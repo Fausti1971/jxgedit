@@ -1,0 +1,6 @@
+main:loadSettings
+Setting:looking for settingsfile,
+	XGDevice:setectDevice,
+	Setting:create settingsfile,
+Setting:loadSettings
+Window:init

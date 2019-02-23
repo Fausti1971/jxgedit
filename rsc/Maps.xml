@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<maps>
+	<midi_channels>
+		<entry name="A01">0</entry>
+		<entry name="A02">1</entry>
+		<entry name="A03">2</entry>
+		<entry name="A04">3</entry>
+		<entry name="A05">4</entry>
+		<entry name="A06">5</entry>
+		<entry name="A07">6</entry>
+		<entry name="A08">7</entry>
+		<entry name="A09">8</entry>
+		<entry name="A10">9</entry>
+		<entry name="A11">10</entry>
+		<entry name="A12">11</entry>
+		<entry name="A13">12</entry>
+		<entry name="A14">13</entry>
+		<entry name="A15">14</entry>
+		<entry name="A16">15</entry>
+		<entry name="B01">16</entry>
+		<entry name="B02">17</entry>
+		<entry name="B03">18</entry>
+		<entry name="B04">19</entry>
+		<entry name="B05">20</entry>
+		<entry name="B06">21</entry>
+		<entry name="B07">22</entry>
+		<entry name="B08">23</entry>
+		<entry name="B09">24</entry>
+		<entry name="B10">25</entry>
+		<entry name="B11">26</entry>
+		<entry name="B12">27</entry>
+		<entry name="B13">28</entry>
+		<entry name="B14">29</entry>
+		<entry name="B15">30</entry>
+		<entry name="B16">31</entry>
+		<entry name="OFF">127</entry>
+	</midi_channels>
+</maps>

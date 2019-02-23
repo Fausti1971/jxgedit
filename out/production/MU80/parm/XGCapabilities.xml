@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><!--defaultTranslationType=Value; defaultValueMin=0; defaultValueMax=127;-->
+<xg version="2.0">
+	<class tag="XGObjectSystem"><parameter tag="MasterTune" name="Master Tune" translationType="ValueDiv10" ValueMin="-2047" ValueMax="2048"></parameter><parameter tag="MasterVolume" name="Master Volume"></parameter><parameter tag="MasterAttenuator" name="Master Attenauator"></parameter><parameter tag="MasterTranspose" name="Master Transpose"></parameter><parameter tag="DrumSetupReset" name="Reset DrumSetup" translationType="ValueAdd1" ValueMax="3">
+		</parameter><parameter tag="XGSystemOn" name="XG System Init" translationType="SetMaxValue" ValueMax="0">
+		</parameter><parameter tag="AllParameterReset" name="Reset All Parameters" translationType="SetMaxValue" ValueMax="0">
+		</parameter></class>
+	<class tag="SystemFX1Rev"><parameter name="Program" translationType="table" tag="SystemFX1ReverbProgram" tableFilter="Reverb" tableType="FXPrograms">
+		</parameter></class></xg>
