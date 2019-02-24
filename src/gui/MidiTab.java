@@ -13,8 +13,8 @@ public class MidiTab extends JPanel
 	
 	public MidiTab()
 	{	add(new JButton("Test"));
-		addAndRegister(new MySlider(MultiPartListView.selectedMultiPart().getParameter((Tags.mp_elRes))));
-		addAndRegister(new MyCombo(MultiPartListView.selectedMultiPart().getParameter((Tags.mp_ch))));
+		addAndRegister(new MySlider(Tags.mp_elRes));
+		addAndRegister(new MyCombo(Tags.mp_ch));
 		
 //		Tags tag, XGAdress adr, ByteType bType, AdressType aType, TranslationType tType, int min, int max, String lName, String sName
 	}

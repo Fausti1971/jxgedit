@@ -15,8 +15,9 @@ import javax.swing.JComponent;
 import memory.Bytes;
 import obj.XGObject;
 import parm.XGParameter;
+import parm.XGParameterConstants;
 
-public class MySlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGObjectChangeListener
+public class MySlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGObjectChangeListener, XGParameterConstants
 {	/**
 	 * 
 	 */
@@ -25,14 +26,15 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 /*****************************************************************************************************************************/
 
 	XGParameter parm = null;
+	final Tags tag;
 
-	public MySlider(XGParameter p)
-	{	parm = p;
+	public MySlider(Tags tag)
+	{	this.tag = tag;
 		setSize(SL_DIM);
 		setMinimumSize(SL_DIM);
 		setPreferredSize(SL_DIM);
 		setMaximumSize(SL_DIM);
-		setToolTipText(p.longName);
+		setVisible(false);
 		setFocusable(true);
 		addMouseMotionListener(this);
 		addMouseListener(this);
@@ -62,6 +64,14 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 
 		String t = parm.getValueAsText();
 		g2.drawString(t, SL_W - GAP - g.getFontMetrics().stringWidth(t), SL_H - GAP);
+	}
+
+	public void bind(XGParameter p)
+	{	if(p != null)
+		{	this.parm = p;
+			setToolTipText(p.longName);
+			setVisible(true);
+		}
 	}
 
 	public void keyTyped(KeyEvent e)
@@ -118,7 +128,11 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 	}
 
 	public void objectChanged(XGObject o)
-	{	parm = o.parameters.get(parm.getTag());
+	{	bind(o.parameters.get(this.tag));
 		repaint();
+	}
+
+	public byte[] getByteArray()
+	{	return parm.obj.getByteArray();
 	}
 }

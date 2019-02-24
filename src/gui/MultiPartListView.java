@@ -15,10 +15,7 @@ public class MultiPartListView extends JList<XGObjectMultiPart> implements ListS
 	private static final long serialVersionUID=1L;
 	public static MultiPartListView instance = null;
 
-	public static XGObjectMultiPart selectedMultiPart()
-	{	if(instance.getSelectedValue() == null) instance.setSelectedIndex(0);
-		return instance.getSelectedValue();
-	}
+//	public static XGObjectMultiPart selectedMultiPart;
 
 /***************************************************************************************************************************/
 
@@ -36,6 +33,7 @@ public class MultiPartListView extends JList<XGObjectMultiPart> implements ListS
 		}
 
 	public void valueChanged(ListSelectionEvent e)
-	{	for(XGObjectChangeListener l : listeners) l.objectChanged(selectedMultiPart());
+	{	XGObjectMultiPart m = getSelectedValue();
+		for(XGObjectChangeListener l : listeners) l.objectChanged(m);
 	}
 }
