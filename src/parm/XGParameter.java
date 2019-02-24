@@ -12,7 +12,7 @@ public class XGParameter implements XGParameterConstants
 
 	/*****************************************************************************************************/
 
-	public int min = DEF_MIN, max = DEF_MAX, hi, offset, size = DEF_SIZE;
+	public int min = DEF_MIN, max = DEF_MAX, offset, size = DEF_SIZE;
 	public String longName, shortName;
 	Function<XGParameter, String> valueTranslation;
 	public Map<Integer, String> translationMap;
@@ -20,13 +20,13 @@ public class XGParameter implements XGParameterConstants
 	private final Tags tag;
 	public XGObject obj;
 
-	public XGParameter(Tags tag, int hi, int offset, int min, int max, String lName, String sName)
-	{	this(tag, hi, offset, DEF_SIZE, DEF_BYTE_TYPE, DEF_TRANS_TYPE, min, max, lName, sName);
+	public XGParameter(Tags tag, XGObject o, int offset, int min, int max, String lName, String sName)
+	{	this(tag, o, offset, DEF_SIZE, DEF_BYTE_TYPE, DEF_TRANS_TYPE, min, max, lName, sName);
 	}
 
-	public XGParameter(Tags tag, int hi, int offset, int size, ByteType bType, Map<Integer, String> table, int min, int max, String lName, String sName)
+	public XGParameter(Tags tag, XGObject o, int offset, int size, ByteType bType, Map<Integer, String> table, int min, int max, String lName, String sName)
 	{	this.tag = tag;
-		this.hi = hi;
+		this.obj = o;
 		this.offset = offset;
 		this.size = size;
 		this.byteType = bType;
@@ -38,9 +38,9 @@ public class XGParameter implements XGParameterConstants
 		this.translationMap = table;
 	}
 
-	public XGParameter(Tags tag, int hi, int offset, int size, ByteType bType, Function<XGParameter, String> tType, int min, int max, String lName, String sName)
+	public XGParameter(Tags tag, XGObject o, int offset, int size, ByteType bType, Function<XGParameter, String> tType, int min, int max, String lName, String sName)
 	{	this.tag = tag;
-		this.hi = hi;
+		this.obj = o;
 		this.offset = offset;
 		this.size = size;
 		this.byteType = bType;
@@ -49,11 +49,6 @@ public class XGParameter implements XGParameterConstants
 		this.longName = lName;
 		this.shortName = sName;
 		this.valueTranslation = tType;
-	}
-
-	public void bind(XGObject o)
-	{	obj = o;
-		System.out.println("Parm: " + this.longName + " new ID: " + o.id);
 	}
 
 	public int getValue()

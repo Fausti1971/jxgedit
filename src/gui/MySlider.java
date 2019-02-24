@@ -118,7 +118,7 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 	}
 
 	public void objectChanged(XGObject o)
-	{	parm.bind(o);
+	{	parm = o.parameters.get(parm.getTag());
 		repaint();
 	}
 }

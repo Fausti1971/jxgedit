@@ -6,7 +6,6 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import application.MU80;
 import obj.XGObjectMultiPart;
 
 public class MultiPartListView extends JList<XGObjectMultiPart> implements ListSelectionListener
@@ -14,6 +13,12 @@ public class MultiPartListView extends JList<XGObjectMultiPart> implements ListS
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
+	public static MultiPartListView instance = null;
+
+	public static XGObjectMultiPart selectedMultiPart()
+	{	if(instance.getSelectedValue() == null) instance.setSelectedIndex(0);
+		return instance.getSelectedValue();
+	}
 
 /***************************************************************************************************************************/
 
@@ -23,7 +28,7 @@ public class MultiPartListView extends JList<XGObjectMultiPart> implements ListS
 	{	super(XGObjectMultiPart.multiparts);
 		super.addListSelectionListener(this);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		MU80.multiPartListView = this;
+		instance = this;
 	}
 
 	public void registerXGObjectChangeListener(XGObjectChangeListener listener)
@@ -31,6 +36,6 @@ public class MultiPartListView extends JList<XGObjectMultiPart> implements ListS
 		}
 
 	public void valueChanged(ListSelectionEvent e)
-	{	for(XGObjectChangeListener l : listeners) l.objectChanged(this.getSelectedValue());
+	{	for(XGObjectChangeListener l : listeners) l.objectChanged(selectedMultiPart());
 	}
 }

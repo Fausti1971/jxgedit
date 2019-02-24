@@ -28,7 +28,7 @@ public class MyCombo extends JComboBox<Entry<Integer, String>> implements GuiCon
 	}
 
 	public void objectChanged(XGObject o)
-	{	parm.bind(o);
+	{	parm = o.parameters.get(parm.getTag());
 		getModel().setSelectedItem(parm.translationMap.get(parm.getValue()));
 		repaint();
 	}
@@ -41,10 +41,5 @@ public class MyCombo extends JComboBox<Entry<Integer, String>> implements GuiCon
 		{
 		}
 		
-/*		Object o = this.getSelectedItem();
-		if(o instanceof Entry)
-		{	Entry<Integer,String> n = (Entry<Integer, String>)o;
-			parm.setValue(n.getKey());
-		}
-*/	}
+	}
 }

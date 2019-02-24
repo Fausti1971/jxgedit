@@ -9,10 +9,7 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 import file.SysexFile;
 import gui.MainFrame;
-import gui.MultiPartListView;
 import midi.XGDevice;
-import parm.TranslationMap;
-import parm.ValueTranslation;
 
 public class MU80
 {	private static final Logger log = Logger.getAnonymousLogger(); 
@@ -23,7 +20,6 @@ public class MU80
 	private static Path homePath = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
 	private static Setting setting;
 	private static MainFrame mainFrame;
-	public static MultiPartListView multiPartListView;
 	public static XGDevice device;
 
 	static

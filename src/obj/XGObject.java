@@ -1,7 +1,9 @@
 package obj;
 
+import java.util.Map;
 import java.util.logging.Logger;
 import application.ChangeListener;
+import parm.XGParameter;
 import parm.XGParameterConstants;
 
 public abstract class XGObject implements XGObjectConstants, XGParameterConstants
@@ -15,11 +17,13 @@ public abstract class XGObject implements XGObjectConstants, XGParameterConstant
 
 /******************** Instance ********************************************************************************************/
 
-	public int id;
+	public int hi, id;
 	private byte[] data = new byte[127];
+	public Map<Tags, XGParameter> parameters = null;
 
 	protected XGObject(XGAdress adr)
 	{	this.id = adr.getMid();
+		this.hi = adr.getHi();
 	}
 
 	public XGObject getXGObject()
@@ -37,5 +41,6 @@ public abstract class XGObject implements XGObjectConstants, XGParameterConstant
 /************* Overrides ***********************************************************************************************************/
 
 /*********** abstract *******************************************************************************************************************/
+
 
 }

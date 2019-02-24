@@ -16,7 +16,7 @@ public class XGMessageParameterChange extends XGMessage
 	public XGMessageParameterChange(XGParameter p)
 	{	super(new byte[8 + p.size]);
 		setMessageID();
-		setHi(p.hi);
+		setHi(p.obj.hi);
 		setMid(p.obj.id);
 		setLo(p.offset);
 		setData(p.copyByteArray(p.offset, p.size));
