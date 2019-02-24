@@ -59,8 +59,7 @@ public class XGParameter implements XGParameterConstants
 	public boolean setValue(int v)
 	{	if(obj == null) return false;
 		int old = getValue();
-		boolean changed = false;
-		changed = (old != setInt(this, Math.min(max, Math.max(min, v))));
+		boolean changed = (old != setInt(this, Math.min(max, Math.max(min, v))));
 		if(changed) new XGMessageParameterChange(this).transmit();
 		return changed;
 	}
