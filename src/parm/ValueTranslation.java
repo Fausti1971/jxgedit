@@ -14,7 +14,7 @@ public interface ValueTranslation extends Function<XGParameter, String>
 
 	static String translateMap(XGParameter p)
 	{	try
-		{	return p.translationMap.get(p.getValue());
+		{	return p.getTranslationMap().get(p.getValue());
 		}
 		catch(NullPointerException e)
 		{	return "no value";

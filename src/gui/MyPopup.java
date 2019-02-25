@@ -14,9 +14,9 @@ public class MyPopup extends JPopupMenu
 	private static final long serialVersionUID=1L;
 
 	public MyPopup(MyCombo c)
-	{	XGParameter p = c.parm;
+	{	XGParameter p = c.getParm();
 		int v = p.getValue();
-		for(Entry<Integer, String> e : p.translationMap.entrySet())
+		for(Entry<Integer, String> e : p.getTranslationMap().entrySet())
 		{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
 			m.addActionListener(new ActionListener()
 			{	public void actionPerformed(ActionEvent ev)

@@ -3,7 +3,7 @@ package gui;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import parm.XGParameterConstants.Tags;
+import parm.XGParameterConstants;
 
 public class MidiTab extends JPanel
 {	/**
@@ -13,8 +13,8 @@ public class MidiTab extends JPanel
 	
 	public MidiTab()
 	{	add(new JButton("Test"));
-		addAndRegister(new MySlider(Tags.mp_elRes));
-		addAndRegister(new MyCombo(Tags.mp_ch));
+		addAndRegister(new MySlider(XGParameterConstants.MP_ELRES));
+		addAndRegister(new MyCombo(XGParameterConstants.MP_CH));
 		
 //		Tags tag, XGAdress adr, ByteType bType, AdressType aType, TranslationType tType, int min, int max, String lName, String sName
 	}

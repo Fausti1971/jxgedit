@@ -3,6 +3,7 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.sound.midi.MidiDevice;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -58,23 +59,27 @@ public class MainMenuBar extends JMenuBar
 		JMenu setting = new JMenu("Settings");
 		setting.add(input);
 		for(MidiDevice d : Midi.getInputs())
-		{	JMenuItem m = new JMenuItem(d.getDeviceInfo().getName());
+		{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(d.getDeviceInfo().getName());
 			m.addActionListener(new ActionListener()
 			{	public void actionPerformed(ActionEvent e)
 				{	MU80.device.getMidi().setInput(d);
 				}
 			});
 			input.add(m);
+			if(MU80.device.getMidi().getInput() == d) m.setSelected(true);
+			else m.setSelected(false);
 		}
 		setting.add(output);
 		for(MidiDevice d : Midi.getOutputs())
-		{	JMenuItem m = new JMenuItem(d.getDeviceInfo().getName());
+		{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(d.getDeviceInfo().getName());
 			m.addActionListener(new ActionListener()
 			{	public void actionPerformed(ActionEvent e)
 				{	MU80.device.getMidi().setOutput(d);
 				}
 			});
 			output.add(m);
+			if(MU80.device.getMidi().getOutput() == d) m.setSelected(true);
+			else m.setSelected(false);
 		}
 
 		super.add(file);

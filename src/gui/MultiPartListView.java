@@ -2,6 +2,7 @@ package gui;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
@@ -20,7 +21,7 @@ public class MultiPartListView extends JList<XGObjectMultiPart> implements ListS
 	Set<XGObjectSelectionListener> listeners = new HashSet<>();
 
 	public MultiPartListView()
-	{	super(XGObjectMultiPart.multiparts);
+	{	super(new Vector<>(XGObjectMultiPart.getMultiParts().values()));
 		super.addListSelectionListener(this);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		instance = this;

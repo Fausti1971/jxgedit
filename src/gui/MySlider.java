@@ -14,6 +14,7 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
 import memory.Bytes;
 import obj.XGObject;
+import parm.Opcode;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 
@@ -25,11 +26,11 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 
 /*****************************************************************************************************************************/
 
-	XGParameter parm = null;
-	final Tags tag;
+	private XGParameter parm = null;
+	private Opcode opcode;
 
-	public MySlider(Tags tag)
-	{	this.tag = tag;
+	public MySlider(Opcode opc)
+	{	this.opcode = opc;
 		setSize(SL_DIM);
 		setMinimumSize(SL_DIM);
 		setPreferredSize(SL_DIM);
@@ -50,7 +51,7 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 	{	Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		int w = Bytes.linearIO(parm.getValue(), parm.min, parm.max, 0, SL_W);
+		int w = Bytes.linearIO(parm.getValue(), parm.getMinValue(), parm.getMaxValue(), 0, SL_W);
 
 		g2.setColor(BACK);
 		g2.fillRoundRect(0, 0 , SL_W, SL_H, SL_RADI, SL_RADI);
@@ -60,7 +61,7 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 		g2.fillRoundRect(0, 0 , w - 1, SL_H - 1, SL_RADI, SL_RADI);
 
 		g2.setColor(Color.BLACK);
-		g2.drawString(parm.shortName, GAP, SL_H - GAP);
+		g2.drawString(parm.getShortName(), GAP, SL_H - GAP);
 
 		String t = parm.getValueAsText();
 		g2.drawString(t, SL_W - GAP - g.getFontMetrics().stringWidth(t), SL_H - GAP);
@@ -69,7 +70,7 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 	public void bind(XGParameter p)
 	{	if(p != null)
 		{	this.parm = p;
-			setToolTipText(p.longName);
+			setToolTipText(p.getLongName());
 			setVisible(true);
 		}
 	}
@@ -92,7 +93,7 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 	}
 
 	public void mouseDragged(MouseEvent e)
-	{	if(parm.setValue(Bytes.linearIO(e.getX(), 0, this.getWidth(), parm.min, parm.max)))repaint();
+	{	if(parm.setValue(Bytes.linearIO(e.getX(), 0, this.getWidth(), parm.getMinValue(), parm.getMaxValue())))repaint();
 		e.consume();
 	}
 
@@ -102,7 +103,7 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 
 	public void mouseClicked(MouseEvent e)
 	{	if(e.getButton() == MouseEvent.BUTTON1)
-		{	if(Bytes.linearIO(parm.getValue(), parm.min, parm.max, 0, this.getWidth()) < e.getX())
+		{	if(Bytes.linearIO(parm.getValue(), parm.getMinValue(), parm.getMaxValue(), 0, this.getWidth()) < e.getX())
 			{	if(parm.addValue(1)) repaint();
 			}
 			else
@@ -128,11 +129,7 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 	}
 
 	public void xgObjectSelected(XGObject o)
-	{	bind(o.parameters.get(this.tag));
+	{	bind(o.getParameter(this.opcode.getOffset()));
 		repaint();
-	}
-
-	public byte[] getByteArray()
-	{	return parm.obj.getByteArray();
 	}
 }

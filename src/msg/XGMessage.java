@@ -7,7 +7,6 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 import application.MU80;
 import memory.Bytes;
-import midi.XGDevice;
 
 public abstract class XGMessage implements XGMessageConstants, Bytes
 {	protected static final Logger log = Logger.getAnonymousLogger();
@@ -39,24 +38,19 @@ public abstract class XGMessage implements XGMessageConstants, Bytes
 	}
 
 	public XGMessage(SysexMessage msg)	//für Midi und File
-	{	this.data = msg.getMessage();
-	}
+	{	this.data = msg.getMessage();}
 
 	public void setOutput(MidiDevice out)
-	{	this.output = out;
-	}
+	{	this.output = out;}
 	
 	public MidiDevice getOutput()
-	{	return this.output;
-	}
+	{	return this.output;}
 
 	public byte[] getByteArray()
-	{	return this.data;
-	}
+	{	return this.data;}
 
 	public SysexMessage asSysexMessage() throws InvalidMidiDataException
-	{	return new SysexMessage(this.data, this.data.length);
-	}
+	{	return new SysexMessage(this.data, this.data.length);}
 
 	protected abstract int getHi();
 	protected abstract int getMid();
@@ -65,5 +59,5 @@ public abstract class XGMessage implements XGMessageConstants, Bytes
 	protected abstract void setMid(int mid);
 	protected abstract void setLo(int lo);
 	protected abstract void setMessageID();
-	public abstract void handle();
+	public abstract void processXGMessage();
 }

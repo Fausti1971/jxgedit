@@ -3,39 +3,35 @@ package obj;
 import java.util.Map;
 import java.util.logging.Logger;
 import application.ChangeListener;
+import parm.Opcode;
 import parm.XGParameter;
-import parm.XGParameterConstants;
 
-public abstract class XGObject implements XGObjectConstants, XGParameterConstants
+public abstract class XGObject implements XGObjectConstants
 {	protected static final Logger log = Logger.getAnonymousLogger();
 
 	protected static ChangeListener listener = null;
-/*
-	public static void setListener(ChangeListener l)
-	{	XGObject.listener = l;
-	}
-*/
+
 /******************** Instance ********************************************************************************************/
 
-	public int hi, id;
-	private byte[] data = new byte[127];
-	public Map<Tags, XGParameter> parameters = null;
+	protected final XGAdress adr;
+	protected Map<Integer, XGParameter> parameters;
 
 	protected XGObject(XGAdress adr)
-	{	this.id = adr.getMid();
-		this.hi = adr.getHi();
-	}
+	{	this.adr = adr;}
 
 	public XGObject getXGObject()
-	{	return this;
+	{	return this;}
+
+	public XGParameter getParameter(int offset)
+	{	if(parameters == null) return null;
+		return parameters.getOrDefault(offset, new XGParameter(this, new Opcode(offset), 0, 0, "unknown parameter", "unknown"));
 	}
 
-	public void read(int offset, byte[] array)
-	{	encodeByteArray(offset, array);
-	}
+	public XGParameter getParameter(Opcode opc)
+	{	return getParameter(opc.getOffset());}
 
-	public byte[] getByteArray()
-	{	return this.data;
+	public XGAdress getAdr()
+	{	return adr;
 	}
 
 /************* Overrides ***********************************************************************************************************/

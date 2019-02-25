@@ -57,12 +57,12 @@ public class Midi implements Receiver
 		return outputs;
 	}
 
-	private static MidiDevice getInput(String name)
+	private static MidiDevice findInput(String name)
 	{	for(MidiDevice d : getInputs()) if(d.getDeviceInfo().getName().equals(name)) return d;
 		return null;
 	}
 
-	private static MidiDevice getOutput(String name)
+	private static MidiDevice findOutput(String name)
 	{	for(MidiDevice d : getOutputs()) if(d.getDeviceInfo().getName().equals(name)) return d;
 		return null;
 	}
@@ -76,7 +76,7 @@ public class Midi implements Receiver
 	private XGRequestQueue queue;
 
 	public Midi(XGDevice dev, String out, String in)
-	{	this(dev, getOutput(out), getInput(in));
+	{	this(dev, findOutput(out), findInput(in));
 	}
 
 	public Midi(XGDevice dev, MidiDevice output, MidiDevice input)
@@ -119,13 +119,19 @@ public class Midi implements Receiver
 		xgDev.getSetting().set(Setting.MIDIINPUT, this.getInputName());
 	}
 
+	public MidiDevice getInput()
+	{	return this.inDev;}
+
+	public MidiDevice getOutput()
+	{	return this.outDev;}
+
 	public String getInputName()
-	{	if(this.inDev == null) return "no input device";
+	{	if(getInput() == null) return "no input device";
 		else return this.inDev.getDeviceInfo().getName();
 	}
 
 	public String getOutputName()
-	{	if(this.outDev == null) return "no output device";
+	{	if(getOutput() == null) return "no output device";
 		else return this.outDev.getDeviceInfo().getName();
 	}
 

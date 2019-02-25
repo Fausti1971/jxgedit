@@ -3,8 +3,6 @@ package file;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -27,7 +25,7 @@ public class SysexFile
 
 /******************************************************************************************************************************************/
 
-	private Path path;
+//	private Path path;
 	private File file;
 
 	private SysexFile(File f)
@@ -36,7 +34,7 @@ public class SysexFile
 	}
 
 	public SysexFile()
-	{	this.path = Paths.get(MU80.getSetting().get(Setting.LASTDUMPPATH));
+	{	//this.path = Paths.get(MU80.getSetting().get(Setting.LASTDUMPPATH));
 		setFile();
 	}
 	
@@ -45,7 +43,7 @@ public class SysexFile
 		{	int count = 0;
 			for(SysexMessage s : parse())
 			{	try
-				{	XGMessage.factory(s).handle();
+				{	XGMessage.factory(s).processXGMessage();
 					count++;
 				}
 				catch (InvalidMidiDataException e)

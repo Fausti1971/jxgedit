@@ -42,44 +42,32 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 	}
 
 	public XGMessageBulkDump getResponse()
-	{	return response;
-	}
+	{	return response;}
 
 	protected int getHi()
-	{	return decodeMidiByte(HI_OFFS);
-	}
+	{	return decodeMidiByte(HI_OFFS);}
 
 	protected int getMid()
-	{return decodeMidiByte(MID_OFFS);
-	}
+	{return decodeMidiByte(MID_OFFS);}
 
 	protected int getLo()
-	{	return decodeMidiByte(LO_OFFS);
-	}
+	{	return decodeMidiByte(LO_OFFS);}
 
 	protected void setHi(int hi)
-	{	encodeMidiByte(HI_OFFS, hi);
-	}
+	{	encodeMidiByte(HI_OFFS, hi);}
 
 	protected void setMid(int mid)
-	{	encodeMidiByte(MID_OFFS, mid);
-	}
+	{	encodeMidiByte(MID_OFFS, mid);}
 
 	protected void setLo(int lo)
-	{	encodeMidiByte(LO_OFFS, lo);
-	}
+	{	encodeMidiByte(LO_OFFS, lo);}
 
 	@Override public String toString()
-	{	return "requesting hi: " + getHi() + " mid: " + getMid() + " lo: " + getLo();
-	}
-
-	public void handle()
-	{
-	// TODO Auto-generated method stub
-	
-	}
+	{	return "requesting hi: " + getHi() + " mid: " + getMid() + " lo: " + getLo();}
 
 	protected void setMessageID()
-	{	encodeHigherNibble(MSG_OFFS, MSG);
-	}
+	{	encodeHigherNibble(MSG_OFFS, MSG);}
+
+	public void processXGMessage()
+	{}
 }

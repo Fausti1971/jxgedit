@@ -8,12 +8,10 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	private XGMessage response;
 
 	protected XGMessageParameterRequest(byte[] array, long time)
-	{	super(array);
-	}
+	{	super(array);}
 
 	public XGMessageParameterRequest(SysexMessage msg)
-	{	super(msg);
-	}
+	{	super(msg);}
 /*
 	public XGMessageParameterRequest(int sysexId, int hi, int mid, int lo)	//TODO entferne diesen Konstruktor wenn XGParamemter steht...
 	{	super(new byte[8]);
@@ -27,28 +25,22 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	}
 */
 	protected int getHi()
-	{	return decodeMidiByte(HI_OFFS);
-	}
+	{	return decodeMidiByte(HI_OFFS);}
 
 	protected int getMid()
-	{	return decodeMidiByte(MID_OFFS);
-	}
+	{	return decodeMidiByte(MID_OFFS);}
 
 	protected int getLo()
-	{	return decodeMidiByte(LO_OFFS);
-	}
+	{	return decodeMidiByte(LO_OFFS);}
 
 	protected void setHi(int hi)
-	{	encodeMidiByte(HI_OFFS, hi);
-	}
+	{	encodeMidiByte(HI_OFFS, hi);}
 
 	protected void setMid(int mid)
-	{	encodeMidiByte(MID_OFFS, mid);
-	}
+	{	encodeMidiByte(MID_OFFS, mid);}
 
 	protected void setLo(int lo)
-	{	encodeMidiByte(LO_OFFS, lo);
-	}
+	{	encodeMidiByte(LO_OFFS, lo);}
 
 	public boolean isResponsed(XGMessage msg)
 	{	if(msg == null) return false;
@@ -62,13 +54,10 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 		return false;
 	}
 
-	public void handle()
-	{
-	// TODO Auto-generated method stub
-	
-	}
-
 	protected void setMessageID()
 	{	encodeHigherNibble(MSG_OFFS, MSG);
 	}
+
+	public void processXGMessage()
+	{}
 }

@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import obj.XGObject;
+import parm.Opcode;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 
@@ -13,11 +14,11 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 	 */
 	private static final long serialVersionUID=1L;
 
-	XGParameter parm;
-	final Tags tag;
+	private XGParameter parm;
+	private Opcode opcode;
 
-	public MyCombo(Tags tag)
-	{	this.tag = tag;
+	public MyCombo(Opcode opc)
+	{	this.opcode = opc;
 		MyCombo mc = this;
 		setSize(SL_DIM);
 		setVisible(false);
@@ -28,26 +29,30 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 		});
 	}
 
+	public XGParameter getParm()
+	{	return this.parm;
+	}
+
+	public void setParm(XGParameter parm)
+	{	this.parm = parm;
+	}
+
 	public void xgObjectSelected(XGObject o)
-	{	bind(o.parameters.get(this.tag));
+	{	bind(o.getParameter(this.opcode.getOffset()));
 	}
 
 	private void bind(XGParameter p)
 	{	if(p != null)
-		{	this.parm = p;
-			setToolTipText(p.longName);
+		{	this.setParm(p);
+			setToolTipText(p.getLongName());
 			setVisible(true);
 			setText(p.getValueAsText());
 			repaint();
 		}
 	}
 
-	public byte[] getByteArray()
-	{	return parm.obj.getByteArray();
-	}
-
 	public void valueChanged(int v)
-	{	this.parm.setValue(v);
-		this.setText(this.parm.getValueAsText());
+	{	this.getParm().setValue(v);
+		this.setText(this.getParm().getValueAsText());
 	}
 }

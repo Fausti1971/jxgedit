@@ -1,6 +1,7 @@
 package memory;
 
 import java.util.Arrays;
+import parm.Opcode;
 import parm.XGParameter;
 
 public interface Bytes
@@ -10,39 +11,41 @@ public interface Bytes
 	{	return((int)(((float)(i - in_min) / (float)(in_max - in_min) * (out_max - out_min)) + out_min));
 	}
 
-	default int getInt(XGParameter p)
-	{	switch(p.getByteType())
+	default void decodeOpcode(int offset, Opcode opc)
+	{	/**
+		* dekodiert den/die in opcode.byteCount enthaltenen opcode.byteType/s am/ab @parm offset des byteArray und setzt opcode.value
+		*/
+		switch(opc.getByteType())
 		{	default:
-			case MIDIBYTE:	return decodeMidiBytes(p.offset, p.size);
-			case NIBBLE:	return decodeLowerNibbles(p.offset, p.size);
+			case MIDIBYTE:	opc.setValue(decodeMidiBytes(offset, opc.getByteCount()));
+			case NIBBLE:	opc.setValue(decodeLowerNibbles(offset, opc.getByteCount()));
 		}
 	}
 
-	default int setInt(XGParameter p, int v)
-	{	switch(p.getByteType())
+	default void encodeOpcode(int offset, Opcode opc)
+	{	switch(opc.getByteType())
 		{	default:
-			case MIDIBYTE:	return encodeMidiBytes(p.offset, p.size, v);
-			case NIBBLE:	return encodeLowerNibbles(p.offset, p.size, v);
+			case MIDIBYTE:	encodeMidiBytes(offset , opc.getByteCount(), opc.getValue());
+			case NIBBLE:	encodeLowerNibbles(offset, opc.getByteCount(), opc.getValue());
 		}
 	}
-
+/*
 	default byte[] getParameterBytes(XGParameter p)
-	{	switch(p.getByteType())
+	{	switch(p.getOpcode().getByteType())
 		{	default:
-			case MIDIBYTE:	return copyByteArray(p.offset, p.size);
-			case NIBBLE:	return copyByteArray(p.offset, p.size);
+			case MIDIBYTE:	return copyByteArray(p.getOffset(), p.size);
+			case NIBBLE:	return copyByteArray(p.getOffset(), p.size);
 		}
 	}
-
+*/
 	byte[] getByteArray();
 
 	default int decodeMidiByte(int index)
 	{	return getByteArray()[index];
 	}
 
-	default int encodeMidiByte(int index, int i)
+	default void encodeMidiByte(int index, int i)
 	{	getByteArray()[index] = (byte)i;
-		return decodeMidiByte(index);
 	}
 
 	default int decodeMidiBytes(int index, int size)
@@ -54,14 +57,13 @@ public interface Bytes
 		return temp;
 	}
 
-	default int encodeMidiBytes(int index, int size, int value)
+	default void encodeMidiBytes(int index, int size, int value)
 	{	size--;
 		while(size >= 0)
 		{	this.encodeMidiByte(index + size, value);
 			size--;
 			value >>= 7;
 		}
-		return decodeMidiBytes(index, size);
 	}
 
 	default int decodeLowerNibble(int index)
@@ -89,12 +91,11 @@ public interface Bytes
 		return res;
 	}
 
-	default int encodeLowerNibbles(int index, int size, int value)
+	default void encodeLowerNibbles(int index, int size, int value)
 	{	for(int i = 0; i < size; i++)
 		{	encodeLowerNibble(index + i, value & 0xF);
 			value >>= 4;
 		}
-		return decodeLowerNibbles(index, size);
 	}
 
 	default byte[] copyByteArray(int index, int size)

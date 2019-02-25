@@ -3,7 +3,9 @@ package msg;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import obj.XGAdress;
+import obj.XGObject;
 import obj.XGObjectConstants;
+import parm.XGParameter;
 
 public class XGMessageBulkDump extends XGMessage
 {	private static final int SIZE_SIZE = 2, SIZE_OFFS = 4, MSG = 0, HI_OFFS = 6, MID_OFFS = 7, LO_OFFS = 8, DATA_OFFS = 9;
@@ -37,46 +39,50 @@ public class XGMessageBulkDump extends XGMessage
 	}
 
 	public XGMessageBulkDump(SysexMessage msg)
-	{	super(msg);
-	}
+	{	super(msg);}
 
 	protected int getHi()
-	{	return decodeMidiByte(HI_OFFS);
-	}
+	{	return decodeMidiByte(HI_OFFS);}
 
 	protected int getMid()
-	{return decodeMidiByte(MID_OFFS);
-	}
+	{return decodeMidiByte(MID_OFFS);}
 
 	protected int getLo()
-	{	return decodeMidiByte(LO_OFFS);
-	}
+	{	return decodeMidiByte(LO_OFFS);}
 
 	protected void setHi(int hi)
-	{	encodeMidiByte(HI_OFFS, hi);
-	}
+	{	encodeMidiByte(HI_OFFS, hi);}
 
 	protected void setMid(int mid)
-	{	encodeMidiByte(MID_OFFS, mid);
-	}
+	{	encodeMidiByte(MID_OFFS, mid);}
 
 	protected void setLo(int lo)
-	{	encodeMidiByte(LO_OFFS, lo);
-	}
+	{	encodeMidiByte(LO_OFFS, lo);}
 
 	private int getDumpSize()
-	{	return decodeMidiBytes(SIZE_OFFS, SIZE_SIZE);
-	}
+	{	return decodeMidiBytes(SIZE_OFFS, SIZE_SIZE);}
 
 	private void setDumpSize(int size)
-	{	encodeMidiBytes(SIZE_OFFS, SIZE_SIZE, size);
-	}
+	{	encodeMidiBytes(SIZE_OFFS, SIZE_SIZE, size);}
 
-	public void handle()
-	{	XGAdress adr = new XGAdress(getHi(),getMid(),getLo());
-		XGObjectConstants.getObjectInstance(adr).read(getLo(), copyByteArray(DATA_OFFS, getDumpSize()));
-	}
 	protected void setMessageID()
-	{	encodeHigherNibble(MSG_OFFS, MSG);
+	{	encodeHigherNibble(MSG_OFFS, MSG);}
+
+	public void processXGMessage()
+	{	int end = getDumpSize() + DATA_OFFS, offset = getLo();
+		XGAdress adr = new XGAdress(getHi(), getMid(), offset);
+		XGObject obj = XGObjectConstants.getObjectInstance(adr);
+		XGParameter p = null;
+		for(int i = DATA_OFFS; i < end;)
+		{	p = obj.getParameter(offset);
+			if(p == null)
+			{	offset++;
+				i++;
+				continue;
+			}
+			decodeOpcode(DATA_OFFS, p.getOpcode());
+			offset += p.getOpcode().getByteCount();
+			i += p.getOpcode().getByteCount();
+		}
 	}
 }
