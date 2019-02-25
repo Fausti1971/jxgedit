@@ -17,7 +17,7 @@ import obj.XGObject;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 
-public class MySlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGObjectChangeListener, XGParameterConstants
+public class MySlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGObjectSelectionListener, XGParameterConstants
 {	/**
 	 * 
 	 */
@@ -127,7 +127,7 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 	{
 	}
 
-	public void objectChanged(XGObject o)
+	public void xgObjectSelected(XGObject o)
 	{	bind(o.parameters.get(this.tag));
 		repaint();
 	}

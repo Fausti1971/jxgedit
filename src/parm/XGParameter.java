@@ -34,7 +34,7 @@ public class XGParameter implements XGParameterConstants
 		this.max = max;
 		this.longName = lName;
 		this.shortName = sName;
-		this.valueTranslation = ValueTranslation::translateTable;
+		this.valueTranslation = ValueTranslation::translateMap;
 		this.translationMap = table;
 	}
 
@@ -61,6 +61,7 @@ public class XGParameter implements XGParameterConstants
 		int old = getValue();
 		boolean changed = (old != setInt(this, Math.min(max, Math.max(min, v))));
 		if(changed) new XGMessageParameterChange(this).transmit();
+		else System.out.println("not changed: " + old + "/" + v);
 		return changed;
 	}
 

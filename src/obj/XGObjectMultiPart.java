@@ -29,8 +29,6 @@ public class XGObjectMultiPart extends XGObject
 
 	/********************************************************************************************************************/
 
-//	XGParameter prg = null, ch = getParameter(Tags.mp_ch), pm = null;
-
 	public XGObjectMultiPart(XGAdress adr)
 	{	super(adr);
 		parameters = initParameters(this); 

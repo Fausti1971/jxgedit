@@ -19,7 +19,7 @@ public class MidiTab extends JPanel
 //		Tags tag, XGAdress adr, ByteType bType, AdressType aType, TranslationType tType, int min, int max, String lName, String sName
 	}
 
-	private <T extends JComponent & XGObjectChangeListener> void addAndRegister(T c)
+	private <T extends JComponent & XGObjectSelectionListener> void addAndRegister(T c)
 	{	super.add(c);
 		MultiPartListView.instance.registerXGObjectChangeListener(c);
 	}

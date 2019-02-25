@@ -7,7 +7,7 @@ import obj.XGObject;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 
-public class MyCombo extends JButton implements GuiConstants, XGObjectChangeListener, XGParameterConstants
+public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionListener, XGParameterConstants
 {	/**
 	 * 
 	 */
@@ -20,6 +20,7 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectChangeList
 	{	this.tag = tag;
 		MyCombo mc = this;
 		setSize(SL_DIM);
+		setVisible(false);
 		addActionListener(new ActionListener()
 		{	public void actionPerformed(ActionEvent e)
 			{	new MyPopup(mc).show(mc, 0, 0);
@@ -27,7 +28,7 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectChangeList
 		});
 	}
 
-	public void objectChanged(XGObject o)
+	public void xgObjectSelected(XGObject o)
 	{	bind(o.parameters.get(this.tag));
 	}
 

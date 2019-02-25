@@ -10,11 +10,11 @@ public abstract class XGObject implements XGObjectConstants, XGParameterConstant
 {	protected static final Logger log = Logger.getAnonymousLogger();
 
 	protected static ChangeListener listener = null;
-
+/*
 	public static void setListener(ChangeListener l)
 	{	XGObject.listener = l;
 	}
-
+*/
 /******************** Instance ********************************************************************************************/
 
 	public int hi, id;
