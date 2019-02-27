@@ -13,14 +13,13 @@ public class MidiTab extends JPanel
 	
 	public MidiTab()
 	{	add(new JButton("Test"));
-		addAndRegister(new MySlider(XGParameterConstants.MP_ELRES));
+		addAndRegister(new LeftZeroSlider(XGParameterConstants.MP_ELRES));
 		addAndRegister(new MyCombo(XGParameterConstants.MP_CH));
-		
-//		Tags tag, XGAdress adr, ByteType bType, AdressType aType, TranslationType tType, int min, int max, String lName, String sName
+		addAndRegister(new LeftZeroSlider(XGParameterConstants.MP_TUNE));
 	}
 
 	private <T extends JComponent & XGObjectSelectionListener> void addAndRegister(T c)
 	{	super.add(c);
-		MultiPartListView.instance.registerXGObjectChangeListener(c);
+		MultiPartListView.getInstance().registerXGObjectChangeListener(c);
 	}
 }

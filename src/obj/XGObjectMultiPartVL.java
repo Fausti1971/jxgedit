@@ -12,4 +12,7 @@ public class XGObjectMultiPartVL extends XGObject
 	public XGObjectMultiPartVL(XGAdress adr)
 	{	super(adr);
 	}
+
+	protected void initParameters()
+	{}
 }

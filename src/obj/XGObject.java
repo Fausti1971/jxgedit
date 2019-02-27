@@ -1,5 +1,6 @@
 package obj;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import application.ChangeListener;
@@ -14,29 +15,32 @@ public abstract class XGObject implements XGObjectConstants
 /******************** Instance ********************************************************************************************/
 
 	protected final XGAdress adr;
-	protected Map<Integer, XGParameter> parameters;
+	protected Map<Integer, XGParameter> parameters = new HashMap<>();
 
 	protected XGObject(XGAdress adr)
-	{	this.adr = adr;}
+	{	this.adr = adr;
+		this.initParameters();
+	}
 
 	public XGObject getXGObject()
 	{	return this;}
 
 	public XGParameter getParameter(int offset)
-	{	if(parameters == null) return null;
-		return parameters.getOrDefault(offset, new XGParameter(this, new Opcode(offset), 0, 0, "unknown parameter", "unknown"));
-	}
+	{	return parameters.getOrDefault(offset, new XGParameter(this, new Opcode(offset), 0, 0, "parameter " + offset, "unknow"));}
 
 	public XGParameter getParameter(Opcode opc)
 	{	return getParameter(opc.getOffset());}
 
+	public Map<Integer, XGParameter> getParameters()
+	{	return this.parameters;}
+
 	public XGAdress getAdr()
-	{	return adr;
-	}
+	{	return adr;}
 
 /************* Overrides ***********************************************************************************************************/
 
 /*********** abstract *******************************************************************************************************************/
 
+	protected abstract void initParameters();
 
 }

@@ -16,4 +16,7 @@ public class XGObjectInsertFXVL extends XGObject
 	public XGObjectInsertFXVL(XGAdress adr)
 	{	super(adr);
 	}
+
+	protected void initParameters()
+	{}
 }

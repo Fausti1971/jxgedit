@@ -27,4 +27,7 @@ public class XGObjectInsertFX extends XGObject
 	@Override public String toString()
 	{	return "FX " + this.adr.getMid();
 	}
+
+	protected void initParameters()
+	{}
 }

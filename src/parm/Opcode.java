@@ -23,23 +23,20 @@ public class Opcode implements XGParameterConstants
 	}
 
 	public int getValue()
-	{	return value;}
+	{	return this.value;}
 
 	public boolean setValue(int v)
-	{	int old = this.value;
+	{	boolean changed = this.value != v;
 		this.value = v;
-		return old != v;
+		return changed;
 	}
 
 	public int getOffset()
-	{	return offset;}
+	{	return this.offset;}
 
 	public int getByteCount()
-	{	return byteCount;}
+	{	return this.byteCount;}
 
 	public Bytes.ByteType getByteType()
-	{	return byteType;}
-
-	@Override public Opcode clone()
-	{	return new Opcode(this.offset, this.byteCount, this.byteType);}
+	{	return this.byteType;}
 }

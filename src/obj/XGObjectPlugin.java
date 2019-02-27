@@ -12,4 +12,7 @@ public class XGObjectPlugin extends XGObject
 	public XGObjectPlugin(XGAdress adr)
 	{	super(adr);
 	}
+
+	protected void initParameters()
+	{}
 }

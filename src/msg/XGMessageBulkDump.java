@@ -5,6 +5,7 @@ import javax.sound.midi.SysexMessage;
 import obj.XGAdress;
 import obj.XGObject;
 import obj.XGObjectConstants;
+import parm.Opcode;
 import parm.XGParameter;
 
 public class XGMessageBulkDump extends XGMessage
@@ -70,19 +71,12 @@ public class XGMessageBulkDump extends XGMessage
 
 	public void processXGMessage()
 	{	int end = getDumpSize() + DATA_OFFS, offset = getLo();
-		XGAdress adr = new XGAdress(getHi(), getMid(), offset);
-		XGObject obj = XGObjectConstants.getObjectInstance(adr);
-		XGParameter p = null;
+		XGObject obj = XGObjectConstants.getObjectInstance(new XGAdress(getHi(), getMid(), offset));
 		for(int i = DATA_OFFS; i < end;)
-		{	p = obj.getParameter(offset);
-			if(p == null)
-			{	offset++;
-				i++;
-				continue;
-			}
-			decodeOpcode(DATA_OFFS, p.getOpcode());
-			offset += p.getOpcode().getByteCount();
-			i += p.getOpcode().getByteCount();
+		{	Opcode opc = obj.getParameter(offset).getOpcode();
+			decodeOpcode(i, opc);
+			offset += opc.getByteCount();
+			i += opc.getByteCount();
 		}
 	}
 }

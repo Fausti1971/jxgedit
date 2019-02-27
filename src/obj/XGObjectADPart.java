@@ -26,4 +26,7 @@ public class XGObjectADPart extends XGObject
 	{	super(adr);
 		instances.add(adr.getMid(), this);
 	}
+
+	protected void initParameters()
+	{}
 }

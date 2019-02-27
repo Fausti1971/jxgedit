@@ -14,4 +14,7 @@ public class XGObjectSysEQ extends XGObject
 	{	super(adr);
 		instance = this;
 	}
+
+	protected void initParameters()
+	{}
 }

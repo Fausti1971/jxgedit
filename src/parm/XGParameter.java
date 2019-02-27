@@ -19,8 +19,7 @@ public class XGParameter implements XGParameterConstants
 	private XGObject xgObject;
 
 	public XGParameter(XGObject o, Opcode opc, int min, int max, String lName, String sName)
-	{	this(o, opc, DEF_TRANS_TYPE, min, max, lName, sName);
-	}
+	{	this(o, opc, DEF_TRANS_TYPE, min, max, lName, sName);}
 
 	public XGParameter(XGObject o, Opcode opc, Map<Integer, String> table, int min, int max, String lName, String sName)
 	{	this.xgObject = o;
@@ -47,51 +46,55 @@ public class XGParameter implements XGParameterConstants
 	{	return this.getOpcode().getValue();}
 
 	public boolean setValue(int v)
-	{	if(xgObject == null) return false;
-		boolean changed = (this.getOpcode().setValue(Math.min(maxValue, Math.max(minValue, v)))); 
+	{	if(this.xgObject == null) return false;
+		boolean changed = (this.getOpcode().setValue(Math.min(this.maxValue, Math.max(this.minValue, v)))); 
 		if(changed) new XGMessageParameterChange(this).transmit();
 		return changed;
 	}
 
 	public boolean addValue(int v)
-	{	return setValue(getValue() + v);}
+	{	return this.setValue(getValue() + v);}
 
 	public String getValueAsText()
-	{	return valueTranslation.apply(this);}
+	{	return this.valueTranslation.apply(this);}
 
 	public XGObject getXGObject()
 	{	return this.xgObject;}
 
 	public Opcode getOpcode()
-	{	return opcode;}
+	{	return this.opcode;}
 
 	public String getLongName()
-	{	return longName;}
+	{	return this.longName;}
 
 	public void setLongName(String longName)
 	{	this.longName = longName;}
 
 	public String getShortName()
-	{	return shortName;}
+	{	return this.shortName;}
 
 	public void setShortName(String shortName)
 	{	this.shortName = shortName;}
 
 	public Map<Integer, String> getTranslationMap()
-	{	return translationMap;}
+	{	return this.translationMap;}
 
 	public void setTranslationMap(Map<Integer, String> translationMap)
 	{	this.translationMap = translationMap;}
 
 	public int getMaxValue()
-	{	return maxValue;}
+	{	return this.maxValue;}
 
 	public void setMaxValue(int maxValue)
-	{	this.maxValue=maxValue;}
+	{	this.maxValue = maxValue;}
 
 	public int getMinValue()
-	{	return minValue;}
+	{	return this.minValue;}
 
 	public void setMinValue(int minValue)
-	{	this.minValue=minValue;}
+	{	this.minValue = minValue;}
+
+	@Override public String toString()
+	{	return this.getLongName() + " = " + this.getValueAsText();
+	}
 }

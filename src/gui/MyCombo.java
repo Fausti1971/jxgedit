@@ -2,9 +2,11 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Map.Entry;
 import javax.swing.JButton;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JPopupMenu;
 import obj.XGObject;
-import parm.Opcode;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 
@@ -15,10 +17,10 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 	private static final long serialVersionUID=1L;
 
 	private XGParameter parm;
-	private Opcode opcode;
+	private int offset;
 
-	public MyCombo(Opcode opc)
-	{	this.opcode = opc;
+	public MyCombo(int offs)
+	{	this.offset = offs;
 		MyCombo mc = this;
 		setSize(SL_DIM);
 		setVisible(false);
@@ -38,21 +40,42 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 	}
 
 	public void xgObjectSelected(XGObject o)
-	{	bind(o.getParameter(this.opcode.getOffset()));
-	}
-
-	private void bind(XGParameter p)
-	{	if(p != null)
+	{	XGParameter p = o.getParameter(this.offset);
+		if(p != null)
 		{	this.setParm(p);
-			setToolTipText(p.getLongName());
-			setVisible(true);
-			setText(p.getValueAsText());
-			repaint();
+			this.setToolTipText(p.getLongName());
+			this.setVisible(true);
+			this.setText(p.getValueAsText());
 		}
+		else this.setVisible(false);
+		this.repaint();
 	}
 
 	public void valueChanged(int v)
 	{	this.getParm().setValue(v);
 		this.setText(this.getParm().getValueAsText());
 	}
+
+	private class MyPopup extends JPopupMenu
+	{	/**
+		 * 
+		 */
+		private static final long serialVersionUID=1L;
+
+		public MyPopup(MyCombo c)
+		{	XGParameter p = c.getParm();
+			int v = p.getValue();
+			for(Entry<Integer, String> e : p.getTranslationMap().entrySet())
+			{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
+				m.addActionListener(new ActionListener()
+				{	public void actionPerformed(ActionEvent ev)
+					{	c.valueChanged(e.getKey());
+					}
+				});
+				if(e.getKey() == v) m.setSelected(true);
+				add(m);
+			}
+		}
+	}
+
 }

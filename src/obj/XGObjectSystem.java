@@ -13,4 +13,7 @@ public class XGObjectSystem extends XGObject
 	{	super(adr);
 		instance = this;
 	}
+
+	protected void initParameters()
+	{}
 }

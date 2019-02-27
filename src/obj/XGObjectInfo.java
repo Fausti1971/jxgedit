@@ -13,4 +13,7 @@ public class XGObjectInfo extends XGObject
 	public XGObjectInfo(XGAdress adr)
 	{	super(adr);
 	}
+
+	protected void initParameters()
+	{}
 }

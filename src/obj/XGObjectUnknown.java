@@ -17,4 +17,7 @@ public class XGObjectUnknown extends XGObject
 		instances.put(adr.hashCode(), this);
 		log.info("unknown object received: " + adr);
 	}
+
+	protected void initParameters()
+	{}
 }

@@ -15,4 +15,7 @@ public class XGObjectDisplayBitmap extends XGObject
 	{	super(adr);
 		instance = this;
 	}
+
+	protected void initParameters()
+	{}
 }

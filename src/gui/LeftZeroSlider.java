@@ -14,11 +14,10 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
 import memory.Bytes;
 import obj.XGObject;
-import parm.Opcode;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 
-public class MySlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGObjectSelectionListener, XGParameterConstants
+public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGObjectSelectionListener, XGParameterConstants
 {	/**
 	 * 
 	 */
@@ -27,10 +26,10 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 /*****************************************************************************************************************************/
 
 	private XGParameter parm = null;
-	private Opcode opcode;
+	private int offset;
 
-	public MySlider(Opcode opc)
-	{	this.opcode = opc;
+	public LeftZeroSlider(int offset)
+	{	this.offset = offset;
 		setSize(SL_DIM);
 		setMinimumSize(SL_DIM);
 		setPreferredSize(SL_DIM);
@@ -65,14 +64,6 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 
 		String t = parm.getValueAsText();
 		g2.drawString(t, SL_W - GAP - g.getFontMetrics().stringWidth(t), SL_H - GAP);
-	}
-
-	public void bind(XGParameter p)
-	{	if(p != null)
-		{	this.parm = p;
-			setToolTipText(p.getLongName());
-			setVisible(true);
-		}
 	}
 
 	public void keyTyped(KeyEvent e)
@@ -129,7 +120,13 @@ public class MySlider extends JComponent implements GuiConstants, KeyListener, M
 	}
 
 	public void xgObjectSelected(XGObject o)
-	{	bind(o.getParameter(this.opcode.getOffset()));
-		repaint();
+	{	XGParameter p = o.getParameter(this.offset);
+		if(p != null)
+		{	this.parm = p;
+			this.setToolTipText(p.getLongName());
+			this.setVisible(true);
+		}
+		else setVisible(false);
+		this.repaint();
 	}
 }
