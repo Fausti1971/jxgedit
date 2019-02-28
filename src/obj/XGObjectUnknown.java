@@ -2,6 +2,8 @@ package obj;
 
 import java.util.HashMap;
 import java.util.Map;
+import parm.XGOpcode;
+import parm.XGParameter;
 
 public class XGObjectUnknown extends XGObject
 {	private static Map<Integer, XGObjectUnknown> instances = new HashMap<>();
@@ -18,6 +20,6 @@ public class XGObjectUnknown extends XGObject
 		log.info("unknown object received: " + adr);
 	}
 
-	protected void initParameters()
-	{}
+	public XGParameter getParameter(int offset)
+	{	return new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown");}
 }

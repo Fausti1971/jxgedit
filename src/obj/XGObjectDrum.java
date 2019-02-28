@@ -2,14 +2,35 @@ package obj;
 
 import java.util.HashMap;
 import java.util.Map;
-import parm.Opcode;
+import parm.XGOpcode;
 import parm.XGParameter;
 
 public class XGObjectDrum extends XGObject
 {	private static final int MIDMIN = 13, MIDMAX = 91, DATASIZE = 0x10;
 
-	private static Map<Integer, Map<Integer, XGObjectDrum>> drums = new HashMap<>();
-
+	private static final Map<Integer, Map<Integer, XGObjectDrum>> drums = new HashMap<>();
+	private static final Map<Integer, XGParameter> params = initParams();
+	private static final Map<Integer, XGParameter> initParams()
+	{	Map<Integer, XGParameter> m = new HashMap<>();
+		m.put(DR_COARSE, new XGParameter(new XGOpcode(DR_COARSE), 0, 127, "pitch coarse", "coarse"));
+		m.put(DR_FINE, new XGParameter(new XGOpcode(DR_FINE), 0, 127, "pitch fine", "fine"));
+		m.put(DR_VOL, new XGParameter(new XGOpcode(DR_VOL), 0, 127, "level", "vol"));
+		m.put(DR_GRP, new XGParameter(new XGOpcode(DR_GRP), 0, 127, "alternate group", "alt"));
+		m.put(DR_PAN, new XGParameter(new XGOpcode(DR_PAN), 0, 127, "panorama", "pan"));
+		m.put(DR_REV, new XGParameter(new XGOpcode(DR_REV), 0, 127, "reverb send", "rev"));
+		m.put(DR_CHO, new XGParameter(new XGOpcode(DR_CHO), 0, 127, "chorus send", "cho"));
+		m.put(DR_VAR, new XGParameter(new XGOpcode(DR_VAR), 0, 127, "variation send", "var"));
+		m.put(DR_ASSIGN, new XGParameter(new XGOpcode(DR_ASSIGN), 0, 1, "key assign", "key"));
+		m.put(DR_RCVOFF, new XGParameter(new XGOpcode(DR_RCVOFF), 0, 1, "receive note off", "rcvoff"));
+		m.put(DR_RCVON, new XGParameter(new XGOpcode(DR_RCVON), 0, 1, "receive note on", "rcvon"));
+		m.put(DR_CUTPOFF, new XGParameter(new XGOpcode(DR_CUTPOFF), 0, 127, "filter cutoff", "cut"));
+		m.put(DR_RESO, new XGParameter(new XGOpcode(DR_RESO), 0, 127, "filter resonance", "res"));
+		m.put(DR_ATTACK, new XGParameter(new XGOpcode(DR_ATTACK), 0, 127, "eg attack time", "atck"));
+		m.put(DR_DECAY, new XGParameter(new XGOpcode(DR_DECAY), 0, 127, "eg decay time", "decy"));
+		m.put(DR_RELEASE, new XGParameter(new XGOpcode(DR_RELEASE), 0, 127, "eg release time", "rels"));
+		return m;
+	}
+	
 	private static Map<Integer,XGObjectDrum> getDrumset(XGAdress adr)
 	{	return drums.getOrDefault(adr.getHi(), new HashMap<>());
 	}
@@ -26,22 +47,7 @@ public class XGObjectDrum extends XGObject
 		
 	}
 
-	protected void initParameters()
-	{	parameters.put(0x00, new XGParameter(this, new Opcode(0x00), 0, 127, "pitch coarse", "coarse"));
-		parameters.put(0x01, new XGParameter(this, new Opcode(0x01), 0, 127, "pitch fine", "fine"));
-		parameters.put(0x02, new XGParameter(this, new Opcode(0x02), 0, 127, "level", "vol"));
-		parameters.put(0x03, new XGParameter(this, new Opcode(0x03), 0, 127, "alternate group", "alt"));
-		parameters.put(0x04, new XGParameter(this, new Opcode(0x04), 0, 127, "panorama", "pan"));
-		parameters.put(0x05, new XGParameter(this, new Opcode(0x05), 0, 127, "reverb send", "rev"));
-		parameters.put(0x06, new XGParameter(this, new Opcode(0x06), 0, 127, "chorus send", "cho"));
-		parameters.put(0x07, new XGParameter(this, new Opcode(0x07), 0, 127, "variation send", "var"));
-		parameters.put(0x08, new XGParameter(this, new Opcode(0x08), 0, 1, "key assign", "key"));
-		parameters.put(0x09, new XGParameter(this, new Opcode(0x09), 0, 1, "receive note off", "rcvoff"));
-		parameters.put(0x0A, new XGParameter(this, new Opcode(0x0A), 0, 1, "receive note on", "rcvon"));
-		parameters.put(0x0B, new XGParameter(this, new Opcode(0x0B), 0, 127, "filter cutoff", "cut"));
-		parameters.put(0x0C, new XGParameter(this, new Opcode(0x0C), 0, 127, "filter resonance", "res"));
-		parameters.put(0x0D, new XGParameter(this, new Opcode(0x0D), 0, 127, "eg attack time", "atck"));
-		parameters.put(0x0E, new XGParameter(this, new Opcode(0x0E), 0, 127, "eg decay time", "decy"));
-		parameters.put(0x0F, new XGParameter(this, new Opcode(0x0F), 0, 127, "eg release time", "rels"));
+	public XGParameter getParameter(int offset)
+	{	return params.getOrDefault(offset, new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown"));
 	}
 }

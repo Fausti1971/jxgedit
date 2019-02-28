@@ -25,8 +25,9 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 /*****************************************************************************************************************************/
 
-	private XGParameter parm = null;
+//	private XGParameter parm = null;
 	private int offset;
+	private XGObject obj;
 
 	public LeftZeroSlider(int offset)
 	{	this.offset = offset;
@@ -40,17 +41,16 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		addMouseListener(this);
 		addMouseWheelListener(this);
 		addKeyListener(this);
-
-//		getInsets().set(0, 5, 1, 5);
-//		setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(3), new Insets(0))));
-
 	}
 
+	private XGParameter getParam()
+	{	return this.obj.getParameter(this.offset);
+	}
 	@Override protected void paintComponent(Graphics g)
 	{	Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		int w = Bytes.linearIO(parm.getValue(), parm.getMinValue(), parm.getMaxValue(), 0, SL_W);
+		int w = Bytes.linearIO(this.obj.getValue(this.offset), getParam().getMinValue(), getParam().getMaxValue(), 0, SL_W);
 
 		g2.setColor(BACK);
 		g2.fillRoundRect(0, 0 , SL_W, SL_H, SL_RADI, SL_RADI);
@@ -60,9 +60,9 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		g2.fillRoundRect(0, 0 , w - 1, SL_H - 1, SL_RADI, SL_RADI);
 
 		g2.setColor(Color.BLACK);
-		g2.drawString(parm.getShortName(), GAP, SL_H - GAP);
+		g2.drawString(getParam().getShortName(), GAP, SL_H - GAP);
 
-		String t = parm.getValueAsText();
+		String t = getParam().getValueAsText(this.obj);
 		g2.drawString(t, SL_W - GAP - g.getFontMetrics().stringWidth(t), SL_H - GAP);
 	}
 
@@ -79,12 +79,12 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e)
-	{	if(parm.addValue(e.getWheelRotation())) repaint();
+	{	if(this.obj.addValue(this.getParam().getOpcode().getOffset(), e.getWheelRotation())) repaint();
 		e.consume();
 	}
 
 	public void mouseDragged(MouseEvent e)
-	{	if(parm.setValue(Bytes.linearIO(e.getX(), 0, this.getWidth(), parm.getMinValue(), parm.getMaxValue())))repaint();
+	{	if(this.obj.changeValue(this.getParam().getOpcode().getOffset(), Bytes.linearIO(e.getX(), 0, this.getWidth(), getParam().getMinValue(), getParam().getMaxValue())))repaint();
 		e.consume();
 	}
 
@@ -94,11 +94,11 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 	public void mouseClicked(MouseEvent e)
 	{	if(e.getButton() == MouseEvent.BUTTON1)
-		{	if(Bytes.linearIO(parm.getValue(), parm.getMinValue(), parm.getMaxValue(), 0, this.getWidth()) < e.getX())
-			{	if(parm.addValue(1)) repaint();
+		{	if(Bytes.linearIO(this.obj.getValue(this.getParam().getOpcode().getOffset()), getParam().getMinValue(), getParam().getMaxValue(), 0, this.getWidth()) < e.getX())
+			{	if(this.obj.addValue(this.getParam().getOpcode().getOffset(), 1)) repaint();
 			}
 			else
-			{	if(parm.addValue(-1)) repaint();
+			{	if(this.obj.addValue(this.getParam().getOpcode().getOffset(), -1)) repaint();
 			}
 		}
 	}
@@ -120,10 +120,9 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	}
 
 	public void xgObjectSelected(XGObject o)
-	{	XGParameter p = o.getParameter(this.offset);
-		if(p != null)
-		{	this.parm = p;
-			this.setToolTipText(p.getLongName());
+	{	this.obj = o;
+		if(this.getParam() != null)
+		{	this.setToolTipText(this.getParam().getLongName());
 			this.setVisible(true);
 		}
 		else setVisible(false);

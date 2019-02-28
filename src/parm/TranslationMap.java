@@ -32,7 +32,7 @@ public interface TranslationMap
 	}
 
 	static class XMLHandler extends DefaultHandler
-	{	private boolean tagIsOpened = false;
+	{	private boolean mapTagIsOpened = false;
 		private String entryName = "";
 		private String tag;
 		private Map<Integer, String> map;
@@ -43,27 +43,28 @@ public interface TranslationMap
 		}
 
 		@Override public void startElement(String uri,String localName,String qName,Attributes attributes) throws SAXException
-		{	if(qName.equals(tag)) tagIsOpened = true;
-			if(tagIsOpened)
+		{	if(qName.equals("map") && attributes.getValue("name").equals(this.tag)) this.mapTagIsOpened = true;
+			if(this.mapTagIsOpened)
 			{	if(qName.equals("entry")) entryName = attributes.getValue("name");
 			}
+			System.out.println("start: " + qName);
 		}
 
 		@Override public void endElement(String namespaceURI, String localName, String qName)
-		{	if(qName.equals(tag)) tagIsOpened = false;
+		{	if(qName.equals("map")) this.mapTagIsOpened = false;
+			System.out.println("end: " + qName);
+			
 		}
 
 		@Override public void characters(char[] ch, int start, int length)
-		{	if(!tagIsOpened) return;
-			int value = 0;
-			String number = String.copyValueOf(ch, start, length);
+		{	if(!this.mapTagIsOpened) return;
+			String number = String.copyValueOf(ch, start, length).strip();
+			if(number.isEmpty()) return;
 			try
-			{	value = Integer.parseInt(number, 10);
-				map.put(value, entryName);
-			} 
+			{	map.put(Integer.parseInt(number, 10), entryName);} 
 			catch(NumberFormatException e)
-			{
-			}
+			{	e.printStackTrace();}
+			System.out.println("char: " + number);
 		}
 	};
 }

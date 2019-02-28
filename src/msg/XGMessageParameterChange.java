@@ -2,7 +2,8 @@ package msg;
 
 import javax.sound.midi.SysexMessage;
 import application.MU80;
-import parm.Opcode;
+import obj.XGObject;
+import parm.XGOpcode;
 import parm.XGParameter;
 
 public class XGMessageParameterChange extends XGMessage
@@ -14,13 +15,13 @@ public class XGMessageParameterChange extends XGMessage
 	{	super(array);
 	}
 
-	public XGMessageParameterChange(XGParameter p)
+	public XGMessageParameterChange(XGObject o, XGParameter p)
 	{	super(new byte[8 + p.getOpcode().getByteCount()]);
 		setMessageID();
-		setHi(p.getXGObject().getAdr().getHi());
-		setMid(p.getXGObject().getAdr().getMid());
+		setHi(o.getAdr().getHi());
+		setMid(o.getAdr().getMid());
 		setLo(p.getOpcode().getOffset());
-		setData(p.getOpcode());
+		setData(p.getOpcode(), o.getValue(p.getOpcode().getOffset()));
 		setEOX(DATA_OFFS + p.getOpcode().getByteCount());
 	}
 
@@ -38,8 +39,8 @@ public class XGMessageParameterChange extends XGMessage
 	protected void setLo(int value)
 	{	encodeMidiByte(LO_OFFS, value);}
 
-	protected void setData(Opcode opc)
-	{	encodeOpcode(DATA_OFFS, opc);}
+	protected void setData(XGOpcode opc, int v)
+	{	encodeOpcode(DATA_OFFS, opc, v);}
 
 	protected int getHi()
 	{	return decodeMidiByte(HI_OFFS);}

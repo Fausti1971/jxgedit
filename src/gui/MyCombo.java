@@ -16,7 +16,8 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 	 */
 	private static final long serialVersionUID=1L;
 
-	private XGParameter parm;
+//	private XGParameter parm;
+	private XGObject obj;
 	private int offset;
 
 	public MyCombo(int offs)
@@ -31,29 +32,23 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 		});
 	}
 
-	public XGParameter getParm()
-	{	return this.parm;
-	}
-
-	public void setParm(XGParameter parm)
-	{	this.parm = parm;
-	}
+	private XGParameter getParam()
+	{	return this.obj.getParameter(this.offset);}
 
 	public void xgObjectSelected(XGObject o)
-	{	XGParameter p = o.getParameter(this.offset);
-		if(p != null)
-		{	this.setParm(p);
-			this.setToolTipText(p.getLongName());
+	{	this.obj = o;
+		if(this.getParam() != null)
+		{	this.setToolTipText(this.getParam().getLongName());
 			this.setVisible(true);
-			this.setText(p.getValueAsText());
+			this.setText(this.getParam().getValueAsText(this.obj));
 		}
 		else this.setVisible(false);
 		this.repaint();
 	}
 
 	public void valueChanged(int v)
-	{	this.getParm().setValue(v);
-		this.setText(this.getParm().getValueAsText());
+	{	this.obj.changeValue(this.getParam().getOpcode().getOffset(), v);
+		this.setText(this.getParam().getValueAsText(this.obj));
 	}
 
 	private class MyPopup extends JPopupMenu
@@ -63,8 +58,8 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 		private static final long serialVersionUID=1L;
 
 		public MyPopup(MyCombo c)
-		{	XGParameter p = c.getParm();
-			int v = p.getValue();
+		{	XGParameter p = c.getParam();
+			int v = c.obj.getValue(c.offset);
 			for(Entry<Integer, String> e : p.getTranslationMap().entrySet())
 			{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
 				m.addActionListener(new ActionListener()

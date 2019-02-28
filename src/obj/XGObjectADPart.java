@@ -1,32 +1,35 @@
 package obj;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
+import parm.XGOpcode;
+import parm.XGParameter;
 
 public class XGObjectADPart extends XGObject
 {	private static final int MIDMIN = 0, MIDMAX = 1, DATASIZE = 0x61, HI = 0x10;
-	private static final XGAdress[] XGDUMPADRESSES = new XGAdress[]{new XGAdress(HI, 0, 0),
-																	new XGAdress(HI, 0, 0x30),
-																	};
 
-	private static List<XGObjectADPart> instances = new ArrayList<>();
+	private static Map<Integer, XGObjectADPart> instances = new HashMap<>();
+	private static final Map<Integer, XGParameter> parameters = initParams();
+	private static final Map<Integer, XGParameter> initParams()
+	{	Map<Integer, XGParameter> m = new HashMap<>();
+		return m;
+	}
 
 	public static XGObjectADPart getInstance(XGAdress adr)
-	{	try
-		{	return instances.get(adr.getMid());
-		}
-		catch(IndexOutOfBoundsException e)
-		{	return new XGObjectADPart(adr);
-		}
+	{	if(instances.containsKey(adr.getMid())) return instances.get(adr.getMid());
+		else return new XGObjectADPart(adr);
 	}
 
 /******************* Instance ****************************************************************************************************************/
 
 	public XGObjectADPart(XGAdress adr)
 	{	super(adr);
-		instances.add(adr.getMid(), this);
+		instances.put(adr.getMid(), this);
 	}
 
 	protected void initParameters()
 	{}
+
+	public XGParameter getParameter(int offset)
+	{	return parameters.getOrDefault(offset, new XGParameter(new XGOpcode(offset), 0, 127, "parameters " + offset, "unknown"));}
 }

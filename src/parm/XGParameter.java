@@ -1,29 +1,25 @@
 package parm;
 
 import java.util.Map;
-import java.util.function.Function;
-import msg.XGMessageParameterChange;
+import java.util.function.BiFunction;
 import obj.XGObject;
 
 public class XGParameter implements XGParameterConstants
-{	private static final Function<XGParameter, String> DEF_TRANS_TYPE = ValueTranslation::translateToText;
-	private static final int DEF_MIN = 0, DEF_MAX = 127;
+{	private static final BiFunction<XGObject, XGParameter, String> DEF_TRANS_TYPE = ValueTranslation::translateToText;
 
 	/*****************************************************************************************************/
 
-	private final Opcode opcode;
-	private int minValue = DEF_MIN, maxValue = DEF_MAX;
+	private final XGOpcode opcode;
+	private final int minValue, maxValue;
 	private String longName, shortName;
-	private Function<XGParameter, String> valueTranslation;
+	private BiFunction<XGObject, XGParameter, String> valueTranslation;
 	private Map<Integer, String> translationMap;
-	private XGObject xgObject;
 
-	public XGParameter(XGObject o, Opcode opc, int min, int max, String lName, String sName)
-	{	this(o, opc, DEF_TRANS_TYPE, min, max, lName, sName);}
+	public XGParameter(XGOpcode opc, int min, int max, String lName, String sName)
+	{	this(opc, DEF_TRANS_TYPE, min, max, lName, sName);}
 
-	public XGParameter(XGObject o, Opcode opc, Map<Integer, String> table, int min, int max, String lName, String sName)
-	{	this.xgObject = o;
-		this.opcode = opc;
+	public XGParameter(XGOpcode opc, Map<Integer, String> table, int min, int max, String lName, String sName)
+	{	this.opcode = opc;
 		this.minValue = min;
 		this.maxValue = max;
 		this.setLongName(lName);
@@ -32,9 +28,8 @@ public class XGParameter implements XGParameterConstants
 		this.setTranslationMap(table);
 	}
 
-	public XGParameter(XGObject o, Opcode opc, Function<XGParameter, String> tType, int min, int max, String lName, String sName)
-	{	this.xgObject = o;
-		this.opcode = opc;
+	public XGParameter(XGOpcode opc, BiFunction<XGObject, XGParameter, String> tType, int min, int max, String lName, String sName)
+	{	this.opcode = opc;
 		this.minValue = min;
 		this.maxValue = max;
 		this.setLongName(lName);
@@ -42,26 +37,10 @@ public class XGParameter implements XGParameterConstants
 		this.valueTranslation = tType;
 	}
 
-	public int getValue()
-	{	return this.getOpcode().getValue();}
+	public String getValueAsText(XGObject o)
+	{	return this.valueTranslation.apply(o, this);}
 
-	public boolean setValue(int v)
-	{	if(this.xgObject == null) return false;
-		boolean changed = (this.getOpcode().setValue(Math.min(this.maxValue, Math.max(this.minValue, v)))); 
-		if(changed) new XGMessageParameterChange(this).transmit();
-		return changed;
-	}
-
-	public boolean addValue(int v)
-	{	return this.setValue(getValue() + v);}
-
-	public String getValueAsText()
-	{	return this.valueTranslation.apply(this);}
-
-	public XGObject getXGObject()
-	{	return this.xgObject;}
-
-	public Opcode getOpcode()
+	public XGOpcode getOpcode()
 	{	return this.opcode;}
 
 	public String getLongName()
@@ -85,16 +64,12 @@ public class XGParameter implements XGParameterConstants
 	public int getMaxValue()
 	{	return this.maxValue;}
 
-	public void setMaxValue(int maxValue)
-	{	this.maxValue = maxValue;}
-
 	public int getMinValue()
 	{	return this.minValue;}
 
-	public void setMinValue(int minValue)
-	{	this.minValue = minValue;}
+	public int limit(int v)
+	{	return Math.max(getMinValue(), Math.min(getMaxValue(), v));}
 
 	@Override public String toString()
-	{	return this.getLongName() + " = " + this.getValueAsText();
-	}
+	{	return this.getLongName();}
 }

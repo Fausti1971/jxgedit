@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <maps>
-	<midi_channels>
+	<map name="midi_channels">
 		<entry name="A01">0</entry>
 		<entry name="A02">1</entry>
 		<entry name="A03">2</entry>
@@ -34,5 +34,5 @@
 		<entry name="B15">30</entry>
 		<entry name="B16">31</entry>
 		<entry name="OFF">127</entry>
-	</midi_channels>
+	</map>
 </maps>
