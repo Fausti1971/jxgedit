@@ -67,7 +67,7 @@ public class XGParameter implements XGParameterConstants
 	public int getMinValue()
 	{	return this.minValue;}
 
-	public int limit(int v)
+	public int limitize(int v)
 	{	return Math.max(getMinValue(), Math.min(getMaxValue(), v));}
 
 	@Override public String toString()

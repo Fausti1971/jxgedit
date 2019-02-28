@@ -11,7 +11,7 @@ import parm.XGParameter;
 public class XGObjectMultiPart extends XGObject
 {	private static final int MIDMIN = 0, MIDMAX = 31, HI = 0x08;
 
-	private static final Map<Integer, XGObjectMultiPart> multiparts = new HashMap<>();
+//	private static final Map<Integer, XGObjectMultiPart> multiparts = new HashMap<>();
 	private static final Map<Integer, XGParameter> parameters = initParameters();
 
 	private static Map<Integer, XGParameter> initParameters()
@@ -22,19 +22,19 @@ public class XGObjectMultiPart extends XGObject
 		return m;
 	};
 
-	public static Map<Integer, XGObjectMultiPart> getMultiParts()
+/*	public static Map<Integer, XGObjectMultiPart> getMultiParts()
 	{	return multiparts;}
 
 	public static XGObjectMultiPart getInstance(XGAdress adr)
 	{	if(multiparts.containsKey(adr.getMid())) return multiparts.get(adr.getMid());
 		else return new XGObjectMultiPart(adr);
 	}
-
+*/
 /********************************************************************************************************************/
 
 	public XGObjectMultiPart(XGAdress adr)
 	{	super(adr);
-		multiparts.put(adr.getMid(), this);
+//		multiparts.put(adr.getMid(), this);
 	}
 
 	@Override public String toString()

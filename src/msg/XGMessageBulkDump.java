@@ -4,9 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import obj.XGAdress;
 import obj.XGObject;
-import obj.XGObjectConstants;
 import parm.XGOpcode;
-import parm.XGParameter;
 
 public class XGMessageBulkDump extends XGMessage
 {	private static final int SIZE_SIZE = 2, SIZE_OFFS = 4, MSG = 0, HI_OFFS = 6, MID_OFFS = 7, LO_OFFS = 8, DATA_OFFS = 9;
@@ -71,7 +69,7 @@ public class XGMessageBulkDump extends XGMessage
 
 	public void processXGMessage()
 	{	int end = getDumpSize() + DATA_OFFS, offset = getLo();
-		XGObject obj = XGObjectConstants.getObjectInstance(new XGAdress(getHi(), getMid(), offset));
+		XGObject obj = XGObject.getXGObjectInstance(new XGAdress(getHi(), getMid(), offset));
 		for(int i = DATA_OFFS; i < end;)
 		{	XGOpcode opc = obj.getParameter(offset).getOpcode();
 			obj.setValue(offset, decodeOpcode(i, opc));

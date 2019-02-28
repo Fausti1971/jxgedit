@@ -6,9 +6,6 @@ import parm.XGParameter;
 public class XGObjectInsertFXVL extends XGObject
 {	private static final int MIDMIN = 0, MIDMAX = 127, DATASIZE = 0;
 
-	public static XGObjectInsertFXVL getInstance(XGAdress adr)
-	{	return null;
-	}
 /******************************************************************************************************************/
 
 	public XGObjectInsertFXVL(XGAdress adr)

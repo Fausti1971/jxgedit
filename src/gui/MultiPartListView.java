@@ -7,9 +7,11 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import obj.XGObjectMultiPart;
+import obj.XGAdress;
+import obj.XGObject;
+import obj.XGObjectConstants;
 
-public class MultiPartListView extends JList<XGObjectMultiPart> implements ListSelectionListener
+public class MultiPartListView extends JList<XGObject> implements ListSelectionListener
 {	/**
 	 * 
 	 */
@@ -27,17 +29,17 @@ public class MultiPartListView extends JList<XGObjectMultiPart> implements ListS
 	Set<XGObjectSelectionListener> listeners = new HashSet<>();
 
 	public MultiPartListView()
-	{	super(new Vector<>(XGObjectMultiPart.getMultiParts().values()));
+	{	super(new Vector<>(XGObject.getXGObjectInstances(new XGAdress(XGObjectConstants.MULTI,0,0)).values()));
 		super.addListSelectionListener(this);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setInstance(this);
 	}
 
-	public void registerXGObjectChangeListener(XGObjectSelectionListener listener)
+	public void registerXGObjectSelectionListener(XGObjectSelectionListener listener)
 		{	listeners.add(listener);}
 
 	public void valueChanged(ListSelectionEvent e)
-	{	XGObjectMultiPart m = getSelectedValue();
+	{	XGObject m = getSelectedValue();
 		for(XGObjectSelectionListener l : listeners) l.xgObjectSelected(m);
 	}
 }

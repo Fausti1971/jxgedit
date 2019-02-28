@@ -5,21 +5,21 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import parm.XGParameterConstants;
 
-public class MidiTab extends JPanel
+public class MultiPartMidiTab extends JPanel implements XGParameterConstants
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
 	
-	public MidiTab()
+	public MultiPartMidiTab()
 	{	add(new JButton("Test"));
-		addAndRegister(new LeftZeroSlider(XGParameterConstants.MP_ELRES));
-		addAndRegister(new MyCombo(XGParameterConstants.MP_CH));
-		addAndRegister(new LeftZeroSlider(XGParameterConstants.MP_TUNE));
+		addAndRegister(new LeftZeroSlider(MP_ELRES));
+		addAndRegister(new MyCombo(MP_CH));
+		addAndRegister(new LeftZeroSlider(MP_TUNE));
 	}
 
 	private <T extends JComponent & XGObjectSelectionListener> void addAndRegister(T c)
 	{	super.add(c);
-		MultiPartListView.getInstance().registerXGObjectChangeListener(c);
+		MultiPartListView.getInstance().registerXGObjectSelectionListener(c);
 	}
 }
