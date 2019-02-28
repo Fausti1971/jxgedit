@@ -11,7 +11,6 @@ import parm.XGParameter;
 public class XGObjectMultiPart extends XGObject
 {	private static final int MIDMIN = 0, MIDMAX = 31, HI = 0x08;
 
-//	private static final Map<Integer, XGObjectMultiPart> multiparts = new HashMap<>();
 	private static final Map<Integer, XGParameter> parameters = initParameters();
 
 	private static Map<Integer, XGParameter> initParameters()
@@ -22,25 +21,18 @@ public class XGObjectMultiPart extends XGObject
 		return m;
 	};
 
-/*	public static Map<Integer, XGObjectMultiPart> getMultiParts()
-	{	return multiparts;}
-
-	public static XGObjectMultiPart getInstance(XGAdress adr)
-	{	if(multiparts.containsKey(adr.getMid())) return multiparts.get(adr.getMid());
-		else return new XGObjectMultiPart(adr);
-	}
-*/
 /********************************************************************************************************************/
 
 	public XGObjectMultiPart(XGAdress adr)
-	{	super(adr);
-//		multiparts.put(adr.getMid(), this);
-	}
+	{	super(adr);}
 
 	@Override public String toString()
-	{	return String.format("%02d", this.adress.getMid() + 1) + " | " + "PartMode" + " | " + getParameter(MP_CH).getValueAsText(this) + " | " + "Program";
-	}
+	{	return String.format("%02d", this.adress.getMid() + 1) + " | " + "PartMode" + " | " + getParameter(MP_CH).getValueAsText(this) + " | " + "Program";}
 
 	public XGParameter getParameter(int offset)
 	{	return parameters.getOrDefault(offset, new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown"));}
+
+	public Map<Integer,XGParameter> getParamters()
+	{	return parameters;
+	}
 }

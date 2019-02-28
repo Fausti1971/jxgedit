@@ -8,7 +8,6 @@ import parm.XGParameter;
 public class XGObjectInsertFX extends XGObject
 {	private static final int MIDMIN = 0, MIDMAX = 0;
 
-//	private static Map<Integer, XGObjectInsertFX> instances = new HashMap<>();
 	private static final Map<Integer, XGParameter> params = initParams();
 	private static final Map<Integer, XGParameter> initParams()
 	{	Map<Integer, XGParameter> m = new HashMap<>();
@@ -16,21 +15,17 @@ public class XGObjectInsertFX extends XGObject
 		return m;
 	}
 
-//	public static XGObjectInsertFX getInstance(XGAdress adr)
-//	{	return instances.getOrDefault(adr.getMid(), new XGObjectInsertFX(adr));}
-
-
 /********************* Instance ***************************************************************************************/
 
 	public XGObjectInsertFX(XGAdress adr)
-	{	super(adr);
-//		instances.put(adr.getMid(), this);
-	}
+	{	super(adr);}
 
 	@Override public String toString()
-	{	return "FX " + this.adress.getMid();
-	}
+	{	return "FX " + this.adress.getMid();}
 
 	public XGParameter getParameter(int offset)
 	{	return params.getOrDefault(offset, new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown"));}
+
+	public Map<Integer,XGParameter> getParamters()
+	{	return params;}
 }

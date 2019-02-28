@@ -1,5 +1,6 @@
 package obj;
 
+import java.util.Map;
 import parm.XGOpcode;
 import parm.XGParameter;
 
@@ -9,14 +10,18 @@ public class XGObjectInsertFXVL extends XGObject
 /******************************************************************************************************************/
 
 	public XGObjectInsertFXVL(XGAdress adr)
-	{	super(adr);
-	}
+	{	super(adr);}
 
 	protected void initParameters()
 	{}
+
 	public XGOpcode getOpcode(int offset)
-	{	return new XGOpcode(offset);
-	}
+	{	return new XGOpcode(offset);}
+
 	public XGParameter getParameter(int offset)
 	{	return new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown");}
+
+	public Map<Integer,XGParameter> getParamters()
+	{	return null;
+	}
 }

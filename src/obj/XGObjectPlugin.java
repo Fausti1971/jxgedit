@@ -1,5 +1,6 @@
 package obj;
 
+import java.util.Map;
 import parm.XGOpcode;
 import parm.XGParameter;
 
@@ -9,10 +10,12 @@ public class XGObjectPlugin extends XGObject
 	/***********************************************************************************************************/
 
 	public XGObjectPlugin(XGAdress adr)
-	{	super(adr);
-	}
+	{	super(adr);}
 
 	public XGParameter getParameter(int offset)
 	{	return new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown");}
+
+	public Map<Integer,XGParameter> getParamters()
+	{	return null;}
 
 }

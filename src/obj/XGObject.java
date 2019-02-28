@@ -44,14 +44,16 @@ public abstract class XGObject implements XGObjectConstants, XGParameterConstant
 	{	return this.values.getOrDefault(offset, 0);
 	}
 
-	public void setValue(int offset, int v)
-	{	this.values.put(offset, v);
+	public boolean setValue(int offset, int v)
+	{	try
+		{	return v != this.values.put(offset, v);}
+		catch(NullPointerException e)
+		{	return false;}
 	}
 
 	public boolean changeValue(int offset, int v)
 	{	v = getParameter(offset).limitize(v);
-		boolean changed = this.getValue(offset) != v;
-		this.setValue(offset, v);
+		boolean changed = this.setValue(offset, v);
 		if(changed) new XGMessageParameterChange(this, this.getParameter(offset)).transmit();
 		return changed;
 	}
@@ -62,9 +64,8 @@ public abstract class XGObject implements XGObjectConstants, XGParameterConstant
 	public XGAdress getAdr()
 	{	return adress;}
 
-/************* Overrides ***********************************************************************************************************/
-
 /*********** abstract *******************************************************************************************************************/
 
 	public abstract XGParameter getParameter(int offset);
+	public abstract Map<Integer, XGParameter> getParamters();
 }
