@@ -15,6 +15,7 @@ public class MainTab extends JTabbedPane
 	{	addTab("MultiPart", new MultiPartTab());
 		addTab("A/D-Part", new ADPartTab());
 		addTab("System/FX", new SysFXTab());
+		addTab("Insert FX", new InsFXTab());
 
 
 	}

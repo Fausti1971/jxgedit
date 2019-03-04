@@ -27,8 +27,7 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 		setVisible(false);
 		addActionListener(new ActionListener()
 		{	public void actionPerformed(ActionEvent e)
-			{	new MyPopup(mc).show(mc, 0, 0);
-			}
+			{	new MyPopup(mc).show(mc, 0, 0);}
 		});
 	}
 

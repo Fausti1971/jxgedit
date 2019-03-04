@@ -9,23 +9,15 @@ public class XGAdress
 		this.lo = lo;
 	}
 
-	public XGAdress getXGAdress()
-	{	return this;
-	}
-
 	public int getHi()
-	{	return hi;
-	}
+	{	return hi;}
 
 	public int getMid()
-	{	return mid;
-	}
+	{	return mid;}
 
 	public int getLo()
-	{	return lo;
-	}
+	{	return lo;}
 
 	@Override public String toString()
-	{	return "(" + getHi() + "/" + getMid() + "/" + getLo() + ")";
-	}
+	{	return "(" + getHi() + "/" + getMid() + "/" + getLo() + ")";}
 }

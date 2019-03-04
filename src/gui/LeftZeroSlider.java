@@ -25,8 +25,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 /*****************************************************************************************************************************/
 
-//	private XGParameter parm = null;
-	private int offset;
+	private final int offset;
 	private XGObject obj;
 
 	public LeftZeroSlider(int offset)
@@ -46,6 +45,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	private XGParameter getParam()
 	{	return this.obj.getParameter(this.offset);
 	}
+
 	@Override protected void paintComponent(Graphics g)
 	{	Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -60,10 +60,10 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		g2.fillRoundRect(0, 0 , w - 1, SL_H - 1, SL_RADI, SL_RADI);
 
 		g2.setColor(Color.BLACK);
-		g2.drawString(getParam().getShortName(), GAP, SL_H - GAP);
+		g2.drawString(getParam().getShortName(), GAP, FONTMIDDLE);
 
 		String t = getParam().getValueAsText(this.obj);
-		g2.drawString(t, SL_W - GAP - g.getFontMetrics().stringWidth(t), SL_H - GAP);
+		if(t != null) g2.drawString(t, SL_W - GAP - g2.getFontMetrics().stringWidth(t), FONTMIDDLE);
 	}
 
 	public void keyTyped(KeyEvent e)
@@ -93,7 +93,8 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	}
 
 	public void mouseClicked(MouseEvent e)
-	{	if(e.getButton() == MouseEvent.BUTTON1)
+	{	this.grabFocus();
+		if(e.getButton() == MouseEvent.BUTTON1)
 		{	if(Bytes.linearIO(this.obj.getValue(this.getParam().getOpcode().getOffset()), getParam().getMinValue(), getParam().getMaxValue(), 0, this.getWidth()) < e.getX())
 			{	if(this.obj.addValue(this.getParam().getOpcode().getOffset(), 1)) repaint();
 			}

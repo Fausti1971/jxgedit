@@ -13,6 +13,9 @@ public class XGObjectMultiPart extends XGObject
 
 	private static final Map<Integer, XGParameter> parameters = initParameters();
 
+	public static final Map<Integer, XGParameter> getParameters()
+	{	return parameters;}
+
 	private static Map<Integer, XGParameter> initParameters()
 	{	Map<Integer, XGParameter> m = new HashMap<>();
 		m.put(MP_ELRES, new XGParameter(new XGOpcode(MP_ELRES), 0, 32, "Element Reserve", "Rsrv"));
@@ -32,7 +35,7 @@ public class XGObjectMultiPart extends XGObject
 	public XGParameter getParameter(int offset)
 	{	return parameters.getOrDefault(offset, new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown"));}
 
-	public Map<Integer,XGParameter> getParamters()
+	public Map<Integer ,XGParameter> getParamters()
 	{	return parameters;
 	}
 }

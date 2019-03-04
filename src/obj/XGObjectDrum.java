@@ -38,6 +38,6 @@ public class XGObjectDrum extends XGObject
 	public XGParameter getParameter(int offset)
 	{	return params.getOrDefault(offset, new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown"));}
 
-	public Map<Integer,XGParameter> getParamters()
+	public Map<Integer, XGParameter> getParamters()
 	{	return params;}
 }
