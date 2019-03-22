@@ -1,9 +1,5 @@
 package application;
 
-import java.awt.Desktop;
-import java.awt.desktop.QuitEvent;
-import java.awt.desktop.QuitHandler;
-import java.awt.desktop.QuitResponse;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
@@ -27,44 +23,37 @@ public class MU80
 	}
 
 	public static Setting getSetting()
-	{	return setting;
-	}
+	{	return setting;}
 
 	public static Path getHomePath()
-	{	return homePath;
-	}
+	{	return homePath;}
 
 	public static String getAppName()
-	{	return APPNAME;
-	}
+	{	return APPNAME;}
 
 	public static String getSeparator()
-	{	return SYSFILESEP;
-	}
+	{	return SYSFILESEP;}
 
 	public static MainFrame getMainFrame()
-	{	return mainFrame;
-	}
+	{	return mainFrame;}
 
 	public static void main(String[] args)
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 //		%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
 
-		Desktop.getDesktop().setQuitHandler(new QuitHandler()
-		{	public void handleQuitRequestWith(QuitEvent e, QuitResponse response)
-			{	response.performQuit();
-				MU80.exit();
+		Runtime.getRuntime().addShutdownHook
+		(	new Thread()
+			{	@Override public void run()
+				{	log.info("exiting application");
+					setting.save();
+					device.close();
+				}
 			}
-		});
+		);
+
 		setting = new Setting(getHomePath().resolve("setting").toFile());
 		device = new XGDevice(setting);
 		SysexFile.getDefaultDump();
 		mainFrame = new MainFrame();
-	}
-
-	public static void exit()
-	{	setting.save();
-		device.close();
-		System.exit(0);
 	}
 }

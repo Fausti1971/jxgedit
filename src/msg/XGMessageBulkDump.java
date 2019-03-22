@@ -72,7 +72,7 @@ public class XGMessageBulkDump extends XGMessage
 		XGObject obj = XGObject.getXGObjectInstance(new XGAdress(getHi(), getMid(), offset));
 		for(int i = DATA_OFFS; i < end;)
 		{	XGOpcode opc = obj.getParameter(offset).getOpcode();
-			obj.setValue(offset, decodeOpcode(i, opc));
+			obj.setValue(offset, decodeXGValue(i, opc));
 			offset += opc.getByteCount();
 			i += opc.getByteCount();
 		}

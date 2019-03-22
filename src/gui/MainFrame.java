@@ -33,7 +33,7 @@ public class MainFrame extends JFrame implements WindowListener
 	}
 
 	public void windowClosing(WindowEvent e)
-	{	MU80.exit();
+	{	System.exit(0);
 	}
 
 	public void windowClosed(WindowEvent e)

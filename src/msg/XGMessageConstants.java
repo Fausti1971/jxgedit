@@ -2,8 +2,6 @@ package msg;
 
 import javax.sound.midi.SysexMessage;
 
-import memory.Bytes;
-
 public interface XGMessageConstants extends Bytes
 {	public static final int
 		VENDOR = 0x43,

@@ -2,7 +2,7 @@ package obj;
 
 import java.util.HashMap;
 import java.util.Map;
-import memory.Bytes.ByteType;
+import msg.Bytes.ByteType;
 import parm.TranslationMap;
 import parm.ValueTranslation;
 import parm.XGOpcode;
@@ -32,10 +32,6 @@ public class XGObjectMultiPart extends XGObject
 	@Override public String toString()
 	{	return String.format("%02d", this.adress.getMid() + 1) + " | " + "PartMode" + " | " + getParameter(MP_CH).getValueAsText(this) + " | " + "Program";}
 
-	public XGParameter getParameter(int offset)
-	{	return parameters.getOrDefault(offset, new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown"));}
-
 	public Map<Integer ,XGParameter> getParamters()
-	{	return parameters;
-	}
+	{	return parameters;}
 }

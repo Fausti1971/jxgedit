@@ -3,15 +3,12 @@ package obj;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
-import application.ChangeListener;
-import msg.XGMessageParameterChange;
-import parm.XGParameter;
-import parm.XGParameterConstants;
+import parm.*;
 
-public abstract class XGObject implements XGObjectConstants, XGParameterConstants
+public abstract class XGObject implements XGObjectConstants, XGOpcodeConstants
 {	protected static final Logger log = Logger.getAnonymousLogger();
 	protected static Map<Integer, Map<Integer, XGObject>> instances = new HashMap<>();
-	protected static ChangeListener listener = null;
+	protected static ObjectChangeListener listener = null;
 
 	public static XGObject getXGObjectInstance(XGAdress adr)
 	{	Map<Integer, XGObject> m = getXGObjectInstances(adr);
@@ -32,40 +29,28 @@ public abstract class XGObject implements XGObjectConstants, XGParameterConstant
 		}
 	}
 
+	public static XGOpcode getOpcode(XGAdress adr)
+	{	return getXGObjectInstance(adr).getOpcode(adr.getLo());}
+
+	public static XGParameter getParameter(XGAdress adr)
+	{	return getXGObjectInstance(adr).getParameter(adr.getLo());}
+
 /******************** Instance ********************************************************************************************/
 
 	protected final XGAdress adress;
-	protected final Map<Integer, Integer> values = new HashMap<>();
+	protected final Map<Integer,XGValue> values = new HashMap<>();
 
 	protected XGObject(XGAdress adr)
 	{	this.adress = adr;}
 
-	public int getValue(int offset)
-	{	return this.values.getOrDefault(offset, 0);
-	}
+	public XGValue getValue(int offset)
+	{	return this.values.getOrDefault(offset, new XGValue(new XGAdress(this.adress.getHi(), this.adress.getMid(), offset)));}
 
-	public boolean setValue(int offset, int v)
-	{	try
-		{	return v != this.values.put(offset, v);}
-		catch(NullPointerException e)
-		{	return false;}
-	}
-
-	public boolean changeValue(int offset, int v)
-	{	v = getParameter(offset).limitize(v);
-		boolean changed = this.setValue(offset, v);
-		if(changed) new XGMessageParameterChange(this, this.getParameter(offset)).transmit();
-		return changed;
-	}
-
-	public boolean addValue(int offset, int v)
-	{	return changeValue(offset, getValue(offset) + v);}
-
-	public XGAdress getAdr()
+	public XGAdress getAdress()
 	{	return adress;}
 
 /*********** abstract *******************************************************************************************************************/
 
 	public abstract XGParameter getParameter(int offset);
-	public abstract Map<Integer, XGParameter> getParamters();
+	public abstract XGOpcode getOpcode(int offset);
 }

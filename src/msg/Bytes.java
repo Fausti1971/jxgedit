@@ -1,29 +1,44 @@
-package memory;
+package msg;
 
 import java.util.Arrays;
 import parm.XGOpcode;
+import parm.XGValue;
 
 public interface Bytes
-{	static enum ByteType{MIDIBYTE, NIBBLE};
+{	enum ByteType{MIDIBYTE, NIBBLE}
 
 	static int linearIO(int i, int in_min, int in_max, int out_min, int out_max)
 	{	return((int)(((float)(i - in_min) / (float)(in_max - in_min) * (out_max - out_min)) + out_min));}
 
 	byte[] getByteArray();
 
-	default int decodeOpcode(int offset, XGOpcode opc)	//dekodiert und returniert die Anzahl opcode.byteCount opcode.byteType/s am/ab offset des byteArray
-	{	switch(opc.getByteType())
-		{	default:
-			case MIDIBYTE:	return decodeMidiBytes(offset, opc.getByteCount());
-			case NIBBLE:	return decodeLowerNibbles(offset, opc.getByteCount());
+	default void decodeXGValue(int offset, XGValue v)	//dekodiert und returniert die Anzahl opcode.byteCount opcode.byteType/s am/ab offset des byteArray
+	{	XGOpcode opc = v.getOpcode();
+		switch(opc.getValueType())
+		{	case Text:		return;
+			case Bitmap:	return;
+			default:
+			case Number:
+				switch(opc.getByteType())
+				{	default:
+					case MIDIBYTE:	v.setValue(decodeMidiBytes(offset, opc.getByteCount()));
+					case NIBBLE:	v.setValue(decodeLowerNibbles(offset, opc.getByteCount()));
+				}
 		}
 	}
 
-	default void encodeOpcode(int offset, XGOpcode opc, int v)
-	{	switch(opc.getByteType())
-		{	default:
-			case MIDIBYTE:	encodeMidiBytes(offset, opc.getByteCount(), v); break;
-			case NIBBLE:	encodeLowerNibbles(offset, opc.getByteCount(), v); break;
+	default void encodeXGValue(int offset, XGValue v)
+	{	XGOpcode opc = v.getOpcode();
+		switch(opc.getValueType())
+		{	case Text:		return;
+			case Bitmap:	return;
+			default:
+			case Number:
+				switch(opc.getByteType())
+				{	default:
+					case MIDIBYTE:	encodeMidiBytes(offset, opc.getByteCount(), (int)v.getValue()); break;
+					case NIBBLE:	encodeLowerNibbles(offset, opc.getByteCount(), (int)v.getValue()); break;
+				}
 		}
 	}
 

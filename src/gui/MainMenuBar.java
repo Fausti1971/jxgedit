@@ -44,7 +44,7 @@ public class MainMenuBar extends JMenuBar
 		});
 		quit.addActionListener(new ActionListener()
 		{	public void actionPerformed(ActionEvent e)
-			{	MU80.exit();
+			{	System.exit(0);
 			}
 		});
 		file.add(load);

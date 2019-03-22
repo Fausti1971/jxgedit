@@ -6,7 +6,6 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 import application.MU80;
-import memory.Bytes;
 
 public abstract class XGMessage implements XGMessageConstants, Bytes
 {	protected static final Logger log = Logger.getAnonymousLogger();

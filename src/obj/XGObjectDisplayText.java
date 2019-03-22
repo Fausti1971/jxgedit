@@ -1,7 +1,7 @@
 package obj;
 
 import java.util.Map;
-import memory.Bytes.ByteType;
+import msg.Bytes.ByteType;
 import parm.ValueTranslation;
 import parm.XGOpcode;
 import parm.XGParameter;

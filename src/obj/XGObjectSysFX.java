@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import parm.XGOpcode;
 import parm.XGParameter;
+import parm.XGValue;
 
 public class XGObjectSysFX extends XGObject
 {	private static final Map<Integer, XGParameter> PARAMETERS = initParams();
@@ -19,9 +20,13 @@ public class XGObjectSysFX extends XGObject
 	public XGObjectSysFX(XGAdress adr)
 	{	super(adr);}
 
-	public XGParameter getParameter(int offset)
-	{	return PARAMETERS.getOrDefault(offset, new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown"));}
+	@Override public XGParameter getParameter(int offset)
+	{	XGParameter p = PARAMETERS.getOrDefault(offset, new XGParameter(offset));
+		if(p.isVariable())
+		{	XGValue masterValue = getValue(p.getMasterValueOffset());
+		}
+	}
 
-	public Map<Integer,XGParameter> getParamters()
-	{	return PARAMETERS;}
+	@Override public XGOpcode getOpcode(int offset)
+	{	return null;}
 }

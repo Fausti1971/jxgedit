@@ -12,7 +12,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
-import memory.Bytes;
+import msg.Bytes;
 import obj.XGObject;
 import parm.XGParameter;
 import parm.XGParameterConstants;
