@@ -1,32 +1,18 @@
-package obj;
+ package obj;
 
-import java.util.HashMap;
 import java.util.Map;
-import parm.XGOpcode;
+import parm.ParameterMap;
 import parm.XGParameter;
-import parm.XGValue;
 
 public class XGObjectSysFX extends XGObject
-{	private static final Map<Integer, XGParameter> PARAMETERS = initParams();
+{	private final static Map<Integer, XGParameter> PARAMETERS = ParameterMap.getParameterMap("fx1_parameters");
 
-	private static final Map<Integer, XGParameter> initParams()
-	{	Map<Integer, XGParameter> m = new HashMap<>();
-		//TODO
-		return m;
-	}
-
-/************** Instance ************************************************************************/
+	/************** Instance ************************************************************************/
 
 	public XGObjectSysFX(XGAdress adr)
 	{	super(adr);}
 
-	@Override public XGParameter getParameter(int offset)
-	{	XGParameter p = PARAMETERS.getOrDefault(offset, new XGParameter(offset));
-		if(p.isVariable())
-		{	XGValue masterValue = getValue(p.getMasterValueOffset());
-		}
+	@Override public XGParameter getParameter(int offs)
+	{	return PARAMETERS.get(offs);
 	}
-
-	@Override public XGOpcode getOpcode(int offset)
-	{	return null;}
 }

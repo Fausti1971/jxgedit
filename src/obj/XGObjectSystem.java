@@ -1,28 +1,16 @@
 package obj;
 
-import java.util.HashMap;
-import java.util.Map;
-import parm.XGOpcode;
+import parm.ParameterMap;
 import parm.XGParameter;
 
 public class XGObjectSystem extends XGObject
-{	private static final Map<Integer, XGParameter> PARAMETERS = initParams();
-
-	private static final Map<Integer, XGParameter> initParams()
-	{	Map<Integer, XGParameter> m = new HashMap<>();
-		//TODO
-		return m;
-	}
+{	private static final String MAP_NAME = "system_parameters";
 
 /*********************************************************************************************************/
 
 	public XGObjectSystem(XGAdress adr)
 	{	super(adr);}
 
-	public XGParameter getParameter(int offset)
-	{	return PARAMETERS.getOrDefault(offset, new XGParameter(new XGOpcode(offset), 0, 127, "parameter " + offset, "unknown"));}
-
-	public Map<Integer,XGParameter> getParamters()
-	{	return PARAMETERS;
-	}
+	public XGParameter getParameter(int offs)
+	{	return ParameterMap.getParameterMap(MAP_NAME).get(offs);}
 }

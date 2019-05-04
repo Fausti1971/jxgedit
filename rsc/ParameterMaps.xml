@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:
+	offset = 0 (dezimal, dei descriptions (variable Parameter) ist dies der Parameterindex bspw. "REVERB PARAMETER 1")
+	byteCount = 1 (dezimal)
+	byteType = MIDIBYTE, NIBBLE
+	valueType = NUMBER, TEXT, BITMAP
+	translator = translateToText, translateNot, translateToTextPlus1, translateDiv10, translateSub128Div10, translateMap
+	translationMap = ""
+	translationMapFilter = ""
+	descriptionMapIndex = 0... (der Index des Descriptions in der MutableParameterMap)
+	descriptionDependsOf = 0 (dezimal, Offset des die Description definierenden Parameters bspw. ReverbType...)
+-->
+<maps xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="ParameterMaps.xsd">
+	<map name="fx1_parameters">
+		<parameter>
+			<offset>0</offset>
+			<longName>Reverb Program</longName>
+			<shortName>RevPrg</shortName>
+			<byteCount>2</byteCount>
+			<byteType>MIDIBYTE</byteType>
+			<valueType>NUMBER</valueType>
+			<translator>translateMap</translator>
+			<translationMap>fx_programs</translationMap>
+			<translationMapFilter>reverb</translationMapFilter>
+		</parameter>
+		<parameterOpcode>
+			<offset>2</offset>
+			<byteCount>02</byteCount>
+			<byteType>MIDIBYTE</byteType>
+			<valueType>NUMBER</valueType>
+			<descriptionMapIndex>1</descriptionMapIndex>
+			<descriptionDependsOf>0</descriptionDependsOf>
+		</parameterOpcode>
+	</map>
+	<map name="Hall 1,Hall 2,Room 1,Room 2,Room 3,Stage 1,Stage 2,Plate">
+		<parameterDescription>
+			<offset>1</offset>
+			<longName>Reverb Time</longName>
+			<shortName>RevTime</shortName>
+			<valueMin>0</valueMin>
+			<valueMax>69</valueMax>
+			<translator>translateMap</translator>
+			<translationMap>reverb_time</translationMap>
+		</parameterDescription>
+	</map>
+</maps>

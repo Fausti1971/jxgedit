@@ -9,13 +9,11 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
+//TODO statische Maps entfernen und online parsen; filterTags als attibutes einfügen (mu80, rev, cho, var, ins...)
 public interface TranslationMap
-{	static final File FILE = new File("rsc/Maps.xml");
+{	static final File FILE = new File("rsc/TranslationMaps.xml");
 
-	public static Map<Integer, String> channelMap = initMap("midi_channels");
-
-	public static Map<Integer, String> initMap(String tag)
+	public static Map<Integer, String> getTranslationMap(String name, String... filter)
 	{	Map<Integer, String> map = new TreeMap<>();
 		if(!FILE.canRead())
 		{	System.out.println("cant read file: " + FILE);
@@ -23,7 +21,7 @@ public interface TranslationMap
 		}
 
 		try
-		{	SAXParserFactory.newInstance().newSAXParser().parse(FILE, new XMLHandler(tag, map));
+		{	SAXParserFactory.newInstance().newSAXParser().parse(FILE, new XMLHandler(name, map, filter));
 		}
 		catch(ParserConfigurationException|SAXException | IOException e)
 		{	e.printStackTrace();
@@ -36,10 +34,12 @@ public interface TranslationMap
 		private String entryName = "";
 		private String tag;
 		private Map<Integer, String> map;
+		private String filter[];
 	
-		XMLHandler(String tag, Map<Integer, String> m)
+		XMLHandler(String tag, Map<Integer, String> m, String... filter)
 		{	this.tag = tag;
 			this.map = m;
+			this.filter = filter;
 		}
 
 		@Override public void startElement(String uri,String localName,String qName,Attributes attributes) throws SAXException

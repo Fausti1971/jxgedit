@@ -1,7 +1,7 @@
 package msg;
 
 import java.util.Arrays;
-import parm.XGOpcode;
+import parm.XGParameterConstants.ValueType;
 import parm.XGValue;
 
 public interface Bytes
@@ -12,32 +12,36 @@ public interface Bytes
 
 	byte[] getByteArray();
 
-	default void decodeXGValue(int offset, XGValue v)	//dekodiert und returniert die Anzahl opcode.byteCount opcode.byteType/s am/ab offset des byteArray
-	{	XGOpcode opc = v.getOpcode();
-		switch(opc.getValueType())
-		{	case Text:		return;
-			case Bitmap:	return;
+	default void decodeXGValue(int offset, XGValue v)	//dekodiert und setzt (in v) die Anzahl opcode.byteCount opcode.byteType/s am/ab offset des byteArray
+	{	ByteType bt = v.getByteType();
+		ValueType vt = v.getValueType();
+		int bc = v.getByteCount();
+		switch(vt)
+		{	case TEXT:		return;
+			case BITMAP:	return;
 			default:
-			case Number:
-				switch(opc.getByteType())
+			case NUMBER:
+				switch(bt)
 				{	default:
-					case MIDIBYTE:	v.setValue(decodeMidiBytes(offset, opc.getByteCount()));
-					case NIBBLE:	v.setValue(decodeLowerNibbles(offset, opc.getByteCount()));
+					case MIDIBYTE:	v.setValue(decodeMidiBytes(offset, bc));
+					case NIBBLE:	v.setValue(decodeLowerNibbles(offset, bc));
 				}
 		}
 	}
 
 	default void encodeXGValue(int offset, XGValue v)
-	{	XGOpcode opc = v.getOpcode();
-		switch(opc.getValueType())
-		{	case Text:		return;
-			case Bitmap:	return;
+	{	ByteType bt = v.getByteType();
+		ValueType vt = v.getValueType();
+		int bc = v.getByteCount();
+		switch(vt)
+		{	case TEXT:		return;
+			case BITMAP:	return;
 			default:
-			case Number:
-				switch(opc.getByteType())
+			case NUMBER:
+				switch(bt)
 				{	default:
-					case MIDIBYTE:	encodeMidiBytes(offset, opc.getByteCount(), (int)v.getValue()); break;
-					case NIBBLE:	encodeLowerNibbles(offset, opc.getByteCount(), (int)v.getValue()); break;
+					case MIDIBYTE:	encodeMidiBytes(offset, bc, (int)v.getValue()); break;
+					case NIBBLE:	encodeLowerNibbles(offset, bc, (int)v.getValue()); break;
 				}
 		}
 	}

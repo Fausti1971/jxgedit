@@ -10,6 +10,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import application.InvalidXGAdressException;
 import application.MU80;
 import application.Setting;
 import msg.XGMessage;
@@ -46,7 +47,7 @@ public class SysexFile
 				{	XGMessage.factory(s).processXGMessage();
 					count++;
 				}
-				catch (InvalidMidiDataException e)
+				catch (InvalidMidiDataException | InvalidXGAdressException e)
 				{	log.severe(e.getMessage());
 				}
 			}

@@ -1,5 +1,7 @@
-/gui/
 /obj/
 /parm/
+/gui/
 /msg/
-/memory/
+/midi/
+/application/
+/file/

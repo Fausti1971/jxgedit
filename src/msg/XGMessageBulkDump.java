@@ -2,9 +2,10 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
+import application.InvalidXGAdressException;
 import obj.XGAdress;
 import obj.XGObject;
-import parm.XGOpcode;
+import parm.XGValue;
 
 public class XGMessageBulkDump extends XGMessage
 {	private static final int SIZE_SIZE = 2, SIZE_OFFS = 4, MSG = 0, HI_OFFS = 6, MID_OFFS = 7, LO_OFFS = 8, DATA_OFFS = 9;
@@ -27,7 +28,7 @@ public class XGMessageBulkDump extends XGMessage
 		setEOX(10 + dataSize);
 	}
 */
-	public XGMessageBulkDump(XGAdress adr)	//wird als response benötigt
+	public XGMessageBulkDump(XGAdress adr) throws InvalidXGAdressException	//wird als response benötigt
 	{	super(new byte[11]);
 		setMessageId(MSG);
 		setDumpSize(0);
@@ -67,14 +68,14 @@ public class XGMessageBulkDump extends XGMessage
 	protected void setMessageID()
 	{	encodeHigherNibble(MSG_OFFS, MSG);}
 
-	public void processXGMessage()
+	public void processXGMessage() throws InvalidXGAdressException
 	{	int end = getDumpSize() + DATA_OFFS, offset = getLo();
 		XGObject obj = XGObject.getXGObjectInstance(new XGAdress(getHi(), getMid(), offset));
 		for(int i = DATA_OFFS; i < end;)
-		{	XGOpcode opc = obj.getParameter(offset).getOpcode();
-			obj.setValue(offset, decodeXGValue(i, opc));
-			offset += opc.getByteCount();
-			i += opc.getByteCount();
+		{	XGValue v = obj.getXGValue(offset);
+			decodeXGValue(i, v);
+			offset += v.getByteCount();
+			i += v.getByteCount();
 		}
 	}
 }

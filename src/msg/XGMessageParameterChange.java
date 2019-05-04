@@ -1,6 +1,7 @@
 package msg;
 
 import javax.sound.midi.SysexMessage;
+import application.InvalidXGAdressException;
 import application.MU80;
 import parm.XGValue;
 
@@ -13,14 +14,14 @@ public class XGMessageParameterChange extends XGMessage
 	{	super(array);
 	}
 
-	public XGMessageParameterChange(XGValue v)
-	{	super(new byte[8 + v.getOpcode().getByteCount()]);
+	public XGMessageParameterChange(XGValue v) throws InvalidXGAdressException
+	{	super(new byte[8 + v.getByteCount()]);
 		setMessageID();
 		setHi(v.getAdress().getHi());
 		setMid(v.getAdress().getMid());
-		setLo(v.getOpcode().getOffset());
+		setLo(v.getOffset());
 		setData(v);
-		setEOX(DATA_OFFS + v.getOpcode().getByteCount());
+		setEOX(DATA_OFFS + v.getByteCount());
 	}
 
 	public XGMessageParameterChange(SysexMessage msg)

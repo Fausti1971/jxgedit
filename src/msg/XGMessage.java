@@ -5,6 +5,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
+import application.InvalidXGAdressException;
 import application.MU80;
 
 public abstract class XGMessage implements XGMessageConstants, Bytes
@@ -58,5 +59,5 @@ public abstract class XGMessage implements XGMessageConstants, Bytes
 	protected abstract void setMid(int mid);
 	protected abstract void setLo(int lo);
 	protected abstract void setMessageID();
-	public abstract void processXGMessage();
+	public abstract void processXGMessage() throws InvalidXGAdressException;
 }

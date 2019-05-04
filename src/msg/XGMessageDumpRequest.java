@@ -14,7 +14,7 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 	{	super(array);
 	}
 
-	public XGMessageDumpRequest(XGAdress adr)
+	public XGMessageDumpRequest(XGAdress adr) throws Exception
 	{	super(new byte[8]);
 		setSysexId(MU80.device.getSysexId());
 		setMessageID();

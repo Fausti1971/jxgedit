@@ -29,7 +29,7 @@ public class XGDeviceDetector implements Receiver
 		}
 	}
 
-	public static Set<XGDeviceDetector> detectXGDevices()		//TODO eine response auf den ersten request wird bei einem timeout bis etwa 200 chronisch ignoriert (?)
+	public static Set<XGDeviceDetector> detectXGDevices() throws Exception		//TODO eine response auf den ersten request wird bei einem timeout bis etwa 200 chronisch ignoriert (?)
 	{	openAllInputs();
 		for(MidiDevice d : Midi.getOutputs())
 		{	oDev = d;

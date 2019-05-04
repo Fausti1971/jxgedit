@@ -1,86 +1,101 @@
 package parm;
 
 import java.util.Map;
-import java.util.function.BiFunction;
+import application.InvalidXGAdressException;
+import msg.Bytes;
+import obj.XGAdress;
 import obj.XGObject;
 
 public class XGParameter implements XGParameterConstants
-{	private static final BiFunction<XGObject, XGParameter, String> DEF_TRANS_TYPE = ValueTranslation::translateToText;
+{	
 
-	/*****************************************************************************************************/
+/*****************************************************************************************************/
 
-	private final int minValue, maxValue, offset, masterOffset;
-	private final String longName, shortName;
-	private final BiFunction<XGObject, XGParameter, String> valueTranslation;
-	private final Map<Integer, String> translationMap;
+	private final ParameterType type;
+	private final int mutableMasterOffset, mutableMapIndex;
+	private final XGParameterOpcode opcode;
+	private final XGParameterDescription description;
 
-	public XGParameter(int offs)
-	{	this(offs, 0, 127, "parameter " + offs, "unknown");}
-	
-	public XGParameter(int offs, int master)
-	{	this.offset = offs;
-		this.masterOffset= master;
-		this.minValue = 0;
-		this.maxValue = 0;
-		this.longName = "";
-		this.shortName = "";
-		this.valueTranslation = DEF_TRANS_TYPE;
-		this.translationMap = null;
+	public XGParameter(int offs)	//automatischer Konstruktor - unbekannter Parameter
+	{	this(new XGParameterOpcode(offs), new XGParameterDescription(offs, 0, 0, "automatic generated unknown parameter", "offs=" + offs, "translateToText", null, null));}
+
+	public XGParameter(XGParameterDescription desc)
+	{	this.type = ParameterType.SECONDARY;
+		this.opcode = null;
+		this.description = desc;
+		this.mutableMasterOffset = 0;
+		this.mutableMapIndex = 0;
 	}
 
-	public XGParameter(int offs, int min, int max, String lName, String sName)
-	{	this(offs, DEF_TRANS_TYPE, min, max, lName, sName);}
-
-	public XGParameter(int offs, Map<Integer, String> table, int min, int max, String lName, String sName)
-	{	this.offset = offs;
-		this.masterOffset= offs;
-		this.minValue = min;
-		this.maxValue = max;
-		this.longName = lName;
-		this.shortName = sName;
-		this.valueTranslation = ValueTranslation::translateMap;
-		this.translationMap = table;
+	public XGParameter(XGParameterOpcode opc, XGParameterDescription desc)
+	{	this.type = ParameterType.COMPLETE;
+		this.description = desc;
+		this.opcode = opc;
+		this.mutableMasterOffset = 0;
+		this.mutableMapIndex = 0;
 	}
 
-	public XGParameter(int offs, BiFunction<XGObject, XGParameter, String> tType, int min, int max, String lName, String sName)
-	{	this.offset = offs;
-		this.masterOffset= offs;
-		this.minValue = min;
-		this.maxValue = max;
-		this.longName = lName;
-		this.shortName = sName;
-		this.valueTranslation = tType;
-		this.translationMap = null;
+	public XGParameter(XGParameterOpcode opc, int masterOffset, int mapIndex)
+	{	this.type = ParameterType.PRIMARY;
+		this.description = null;
+		this.opcode = opc;
+		this.mutableMasterOffset = masterOffset;
+		this.mutableMapIndex = mapIndex;
 	}
 
-	public int getMasterValueOffset()
-	{	if(this.isVariable()) return this.masterOffset;
-		else return this.offset;
+	public XGParameterDescription getDescription(XGValue v)
+	{	if(this.description != null || v == null) return this.description;
+		XGValue masterValue;
+		try
+		{	masterValue = XGObject.getValue(new XGAdress(v.getAdress().getHi(), v.getAdress().getMid(), this.getMasterOffset()));}
+		catch(InvalidXGAdressException e)
+		{	e.printStackTrace();
+			return null;
+		}
+		return ParameterMap.getParameterMap(masterValue.getTranslatedValue()).get(this.mutableMapIndex).description;
 	}
 
-	public boolean isVariable()
-	{	return this.offset != this.masterOffset;}
+	public ParameterType getType()
+	{	return type;}
 
-	public String getValueAsText(XGObject o)
-	{	return this.valueTranslation.apply(o, this);}
+	public int getMasterOffset()
+	{	return this.mutableMasterOffset;}
+
+	public int getMutableIndex()
+	{	return this.mutableMapIndex;}
+
+	public int getOffset()
+	{	return this.opcode.getOffset();}
+
+	public Bytes.ByteType getByteType()
+	{	return this.opcode.getByteType();}
+
+	public int getByteCount()
+	{	return this.opcode.getByteCount();}
 
 	public String getLongName()
-	{	return this.longName;}
+	{	return this.getDescription(null).getLongName();}
 
 	public String getShortName()
-	{	return this.shortName;}
+	{	return this.description.getShortName();}
 
 	public Map<Integer, String> getTranslationMap()
-	{	return this.translationMap;}
+	{	return this.description.getTranslationMap();}
+
+	public ValueType getValueType()
+	{	return this.opcode.getValueType();}
 
 	public int getMaxValue()
-	{	return this.maxValue;}
+	{	return this.description.getMaxValue();}
 
 	public int getMinValue()
-	{	return this.minValue;}
+	{	return this.description.getMinValue();}
 
 	public int limitize(int v)
 	{	return Math.max(getMinValue(), Math.min(getMaxValue(), v));}
+
+	public String translate(XGValue v)
+	{	return this.description.getValueTranslator().translate(v);}
 
 	@Override public String toString()
 	{	return this.getLongName();}

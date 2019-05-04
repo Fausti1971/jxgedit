@@ -7,8 +7,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import obj.XGObject;
-import parm.XGParameter;
 import parm.XGParameterConstants;
+import parm.XGValue;
 
 public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionListener, XGParameterConstants
 {	/**
@@ -16,8 +16,7 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 	 */
 	private static final long serialVersionUID=1L;
 
-//	private XGParameter parm;
-	private XGObject obj;
+	private XGValue value;
 	private int offset;
 
 	public MyCombo(int offs)
@@ -31,23 +30,17 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 		});
 	}
 
-	private XGParameter getParam()
-	{	return this.obj.getParameter(this.offset);}
-
 	public void xgObjectSelected(XGObject o)
-	{	this.obj = o;
-		if(this.getParam() != null)
-		{	this.setToolTipText(this.getParam().getLongName());
-			this.setVisible(true);
-			this.setText(this.getParam().getValueAsText(this.obj));
-		}
-		else this.setVisible(false);
+	{	this.value = o.getXGValue(this.offset);
+		this.setToolTipText(this.value.getLongName());
+		this.setVisible(true);
+		this.setText(this.value.getTranslatedValue());
 		this.repaint();
 	}
 
 	public void valueChanged(int v)
-	{	this.obj.changeValue(this.getParam().getOpcode().getOffset(), v);
-		this.setText(this.getParam().getValueAsText(this.obj));
+	{	this.value.changeValue(v);
+		this.setText(this.value.getTranslatedValue());
 	}
 
 	private class MyPopup extends JPopupMenu
@@ -57,9 +50,8 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 		private static final long serialVersionUID=1L;
 
 		public MyPopup(MyCombo c)
-		{	XGParameter p = c.getParam();
-			int v = c.obj.getValue(c.offset);
-			for(Entry<Integer, String> e : p.getTranslationMap().entrySet())
+		{	int v = (int)c.value.getValue();
+			for(Entry<Integer, String> e : c.value.getTranslationMap().entrySet())
 			{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
 				m.addActionListener(new ActionListener()
 				{	public void actionPerformed(ActionEvent ev)
