@@ -10,12 +10,14 @@
 	descriptionMapIndex = 0... (der Index des Descriptions in der MutableParameterMap)
 	descriptionDependsOf = 0 (dezimal, Offset des die Description definierenden Parameters bspw. ReverbType...)
 -->
-<maps xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="ParameterMaps.xsd">
+<maps xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGParameterMaps.xsd">
 	<map name="fx1_parameters">
 		<parameter>
 			<offset>0</offset>
 			<longName>Reverb Program</longName>
 			<shortName>RevPrg</shortName>
+			<valueMin>0</valueMin>
+			<valueMax>69</valueMax>
 			<byteCount>2</byteCount>
 			<byteType>MIDIBYTE</byteType>
 			<valueType>NUMBER</valueType>

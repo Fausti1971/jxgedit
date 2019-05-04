@@ -3,7 +3,18 @@ package obj;
 import application.InvalidXGAdressException;
 
 public interface XGObjectConstants
-{	public static final int
+{	public static String XML_FILE = "rsc/XGObjects.xml";
+
+	public static String
+		TAG_OBJECT = "object",
+		TAG_NAME = "name",
+		TAG_ADRESS = "adress",
+		TAG_HI = "hi",
+		TAG_MID = "mid",
+		TAG_LO = "lo",
+		TAG_PARAMETERMAP = "parameterMap";
+
+	public static final int
 		MASTER = 0x00,
 		INFO = 0x01,
 		SYSFX = 0x02,

@@ -11,12 +11,12 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 //TODO statische Maps entfernen und online parsen; filterTags als attibutes einfügen (mu80, rev, cho, var, ins...)
 public interface TranslationMap
-{	static final File FILE = new File("rsc/TranslationMaps.xml");
+{	static final File FILE = new File("rsc/XGTranslationMaps.xml");
 
 	public static Map<Integer, String> getTranslationMap(String name, String... filter)
 	{	Map<Integer, String> map = new TreeMap<>();
 		if(!FILE.canRead())
-		{	System.out.println("cant read file: " + FILE);
+		{	System.out.println("can't read file: " + FILE);
 			return map;
 		}
 
@@ -47,13 +47,10 @@ public interface TranslationMap
 			if(this.mapTagIsOpened)
 			{	if(qName.equals("entry")) entryName = attributes.getValue("name");
 			}
-			System.out.println("start: " + qName);
 		}
 
 		@Override public void endElement(String namespaceURI, String localName, String qName)
 		{	if(qName.equals("map")) this.mapTagIsOpened = false;
-			System.out.println("end: " + qName);
-			
 		}
 
 		@Override public void characters(char[] ch, int start, int length)

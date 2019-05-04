@@ -5,7 +5,8 @@ import java.util.Map;
 import msg.Bytes;
 
 public interface XGParameterConstants
-{	static final String
+{	static final String XML_FILE = "rsc/XGParameterMaps.xml"; 
+	static final String
 		TAG_PARAMETER = "parameter",
 		TAG_OPCODE = "parameterOpcode",
 		TAG_DESCRIPTION = "parameterDescription",

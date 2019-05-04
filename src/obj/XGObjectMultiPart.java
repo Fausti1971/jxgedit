@@ -1,12 +1,12 @@
 package obj;
 
 import java.util.Map;
-import parm.ParameterMap;
+import parm.XGParameterMap;
 import parm.XGParameter;
 
 public class XGObjectMultiPart extends XGObject
 {	private static final int MIDMIN = 0, MIDMAX = 31, HI = 0x08;
-	private static final Map<Integer, XGParameter> PARAMETERS = ParameterMap.getParameterMap("mp_parameters");
+	private static final Map<Integer, XGParameter> PARAMETERS = XGParameterMap.getParameterMap("mp_parameters");
 
 /********************************************************************************************************************/
 

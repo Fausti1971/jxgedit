@@ -1,4 +1,4 @@
-package parm;
+package obj;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,57 +10,66 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public interface ParameterMap extends XGParameterConstants
+public interface XGObjectDescriptionSet extends XGObjectConstants
 {	static Logger log = Logger.getAnonymousLogger();
-	static final File FILE = new File("rsc/ParameterMaps.xml");
-	static Map<String, Map<Integer, XGParameter>> CACHE = new HashMap<>();
+	static final File FILE = new File(XML_FILE);
 
-	public static Map<Integer, XGParameter> getParameterMap(String name)
-	{	if(CACHE.containsKey(name)) return CACHE.get(name);
-		Map<Integer, XGParameter> map = new TreeMap<>();
-
+	public static Set<XGObjectDescription> getObjectDescriptionSet()
+	{	Set<XGObjectDescription> set = new HashSet<>();
+	
 		if(!FILE.canRead())
-		{	log.info("cant read file: " + FILE);
-			return map;
+		{	log.info("can't read file: " + FILE);
+			return set;
 		}
-
+	
 		try
-		{	SAXParserFactory.newInstance().newSAXParser().parse(FILE, new XMLHandler(name, map));
+		{	SAXParserFactory spf = SAXParserFactory.newInstance();
+			spf.setValidating(true);
+			SAXParser sp = spf.newSAXParser();
+			log.info("validating=" + sp.isValidating());
+			sp.parse(FILE, new XMLHandler(set));
 		}
 		catch(ParserConfigurationException|SAXException | IOException e)
 		{	e.printStackTrace();
 		}
-		return CACHE.get(name);
+		return set;
 	}
-/*
+	
 	public static void main(String[] args)
-	{	getParameterMap("fx1_parameters");
-	}
-*/
+	{	log.info("" + getObjectDescriptionSet());}
+	
 	static class XMLHandler extends DefaultHandler
 	{	private boolean mapTagIsOpened = false, entryTagIsOpened = false;;
 		private String tag, key, value;
+		private Set<XGObjectDescription> ods;
 		private Set<String> names = new HashSet<>();
 		private Map<String, String> entry = new HashMap<>();
-		private Map<Integer, XGParameter> map;
 	
-		XMLHandler(String tag, Map<Integer, XGParameter> m)
-		{	this.tag = tag;
-			this.map = m;
-		}
+		XMLHandler(Set<XGObjectDescription> s)
+		{	this.ods = s;}
+	
+		@Override public void startDocument() throws SAXException
+			{	super.startDocument();
+				log.info("start parsing " + FILE);
+			}
+	
+		@Override public void endDocument() throws SAXException
+			{	super.endDocument();
+				log.info("parsing finished " + FILE);
+			}
+	
 		@Override public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
 		{	if(qName.equals("map"))
-			{	StringTokenizer t = new StringTokenizer(attributes.getValue("name"), ",");
-				while(t.hasMoreElements()) names.add(t.nextToken());
-				if(names.contains(this.tag)) this.mapTagIsOpened = true;
+			{	this.mapTagIsOpened = true;
 				return;
 			}
-			if(this.mapTagIsOpened && (qName.equals(TAG_PARAMETER) || qName.equals(TAG_OPCODE) || qName.equals(TAG_DESCRIPTION)))
+			if(this.mapTagIsOpened && (qName.equals(TAG_OBJECT)))
 			{	this.entryTagIsOpened = true;
 				this.entry.clear();
 				return;
@@ -69,7 +78,7 @@ public interface ParameterMap extends XGParameterConstants
 			{	this.key = qName;
 			}
 		}
-
+	
 		@Override public void endElement(String namespaceURI, String localName, String qName)
 		{	if(qName.equals("map") && this.mapTagIsOpened)
 			{	for(String s : names) CACHE.put(s, this.map);
@@ -79,7 +88,7 @@ public interface ParameterMap extends XGParameterConstants
 			if(qName.equals(TAG_DESCRIPTION) && this.entryTagIsOpened)
 			{	XGParameter p = new XGParameter(new XGParameterDescription(Integer.parseInt(this.entry.get(TAG_OFFSET)), Integer.parseInt(this.entry.get(TAG_MIN)), Integer.parseInt(this.entry.get(TAG_MAX)),
 					this.entry.get(TAG_LONGNAME), this.entry.get(TAG_SHORTNAME), this.entry.get(TAG_TRANSLATOR), this.entry.get(TAG_TRANSLATIONMAP), this.entry.get(TAG_TRANSLATIONMAPFILTER)));;
-				this.map.put(p.getOffset(), p);
+				this.map.put(Integer.parseInt(this.entry.get(TAG_OFFSET)), p);
 				this.entry.clear();
 				this.entryTagIsOpened = false;
 			}
@@ -100,7 +109,7 @@ public interface ParameterMap extends XGParameterConstants
 			}
 			if(qName.equals(this.key)) this.entry.put(this.key, this.value);
 		}
-
+	
 		@Override public void characters(char[] ch, int start, int length)
 		{	if(!this.mapTagIsOpened) return;
 			if(!this.entryTagIsOpened) return;

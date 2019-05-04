@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="map">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="object" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="name" type="xs:string"/>
+							<xs:element name="adressHi" type="xs:nonNegativeInteger"/>
+							<xs:element name="adressMid" type="xs:nonNegativeInteger" minOccurs="0"/>
+							<xs:element name="adressLo" type="xs:nonNegativeInteger" minOccurs="0"/>
+							<xs:element name="parameterMap" type="xs:string"/>
+							<xs:element name="dumpSequence" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="hi">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="[0-9]|[0-9]-[0-9]|[0-9],[0-9]" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="mid">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="[0-9]|[0-9]-[0-9]|[0-9],[0-9]" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="lo">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="[0-9]|[0-9]-[0-9]|[0-9],[0-9]" />
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="adress">
+	</xs:element>
+</xs:schema>

@@ -52,7 +52,7 @@ public class XGParameter implements XGParameterConstants
 		{	e.printStackTrace();
 			return null;
 		}
-		return ParameterMap.getParameterMap(masterValue.getTranslatedValue()).get(this.mutableMapIndex).description;
+		return XGParameterMap.getParameterMap(masterValue.getTranslatedValue()).get(this.mutableMapIndex).description;
 	}
 
 	public ParameterType getType()

@@ -12,7 +12,7 @@ public class XGValue
 {	private final XGAdress adress;
 	private Object value;
 	private final XGParameter param;
-	private Set<ValueChangeListener> listeners = new HashSet<>();
+	private Set<XGValueChangeListener> listeners = new HashSet<>();
 	
 	public XGValue(XGAdress adr)
 	{	this(adr, new Object());}
@@ -80,7 +80,7 @@ public class XGValue
 			{	new XGMessageParameterChange(this).transmit();}
 			catch(InvalidXGAdressException e)
 			{	e.printStackTrace();}
-			for(ValueChangeListener l : listeners) l.valueChanged(this);
+			for(XGValueChangeListener l : listeners) l.valueChanged(this);
 		}
 		return changed;
 	}

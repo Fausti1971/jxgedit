@@ -1,4 +1,4 @@
 package parm;
-public interface ValueChangeListener
+public interface XGValueChangeListener
 {	public void valueChanged(XGValue v);
 }

@@ -2,9 +2,12 @@ package obj;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.logging.Logger;
 import application.InvalidXGAdressException;
-import parm.*;
+import parm.XGParameter;
+import parm.XGParameterConstants;
+import parm.XGValue;
 
 public abstract class XGObject implements XGObjectConstants, XGParameterConstants
 {	protected static final Logger log = Logger.getAnonymousLogger();
@@ -51,7 +54,7 @@ public abstract class XGObject implements XGObjectConstants, XGParameterConstant
 /******************** Instance ********************************************************************************************/
 
 	protected final XGAdress adress;
-	protected final Map<Integer, XGValue> values = new HashMap<>();
+	protected final Map<Integer, XGValue> values = new TreeMap<>();
 
 	protected XGObject(XGAdress adr)
 	{	this.adress = adr;}

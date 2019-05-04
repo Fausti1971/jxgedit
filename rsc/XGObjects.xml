@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGObjects.xsd">
+	<object>
+		<name>System</name>
+		<adressHi>0</adressHi>
+		<adressMid>0</adressMid>
+		<adressLo>0</adressLo>
+		<parameterMap>sys_parameters</parameterMap>
+		<dumpSequence>	<!-- Separation über Komma oder Minus möglich; rekursiver loop von hi nach lo-->
+			<hi>0</hi>
+			<mid>0</mid>
+			<lo>0</lo>
+		</dumpSequence>
+	</object>
+	<object>
+		<name>Info</name>
+		<adressHi>0</adressHi>
+		<adressMid>0</adressMid>
+		<adressLo>0</adressLo>
+		<parameterMap>info_parameters</parameterMap>
+		<dumpSequence>
+			<hi>1</hi>
+			<mid>0</mid>
+			<lo>0</lo>
+		</dumpSequence>
+	</object>
+	<object>
+		<name>FX1 Reverb</name>
+		<adressHi>2</adressHi>
+		<adressMid>1</adressMid>
+		<adressLo>0</adressLo>hier fehlt noch was...
+		<parameterMap>fx1_parameters</parameterMap>
+		<dumpSequence>
+			<hi>0</hi>
+			<mid>0</mid>
+			<lo>0</lo>
+		</dumpSequence>
+	</object>
+</map>

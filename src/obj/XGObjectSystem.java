@@ -1,6 +1,6 @@
 package obj;
 
-import parm.ParameterMap;
+import parm.XGParameterMap;
 import parm.XGParameter;
 
 public class XGObjectSystem extends XGObject
@@ -12,5 +12,5 @@ public class XGObjectSystem extends XGObject
 	{	super(adr);}
 
 	public XGParameter getParameter(int offs)
-	{	return ParameterMap.getParameterMap(MAP_NAME).get(offs);}
+	{	return XGParameterMap.getParameterMap(MAP_NAME).get(offs);}
 }

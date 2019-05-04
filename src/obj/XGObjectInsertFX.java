@@ -1,6 +1,6 @@
 package obj;
 
-import parm.ParameterMap;
+import parm.XGParameterMap;
 import parm.XGParameter;
 
 public class XGObjectInsertFX extends XGObject
@@ -21,5 +21,5 @@ public class XGObjectInsertFX extends XGObject
 		return "FX " + m;}
 
 	public XGParameter getParameter(int offset)
-	{	return ParameterMap.getParameterMap(MAP_NAME).get(offset);}
+	{	return XGParameterMap.getParameterMap(MAP_NAME).get(offset);}
 }
