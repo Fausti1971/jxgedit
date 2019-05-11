@@ -46,10 +46,7 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	{	if(msg == null) return false;
 		if(msg instanceof XGMessageParameterChange)
 		{	XGMessageParameterChange x = (XGMessageParameterChange)msg;
-			if(x.getSysexId() == response.getSysexId() &&
-				x.getHi() == response.getHi() &&
-				x.getMid() == response.getMid() &&
-				x.getLo() == response.getLo()) return true;
+			if(x.getSysexId() == response.getSysexId() && x.getAdress().equals(response.getAdress())) return true;
 		}
 		return false;
 	}

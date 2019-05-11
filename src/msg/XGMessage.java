@@ -7,6 +7,7 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 import application.InvalidXGAdressException;
 import application.MU80;
+import obj.XGAdress;
 
 public abstract class XGMessage implements XGMessageConstants, Bytes
 {	protected static final Logger log = Logger.getAnonymousLogger();
@@ -51,6 +52,9 @@ public abstract class XGMessage implements XGMessageConstants, Bytes
 
 	public SysexMessage asSysexMessage() throws InvalidMidiDataException
 	{	return new SysexMessage(this.data, this.data.length);}
+
+	public XGAdress getAdress()
+	{	return new XGAdress(getHi(), getMid(), getLo());}
 
 	protected abstract int getHi();
 	protected abstract int getMid();

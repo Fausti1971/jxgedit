@@ -29,7 +29,7 @@ public class MultiPartListView extends JList<XGObject> implements ListSelectionL
 	Set<XGObjectSelectionListener> listeners = new HashSet<>();
 
 	public MultiPartListView()
-	{	super(new Vector<>(XGObject.getXGObjectInstances(new XGAdress(XGObjectConstants.MULTI,0,0)).values()));
+	{	super(new Vector<>(XGObject.getXGObjectInstances(new XGAdress(XGObjectConstants.MULTI))));
 		super.addListSelectionListener(this);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setInstance(this);

@@ -1,9 +1,10 @@
 package parm;
 
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class XGParameterDescription
-{
+{	private static Logger log =Logger.getAnonymousLogger();
 
 /*****************************************************************************************/
 
@@ -20,6 +21,8 @@ public class XGParameterDescription
 		this.shortName = sName;
 		this.valueTranslator = ValueTranslator.getTranslator(translator);
 		this.translationMap = TranslationMap.getTranslationMap(mapName, mapFilter);
+		log.info("parameter-description added: " + this.getLongName());
+
 	}
 
 	public int getOffset()

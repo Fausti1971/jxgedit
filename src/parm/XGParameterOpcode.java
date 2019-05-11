@@ -1,10 +1,11 @@
 package parm;
 
+import java.util.logging.Logger;
 import msg.Bytes;
 import msg.Bytes.ByteType;
 
 public class XGParameterOpcode implements XGParameterConstants
-{
+{	private static Logger log =Logger.getAnonymousLogger();
 
 /*****************************************************************************************/
 
@@ -24,6 +25,7 @@ public class XGParameterOpcode implements XGParameterConstants
 		this.byteCount = bCount;
 		this.valueType = ValueType.valueOf(vType);
 		this.byteType = ByteType.valueOf(bType);
+		log.info("parameter-opcode added: " + this.getOffset());
 	}
 
 	public int getOffset()

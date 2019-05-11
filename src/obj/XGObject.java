@@ -2,6 +2,8 @@ package obj;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 import application.InvalidXGAdressException;
@@ -9,34 +11,24 @@ import parm.XGParameter;
 import parm.XGParameterConstants;
 import parm.XGValue;
 
-public abstract class XGObject implements XGObjectConstants, XGParameterConstants
+public class XGObject implements XGObjectConstants, XGParameterConstants
 {	protected static final Logger log = Logger.getAnonymousLogger();
-	protected static Map<Integer, Map<Integer, XGObject>> instances = new HashMap<>();
+	protected static Map<XGAdress, XGObject> instances = new HashMap<>();
 	protected static ObjectChangeListener listener = null;
 
 	public static XGObject getXGObjectInstance(XGAdress adr) throws InvalidXGAdressException
-	{	Map<Integer, XGObject> m = getXGObjectInstances(adr);
-		if(m.containsKey(adr.getMid())) return m.get(adr.getMid());
+	{	if(instances.containsKey(adr)) return instances.get(adr);
 		else
-		{	XGObject o = XGObjectConstants.newXGObjectInstance(adr);
-			m.put(adr.getMid(), o);
+		{	XGObject o = new XGObject(adr);
+			instances.put(adr, o);
 			return o;
 		}
 	}
 
-	public static Map<Integer, XGObject> getXGObjectInstances(XGAdress adr)
-	{	try
-		{	if(instances.containsKey(adr.getHi())) return instances.get(adr.getHi());
-			else
-			{	Map<Integer, XGObject> m = new HashMap<>();
-				instances.put(adr.getHi(), m);
-				return m;
-			}
-		}
-		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();
-			return null;
-		}
+	public static Set<XGObject> getXGObjectInstances(XGAdress adr)
+	{	Set<XGObject> s = new HashSet<>();
+		for(XGAdress o : instances.keySet()) if(o.isPartOf(adr)) s.add(instances.get(o));
+		return s;
 	}
 
 	public static XGParameter getParameter(XGAdress adr)
@@ -77,7 +69,12 @@ public abstract class XGObject implements XGObjectConstants, XGParameterConstant
 	public XGAdress getAdress()
 	{	return adress;}
 
-/*********** abstract *******************************************************************************************************************/
-
-	public abstract XGParameter getParameter(int offset); //TODO Umbau auf statische Methode mit String MAP_NAME im XGObjectConstants (Instance-Methoden liefern bei fehlender ParameterMap null)
+	public XGParameter getParameter(int offset)
+	{	try
+		{	return XGObjectDescription.getXGObjectDescription(this.adress).parameterMap.get(offset);}
+		catch(InvalidXGAdressException | NullPointerException | ExceptionInInitializerError e)
+		{	e.printStackTrace();
+			return new XGParameter(offset);
+		}
+	};
 }

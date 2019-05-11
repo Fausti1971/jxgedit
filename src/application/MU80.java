@@ -6,21 +6,22 @@ import java.util.logging.Logger;
 import file.SysexFile;
 import gui.MainFrame;
 import midi.XGDevice;
+import obj.XGObjectDescription;
+import obj.XGObjectDescriptionMap;
+import parm.XGParameterMap;
 
 public class MU80
 {	private static final Logger log = Logger.getAnonymousLogger(); 
 	private static final String
 		APPNAME = "MU80",
 		SYSFILESEP = System.getProperty("file.separator");
-
 	private static Path homePath = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
 	private static Setting setting;
 	private static MainFrame mainFrame;
 	public static XGDevice device;
 
 	static
-	{	homePath.toFile().mkdirs();
-	}
+	{	homePath.toFile().mkdirs();}
 
 	public static Setting getSetting()
 	{	return setting;}
@@ -53,6 +54,8 @@ public class MU80
 
 		setting = new Setting(getHomePath().resolve("setting").toFile());
 		device = new XGDevice(setting);
+		XGParameterMap.initParameterMaps();
+		XGObjectDescriptionMap.initObjectDescriptionMap();
 		SysexFile.getDefaultDump();
 		mainFrame = new MainFrame();
 	}
