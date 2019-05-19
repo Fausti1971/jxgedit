@@ -1,5 +1,6 @@
 package obj;
-import application.InvalidXGAdressException;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
 public class XGDumpDescription implements XGObjectConstants
 {	private final String name;
 	private final XGAdress min, max;

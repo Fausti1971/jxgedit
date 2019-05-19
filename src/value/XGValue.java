@@ -1,15 +1,15 @@
-package parm;
+package value;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import application.InvalidXGAdressException;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
 import msg.XGMessageParameterChange;
-import obj.XGAdress;
 import obj.XGObject;
+import parm.XGParameter;
 
 public class XGValue
 {	private static Logger log = Logger.getAnonymousLogger();
-
 
 	private final XGAdress adress;
 	private final XGParameter parameter;

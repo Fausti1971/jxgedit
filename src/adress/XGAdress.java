@@ -1,6 +1,4 @@
-package obj;
-
-import application.InvalidXGAdressException;
+package adress;
 
 public class XGAdress
 {	private final int hi, mid, lo;

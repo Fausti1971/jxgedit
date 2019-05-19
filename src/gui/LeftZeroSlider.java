@@ -15,7 +15,7 @@ import javax.swing.JComponent;
 import msg.Bytes;
 import obj.XGObject;
 import parm.XGParameterConstants;
-import parm.XGValue;
+import value.XGValue;
 
 public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGObjectSelectionListener, XGParameterConstants
 {	/**
@@ -125,7 +125,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		catch(NullPointerException e)
 		{	e.printStackTrace();
 			setVisible(false);
-			this.repaint();
 		}
+		this.repaint();
 	}
 }

@@ -17,6 +17,5 @@ public class MultiPartMidiTab extends JPanel implements XGParameterConstants
 	private <T extends JComponent & XGObjectSelectionListener> void addAndRegister(T c)
 	{	super.add(c);
 		MultiPartTab.getTableView().registerObjectSelectionListener(c);
-//		MultiPartListView.getInstance().registerXGObjectSelectionListener(c);
 	}
 }

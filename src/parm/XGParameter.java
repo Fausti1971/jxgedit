@@ -3,6 +3,8 @@ package parm;
 import java.util.Map;
 import msg.Bytes;
 import msg.Bytes.ByteType;
+import value.TranslationMap;
+import value.ValueTranslator;
 
 public class XGParameter implements XGParameterConstants
 {	
@@ -90,7 +92,8 @@ public class XGParameter implements XGParameterConstants
 	{	return valueTranslator;}
 
 	public Map<Integer, String> getTranslationMap()
-	{	return translationMap;}
+	{	if(this.translationMap == null) System.out.println("no translationmap for " + this.longName);
+		return this.translationMap;}
 
 	@Override public String toString()
 	{	return this.longName;}

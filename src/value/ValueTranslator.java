@@ -1,58 +1,51 @@
-package parm;
-
-import java.util.HashMap;
-import java.util.Map;
+package value;
 
 //TODO determiniere ValueType und differenziere Methoden
 
 public interface ValueTranslator
 {	String translate(XGValue v);
-	void addToMap();
 
 	static ValueTranslator getTranslator(String name)
-	{	return translators.getOrDefault(name, translateToText);}
-
-	static Map<String, ValueTranslator> translators = new HashMap<>();
-
+	{	switch(name)
+		{	case "translateNot":		return translateNot;
+			case "translateToText":		return translateToText;
+			case "translateToTextPlus1":return translateToTextPlus1;
+			case "translateDiv10":		return translateDiv10;
+			case "translateSub128Div10":return translateSub128Div10;
+			case "translateMap":		return translateMap;
+			default:					return translateToText;
+		}
+	}
+	
 	static ValueTranslator translateNot = new ValueTranslator()
 	{	public String translate(XGValue v)
 		{	return "";}
-		public void addToMap()
-		{	translators.put("translateNot", this);}
 	};
 
 	static ValueTranslator translateToText = new ValueTranslator()
-	{	public void addToMap()
-		{	translators.put("translateToText", this);}
-		public String translate(XGValue v)
+	{	public String translate(XGValue v)
 		{	return v.getValue().toString();}
 	};
 
 	static ValueTranslator translateToTextPlus1 = new ValueTranslator()
-	{	public void addToMap()
-		{	translators.put("translateToTextPlus1", this);}
-		public String translate(XGValue v)
+	{	public String translate(XGValue v)
 		{	return "" + ((int)v.getValue() + 1);}
 	};
 
 	static ValueTranslator translateDiv10 = new ValueTranslator()
-	{	public void addToMap()
-		{	translators.put("translateDiv10", this);}
-		public String translate(XGValue v)
+	{	public String translate(XGValue v)
 		{	return "" + ((float)v.getValue())/10;}
 	};
 
 	static ValueTranslator translateSub128Div10 = new ValueTranslator()
-	{	public void addToMap()
-		{	translators.put("translateSub128Div10", this);}
-		public String translate(XGValue v)
-		{	return Float.toString(((float)v.getValue() - 128) / 10);}
+	{	public String translate(XGValue v)
+		{	float f = (int)v.getValue();
+			return Float.toString((f - 128) / 10);
+		}
 	};
 
 	static ValueTranslator translateMap = new ValueTranslator()
-	{	public void addToMap()
-		{	translators.put("translateMap", this);}
-		public String translate(XGValue v)
+	{	public String translate(XGValue v)
 		{	try
 			{	return v.getParameter().getTranslationMap().get((int)v.getValue());}
 			catch(NullPointerException e)

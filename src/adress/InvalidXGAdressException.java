@@ -1,4 +1,4 @@
-package application;
+package adress;
 
 public class InvalidXGAdressException extends Exception
 {	/**

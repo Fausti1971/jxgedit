@@ -2,8 +2,8 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
+import adress.XGAdress;
 import application.MU80;
-import obj.XGAdress;
 
 public class XGMessageDumpRequest extends XGMessage implements XGRequest
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20;

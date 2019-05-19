@@ -1,15 +1,15 @@
 package obj;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.logging.Logger;
-import application.InvalidXGAdressException;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
 import parm.XGParameter;
 import parm.XGParameterConstants;
-import parm.XGValue;
+import value.XGValue;
 
 public class XGObject implements XGObjectConstants, XGParameterConstants
 {	protected static final Logger log = Logger.getAnonymousLogger();

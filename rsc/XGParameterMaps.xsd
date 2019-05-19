@@ -16,9 +16,9 @@
 										<xs:element name="valueMin" type="xs:nonNegativeInteger" minOccurs="0"/>
 										<xs:element name="valueMax" type="xs:nonNegativeInteger" minOccurs="0"/>
 										<xs:element name="byteCount" type="xs:nonNegativeInteger" minOccurs="0"/>
-										<xs:element name="byteType" type="byteType" default="MIDIBYTE" minOccurs="0"/>
-										<xs:element name="valueType" type="valueType" default="NUMBER" minOccurs="0"/>
-										<xs:element name="translator" type="translatorType" default="translateToText" minOccurs="0"/>
+										<xs:element name="byteType" type="byteType" minOccurs="0"/>
+										<xs:element name="valueType" type="valueType" minOccurs="0"/>
+										<xs:element name="translator" type="translatorType" minOccurs="0"/>
 										<xs:element name="translationMap" minOccurs="0" maxOccurs="1">
 											<xs:complexType>
 												<xs:simpleContent>

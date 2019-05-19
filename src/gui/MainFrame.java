@@ -5,7 +5,7 @@ import java.awt.Container;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JFrame;
-import application.InvalidXGAdressException;
+import adress.InvalidXGAdressException;
 
 public class MainFrame extends JFrame implements WindowListener
 {	/**

@@ -21,8 +21,7 @@ public interface XGParameterMap extends XGParameterConstants
 	public static Map<Integer, XGParameter> getParameterMap(String name)
 	{	if(parameterMaps.containsKey(name)) return parameterMaps.get(name);
 		else
-		{	log.info("new parametermap created: " + name);
-			Map<Integer, XGParameter> m = new HashMap<>();
+		{	Map<Integer, XGParameter> m = new HashMap<>();
 			parameterMaps.put(name, m);
 			return m;
 		}
@@ -58,7 +57,7 @@ public interface XGParameterMap extends XGParameterConstants
 	
 		@Override public void startDocument() throws SAXException
 			{	super.startDocument();
-				log.info("start parsing " + FILE);
+				log.info("parsing started " + FILE);
 			}
 
 		@Override public void endDocument() throws SAXException
@@ -67,15 +66,14 @@ public interface XGParameterMap extends XGParameterConstants
 			}
 
 		@Override public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
-		{	if(qName.equals("map"))
+		{	if(qName.equals(TAG_MAP))
 			{	mapNames = splitString(attributes.getValue("name"));
 				map = new HashMap<>();
 				return;
 			}
 			if(qName.equals(TAG_TRANSLATIONMAP))
-			{	filters = splitString(attributes.getValue("filter"));
-				return;
-			}
+			{	filters = splitString(attributes.getValue("filter"));}
+
 			if(qName.equals(TAG_PARAMETER))
 			{	p = new XGParameter(0);
 				return;
@@ -84,7 +82,7 @@ public interface XGParameterMap extends XGParameterConstants
 		}
 
 		@Override public void endElement(String namespaceURI, String localName, String qName)
-		{	if(qName.equals("map"))
+		{	if(qName.equals(TAG_MAP))
 			{	if(this.map.size() > 0)
 				{	for(String s : mapNames)
 					{	parameterMaps.put(s, this.map);

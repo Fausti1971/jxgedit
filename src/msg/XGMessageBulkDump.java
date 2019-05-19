@@ -2,10 +2,10 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import application.InvalidXGAdressException;
-import obj.XGAdress;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
 import obj.XGObject;
-import parm.XGValue;
+import value.XGValue;
 
 public class XGMessageBulkDump extends XGMessage
 {	private static final int SIZE_SIZE = 2, SIZE_OFFS = 4, MSG = 0, HI_OFFS = 6, MID_OFFS = 7, LO_OFFS = 8, DATA_OFFS = 9;

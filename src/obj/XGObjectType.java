@@ -5,7 +5,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Logger;
-import application.InvalidXGAdressException;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
 import parm.XGParameter;
 import parm.XGParameterMap;
 

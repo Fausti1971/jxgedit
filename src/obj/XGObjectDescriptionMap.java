@@ -12,6 +12,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+import adress.XGAdress;
 
 public interface XGObjectDescriptionMap extends XGObjectConstants
 {	static enum AdressType{NONE, ADRESS, DUMPSEQ};

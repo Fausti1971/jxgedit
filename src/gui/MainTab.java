@@ -1,7 +1,7 @@
 package gui;
 
 import javax.swing.JTabbedPane;
-import application.InvalidXGAdressException;
+import adress.InvalidXGAdressException;
 
 public class MainTab extends JTabbedPane
 {

@@ -1,10 +1,12 @@
 package parm;
 
 import msg.Bytes;
+import value.ValueTranslator;
 
 public interface XGParameterConstants
 {	static final String XML_FILE = "rsc/XGParameterMaps.xml"; 
 	static final String
+		TAG_MAP = "map",
 		TAG_PARAMETER = "parameter",
 		TAG_OFFSET = "offset",
 		TAG_BYTECOUNT = "byteCount",

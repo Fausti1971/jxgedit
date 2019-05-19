@@ -8,7 +8,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import obj.XGObject;
 import parm.XGParameterConstants;
-import parm.XGValue;
+import value.XGValue;
 
 public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionListener, XGParameterConstants
 {	/**
@@ -53,12 +53,12 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 		{	int v = (int)c.value.getValue();
 			for(Entry<Integer, String> e : c.value.getParameter().getTranslationMap().entrySet())
 			{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
+				if(e.getKey() == v) m.setSelected(true);
 				m.addActionListener(new ActionListener()
 				{	public void actionPerformed(ActionEvent ev)
 					{	c.valueChanged(e.getKey());
 					}
 				});
-				if(e.getKey() == v) m.setSelected(true);
 				add(m);
 			}
 		}

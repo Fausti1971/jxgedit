@@ -3,7 +3,7 @@ package msg;
 import java.util.Arrays;
 import parm.XGParameter;
 import parm.XGParameterConstants.ValueType;
-import parm.XGValue;
+import value.XGValue;
 
 public interface Bytes
 {	enum ByteType{MIDIBYTE, NIBBLE}
@@ -13,7 +13,7 @@ public interface Bytes
 
 	byte[] getByteArray();
 
-	default void decodeXGValue(int offset, XGValue v)	//dekodiert und setzt (in v) die Anzahl opcode.byteCount opcode.byteType/s am/ab offset des byteArray
+	default void decodeXGValue(int offset, XGValue v)	//dekodiert und setzt (in v) die Anzahl byteCount byteType/s am/ab offset des byteArray
 	{	XGParameter p = v.getParameter();
 		if(p == null) return;
 		ByteType bt = p.getByteType();
@@ -121,7 +121,7 @@ public interface Bytes
 	default int calcChecksum(int from, int to)
 	{	byte[] array = getByteArray();
 		byte sum = 0;
-		Math.min(array.length, to);
+		to = Math.min(array.length, to);
 		for(int i = from; i <= to; sum += array[i++]);
 		return sum;
 	}

@@ -1,9 +1,9 @@
 package msg;
 
 import javax.sound.midi.SysexMessage;
-import application.InvalidXGAdressException;
+import adress.InvalidXGAdressException;
 import application.MU80;
-import parm.XGValue;
+import value.XGValue;
 
 public class XGMessageParameterChange extends XGMessage
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x10, DATA_OFFS = 7;

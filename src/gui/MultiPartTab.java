@@ -3,7 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import obj.XGAdress;
+import adress.XGAdress;
 import obj.XGObjectConstants;
 import parm.XGParameterConstants;
 

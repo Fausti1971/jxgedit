@@ -10,7 +10,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
-import application.InvalidXGAdressException;
+import adress.InvalidXGAdressException;
 import application.MU80;
 import application.Setting;
 import msg.XGMessage;

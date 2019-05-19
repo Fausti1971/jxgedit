@@ -9,11 +9,10 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-
+import adress.XGAdress;
 import msg.XGMessage;
 import msg.XGMessageBulkDump;
 import msg.XGMessageDumpRequest;
-import obj.XGAdress;
 
 public class XGDeviceDetector implements Receiver
 {	private static Logger log = Logger.getAnonymousLogger();

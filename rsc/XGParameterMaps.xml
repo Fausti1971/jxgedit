@@ -74,6 +74,18 @@
 			<translator>translateMap</translator>
 			<translationMap>midi_channels</translationMap>
 		</parameter>
+
+		<parameter>
+			<offset>9</offset>
+			<longName>Detune</longName>
+			<shortName>Tune</shortName>
+			<valueMin>0</valueMin>
+			<valueMax>255</valueMax>
+			<byteCount>2</byteCount>
+			<byteType>NIBBLE</byteType>
+			<valueType>NUMBER</valueType>
+			<translator>translateSub128Div10</translator>
+		</parameter>
 		
 	</map>
 	
