@@ -1,17 +1,19 @@
 package parm;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 import application.InvalidXGAdressException;
 import msg.XGMessageParameterChange;
 import obj.XGAdress;
 import obj.XGObject;
-import parm.XGParameterConstants.ValueType;
 
 public class XGValue
-{	private final XGAdress adress;
+{	private static Logger log = Logger.getAnonymousLogger();
+
+
+	private final XGAdress adress;
+	private final XGParameter parameter;
 	private Object value;
-	private final XGParameter param;
 	private Set<XGValueChangeListener> listeners = new HashSet<>();
 	
 	public XGValue(XGAdress adr)
@@ -20,7 +22,7 @@ public class XGValue
 	public XGValue(XGAdress adr, Object val)
 	{	this.adress = adr;
 		this.value = val;
-		this.param = XGObject.getParameter(adr);
+		this.parameter = XGObject.getParameter(adr);
 	}
 
 	public Object getValue()
@@ -31,39 +33,18 @@ public class XGValue
 		{	return this.adress.getLo();}
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();
-			return this.param.getOffset();
+			return 0;
 		}
 	}
 
-	public msg.Bytes.ByteType getByteType()
-	{	return this.param.getByteType();}
-
-	public int getByteCount()
-	{	return this.param.getByteCount();}
-
-	public ValueType getValueType()
-	{	return this.param.getValueType();}
-
-	public int getMaxValue()
-	{	return this.param.getMaxValue();}
-
-	public int getMinValue()
-	{	return this.param.getMinValue();}
-
-	public String getLongName()
-	{	return this.param.getLongName();}
-
-	public String getShortName()
-	{	return this.param.getShortName();}
-
-	public Map<Integer, String> getTranslationMap()
-	{	return this.param.getTranslationMap();}
+	public XGParameter getParameter()
+	{	return this.parameter;}
 
 	public XGAdress getAdress()
 	{	return this.adress;}
 
 	public String getTranslatedValue()
-	{	return this.param.translate(this);}
+	{	return this.parameter.getValueTranslator().translate(this);}
 
 	public boolean setValue(Object v)
 	{	v = this.limitize(v);
@@ -86,32 +67,24 @@ public class XGValue
 	}
 
 	public boolean addValue(Object v)
-	{	try
-		{	switch(this.getValueType())
-			{	case NUMBER:	return changeValue((int)this.value + (int)v);
-				case TEXT:		return changeValue(((String)this.value) + v);
-				case BITMAP:	return false;
-				default:		return false;
-			}
-		}
-		catch(NullPointerException e)
-		{	e.printStackTrace();
-			return false;
+	{	switch(this.parameter.getValueType())
+		{	case NUMBER:	return changeValue((int)this.value + (int)v);
+			case TEXT:		return changeValue(((String)this.value) + v);
+			case BITMAP:	return false;
+			default:		return false;
 		}
 	}
 
 	private	Object limitize(Object v)
-	{	try
-		{	switch(this.getValueType())
-			{	case NUMBER:	return Math.min(getMaxValue(), Math.max(getMinValue(), (int)v));
-				case TEXT:		return "";
-				case BITMAP:	return null;
-				default:		return null;
-			}
-		}
-		catch(NullPointerException e)
-		{	e.printStackTrace();
-			return null;
+	{	if(!this.parameter.isLimitizable()) return v;
+		switch(this.parameter.getValueType())
+		{	case NUMBER:	return Math.min(this.parameter.getMaxValue(), Math.max(this.parameter.getMinValue(), (int)v));
+			case TEXT:		return "";
+			case BITMAP:	return null;
+			default:		return null;
 		}
 	}
+
+	@Override public String toString()
+	{	return this.getTranslatedValue();}
 }

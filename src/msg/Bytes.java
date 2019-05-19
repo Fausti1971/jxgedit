@@ -1,6 +1,7 @@
 package msg;
 
 import java.util.Arrays;
+import parm.XGParameter;
 import parm.XGParameterConstants.ValueType;
 import parm.XGValue;
 
@@ -13,9 +14,11 @@ public interface Bytes
 	byte[] getByteArray();
 
 	default void decodeXGValue(int offset, XGValue v)	//dekodiert und setzt (in v) die Anzahl opcode.byteCount opcode.byteType/s am/ab offset des byteArray
-	{	ByteType bt = v.getByteType();
-		ValueType vt = v.getValueType();
-		int bc = v.getByteCount();
+	{	XGParameter p = v.getParameter();
+		if(p == null) return;
+		ByteType bt = p.getByteType();
+		ValueType vt = p.getValueType();
+		int bc = p.getByteCount();
 		switch(vt)
 		{	case TEXT:		return;
 			case BITMAP:	return;
@@ -30,9 +33,11 @@ public interface Bytes
 	}
 
 	default void encodeXGValue(int offset, XGValue v)
-	{	ByteType bt = v.getByteType();
-		ValueType vt = v.getValueType();
-		int bc = v.getByteCount();
+	{	XGParameter p = v.getParameter();
+		if(p == null) return;
+		ByteType bt = p.getByteType();
+		ValueType vt = p.getValueType();
+		int bc = p.getByteCount();
 		switch(vt)
 		{	case TEXT:		return;
 			case BITMAP:	return;

@@ -25,7 +25,7 @@ public interface ValueTranslator
 	{	public void addToMap()
 		{	translators.put("translateToText", this);}
 		public String translate(XGValue v)
-		{	return "" + v;}
+		{	return v.getValue().toString();}
 	};
 
 	static ValueTranslator translateToTextPlus1 = new ValueTranslator()
@@ -54,7 +54,7 @@ public interface ValueTranslator
 		{	translators.put("translateMap", this);}
 		public String translate(XGValue v)
 		{	try
-			{	return v.getTranslationMap().get((int)v.getValue());}
+			{	return v.getParameter().getTranslationMap().get((int)v.getValue());}
 			catch(NullPointerException e)
 			{	return "no value";}
 		}

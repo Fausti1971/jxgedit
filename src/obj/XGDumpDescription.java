@@ -7,7 +7,8 @@ public class XGDumpDescription implements XGObjectConstants
 	public XGDumpDescription(XGAdress min, XGAdress max, String n)
 	{	this.min = min;
 		this.max = max;
-		this.name = n;
+		if(!(n == null)) this.name = n;
+		else this.name = "nameless dump";
 	}
 
 	public XGDumpDescription(XGAdress min, XGAdress max) throws InvalidXGAdressException
@@ -17,5 +18,5 @@ public class XGDumpDescription implements XGObjectConstants
 	{	this(adr, adr);}
 
 	@Override public String toString()
-	{	return "DS: " + name + " " + min + "..." + max;}
+	{	return name + " " + min + "..." + max;}
 }

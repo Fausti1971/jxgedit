@@ -22,20 +22,12 @@
 			<byteType>MIDIBYTE</byteType>
 			<valueType>NUMBER</valueType>
 			<translator>translateMap</translator>
-			<translationMap>fx_programs</translationMap>
-			<translationMapFilter>reverb</translationMapFilter>
+			<translationMap filter="reverb">fx_programs</translationMap>
 		</parameter>
-		<parameterOpcode>
-			<offset>2</offset>
-			<byteCount>02</byteCount>
-			<byteType>MIDIBYTE</byteType>
-			<valueType>NUMBER</valueType>
-			<descriptionMapIndex>1</descriptionMapIndex>
-			<descriptionDependsOf>0</descriptionDependsOf>
-		</parameterOpcode>
 	</map>
+
 	<map name="Hall 1,Hall 2,Room 1,Room 2,Room 3,Stage 1,Stage 2,Plate">
-		<parameterDescription>
+		<parameter>
 			<offset>1</offset>
 			<longName>Reverb Time</longName>
 			<shortName>RevTime</shortName>
@@ -43,6 +35,46 @@
 			<valueMax>69</valueMax>
 			<translator>translateMap</translator>
 			<translationMap>reverb_time</translationMap>
-		</parameterDescription>
+		</parameter>
 	</map>
+
+	<map name="multipart_parameters">
+		<parameter>
+			<offset>0</offset>
+			<longName>Element Reserve</longName>
+			<shortName>ElmRsv</shortName>
+			<valueMin>0</valueMin>
+			<valueMax>32</valueMax>
+			<byteCount>1</byteCount>
+			<byteType>MIDIBYTE</byteType>
+			<valueType>NUMBER</valueType>
+			<translator>translateToText</translator>
+		</parameter>
+		<parameter>
+			<offset>1</offset>
+			<longName>Bank Select MSB</longName>
+			<shortName>BnkMSB</shortName>
+			<valueMin>0</valueMin>
+			<valueMax>127</valueMax>
+			<byteCount>1</byteCount>
+			<byteType>MIDIBYTE</byteType>
+			<valueType>NUMBER</valueType>
+			<translator>translateToText</translator>
+		</parameter>
+
+		<parameter>
+			<offset>4</offset>
+			<longName>MIDI Channel</longName>
+			<shortName>Ch</shortName>
+			<valueMin>0</valueMin>
+			<valueMax>127</valueMax>
+			<byteCount>1</byteCount>
+			<byteType>MIDIBYTE</byteType>
+			<valueType>NUMBER</valueType>
+			<translator>translateMap</translator>
+			<translationMap>midi_channels</translationMap>
+		</parameter>
+		
+	</map>
+	
 </maps>

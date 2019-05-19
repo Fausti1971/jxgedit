@@ -2,9 +2,7 @@ package obj;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
@@ -20,9 +18,9 @@ public interface XGObjectDescriptionMap extends XGObjectConstants
 	static int MIN = 0, MAX = 1;
 	static Logger log = Logger.getAnonymousLogger();
 	static final File FILE = new File(XML_FILE);
-	static Map<XGAdress, XGObjectDescription> objectDescriptionMap = new HashMap<>();
+	static Set<XGObjectType> objectDescriptionMap = new HashSet<>();
 
-	static Map<XGAdress, XGObjectDescription> getObjectDescriptionMap()
+	static Set<XGObjectType> getObjectDescriptionMap()
 	{	return objectDescriptionMap;}
 
 	public static void initObjectDescriptionMap()
@@ -47,7 +45,7 @@ public interface XGObjectDescriptionMap extends XGObjectConstants
 	{	private boolean mapTagIsOpened = false;
 		private XGOD od;
 		private XGDD dd;
-		private XGA adr, dsAdr;
+		private XGA adr;
 		private String temp;
 
 		XMLHandler()
@@ -86,8 +84,7 @@ public interface XGObjectDescriptionMap extends XGObjectConstants
 				return;
 			}
 			switch(qName)
-			{ 	case TAG_OBJECT:	objectDescriptionMap.put(
-										this.od.adr, new XGObjectDescription(this.od.adr, this.od.name, this.od.mapName, this.od.descs));
+			{ 	case TAG_OBJECT:	objectDescriptionMap.add(new XGObjectType(this.od.adr, this.od.name, this.od.mapName, this.od.descs));
 									break;
 				case TAG_ADRESS:	this.od.adr = this.adr.getXGAdresses()[MIN];
 									this.adr.type = AdressType.NONE;

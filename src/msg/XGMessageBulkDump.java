@@ -74,8 +74,8 @@ public class XGMessageBulkDump extends XGMessage
 		for(int i = DATA_OFFS; i < end;)
 		{	XGValue v = obj.getXGValue(offset);
 			decodeXGValue(i, v);
-			offset += v.getByteCount();
-			i += v.getByteCount();
+			offset += v.getParameter().getByteCount();
+			i += v.getParameter().getByteCount();
 		}
 	}
 }

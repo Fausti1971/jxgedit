@@ -15,13 +15,13 @@ public class XGMessageParameterChange extends XGMessage
 	}
 
 	public XGMessageParameterChange(XGValue v) throws InvalidXGAdressException
-	{	super(new byte[8 + v.getByteCount()]);
+	{	super(new byte[8 + v.getParameter().getByteCount()]);
 		setMessageID();
 		setHi(v.getAdress().getHi());
 		setMid(v.getAdress().getMid());
 		setLo(v.getOffset());
 		setData(v);
-		setEOX(DATA_OFFS + v.getByteCount());
+		setEOX(DATA_OFFS + v.getParameter().getByteCount());
 	}
 
 	public XGMessageParameterChange(SysexMessage msg)

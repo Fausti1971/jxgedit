@@ -11,44 +11,25 @@
 								<xs:complexType>
 									<xs:sequence>
 										<xs:element name="offset" type="xs:nonNegativeInteger"/>
-										<xs:element name="longName" type="xs:string"/>
-										<xs:element name="shortName" type="xs:string"/>
-										<xs:element name="valueMin" type="xs:nonNegativeInteger"/>
-										<xs:element name="valueMax" type="xs:nonNegativeInteger"/>
-										<xs:element name="byteCount" type="xs:nonNegativeInteger"/>
-										<xs:element name="byteType" type="byteType" default="MIDIBYTE"/>
-										<xs:element name="valueType" type="valueType" default="NUMBER"/>
+										<xs:element name="longName" type="xs:string" minOccurs="0"/>
+										<xs:element name="shortName" type="xs:string" minOccurs="0"/>
 										<xs:element name="valueMin" type="xs:nonNegativeInteger" minOccurs="0"/>
 										<xs:element name="valueMax" type="xs:nonNegativeInteger" minOccurs="0"/>
-										<xs:element name="translator" type="translatorType" default="translateToText"/>
-										<xs:element name="translationMap" type="xs:string" minOccurs="0" maxOccurs="1"/>
-										<xs:element name="translationMapFilter" type="xs:string" minOccurs="0" maxOccurs="1"/>
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-							<xs:element name="parameterOpcode" minOccurs="0" maxOccurs="unbounded">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="offset" type="xs:nonNegativeInteger"/>
-										<xs:element name="byteCount" type="xs:nonNegativeInteger"/>
-										<xs:element name="byteType" type="byteType" default="MIDIBYTE"/>
-										<xs:element name="valueType" type="valueType" default="NUMBER"/>
-										<xs:element name="descriptionMapIndex" type="mapIndex"/>
-										<xs:element name="descriptionDependsOf" type="xs:nonNegativeInteger"/>
-									</xs:sequence>
-								</xs:complexType>
-							</xs:element>
-							<xs:element name="parameterDescription" minOccurs="0" maxOccurs="unbounded">
-								<xs:complexType>
-									<xs:sequence>
-										<xs:element name="offset" type="xs:nonNegativeInteger"/>
-										<xs:element name="longName" type="xs:string"/>
-										<xs:element name="shortName" type="xs:string"/>
-										<xs:element name="valueMin" type="xs:nonNegativeInteger" minOccurs="0"/>
-										<xs:element name="valueMax" type="xs:nonNegativeInteger" minOccurs="0"/>
-										<xs:element name="translator" type="translatorType" default="translateToText"/>
-										<xs:element name="translationMap" type="xs:string" minOccurs="0" maxOccurs="1"/>
-										<xs:element name="translationMapFilter" type="xs:string" minOccurs="0" maxOccurs="1"/>
+										<xs:element name="byteCount" type="xs:nonNegativeInteger" minOccurs="0"/>
+										<xs:element name="byteType" type="byteType" default="MIDIBYTE" minOccurs="0"/>
+										<xs:element name="valueType" type="valueType" default="NUMBER" minOccurs="0"/>
+										<xs:element name="translator" type="translatorType" default="translateToText" minOccurs="0"/>
+										<xs:element name="translationMap" minOccurs="0" maxOccurs="1">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="filter" type="xs:string" use="optional"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="descriptionMapIndex" type="mapIndex" minOccurs="0"/>
+										<xs:element name="descriptionDependsOf" type="xs:nonNegativeInteger" minOccurs="0"/>
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>

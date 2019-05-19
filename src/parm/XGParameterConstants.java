@@ -1,15 +1,11 @@
 package parm;
 
-import java.util.HashMap;
-import java.util.Map;
 import msg.Bytes;
 
 public interface XGParameterConstants
 {	static final String XML_FILE = "rsc/XGParameterMaps.xml"; 
 	static final String
 		TAG_PARAMETER = "parameter",
-		TAG_OPCODE = "parameterOpcode",
-		TAG_DESCRIPTION = "parameterDescription",
 		TAG_OFFSET = "offset",
 		TAG_BYTECOUNT = "byteCount",
 		TAG_BYTETYPE = "byteType",
@@ -18,24 +14,19 @@ public interface XGParameterConstants
 		TAG_MAX = "valueMax",
 		TAG_TRANSLATOR = "translator",
 		TAG_TRANSLATIONMAP = "translationMap",
-		TAG_TRANSLATIONMAPFILTER = "translationMapFilter",
 		TAG_DESCMAPINDEX = "descriptionMapIndex",
 		TAG_DEPENDSOF = "descriptionDependsOf",
 		TAG_LONGNAME = "longName",
 		TAG_SHORTNAME = "shortName";
 
-	static enum ParameterType {COMPLETE, PRIMARY, SECONDARY};
+	static enum ParameterType {UNKNOWN, COMPLETE, OPCODE, DESCRIPTION};
 	static enum ValueType {NUMBER, TEXT, BITMAP};
 
-	static final Bytes.ByteType DEF_BYTE_TYPE = Bytes.ByteType.MIDIBYTE;
+	static final String DEF_LONGNAME = "unknown parameter", DEF_SHORTNAME = "unknow";
 	static final int DEF_BYTECOUNT = 1;
+	static final Bytes.ByteType DEF_BYTE_TYPE = Bytes.ByteType.MIDIBYTE;
 	static final ValueType DEF_VALUE_TYPE = ValueType.NUMBER;
-
-	public static Map<Integer, XGParameter> getParameterMap(XGParameter[] s)
-	{	Map<Integer, XGParameter> m = new HashMap<>();
-		for(XGParameter p : s) m.put(p.getOffset(), p);
-		return m;
-	}
+	static final ValueTranslator DEF_TRANSLATOR = ValueTranslator.translateToText;
 
 	public static final int
 	SYS_TUNE = 0x00,

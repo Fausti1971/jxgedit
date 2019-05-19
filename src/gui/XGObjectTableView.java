@@ -1,59 +1,70 @@
 package gui;
 
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
-import javax.swing.text.AttributeSet;
-import javax.swing.text.Document;
-import javax.swing.text.Element;
-import javax.swing.text.TableView.TableRow;
+import application.InvalidXGAdressException;
+import obj.XGAdress;
 import obj.XGObject;
-import parm.XGParameter;
+import obj.XGObjectType;
+import parm.XGValue;
 
 public class XGObjectTableView extends JTable implements ListSelectionListener
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
-	private static XGObjectTableView instance;
-
-	public static XGObjectTableView getInstance()
-	{	return instance;}
 
 /****************************************************************************************************/
 
 	Set<XGObjectSelectionListener> listeners = new HashSet<>();
 
-	public XGObjectTableView(TableModel model)
-	{	
-		TableColumn tc = new TableColumn();
-		tc.setHeaderValue("ID");
-		tc.setResizable(true);
-		this.addColumn(tc);
-/*
-		for(XGParameter p : pMap.values())
-		{	tc = new TableColumn();
-			tc.setHeaderValue(p.getShortName());
-			tc.setResizable(true);
-			this.addColumn(tc);
+	public XGObjectTableView(XGAdress adr)
+	{	try
+		{	TableModel tm = new TableModel()
+			{	XGObjectType ot = XGObjectType.getObjectType(adr);
+				Integer[] col = ot.getParameterMap().keySet().toArray(Integer[]::new);
+				Integer[] row = ot.getObjects().keySet().toArray(Integer[]::new);
+	
+				public void setValueAt(Object aValue,int rowIndex,int columnIndex)
+				{}
+				
+				public void removeTableModelListener(TableModelListener l)
+				{}
+				
+				public boolean isCellEditable(int rowIndex,int columnIndex)
+				{	return false;}
+				
+				public Object getValueAt(int rowIndex,int columnIndex)
+				{	return ot.getObjects().get(row[rowIndex]).getXGValue(col[columnIndex]);
+				}
+				
+				public int getRowCount()
+				{	return row.length;}
+				
+				public String getColumnName(int columnIndex)
+				{	return ot.getParameter(col[columnIndex]).getLongName();}
+				
+				public int getColumnCount()
+				{	return col.length;}
+				
+				public Class<?> getColumnClass(int columnIndex)
+				{	return XGValue.class;}
+				
+				public void addTableModelListener(TableModelListener l)
+				{}
+			};
+			super.setModel(tm);
 		}
-*/		this.setAutoResizeMode(JTable.AUTO_RESIZE_NEXT_COLUMN);
-		this.setColumnSelectionAllowed(false);
-		this.setRowSelectionAllowed(true);
-		this.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
-		instance = this;
+		catch(InvalidXGAdressException e)
+		{	e.printStackTrace();}
 	}
 
-	public void registerXGObjectSelectionListener(XGObjectSelectionListener listener)
+	public void registerObjectSelectionListener(XGObjectSelectionListener listener)
 	{	listeners.add(listener);}
 
 	public void valueChanged(ListSelectionEvent e)

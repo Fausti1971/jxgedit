@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import file.SysexFile;
 import gui.MainFrame;
 import midi.XGDevice;
-import obj.XGObjectDescription;
 import obj.XGObjectDescriptionMap;
 import parm.XGParameterMap;
 

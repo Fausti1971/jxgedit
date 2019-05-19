@@ -1,7 +1,5 @@
 package obj;
 
-import application.InvalidXGAdressException;
-
 public interface XGObjectConstants
 {	public static String XML_FILE = "rsc/XGObjects.xml";
 

@@ -1,10 +1,10 @@
 package obj;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.HashSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.logging.Logger;
 import application.InvalidXGAdressException;
 import parm.XGParameter;
@@ -13,27 +13,20 @@ import parm.XGValue;
 
 public class XGObject implements XGObjectConstants, XGParameterConstants
 {	protected static final Logger log = Logger.getAnonymousLogger();
-	protected static Map<XGAdress, XGObject> instances = new HashMap<>();
 	protected static ObjectChangeListener listener = null;
 
 	public static XGObject getXGObjectInstance(XGAdress adr) throws InvalidXGAdressException
-	{	if(instances.containsKey(adr)) return instances.get(adr);
-		else
-		{	XGObject o = new XGObject(adr);
-			instances.put(adr, o);
-			return o;
-		}
-	}
+	{	return XGObjectType.getObjectInstance(adr);}
 
-	public static Set<XGObject> getXGObjectInstances(XGAdress adr)
-	{	Set<XGObject> s = new HashSet<>();
-		for(XGAdress o : instances.keySet()) if(o.isPartOf(adr)) s.add(instances.get(o));
-		return s;
-	}
+	public static XGObjectType getXGObjectType(XGAdress adr) throws InvalidXGAdressException
+	{	return XGObjectType.getObjectType(adr);}
+
+	public static Set<XGObject> getXGObjectInstances(XGAdress adr) throws InvalidXGAdressException
+	{	return new TreeSet<>(getXGObjectType(adr).getObjects().values());}
 
 	public static XGParameter getParameter(XGAdress adr)
 	{	try
-		{	return XGObject.getXGObjectInstance(adr).getParameter(adr.getLo());}
+		{	return XGObjectType.getObjectType(adr).getParameter(adr.getLo());}
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();
 			return null; 
@@ -69,12 +62,13 @@ public class XGObject implements XGObjectConstants, XGParameterConstants
 	public XGAdress getAdress()
 	{	return adress;}
 
-	public XGParameter getParameter(int offset)
+	@Override public String toString()
 	{	try
-		{	return XGObjectDescription.getXGObjectDescription(this.adress).parameterMap.get(offset);}
-		catch(InvalidXGAdressException | NullPointerException | ExceptionInInitializerError e)
-		{	e.printStackTrace();
-			return new XGParameter(offset);
+		{	return XGObjectType.getObjectType(this.adress).getName() + this.adress;
 		}
-	};
+		catch(InvalidXGAdressException e)
+		{	e.printStackTrace();
+			return "?";
+		}
+	}
 }

@@ -46,7 +46,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	{	Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		int w = Bytes.linearIO((int)this.value.getValue(), this.value.getMinValue(), this.value.getMaxValue(), 0, SL_W);
+		int w = Bytes.linearIO((int)this.value.getValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, SL_W);
 
 		g2.setColor(BACK);
 		g2.fillRoundRect(0, 0 , SL_W, SL_H, SL_RADI, SL_RADI);
@@ -56,7 +56,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		g2.fillRoundRect(0, 0 , w - 1, SL_H - 1, SL_RADI, SL_RADI);
 
 		g2.setColor(Color.BLACK);
-		g2.drawString(this.value.getShortName(), GAP, FONTMIDDLE);
+		g2.drawString(this.value.getParameter().getShortName(), GAP, FONTMIDDLE);
 
 		String t = this.value.getTranslatedValue();
 		if(t != null) g2.drawString(t, SL_W - GAP - g2.getFontMetrics().stringWidth(t), FONTMIDDLE);
@@ -80,7 +80,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	}
 
 	public void mouseDragged(MouseEvent e)
-	{	if(this.value.changeValue(Bytes.linearIO(e.getX(), 0, this.getWidth(), this.value.getMinValue(), this.value.getMaxValue())))repaint();
+	{	if(this.value.changeValue(Bytes.linearIO(e.getX(), 0, this.getWidth(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue())))repaint();
 		e.consume();
 	}
 
@@ -91,7 +91,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	public void mouseClicked(MouseEvent e)
 	{	this.grabFocus();
 		if(e.getButton() == MouseEvent.BUTTON1)
-		{	if(Bytes.linearIO((int)this.value.getValue(), this.value.getMinValue(), this.value.getMaxValue(), 0, this.getWidth()) < e.getX())
+		{	if(Bytes.linearIO((int)this.value.getValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, this.getWidth()) < e.getX())
 			{	if(this.value.addValue(1)) repaint();
 			}
 			else
@@ -119,7 +119,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	public void xgObjectSelected(XGObject o)
 	{	this.value = o.getXGValue(this.offset);
 		try
-		{	this.setToolTipText(this.value.getLongName());
+		{	this.setToolTipText(this.value.getParameter().getLongName());
 			this.setVisible(true);
 		}
 		catch(NullPointerException e)

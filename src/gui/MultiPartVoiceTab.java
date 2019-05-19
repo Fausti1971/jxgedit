@@ -19,8 +19,8 @@ public class MultiPartVoiceTab extends JPanel implements XGParameterConstants
 
 	private <T extends JComponent & XGObjectSelectionListener> void addAndRegister(T c)
 	{	super.add(c);
-//		XGObjectTableView.getInstance().registerXGObjectSelectionListener(c);
-		MultiPartListView.getInstance().registerXGObjectSelectionListener(c);
+		MultiPartTab.getTableView().registerObjectSelectionListener(c);
+//		MultiPartListView.getInstance().registerXGObjectSelectionListener(c);
 	}
 }
 

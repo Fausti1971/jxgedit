@@ -32,7 +32,7 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 
 	public void xgObjectSelected(XGObject o)
 	{	this.value = o.getXGValue(this.offset);
-		this.setToolTipText(this.value.getLongName());
+		this.setToolTipText(this.value.getParameter().getLongName());
 		this.setVisible(true);
 		this.setText(this.value.getTranslatedValue());
 		this.repaint();
@@ -51,7 +51,7 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 
 		public MyPopup(MyCombo c)
 		{	int v = (int)c.value.getValue();
-			for(Entry<Integer, String> e : c.value.getTranslationMap().entrySet())
+			for(Entry<Integer, String> e : c.value.getParameter().getTranslationMap().entrySet())
 			{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
 				m.addActionListener(new ActionListener()
 				{	public void actionPerformed(ActionEvent ev)

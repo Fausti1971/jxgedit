@@ -44,15 +44,17 @@ public class XGAdress
 		else throw new InvalidXGAdressException("access to invalid LO-Adress");
 	}
 
-	public boolean isPartOf(XGAdress adr)
-	{	boolean result = false;
-		if(adr.hiIsValid && this.hiIsValid && adr.hi == this.hi) result = true;
-		else return adr.hiIsValid == this.hiIsValid;
-		if(adr.midIsValid && this.midIsValid && adr.mid == this.mid) result = true;
-		else return adr.midIsValid == this.midIsValid;
-		if(adr.loIsValid && this.loIsValid && adr.lo == this.lo) result = true;
-		else return adr.loIsValid == this.loIsValid;
-		return result;
+	public boolean isMemberOf(XGAdress adr)//TODO überarbeiten
+	{	if(adr.hiIsValid)
+			if(!(this.hiIsValid && adr.hi == this.hi)) return false;
+			else if(adr.midIsValid)
+				if(!(this.midIsValid && adr.mid == this.mid)) return false;
+				else if(adr.loIsValid)
+					if(this.loIsValid && adr.lo == this.lo) return true;
+					else return false;
+				else return true;
+			else return true;
+		else return false;
 	}
 
 	@Override

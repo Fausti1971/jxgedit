@@ -7,6 +7,7 @@ import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import application.InvalidXGAdressException;
 import obj.XGAdress;
 import obj.XGObject;
 import obj.XGObjectConstants;
@@ -28,7 +29,7 @@ public class MultiPartListView extends JList<XGObject> implements ListSelectionL
 
 	Set<XGObjectSelectionListener> listeners = new HashSet<>();
 
-	public MultiPartListView()
+	public MultiPartListView() throws InvalidXGAdressException
 	{	super(new Vector<>(XGObject.getXGObjectInstances(new XGAdress(XGObjectConstants.MULTI))));
 		super.addListSelectionListener(this);
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
