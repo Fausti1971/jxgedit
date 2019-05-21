@@ -24,32 +24,60 @@ public interface ValueTranslator
 
 	static ValueTranslator translateToText = new ValueTranslator()
 	{	public String translate(XGValue v)
-		{	return v.getValue().toString();}
+		{	try
+			{	return "" + v.getNumberValue();
+			}
+			catch(WrongXGValueTypeException e)
+			{	e.printStackTrace();
+				return "no value";
+			}
+		}
 	};
 
 	static ValueTranslator translateToTextPlus1 = new ValueTranslator()
 	{	public String translate(XGValue v)
-		{	return "" + ((int)v.getValue() + 1);}
+		{	try
+			{	return "" + (v.getNumberValue() + 1);
+			}
+			catch(WrongXGValueTypeException e)
+			{	e.printStackTrace();
+				return "no value";
+			}
+		}
 	};
 
 	static ValueTranslator translateDiv10 = new ValueTranslator()
 	{	public String translate(XGValue v)
-		{	return "" + ((float)v.getValue())/10;}
+		{	try
+			{	return "" + ((float)v.getNumberValue())/10;
+			}
+			catch(WrongXGValueTypeException e)
+			{	e.printStackTrace();
+				return "no value";
+			}
+		}
 	};
 
 	static ValueTranslator translateSub128Div10 = new ValueTranslator()
 	{	public String translate(XGValue v)
-		{	float f = (int)v.getValue();
-			return Float.toString((f - 128) / 10);
+		{	try
+			{	float f = (int)v.getNumberValue();
+				return Float.toString((f - 128) / 10);
+			}
+			catch(WrongXGValueTypeException e)
+			{	e.printStackTrace();
+				return "no value";
+			}
 		}
 	};
 
 	static ValueTranslator translateMap = new ValueTranslator()
 	{	public String translate(XGValue v)
 		{	try
-			{	return v.getParameter().getTranslationMap().get((int)v.getValue());}
-			catch(NullPointerException e)
-			{	return "no value";}
+			{	return v.getParameter().getTranslationMap().get((int)v.getNumberValue());}
+			catch(NullPointerException | WrongXGValueTypeException e)
+			{	e.printStackTrace();
+				return "no value";}
 		}
 	};
 }

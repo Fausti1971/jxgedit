@@ -15,6 +15,7 @@ import javax.swing.JComponent;
 import msg.Bytes;
 import obj.XGObject;
 import parm.XGParameterConstants;
+import value.WrongXGValueTypeException;
 import value.XGValue;
 
 public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGObjectSelectionListener, XGParameterConstants
@@ -46,7 +47,11 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	{	Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		int w = Bytes.linearIO((int)this.value.getValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, SL_W);
+		int w = 0;
+		try
+		{	w = Bytes.linearIO(this.value.getNumberValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, SL_W);}
+		catch(WrongXGValueTypeException e)
+		{	e.printStackTrace();}
 
 		g2.setColor(BACK);
 		g2.fillRoundRect(0, 0 , SL_W, SL_H, SL_RADI, SL_RADI);
@@ -58,7 +63,14 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		g2.setColor(Color.BLACK);
 		g2.drawString(this.value.getParameter().getShortName(), GAP, FONTMIDDLE);
 
-		String t = this.value.getTranslatedValue();
+		String t;
+		try
+		{	t = this.value.getTextValue();
+		}
+		catch(WrongXGValueTypeException e)
+		{	e.printStackTrace();
+			t = "no value";
+		}
 		if(t != null) g2.drawString(t, SL_W - GAP - g2.getFontMetrics().stringWidth(t), FONTMIDDLE);
 	}
 
@@ -91,11 +103,16 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	public void mouseClicked(MouseEvent e)
 	{	this.grabFocus();
 		if(e.getButton() == MouseEvent.BUTTON1)
-		{	if(Bytes.linearIO((int)this.value.getValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, this.getWidth()) < e.getX())
-			{	if(this.value.addValue(1)) repaint();
+		{	try
+			{	if(Bytes.linearIO(this.value.getNumberValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, this.getWidth()) < e.getX())
+				{	if(this.value.addValue(1)) repaint();
+				}
+				else
+				{	if(this.value.addValue(-1)) repaint();
+				}
 			}
-			else
-			{	if(this.value.addValue(-1)) repaint();
+			catch(WrongXGValueTypeException e1)
+			{	e1.printStackTrace();
 			}
 		}
 	}

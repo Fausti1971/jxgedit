@@ -3,6 +3,7 @@ package msg;
 import java.util.Arrays;
 import parm.XGParameter;
 import parm.XGParameterConstants.ValueType;
+import value.WrongXGValueTypeException;
 import value.XGValue;
 
 public interface Bytes
@@ -19,17 +20,21 @@ public interface Bytes
 		ByteType bt = p.getByteType();
 		ValueType vt = p.getValueType();
 		int bc = p.getByteCount();
-		switch(vt)
-		{	case TEXT:		return;
-			case BITMAP:	return;
-			default:
-			case NUMBER:
-				switch(bt)
-				{	default:
-					case MIDIBYTE:	v.setValue(decodeMidiBytes(offset, bc));
-					case NIBBLE:	v.setValue(decodeLowerNibbles(offset, bc));
-				}
+		try
+		{	switch(vt)
+			{	case TEXT:		return;
+				case BITMAP:	return;
+				default:
+				case NUMBER:
+					switch(bt)
+					{	default:
+						case MIDIBYTE:	v.setValue(decodeMidiBytes(offset, bc));
+						case NIBBLE:	v.setValue(decodeLowerNibbles(offset, bc));
+					}
+			}
 		}
+		catch(WrongXGValueTypeException e)
+		{	e.printStackTrace();}
 	}
 
 	default void encodeXGValue(int offset, XGValue v)
@@ -38,17 +43,21 @@ public interface Bytes
 		ByteType bt = p.getByteType();
 		ValueType vt = p.getValueType();
 		int bc = p.getByteCount();
-		switch(vt)
-		{	case TEXT:		return;
-			case BITMAP:	return;
-			default:
-			case NUMBER:
-				switch(bt)
-				{	default:
-					case MIDIBYTE:	encodeMidiBytes(offset, bc, (int)v.getValue()); break;
-					case NIBBLE:	encodeLowerNibbles(offset, bc, (int)v.getValue()); break;
-				}
+		try
+		{	switch(vt)
+			{	case TEXT:		return;
+				case BITMAP:	return;
+				default:
+				case NUMBER:
+					switch(bt)
+					{	default:
+						case MIDIBYTE:	encodeMidiBytes(offset, bc, (int)v.getNumberValue()); break;
+						case NIBBLE:	encodeLowerNibbles(offset, bc, (int)v.getNumberValue()); break;
+					}
+			}
 		}
+		catch(WrongXGValueTypeException e)
+		{	e.printStackTrace();}
 	}
 
 	default int decodeMidiByte(int index)

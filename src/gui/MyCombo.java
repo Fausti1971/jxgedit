@@ -8,6 +8,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import obj.XGObject;
 import parm.XGParameterConstants;
+import value.WrongXGValueTypeException;
 import value.XGValue;
 
 public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionListener, XGParameterConstants
@@ -34,13 +35,23 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 	{	this.value = o.getXGValue(this.offset);
 		this.setToolTipText(this.value.getParameter().getLongName());
 		this.setVisible(true);
-		this.setText(this.value.getTranslatedValue());
+		try
+		{	this.setText(this.value.getTextValue());
+		}
+		catch(WrongXGValueTypeException e)
+		{	e.printStackTrace();
+		}
 		this.repaint();
 	}
 
 	public void valueChanged(int v)
 	{	this.value.changeValue(v);
-		this.setText(this.value.getTranslatedValue());
+		try
+		{	this.setText(this.value.getTextValue());
+		}
+		catch(WrongXGValueTypeException e)
+		{	e.printStackTrace();
+		}
 	}
 
 	private class MyPopup extends JPopupMenu
@@ -50,17 +61,21 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 		private static final long serialVersionUID=1L;
 
 		public MyPopup(MyCombo c)
-		{	int v = (int)c.value.getValue();
-			for(Entry<Integer, String> e : c.value.getParameter().getTranslationMap().entrySet())
-			{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
-				if(e.getKey() == v) m.setSelected(true);
-				m.addActionListener(new ActionListener()
-				{	public void actionPerformed(ActionEvent ev)
-					{	c.valueChanged(e.getKey());
-					}
-				});
-				add(m);
+		{	try
+			{	int v = c.value.getNumberValue();
+				for(Entry<Integer, String> e : c.value.getParameter().getTranslationMap().entrySet())
+				{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
+					if(e.getKey() == v) m.setSelected(true);
+					m.addActionListener(new ActionListener()
+					{	public void actionPerformed(ActionEvent ev)
+						{	c.valueChanged(e.getKey());
+						}
+					});
+					add(m);
+				}
 			}
+			catch(WrongXGValueTypeException e)
+			{	e.printStackTrace();}
 		}
 	}
 

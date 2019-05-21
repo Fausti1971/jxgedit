@@ -86,7 +86,15 @@
 			<valueType>NUMBER</valueType>
 			<translator>translateSub128Div10</translator>
 		</parameter>
-		
+
+		<parameter>
+			<offset>26</offset>
+			<longName>Attack Time</longName>
+			<shortName>Atck</shortName>
+			<valueMin>0</valueMin>
+			<valueMax>127</valueMax>
+		</parameter>
+
 	</map>
 	
 </maps>
