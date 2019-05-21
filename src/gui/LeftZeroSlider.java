@@ -17,8 +17,9 @@ import obj.XGObject;
 import parm.XGParameterConstants;
 import value.WrongXGValueTypeException;
 import value.XGValue;
+import value.XGValueChangeListener;
 
-public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGObjectSelectionListener, XGParameterConstants
+public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGParameterConstants, XGValueChangeListener
 {	/**
 	 * 
 	 */
@@ -144,5 +145,9 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 			setVisible(false);
 		}
 		this.repaint();
+	}
+
+	public void valueChanged(XGValue v)
+	{
 	}
 }

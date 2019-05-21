@@ -51,8 +51,8 @@ public interface Bytes
 				case NUMBER:
 					switch(bt)
 					{	default:
-						case MIDIBYTE:	encodeMidiBytes(offset, bc, (int)v.getNumberValue()); break;
-						case NIBBLE:	encodeLowerNibbles(offset, bc, (int)v.getNumberValue()); break;
+						case MIDIBYTE:	encodeMidiBytes(offset, bc, v.getNumberValue()); break;
+						case NIBBLE:	encodeLowerNibbles(offset, bc, v.getNumberValue()); break;
 					}
 			}
 		}

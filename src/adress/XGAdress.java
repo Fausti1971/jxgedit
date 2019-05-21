@@ -1,83 +1,99 @@
 package adress;
 
-public class XGAdress
+public class XGAdress implements XGAdressConstants
 {	private final int hi, mid, lo;
-	private final boolean hiIsValid, midIsValid, loIsValid;
+	private final int mask;
+
+	public XGAdress(String hi, String mid, String lo)
+	{	int temp = 0;
+
+		if(hi != null)
+		{	this.hi = Integer.parseInt(hi);
+			temp |= ADR_HI;
+		}
+		else this.hi = 0;
+
+		if(mid != null)
+		{	this.mid = Integer.parseInt(mid);
+			temp |= ADR_MID;
+		}
+		else this.mid = 0;
+
+		if(lo != null)
+		{	this.lo = Integer.parseInt(lo);
+			temp |= ADR_LO;
+		}
+		else this.lo = 0;
+		this.mask = temp;
+	}
 
 	public XGAdress(int hi, int mid, int lo)
 	{	this.hi = hi;
 		this.mid = mid;
 		this.lo = lo;
-		this.hiIsValid = this.midIsValid = this.loIsValid = true;
+		this.mask = ADR_HI | ADR_MID | ADR_LO;
 	}
 
 	public XGAdress(int hi, int mid)
 	{	this.hi = hi;
 		this.mid = mid;
 		this.lo = 0;
-		this.hiIsValid = this.midIsValid = true;
-		this.loIsValid = false;
+		this.mask = ADR_HI | ADR_MID;
 	}
 
 	public XGAdress(int hi)
 	{	this.hi = hi;
 		this.mid = 0;
 		this.lo = 0;
-		this.hiIsValid = true;
-		this.midIsValid = this.loIsValid = false;
+		this.mask = ADR_HI;
 	}
 
 	public int getHi() throws InvalidXGAdressException
-	{	if(hiIsValid) return hi;
+	{	if(this.isHiValdi()) return this.hi;
 		else throw new InvalidXGAdressException("acces to ivalid HI-Adress");
 	}
 
 	public int getMid() throws InvalidXGAdressException
-	{	if(midIsValid) return mid;
+	{	if(this.isMidValdi()) return this.mid;
 		else throw new InvalidXGAdressException("access to invalid MID-Adress");
 	}
 
 	public int getLo() throws InvalidXGAdressException
-	{	if(loIsValid) return lo;
+	{	if(this.isLoValdi()) return this.lo;
 		else throw new InvalidXGAdressException("access to invalid LO-Adress");
 	}
 
-	public boolean isMemberOf(XGAdress adr)//TODO überarbeiten
-	{	if(adr.hiIsValid)
-			if(!(this.hiIsValid && adr.hi == this.hi)) return false;
-			else if(adr.midIsValid)
-				if(!(this.midIsValid && adr.mid == this.mid)) return false;
-				else if(adr.loIsValid)
-					if(this.loIsValid && adr.lo == this.lo) return true;
-					else return false;
-				else return true;
-			else return true;
-		else return false;
+	public boolean isHiValdi()
+	{	return (this.mask & ADR_HI) != 0;}
+
+	public boolean isMidValdi()
+	{	return (this.mask & ADR_MID) != 0;}
+
+	public boolean isLoValdi()
+	{	return (this.mask & ADR_LO) != 0;}
+
+	public boolean equalsValidFields(XGAdress adr)
+	{	if(this.isHiValdi() && adr.isHiValdi())
+			if(this.hi != adr.hi) return false;
+		if(this.isMidValdi() && adr.isMidValdi())
+			if(this.mid != adr.mid) return false;
+		if(this.isLoValdi() && adr.isLoValdi())
+			if(this.lo != adr.lo) return false;
+		return true;
 	}
 
 	@Override
 	public boolean equals(Object obj)
 	{	if(!(obj instanceof XGAdress)) return false;
 		XGAdress a = (XGAdress)obj;
-		try
-		{	return(a.getHi() == this.getHi() && a.getMid() == this.getMid() && a.getLo() == this.getLo());}
-		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();
-			return false;
-		}
+		return(a.mask == this.mask && a.hi == this.hi && a.mid == this.mid && a.lo == this.lo);
 	}
 
 	@Override public String toString()
-	{	String h = "--", m = "--", l = "--";
-		try
-		{	h = "" + getHi();
-			m = "" + getMid();
-			l = "" + getLo();
-		}
-		catch(Exception e)
-		{	//e.printStackTrace();
-			//return "(" + h + "/" + m + "/" + l + ")";
-		}
+	{	String h = "-", m = "-", l = "-";
+		if(this.isHiValdi()) h = "" + this.hi;
+		if(this.isMidValdi()) m = "" + this.mid;
+		if(this.isLoValdi()) l = "" + this.lo;
 		return "(" + h + "/" + m + "/" + l + ")";
 	}
 }

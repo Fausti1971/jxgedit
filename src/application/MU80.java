@@ -53,9 +53,9 @@ public class MU80
 
 		setting = new Setting(getHomePath().resolve("setting").toFile());
 		device = new XGDevice(setting);
+		mainFrame = new MainFrame();
 		XGParameterMap.initParameterMaps();
 		XGObjectDescriptionMap.initObjectDescriptionMap();
 		SysexFile.getDefaultDump();
-		mainFrame = new MainFrame();
 	}
 }
