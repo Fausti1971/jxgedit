@@ -55,6 +55,6 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	{	encodeHigherNibble(MSG_OFFS, MSG);
 	}
 
-	public void processXGMessage()
+	public void storeMessage()
 	{}
 }

@@ -31,6 +31,6 @@ public class XGMessageUnknown extends XGMessage
 	protected void setMessageID()
 	{	encodeHigherNibble(MSG_OFFS, 0);}
 
-	public void processXGMessage()
+	public void storeMessage()
 	{	log.info("unknown message received: " + getMessageId());}
 }

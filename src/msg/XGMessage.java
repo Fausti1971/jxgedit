@@ -64,5 +64,5 @@ public abstract class XGMessage implements XGMessageConstants, Bytes
 	protected abstract void setMid(int mid);
 	protected abstract void setLo(int lo);
 	protected abstract void setMessageID();
-	public abstract void processXGMessage() throws InvalidXGAdressException;
+	public abstract void storeMessage() throws InvalidXGAdressException;
 }

@@ -6,7 +6,7 @@ import application.MU80;
 import value.XGValue;
 
 public class XGMessageParameterChange extends XGMessage
-{	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x10, DATA_OFFS = 7;
+{	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x10, DATA_OFFS = 7, OVERHEAD = 8;
 
 /****************************************************************************************************************/
 
@@ -15,7 +15,7 @@ public class XGMessageParameterChange extends XGMessage
 	}
 
 	public XGMessageParameterChange(XGValue v) throws InvalidXGAdressException
-	{	super(new byte[8 + v.getParameter().getByteCount()]);
+	{	super(new byte[OVERHEAD + v.getParameter().getByteCount()]);
 		setMessageID();
 		setHi(v.getAdress().getHi());
 		setMid(v.getAdress().getMid());
@@ -56,6 +56,6 @@ public class XGMessageParameterChange extends XGMessage
 	protected void setMessageID()
 	{	encodeHigherNibble(MSG_OFFS, MSG);}
 
-	public void processXGMessage()
+	public void storeMessage()
 	{}
 }

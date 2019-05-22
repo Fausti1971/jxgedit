@@ -68,7 +68,7 @@ public class XGMessageBulkDump extends XGMessage
 	protected void setMessageID()
 	{	encodeHigherNibble(MSG_OFFS, MSG);}
 
-	public void processXGMessage() throws InvalidXGAdressException
+	public void storeMessage() throws InvalidXGAdressException
 	{	int end = getDumpSize() + DATA_OFFS, offset = getLo();
 		XGObject obj = XGObject.getXGObjectInstance(new XGAdress(getHi(), getMid(), offset));
 		for(int i = DATA_OFFS; i < end;)

@@ -65,6 +65,6 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 	protected void setMessageID()
 	{	encodeHigherNibble(MSG_OFFS, MSG);}
 
-	public void processXGMessage()
+	public void storeMessage()
 	{}
 }

@@ -44,7 +44,7 @@ public class SysexFile
 		{	int count = 0;
 			for(SysexMessage s : parse())
 			{	try
-				{	XGMessage.factory(s).processXGMessage();
+				{	XGMessage.factory(s).storeMessage();
 					count++;
 				}
 				catch (InvalidMidiDataException | InvalidXGAdressException e)
