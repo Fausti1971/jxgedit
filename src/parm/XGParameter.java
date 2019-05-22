@@ -1,8 +1,8 @@
 package parm;
 
 import java.util.Map;
-import msg.Bytes;
-import msg.Bytes.ByteType;
+import midi.Bytes;
+import midi.Bytes.ByteType;
 import value.TranslationMap;
 import value.ValueTranslator;
 

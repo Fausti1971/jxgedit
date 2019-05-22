@@ -1,6 +1,6 @@
 package parm;
 
-import msg.Bytes;
+import midi.Bytes;
 import value.ValueTranslator;
 
 public interface XGParameterConstants

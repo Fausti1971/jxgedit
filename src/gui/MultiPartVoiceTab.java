@@ -37,4 +37,6 @@ public class MultiPartVoiceTab extends JPanel implements XGParameterConstants, X
 	}
 }
 
-//TODO um die statischen Components und Parameter lauschen zu lassen ist ein "ReceivingListener" und zur Registrierung der Parameter die Initialisierung mittels XGAdressen (hi/-/lo) erforderlich
+//TODO um die statischen Components/Parameter lauschen zu lassen ist ein "ReceivingListener" erforderlich
+//und zur Registrierung an diesem die Initialisierung der Parameter/Components mittels neuer XGAdressen (hi/-/lo);
+//hi- und mid-adressen können aus dem XGObjectType bezogen werden zu dem eine Beziehung über parameterMapName besteht, sodass evtl. keine Umstellung der XGParameterMaps.XML erforderlich ist

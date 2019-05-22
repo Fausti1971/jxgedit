@@ -50,26 +50,32 @@ public class XGAdress implements XGAdressConstants
 
 	public int getHi() throws InvalidXGAdressException
 	{	if(this.isHiValdi()) return this.hi;
-		else throw new InvalidXGAdressException("acces to ivalid HI-Adress");
+		else throw new InvalidXGAdressException("acces to ivalid hi-adress");
 	}
 
 	public int getMid() throws InvalidXGAdressException
 	{	if(this.isMidValdi()) return this.mid;
-		else throw new InvalidXGAdressException("access to invalid MID-Adress");
+		else throw new InvalidXGAdressException("access to invalid mid-adress");
 	}
 
 	public int getLo() throws InvalidXGAdressException
 	{	if(this.isLoValdi()) return this.lo;
-		else throw new InvalidXGAdressException("access to invalid LO-Adress");
+		else throw new InvalidXGAdressException("access to invalid lo-adress");
 	}
 
-	public boolean isHiValdi()
+	public boolean isParameterAdress()
+	{	return this.isHiValdi() && this.isLoValdi();}
+
+	public boolean isValueAdress()
+	{	return this.isHiValdi() && this.isMidValdi() && this.isLoValdi();}
+
+	private boolean isHiValdi()
 	{	return (this.mask & ADR_HI) != 0;}
 
-	public boolean isMidValdi()
+	private boolean isMidValdi()
 	{	return (this.mask & ADR_MID) != 0;}
 
-	public boolean isLoValdi()
+	private boolean isLoValdi()
 	{	return (this.mask & ADR_LO) != 0;}
 
 	public boolean equalsValidFields(XGAdress adr)
@@ -82,8 +88,7 @@ public class XGAdress implements XGAdressConstants
 		return true;
 	}
 
-	@Override
-	public boolean equals(Object obj)
+	@Override public boolean equals(Object obj)
 	{	if(!(obj instanceof XGAdress)) return false;
 		XGAdress a = (XGAdress)obj;
 		return(a.mask == this.mask && a.hi == this.hi && a.mid == this.mid && a.lo == this.lo);

@@ -1,6 +1,7 @@
 package msg;
 
 import javax.sound.midi.SysexMessage;
+import midi.Bytes;
 
 public interface XGMessageConstants extends Bytes
 {	public static final int

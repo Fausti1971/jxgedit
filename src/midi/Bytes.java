@@ -1,4 +1,4 @@
-package msg;
+package midi;
 
 import java.util.Arrays;
 import parm.XGParameter;
