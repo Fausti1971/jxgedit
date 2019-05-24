@@ -1,51 +1,54 @@
 package adress;
 
 public class XGAdress implements XGAdressConstants
-{	private final int hi, mid, lo;
-	private final int mask;
+{	private final int hi, mid, lo, mask, hashCode;
 
 	public XGAdress(String hi, String mid, String lo)
 	{	int temp = 0;
 
 		if(hi != null)
-		{	this.hi = Integer.parseInt(hi);
+		{	this.hi = Integer.parseInt(hi) & 0xF7;
 			temp |= ADR_HI;
 		}
 		else this.hi = 0;
 
 		if(mid != null)
-		{	this.mid = Integer.parseInt(mid);
+		{	this.mid = Integer.parseInt(mid) & 0xF7;
 			temp |= ADR_MID;
 		}
 		else this.mid = 0;
 
 		if(lo != null)
-		{	this.lo = Integer.parseInt(lo);
+		{	this.lo = Integer.parseInt(lo) & 0xF7;
 			temp |= ADR_LO;
 		}
 		else this.lo = 0;
 		this.mask = temp;
+		this.hashCode = computeHashCode();
 	}
 
 	public XGAdress(int hi, int mid, int lo)
-	{	this.hi = hi;
-		this.mid = mid;
-		this.lo = lo;
+	{	this.hi = hi & 0xF7;
+		this.mid = mid & 0xF7;
+		this.lo = lo & 0xF7;
 		this.mask = ADR_HI | ADR_MID | ADR_LO;
+		this.hashCode = computeHashCode();
 	}
 
 	public XGAdress(int hi, int mid)
-	{	this.hi = hi;
-		this.mid = mid;
+	{	this.hi = hi & 0xF7;
+		this.mid = mid & 0xF7;
 		this.lo = 0;
 		this.mask = ADR_HI | ADR_MID;
+		this.hashCode = computeHashCode();
 	}
 
 	public XGAdress(int hi)
-	{	this.hi = hi;
+	{	this.hi = hi & 0xF7;
 		this.mid = 0;
 		this.lo = 0;
 		this.mask = ADR_HI;
+		this.hashCode = computeHashCode();
 	}
 
 	public int getHi() throws InvalidXGAdressException
@@ -63,11 +66,8 @@ public class XGAdress implements XGAdressConstants
 		else throw new InvalidXGAdressException("access to invalid lo-adress");
 	}
 
-	public boolean isParameterAdress()
-	{	return this.isHiValdi() && this.isLoValdi();}
-
 	public boolean isValueAdress()
-	{	return this.isHiValdi() && this.isMidValdi() && this.isLoValdi();}
+	{	return (this.hashCode & 0xE00000) != 0;}
 
 	private boolean isHiValdi()
 	{	return (this.mask & ADR_HI) != 0;}
@@ -78,6 +78,13 @@ public class XGAdress implements XGAdressConstants
 	private boolean isLoValdi()
 	{	return (this.mask & ADR_LO) != 0;}
 
+	private int computeHashCode()
+	{	int temp = this.mask << 21;
+		temp |= this.hi << 14;
+		temp |= this.mid << 7;
+		temp |= this.lo;
+		return temp;
+	}
 	public boolean equalsValidFields(XGAdress adr)
 	{	if(this.isHiValdi() && adr.isHiValdi())
 			if(this.hi != adr.hi) return false;
@@ -90,9 +97,11 @@ public class XGAdress implements XGAdressConstants
 
 	@Override public boolean equals(Object obj)
 	{	if(!(obj instanceof XGAdress)) return false;
-		XGAdress a = (XGAdress)obj;
-		return(a.mask == this.mask && a.hi == this.hi && a.mid == this.mid && a.lo == this.lo);
+		return this.hashCode == ((XGAdress)obj).hashCode;
 	}
+
+	@Override public int hashCode()
+	{	return this.hashCode;}
 
 	@Override public String toString()
 	{	String h = "-", m = "-", l = "-";
