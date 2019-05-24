@@ -28,6 +28,9 @@ public class XGObjectType
 		}
 	}
 
+	public static XGParameter getParameter(XGAdress adr) throws InvalidXGAdressException
+	{	return getObjectType(adr).getParameter(adr.getLo());}
+
 /******************************************************************************************************************/
 
 	private final XGAdress adress;//0,0=System; 2,1=FX1; 2,64=EQ; 3=FX2, 8=MultiPart;  

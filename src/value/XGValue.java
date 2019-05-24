@@ -7,6 +7,7 @@ import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import msg.XGMessageParameterChange;
 import obj.XGObject;
+import obj.XGObjectType;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 
@@ -20,12 +21,12 @@ public class XGValue implements XGParameterConstants
 	private Image imageValue;
 	private Set<XGValueChangeListener> listeners = new HashSet<>();
 	
-	public XGValue(XGAdress adr)
+	public XGValue(XGAdress adr) throws InvalidXGAdressException
 	{	this(adr, new Object());}
 
-	public XGValue(XGAdress adr, Object val)
+	public XGValue(XGAdress adr, Object val) throws InvalidXGAdressException
 	{	this.adress = adr;
-		this.parameter = XGObject.getParameter(adr);
+		this.parameter = XGObjectType.getParameter(adr);
 		ValueType vt = this.parameter.getValueType();
 		if(val instanceof Image && vt.equals(ValueType.BITMAP)) this.imageValue = (Image)val;
 		if(val instanceof Integer && vt.equals(ValueType.NUMBER)) this.numberValue = (int)val;
