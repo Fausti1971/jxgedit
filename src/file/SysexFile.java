@@ -42,6 +42,7 @@ public class SysexFile
 	public void load(boolean protocol)
 	{	if(file != null)
 		{	int count = 0;
+			log.info("parsing started: " + file.getAbsolutePath());
 			for(SysexMessage s : parse())
 			{	try
 				{	XGMessage.factory(s).storeMessage();
@@ -51,7 +52,7 @@ public class SysexFile
 				{	log.severe(e.getMessage());
 				}
 			}
-			log.info(count + " Messages loaded from " + file.getAbsolutePath());
+			log.info(count + " Messages parsed from " + file.getAbsolutePath());
 			if(protocol)
 			{	MU80.getSetting().put(Setting.LASTDUMPFILE, file.getAbsolutePath());
 				MU80.getSetting().put(Setting.LASTDUMPPATH, file.getParent());

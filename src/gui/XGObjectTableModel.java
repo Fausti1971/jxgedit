@@ -20,15 +20,17 @@ public class XGObjectTableModel implements TableModel
 	public void setValueAt(Object aValue,int rowIndex,int columnIndex)
 	{}
 	
-	public void removeTableModelListener(TableModelListener l)
-	{}
-	
 	public boolean isCellEditable(int rowIndex,int columnIndex)
 	{	return false;}
 	
 	public Object getValueAt(int rowIndex,int columnIndex)
-	{	XGValue v = ot.getObjects().get(row[rowIndex]).getXGValue(col[columnIndex]);
-		return v;
+	{	try
+		{	return ot.getObjects().get(row[rowIndex]).getXGValue(col[columnIndex]);
+		}
+		catch(InvalidXGAdressException e)
+		{	e.printStackTrace();
+		}
+		return null;
 	}
 	
 	public int getRowCount()
@@ -44,5 +46,9 @@ public class XGObjectTableModel implements TableModel
 	{	return XGValue.class;}
 	
 	public void addTableModelListener(TableModelListener l)
-	{	}
+	{}
+
+	public void removeTableModelListener(TableModelListener l)
+	{}
+
 }

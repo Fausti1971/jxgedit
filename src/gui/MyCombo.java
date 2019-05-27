@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
+import adress.InvalidXGAdressException;
 import obj.XGObject;
 import parm.XGParameterConstants;
 import value.WrongXGValueTypeException;
@@ -32,13 +33,13 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 	}
 
 	public void xgObjectSelected(XGObject o)
-	{	this.value = o.getXGValue(this.offset);
-		this.setToolTipText(this.value.getParameter().getLongName());
-		this.setVisible(true);
-		try
+	{	try
 		{	this.setText(this.value.getTextValue());
+			this.value = o.getXGValue(this.offset);
+			this.setToolTipText(this.value.getParameter().getLongName());
+			this.setVisible(true);
 		}
-		catch(WrongXGValueTypeException e)
+		catch(WrongXGValueTypeException | InvalidXGAdressException e)
 		{	e.printStackTrace();
 		}
 		this.repaint();

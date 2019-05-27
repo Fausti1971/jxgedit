@@ -92,7 +92,7 @@ public interface XGObjectDescriptionMap extends XGObjectConstants
 									break;
 				case TAG_DUMPSEQ:	this.dd.min = this.adr.getXGAdresses()[MIN];
 									this.dd.max = this.adr.getXGAdresses()[MAX];
-									this.od.descs.add(new XGDumpDescription(this.dd.min, this.dd.max, this.dd.name));
+									this.od.descs.add(new XGBulkDumpDescription(this.dd.min, this.dd.max, this.dd.name));
 									this.adr.type = AdressType.NONE;
 									break;
 				case TAG_HI:		this.adr.hi = this.temp; break;
@@ -112,7 +112,7 @@ public interface XGObjectDescriptionMap extends XGObjectConstants
 	class XGOD
 	{	private XGAdress adr;
 		private String name, mapName;
-		private Set<XGDumpDescription> descs = new HashSet<>();
+		private Set<XGBulkDumpDescription> descs = new HashSet<>();
 	}
 
 	class XGA
@@ -123,45 +123,32 @@ public interface XGObjectDescriptionMap extends XGObjectConstants
 		{	this.type = t;}
 
 		private XGAdress[] getXGAdresses()
-		{	int h, m, l;
+		{	String h, m, l;
 			XGAdress[] array = new XGAdress[2];
 			switch(this.type)
 			{
 				default:
 				case NONE:	return null;
-				case ADRESS:
-				{	try
-					{	h = Integer.parseInt(this.hi);
-						array[MIN] = new XGAdress(h);
-						m = Integer.parseInt(this.mid);
-						array[MIN] = new XGAdress(h, m);
-						l = Integer.parseInt(this.lo);
-						array[MIN] = new XGAdress(h, m, l);
-					}
-					catch(NumberFormatException | NullPointerException e)
-					{	//e.printStackTrace();
-						return array;
-					}
-				}
+				case ADRESS:	array[MIN] = new XGAdress(this.hi, this.mid, this.lo); return array;
 				case DUMPSEQ:
-				{	int hx, mx, lx;
+				{	String hx, mx, lx;
 					StringTokenizer st = new StringTokenizer(this.hi, "-");
-					if(st.countTokens() == 1) h = hx = Integer.parseInt(this.hi);
+					if(st.countTokens() == 1) h = hx = this.hi;
 					else
-					{	h = Integer.parseInt(st.nextToken());
-						hx = Integer.parseInt(st.nextToken());
+					{	h = st.nextToken();
+						hx = st.nextToken();
 					}
 					st = new StringTokenizer(this.mid, "-");
-					if(st.countTokens() == 1) m = mx = Integer.parseInt(this.mid);
+					if(st.countTokens() == 1) m = mx = this.mid;
 					else
-					{	m = Integer.parseInt(st.nextToken());
-						mx = Integer.parseInt(st.nextToken());
+					{	m = st.nextToken();
+						mx = st.nextToken();
 					}
 					st = new StringTokenizer(this.lo, "-");
-					if(st.countTokens() == 1) l = lx = Integer.parseInt(this.lo);
+					if(st.countTokens() == 1) l = lx = this.lo;
 					else
-					{	l = Integer.parseInt(st.nextToken());
-						lx = Integer.parseInt(st.nextToken());
+					{	l = st.nextToken();
+						lx = st.nextToken();
 					}
 					array[MIN] = new XGAdress(h, m, l);
 					array[MAX] = new XGAdress(hx, mx, lx);

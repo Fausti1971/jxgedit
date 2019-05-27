@@ -134,19 +134,6 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	{
 	}
 
-	public void xgObjectSelected(XGObject o)
-	{	this.value = o.getXGValue(this.offset);
-		try
-		{	this.setToolTipText(this.value.getParameter().getLongName());
-			this.setVisible(true);
-		}
-		catch(NullPointerException e)
-		{	e.printStackTrace();
-			setVisible(false);
-		}
-		this.repaint();
-	}
-
 	public void valueChanged(XGValue v)
 	{
 	}

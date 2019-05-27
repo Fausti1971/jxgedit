@@ -85,4 +85,52 @@
 		</dumpSequence>
 	</object>
 
+	<object>
+		<name>Drumset 1</name>
+		<adress>
+			<hi>48</hi>
+		</adress>
+		<parameterMap>drum_parameters</parameterMap>
+		<dumpSequence>
+			<hi>48</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+	<object>
+		<name>Drumset 2</name>
+		<adress>
+			<hi>49</hi>
+		</adress>
+		<parameterMap>drum_parameters</parameterMap>
+		<dumpSequence>
+			<hi>49</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+	<object>
+		<name>Drumset 3</name>
+		<adress>
+			<hi>50</hi>
+		</adress>
+		<parameterMap>drum_parameters</parameterMap>
+		<dumpSequence>
+			<hi>50</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+	<object>
+		<name>Drumset 4</name>
+		<adress>
+			<hi>51</hi>
+		</adress>
+		<parameterMap>drum_parameters</parameterMap>
+		<dumpSequence>
+			<hi>51</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
 </map>

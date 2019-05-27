@@ -50,12 +50,12 @@ public interface TranslationMap extends XGValueConstants
 
 		@Override public void startDocument() throws SAXException
 		{	super.startDocument();
-			log.info("parsing started: " + tag + "in " + FILE);
+			log.info("parsing started: " + tag + " in " + FILE);
 		}
 
 		@Override public void endDocument() throws SAXException
 		{	super.endDocument();
-			log.info("parsing finished: " + tag + "in " + FILE);
+			log.info("parsing finished: " + tag + " in " + FILE);
 		}
 
 		@Override public void startElement(String uri,String localName,String qName,Attributes attributes) throws SAXException

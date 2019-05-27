@@ -15,13 +15,13 @@ public class XGObjectType
 	private static Set<XGObjectType> objectTypes = XGObjectDescriptionMap.getObjectDescriptionMap();
 
 	public static XGObjectType getObjectType(XGAdress adr) throws InvalidXGAdressException
-	{	for(XGObjectType d : objectTypes) if(adr.equalsValidFields(d.adress)) return d;
+	{	for(XGObjectType d : objectTypes) if(adr.equalsMaskedValidFields(d.adress)) return d;
 		return new XGObjectType(adr);
 	}
 
 	public static XGObject getObjectInstance(XGAdress adr)
 	{	try
-		{	return getObjectType(adr).getObject(adr);}
+		{	return getObjectType(adr).getObjectOrNew(adr);}
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();
 			return null;
@@ -37,13 +37,13 @@ public class XGObjectType
 	private final String objectName;
 	private final String parameterMapName;
 	private final Map<Integer, XGParameter> parameterMap;
-	private final Set<XGDumpDescription> dumpSequence;
+	private final Set<XGBulkDumpDescription> dumpSequence;
 	private Map<Integer, XGObject> objects = new TreeMap<>();
 
 	public XGObjectType(XGAdress adr) throws InvalidXGAdressException
-	{	this(adr, "unknown object", "unknown_parametermap", new HashSet(){{add(adr); add(adr);}});}
+	{	this(adr, "unknown object-type", "unknown parameter-map", new HashSet(){{add(adr); add(adr);}});}
 
-	public XGObjectType(XGAdress adr, String name, String pMapName, Set<XGDumpDescription> dseq)
+	public XGObjectType(XGAdress adr, String name, String pMapName, Set<XGBulkDumpDescription> dseq)
 	{	this.adress = adr;
 		this.objectName = name;
 		this.parameterMapName = pMapName;
@@ -52,12 +52,12 @@ public class XGObjectType
 		log.info("" + this);
 	}
 
-	public XGObject getObject(XGAdress adr)
+	public XGObject getObjectOrNew(XGAdress adr)
 	{	try
 		{	XGObject o;
 			if(this.objects.containsKey(adr.getMid())) return this.objects.get(adr.getMid());
 			else
-			{	this.objects.put(adr.getMid(), o = new XGObject(adr));
+			{	this.objects.put(adr.getMid(), o = new XGObject(new XGAdress(this.adress.getHi(), adr.getMid())));
 				return o;
 			}
 		}

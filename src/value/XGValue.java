@@ -6,7 +6,6 @@ import java.util.logging.Logger;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import msg.XGMessageParameterChange;
-import obj.XGObject;
 import obj.XGObjectType;
 import parm.XGParameter;
 import parm.XGParameterConstants;
