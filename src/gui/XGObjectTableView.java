@@ -5,15 +5,16 @@ import java.util.Set;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import obj.XGObject;
-import obj.XGObjectType;
-import value.XGValue;
+import value.XGValueChangeListener;
+import value.XGValueStorage;
 
-public class XGObjectTableView extends JTable implements TableModelListener
+public class XGObjectTableView extends JTable implements TableModelListener, ListSelectionListener
 {	/**
 	 * 
 	 */
@@ -21,29 +22,49 @@ public class XGObjectTableView extends JTable implements TableModelListener
 
 /****************************************************************************************************/
 
-	Set<XGObjectSelectionListener> listeners = new HashSet<>();
+	private Set<XGValueChangeListener> vcl = new HashSet<>();
+	private XGAdress adress;
 
 	public XGObjectTableView(XGAdress adr)
 	{	try
-		{	TableModel tm = new XGObjectTableModel(adr);
+		{	this.adress = adr;
+			TableModel tm = new XGObjectTableModel(adr);
 			this.setModel(tm);
 			this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			ListSelectionModel selectionModel = this.getSelectionModel();
-			selectionModel.addListSelectionListener(this);
+			this.getSelectionModel().addListSelectionListener(this);
 			tm.addTableModelListener(this);
 		}
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();}
 	}
 
-	public void registerObjectSelectionListener(XGObjectSelectionListener listener)
-	{	listeners.add(listener);}
-
 	@Override public void valueChanged(ListSelectionEvent e)
 	{	super.valueChanged(e);
 		if(e.getValueIsAdjusting()) return;
-		XGValue v = (XGValue)this.getModel().getValueAt(this.getSelectedRow(), this.getSelectedColumn());
-		XGObject o = XGObjectType.getObjectInstance(v.getAdress());
-		for(XGObjectSelectionListener l : listeners) l.xgObjectSelected(o);
+		try
+		{	this.adress = new XGAdress(this.adress.getHi(), this.getSelectedRow());
+		}
+		catch(InvalidXGAdressException e2)
+		{	e2.printStackTrace();
+			return;
+		}
+		for(XGValueChangeListener l : this.vcl)
+		{	try
+			{	l.valueChanged(XGValueStorage.getValue(l.getAdress().complement(this.adress)));
+			}
+			catch(InvalidXGAdressException e1)
+			{	e1.printStackTrace();
+				return;
+			}
+		}
 	}
+
+	@Override public void tableChanged(TableModelEvent e)
+	{	super.tableChanged(e);}
+
+	public void addXGValueChangeListener(XGValueChangeListener l)
+	{	this.vcl.add(l);}
+
+	public void removeXGVAlueChangeListener(XGValueChangeListener l)
+	{	this.vcl.remove(l);}
 }

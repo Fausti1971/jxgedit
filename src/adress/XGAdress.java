@@ -27,6 +27,15 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 		this.lo = new XGAdressField();
 	}
 
+	public XGAdress(XGAdressField h, XGAdressField m, XGAdressField l)
+	{	if(h != null) this.hi = h;
+		else this.hi = new XGAdressField();
+		if(m != null) this.mid = m;
+		else this.mid = new XGAdressField();
+		if(l != null) this.lo = l;
+		else this.lo = new XGAdressField();
+	}
+
 	public int getHi() throws InvalidXGAdressException
 	{	return this.hi.getValue();}
 
@@ -48,6 +57,11 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 	private boolean isLoValdi()
 	{	return this.lo.isValid();}
 
+	public XGAdress complement(XGAdress adr) throws InvalidXGAdressException
+	{	if(this.isValueAdress()) return this;
+		return new XGAdress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
+	}
+
 	public boolean equalsMaskedValidFields(XGAdress adr)
 	{	if(!(this.hi.equalsMaskedValid(adr.hi))) return false;
 		if(!(this.mid.equalsMaskedValid(adr.mid))) return false;
@@ -65,7 +79,6 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 			return false;
 		}
 	}
-
 
 	@Override public String toString()
 	{	return "(" + this.hi + "/" + this.mid + "/" + this.lo + ")";}

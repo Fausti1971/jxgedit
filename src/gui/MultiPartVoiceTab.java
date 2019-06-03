@@ -4,11 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
+import adress.XGAdressField;
 import obj.XGObject;
+import obj.XGObjectConstants;
 import parm.XGParameterConstants;
 import value.XGValueChangeListener;
 
-public class MultiPartVoiceTab extends JPanel implements XGParameterConstants, XGObjectSelectionListener
+public class MultiPartVoiceTab extends JPanel implements XGObjectConstants, XGParameterConstants
 {
 	/**
 	 * 
@@ -20,11 +24,16 @@ public class MultiPartVoiceTab extends JPanel implements XGParameterConstants, X
 	private Map<Integer, XGValueChangeListener> components = new HashMap<>();
 
 	public MultiPartVoiceTab()
-	{	addAndRegister(MP_ELRES, new LeftZeroSlider(MP_ELRES));
-		addAndRegister(MP_TUNE, new LeftZeroSlider(MP_TUNE));
-		addAndRegister(MP_ATACK, new LeftZeroSlider(MP_ATACK));
+	{	XGAdressField hi = new XGAdressField(MULTI);
+		try
+		{	addAndRegister(MP_ELRES, new LeftZeroSlider(new XGAdress(hi, null, new XGAdressField(MP_ELRES))));
+			addAndRegister(MP_TUNE, new LeftZeroSlider(new XGAdress(hi, null, new XGAdressField(MP_TUNE))));
+			addAndRegister(MP_ATACK, new LeftZeroSlider(new XGAdress(hi, null, new XGAdressField(MP_ATACK))));
+		}
+		catch(InvalidXGAdressException e)
+		{	e.printStackTrace();}
 
-		MultiPartTab.getTableView().registerObjectSelectionListener(this);
+//		MultiPartTab.getTableView().registerObjectSelectionListener(this);
 	}
 
 	private <T extends JComponent & XGValueChangeListener> void addAndRegister(int offs, T c)

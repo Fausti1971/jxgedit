@@ -10,7 +10,7 @@ import obj.XGObjectType;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 
-public class XGValue implements XGParameterConstants
+public class XGValue implements XGParameterConstants, Comparable<XGValue>
 {	private static Logger log = Logger.getAnonymousLogger();
 
 	private final XGAdress adress;
@@ -32,6 +32,12 @@ public class XGValue implements XGParameterConstants
 		if(val instanceof String && vt.equals(ValueType.TEXT)) this.textValue = (String)val;
 	}
 
+	public void addListener(XGValueChangeListener l)
+	{	this.listeners.add(l);}
+
+	public void removeListener(XGValueChangeListener l)
+	{	this.listeners.remove(l);}
+
 	public String getTextValue() throws WrongXGValueTypeException
 	{	switch(this.parameter.getValueType())
 		{	case TEXT:		return this.textValue;
@@ -39,7 +45,6 @@ public class XGValue implements XGParameterConstants
 			case NUMBER:	return this.parameter.getValueTranslator().translate(this);
 			default:		return "";
 		}
-		
 	}
 
 	public int getNumberValue() throws WrongXGValueTypeException
@@ -149,4 +154,7 @@ public class XGValue implements XGParameterConstants
 			return "";
 		}
 	}
+
+	public int compareTo(XGValue o)
+	{	return this.adress.compareTo(o.adress);}
 }

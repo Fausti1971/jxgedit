@@ -3,7 +3,6 @@ package obj;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.logging.Logger;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
@@ -18,7 +17,7 @@ public class XGObjectType
 	{	for(XGObjectType d : objectTypes) if(adr.equalsMaskedValidFields(d.adress)) return d;
 		return new XGObjectType(adr);
 	}
-
+/*
 	public static XGObject getObjectInstance(XGAdress adr)
 	{	try
 		{	return getObjectType(adr).getObjectOrNew(adr);}
@@ -27,7 +26,7 @@ public class XGObjectType
 			return null;
 		}
 	}
-
+*/
 	public static XGParameter getParameter(XGAdress adr) throws InvalidXGAdressException
 	{	return getObjectType(adr).getParameter(adr.getLo());}
 
@@ -38,7 +37,7 @@ public class XGObjectType
 	private final String parameterMapName;
 	private final Map<Integer, XGParameter> parameterMap;
 	private final Set<XGBulkDumpDescription> dumpSequence;
-	private Map<Integer, XGObject> objects = new TreeMap<>();
+//	private Set<XGAdress> objects = new TreeSet<>();
 
 	public XGObjectType(XGAdress adr) throws InvalidXGAdressException
 	{	this(adr, "unknown object-type", "unknown parameter-map", new HashSet(){{add(adr); add(adr);}});}
@@ -51,13 +50,13 @@ public class XGObjectType
 		this.dumpSequence = dseq;
 		log.info("" + this);
 	}
-
+/*
 	public XGObject getObjectOrNew(XGAdress adr)
 	{	try
 		{	XGObject o;
-			if(this.objects.containsKey(adr.getMid())) return this.objects.get(adr.getMid());
+			if(this.objects.contains(adr)) return this.objects.get(adr.getMid());
 			else
-			{	this.objects.put(adr.getMid(), o = new XGObject(new XGAdress(this.adress.getHi(), adr.getMid())));
+			{	this.objects.add(o = new XGObject(new XGAdress(this.adress.getHi(), adr.getMid())));
 				return o;
 			}
 		}
@@ -67,9 +66,9 @@ public class XGObjectType
 		}
 	}
 
-	public Map<Integer, XGObject> getObjects()
+	public Set<XGAdress> getObjects()
 	{	return this.objects;}
-
+*/
 	public Map<Integer, XGParameter> getParameterMap()
 	{	return this.parameterMap;}
 

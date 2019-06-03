@@ -1,60 +1,70 @@
 package value;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
+import java.util.TreeSet;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 
-public interface XGValueStorage
+public interface XGValueStorage extends XGValueChangeListener
 {
-	static Map<XGAdress, XGValue> STORAGE = new TreeMap<>();	//adress, value
-	static Map<XGAdress, Set<XGValueChangeListener>> LISTENERS = new HashMap<>();
+	static Set<XGValue> STORAGE = new TreeSet<>();
+	static Set<XGValueChangeListener> LISTENERS = new HashSet<>();
 
 	static XGValue getValue(XGAdress adr) throws InvalidXGAdressException
-	{	if(adr.isValueAdress()) return STORAGE.get(adr);
-		else throw new InvalidXGAdressException("no valid value-adress: " + adr);
+	{	if(!adr.isValueAdress()) throw new InvalidXGAdressException("no valid value-adress: " + adr);
+		for(XGValue v : STORAGE)
+		{	if(v.getAdress().equals(adr)) return v;}
+		return null;
 	}
 
-	static Map<XGAdress, XGValue> getValues(XGAdress adr) throws InvalidXGAdressException
-	{	Map<XGAdress, XGValue> map = new TreeMap<>();
-		for(XGAdress a : STORAGE.keySet())
-			if(a.equalsMaskedValidFields(adr)) map.put(a, getValue(a));
-		return map;
+	static Set<XGValue> getValues(XGAdress adr) throws InvalidXGAdressException
+	{	Set<XGValue> set = new TreeSet<>();
+		for(XGValue v : STORAGE)
+		{	if(v.getAdress().equalsMaskedValidFields(adr)) set.add(v);}
+		return set;
 	}
 
 	static XGValue getValueOrNew(XGAdress adr) throws InvalidXGAdressException
 	{	XGValue v = getValue(adr);
 		if(v == null);
 		{	v = new XGValue(adr);
-			STORAGE.put(adr, v);
+			STORAGE.add(v);
 			notifyListeners(v);
 		}
 		return v;
 	}
 
-	static XGValue getValueOrListenFor(XGAdress adr, XGValueChangeListener l) throws InvalidXGAdressException
-	{	XGValue v = getValue(adr);
-		if(v == null) addListener(adr, l);
+	static XGValue getValueOrListenFor(XGValueChangeListener l) throws InvalidXGAdressException
+	{	XGValue v = getValue(l.getAdress());
+		if(v == null) addListener(l);
+		else
+		{	v.addListener(l);
+			removeListener(l);
+		}
 		return v;
 	}
 
-	static void addListener(XGAdress adr, XGValueChangeListener l)
-	{	if(!adr.isValueAdress()) return;
-		Set<XGValueChangeListener> s = LISTENERS.getOrDefault(adr, new HashSet<>());
-		s.add(l);
-		LISTENERS.put(adr, s);
+	static Set<XGAdress> getObjectInstances(XGAdress adr)
+	{	Set<XGAdress> s = new TreeSet<>();
+		for(XGValue a : STORAGE) if(a.getAdress().equalsMaskedValidFields(adr))
+		{	try
+			{	s.add(new XGAdress(a.getAdress().getHi(), a.getAdress().getMid()));}
+			catch(InvalidXGAdressException e)
+			{	e.printStackTrace();}
+		}
+		return s;
 	}
+
+	static void addListener(XGValueChangeListener l)
+	{	LISTENERS.add(l);}
 
 	static void removeListener(XGValueChangeListener l)
-	{	
-	}
+	{	LISTENERS.remove(l);}
 
 	static void notifyListeners(XGValue v)
-	{	Set<XGValueChangeListener> s = LISTENERS.get(v.getAdress());
-		if(s == null) return;
-		for(XGValueChangeListener l : s) l.valueChanged(v);
+	{	for(XGValueChangeListener l : LISTENERS)
+			if(l.getAdress().equalsMaskedValidFields(v.getAdress())) l.valueChanged(v);
+			//l.valueChanged(v);
 	}
 }

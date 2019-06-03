@@ -12,8 +12,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
 import midi.Bytes;
-import obj.XGObject;
+import obj.XGObjectType;
+import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.WrongXGValueTypeException;
 import value.XGValue;
@@ -27,11 +30,13 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 /*****************************************************************************************************************************/
 
-	private final int offset;
+	private final XGAdress adress;
+	private final XGParameter parameter;
 	private XGValue value;
 
-	public LeftZeroSlider(int offset)
-	{	this.offset = offset;
+	public LeftZeroSlider(XGAdress adr) throws InvalidXGAdressException
+	{	this.adress = adr;
+		this.parameter = XGObjectType.getParameter(adr);
 		setSize(SL_DIM);
 		setMinimumSize(SL_DIM);
 		setPreferredSize(SL_DIM);
@@ -50,7 +55,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 		int w = 0;
 		try
-		{	w = Bytes.linearIO(this.value.getNumberValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, SL_W);}
+		{	w = Bytes.linearIO(this.value.getNumberValue(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, SL_W);}
 		catch(WrongXGValueTypeException e)
 		{	e.printStackTrace();}
 
@@ -62,7 +67,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		g2.fillRoundRect(0, 0 , w - 1, SL_H - 1, SL_RADI, SL_RADI);
 
 		g2.setColor(Color.BLACK);
-		g2.drawString(this.value.getParameter().getShortName(), GAP, FONTMIDDLE);
+		g2.drawString(this.parameter.getShortName(), GAP, FONTMIDDLE);
 
 		String t;
 		try
@@ -105,7 +110,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	{	this.grabFocus();
 		if(e.getButton() == MouseEvent.BUTTON1)
 		{	try
-			{	if(Bytes.linearIO(this.value.getNumberValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, this.getWidth()) < e.getX())
+			{	if(Bytes.linearIO(this.value.getNumberValue(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.getWidth()) < e.getX())
 				{	if(this.value.addValue(1)) repaint();
 				}
 				else
@@ -135,6 +140,10 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	}
 
 	public void valueChanged(XGValue v)
-	{
+	{	this.value = v;
+		this.repaint();
 	}
+
+	public XGAdress getAdress()
+	{	return this.adress;}
 }

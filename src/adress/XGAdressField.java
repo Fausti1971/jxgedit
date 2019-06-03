@@ -59,6 +59,19 @@ public class XGAdressField implements XGAdressConstants
 		else throw new InvalidXGAdressException(EXCEPTIONTEXT);
 	}
 
+	public XGAdressField complement(XGAdressField f) throws InvalidXGAdressException
+	{	int status = 0;
+		if(this.valid) status = 1;
+		if(f.valid) status |= 2;
+		switch(status)
+		{	case 1:	return this;
+			case 2:	return f;
+			case 3:	if(this.value == f.value) return this;
+			default:
+			case 0:	throw new InvalidXGAdressException("can't complement adress-field " + this + " with " + f);
+		}
+	}
+
 	public int compare(XGAdressField o)
 	{	if(this.valid && o.valid) return Integer.compare(this.value, o.value);
 		else return 0;
