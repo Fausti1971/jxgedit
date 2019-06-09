@@ -7,7 +7,7 @@ import value.TranslationMap;
 import value.ValueTranslator;
 
 public class XGParameter implements XGParameterConstants
-{	
+{
 
 /*****************************************************************************************************/
 
@@ -35,7 +35,7 @@ public class XGParameter implements XGParameterConstants
 		this.shortName = DEF_SHORTNAME;
 	}
 
-	public void setParameterProperty(String key, String value, String... filter)
+	protected void setParameterProperty(String key, String value, String... filter)
 	{	switch(key)
 		{	case TAG_OFFSET:		this.offset = Integer.parseInt(value); break;
 			case TAG_MIN:			this.minValue = Integer.parseInt(value); break;

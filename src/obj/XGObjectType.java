@@ -14,7 +14,7 @@ public class XGObjectType
 	private static Set<XGObjectType> objectTypes = XGObjectDescriptionMap.getObjectDescriptionMap();
 
 	public static XGObjectType getObjectType(XGAdress adr) throws InvalidXGAdressException
-	{	for(XGObjectType d : objectTypes) if(adr.equalsMaskedValidFields(d.adress)) return d;
+	{	for(XGObjectType d : objectTypes) if(adr.equalsValidFields(d.adress)) return d;
 		return new XGObjectType(adr);
 	}
 /*

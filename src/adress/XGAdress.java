@@ -4,9 +4,9 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 {	private final XGAdressField hi, mid, lo;
 
 	public XGAdress(String hi, String mid, String lo)
-	{	this.hi = new XGAdressField(hi, null);
-		this.mid = new XGAdressField(mid, null);
-		this.lo = new XGAdressField(lo, null);
+	{	this.hi = new XGAdressField(hi);
+		this.mid = new XGAdressField(mid);
+		this.lo = new XGAdressField(lo);
 	}
 
 	public XGAdress(int hi, int mid, int lo)
@@ -62,17 +62,18 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 		return new XGAdress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
 	}
 
-	public boolean equalsMaskedValidFields(XGAdress adr)
-	{	if(!(this.hi.equalsMaskedValid(adr.hi))) return false;
-		if(!(this.mid.equalsMaskedValid(adr.mid))) return false;
-		if(!(this.lo.equalsMaskedValid(adr.lo))) return false;
+	public boolean equalsValidFields(XGAdress adr)
+	{	if(!(this.hi.equalsValid(adr.hi))) return false;
+		if(!(this.mid.equalsValid(adr.mid))) return false;
+		if(!(this.lo.equalsValid(adr.lo))) return false;
 		return true;
 	}
 
 	@Override public boolean equals(Object obj)
 	{	if(!(obj instanceof XGAdress)) return false;
+		XGAdress adr = (XGAdress)obj;
 		try
-		{	return this.hi.equals(((XGAdress)obj).hi) && this.mid.equals(((XGAdress)obj).mid) && this.lo.equals(((XGAdress)obj).lo);
+		{	return this.hi.equals(adr.hi) && this.mid.equals(adr.mid) && this.lo.equals(adr.lo);
 		}
 		catch(NullPointerException e)
 		{	e.printStackTrace();

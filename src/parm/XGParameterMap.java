@@ -32,7 +32,6 @@ public interface XGParameterMap extends XGParameterConstants
 		{	log.info("can't read file: " + FILE);
 			return;
 		}
-
 		try
 		{	SAXParserFactory spf = SAXParserFactory.newInstance();
 			spf.setValidating(true);

@@ -21,7 +21,7 @@ public interface XGValueStorage extends XGValueChangeListener
 	static Set<XGValue> getValues(XGAdress adr) throws InvalidXGAdressException
 	{	Set<XGValue> set = new TreeSet<>();
 		for(XGValue v : STORAGE)
-		{	if(v.getAdress().equalsMaskedValidFields(adr)) set.add(v);}
+		{	if(v.getAdress().equalsValidFields(adr)) set.add(v);}
 		return set;
 	}
 
@@ -47,7 +47,7 @@ public interface XGValueStorage extends XGValueChangeListener
 
 	static Set<XGAdress> getObjectInstances(XGAdress adr)
 	{	Set<XGAdress> s = new TreeSet<>();
-		for(XGValue a : STORAGE) if(a.getAdress().equalsMaskedValidFields(adr))
+		for(XGValue a : STORAGE) if(a.getAdress().equalsValidFields(adr))
 		{	try
 			{	s.add(new XGAdress(a.getAdress().getHi(), a.getAdress().getMid()));}
 			catch(InvalidXGAdressException e)
@@ -64,7 +64,7 @@ public interface XGValueStorage extends XGValueChangeListener
 
 	static void notifyListeners(XGValue v)
 	{	for(XGValueChangeListener l : LISTENERS)
-			if(l.getAdress().equalsMaskedValidFields(v.getAdress())) l.valueChanged(v);
+			if(l.getAdress().equalsValidFields(v.getAdress())) l.valueChanged(v);
 			//l.valueChanged(v);
 	}
 }
