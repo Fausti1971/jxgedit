@@ -1,59 +1,62 @@
 package parm;
 
 import java.util.Map;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
+import adress.XGAdressable;
+import application.Rest;
 import midi.Bytes;
 import midi.Bytes.ByteType;
 import value.TranslationMap;
 import value.ValueTranslator;
 
-public class XGParameter implements XGParameterConstants
+public class XGParameter implements XGParameterConstants, XGAdressable
 {
 
 /*****************************************************************************************************/
 
 	private ParameterType type;
-	private int mutableMapIndex = 0, masterParameterOffset, offset, minValue, maxValue, byteCount;
+	private XGAdress adress, masterParameterAdress;
+	private int mutableMapIndex = 0, minValue, maxValue, byteCount;
 	private String longName, shortName;
 	private ValueTranslator valueTranslator;
 	private Map<Integer, String> translationMap;
 	private Bytes.ByteType byteType;
 	private ValueType valueType;
 
-	public XGParameter(int offs)	//automatischer Konstruktor - unbekannter Parameter
+	public XGParameter(XGAdress adr)	//automatischer Konstruktor - unbekannter Parameter
 	{	this.type = ParameterType.UNKNOWN;
-		this.offset = offs;
+		this.adress = adr;
 		this.minValue = 0;
 		this.maxValue = 127;
 		this.byteCount = DEF_BYTECOUNT;
 		this.mutableMapIndex = 0;
-		this.masterParameterOffset = 0;
+		this.masterParameterAdress = null;
 		this.valueTranslator = DEF_TRANSLATOR;
 		this.translationMap = null;
 		this.byteType = DEF_BYTE_TYPE;
 		this.valueType = DEF_VALUE_TYPE;
-		this.longName = DEF_LONGNAME + offset;
+		this.longName = DEF_LONGNAME + adr;
 		this.shortName = DEF_SHORTNAME;
 	}
 
-	protected void setParameterProperty(String key, String value, String... filter)
-	{	switch(key)
-		{	case TAG_OFFSET:		this.offset = Integer.parseInt(value); break;
-			case TAG_MIN:			this.minValue = Integer.parseInt(value); break;
-			case TAG_MAX:			this.maxValue = Integer.parseInt(value); break;
-			case TAG_LONGNAME:		this.longName = value; break;
-			case TAG_SHORTNAME:		this.shortName = value; break;
-			case TAG_BYTECOUNT:		this.byteCount = Integer.parseInt(value); break;
-			case TAG_DESCMAPINDEX:	this.mutableMapIndex = Integer.parseInt(value); break;
-			case TAG_DEPENDSOF:		this.masterParameterOffset = Integer.parseInt(value); break;
-			case TAG_TRANSLATOR:	this.valueTranslator = ValueTranslator.getTranslator(value); break;
-			case TAG_TRANSLATIONMAP:this.translationMap = TranslationMap.getTranslationMap(value, filter); break;
-			case TAG_BYTETYPE:		this.byteType = ByteType.valueOf(value); break;
-			case TAG_VALUETYPE:		this.valueType = ValueType.valueOf(value); break;
-		}
+	protected XGParameter(Map<String, String> map) throws InvalidXGAdressException
+	{	this(new XGAdress(map.get(TAG_ADRESS_HI), map.get(TAG_ADRESS_MID), map.get(TAG_ADRESS_LO)));
+		this.minValue = Integer.parseInt(map.get(TAG_MIN));
+		this.maxValue = Integer.parseInt(map.get(TAG_MAX));
+		this.longName = map.get(TAG_LONGNAME);
+		this.shortName = map.get(TAG_SHORTNAME);
+		this.byteCount = Integer.parseInt(map.get(TAG_BYTECOUNT));
+		this.byteType = ByteType.valueOf(map.get(TAG_BYTETYPE));
+		this.valueType = ValueType.valueOf(map.get(TAG_VALUETYPE));
+		this.mutableMapIndex = Integer.parseInt(map.get(TAG_DESCMAPINDEX));
+		this.masterParameterAdress = new XGAdress(map.get(TAG_DEPENDSOF_HI), map.get(TAG_DEPENDSOF_MID), map.get(TAG_DEPENDSOF_LO));
+		this.valueTranslator = ValueTranslator.getTranslator(map.get(TAG_TRANSLATOR));
+		this.translationMap = TranslationMap.getTranslationMap(map.get(TAG_TRANSLATIONMAP), Rest.splitString(map.get(TAG_FILTER)));
 	}
 
-	public int getOffset()
-	{	return offset;}
+	public XGAdress getAdress()
+	{	return this.adress;}
 
 	public int getMinValue()
 	{	return minValue;}
@@ -67,8 +70,8 @@ public class XGParameter implements XGParameterConstants
 	public ParameterType getType()
 	{	return this.type;}
 
-	public int getMasterParameterOffset()
-	{	return this.masterParameterOffset;}
+	public XGAdress getMasterParameterAdress()
+	{	return this.masterParameterAdress;}
 
 	public int getMutableIndex()
 	{	return this.mutableMapIndex;}

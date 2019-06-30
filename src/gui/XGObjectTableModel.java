@@ -7,15 +7,17 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
+import adress.XGInstanceSelector;
 import obj.XGObjectType;
+import parm.XGParameter;
 import value.XGValue;
 import value.XGValueChangeListener;
 import value.XGValueStorage;
 
-public class XGObjectTableModel implements TableModel, XGValueChangeListener
+public class XGObjectTableModel implements TableModel, XGValueChangeListener, XGInstanceSelector
 {	private XGObjectType ot;
 	private XGAdress adress;
-	private Integer[] col;
+	private XGParameter[] col;
 	private Set<TableModelListener> tml = new HashSet<>();
 	private Set<XGValueChangeListener> vcl = new HashSet<>();
 
@@ -23,7 +25,7 @@ public class XGObjectTableModel implements TableModel, XGValueChangeListener
 	{	this.adress = adr;
 		this.ot = XGObjectType.getObjectType(adr);
 		XGValueStorage.addListener(this);
-		this.col = ot.getParameterMap().keySet().toArray(Integer[]::new);
+		this.col = ot.getParameterMap().toArray(new XGParameter[ot.getParameterMap().size()]);
 	}
 
 	public XGAdress getAdress()
@@ -37,7 +39,7 @@ public class XGObjectTableModel implements TableModel, XGValueChangeListener
 	
 	public Object getValueAt(int rowIndex, int columnIndex)
 	{	try
-		{	return XGValueStorage.getValue(new XGAdress(this.adress.getHi(), rowIndex, col[columnIndex]));
+		{	return XGValueStorage.getValue(this.adress.complement(col[columnIndex].getAdress()));
 		}
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();
@@ -49,7 +51,7 @@ public class XGObjectTableModel implements TableModel, XGValueChangeListener
 	{	return XGValueStorage.getObjectInstances(this.adress).size();}
 	
 	public String getColumnName(int columnIndex)
-	{	return ot.getParameter(col[columnIndex]).getLongName();}
+	{	return ot.getParameter(col[columnIndex].getAdress()).getLongName();}
 	
 	public int getColumnCount()
 	{	return col.length;}
@@ -60,7 +62,7 @@ public class XGObjectTableModel implements TableModel, XGValueChangeListener
 	public void valueChanged(XGValue v)
 	{	try
 		{	if(v.getAdress().getLo() < col.length)
-			{	this.setValueAt(v, v.getAdress().getMid(), col[v.getAdress().getLo()]);
+			{	//this.setValueAt(v, v.getAdress().getMid(), col[v.getAdress()]);
 			}
 			for(XGValueChangeListener a : this.vcl)
 			{	//if(v.getAdress().equalsMaskedValidFields(a.getAdress())) a.valueChanged(v);

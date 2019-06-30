@@ -1,11 +1,11 @@
 package obj;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
+import adress.XGAdressableSet;
 import parm.XGParameter;
 import parm.XGParameterMap;
 
@@ -27,26 +27,29 @@ public class XGObjectType
 		}
 	}
 */
-	public static XGParameter getParameter(XGAdress adr) throws InvalidXGAdressException
-	{	return getObjectType(adr).getParameter(adr.getLo());}
 
 /******************************************************************************************************************/
 
 	private final XGAdress adress;//0,0=System; 2,1=FX1; 2,64=EQ; 3=FX2, 8=MultiPart;  
 	private final String objectName;
 	private final String parameterMapName;
-	private final Map<Integer, XGParameter> parameterMap;
+	private final XGAdressableSet<XGParameter> parameterSet;
 	private final Set<XGBulkDumpDescription> dumpSequence;
 //	private Set<XGAdress> objects = new TreeSet<>();
 
 	public XGObjectType(XGAdress adr) throws InvalidXGAdressException
-	{	this(adr, "unknown object-type", "unknown parameter-map", new HashSet(){{add(adr); add(adr);}});}
+	{	this(adr, "unknown object-type", "unknown parameter-map", new HashSet<XGBulkDumpDescription>()
+			{/**
+			 * 
+			 */
+			private static final long serialVersionUID=1L;
+			{add(new XGBulkDumpDescription(adr));}});}
 
 	public XGObjectType(XGAdress adr, String name, String pMapName, Set<XGBulkDumpDescription> dseq)
 	{	this.adress = adr;
 		this.objectName = name;
 		this.parameterMapName = pMapName;
-		this.parameterMap = XGParameterMap.getParameterMap(pMapName);
+		this.parameterSet = XGParameterMap.getParameterMap(pMapName);
 		this.dumpSequence = dseq;
 		log.info("" + this);
 	}
@@ -69,11 +72,11 @@ public class XGObjectType
 	public Set<XGAdress> getObjects()
 	{	return this.objects;}
 */
-	public Map<Integer, XGParameter> getParameterMap()
-	{	return this.parameterMap;}
+	public XGAdressableSet<XGParameter> getParameterMap()
+	{	return this.parameterSet;}
 
-	public XGParameter getParameter(int offs)
-	{	return this.parameterMap.getOrDefault(offs, new XGParameter(offs));}
+	public XGParameter getParameter(XGAdress adr)
+	{	return (XGParameter)this.parameterSet.getOrDefault(adr, new XGParameter(adr));}
 
 	public String getName()
 	{	return this.objectName;}

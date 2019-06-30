@@ -3,6 +3,7 @@ package value;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,7 +17,7 @@ public interface TranslationMap extends XGValueConstants
 {	static final Logger log = Logger.getAnonymousLogger();
 	static final File FILE = new File("rsc/XGTranslationMaps.xml");
 
-	public static Map<Integer, String> getTranslationMap(String name, String... filter)
+	public static Map<Integer, String> getTranslationMap(String name, Set<String> filter)
 	{	Map<Integer, String> map = new TreeMap<>();
 		if(!FILE.canRead())
 		{	log.info("can't read file: " + FILE);
@@ -38,11 +39,11 @@ public interface TranslationMap extends XGValueConstants
 	static class XMLHandler extends DefaultHandler
 	{	private String tag;
 		private Map<Integer, String> map;
-		private String filter[];
+		private Set<String> filter;
 		private String value, text, temp;
 		private boolean isMyMap = false;
 
-		XMLHandler(String tag, Map<Integer, String> m, String... filter)
+		XMLHandler(String tag, Map<Integer, String> m, Set<String> filter)
 		{	this.tag = tag;
 			this.map = m;
 			this.filter = filter;

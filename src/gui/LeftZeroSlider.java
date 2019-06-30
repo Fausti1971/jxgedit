@@ -14,7 +14,7 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import midi.Bytes;
+import application.Rest;
 import obj.XGObjectType;
 import parm.XGParameter;
 import parm.XGParameterConstants;
@@ -36,7 +36,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 	public LeftZeroSlider(XGAdress adr) throws InvalidXGAdressException
 	{	this.adress = adr;
-		this.parameter = XGObjectType.getParameter(adr);
+		this.parameter = XGObjectType.getObjectType(adr).getParameter(adr);
 		setSize(SL_DIM);
 		setMinimumSize(SL_DIM);
 		setPreferredSize(SL_DIM);
@@ -55,7 +55,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 		int w = 0;
 		try
-		{	w = Bytes.linearIO(this.value.getNumberValue(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, SL_W);}
+		{	w = Rest.linearIO(this.value.getNumberValue(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, SL_W);}
 		catch(WrongXGValueTypeException e)
 		{	e.printStackTrace();}
 
@@ -98,7 +98,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	}
 
 	public void mouseDragged(MouseEvent e)
-	{	if(this.value.changeValue(Bytes.linearIO(e.getX(), 0, this.getWidth(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue())))repaint();
+	{	if(this.value.changeValue(Rest.linearIO(e.getX(), 0, this.getWidth(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue())))repaint();
 		e.consume();
 	}
 
@@ -110,7 +110,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	{	this.grabFocus();
 		if(e.getButton() == MouseEvent.BUTTON1)
 		{	try
-			{	if(Bytes.linearIO(this.value.getNumberValue(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.getWidth()) < e.getX())
+			{	if(Rest.linearIO(this.value.getNumberValue(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.getWidth()) < e.getX())
 				{	if(this.value.addValue(1)) repaint();
 				}
 				else

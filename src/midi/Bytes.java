@@ -9,9 +9,6 @@ import value.XGValue;
 public interface Bytes
 {	enum ByteType{MIDIBYTE, NIBBLE}
 
-	static int linearIO(int i, int in_min, int in_max, int out_min, int out_max)
-	{	return((int)(((float)(i - in_min) / (float)(in_max - in_min) * (out_max - out_min)) + out_min));}
-
 	byte[] getByteArray();
 
 	default void decodeXGValue(int offset, XGValue v)	//dekodiert und setzt (in v) die Anzahl byteCount byteType/s am/ab offset des byteArray

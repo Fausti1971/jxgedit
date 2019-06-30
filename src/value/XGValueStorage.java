@@ -5,25 +5,20 @@ import java.util.Set;
 import java.util.TreeSet;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
+import adress.XGAdressableSet;
 
 public interface XGValueStorage extends XGValueChangeListener
 {
-	static Set<XGValue> STORAGE = new TreeSet<>();
+	static XGAdressableSet<XGValue> STORAGE = new XGAdressableSet<>();
 	static Set<XGValueChangeListener> LISTENERS = new HashSet<>();
 
 	static XGValue getValue(XGAdress adr) throws InvalidXGAdressException
 	{	if(!adr.isValueAdress()) throw new InvalidXGAdressException("no valid value-adress: " + adr);
-		for(XGValue v : STORAGE)
-		{	if(v.getAdress().equals(adr)) return v;}
-		return null;
+		return STORAGE.get(adr);
 	}
 
-	static Set<XGValue> getValues(XGAdress adr) throws InvalidXGAdressException
-	{	Set<XGValue> set = new TreeSet<>();
-		for(XGValue v : STORAGE)
-		{	if(v.getAdress().equalsValidFields(adr)) set.add(v);}
-		return set;
-	}
+	static XGAdressableSet<XGValue> getValues(XGAdress adr) throws InvalidXGAdressException
+	{	return STORAGE.getValid(adr);}
 
 	static XGValue getValueOrNew(XGAdress adr) throws InvalidXGAdressException
 	{	XGValue v = getValue(adr);
@@ -47,9 +42,9 @@ public interface XGValueStorage extends XGValueChangeListener
 
 	static Set<XGAdress> getObjectInstances(XGAdress adr)
 	{	Set<XGAdress> s = new TreeSet<>();
-		for(XGValue a : STORAGE) if(a.getAdress().equalsValidFields(adr))
+		for(XGAdress a : STORAGE.adresses()) if(a.equalsValidFields(adr))
 		{	try
-			{	s.add(new XGAdress(a.getAdress().getHi(), a.getAdress().getMid()));}
+			{	s.add(new XGAdress(a.getHi(), a.getMid()));}
 			catch(InvalidXGAdressException e)
 			{	e.printStackTrace();}
 		}

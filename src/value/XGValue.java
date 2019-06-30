@@ -5,12 +5,13 @@ import java.util.Set;
 import java.util.logging.Logger;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
+import adress.XGAdressable;
 import msg.XGMessageParameterChange;
 import obj.XGObjectType;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 
-public class XGValue implements XGParameterConstants, Comparable<XGValue>
+public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdressable
 {	private static Logger log = Logger.getAnonymousLogger();
 
 	private final XGAdress adress;
@@ -25,7 +26,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>
 
 	public XGValue(XGAdress adr, Object val) throws InvalidXGAdressException
 	{	this.adress = adr;
-		this.parameter = XGObjectType.getParameter(adr);
+		this.parameter = XGObjectType.getObjectType(adr).getParameter(adr);
 		ValueType vt = this.parameter.getValueType();
 		if(val instanceof Image && vt.equals(ValueType.BITMAP)) this.imageValue = (Image)val;
 		if(val instanceof Integer && vt.equals(ValueType.NUMBER)) this.numberValue = (int)val;

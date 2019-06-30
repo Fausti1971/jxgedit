@@ -13,7 +13,9 @@
 <maps xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGParameterMaps.xsd">
 	<map name="fx1_parameters">
 		<parameter>
-			<offset>0</offset>
+			<adressHi>2</adressHi>
+			<adressMid>1</adressMid>
+			<adressLo>0</adressLo>
 			<longName>Reverb Program</longName>
 			<shortName>RevPrg</shortName>
 			<valueMin>0</valueMin>
@@ -24,11 +26,19 @@
 			<translator>translateMap</translator>
 			<translationMap filter="reverb">fx_programs</translationMap>
 		</parameter>
+		<parameter>
+			<adressHi>2</adressHi>
+			<adressMid>1</adressMid>
+			<adressLo>2</adressLo>
+			<descriptionMapIndex>1</descriptionMapIndex>
+			<dependsOfHi>2</dependsOfHi>
+			<dependsOfMid>1</dependsOfMid>
+			<dependsOfLo>0</dependsOfLo>
+		</parameter>
 	</map>
 
 	<map name="Hall 1,Hall 2,Room 1,Room 2,Room 3,Stage 1,Stage 2,Plate">
 		<parameter>
-			<offset>1</offset>
 			<longName>Reverb Time</longName>
 			<shortName>RevTime</shortName>
 			<valueMin>0</valueMin>
@@ -40,7 +50,8 @@
 
 	<map name="multipart_parameters">
 		<parameter>
-			<offset>0</offset>
+			<adressHi>8</adressHi>
+			<adressLo>0</adressLo>
 			<longName>Element Reserve</longName>
 			<shortName>ElmRsv</shortName>
 			<valueMin>0</valueMin>
@@ -51,7 +62,8 @@
 			<translator>translateToText</translator>
 		</parameter>
 		<parameter>
-			<offset>1</offset>
+			<adressHi>8</adressHi>
+			<adressLo>1</adressLo>
 			<longName>Bank Select MSB</longName>
 			<shortName>BnkMSB</shortName>
 			<valueMin>0</valueMin>
@@ -63,7 +75,8 @@
 		</parameter>
 
 		<parameter>
-			<offset>4</offset>
+			<adressHi>8</adressHi>
+			<adressLo>4</adressLo>
 			<longName>MIDI Channel</longName>
 			<shortName>Ch</shortName>
 			<valueMin>0</valueMin>
@@ -76,7 +89,8 @@
 		</parameter>
 
 		<parameter>
-			<offset>9</offset>
+			<adressHi>8</adressHi>
+			<adressLo>9</adressLo>
 			<longName>Detune</longName>
 			<shortName>Tune</shortName>
 			<valueMin>0</valueMin>
@@ -88,7 +102,8 @@
 		</parameter>
 
 		<parameter>
-			<offset>26</offset>
+			<adressHi>8</adressHi>
+			<adressLo>26</adressLo>
 			<longName>Attack Time</longName>
 			<shortName>Atck</shortName>
 			<valueMin>0</valueMin>

@@ -8,7 +8,10 @@ public interface XGParameterConstants
 	static final String
 		TAG_MAP = "map",
 		TAG_PARAMETER = "parameter",
-		TAG_OFFSET = "offset",
+		TAG_ADRESS_HI = "adressHi",
+		TAG_ADRESS_MID = "adressMid",
+		TAG_ADRESS_LO = "adressLo",
+		TAG_FILTER = "filter",
 		TAG_BYTECOUNT = "byteCount",
 		TAG_BYTETYPE = "byteType",
 		TAG_VALUETYPE = "valueType",
@@ -17,10 +20,13 @@ public interface XGParameterConstants
 		TAG_TRANSLATOR = "translator",
 		TAG_TRANSLATIONMAP = "translationMap",
 		TAG_DESCMAPINDEX = "descriptionMapIndex",
-		TAG_DEPENDSOF = "descriptionDependsOf",
+		TAG_DEPENDSOF_HI = "dependsOfHi",
+		TAG_DEPENDSOF_MID = "dependsOfMid",
+		TAG_DEPENDSOF_LO = "dependsOfLo",
 		TAG_LONGNAME = "longName",
 		TAG_SHORTNAME = "shortName";
 
+	static final int HI = 0, MID = 1, LO = 2;
 	static enum ParameterType {UNKNOWN, COMPLETE, OPCODE, DESCRIPTION};
 	static enum ValueType {NUMBER, TEXT, BITMAP};
 
