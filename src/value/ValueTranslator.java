@@ -6,7 +6,8 @@ public interface ValueTranslator
 {	String translate(XGValue v);
 
 	static ValueTranslator getTranslator(String name)
-	{	switch(name)
+	{	if(name == null) return translateToText;
+		switch(name)
 		{	case "translateNot":		return translateNot;
 			case "translateToText":		return translateToText;
 			case "translateToTextPlus1":return translateToTextPlus1;
