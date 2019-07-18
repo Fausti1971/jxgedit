@@ -1,7 +1,10 @@
 package adress;
 
+import java.util.logging.Logger;
 public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
-{	private final XGAdressField hi, mid, lo;
+{	private static Logger log =Logger.getAnonymousLogger();
+
+	private final XGAdressField hi, mid, lo;
 
 	public XGAdress(String hi, String mid, String lo)
 	{	this.hi = new XGAdressField(hi);
@@ -57,9 +60,15 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 	private boolean isLoValdi()
 	{	return this.lo.isValid();}
 
-	public XGAdress complement(XGAdress adr) throws InvalidXGAdressException
+	public XGAdress complement(XGAdress adr)
 	{	if(this.isValueAdress()) return this;
-		return new XGAdress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
+		try
+		{	return new XGAdress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
+		}
+		catch(InvalidXGAdressException e)
+		{	log.info("can't complement adress " + this + " with " + adr);
+			return this;
+		}
 	}
 
 	public boolean equalsValidFields(XGAdress adr)

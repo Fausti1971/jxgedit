@@ -15,4 +15,11 @@ public interface Rest
 
 	static int linearIO(int i, int in_min, int in_max, int out_min, int out_max)
 	{	return((int)(((float)(i - in_min) / (float)(in_max - in_min) * (out_max - out_min)) + out_min));}
+
+	static int parseIntOrDefault(String s, int def)
+	{	try
+		{	return Integer.parseInt(s);}
+		catch(NumberFormatException e)
+		{	return def;}
+	}
 }

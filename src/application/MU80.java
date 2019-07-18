@@ -16,7 +16,7 @@ public class MU80
 		SYSFILESEP = System.getProperty("file.separator");
 	private static Path homePath = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
 	private static Setting setting;
-	private static MainFrame mainFrame;
+//	private static MainFrame mainFrame;
 	public static XGDevice device;
 
 	static
@@ -34,8 +34,8 @@ public class MU80
 	public static String getSeparator()
 	{	return SYSFILESEP;}
 
-	public static MainFrame getMainFrame()
-	{	return mainFrame;}
+//	public static MainFrame getMainFrame()
+//	{	return mainFrame;}
 
 	public static void main(String[] args)
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
@@ -55,7 +55,7 @@ public class MU80
 		device = new XGDevice(setting);
 		XGParameterMap.initParameterMaps();
 		XGObjectDescriptionMap.initObjectDescriptionMap();
-		mainFrame = new MainFrame();
+//		mainFrame = new MainFrame();
 		SysexFile.getDefaultDump();
 	}
 }

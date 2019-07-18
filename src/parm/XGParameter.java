@@ -42,14 +42,20 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 
 	protected XGParameter(Map<String, String> map) throws InvalidXGAdressException
 	{	this(new XGAdress(map.get(TAG_ADRESS_HI), map.get(TAG_ADRESS_MID), map.get(TAG_ADRESS_LO)));
-		this.minValue = Integer.parseInt(map.get(TAG_MIN));
-		this.maxValue = Integer.parseInt(map.get(TAG_MAX));
-		this.longName = map.get(TAG_LONGNAME);
-		this.shortName = map.get(TAG_SHORTNAME);
-		this.byteCount = Integer.parseInt(map.get(TAG_BYTECOUNT));
-		this.byteType = ByteType.valueOf(map.get(TAG_BYTETYPE));
-		this.valueType = ValueType.valueOf(map.get(TAG_VALUETYPE));
-		this.mutableMapIndex = Integer.parseInt(map.get(TAG_DESCMAPINDEX));
+		this.minValue = Rest.parseIntOrDefault(map.get(TAG_MIN), DEF_MIN);
+		this.maxValue = Rest.parseIntOrDefault(map.get(TAG_MAX), DEF_MAX);
+		this.longName = map.getOrDefault(TAG_LONGNAME, DEF_LONGNAME);
+		this.shortName = map.getOrDefault(TAG_SHORTNAME, DEF_SHORTNAME);
+		this.byteCount = Rest.parseIntOrDefault(map.get(TAG_BYTECOUNT), DEF_BYTECOUNT);
+		try
+		{	this.byteType = ByteType.valueOf(map.get(TAG_BYTETYPE));}
+		catch(NullPointerException e)
+		{	this.byteType = DEF_BYTE_TYPE;}
+		try
+		{	this.valueType = ValueType.valueOf(map.get(TAG_VALUETYPE));}
+		catch(NullPointerException e)
+		{	this.valueType = DEF_VALUE_TYPE;}
+		this.mutableMapIndex = Rest.parseIntOrDefault(map.get(TAG_DESCMAPINDEX), 0);
 		this.masterParameterAdress = new XGAdress(map.get(TAG_DEPENDSOF_HI), map.get(TAG_DEPENDSOF_MID), map.get(TAG_DEPENDSOF_LO));
 		this.valueTranslator = ValueTranslator.getTranslator(map.get(TAG_TRANSLATOR));
 		this.translationMap = TranslationMap.getTranslationMap(map.get(TAG_TRANSLATIONMAP), Rest.splitString(map.get(TAG_FILTER)));
