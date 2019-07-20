@@ -1,0 +1,31 @@
+main:loadSettings
+Setting:looking for settingsfile,
+	XGDevice:setectDevice,
+	Setting:create settingsfile,
+Setting:loadSettings
+Window:init
+
+Parameter:
+	ParameterTag tag
+	int min, max
+	String sName, lName
+	Map table
+	Translator translator
+	XGAdress prg;
+	int number;
+
+	int getMinValue()
+	{	return getParameter().min}
+
+	getMaxValue();
+	getLongName();
+	getShortName();
+	getValueAsText();
+
+	private boolean isMutable()
+	{	return this.adr != null;}
+
+	private getParameter()
+	{	if(this.isMutable) return XGParameterMaps.getParameter((int)XGObject.getValue(adr), nr);
+		else return this;
+	}

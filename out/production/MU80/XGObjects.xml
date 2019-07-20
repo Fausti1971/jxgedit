@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGObjects.xsd">
+	<object>
+		<name>System</name>
+		<adress>
+			<hi>0</hi>
+			<mid>0</mid>
+		</adress>
+		<parameterMap>sys_parameters</parameterMap>
+		<dumpSequence>	<!-- Range über Minus möglich; rekursiver loop von hi nach lo-->
+			<hi>0</hi>
+			<mid>0</mid>
+			<lo>0-6</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>Info</name>
+		<adress>
+			<hi>1</hi>
+			<mid>0</mid>
+		</adress>
+		<parameterMap>info_parameters</parameterMap>
+		<dumpSequence>
+			<hi>1</hi>
+			<mid>0</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>System FX</name>
+		<adress>
+			<hi>2</hi>
+			<mid>1</mid>
+		</adress>
+		<parameterMap>fx1_parameters</parameterMap>
+		<dumpSequence name="reverb">
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>0-13</lo>
+		</dumpSequence>
+		<dumpSequence name="reverb">
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>16-21</lo>
+		</dumpSequence>
+		<dumpSequence name="chorus">
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>32-46</lo>
+		</dumpSequence>
+		<dumpSequence name="chorus">
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>48-53</lo>
+		</dumpSequence>
+		<dumpSequence name="variation">
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>64-96</lo>
+		</dumpSequence>
+		<dumpSequence name="variation">
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>112-117</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>Multipart</name>
+		<adress>
+			<hi>8</hi>
+		</adress>
+		<parameterMap>multipart_parameters</parameterMap>
+		<dumpSequence>
+			<hi>8</hi>
+			<mid>0-31</mid>
+			<lo>0-40</lo>
+		</dumpSequence>
+		<dumpSequence>
+			<hi>8</hi>
+			<mid>0-31</mid>
+			<lo>48-110</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>Drumset 1</name>
+		<adress>
+			<hi>48</hi>
+		</adress>
+		<parameterMap>drum_parameters</parameterMap>
+		<dumpSequence>
+			<hi>48</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+	<object>
+		<name>Drumset 2</name>
+		<adress>
+			<hi>49</hi>
+		</adress>
+		<parameterMap>drum_parameters</parameterMap>
+		<dumpSequence>
+			<hi>49</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+	<object>
+		<name>Drumset 3</name>
+		<adress>
+			<hi>50</hi>
+		</adress>
+		<parameterMap>drum_parameters</parameterMap>
+		<dumpSequence>
+			<hi>50</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+	<object>
+		<name>Drumset 4</name>
+		<adress>
+			<hi>51</hi>
+		</adress>
+		<parameterMap>drum_parameters</parameterMap>
+		<dumpSequence>
+			<hi>51</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+</map>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- xs: erforderlich, da "byteType" bereits anderweitig belegt ist -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="maps">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="map"  minOccurs="1" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="parameter" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="adressHi" type="xs:nonNegativeInteger"/>
+										<xs:element name="adressMid" type="xs:nonNegativeInteger" minOccurs="0"/>
+										<xs:element name="adressLo" type="xs:nonNegativeInteger"/>
+										<xs:element name="longName" type="xs:string" minOccurs="0"/>
+										<xs:element name="shortName" type="xs:string" minOccurs="0"/>
+										<xs:element name="valueMin" type="xs:nonNegativeInteger" minOccurs="0"/>
+										<xs:element name="valueMax" type="xs:nonNegativeInteger" minOccurs="0"/>
+										<xs:element name="byteCount" type="xs:nonNegativeInteger" minOccurs="0"/>
+										<xs:element name="byteType" type="byteType" minOccurs="0"/>
+										<xs:element name="valueType" type="valueType" minOccurs="0"/>
+										<xs:element name="translator" type="translatorType" minOccurs="0"/>
+										<xs:element name="translationMap" minOccurs="0" maxOccurs="1">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="filter" type="xs:string" use="optional"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="descriptionMapIndex" type="mapIndex" minOccurs="0"/>
+										<xs:element name="dependsOfHi" type="xs:nonNegativeInteger" minOccurs="0"/>
+										<xs:element name="dependsOfMid" type="xs:nonNegativeInteger" minOccurs="0"/>
+										<xs:element name="dependsOfLo" type="xs:nonNegativeInteger" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="name" type="xs:string" use="required"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="translatorType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="translateToText"/>
+			<xs:enumeration value="translateNot"/>
+			<xs:enumeration value="translateToTextPlus1"/>
+			<xs:enumeration value="translateDiv10"/>
+			<xs:enumeration value="translateSub128Div10"/>
+			<xs:enumeration value="translateMap"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="byteType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MIDIBYTE"/>
+			<xs:enumeration value="NIBBLE"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="valueType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="NUMBER"/>
+			<xs:enumeration value="TEXT"/>
+			<xs:enumeration value="BITMAP"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="mapIndex">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -14,6 +14,10 @@ import parm.XGParameterConstants;
 public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdressable
 {	private static Logger log = Logger.getAnonymousLogger();
 
+	public static XGValue getValueOrNew(XGAdress adr) throws InvalidXGAdressException
+	{	return XGObjectType.getObjectTypeOrNew(adr).getInstanceOrNew(adr).getValueOrNew(adr);}
+
+	
 	private final XGAdress adress;
 	private final XGParameter parameter;
 	private String textValue;
@@ -26,7 +30,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdr
 
 	public XGValue(XGAdress adr, Object val) throws InvalidXGAdressException
 	{	this.adress = adr;
-		this.parameter = XGObjectType.getObjectType(adr).getParameter(adr);
+		this.parameter = XGObjectType.getObjectTypeOrNew(adr).getParameter(adr);
 		ValueType vt = this.parameter.getValueType();
 		if(val instanceof Image && vt.equals(ValueType.BITMAP)) this.imageValue = (Image)val;
 		if(val instanceof Integer && vt.equals(ValueType.NUMBER)) this.numberValue = (int)val;

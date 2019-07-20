@@ -13,15 +13,16 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import adress.XGAdress;
+import adress.XGAdressableSet;
 
 public interface XGObjectDescriptionMap extends XGObjectConstants
 {	static enum AdressType{NONE, ADRESS, DUMPSEQ};
 	static int MIN = 0, MAX = 1;
 	static Logger log = Logger.getAnonymousLogger();
 	static final File FILE = new File(XML_FILE);
-	static Set<XGObjectType> objectDescriptionMap = new HashSet<>();
+	static XGAdressableSet<XGObjectType> objectDescriptionMap = new XGAdressableSet<XGObjectType>();
 
-	static Set<XGObjectType> getObjectDescriptionMap()
+	static XGAdressableSet<XGObjectType> getObjectDescriptionMap()
 	{	return objectDescriptionMap;}
 
 	public static void initObjectDescriptionMap()

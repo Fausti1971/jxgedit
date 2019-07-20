@@ -5,7 +5,6 @@ import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import value.XGValue;
-import value.XGValueStorage;
 
 public class XGMessageBulkDump extends XGMessage
 {	private static final int SIZE_SIZE = 2, SIZE_OFFS = 4, MSG = 0, HI_OFFS = 6, MID_OFFS = 7, LO_OFFS = 8, DATA_OFFS = 9;
@@ -71,7 +70,7 @@ public class XGMessageBulkDump extends XGMessage
 	public void storeMessage() throws InvalidXGAdressException
 	{	int end = getDumpSize() + DATA_OFFS, offset = getLo();
 		for(int i = DATA_OFFS; i < end;)
-		{	XGValue v = XGValueStorage.getValueOrNew(new XGAdress(getHi(), getMid(), offset));
+		{	XGValue v = XGValue.getValueOrNew(new XGAdress(getHi(), getMid(), offset));
 			decodeXGValue(i, v);
 			offset += v.getParameter().getByteCount();
 			i += v.getParameter().getByteCount();

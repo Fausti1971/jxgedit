@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="coremidi4j-1.1">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../coremidi4j-1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../CM4J/coremidi4j-1.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
