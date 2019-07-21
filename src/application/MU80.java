@@ -5,6 +5,7 @@ import java.nio.file.Paths;
 import java.util.logging.Logger;
 import file.SysexFile;
 import gui.MainFrame;
+import gui.TreeFrame;
 import midi.XGDevice;
 import obj.XGObjectDescriptionMap;
 import parm.XGParameterMap;
@@ -17,6 +18,7 @@ public class MU80
 	private static Path homePath = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
 	private static Setting setting;
 //	private static MainFrame mainFrame;
+	private static TreeFrame treeFrame;
 	public static XGDevice device;
 
 	static
@@ -37,6 +39,12 @@ public class MU80
 //	public static MainFrame getMainFrame()
 //	{	return mainFrame;}
 
+	public static TreeFrame getTreeFrame()
+	{	return treeFrame;}
+
+	public static void setTreeFrame(TreeFrame treeFrame)
+	{	MU80.treeFrame = treeFrame;}
+
 	public static void main(String[] args)
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 //		%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
@@ -56,6 +64,7 @@ public class MU80
 		XGParameterMap.initParameterMaps();
 		XGObjectDescriptionMap.initObjectDescriptionMap();
 //		mainFrame = new MainFrame();
+		setTreeFrame(new TreeFrame());
 		SysexFile.getDefaultDump();
 	}
 }

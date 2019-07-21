@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGObjects.xsd">
 	<object>
-		<name>System</name>
+		<name>Master</name>
 		<adress>
 			<hi>0</hi>
 			<mid>0</mid>

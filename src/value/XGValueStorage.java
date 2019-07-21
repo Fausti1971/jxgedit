@@ -18,7 +18,7 @@ public interface XGValueStorage extends XGValueChangeListener
 	}
 
 	static XGAdressableSet<XGValue> getValues(XGAdress adr) throws InvalidXGAdressException
-	{	return STORAGE.getValid(adr);}
+	{	return STORAGE.getAllValid(adr);}
 
 	static XGValue getValueOrNew(XGAdress adr) throws InvalidXGAdressException
 	{	XGValue v = getValue(adr);

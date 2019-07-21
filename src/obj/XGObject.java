@@ -3,9 +3,10 @@ package obj;
 import java.util.logging.Logger;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
+import adress.XGAdressable;
 import parm.XGParameterConstants;
 
-public class XGObject implements XGObjectConstants, XGParameterConstants
+public class XGObject implements XGObjectConstants, XGParameterConstants, XGAdressable
 {	protected static final Logger log = Logger.getAnonymousLogger();
 
 /******************** Instance ********************************************************************************************/

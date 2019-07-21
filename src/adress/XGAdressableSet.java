@@ -25,11 +25,17 @@ public class XGAdressableSet<T extends XGAdressable>
 		else return adror;
 	}
 
-	public XGAdressableSet<T> getValid(XGAdress adr)
+	public XGAdressableSet<T> getAllValid(XGAdress adr)
 	{	XGAdressableSet<T> set = new XGAdressableSet<>();
 		for(XGAdress a : this.map.keySet()) if(a.equalsValidFields(adr)) set.add(this.map.get(a));
 		return set;
 	}
+
+	public T getValid(XGAdress adr)
+	{	for(T a : this.map.values()) if(a.getAdress().equalsValidFields(adr)) return a;
+		return null;
+	}
+
 
 	public T[] toArray(T[] a)
 	{	return this.map.values().toArray(a);}
@@ -39,4 +45,7 @@ public class XGAdressableSet<T extends XGAdressable>
 
 	public Collection<XGAdress> adresses()
 	{	return this.map.keySet();}
+
+	public boolean contains(XGAdress adr)
+	{	return this.map.containsKey(adr);}
 }

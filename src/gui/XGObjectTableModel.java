@@ -2,6 +2,7 @@ package gui;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Vector;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
@@ -17,7 +18,7 @@ import value.XGValueStorage;
 public class XGObjectTableModel implements TableModel, XGValueChangeListener, XGInstanceSelector
 {	private XGObjectType ot;
 	private XGAdress adress;
-	private XGParameter[] col;
+	private Vector<XGParameter> col;
 	private Set<TableModelListener> tml = new HashSet<>();
 	private Set<XGValueChangeListener> vcl = new HashSet<>();
 
@@ -26,6 +27,8 @@ public class XGObjectTableModel implements TableModel, XGValueChangeListener, XG
 		this.ot = XGObjectType.getObjectType(adr);
 		XGValueStorage.addListener(this);
 		this.col = ot.getParameterMap().toArray(new XGParameter[ot.getParameterMap().size()]);
+
+		
 	}
 
 	public XGAdress getAdress()

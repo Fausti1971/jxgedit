@@ -15,7 +15,7 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 
 /*****************************************************************************************************/
 
-	private ParameterType type;
+	private String objectType, category;
 	private XGAdress adress, masterParameterAdress;
 	private int mutableMapIndex = 0, minValue, maxValue, byteCount;
 	private String longName, shortName;
@@ -25,8 +25,7 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 	private ValueType valueType;
 
 	public XGParameter(XGAdress adr)	//automatischer Konstruktor - unbekannter Parameter
-	{	this.type = ParameterType.UNKNOWN;
-		this.adress = adr;
+	{	this.adress = adr;
 		this.minValue = 0;
 		this.maxValue = 127;
 		this.byteCount = DEF_BYTECOUNT;
@@ -61,6 +60,22 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 		this.translationMap = TranslationMap.getTranslationMap(map.get(TAG_TRANSLATIONMAP), Rest.splitString(map.get(TAG_FILTER)));
 	}
 
+	public String getCategory()
+	{	if(this.category != null) return category;
+		return DEF_CAT;
+	}
+
+	public void setCategory(String category)
+	{	this.category = category;}
+
+	public String getObjectType()
+	{	if(this.objectType != null) return objectType;
+		return DEF_OBTYPE;
+	}
+
+	public void setObjectType(String objectType)
+	{	this.objectType = objectType;}
+
 	public XGAdress getAdress()
 	{	return this.adress;}
 
@@ -72,9 +87,6 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 
 	public boolean isLimitizable()
 	{	return !this.valueTranslator.equals(ValueTranslator.translateMap);}
-
-	public ParameterType getType()
-	{	return this.type;}
 
 	public XGAdress getMasterParameterAdress()
 	{	return this.masterParameterAdress;}

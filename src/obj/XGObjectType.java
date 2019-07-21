@@ -17,8 +17,8 @@ public class XGObjectType
 	{	for(XGObjectType d : objectTypes) if(adr.equalsValidFields(d.adress)) return d;
 		return new XGObjectType(adr);
 	}
-/*
-	public static XGObject getObjectInstance(XGAdress adr)
+
+	public static XGObject getObjectInstanceOrNew(XGAdress adr)
 	{	try
 		{	return getObjectType(adr).getObjectOrNew(adr);}
 		catch(InvalidXGAdressException e)
@@ -26,7 +26,6 @@ public class XGObjectType
 			return null;
 		}
 	}
-*/
 
 /******************************************************************************************************************/
 
@@ -35,7 +34,7 @@ public class XGObjectType
 	private final String parameterMapName;
 	private final XGAdressableSet<XGParameter> parameterSet;
 	private final Set<XGBulkDumpDescription> dumpSequence;
-//	private Set<XGAdress> objects = new TreeSet<>();
+	private XGAdressableSet<XGObject> objects = new XGAdressableSet<>();
 
 	public XGObjectType(XGAdress adr) throws InvalidXGAdressException
 	{	this(adr, "unknown object-type", "unknown parameter-map", new HashSet<XGBulkDumpDescription>()
@@ -49,15 +48,15 @@ public class XGObjectType
 	{	this.adress = adr;
 		this.objectName = name;
 		this.parameterMapName = pMapName;
-		this.parameterSet = XGParameterMap.getParameterMap(pMapName);
+		this.parameterSet = XGParameterMap.getParameterSet(pMapName);
 		this.dumpSequence = dseq;
 		log.info("" + this);
 	}
-/*
+
 	public XGObject getObjectOrNew(XGAdress adr)
 	{	try
 		{	XGObject o;
-			if(this.objects.contains(adr)) return this.objects.get(adr.getMid());
+			if(this.objects.contains(adr)) return this.objects.get(adr);
 			else
 			{	this.objects.add(o = new XGObject(new XGAdress(this.adress.getHi(), adr.getMid())));
 				return o;
@@ -69,14 +68,8 @@ public class XGObjectType
 		}
 	}
 
-	public Set<XGAdress> getObjects()
+	public XGAdressableSet<XGObject> getObjects()
 	{	return this.objects;}
-*/
-	public XGAdressableSet<XGParameter> getParameterMap()
-	{	return this.parameterSet;}
-
-	public XGParameter getParameter(XGAdress adr)
-	{	return (XGParameter)this.parameterSet.getOrDefault(adr, new XGParameter(adr));}
 
 	public String getName()
 	{	return this.objectName;}

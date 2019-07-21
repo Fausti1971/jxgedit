@@ -19,7 +19,7 @@ public class XGMessageParameterChange extends XGMessage
 		setMessageID();
 		setHi(v.getAdress().getHi());
 		setMid(v.getAdress().getMid());
-		setLo(v.getOffset());
+		setLo(v.getAdress().getLo());
 		setData(v);
 		setEOX(DATA_OFFS + v.getParameter().getByteCount());
 	}

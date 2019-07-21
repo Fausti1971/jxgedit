@@ -27,10 +27,9 @@ public interface XGParameterConstants
 		TAG_SHORTNAME = "shortName";
 
 	static final int HI = 0, MID = 1, LO = 2;
-	static enum ParameterType {UNKNOWN, COMPLETE, OPCODE, DESCRIPTION};
 	static enum ValueType {NUMBER, TEXT, BITMAP};
 
-	static final String DEF_LONGNAME = "unknown parameter", DEF_SHORTNAME = "unknow";
+	static final String DEF_LONGNAME = "unknown parameter", DEF_SHORTNAME = "unknow", DEF_CAT = "unknown category", DEF_OBTYPE = "unknown objecttype";
 	static final int DEF_BYTECOUNT = 1, DEF_MIN = 0, DEF_MAX = 127;
 	static final Bytes.ByteType DEF_BYTE_TYPE = Bytes.ByteType.MIDIBYTE;
 	static final ValueType DEF_VALUE_TYPE = ValueType.NUMBER;

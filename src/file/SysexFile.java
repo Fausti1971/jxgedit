@@ -56,7 +56,7 @@ public class SysexFile
 			if(protocol)
 			{	MU80.getSetting().put(Setting.LASTDUMPFILE, file.getAbsolutePath());
 				MU80.getSetting().put(Setting.LASTDUMPPATH, file.getParent());
-				MU80.getMainFrame().setTitle(file.getAbsolutePath());
+				MU80.getTreeFrame().setTitle(file.getAbsolutePath());
 				
 			}
 		}
@@ -75,7 +75,7 @@ public class SysexFile
 			{	return f.exists() && f.canRead() && f.isFile() && f.getName().endsWith(".syx");
 			}
 		});
-		int res = fc.showDialog(MU80.getMainFrame(), "Open");
+		int res = fc.showDialog(MU80.getTreeFrame(), "Open");
 		if(res == JFileChooser.APPROVE_OPTION) this.file = fc.getSelectedFile();
 		else this.file = null;
 		return;

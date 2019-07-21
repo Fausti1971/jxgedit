@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.logging.Logger;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -13,23 +12,20 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import adress.InvalidXGAdressException;
+import adress.XGAdress;
 import adress.XGAdressableSet;
-import application.Rest;
 
 public interface XGParameterMap extends XGParameterConstants
 {	static Logger log = Logger.getAnonymousLogger();
 	static final File FILE = new File(XML_FILE);
-	static Map<String, XGAdressableSet<XGParameter>> parameterSets = new HashMap<>();
+	static XGAdressableSet<XGParameter> parameterSet = new XGAdressableSet<>();
 
-	public static XGAdressableSet<XGParameter> getParameterMap(String name)
-	{	if(parameterSets.containsKey(name)) return parameterSets.get(name);
-		else
-		{	XGAdressableSet<XGParameter> m = new XGAdressableSet<>();
-			parameterSets.put(name, m);
-			return m;
-		}
-	}
+	public static XGAdressableSet<XGParameter> getParameterSet(String name)
+	{	return parameterSet;}
 
+	public static XGParameter getParameter(XGAdress adr)
+	{	return parameterSet.getValid(adr);}
+	
 	public static void initParameterMaps()
 	{	if(!FILE.canRead())
 		{	log.info("can't read file: " + FILE);
@@ -54,8 +50,6 @@ public interface XGParameterMap extends XGParameterConstants
 	static class XMLHandler extends DefaultHandler
 	{	private Map<String, String> param;
 		private String key, value;
-		private Set<String> mapNames;
-		private XGAdressableSet<XGParameter> set;
 	
 		@Override public void startDocument() throws SAXException
 			{	super.startDocument();
@@ -69,9 +63,7 @@ public interface XGParameterMap extends XGParameterConstants
 
 		@Override public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException
 		{	switch(qName)
-			{	case(TAG_MAP):				mapNames = Rest.splitString(attributes.getValue("name"));
-											this.set = new XGAdressableSet<>();
-											return;
+			{	case(TAG_MAP):				return;
 				case(TAG_TRANSLATIONMAP):	param.put(TAG_FILTER, attributes.getValue(TAG_FILTER)); return;
 				case(TAG_PARAMETER):		param = new HashMap<>(); return;
 				default:					this.key = qName;
@@ -80,16 +72,9 @@ public interface XGParameterMap extends XGParameterConstants
 
 		@Override public void endElement(String namespaceURI, String localName, String qName)
 		{	switch(qName)
-			{	case(TAG_MAP):				if(this.set.size() > 0)
-											{	for(String s : mapNames)
-												{	parameterSets.put(s, this.set);
-													log.info("parameter-map added " + s);
-												}
-												mapNames = null;
-											}
-											return;
+			{	case(TAG_MAP):				return;
 				case(TAG_PARAMETER):		try
-											{	this.set.add(new XGParameter(param));
+											{	parameterSet.add(new XGParameter(param));
 											}
 											catch(InvalidXGAdressException e)
 											{	e.printStackTrace();}
