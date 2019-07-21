@@ -35,7 +35,7 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 		{	this.value = v;
 			try
 			{	this.value.addListener(this);
-				this.setToolTipText(XGObjectType.getObjectType(this.adress).getParameter(this.adress).getLongName());
+				this.setToolTipText(XGObjectType.getObjectTypeOrNew(this.adress).getParameter(this.adress).getLongName());
 				this.setText(this.value.getTextValue());
 				addActionListener(this);
 			}
@@ -66,7 +66,7 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 			this.setLocation(c.getLocation());
 			try
 			{	int v = c.value.getNumberValue();
-				for(Entry<Integer, String> e : XGObjectType.getObjectType(c.getAdress()).getParameter(c.getAdress()).getTranslationMap().entrySet())
+				for(Entry<Integer, String> e : XGObjectType.getObjectTypeOrNew(c.getAdress()).getParameter(c.getAdress()).getTranslationMap().entrySet())
 				{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
 					if(e.getKey() == v) m.setSelected(true);
 					m.addActionListener(new ActionListener()

@@ -13,7 +13,6 @@ import obj.XGObjectType;
 import parm.XGParameter;
 import value.XGValue;
 import value.XGValueChangeListener;
-import value.XGValueStorage;
 
 public class XGObjectTableModel implements TableModel, XGValueChangeListener, XGInstanceSelector
 {	private XGObjectType ot;
@@ -24,8 +23,7 @@ public class XGObjectTableModel implements TableModel, XGValueChangeListener, XG
 
 	public XGObjectTableModel(XGAdress adr) throws InvalidXGAdressException
 	{	this.adress = adr;
-		this.ot = XGObjectType.getObjectType(adr);
-		XGValueStorage.addListener(this);
+		this.ot = XGObjectType.getObjectTypeOrNew(adr);
 		this.col = ot.getParameterMap().toArray(new XGParameter[ot.getParameterMap().size()]);
 
 		
@@ -42,7 +40,7 @@ public class XGObjectTableModel implements TableModel, XGValueChangeListener, XG
 	
 	public Object getValueAt(int rowIndex, int columnIndex)
 	{	try
-		{	return XGValueStorage.getValue(this.adress.complement(col[columnIndex].getAdress()));
+		{	return XGValue.getValueOrNew(this.adress.complement(col[columnIndex].getAdress()));
 		}
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();
@@ -51,7 +49,7 @@ public class XGObjectTableModel implements TableModel, XGValueChangeListener, XG
 	}
 	
 	public int getRowCount()
-	{	return XGValueStorage.getObjectInstances(this.adress).size();}
+	{	return this.ot.getInstances().size();}
 	
 	public String getColumnName(int columnIndex)
 	{	return ot.getParameter(col[columnIndex].getAdress()).getLongName();}

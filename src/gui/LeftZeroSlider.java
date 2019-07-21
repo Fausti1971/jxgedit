@@ -36,7 +36,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 	public LeftZeroSlider(XGAdress adr) throws InvalidXGAdressException
 	{	this.adress = adr;
-		this.parameter = XGObjectType.getObjectType(adr).getParameter(adr);
+		this.parameter = XGObjectType.getObjectTypeOrNew(adr).getParameter(adr);
 		setSize(SL_DIM);
 		setMinimumSize(SL_DIM);
 		setPreferredSize(SL_DIM);

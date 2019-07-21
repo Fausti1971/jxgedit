@@ -1,15 +1,19 @@
 package adress;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class XGAdressableSet<T extends XGAdressable>
+public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>
 {
 	private Map<XGAdress, T> map;
 
 	public XGAdressableSet()
 	{	this.map = new TreeMap<>();}
+
+	public boolean contains(XGAdress adr)
+	{	return this.map.containsKey(adr);}
 
 	public void add(T adr)
 	{	this.map.put(adr.getAdress(), adr);}
@@ -20,9 +24,9 @@ public class XGAdressableSet<T extends XGAdressable>
 	public int size()
 	{	return this.map.size();}
 
-	public T getOrDefault(XGAdress adr, T adror)
+	public T getOrDefault(XGAdress adr, T def)
 	{	if(this.map.containsKey(adr)) return this.map.get(adr);
-		else return adror;
+		else return def;
 	}
 
 	public XGAdressableSet<T> getAllValid(XGAdress adr)
@@ -46,6 +50,11 @@ public class XGAdressableSet<T extends XGAdressable>
 	public Collection<XGAdress> adresses()
 	{	return this.map.keySet();}
 
+<<<<<<< HEAD
 	public boolean contains(XGAdress adr)
 	{	return this.map.containsKey(adr);}
+=======
+	public Iterator<T> iterator()
+	{	return this.map.values().iterator();}
+>>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
 }

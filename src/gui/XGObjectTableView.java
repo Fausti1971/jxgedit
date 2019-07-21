@@ -11,8 +11,8 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
+import value.XGValue;
 import value.XGValueChangeListener;
-import value.XGValueStorage;
 
 public class XGObjectTableView extends JTable implements TableModelListener, ListSelectionListener
 {	/**
@@ -30,6 +30,7 @@ public class XGObjectTableView extends JTable implements TableModelListener, Lis
 		{	this.adress = adr;
 			TableModel tm = new XGObjectTableModel(adr);
 			this.setModel(tm);
+			this.setAutoCreateRowSorter(true);
 			this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			this.getSelectionModel().addListSelectionListener(this);
 			tm.addTableModelListener(this);
@@ -50,7 +51,7 @@ public class XGObjectTableView extends JTable implements TableModelListener, Lis
 		}
 		for(XGValueChangeListener l : this.vcl)
 		{	try
-			{	l.valueChanged(XGValueStorage.getValue(l.getAdress().complement(this.adress)));
+			{	l.valueChanged(XGValue.getValueOrNew(l.getAdress().complement(this.adress)));
 			}
 			catch(InvalidXGAdressException e1)
 			{	e1.printStackTrace();
