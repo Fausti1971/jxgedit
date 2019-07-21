@@ -4,10 +4,7 @@ import java.util.logging.Logger;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressable;
-<<<<<<< HEAD
-=======
 import adress.XGAdressableSet;
->>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
 import parm.XGParameterConstants;
 import value.XGValue;
 

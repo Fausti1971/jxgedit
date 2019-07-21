@@ -4,8 +4,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
 import file.SysexFile;
-import gui.MainFrame;
-import gui.TreeFrame;
 import midi.XGDevice;
 import obj.XGObjectDescriptionMap;
 import parm.XGParameterMap;
@@ -17,12 +15,6 @@ public class MU80
 		SYSFILESEP = System.getProperty("file.separator");
 	private static Path homePath = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
 	private static Setting setting;
-<<<<<<< HEAD
-//	private static MainFrame mainFrame;
-	private static TreeFrame treeFrame;
-=======
-	private static MainFrame mainFrame;
->>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
 	public static XGDevice device;
 
 	static
@@ -39,15 +31,6 @@ public class MU80
 
 	public static String getSeparator()
 	{	return SYSFILESEP;}
-
-	public static MainFrame getMainFrame()
-	{	return mainFrame;}
-
-	public static TreeFrame getTreeFrame()
-	{	return treeFrame;}
-
-	public static void setTreeFrame(TreeFrame treeFrame)
-	{	MU80.treeFrame = treeFrame;}
 
 	public static void main(String[] args)
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
@@ -67,12 +50,6 @@ public class MU80
 		device = new XGDevice(setting);
 		XGParameterMap.initParameterMaps();
 		XGObjectDescriptionMap.initObjectDescriptionMap();
-<<<<<<< HEAD
-//		mainFrame = new MainFrame();
-		setTreeFrame(new TreeFrame());
-=======
-		mainFrame = new MainFrame();
->>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
 		SysexFile.getDefaultDump();
 	}
 }

@@ -19,19 +19,8 @@ public class XGObjectType implements XGAdressable
 		return new XGObjectType(adr);
 	}
 
-<<<<<<< HEAD
-	public static XGObject getObjectInstanceOrNew(XGAdress adr)
-	{	try
-		{	return getObjectType(adr).getObjectOrNew(adr);}
-		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();
-			return null;
-		}
-	}
-=======
 	public static XGObjectType getObjectType(XGAdress adr)
 	{	return objectTypes.get(adr);}
->>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
 
 /******************************************************************************************************************/
 
@@ -40,11 +29,7 @@ public class XGObjectType implements XGAdressable
 	private final String parameterMapName;
 	private final XGAdressableSet<XGParameter> parameterSet;
 	private final Set<XGBulkDumpDescription> dumpSequence;
-<<<<<<< HEAD
-	private XGAdressableSet<XGObject> objects = new XGAdressableSet<>();
-=======
 	private XGAdressableSet<XGObject> instances = new XGAdressableSet<>();
->>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
 
 	public XGObjectType(XGAdress adr) throws InvalidXGAdressException
 	{	this(adr, "unknown object-type", "unknown parameter-map", new HashSet<XGBulkDumpDescription>()
@@ -63,30 +48,6 @@ public class XGObjectType implements XGAdressable
 		log.info("" + this);
 	}
 
-<<<<<<< HEAD
-=======
-/*
->>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
-	public XGObject getObjectOrNew(XGAdress adr)
-	{	try
-		{	XGObject o;
-			if(this.objects.contains(adr)) return this.objects.get(adr);
-			else
-			{	this.objects.add(o = new XGObject(new XGAdress(this.adress.getHi(), adr.getMid())));
-				return o;
-			}
-		}
-		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();
-			return null;
-		}
-	}
-<<<<<<< HEAD
-
-	public XGAdressableSet<XGObject> getObjects()
-	{	return this.objects;}
-=======
-*/
 	public XGAdress getAdress()
 	{	return this.adress;}
 
@@ -105,7 +66,6 @@ public class XGObjectType implements XGAdressable
 
 	public XGParameter getParameter(XGAdress adr)
 	{	return this.parameterSet.getOrDefault(adr, new XGParameter(adr));}
->>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
 
 	public String getName()
 	{	return this.objectName;}

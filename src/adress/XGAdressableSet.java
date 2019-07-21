@@ -50,11 +50,6 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>
 	public Collection<XGAdress> adresses()
 	{	return this.map.keySet();}
 
-<<<<<<< HEAD
-	public boolean contains(XGAdress adr)
-	{	return this.map.containsKey(adr);}
-=======
 	public Iterator<T> iterator()
 	{	return this.map.values().iterator();}
->>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
 }

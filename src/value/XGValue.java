@@ -7,6 +7,7 @@ import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressable;
 import msg.XGMessageParameterChange;
+import obj.XGObjectType;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import parm.XGParameterMap;
@@ -30,11 +31,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdr
 
 	public XGValue(XGAdress adr, Object val) throws InvalidXGAdressException
 	{	this.adress = adr;
-<<<<<<< HEAD
 		this.parameter = XGParameterMap.getParameter(adr);
-=======
-		this.parameter = XGObjectType.getObjectTypeOrNew(adr).getParameter(adr);
->>>>>>> branch 'StorageTesting' of ssh://git@server/~/MU80.git
+//		this.parameter = XGObjectType.getObjectTypeOrNew(adr).getParameter(adr);
 		ValueType vt = this.parameter.getValueType();
 		if(val instanceof Image && vt.equals(ValueType.BITMAP)) this.imageValue = (Image)val;
 		if(val instanceof Integer && vt.equals(ValueType.NUMBER)) this.numberValue = (int)val;

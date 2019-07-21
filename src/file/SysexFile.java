@@ -56,7 +56,7 @@ public class SysexFile
 			if(protocol)
 			{	MU80.getSetting().put(Setting.LASTDUMPFILE, file.getAbsolutePath());
 				MU80.getSetting().put(Setting.LASTDUMPPATH, file.getParent());
-				MU80.getTreeFrame().setTitle(file.getAbsolutePath());
+//				MU80.getTreeFrame().setTitle(file.getAbsolutePath());
 				
 			}
 		}
