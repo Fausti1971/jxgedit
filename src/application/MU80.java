@@ -3,10 +3,13 @@ package application;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import file.SysexFile;
+import gui.MainFrame;
+import gui.TreeFrame;
 import midi.XGDevice;
-import obj.XGObjectDescriptionMap;
-import parm.XGParameterMap;
+import obj.XGObjectType;
+import parm.XGParameter;
 
 public class MU80
 {	private static final Logger log = Logger.getAnonymousLogger(); 
@@ -15,6 +18,7 @@ public class MU80
 		SYSFILESEP = System.getProperty("file.separator");
 	private static Path homePath = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
 	private static Setting setting;
+	private static JFrame mainFrame;
 	public static XGDevice device;
 
 	static
@@ -32,6 +36,9 @@ public class MU80
 	public static String getSeparator()
 	{	return SYSFILESEP;}
 
+	public static JFrame getMainFrame()
+	{	return mainFrame;}
+
 	public static void main(String[] args)
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 //		%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
@@ -48,8 +55,11 @@ public class MU80
 
 		setting = new Setting(getHomePath().resolve("setting").toFile());
 		device = new XGDevice(setting);
-		XGParameterMap.initParameterMaps();
-		XGObjectDescriptionMap.initObjectDescriptionMap();
+		XGObjectType.initObjectTypeMap();
+		XGParameter.initParameterSet();
+		mainFrame = new MainFrame();
+//		mainFrame = new TreeFrame();
+//		new XGTextReader().run();
 		SysexFile.getDefaultDump();
 	}
 }

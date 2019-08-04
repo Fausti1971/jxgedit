@@ -9,6 +9,7 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import msg.XGMessage;
 import msg.XGMessageBulkDump;
@@ -90,7 +91,7 @@ public class XGDeviceDetector implements Receiver
 				instances.add(this);
 			}
 		}
-		catch (InvalidMidiDataException e)
+		catch (InvalidMidiDataException | InvalidXGAdressException e)
 		{	log.info(e.getMessage());
 		}
 	}

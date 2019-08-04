@@ -29,12 +29,8 @@ public class XGAdressField implements XGAdressConstants
 	}
 	public XGAdressField(int v)
 	{	this.value = v;
-		this.valid = true;
-	}
-
-	public XGAdressField(int v, int m)
-	{	this.value = v;
-		this.valid = true;
+		if(v == INVALIDFIELD) this.valid = false;
+		else this.valid = true;
 	}
 
 	public boolean isValid()

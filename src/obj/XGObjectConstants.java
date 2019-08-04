@@ -1,17 +1,17 @@
 package obj;
 
 public interface XGObjectConstants
-{	public static String XML_FILE = "rsc/XGObjects.xml";
+{	public static String
+		XML_FILE = "rsc/MU80.xml",
+		DEF_OBJECTTYPENAME ="unknown objecttype";
 
 	public static String
 		TAG_OBJECT = "object",
 		TAG_NAME = "name",
-		TAG_ADRESS = "adress",
 		TAG_HI = "hi",
 		TAG_MID = "mid",
 		TAG_LO = "lo",
-		TAG_DUMPSEQ = "dumpSequence",
-		TAG_PARAMETERMAP = "parameterMap";
+		TAG_DUMPSEQ = "dumpSequence";
 
 	public static final int
 		MASTER = 0x00,

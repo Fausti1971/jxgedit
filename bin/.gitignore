@@ -1,9 +1,9 @@
-/obj/
-/parm/
-/gui/
-/msg/
-/midi/
-/application/
-/file/
 /value/
 /adress/
+/parm/
+/gui/
+/obj/
+/application/
+/msg/
+/midi/
+/file/

@@ -1,31 +1,86 @@
 package parm;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Map;
-import adress.InvalidXGAdressException;
+import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 import adress.XGAdress;
 import adress.XGAdressable;
+import adress.XGAdressableSet;
 import application.Rest;
-import midi.Bytes;
-import midi.Bytes.ByteType;
-import value.TranslationMap;
-import value.ValueTranslator;
+import msg.XGByteArray;
+import msg.XGByteArray.DataType;
+import obj.XGObjectType;
+import value.XGValueTranslator;
+import value.XGValueTranslationMap;
 
 public class XGParameter implements XGParameterConstants, XGAdressable
-{
+{	static Logger log = Logger.getAnonymousLogger();
+	static final File FILE = new File(XML_FILE);
+	static final XGAdressableSet<XGParameter> PARAMETERS = new XGAdressableSet<>();
+	
+	public static XGParameter getParameter(XGAdress adr)
+	{	return PARAMETERS.getFirstValidOrDefault(adr, new XGParameter(adr));}
+
+	public static XGAdressableSet<XGParameter> getAllValidParameterSet(XGAdress adr)
+	{	return PARAMETERS.getAllValid(adr);}
+
+	public static XGAdressableSet<XGParameter> getAllValidParameterSet(String type)
+	{	XGAdressableSet<XGParameter> s = new XGAdressableSet<XGParameter>();
+		for(XGParameter p : PARAMETERS) if(p.getObjectType().getName().equals(type)) s.add(p);
+		PARAMETERS.addListener(s);
+		return s;
+	}
+
+	public static void initParameterSet()
+	{	if(!FILE.canRead())
+		{	log.info("can't read file: " + FILE);
+			return;
+		}
+	
+		try
+		{	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	//		dbf.setValidating(true);
+	//		dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, null);
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db.parse(FILE); 
+	
+			Element rootElement = doc.getDocumentElement(); 
+	
+			Node n = rootElement.getFirstChild();
+			while(n.getNextSibling() != null)
+			{	if(n.getNodeName().equals(TAG_PARAMETER))
+				{	XGParameter p = new XGParameter(n);
+					PARAMETERS.add(p);
+				}
+				n = n.getNextSibling();
+			}
+		}
+		catch (IOException | ParserConfigurationException | SAXException e)
+		{ e.printStackTrace();}
+	}
 
 /*****************************************************************************************************/
 
-	private String objectType, category;
-	private XGAdress adress, masterParameterAdress;
-	private int mutableMapIndex = 0, minValue, maxValue, byteCount;
-	private String longName, shortName;
-	private ValueTranslator valueTranslator;
-	private Map<Integer, String> translationMap;
-	private Bytes.ByteType byteType;
-	private ValueType valueType;
+	private final XGObjectType objectType;
+	private final XGAdress adress, masterParameterAdress;
+	private final int mutableMapIndex, minValue, maxValue, byteCount;
+	private final String longName, shortName;
+	private final XGValueTranslator valueTranslator;
+	private final Map<Integer, String> translationMap;
+	private final XGByteArray.DataType byteType;
+	private final ValueDataClass valueClass;
 
 	public XGParameter(XGAdress adr)	//automatischer Konstruktor - unbekannter Parameter
-	{	this.adress = adr;
+	{	this.objectType = XGObjectType.getObjectTypeOrNew(adr);
+		this.adress = adr;
 		this.minValue = 0;
 		this.maxValue = 127;
 		this.byteCount = DEF_BYTECOUNT;
@@ -34,47 +89,51 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 		this.valueTranslator = DEF_TRANSLATOR;
 		this.translationMap = null;
 		this.byteType = DEF_BYTE_TYPE;
-		this.valueType = DEF_VALUE_TYPE;
-		this.longName = DEF_LONGNAME + adr;
+		this.valueClass = DEF_VALUECLASS;
+		this.longName = DEF_LONGNAME + " " + adr;
 		this.shortName = DEF_SHORTNAME;
 	}
 
-	protected XGParameter(Map<String, String> map) throws InvalidXGAdressException
-	{	this(new XGAdress(map.get(TAG_ADRESS_HI), map.get(TAG_ADRESS_MID), map.get(TAG_ADRESS_LO)));
-		this.minValue = Rest.parseIntOrDefault(map.get(TAG_MIN), DEF_MIN);
-		this.maxValue = Rest.parseIntOrDefault(map.get(TAG_MAX), DEF_MAX);
-		this.longName = map.getOrDefault(TAG_LONGNAME, DEF_LONGNAME);
-		this.shortName = map.getOrDefault(TAG_SHORTNAME, DEF_SHORTNAME);
-		this.byteCount = Rest.parseIntOrDefault(map.get(TAG_BYTECOUNT), DEF_BYTECOUNT);
-		try
-		{	this.byteType = ByteType.valueOf(map.get(TAG_BYTETYPE));}
-		catch(NullPointerException e)
-		{	this.byteType = DEF_BYTE_TYPE;}
-		try
-		{	this.valueType = ValueType.valueOf(map.get(TAG_VALUETYPE));}
-		catch(NullPointerException e)
-		{	this.valueType = DEF_VALUE_TYPE;}
-		this.mutableMapIndex = Rest.parseIntOrDefault(map.get(TAG_DESCMAPINDEX), 0);
-		this.masterParameterAdress = new XGAdress(map.get(TAG_DEPENDSOF_HI), map.get(TAG_DEPENDSOF_MID), map.get(TAG_DEPENDSOF_LO));
-		this.valueTranslator = ValueTranslator.getTranslator(map.get(TAG_TRANSLATOR));
-		this.translationMap = TranslationMap.getTranslationMap(map.get(TAG_TRANSLATIONMAP), Rest.splitString(map.get(TAG_FILTER)));
+	public XGParameter(Node e)
+	{	Node n = Rest.getFirstChildNodeByTag(e, TAG_ADRESS);
+		this.adress = new XGAdress(n);
+
+		this.objectType = XGObjectType.getObjectTypeOrNew(this.adress);
+
+		String s = Rest.getFirstNodeChildTextContentByTagAsString(e, TAG_MIN);
+		this.minValue = Rest.parseIntOrDefault(s, DEF_MIN);
+
+		s = Rest.getFirstNodeChildTextContentByTagAsString(e, TAG_MAX);
+		this.maxValue = Rest.parseIntOrDefault(s, DEF_MAX);
+
+		s = Rest.getFirstNodeChildTextContentByTagAsString(e, TAG_LONGNAME);
+		this.longName = Rest.getStringOrDefault(s, DEF_LONGNAME);
+
+		s = Rest.getFirstNodeChildTextContentByTagAsString(e, TAG_SHORTNAME);
+		this.shortName = Rest.getStringOrDefault(s, DEF_SHORTNAME);
+
+		s = Rest.getFirstNodeChildTextContentByTagAsString(e, TAG_BYTECOUNT);
+		this.byteCount = Rest.parseIntOrDefault(s, DEF_BYTECOUNT);
+
+		s = Rest.getFirstNodeChildTextContentByTagAsString(e, TAG_BYTETYPE);
+		this.byteType = DataType.valueOf(Rest.getStringOrDefault(s, DEF_BYTE_TYPE.name()));
+
+		s = Rest.getFirstNodeChildTextContentByTagAsString(e, TAG_VALUECLASS);
+		this.valueClass = ValueDataClass.valueOf(Rest.getStringOrDefault(s, DEF_VALUECLASS.name()));
+		
+		s = Rest.getFirstNodeChildTextContentByTagAsString(e, TAG_DESCMAPINDEX);
+		this.mutableMapIndex = Rest.parseIntOrDefault(s, 0);
+
+		n = Rest.getFirstChildNodeByTag(e,TAG_DEPENDSOFADRESS);
+		this.masterParameterAdress = new XGAdress(n);
+
+		s = Rest.getFirstNodeChildTextContentByTagAsString(e, TAG_TRANSLATOR);
+		this.valueTranslator = XGValueTranslator.getTranslator(s);
+
+		n = Rest.getFirstChildNodeByTag(e, TAG_TRANSLATIONMAP);
+		if(n != null) this.translationMap = XGValueTranslationMap.getTranslationMap(n.getTextContent(), Rest.splitNodesAttributeMap(n, ATTR_FILTER));
+		else this.translationMap = null;
 	}
-
-	public String getCategory()
-	{	if(this.category != null) return category;
-		return DEF_CAT;
-	}
-
-	public void setCategory(String category)
-	{	this.category = category;}
-
-	public String getObjectType()
-	{	if(this.objectType != null) return objectType;
-		return DEF_OBTYPE;
-	}
-
-	public void setObjectType(String objectType)
-	{	this.objectType = objectType;}
 
 	public XGAdress getAdress()
 	{	return this.adress;}
@@ -86,7 +145,10 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 	{	return maxValue;}
 
 	public boolean isLimitizable()
-	{	return !this.valueTranslator.equals(ValueTranslator.translateMap);}
+	{	return !this.valueTranslator.equals(XGValueTranslator.translateMap);}
+
+	public XGObjectType getObjectType()
+	{	return this.objectType;}
 
 	public XGAdress getMasterParameterAdress()
 	{	return this.masterParameterAdress;}
@@ -103,17 +165,17 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 	public String getLongName()
 	{	return this.longName;}
 
-	public Bytes.ByteType getByteType()
+	public XGByteArray.DataType getByteType()
 	{	return byteType;}
 
-	public ValueType getValueType()
-	{	return valueType;}
+	public ValueDataClass getValueClass()
+	{	return valueClass;}
 
-	public ValueTranslator getValueTranslator()
+	public XGValueTranslator getValueTranslator()
 	{	return valueTranslator;}
 
 	public Map<Integer, String> getTranslationMap()
-	{	if(this.translationMap == null) System.out.println("no translationmap for " + this.longName);
+	{	if(this.translationMap == null) log.info("no translationmap for " + this.longName);
 		return this.translationMap;}
 
 	@Override public String toString()

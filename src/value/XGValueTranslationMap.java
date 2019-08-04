@@ -13,7 +13,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-public interface TranslationMap extends XGValueConstants
+public interface XGValueTranslationMap extends XGValueConstants
 {	static final Logger log = Logger.getAnonymousLogger();
 	static final File FILE = new File("rsc/XGTranslationMaps.xml");
 

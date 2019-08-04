@@ -13,7 +13,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
-
+import adress.InvalidXGAdressException;
 import application.Setting;
 import application.MU80;
 import msg.XGMessage;
@@ -139,7 +139,7 @@ public class Midi implements Receiver
 	{	return this.xgDev.getName();
 	}
 
-	public void transmit(XGMessage msg)
+	public synchronized void transmit(XGMessage msg)
 	{	if(this.transmitter == null) return;
 		try
 		{	this.transmitter.send(msg.asSysexMessage(), -1L);
@@ -153,12 +153,12 @@ public class Midi implements Receiver
 	{	this.queue.add(msg);
 	}
 
-	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
+	@Override public synchronized void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	XGMessage msg;
 		try
 		{	msg = XGMessage.factory(mmsg);
 		}
-		catch (InvalidMidiDataException e)
+		catch (InvalidMidiDataException | InvalidXGAdressException e)
 		{	log.info(e.getMessage());
 			return;
 		}

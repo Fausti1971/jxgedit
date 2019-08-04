@@ -2,6 +2,7 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
+import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import application.MU80;
 
@@ -14,18 +15,18 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 	{	super(array);
 	}
 
-	public XGMessageDumpRequest(XGAdress adr) throws Exception
+	public XGMessageDumpRequest(XGAdress adr) throws InvalidXGAdressException
 	{	super(new byte[8]);
 		setSysexId(MU80.device.getSysexId());
 		setMessageID();
-		encodeMidiByte(HI_OFFS, adr.getHi());
-		encodeMidiByte(MID_OFFS, adr.getMid());
-		encodeMidiByte(LO_OFFS, adr.getLo());
+		encodeMidiByteFromInteger(HI_OFFS, adr.getHi());
+		encodeMidiByteFromInteger(MID_OFFS, adr.getMid());
+		encodeMidiByteFromInteger(LO_OFFS, adr.getLo());
 		setEOX(7);
 		this.response = new XGMessageBulkDump(adr);
 	}
 
-	public XGMessageDumpRequest(SysexMessage msg)
+	public XGMessageDumpRequest(SysexMessage msg) throws InvalidMidiDataException
 	{	super(msg);
 	}
 
@@ -42,28 +43,28 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 	{	return response;}
 
 	protected int getHi()
-	{	return decodeMidiByte(HI_OFFS);}
+	{	return decodeMidiByteToInteger(HI_OFFS);}
 
 	protected int getMid()
-	{return decodeMidiByte(MID_OFFS);}
+	{return decodeMidiByteToInteger(MID_OFFS);}
 
 	protected int getLo()
-	{	return decodeMidiByte(LO_OFFS);}
+	{	return decodeMidiByteToInteger(LO_OFFS);}
 
 	protected void setHi(int hi)
-	{	encodeMidiByte(HI_OFFS, hi);}
+	{	encodeMidiByteFromInteger(HI_OFFS, hi);}
 
 	protected void setMid(int mid)
-	{	encodeMidiByte(MID_OFFS, mid);}
+	{	encodeMidiByteFromInteger(MID_OFFS, mid);}
 
 	protected void setLo(int lo)
-	{	encodeMidiByte(LO_OFFS, lo);}
+	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
 
 	@Override public String toString()
 	{	return "requesting hi: " + getHi() + " mid: " + getMid() + " lo: " + getLo();}
 
 	protected void setMessageID()
-	{	encodeHigherNibble(MSG_OFFS, MSG);}
+	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);}
 
 	public void storeMessage()
 	{}

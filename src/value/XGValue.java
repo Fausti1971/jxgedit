@@ -1,42 +1,82 @@
 package value;
-import java.awt.Image;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressable;
+import adress.XGAdressableSet;
+import adress.XGAdressableSetListener;
 import msg.XGMessageParameterChange;
+import obj.XGObjectInstance;
 import obj.XGObjectType;
 import parm.XGParameter;
 import parm.XGParameterConstants;
-import parm.XGParameterMap;
 
-public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdressable
-{	private static Logger log = Logger.getAnonymousLogger();
+public abstract class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdressable
+{
+	static XGAdressableSet<XGValue> VALUES = new XGAdressableSet<>();
+
+	private static XGValue factory(XGAdress adr) throws InvalidXGAdressException
+	{	XGParameter p = XGParameter.getParameter(adr);
+		switch(p.getValueClass())
+		{	default:
+			case Integer:	return new XGIntegerValue(adr);
+			case Image:		return new XGImageValue(adr);
+			case String:	return new XGStringValue(adr);
+		}
+	}
+
+	public static XGValue getValue(XGAdress adr) throws InvalidXGAdressException
+	{	if(!adr.isValueAdress()) throw new InvalidXGAdressException("no valid value-adress: " + adr);
+		return VALUES.get(adr);
+	}
+
+	public static XGAdressableSet<XGValue> getValues()
+	{	return VALUES;}
+
+	public static XGAdressableSet<XGValue> getValues(XGAdress adr) throws InvalidXGAdressException
+	{	return VALUES.getAllValid(adr);}
+
+	public synchronized static XGAdressableSet<XGValue> getValues(String type)
+	{	XGAdressableSet<XGValue> set = new XGAdressableSet<XGValue>();
+		for(XGValue v : VALUES) if(v.getInstance().getType().getName().equals(type)) set.add(v);
+		VALUES.addListener(set);
+		return set;
+	}
 
 	public static XGValue getValueOrNew(XGAdress adr) throws InvalidXGAdressException
-	{	return XGObjectType.getObjectTypeOrNew(adr).getInstanceOrNew(adr).getValueOrNew(adr);}
+	{	XGValue v = getValue(adr);
+		if(v == null) v = XGValue.factory(adr);
+		return v;
+	}
 
-	
+	public static XGValue getValueOrNewAndStore(XGAdress adr) throws InvalidXGAdressException
+	{	XGValue v = getValue(adr);
+		if(v == null)
+		{	v = XGValue.factory(adr);
+			VALUES.add(v);
+		}
+		return v;
+	}
+
+	public static void addXGValueListener(XGAdressableSetListener l)
+	{	VALUES.addListener(l);}
+
+	public static void removeXGValueListener(XGAdressableSetListener l)
+	{	VALUES.removeListener(l);}
+
+/***********************************************************************************************/
+
 	private final XGAdress adress;
+	private final XGObjectInstance instance;
 	private final XGParameter parameter;
-	private String textValue;
-	private int numberValue;
-	private Image imageValue;
-	private Set<XGValueChangeListener> listeners = new HashSet<>();
+	private final Set<XGValueChangeListener> listeners = new HashSet<>();
 	
 	public XGValue(XGAdress adr) throws InvalidXGAdressException
-	{	this(adr, new Object());}
-
-	public XGValue(XGAdress adr, Object val) throws InvalidXGAdressException
-	{	this.adress = adr;
-		this.parameter = XGParameterMap.getParameter(adr);
-//		this.parameter = XGObjectType.getObjectTypeOrNew(adr).getParameter(adr);
-		ValueType vt = this.parameter.getValueType();
-		if(val instanceof Image && vt.equals(ValueType.BITMAP)) this.imageValue = (Image)val;
-		if(val instanceof Integer && vt.equals(ValueType.NUMBER)) this.numberValue = (int)val;
-		if(val instanceof String && vt.equals(ValueType.TEXT)) this.textValue = (String)val;
+	{	if(!adr.isValueAdress()) throw new InvalidXGAdressException("not a value adress: " + adr);
+		this.adress = adr;
+		this.instance = XGObjectType.getObjectTypeOrNew(adr).getInstance(adr);
+		this.parameter = XGParameter.getParameter(adr);
 	}
 
 	public void addListener(XGValueChangeListener l)
@@ -45,113 +85,47 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdr
 	public void removeListener(XGValueChangeListener l)
 	{	this.listeners.remove(l);}
 
-	public String getTextValue() throws WrongXGValueTypeException
-	{	switch(this.parameter.getValueType())
-		{	case TEXT:		return this.textValue;
-			case BITMAP:	throw new WrongXGValueTypeException("can't convert BITMAP to TEXT");
-			case NUMBER:	return this.parameter.getValueTranslator().translate(this);
-			default:		return "";
-		}
+	protected void notifyListeners()
+	{	for(XGValueChangeListener l : this.listeners) l.valueChanged(this);
+//		VALUESET.notifyListeners(this.adress);
 	}
-
-	public int getNumberValue() throws WrongXGValueTypeException
-	{	switch(this.parameter.getValueType())
-		{	case BITMAP:	throw new WrongXGValueTypeException("can't convert BITMAP to NUMBER");
-			case NUMBER:	return this.numberValue;
-			case TEXT:		try
-							{	return Integer.parseInt(this.textValue);
-							}
-							catch(NumberFormatException e)
-							{	throw new WrongXGValueTypeException("can't convert " + this.textValue + " to NUMBER");
-							}
-			default:		throw new WrongXGValueTypeException("can't convert " + this.parameter.getValueType().name() + " to NUMBER");
-		}
-	}
-
-	public Image getImageValue() throws WrongXGValueTypeException
-	{	switch(this.parameter.getValueType())
-		{	case BITMAP:	return this.imageValue;
-			case NUMBER:
-			case TEXT:
-			default:		throw new WrongXGValueTypeException("can't convert " + this.parameter.getValueType().name() + " to BITMAP");
-		}
-	}
-
-	public XGParameter getParameter()
-	{	return this.parameter;}
 
 	public XGAdress getAdress()
 	{	return this.adress;}
 
-	public boolean setValue(Object v) throws WrongXGValueTypeException
-	{	v = this.limitize(v);
-		ValueType vt = this.parameter.getValueType();
-		boolean changed;
+	public XGObjectInstance getInstance()
+	{	return this.instance;}
 
-		if(v instanceof Integer && vt.equals(ValueType.NUMBER))
-		{	changed = this.numberValue != (int)v;
-			this.numberValue = (int)v;
-			return changed;
-		}
-		if(v instanceof String && vt.equals(ValueType.TEXT))
-		{	changed = !this.textValue.equals((String)v);
-			this.textValue = (String)v;
-			return changed;
-		}
-		if(v instanceof Image && vt.equals(ValueType.BITMAP))
-		{	changed = !this.imageValue.equals((Image)v);
-			this.imageValue = (Image)v;
-			return changed;
-		}
-		throw new WrongXGValueTypeException("can't convert " + v.getClass().getSimpleName() + " to " + vt.name());
-	}
+	public XGParameter getParameter()
+	{	return this.parameter;}
 
-	public boolean changeValue(Object v)
-	{	v = this.limitize(v);
-		boolean changed = false;
-		try
-		{	changed = this.setValue(v);
-			if(changed)
-			{	new XGMessageParameterChange(this).transmit();
-				notifyListeners();
-			}
+	protected abstract void validate(Object o) throws WrongXGValueTypeException;
+
+	public abstract boolean setContent(Object o) throws WrongXGValueTypeException;
+
+	public abstract Object getContent();
+
+	public abstract boolean addAndTransmit(Object v) throws WrongXGValueTypeException;
+
+	public boolean setContentAndTransmit(Object o) throws WrongXGValueTypeException, InvalidXGAdressException
+	{	boolean changed = this.setContent(o);
+		if(changed)
+		{	new XGMessageParameterChange(this).transmit();
+			notifyListeners();
 		}
-		catch(WrongXGValueTypeException | InvalidXGAdressException e)
-		{	return false;}
 		return changed;
 	}
 
-	public boolean addValue(Object v)
-	{	switch(this.parameter.getValueType())
-		{	case NUMBER:	return changeValue(this.numberValue + (int)v);
-			case TEXT:		return changeValue(this.textValue + v);
-			case BITMAP:	return false;
-			default:		return false;
-		}
-	}
+	protected abstract Object limitize(Object v);
 
-	private	Object limitize(Object v)
-	{	if(!this.parameter.isLimitizable()) return v;
-		switch(this.parameter.getValueType())
-		{	case NUMBER:	return Math.min(this.parameter.getMaxValue(), Math.max(this.parameter.getMinValue(), (int)v));
-			case TEXT:		return "";	//TODO Stringlänge auf maxValue reduzieren;
-			case BITMAP:	return null;
-			default:		return null;
-		}
-	}
-
-	private void notifyListeners()
-	{	for(XGValueChangeListener l : listeners) l.valueChanged(this);}
-
-	@Override public String toString()
-	{	try
-		{	return this.getTextValue();
-		}
-		catch(WrongXGValueTypeException e)
-		{	e.printStackTrace();
-			return "";
-		}
-	}
+	public String getDescription()
+	{	return this.getClass().getSimpleName() + " "
+			+ this.instance.getType() + " "
+			+ this.instance + ", "
+			+ this.getParameter() + " = "
+			+ this.toString();
+}
+	@Override public abstract String toString();
 
 	public int compareTo(XGValue o)
 	{	return this.adress.compareTo(o.adress);}

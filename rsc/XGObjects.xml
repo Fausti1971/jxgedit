@@ -1,133 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGObjects.xsd">
-	<object>
-		<name>Master</name>
-		<adress>
-			<hi>0</hi>
-			<mid>0</mid>
-		</adress>
-		<parameterMap>sys_parameters</parameterMap>
-		<dumpSequence>	<!-- Range über Minus möglich; rekursiver loop von hi nach lo-->
-			<hi>0</hi>
+
+	<object device="MU80">
+		<name>System</name>
+		<dumpSequence device="MU80">
+			<hi>0</hi>	<!-- Range über Minus möglich; rekursiver loop von hi nach lo-->
 			<mid>0</mid>
 			<lo>0-6</lo>
 		</dumpSequence>
 	</object>
 
-	<object>
-		<name>Info</name>
-		<adress>
-			<hi>1</hi>
-			<mid>0</mid>
-		</adress>
-		<parameterMap>info_parameters</parameterMap>
-		<dumpSequence>
+	<object device="MU80">
+		<name>System Info</name>
+		<dumpSequence device="MU80">
 			<hi>1</hi>
 			<mid>0</mid>
 			<lo>0-15</lo>
 		</dumpSequence>
 	</object>
 
-	<object>
-		<name>System FX</name>
-		<adress>
-			<hi>2</hi>
-			<mid>1</mid>
-		</adress>
-		<parameterMap>fx1_parameters</parameterMap>
-		<dumpSequence name="reverb">
+	<object device="MU80">
+		<name>System FX 1</name>
+		<dumpSequence device="MU80">
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>0-13</lo>
 		</dumpSequence>
-		<dumpSequence name="reverb">
+		<dumpSequence device="MU80">
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>16-21</lo>
 		</dumpSequence>
-		<dumpSequence name="chorus">
+	</object>
+
+	<object device="MU80">
+		<name>System FX 2</name>
+		<dumpSequence device="MU80">
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>32-46</lo>
 		</dumpSequence>
-		<dumpSequence name="chorus">
+		<dumpSequence device="MU80">
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>48-53</lo>
 		</dumpSequence>
-		<dumpSequence name="variation">
+	</object>
+
+	<object device="MU80">
+		<name>System FX 3</name>
+		<dumpSequence device="MU80">
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>64-96</lo>
 		</dumpSequence>
-		<dumpSequence name="variation">
+		<dumpSequence device="">
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>97</lo>
+		</dumpSequence>
+		<dumpSequence device="">
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>98</lo>
+		</dumpSequence>
+		<dumpSequence device="MU80">
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>112-117</lo>
 		</dumpSequence>
 	</object>
 
-	<object>
+	<object device="MU80">
+		<name>System EQ</name>
+		<dumpSequence device="MU80">
+			<hi>2</hi>
+			<mid>64</mid>
+			<lo>0-21</lo>
+		</dumpSequence>
+	</object>
+
+	<object device="MU80">
+		<name>Insertion FX</name>
+		<dumpSequence device="MU80">
+			<hi>3</hi>
+			<mid>0</mid>
+			<lo>0-17</lo>
+		</dumpSequence>
+		<dumpSequence device="">
+			<hi>3</hi>
+			<mid>0</mid>
+			<lo>18</lo>
+		</dumpSequence>
+		<dumpSequence device="">
+			<hi>3</hi>
+			<mid>0</mid>
+			<lo>19</lo>
+		</dumpSequence>
+		<dumpSequence device="MU80">
+			<hi>3</hi>
+			<mid>0</mid>
+			<lo>32-37</lo>
+		</dumpSequence>
+		<dumpSequence device="">
+			<hi>3</hi>
+			<mid>0</mid>
+			<lo>48-66</lo>
+		</dumpSequence>
+	</object>
+
+	<object device="MU80">
+		<name>Display Data</name>
+		<dumpSequence device="MU80">
+			<hi>6</hi>
+			<mid>0</mid>
+			<lo>0-31</lo>
+		</dumpSequence>
+		<dumpSequence device="MU80">
+			<hi>7</hi>
+			<mid>0-127</mid>
+			<lo>0-47</lo>
+		</dumpSequence>
+	</object>
+
+	<object device="MU80">
 		<name>Multipart</name>
-		<adress>
-			<hi>8</hi>
-		</adress>
-		<parameterMap>multipart_parameters</parameterMap>
-		<dumpSequence>
+		<dumpSequence device="MU80">
 			<hi>8</hi>
 			<mid>0-31</mid>
 			<lo>0-40</lo>
 		</dumpSequence>
-		<dumpSequence>
+		<dumpSequence device="MU80">
 			<hi>8</hi>
 			<mid>0-31</mid>
 			<lo>48-110</lo>
 		</dumpSequence>
+		<dumpSequence device="">
+			<hi>8</hi>
+			<mid>0-31</mid>
+			<lo>112-115</lo>
+		</dumpSequence>
+		<dumpSequence device="MU80">
+			<hi>8</hi>
+			<mid>0-31</mid>
+			<lo>116-127</lo>
+		</dumpSequence>
+
 	</object>
 
-	<object>
+	<object device="MU80">
 		<name>Drumset 1</name>
-		<adress>
-			<hi>48</hi>
-		</adress>
-		<parameterMap>drum_parameters</parameterMap>
-		<dumpSequence>
+		<dumpSequence device="MU80">
 			<hi>48</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>
 		</dumpSequence>
 	</object>
-	<object>
+	<object device="MU80">
 		<name>Drumset 2</name>
-		<adress>
-			<hi>49</hi>
-		</adress>
-		<parameterMap>drum_parameters</parameterMap>
-		<dumpSequence>
+		<dumpSequence device="MU80">
 			<hi>49</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>
 		</dumpSequence>
 	</object>
-	<object>
+	<object device="MU80">
 		<name>Drumset 3</name>
-		<adress>
-			<hi>50</hi>
-		</adress>
-		<parameterMap>drum_parameters</parameterMap>
-		<dumpSequence>
+		<dumpSequence device="MU80">
 			<hi>50</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>
 		</dumpSequence>
 	</object>
-	<object>
+	<object device="MU80">
 		<name>Drumset 4</name>
-		<adress>
-			<hi>51</hi>
-		</adress>
-		<parameterMap>drum_parameters</parameterMap>
-		<dumpSequence>
+		<dumpSequence device="MU80">
 			<hi>51</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>

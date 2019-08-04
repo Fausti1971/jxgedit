@@ -1,10 +1,11 @@
 package msg;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 
 public class XGMessageUnknown extends XGMessage
 {
-	protected XGMessageUnknown(SysexMessage msg)
+	protected XGMessageUnknown(SysexMessage msg) throws InvalidMidiDataException
 	{	super(msg);}
 
 	protected XGMessageUnknown(byte[] msg)
@@ -29,7 +30,7 @@ public class XGMessageUnknown extends XGMessage
 	{}
 
 	protected void setMessageID()
-	{	encodeHigherNibble(MSG_OFFS, 0);}
+	{	encodeHigherNibbleFromInteger(MSG_OFFS, 0);}
 
 	public void storeMessage()
 	{	log.info("unknown message received: " + getMessageId());}

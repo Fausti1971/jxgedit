@@ -1,6 +1,12 @@
 package msg;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
+import application.MU80;
+import value.WrongXGValueTypeException;
+import value.XGValue;
 
 public class XGMessageParameterRequest extends XGMessage implements XGRequest
 {	private static final int MSG = 0x30, HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6;
@@ -10,37 +16,37 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	protected XGMessageParameterRequest(byte[] array, long time)
 	{	super(array);}
 
-	public XGMessageParameterRequest(SysexMessage msg)
+	public XGMessageParameterRequest(SysexMessage msg) throws InvalidMidiDataException
 	{	super(msg);}
-/*
-	public XGMessageParameterRequest(int sysexId, int hi, int mid, int lo)	//TODO entferne diesen Konstruktor wenn XGParamemter steht...
+
+	public XGMessageParameterRequest(XGAdress adr) throws InvalidXGAdressException, WrongXGValueTypeException
 	{	super(new byte[8]);
 		setMessageId(MSG);
-		setSysexId(sysexId);
-		setHi(hi);
-		setMid(mid);
-		setLo(lo);
+		setSysexId(MU80.device.getSysexId());
+		setHi(adr.getHi());
+		setMid(adr.getMid());
+		setLo(adr.getLo());
 		setEOX(7);
-		this.response = new XGMessageParameterChange(sysexId, hi, mid, lo, 0, 0);
+		this.response = new XGMessageParameterChange(XGValue.getValueOrNew(adr));
 	}
-*/
+
 	protected int getHi()
-	{	return decodeMidiByte(HI_OFFS);}
+	{	return decodeMidiByteToInteger(HI_OFFS);}
 
 	protected int getMid()
-	{	return decodeMidiByte(MID_OFFS);}
+	{	return decodeMidiByteToInteger(MID_OFFS);}
 
 	protected int getLo()
-	{	return decodeMidiByte(LO_OFFS);}
+	{	return decodeMidiByteToInteger(LO_OFFS);}
 
 	protected void setHi(int hi)
-	{	encodeMidiByte(HI_OFFS, hi);}
+	{	encodeMidiByteFromInteger(HI_OFFS, hi);}
 
 	protected void setMid(int mid)
-	{	encodeMidiByte(MID_OFFS, mid);}
+	{	encodeMidiByteFromInteger(MID_OFFS, mid);}
 
 	protected void setLo(int lo)
-	{	encodeMidiByte(LO_OFFS, lo);}
+	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
 
 	public boolean isResponsed(XGMessage msg)
 	{	if(msg == null) return false;
@@ -52,7 +58,7 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	}
 
 	protected void setMessageID()
-	{	encodeHigherNibble(MSG_OFFS, MSG);
+	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
 	}
 
 	public void storeMessage()

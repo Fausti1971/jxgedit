@@ -1,8 +1,8 @@
 package msg;
 
+import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
-import application.MU80;
 import value.XGValue;
 
 public class XGMessageParameterChange extends XGMessage
@@ -24,37 +24,34 @@ public class XGMessageParameterChange extends XGMessage
 		setEOX(DATA_OFFS + v.getParameter().getByteCount());
 	}
 
-	public XGMessageParameterChange(SysexMessage msg)
+	public XGMessageParameterChange(SysexMessage msg) throws InvalidMidiDataException
 	{	super(msg);
 		log.info(this.getClass().toString());
 	}
 
 	protected void setHi(int value)
-	{	encodeMidiByte(HI_OFFS, value);}
+	{	encodeMidiByteFromInteger(HI_OFFS, value);}
 
 	protected void setMid(int value)
-	{	encodeMidiByte(MID_OFFS, value);}
+	{	encodeMidiByteFromInteger(MID_OFFS, value);}
 
 	protected void setLo(int value)
-	{	encodeMidiByte(LO_OFFS, value);}
+	{	encodeMidiByteFromInteger(LO_OFFS, value);}
 
 	protected void setData(XGValue v)
 	{	encodeXGValue(DATA_OFFS, v);}
 
 	protected int getHi()
-	{	return decodeMidiByte(HI_OFFS);}
+	{	return decodeMidiByteToInteger(HI_OFFS);}
 
 	protected int getMid()
-	{	return decodeMidiByte(MID_OFFS);}
+	{	return decodeMidiByteToInteger(MID_OFFS);}
 
 	protected int getLo()
-	{	return decodeMidiByte(LO_OFFS);}
-
-	public void transmit()
-	{	MU80.device.transmit(this);}
+	{	return decodeMidiByteToInteger(LO_OFFS);}
 
 	protected void setMessageID()
-	{	encodeHigherNibble(MSG_OFFS, MSG);}
+	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);}
 
 	public void storeMessage()
 	{}

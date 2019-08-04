@@ -1,7 +1,9 @@
 package adress;
 
 import java.util.logging.Logger;
-public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
+import org.w3c.dom.Node;
+import application.Rest;
+public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdressable
 {	private static Logger log =Logger.getAnonymousLogger();
 
 	private final XGAdressField hi, mid, lo;
@@ -18,18 +20,6 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 		this.lo = new XGAdressField(lo);
 	}
 
-	public XGAdress(int hi, int mid)
-	{	this.hi = new XGAdressField(hi);
-		this.mid = new XGAdressField(mid);
-		this.lo = new XGAdressField();
-	}
-
-	public XGAdress(int hi)
-	{	this.hi = new XGAdressField(hi);
-		this.mid = new XGAdressField();
-		this.lo = new XGAdressField();
-	}
-
 	public XGAdress(XGAdressField h, XGAdressField m, XGAdressField l)
 	{	if(h != null) this.hi = h;
 		else this.hi = new XGAdressField();
@@ -37,6 +27,12 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 		else this.mid = new XGAdressField();
 		if(l != null) this.lo = l;
 		else this.lo = new XGAdressField();
+	}
+
+	public XGAdress(Node item)
+	{	this.hi = new XGAdressField(Rest.getFirstNodeChildTextContentByTagAsString(item, TAG_HI));
+		this.mid = new XGAdressField(Rest.getFirstNodeChildTextContentByTagAsString(item, TAG_MID));
+		this.lo = new XGAdressField(Rest.getFirstNodeChildTextContentByTagAsString(item, TAG_LO));
 	}
 
 	public int getHi() throws InvalidXGAdressException
@@ -49,15 +45,15 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 	{	return this.lo.getValue();}
 
 	public boolean isValueAdress()
-	{	return this.isHiValdi() && this.isMidValdi() && this.isLoValdi();}
+	{	return this.isHiValid() && this.isMidValid() && this.isLoValid();}
 
-	private boolean isHiValdi()
+	public boolean isHiValid()
 	{	return this.hi.isValid();}
 
-	private boolean isMidValdi()
+	public boolean isMidValid()
 	{	return this.mid.isValid();}
 
-	private boolean isLoValdi()
+	public boolean isLoValid()
 	{	return this.lo.isValid();}
 
 	public XGAdress complement(XGAdress adr)
@@ -95,9 +91,12 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>
 
 	public int compareTo(XGAdress o)
 	{	int temp = 0;
-		if(this.isHiValdi() && o.isHiValdi()) temp = this.hi.compare(o.hi);
-		if(temp == 0 && this.isMidValdi() && o.isMidValdi()) temp = this.mid.compare(o.mid);
-		if(temp == 0 && this.isLoValdi() && o.isLoValdi()) temp = this.lo.compare(o.lo);
+		if(this.isHiValid() && o.isHiValid()) temp = this.hi.compare(o.hi);
+		if(temp == 0 && this.isMidValid() && o.isMidValid()) temp = this.mid.compare(o.mid);
+		if(temp == 0 && this.isLoValid() && o.isLoValid()) temp = this.lo.compare(o.lo);
 		return temp;
 	}
+
+	public XGAdress getAdress()
+	{	return this;}
 }

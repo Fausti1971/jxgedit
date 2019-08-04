@@ -1,32 +1,32 @@
-package midi;
+	package msg;
 
 import java.util.Arrays;
 import parm.XGParameter;
-import parm.XGParameterConstants.ValueType;
+import parm.XGParameterConstants.ValueDataClass;
 import value.WrongXGValueTypeException;
 import value.XGValue;
 
-public interface Bytes
-{	enum ByteType{MIDIBYTE, NIBBLE}
+public interface XGByteArray
+{	enum DataType{MIDIBYTE, NIBBLE}
 
 	byte[] getByteArray();
 
 	default void decodeXGValue(int offset, XGValue v)	//dekodiert und setzt (in v) die Anzahl byteCount byteType/s am/ab offset des byteArray
 	{	XGParameter p = v.getParameter();
 		if(p == null) return;
-		ByteType bt = p.getByteType();
-		ValueType vt = p.getValueType();
+		DataType bt = p.getByteType();
+		ValueDataClass vc = p.getValueClass();
 		int bc = p.getByteCount();
 		try
-		{	switch(vt)
-			{	case TEXT:		return;
-				case BITMAP:	return;
+		{	switch(vc)
+			{	case String:		v.setContent(getString(offset, offset + bc)); break;
+				case Image:			return;
 				default:
-				case NUMBER:
+				case Integer:
 					switch(bt)
 					{	default:
-						case MIDIBYTE:	v.setValue(decodeMidiBytes(offset, bc));
-						case NIBBLE:	v.setValue(decodeLowerNibbles(offset, bc));
+						case MIDIBYTE:	v.setContent(decodeMidiBytesToInteger(offset, bc)); break;
+						case NIBBLE:	v.setContent(decodeLowerNibbles(offset, bc)); break;
 					}
 			}
 		}
@@ -37,45 +37,41 @@ public interface Bytes
 	default void encodeXGValue(int offset, XGValue v)
 	{	XGParameter p = v.getParameter();
 		if(p == null) return;
-		ByteType bt = p.getByteType();
-		ValueType vt = p.getValueType();
+		DataType bt = p.getByteType();
+		ValueDataClass vc = p.getValueClass();
 		int bc = p.getByteCount();
-		try
-		{	switch(vt)
-			{	case TEXT:		return;
-				case BITMAP:	return;
+		switch(vc)
+			{	case String:	setString(offset, bc, v.toString()); break;
+				case Image:		return;
 				default:
-				case NUMBER:
+				case Integer:
 					switch(bt)
 					{	default:
-						case MIDIBYTE:	encodeMidiBytes(offset, bc, v.getNumberValue()); break;
-						case NIBBLE:	encodeLowerNibbles(offset, bc, v.getNumberValue()); break;
+						case MIDIBYTE:	encodeMidiBytesFromInteger(offset, bc, (int)v.getContent()); break;
+						case NIBBLE:	encodeLowerNibblesFromInteger(offset, bc, (int)v.getContent()); break;
 					}
 			}
-		}
-		catch(WrongXGValueTypeException e)
-		{	e.printStackTrace();}
 	}
 
-	default int decodeMidiByte(int index)
+	default int decodeMidiByteToInteger(int index)
 	{	return (getByteArray()[index]) & 0x7F;}
 
-	default void encodeMidiByte(int index, int i)
+	default void encodeMidiByteFromInteger(int index, int i)
 	{	getByteArray()[index] = (byte)(i & 0xFF);}
 
-	default int decodeMidiBytes(int index, int size)
+	default int decodeMidiBytesToInteger(int index, int size)
 	{	int temp = 0;
 		for(int i = 0; i < size; i++)
 		{	temp <<= 7;
-			temp |= this.decodeMidiByte(index + i);
+			temp |= this.decodeMidiByteToInteger(index + i);
 		}
 		return temp;
 	}
 
-	default void encodeMidiBytes(int index, int size, int value)
+	default void encodeMidiBytesFromInteger(int index, int size, int value)
 	{	size--;
 		while(size >= 0)
-		{	this.encodeMidiByte(index + size, value & 0x7F);
+		{	this.encodeMidiByteFromInteger(index + size, value & 0x7F);
 			size--;
 			value >>= 7;
 		}
@@ -85,13 +81,13 @@ public interface Bytes
 	{	return getByteArray()[index] & 0xF;}
 
 	default void encodeLowerNibble(int index, int value)
-	{	encodeMidiByte(index, decodeHigherNibble(index) | (value & 0xF));}
+	{	encodeMidiByteFromInteger(index, decodeHigherNibbleToInteger(index) | (value & 0xF));}
 
-	default int decodeHigherNibble(int index)
+	default int decodeHigherNibbleToInteger(int index)
 	{	return getByteArray()[index] & 0xF0;}
 
-	default void encodeHigherNibble(int index, int value)
-	{	encodeMidiByte(index, decodeLowerNibble(index) | (value & 0XF0));}
+	default void encodeHigherNibbleFromInteger(int index, int value)
+	{	encodeMidiByteFromInteger(index, decodeLowerNibble(index) | (value & 0XF0));}
 
 	default int decodeLowerNibbles(int index, int size)
 	{	int res = 0;
@@ -102,7 +98,7 @@ public interface Bytes
 		return res;
 	}
 
-	default void encodeLowerNibbles(int index, int size, int value)
+	default void encodeLowerNibblesFromInteger(int index, int size, int value)
 	{	size--;
 		while(size >= 0)
 		{	encodeLowerNibble(index + size, value & 0xF);
@@ -136,12 +132,15 @@ public interface Bytes
 	{	StringBuilder sb = new StringBuilder();
 		char c;
 		while(true)
-		{	c = (char)this.decodeMidiByte(from);
+		{	c = (char)this.decodeMidiByteToInteger(from);
 			if(c == 0 || from == to) break;
 			sb.append(c);
 			from++;}
 		return(sb.toString());
 	}
+
+	default void setString(int offset, int bc, String s)//TODO
+	{}
 
 	public default String toHexString()
 	{	if(getByteArray() == null) return "no data";
