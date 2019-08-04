@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:
+	offset = 0 (dezimal, dei descriptions (variable Parameter) ist dies der Parameterindex bspw. "REVERB PARAMETER 1")
+	byteCount = 1 (dezimal)
+	byteType = MIDIBYTE, NIBBLE
+	valueClass = Integer, String, BITMAP
+	translator = translateToText, translateNot, translateToTextPlus1, translateDiv10, translateSub128Div10, translateMap
+	translationMap = ""
+	translationMapFilter = ""
+	descriptionMapIndex = 0... (der Index des Descriptions in der MutableParameterMap)
+	descriptionDependsOf = 0 (dezimal, Offset des die Description definierenden Parameters bspw. ReverbType...)
+-->
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGParameterMaps.xsd">
+
+	<parameter>
+		<adress>
+			<hi>6</hi>
+			<mid>0</mid>
+			<lo>0</lo>
+		</adress>
+		<byteCount>32</byteCount>
+		<byteType>MIDIBYTE</byteType>
+		<longName>DisplayText</longName>
+		<shortName>Text</shortName>
+		<valueClass>String</valueClass>
+	</parameter>
+
+	<parameter>
+		<adress>
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>0</lo>
+		</adress>
+		<longName>Reverb Program</longName>
+		<shortName>RevPrg</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>69</valueMax>
+		<byteCount>2</byteCount>
+		<byteType>MIDIBYTE</byteType>
+		<valueClass>Integer</valueClass>
+		<translator>translateMap</translator>
+		<translationMap filter="reverb">fx_programs</translationMap>
+	</parameter>
+	<parameter>
+		<adress>
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>2</lo>
+		</adress>
+		<descriptionMapIndex>1</descriptionMapIndex>
+		<dependsOfAdress>
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>0</lo>
+		</dependsOfAdress>
+	</parameter>
+
+	<parameter>
+		<adress>
+			<hi>8</hi>
+			<lo>0</lo>
+		</adress>
+		<longName>Element Reserve</longName>
+		<shortName>ElmRsv</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>32</valueMax>
+		<byteCount>1</byteCount>
+		<byteType>MIDIBYTE</byteType>
+		<valueClass>Integer</valueClass>
+		<translator>translateToText</translator>
+	</parameter>
+	<parameter>
+		<adress>
+			<hi>8</hi>
+			<lo>1</lo>
+		</adress>
+		<longName>Bank Select MSB</longName>
+		<shortName>BnkMSB</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+		<byteCount>1</byteCount>
+		<byteType>MIDIBYTE</byteType>
+		<valueClass>Integer</valueClass>
+		<translator>translateToText</translator>
+	</parameter>
+
+	<parameter>
+		<adress>
+			<hi>8</hi>
+			<lo>4</lo>
+		</adress>
+		<longName>MIDI Channel</longName>
+		<shortName>Ch</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+		<byteCount>1</byteCount>
+		<byteType>MIDIBYTE</byteType>
+		<valueClass>Integer</valueClass>
+		<translator>translateMap</translator>
+		<translationMap>midi_channels</translationMap>
+	</parameter>
+
+	<parameter>
+		<adress>
+			<hi>8</hi>
+			<lo>9</lo>
+		</adress>
+		<longName>Detune</longName>
+		<shortName>Tune</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>255</valueMax>
+		<byteCount>2</byteCount>
+		<byteType>NIBBLE</byteType>
+		<valueClass>Integer</valueClass>
+		<translator>translateSub128Div10</translator>
+	</parameter>
+
+	<parameter>
+		<adress>
+			<hi>8</hi>
+			<lo>26</lo>
+		</adress>
+		<longName>Attack Time</longName>
+		<shortName>Atck</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+	</parameter>
+
+</map>

@@ -6,49 +6,54 @@ import java.util.Map.Entry;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
-import obj.XGObject;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
+import adress.XGInstanceSelectionListener;
 import parm.XGParameter;
 import parm.XGParameterConstants;
+import value.WrongXGValueTypeException;
+import value.XGValue;
+import value.XGValueChangeListener;
 
-public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionListener, XGParameterConstants
+public class MyCombo extends JButton implements ActionListener, GuiConstants, XGParameterConstants, XGValueChangeListener, XGInstanceSelectionListener
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
 
-//	private XGParameter parm;
-	private XGObject obj;
-	private int offset;
+	private XGValue value;
+	private XGAdress adress;
 
-	public MyCombo(int offs)
-	{	this.offset = offs;
-		MyCombo mc = this;
+	public MyCombo(XGAdress adr)
+	{	this.adress = adr;
 		setSize(SL_DIM);
-		setVisible(false);
-		addActionListener(new ActionListener()
-		{	public void actionPerformed(ActionEvent e)
-			{	new MyPopup(mc).show(mc, 0, 0);}
-		});
+		this.valueChanged(this.value);
 	}
 
-	private XGParameter getParam()
-	{	return this.obj.getParameter(this.offset);}
+	public void instanceSelected(XGAdress adr)
+	{	try
+		{	valueChanged(XGValue.getValue(this.adress.complement(adr)));}
+		catch(InvalidXGAdressException e)
+		{	e.printStackTrace();}
+	}
 
-	public void xgObjectSelected(XGObject o)
-	{	this.obj = o;
-		if(this.getParam() != null)
-		{	this.setToolTipText(this.getParam().getLongName());
-			this.setVisible(true);
-			this.setText(this.getParam().getValueAsText(this.obj));
+	public void valueChanged(XGValue v)
+	{	if(this.value != null) this.value.removeListener(this);
+		if(v != null)
+		{	this.value = v;
+			this.value.addListener(this);
+				this.setToolTipText(v.getParameter().getLongName());
+				this.setText(this.value.toString());
+				addActionListener(this);
 		}
-		else this.setVisible(false);
 		this.repaint();
 	}
 
-	public void valueChanged(int v)
-	{	this.obj.changeValue(this.getParam().getOpcode().getOffset(), v);
-		this.setText(this.getParam().getValueAsText(this.obj));
-	}
+	public void actionPerformed(ActionEvent e)
+	{	new MyPopup(this);}
+
+	public XGAdress getAdress()
+	{	return this.adress;}
 
 	private class MyPopup extends JPopupMenu
 	{	/**
@@ -56,20 +61,30 @@ public class MyCombo extends JButton implements GuiConstants, XGObjectSelectionL
 		 */
 		private static final long serialVersionUID=1L;
 
-		public MyPopup(MyCombo c)
-		{	XGParameter p = c.getParam();
-			int v = c.obj.getValue(c.offset);
-			for(Entry<Integer, String> e : p.getTranslationMap().entrySet())
-			{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
-				m.addActionListener(new ActionListener()
-				{	public void actionPerformed(ActionEvent ev)
-					{	c.valueChanged(e.getKey());
-					}
-				});
-				if(e.getKey() == v) m.setSelected(true);
-				add(m);
-			}
+	/*******************************************************************************************************/
+
+		private MyPopup(MyCombo c)
+		{	MyPopup instance = this;
+			this.setInvoker(c);
+			this.setLocation(c.getLocation());
+			int v = (int)c.value.getContent();
+				for(Entry<Integer, String> e : XGParameter.getParameter(c.getAdress()).getTranslationMap().entrySet())
+				{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
+					if(e.getKey() == v) m.setSelected(true);
+					m.addActionListener(new ActionListener()
+					{	public void actionPerformed(ActionEvent ae)
+						{	try
+							{	c.value.setContentAndTransmit(e.getKey());}
+							catch(WrongXGValueTypeException|InvalidXGAdressException e)
+							{	e.printStackTrace();}
+							instance.setVisible(false);
+							instance.setEnabled(false);
+						}
+					});
+					this.add(m);
+				}
+			this.setEnabled(true);
+			this.setVisible(true);
 		}
 	}
-
 }

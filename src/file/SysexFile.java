@@ -10,6 +10,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
+import adress.InvalidXGAdressException;
 import application.MU80;
 import application.Setting;
 import msg.XGMessage;
@@ -41,16 +42,17 @@ public class SysexFile
 	public void load(boolean protocol)
 	{	if(file != null)
 		{	int count = 0;
+			log.info("parsing started: " + file.getAbsolutePath());
 			for(SysexMessage s : parse())
 			{	try
-				{	XGMessage.factory(s).processXGMessage();
+				{	XGMessage.factory(s).storeMessage();
 					count++;
 				}
-				catch (InvalidMidiDataException e)
+				catch (InvalidMidiDataException | InvalidXGAdressException e)
 				{	log.severe(e.getMessage());
 				}
 			}
-			log.info(count + " Messages loaded from " + file.getAbsolutePath());
+			log.info(count + " Messages parsed from " + file.getAbsolutePath());
 			if(protocol)
 			{	MU80.getSetting().put(Setting.LASTDUMPFILE, file.getAbsolutePath());
 				MU80.getSetting().put(Setting.LASTDUMPPATH, file.getParent());

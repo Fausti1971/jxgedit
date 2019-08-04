@@ -8,23 +8,6 @@ import msg.XGMessage;
 public class XGDevice
 {	private static final Logger log = Logger.getAnonymousLogger();
 
-/*	public static void init()
-	{	File[] files = MU80.getDevicePath().toFile().listFiles();
-		for(File f : files)
-		{	if(f == null) return;
-			if(f.isDirectory()) continue;
-			if(f.isHidden()) continue;
-			if(f.getName().equals(MU80.getAppName())) continue;
-			new XGDevice(new Setting(f));
-		}
-		if(instances.isEmpty())
-		{	Set<XGDeviceDetector> devs = XGDeviceDetector.detectXGDevices();
-			if(devs.isEmpty()) log.info("no XG-Devices detected!");
-			else for(XGDeviceDetector d : devs) new XGDevice(d);
-		}
-	}
-*/
-
 /***************************************************************************************************************************/
 
 	private Midi midi = null;
@@ -32,17 +15,6 @@ public class XGDevice
 	public XGDevice(Setting setting)	//für Initialisation via Setting (file)
 	{	this.midi = new Midi(this, setting.get(Setting.MIDIOUTPUT), setting.get(Setting.MIDIINPUT));
 	}
-/*
-	private XGDevice(XGDeviceDetector d)		//	nur für Initialisiation via XGDeviceDetector
-	{	this.setting = new Setting();	//temporär
-		this.setName(d.name);
-		this.setSysexId(d.sysexId);
-		this.midi = new Midi(this, d.output, d.input);	//schreibt in setting, daher temporär
-		this.setting = new Setting(Integer.toString(hashCode()), this.setting);	//endgültig
-		instances.put(this.hashCode(), this);
-		listener.deviceAdded(this);
-	}
-*/
 
 	public int getSysexId()
 	{	return getSetting().getInt(Setting.SYSEXID, 0);

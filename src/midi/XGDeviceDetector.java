@@ -9,11 +9,11 @@ import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
 import msg.XGMessage;
 import msg.XGMessageBulkDump;
 import msg.XGMessageDumpRequest;
-import obj.XGAdress;
 
 public class XGDeviceDetector implements Receiver
 {	private static Logger log = Logger.getAnonymousLogger();
@@ -29,7 +29,7 @@ public class XGDeviceDetector implements Receiver
 		}
 	}
 
-	public static Set<XGDeviceDetector> detectXGDevices()		//TODO eine response auf den ersten request wird bei einem timeout bis etwa 200 chronisch ignoriert (?)
+	public static Set<XGDeviceDetector> detectXGDevices() throws Exception		//TODO eine response auf den ersten request wird bei einem timeout bis etwa 200 chronisch ignoriert (?)
 	{	openAllInputs();
 		for(MidiDevice d : Midi.getOutputs())
 		{	oDev = d;
@@ -91,7 +91,7 @@ public class XGDeviceDetector implements Receiver
 				instances.add(this);
 			}
 		}
-		catch (InvalidMidiDataException e)
+		catch (InvalidMidiDataException | InvalidXGAdressException e)
 		{	log.info(e.getMessage());
 		}
 	}

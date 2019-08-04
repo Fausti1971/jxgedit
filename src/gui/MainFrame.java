@@ -5,7 +5,7 @@ import java.awt.Container;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JFrame;
-import application.MU80;
+import adress.InvalidXGAdressException;
 
 public class MainFrame extends JFrame implements WindowListener
 {	/**
@@ -21,7 +21,11 @@ public class MainFrame extends JFrame implements WindowListener
 		Container root = super.getContentPane();
 		root.setLayout(new BorderLayout());
 		root.add(new MainMenuBar(), BorderLayout.NORTH);
-		root.add(new MainTab(), BorderLayout.CENTER);
+		try
+		{	root.add(new MainTab(), BorderLayout.CENTER);}
+		catch(InvalidXGAdressException e)
+		{	e.printStackTrace();}
+
 		root.add(new MainProgressBar(), BorderLayout.SOUTH);
 
 		pack();
@@ -33,7 +37,7 @@ public class MainFrame extends JFrame implements WindowListener
 	}
 
 	public void windowClosing(WindowEvent e)
-	{	MU80.exit();
+	{	System.exit(0);
 	}
 
 	public void windowClosed(WindowEvent e)
