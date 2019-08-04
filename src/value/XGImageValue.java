@@ -13,6 +13,7 @@ public class XGImageValue extends XGValue
 	public boolean setContent(Object o) throws WrongXGValueTypeException
 	{	this.validate(o);
 		this.content = (Image)this.limitize(o);
+		this.notifyListeners();
 		return false;
 	}
 
@@ -20,7 +21,7 @@ public class XGImageValue extends XGValue
 	{	return this.content;}
 
 	public boolean addAndTransmit(Object o) throws WrongXGValueTypeException
-	{	return setContent(o);}
+	{	return this.setContent(o);}
 
 	protected Object limitize(Object o)
 	{	return o;}

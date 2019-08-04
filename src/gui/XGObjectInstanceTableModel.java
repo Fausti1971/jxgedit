@@ -13,8 +13,9 @@ import obj.XGObjectInstance;
 import obj.XGObjectType;
 import parm.XGParameter;
 import value.XGValue;
+import value.XGValueChangeListener;
 
-public class XGObjectInstanceTableModel implements TableModel, XGAdressableSetListener
+public class XGObjectInstanceTableModel implements TableModel, XGAdressableSetListener, XGValueChangeListener
 {	private XGObjectType ot;
 	private Vector<XGParameter> col;
 	private Set<TableModelListener> tml = new HashSet<>();
@@ -39,7 +40,9 @@ public class XGObjectInstanceTableModel implements TableModel, XGAdressableSetLi
 	{	XGAdress pa = this.col.get(columnIndex).getAdress();
 		XGObjectInstance oi = ot.getXGObjectInstances().get(rowIndex);
 		try
-		{	return XGValue.getValue(pa.complement(oi.getAdress()));}
+		{	XGValue v = XGValue.getValue(pa.complement(oi.getAdress()));
+			v.addListener(this);
+			return v;}
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();}
 		return null;
@@ -70,7 +73,8 @@ public class XGObjectInstanceTableModel implements TableModel, XGAdressableSetLi
 	{	for(TableModelListener l : tml) l.tableChanged(e);}
 
 	public void setChanged(XGAdress adr)
-	{	int row = this.ot.getXGObjectInstances().indexOf(adr);
-		notifyTableModelListeners(new TableModelEvent(this, row));
-	}
+	{	notifyTableModelListeners(new TableModelEvent(this));}
+
+	public void valueChanged(XGValue v)
+	{	notifyTableModelListeners(new TableModelEvent(this, 0, this.ot.getXGObjectInstances().size(), this.getColumn(v)));}
 }

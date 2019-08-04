@@ -180,4 +180,8 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 
 	@Override public String toString()
 	{	return this.longName;}
+
+	public String getInfo()
+	{	return this.getClass().getSimpleName() + " " + this.toString();
+	}
 }

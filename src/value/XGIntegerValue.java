@@ -19,6 +19,7 @@ public class XGIntegerValue extends XGValue
 		int i = (int)this.limitize(o);
 		boolean changed = (i == (int)o);
 		this.content = i;
+		this.notifyListeners();
 		return changed;
 	}
 

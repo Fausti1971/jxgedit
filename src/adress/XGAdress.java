@@ -99,4 +99,7 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdre
 
 	public XGAdress getAdress()
 	{	return this;}
+
+	public String getInfo()
+	{	return this.getClass().getSimpleName() + " " + this.toString();}
 }

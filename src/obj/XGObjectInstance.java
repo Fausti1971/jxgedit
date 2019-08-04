@@ -27,4 +27,8 @@ public class XGObjectInstance implements XGAdressable
 			return this.type.getName();
 		}
 	}
+
+	public String getInfo()
+	{	return this.getType().getName() + " " + this.toString();
+	}
 }

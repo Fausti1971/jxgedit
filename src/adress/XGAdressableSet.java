@@ -10,14 +10,15 @@ import java.util.Vector;
 
 public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGAdressConstants, XGAdressableSetListener
 {
-
 /***********************************************************************************************************/
 
+	private Class<?> type = null;
 	private SortedMap<XGAdress, T> map = new TreeMap<XGAdress,T>();
 	private Set<XGAdressableSetListener> listeners = new HashSet<XGAdressableSetListener>();
 
 	public void add(T obj)
 	{	if(obj == null) return;
+		if(this.type == null) this.type = obj.getClass();
 		XGAdress adr = obj.getAdress();
 		this.map.put(adr, obj);
 		notifyListeners(adr);
@@ -99,6 +100,7 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	{	this.notifyListeners(adr);}
 
 	@Override public String toString()
-	{	if(size() == 0) return "empty set";
-		return getFirstValid(INVALIDADRESS).getClass().getSimpleName() + " (" + size() + ")";}
+	{	if(this.map.isEmpty()) return "empty set";
+		return (this.type.getSimpleName()) + " (" + size() + ")";
+	}
 }

@@ -22,7 +22,7 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 	private static final long serialVersionUID=1L;
 
 	private XGValue value;
-	private XGAdress adress;
+	private final XGAdress adress;
 
 	public MyCombo(XGAdress adr)
 	{	this.adress = adr;
@@ -30,22 +30,19 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 		this.valueChanged(this.value);
 	}
 
-	public void instanceSelected(XGAdress adr)
-	{	try
-		{	valueChanged(XGValue.getValue(this.adress.complement(adr)));}
-		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();}
-	}
-
 	public void valueChanged(XGValue v)
-	{	if(this.value != null) this.value.removeListener(this);
+	{	if(this.value != null)
+		{	this.value.removeListener(this);
+			this.removeActionListener(this);
+		}
 		if(v != null)
 		{	this.value = v;
 			this.value.addListener(this);
-				this.setToolTipText(v.getParameter().getLongName());
-				this.setText(this.value.toString());
-				addActionListener(this);
+			this.setToolTipText(v.getParameter().getLongName());
+			this.setText(this.value.toString());
+			this.addActionListener(this);
 		}
+		this.setVisible(this.isVisible());
 		this.repaint();
 	}
 
@@ -55,18 +52,23 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 	public XGAdress getAdress()
 	{	return this.adress;}
 
+	@Override public boolean isVisible()
+	{	return this.value != null;}
+
+/*******************************************************************************************************/
+
 	private class MyPopup extends JPopupMenu
 	{	/**
 		 * 
 		 */
 		private static final long serialVersionUID=1L;
 
-	/*******************************************************************************************************/
+	/***************************************************************/
 
 		private MyPopup(MyCombo c)
 		{	MyPopup instance = this;
 			this.setInvoker(c);
-			this.setLocation(c.getLocation());
+			this.setLocation(c.getLocationOnScreen());
 			int v = (int)c.value.getContent();
 				for(Entry<Integer, String> e : XGParameter.getParameter(c.getAdress()).getTranslationMap().entrySet())
 				{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
@@ -87,4 +89,7 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 			this.setVisible(true);
 		}
 	}
+
+	public String getInfo()
+	{	return this.toString();}
 }

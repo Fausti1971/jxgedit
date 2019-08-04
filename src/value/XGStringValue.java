@@ -15,6 +15,7 @@ public class XGStringValue extends XGValue
 		String s = (String)this.limitize(o);
 		boolean changed = !this.content.equals(o);
 		this.content = s;
+		this.notifyListeners();
 		return changed;
 	}
 

@@ -56,13 +56,10 @@ public class XGTreeModel implements TreeModel, XGAdressableSetListener
 
 	public void setChanged(XGAdress adr)
 	{	for(TreeModelListener l : this.tml)
-		try
-		{
-		l.treeStructureChanged(new TreeModelEvent(this, new TreePath(XGValue.getValue(adr))));
-		}catch(InvalidXGAdressException e)
-		{
-		// TODO Auto-generated catch block
-		e.printStackTrace();
+		{	try
+			{	l.treeStructureChanged(new TreeModelEvent(this, new TreePath(XGValue.getValue(adr))));}
+			catch(InvalidXGAdressException e)
+			{	e.printStackTrace();}
 		}
 	}
 }

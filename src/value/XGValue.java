@@ -85,7 +85,7 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	public void removeListener(XGValueChangeListener l)
 	{	this.listeners.remove(l);}
 
-	protected void notifyListeners()
+	public void notifyListeners()
 	{	for(XGValueChangeListener l : this.listeners) l.valueChanged(this);
 //		VALUESET.notifyListeners(this.adress);
 	}
@@ -118,7 +118,7 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 
 	protected abstract Object limitize(Object v);
 
-	public String getDescription()
+	public String getInfo()
 	{	return this.getClass().getSimpleName() + " "
 			+ this.instance.getType() + " "
 			+ this.instance + ", "
