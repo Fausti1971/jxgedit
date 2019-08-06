@@ -1,11 +1,10 @@
 package obj;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.StringTokenizer;
 import org.w3c.dom.Node;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import application.Rest;
+import msg.XGMessageDumpRequest;
 public class XGBulkDumpSequence implements XGObjectConstants
 {	private final XGAdress min, max;
 
@@ -40,13 +39,13 @@ public class XGBulkDumpSequence implements XGObjectConstants
 		this.min = new XGAdress(hiMin, midMin, loMin);
 		this.max = new XGAdress(hiMax, midMax, loMax);
 	}
-
+/*
 	public Set<XGBulkDumpSequence> toHashSet()
 	{	Set<XGBulkDumpSequence> set = new HashSet<>();
 		set.add(this);
 		return set;
 	}
-
+*/
 	public boolean include(XGAdress adr)
 	{	if(adr.compareTo(this.min) < 0) return false;
 		if(adr.compareTo(this.max) > 0) return false;
@@ -55,4 +54,15 @@ public class XGBulkDumpSequence implements XGObjectConstants
 
 	@Override public String toString()
 	{	return min + "..." + max;}
+
+	public void requestAll()
+	{	try
+		{	int hi, mid, lo = this.min.getLo();
+			for(hi = this.min.getHi(); hi <= this.max.getHi(); hi++)
+				for(mid = this.min.getMid(); mid <= this.max.getMid(); mid++)
+					new XGMessageDumpRequest(new XGAdress(hi, mid, lo)).request();
+		}
+		catch(InvalidXGAdressException e)
+		{	e.printStackTrace();}
+	}
 }

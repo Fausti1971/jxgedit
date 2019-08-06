@@ -8,8 +8,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
-import adress.XGAdress;
 import adress.XGInstanceSelectionListener;
+import obj.XGObjectInstance;
 import value.XGValue;
 
 public class XGObjectInstanceTable extends JTable implements TableModelListener, ListSelectionListener
@@ -36,7 +36,9 @@ public class XGObjectInstanceTable extends JTable implements TableModelListener,
 	@Override public void valueChanged(ListSelectionEvent e)// wird vom DefaultListSelectionModel über Änderungen der Selection informiert 
 	{	super.valueChanged(e);
 		if(e.getValueIsAdjusting()) return;
-		notifyXGInstanceSelectionListeners(((XGValue)this.tm.getValueAt(this.getSelectedRow(), 0)).getInstance().getAdress());
+		int row = this.getSelectedRow();
+		if(row < 0) return;	//nix selected
+		notifyXGInstanceSelectionListeners(((XGValue)this.tm.getValueAt(row, 0)).getInstance());
 	}
 
 	@Override public void tableChanged(TableModelEvent e) // wird vom TableModel über Änderungen am Model informiert
@@ -50,6 +52,6 @@ public class XGObjectInstanceTable extends JTable implements TableModelListener,
 	public void removeXGInstanceSelectionListener(XGInstanceSelectionListener l)
 	{	this.isl.remove(l);}
 
-	private void notifyXGInstanceSelectionListeners(XGAdress adr)
-	{	for(XGInstanceSelectionListener l : this.isl) l.instanceSelected(adr);}
+	private void notifyXGInstanceSelectionListeners(XGObjectInstance i)
+	{	for(XGInstanceSelectionListener l : this.isl) l.instanceSelected(i);}
 }

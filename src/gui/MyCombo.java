@@ -30,6 +30,11 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 		this.valueChanged(this.value);
 	}
 
+	public void contentChanged(XGValue v)
+	{	this.setText(this.value.toString());
+		if(this.isVisible()) this.repaint();
+	}
+
 	public void valueChanged(XGValue v)
 	{	if(this.value != null)
 		{	this.value.removeListener(this);

@@ -11,6 +11,7 @@ import javax.swing.JSeparator;
 import application.MU80;
 import file.SysexFile;
 import midi.Midi;
+import obj.XGObjectType;
 
 public class MainMenuBar extends JMenuBar
 {	/**
@@ -44,8 +45,7 @@ public class MainMenuBar extends JMenuBar
 		});
 		quit.addActionListener(new ActionListener()
 		{	public void actionPerformed(ActionEvent e)
-			{	System.exit(0);
-			}
+			{	System.exit(0);	}
 		});
 		file.add(load);
 		file.add(save);
@@ -54,6 +54,10 @@ public class MainMenuBar extends JMenuBar
 
 		JMenu midi = new JMenu("MIDI");
 		midi.add(upload);
+		download.addActionListener(new ActionListener()
+		{	public void actionPerformed(ActionEvent e)
+			{	XGObjectType.requestAll();}
+		});
 		midi.add(download);
 
 		JMenu setting = new JMenu("Settings");

@@ -84,7 +84,7 @@ public class XGDeviceDetector implements Receiver
 	@Override public void send(MidiMessage message, long timeStamp)
 	{	try
 		{	XGMessageBulkDump x = (XGMessageBulkDump) XGMessage.factory(message);
-			if(request.isResponsed(x))
+			if(request.setResponsedBy(x))
 			{	this.output = request.getOutput();
 				this.sysexId = x.getSysexId();
 //				this.name = x.getDump().getString(0, 0xE).trim();

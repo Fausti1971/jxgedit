@@ -85,8 +85,8 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	public void removeListener(XGValueChangeListener l)
 	{	this.listeners.remove(l);}
 
-	public void notifyListeners()
-	{	for(XGValueChangeListener l : this.listeners) l.valueChanged(this);
+	public synchronized void notifyListeners()
+	{	for(XGValueChangeListener l : this.listeners) l.contentChanged(this);
 //		VALUESET.notifyListeners(this.adress);
 	}
 
@@ -111,7 +111,7 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	{	boolean changed = this.setContent(o);
 		if(changed)
 		{	new XGMessageParameterChange(this).transmit();
-			notifyListeners();
+			this.notifyListeners();
 		}
 		return changed;
 	}

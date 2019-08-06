@@ -63,6 +63,9 @@ public abstract class XGMessage implements XGMessageConstants, XGByteArray
 	public void transmit()
 	{	MU80.device.transmit(this);}
 
+	@Override public String toString()
+	{	return this.getClass().getSimpleName() + " " + this.getAdress();}
+
 	protected abstract int getHi();
 	protected abstract int getMid();
 	protected abstract int getLo();

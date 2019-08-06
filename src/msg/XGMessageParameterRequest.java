@@ -48,7 +48,7 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	protected void setLo(int lo)
 	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
 
-	public boolean isResponsed(XGMessage msg)
+	public boolean setResponsedBy(XGMessage msg)
 	{	if(msg == null) return false;
 		if(msg instanceof XGMessageParameterChange)
 		{	XGMessageParameterChange x = (XGMessageParameterChange)msg;
@@ -63,4 +63,16 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 
 	public void storeMessage()
 	{}
+
+	public void request()
+	{
+	// TODO Auto-generated method stub
+	
+	}
+
+	public boolean isResponsed()
+	{
+	// TODO Auto-generated method stub
+	return false;
+	}
 }

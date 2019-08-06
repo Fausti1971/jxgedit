@@ -141,6 +141,10 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	@Override public boolean isVisible()
 	{	return this.value != null;}
 
+
+	public void contentChanged(XGValue v)
+	{	if(this.isVisible()) this.repaint();}
+
 	public void valueChanged(XGValue v)
 	{	if(this.value != null) this.value.removeListener(this);
 		this.value = v;

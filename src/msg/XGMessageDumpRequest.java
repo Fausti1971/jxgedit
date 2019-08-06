@@ -8,6 +8,7 @@ import application.MU80;
 
 public class XGMessageDumpRequest extends XGMessage implements XGRequest
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20;
+	private boolean responsed = false;
 
 	XGMessageBulkDump response = null;
 
@@ -30,14 +31,17 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 	{	super(msg);
 	}
 
-	public boolean isResponsed(XGMessage msg)
-	{	if(msg == null) return false;
+	public boolean setResponsedBy(XGMessage msg)
+	{	if(msg == null) return this.responsed = false;
 		if(msg instanceof XGMessageBulkDump)
 		{	XGMessageBulkDump x = (XGMessageBulkDump)msg;
-			if(x.getSysexId() == response.getSysexId() && x.getAdress().equals(response.getAdress())) return true;
+			if(x.getSysexId() == response.getSysexId() && x.getAdress().equals(response.getAdress())) return this.responsed = true;
 		}
-		return false;
+		return this.responsed = false;
 	}
+
+	public boolean isResponsed()
+	{	return this.responsed;}
 
 	public XGMessageBulkDump getResponse()
 	{	return response;}
@@ -61,7 +65,7 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
 
 	@Override public String toString()
-	{	return "requesting hi: " + getHi() + " mid: " + getMid() + " lo: " + getLo();}
+	{	return this.getAdress().toString();}
 
 	protected void setMessageID()
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);}

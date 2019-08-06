@@ -8,9 +8,12 @@ import msg.XGMessage;
 public class XGDevice
 {	private static final Logger log = Logger.getAnonymousLogger();
 
+	private static final int DEF_MIDITIMEOUT = 150;
+
 /***************************************************************************************************************************/
 
 	private Midi midi = null;
+	private int midiTimeout = MU80.getSetting().getInt(Setting.MIDITIMEOUT, DEF_MIDITIMEOUT);
 
 	public XGDevice(Setting setting)	//für Initialisation via Setting (file)
 	{	this.midi = new Midi(this, setting.get(Setting.MIDIOUTPUT), setting.get(Setting.MIDIINPUT));
@@ -39,6 +42,9 @@ public class XGDevice
 	public Midi getMidi()
 	{	return this.midi;
 	}
+
+	public int getTimeout()
+	{	return midiTimeout;}
 
 	public void transmit(XGMessage msg)
 	{	this.midi.transmit(msg);

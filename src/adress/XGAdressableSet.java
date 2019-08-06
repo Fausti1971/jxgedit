@@ -36,7 +36,7 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	public T get(XGAdress adr)
 	{	return this.map.get(adr);}
 
-	public T get(int index)
+	public synchronized T get(int index)
 	{	Vector<T> v = new Vector<>(this.values());
 		return v.get(index);
 	}

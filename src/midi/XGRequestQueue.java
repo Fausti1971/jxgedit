@@ -1,72 +1,87 @@
 package midi;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Queue;
-
+import java.util.Set;
+import java.util.logging.Logger;
 import msg.XGMessage;
 import msg.XGRequest;
 
-public class XGRequestQueue extends Thread
-{	private final Queue<XGRequest> queue = new LinkedList<>();
-	private Midi midi;
-	private int timeout;
-	private XGRequest request;
-	private volatile boolean isAlive = false;
+public class XGRequestQueue implements Runnable
+{	private static Logger log = Logger.getAnonymousLogger();
 
-	public XGRequestQueue(Midi midi, int timeout)
+	private final Queue<XGRequest> queue = new LinkedList<>();
+	private final Set<XGRequest> unresponsedRequests = new HashSet<>();
+	private Midi midi;
+	private XGRequest request;
+	private long startTime, endTime, timeout, time;
+	private volatile boolean cancel = false;
+
+	public XGRequestQueue(Midi midi)
 	{	this.midi = midi;
-		this.timeout = timeout;
+		this.timeout = this.midi.getXGDevice().getTimeout();
 	}
 
 	@Override public void run()
-	{	isAlive = true;
-		while(isAlive)
-		{	try
-			{	sleep(timeout);
-			}
-			catch (InterruptedException e1)
-			{
-			}
-			while(queue.isEmpty())
-				try
-				{	sleep(10000);
+	{	while(!this.cancel)
+		{	while(!queue.isEmpty())
+			{	this.request = queue.poll();
+				this.midi.transmit((XGMessage)this.request);
+				this.startTime = System.currentTimeMillis();
+				this.time = 0;
+				while(true)
+				{	try
+					{	Thread.sleep(10);}
+					catch(InterruptedException e)
+					{	e.printStackTrace();}
+					if(this.request.isResponsed()) break;
+					if((this.time += 10) > this.timeout)
+					{	this.timeOut(System.currentTimeMillis() - this.startTime);
+						break;
+					}
 				}
-				catch (InterruptedException e)
-				{
-				}
-			request = queue.poll();
-			this.midi.transmit((XGMessage)request);
-//			listener.queueSizeChanged(this);
-//			listener.queueTextChanged(this);
+	//			listener.queueSizeChanged(this);
+	//			listener.queueTextChanged(this);
+			}
+			try
+			{	Thread.sleep(50);}
+			catch(InterruptedException e)
+			{	e.printStackTrace();}
 		}
+		System.out.println(this.getOutputName() + ": " + this.size());
 	}
 
 	public synchronized void add(XGRequest request)
-	{	queue.add(request);
-		notifyAll();
+	{	this.queue.add(request);
 //		listener.queueSizeChanged(this);
 	}
 
 	public synchronized void cancel()
-	{	isAlive = false;
-		notifyAll();
-	}
+	{	this.cancel = true;}
 
 	public synchronized void setResponsed(XGMessage msg)
-	{	if(request == null) return;
-		if(request.isResponsed(msg)) notify();
-		
+	{	if(request.setResponsedBy(msg))
+		{	this.endTime = System.currentTimeMillis();
+			try
+			{	Thread.sleep(5);}	//erforderlich, sonst werden requests verschluckt
+			catch(InterruptedException e)
+			{	e.printStackTrace();}
+//			log.info(this.request.getClass().getSimpleName() + this.request + " responsed after " + (this.endTime - this.startTime) + " ms");
+		}
 	}
 
 	public int size()
-	{	return queue.size();
-	}
+	{	return this.queue.size();}
 
 	public XGRequest getRequest()
-	{	return request;
-	}
+	{	return this.request;}
 
 	public String getOutputName()
-	{	return this.midi.getOutputName();
+	{	return this.midi.getOutputName();}
+
+	public void timeOut(long time)
+	{	this.unresponsedRequests.add(this.request);
+		log.info("unresponsed request " + this.unresponsedRequests.size() + " " + this.request + " after timeout: " + time + " ms");
 	}
 }

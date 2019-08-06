@@ -75,6 +75,9 @@ public class XGObjectInstanceTableModel implements TableModel, XGAdressableSetLi
 	public void setChanged(XGAdress adr)
 	{	notifyTableModelListeners(new TableModelEvent(this));}
 
+	public void contentChanged(XGValue v)
+	{	notifyTableModelListeners(new TableModelEvent(this, 0, this.ot.getXGObjectInstances().size(), this.getColumn(v)));}
+
 	public void valueChanged(XGValue v)
 	{	notifyTableModelListeners(new TableModelEvent(this, 0, this.ot.getXGObjectInstances().size(), this.getColumn(v)));}
 }

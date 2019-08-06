@@ -35,6 +35,13 @@ public class XGObjectType implements XGObjectConstants, XGAdressConstants
 		return new XGObjectType(INVALIDADRESS);
 	}
 
+
+	public static void requestAll()
+	{	for(XGObjectType o : OBJECTTYPES)
+			for(XGBulkDumpSequence s : o.dumpSequences) s.requestAll();
+		log.info("complete request queued");
+	}
+
 	public static void initObjectTypeMap()
 	{	if(!FILE.canRead())
 		{	log.info("can't read file: " + FILE);

@@ -85,20 +85,6 @@
 	</object>
 
 	<object>
-		<name>Display Data</name>
-		<dumpSequence>
-			<hi>6</hi>
-			<mid>0</mid>
-			<lo>0-31</lo>
-		</dumpSequence>
-		<dumpSequence>
-			<hi>7</hi>
-			<mid>0-127</mid>
-			<lo>0-47</lo>
-		</dumpSequence>
-	</object>
-
-	<object>
 		<name>Multipart</name>
 		<dumpSequence>
 			<hi>8</hi>

@@ -4,7 +4,6 @@ package midi;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
@@ -15,7 +14,6 @@ import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import adress.InvalidXGAdressException;
 import application.Setting;
-import application.MU80;
 import msg.XGMessage;
 import msg.XGRequest;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
@@ -73,6 +71,7 @@ public class Midi implements Receiver
 	private Receiver transmitter;
 	private MidiDevice outDev;
 	private MidiDevice inDev;
+	private Thread queueThread;
 	private XGRequestQueue queue;
 
 	public Midi(XGDevice dev, String out, String in)
@@ -83,9 +82,12 @@ public class Midi implements Receiver
 	{	this.xgDev = dev;
 		this.setOutput(output);
 		this.setInput(input);
-		this.queue = new XGRequestQueue(this, MU80.getSetting().getInt(Setting.MIDITIMEOUT, 150));
-		this.queue.start();
+		this.queueThread = new Thread(this.queue = new XGRequestQueue(this));
+		this.queueThread.start();
 	}
+
+	public XGDevice getXGDevice()
+	{	return this.xgDev;}
 
 	public void setOutput(MidiDevice dev)
 	{	if(dev == null) return;
@@ -140,24 +142,20 @@ public class Midi implements Receiver
 	}
 
 	public synchronized void transmit(XGMessage msg)
-	{	if(this.transmitter == null) return;
+	{	if(this.transmitter == null) throw new RuntimeException("no transmitter initialized!");
 		try
-		{	this.transmitter.send(msg.asSysexMessage(), -1L);
-		}
+		{	this.transmitter.send(msg.asSysexMessage(), -1L);}
 		catch (InvalidMidiDataException e)
-		{	log.severe(e.getMessage());
-		}
+		{	log.severe(e.getMessage());}
 	}
 
 	public void request(XGRequest msg)
-	{	this.queue.add(msg);
-	}
+	{	this.queue.add(msg);}
 
 	@Override public synchronized void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	XGMessage msg;
 		try
-		{	msg = XGMessage.factory(mmsg);
-		}
+		{	msg = XGMessage.factory(mmsg);}
 		catch (InvalidMidiDataException | InvalidXGAdressException e)
 		{	log.info(e.getMessage());
 			return;
@@ -166,7 +164,7 @@ public class Midi implements Receiver
 	}
 
 	@Override public void close()
-	{	if(this.queue.isAlive())this.queue.cancel();
+	{	if(this.queueThread.isAlive())this.queue.cancel();
 		if(this.inDev != null && this.inDev.isOpen()) this.inDev.close();
 		log.info("MidiInput closed: " + getInputName());
 		if(this.outDev != null && this.outDev.isOpen()) this.outDev.close();
