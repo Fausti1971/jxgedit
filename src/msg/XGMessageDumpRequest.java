@@ -44,7 +44,7 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 	{	return this.responsed;}
 
 	public XGMessageBulkDump getResponse()
-	{	return response;}
+	{	return this.response;}
 
 	protected int getHi()
 	{	return decodeMidiByteToInteger(HI_OFFS);}

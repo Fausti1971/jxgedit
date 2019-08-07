@@ -71,7 +71,6 @@ public class Midi implements Receiver
 	private Receiver transmitter;
 	private MidiDevice outDev;
 	private MidiDevice inDev;
-	private Thread queueThread;
 	private XGRequestQueue queue;
 
 	public Midi(XGDevice dev, String out, String in)
@@ -82,8 +81,8 @@ public class Midi implements Receiver
 	{	this.xgDev = dev;
 		this.setOutput(output);
 		this.setInput(input);
-		this.queueThread = new Thread(this.queue = new XGRequestQueue(this));
-		this.queueThread.start();
+		this.queue = new XGRequestQueue(this);
+		this.queue.start();
 	}
 
 	public XGDevice getXGDevice()
@@ -142,11 +141,12 @@ public class Midi implements Receiver
 	}
 
 	public synchronized void transmit(XGMessage msg)
-	{	if(this.transmitter == null) throw new RuntimeException("no transmitter initialized!");
+	{	if(this.transmitter == null || msg == null) throw new RuntimeException("no transmitter initialized!");
 		try
-		{	this.transmitter.send(msg.asSysexMessage(), -1L);}
+		{	msg.setTimeStamp(System.currentTimeMillis());
+			this.transmitter.send(msg.asSysexMessage(), -1L);}
 		catch (InvalidMidiDataException e)
-		{	log.severe(e.getMessage());}
+		{	log.severe(e.getMessage() + msg);}
 	}
 
 	public void request(XGRequest msg)
@@ -164,7 +164,7 @@ public class Midi implements Receiver
 	}
 
 	@Override public void close()
-	{	if(this.queueThread.isAlive())this.queue.cancel();
+	{	if(this.queue.isAlive())this.queue.interrupt();
 		if(this.inDev != null && this.inDev.isOpen()) this.inDev.close();
 		log.info("MidiInput closed: " + getInputName());
 		if(this.outDev != null && this.outDev.isOpen()) this.outDev.close();

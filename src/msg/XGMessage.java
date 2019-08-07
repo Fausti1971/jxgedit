@@ -27,6 +27,7 @@ public abstract class XGMessage implements XGMessageConstants, XGByteArray
 /****************************************************************************************************************************************/
 
 	private MidiDevice output;				//nur für XGDeviceDetector von Relevanz
+	private long transmissionTimeStamp;
 	private byte[] data;
 
 	protected XGMessage(byte[] array)	// für manuell erzeugte
@@ -35,10 +36,12 @@ public abstract class XGMessage implements XGMessageConstants, XGByteArray
 		setSysexId(MU80.device.getSysexId());
 		setVendorId();
 		setModelId();
+		this.setTimeStamp(System.currentTimeMillis());
 	}
 
 	protected XGMessage(SysexMessage msg) throws InvalidMidiDataException	//für Midi und File
-	{	this.data = msg.getMessage();
+	{	this.setTimeStamp(System.currentTimeMillis());
+		this.data = msg.getMessage();
 		this.validate();
 	}
 
@@ -50,6 +53,12 @@ public abstract class XGMessage implements XGMessageConstants, XGByteArray
 
 	public byte[] getByteArray()
 	{	return this.data;}
+
+	public long getTimeStamp()
+	{	return this.transmissionTimeStamp;}
+
+	public void setTimeStamp(long time)
+	{	this.transmissionTimeStamp = time;}
 
 	void validate() throws InvalidMidiDataException
 	{	if(!(this.getVendorId() == VENDOR && this.getModelId() == MODEL)) throw new InvalidMidiDataException("no xg data");}

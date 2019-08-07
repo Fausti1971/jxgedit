@@ -64,15 +64,11 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	public void storeMessage()
 	{}
 
-	public void request()
-	{
-	// TODO Auto-generated method stub
-	
+	public boolean isResponsed()
+	{	return false;
 	}
 
-	public boolean isResponsed()
-	{
-	// TODO Auto-generated method stub
-	return false;
+	public XGMessage getResponse()
+	{	return this.response;
 	}
 }
