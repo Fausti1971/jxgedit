@@ -6,33 +6,43 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
+//TOD: Umbau nach XML
+//Config.xml: Version, Date, Time, MidiInput, MidiOutput, MIidiTimeout, SysexID, WindowX, WindowY, WindowW, WindowH, LastDumpFile
 
-public class Setting extends Properties
+public class Configuration extends Properties implements ConfigurationChangeListener
 {	/**
 	 * 
 	 */
-	public static final String DEVICENAME = "DeviceName", MIDIINPUT = "MidiInput", MIDIOUTPUT = "MidiOutput", SYSEXID = "SysexID", MIDITIMEOUT = "MidiTimeout", LASTDUMPPATH = "LastDumpPath", LASTDUMPFILE = "LastDumpFile";
+	private static Configuration CONFIG = null;
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getAnonymousLogger();
 
+	public static Configuration getConfig()
+	{	return CONFIG;	
+	}
+
+	public static void initConfig()
+	{	CONFIG = new Configuration();
+	}
+
 /***********************************************************************************************/
 
-	private File file = null;
+	private File file = ConfigurationConstants.getHomePath().resolve("config.xml").toFile();
 /*
 	public Setting(String filename, Setting set)		//Konstruktor für Devicesettings
 	{	this.file = (MU80.getDevicePath().resolve(filename)).toFile();
 		for(String s : set.stringPropertyNames()) this.setProperty(s, set.getProperty(s));
 	}
 */
-	public Setting(File file)				//Konstruktor für Settingsfile als File
-	{	this.file = file;
-		loadSetting();
+	public Configuration()				//Konstruktor für Settingsfile als File
+	{	this.loadSetting();
+		
 	}
 
 	private boolean loadSetting()
 	{	if(this.file.exists())
 		{	try(FileInputStream fis = new FileInputStream(this.file))
-			{	this.load(fis);
+			{	this.loadFromXML(fis);
 			}
 			catch (IOException e)
 			{	log.info(e.getMessage());
@@ -56,7 +66,7 @@ public class Setting extends Properties
 			}
 		}
 		try(FileOutputStream fos = new FileOutputStream(this.file))
-		{	this.store(fos, MU80.getAppName());
+		{	this.storeToXML(fos, ConfigurationConstants.getAppName());
 		}
 		catch (IOException e)
 		{	e.printStackTrace();
@@ -82,11 +92,7 @@ public class Setting extends Properties
 		return Integer.parseInt((String) this.getProperty(key));
 	}
 
-	public String get(String key)
-	{	return(this.getProperty(key, "no value"));
-	}
-
-	public String get(String key, String def)
+	public String getOrDefault(String key, String def)
 	{	return(this.getProperty(key, def));
 	}
 
@@ -96,5 +102,9 @@ public class Setting extends Properties
 
 	public void close()
 	{
+	}
+
+	public void configurationChanged(ConfigurationEvent e)
+	{	log.info(e.name());
 	}
 }

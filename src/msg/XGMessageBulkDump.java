@@ -27,7 +27,6 @@ public class XGMessageBulkDump extends XGMessage
 	public XGMessageBulkDump(SysexMessage msg) throws InvalidMidiDataException, InvalidXGAdressException	//für MIDI und FILE
 	{	super(msg);
 		checkSum();
-		storeMessage();
 	}
 
 	protected int getHi()

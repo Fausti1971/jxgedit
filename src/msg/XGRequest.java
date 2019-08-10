@@ -1,12 +1,12 @@
 package msg;
 
-import application.MU80;
+import midi.XGDevice;
 
-public interface XGRequest
+public interface XGRequest extends XGMessageConstants
 {	boolean setResponsedBy(XGMessage msg);
 	boolean isResponsed();
 	XGMessage getResponse();
 
 	default void request()
-	{	MU80.device.getMidi().request(this);}
+	{	XGDevice.getDevice().getMidi().request(this);}
 }

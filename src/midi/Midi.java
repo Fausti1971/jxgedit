@@ -1,8 +1,9 @@
 //@format:off
 package midi;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.Vector;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
@@ -13,16 +14,22 @@ import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
 import adress.InvalidXGAdressException;
-import application.Setting;
+import application.Configuration;
+import application.ConfigurationChangeListener;
+import application.ConfigurationConstants;
 import msg.XGMessage;
 import msg.XGRequest;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
-
-public class Midi implements Receiver
+import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
+import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
+/**
+ *ein Singleton eines MidiOut-/Input des MidiSystems zum Senden und Empfangen
+ */
+public class Midi implements Receiver, ConfigurationConstants, CoreMidiNotification
 {	private static Logger log = Logger.getAnonymousLogger();
 
-	public static List<MidiDevice> getInputs()
-	{	List<MidiDevice> inputs = new ArrayList<>();
+	public static Vector<MidiDevice> getInputs()
+	{	Vector<MidiDevice> inputs = new Vector<>();
 		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
 		MidiDevice tmpDev = null;
 		for (MidiDevice.Info i: infos)
@@ -38,8 +45,8 @@ public class Midi implements Receiver
 		return inputs;
 	}
 
-	public static List<MidiDevice> getOutputs()
-	{	List<MidiDevice> outputs = new ArrayList<>();
+	public static Vector<MidiDevice> getOutputs()
+	{	Vector<MidiDevice> outputs = new Vector<>();
 		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
 		MidiDevice tmpDev = null;
 		for (MidiDevice.Info i: infos)
@@ -72,25 +79,34 @@ public class Midi implements Receiver
 	private MidiDevice outDev;
 	private MidiDevice inDev;
 	private XGRequestQueue queue;
+	private Set<ConfigurationChangeListener> listeners = new HashSet<>();
 
-	public Midi(XGDevice dev, String out, String in)
+	private Midi(XGDevice dev, String out, String in)
 	{	this(dev, findOutput(out), findInput(in));
 	}
 
-	public Midi(XGDevice dev, MidiDevice output, MidiDevice input)
+	private Midi(XGDevice dev, MidiDevice output, MidiDevice input)
 	{	this.xgDev = dev;
 		this.setOutput(output);
 		this.setInput(input);
 		this.queue = new XGRequestQueue(this);
 		this.queue.start();
+		try
+		{	CoreMidiDeviceProvider.addNotificationListener(this);
+		}
+		catch(CoreMidiException e)
+		{	e.printStackTrace();
+		}
+		this.listeners.add(Configuration.getConfig());
+		this.notifyListeners();
 	}
 
 	public XGDevice getXGDevice()
 	{	return this.xgDev;}
 
 	public void setOutput(MidiDevice dev)
-	{	if(dev == null) return;
-		if(this.outDev != null && this.outDev.isOpen()) this.outDev.close();
+	{	if(this.outDev != null && this.outDev.isOpen()) this.outDev.close();
+		if(dev == null) return;
 		try
 		{	dev.open();
 			this.outDev = dev;
@@ -101,12 +117,14 @@ public class Midi implements Receiver
 			return;
 		}
 		log.info(getOutputName() + ": " + this.getDeviceName());
-		xgDev.getSetting().set(Setting.MIDIOUTPUT, this.getOutputName());
+		Configuration.getConfig().set(MIDIOUTPUT, this.getOutputName());
+		this.notifyListeners();
+//TODO autorequest DeviceInfo an reload xml; reInit nach MidiChange
 	}
 
 	public void setInput(MidiDevice dev)
-	{	if(dev == null) return;
-		if(this.inDev != null && this.inDev.isOpen()) this.inDev.close();
+	{	if(this.inDev != null && this.inDev.isOpen()) this.inDev.close();
+		if(dev == null) return;
 		try
 		{	dev.getTransmitter().setReceiver(this);
 			dev.open();
@@ -117,7 +135,9 @@ public class Midi implements Receiver
 			return;
 		}
 		log.info(getInputName() + ": " + this.getDeviceName());
-		xgDev.getSetting().set(Setting.MIDIINPUT, this.getInputName());
+		Configuration.getConfig().set(MIDIINPUT, this.getInputName());
+		this.notifyListeners();
+//TODO autorequest DeviceInfo an reload xml, reInit nach MidiChange
 	}
 
 	public MidiDevice getInput()
@@ -140,7 +160,7 @@ public class Midi implements Receiver
 	{	return this.xgDev.getName();
 	}
 
-	public synchronized void transmit(XGMessage msg)
+	public void transmit(XGMessage msg)
 	{	if(this.transmitter == null || msg == null) throw new RuntimeException("no transmitter initialized!");
 		try
 		{	msg.setTimeStamp(System.currentTimeMillis());
@@ -152,10 +172,12 @@ public class Midi implements Receiver
 	public void request(XGRequest msg)
 	{	this.queue.add(msg);}
 
-	@Override public synchronized void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
+	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	XGMessage msg;
 		try
-		{	msg = XGMessage.factory(mmsg);}
+		{	msg = XGMessage.factory(mmsg);
+			msg.storeMessage();
+		}
 		catch (InvalidMidiDataException | InvalidXGAdressException e)
 		{	log.info(e.getMessage());
 			return;
@@ -166,8 +188,20 @@ public class Midi implements Receiver
 	@Override public void close()
 	{	if(this.queue.isAlive())this.queue.interrupt();
 		if(this.inDev != null && this.inDev.isOpen()) this.inDev.close();
-		log.info("MidiInput closed: " + getInputName());
+		log.info("MidiInput closed: " + this.getInputName());
 		if(this.outDev != null && this.outDev.isOpen()) this.outDev.close();
-		log.info("MidiOutput closed: " + getOutputName());
+		log.info("MidiOutput closed: " + this.getOutputName());
+	}
+
+	public void addListener(ConfigurationChangeListener l)
+	{	this.listeners.add(l);
+	}
+	
+	public void notifyListeners()
+	{	for(ConfigurationChangeListener l : this.listeners) l.configurationChanged(ConfigurationEvent.Midi);
+	}
+
+	public void midiSystemUpdated() throws CoreMidiException
+	{	this.notifyListeners();
 	}
 }

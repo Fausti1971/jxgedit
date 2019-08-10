@@ -65,4 +65,14 @@ public class XGBulkDumpSequence implements XGObjectConstants
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();}
 	}
+
+	public int maxInstanceCount()
+	{	try
+		{	return this.max.getMid() - this.min.getMid();
+		}
+		catch(InvalidXGAdressException e)
+		{	e.printStackTrace();
+			return 0;
+		}
+	}
 }

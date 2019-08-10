@@ -4,7 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import application.MU80;
+import midi.XGDevice;
 
 public class XGMessageDumpRequest extends XGMessage implements XGRequest
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20;
@@ -18,7 +18,7 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 
 	public XGMessageDumpRequest(XGAdress adr) throws InvalidXGAdressException
 	{	super(new byte[8]);
-		setSysexId(MU80.device.getSysexId());
+		setSysexId(XGDevice.getDevice().getSysexId());
 		setMessageID();
 		encodeMidiByteFromInteger(HI_OFFS, adr.getHi());
 		encodeMidiByteFromInteger(MID_OFFS, adr.getMid());
@@ -34,8 +34,7 @@ public class XGMessageDumpRequest extends XGMessage implements XGRequest
 	public boolean setResponsedBy(XGMessage msg)
 	{	if(msg == null) return this.responsed = false;
 		if(msg instanceof XGMessageBulkDump)
-		{	XGMessageBulkDump x = (XGMessageBulkDump)msg;
-			if(x.getSysexId() == response.getSysexId() && x.getAdress().equals(response.getAdress())) return this.responsed = true;
+		{	if(msg.getSysexId() == this.response.getSysexId() && msg.getAdress().equals(this.response.getAdress())) return this.responsed = true;
 		}
 		return this.responsed = false;
 	}

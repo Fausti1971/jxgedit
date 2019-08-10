@@ -12,6 +12,7 @@ public class XGRequestQueue extends Thread
 {	private static Logger log = Logger.getAnonymousLogger();
 
 /************************************************************************************/
+//TODO notify kann noch nicht zwischen responsed und timeout unterscheiden
 
 	private final Queue<XGRequest> queue = new LinkedList<>();
 	private final Set<XGRequest> unresponsedRequests = new HashSet<>();
@@ -30,7 +31,9 @@ public class XGRequestQueue extends Thread
 	{	log.info("MIDI queue started...");
 		while(!quit)
 		{	try
-			{	this.wait(time);}
+			{	this.wait(time);
+//				System.out.println("responsed? " + this.getState());
+			}
 			catch(InterruptedException e)
 			{	this.quit = true;}
 
@@ -61,17 +64,15 @@ public class XGRequestQueue extends Thread
 	{	if(request.setResponsedBy(msg))
 		{	log.info(this.request + " responsed after " + (System.currentTimeMillis() - ((XGMessage)this.request).getTimeStamp()) + " ms");
 			if(this.waitForResponse) this.notify();
-			
-			try
-			{	Thread.sleep(5);}	//erforderlich, sonst werden requests verschluckt oder responds werden erst nach timeout erkannt !?
-			catch(InterruptedException e)
-			{	e.printStackTrace();}
 		}
 		else 
 		{	this.unresponsedRequests.add(this.request);
 			log.info("unresponsed request " + this.unresponsedRequests.size() + " " + this.request + " after timeout: " + time + " ms");
 		}
-
+		try
+		{	Thread.sleep(5);}	//erforderlich, sonst werden requests verschluckt oder responds werden erst nach timeout erkannt !?
+		catch(InterruptedException e)
+		{	e.printStackTrace();}
 	}
 
 	public int size()

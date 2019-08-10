@@ -3,7 +3,6 @@ package midi;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiMessage;
@@ -21,6 +20,7 @@ public class XGDeviceDetector implements Receiver
 	private static Receiver trans = null;
 	private static XGMessageDumpRequest request = null;
 	private static Set<XGDeviceDetector> instances = new HashSet<>();
+	private static final XGAdress ADRESS = new XGAdress(1, 0, 0);
 	private static int timer = 100;
 
 	private static void openAllInputs()
@@ -29,19 +29,19 @@ public class XGDeviceDetector implements Receiver
 		}
 	}
 
-	public static Set<XGDeviceDetector> detectXGDevices() throws Exception		//TODO eine response auf den ersten request wird bei einem timeout bis etwa 200 chronisch ignoriert (?)
+	public static Set<XGDeviceDetector> detectXGDevices() throws MidiUnavailableException	//TODO eine response auf den ersten request wird bei einem timeout bis etwa 200 chronisch ignoriert (?)
 	{	openAllInputs();
 		for(MidiDevice d : Midi.getOutputs())
 		{	oDev = d;
-			try
-			{	oDev.open();
-				trans = oDev.getReceiver();
-			}
-			catch (MidiUnavailableException e)
-			{	e.printStackTrace();
-			}
+			oDev.open();
+			trans = oDev.getReceiver();
 			for(int i = 0; i < 16; i++)
-			{	request = new XGMessageDumpRequest(new XGAdress(1, 0, 0));	// immer neuen request instanziieren, damit die dabei automatisch erstellte response die richtige sysexID hat
+			{	try
+				{	request = new XGMessageDumpRequest(ADRESS);
+				}
+				catch(InvalidXGAdressException e1)
+				{	e1.printStackTrace();
+				}
 				request.setSysexId(i);
 				request.getResponse().setSysexId(i);
 				request.setOutput(oDev);

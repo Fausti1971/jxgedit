@@ -7,7 +7,7 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import application.MU80;
+import midi.XGDevice;
 
 public abstract class XGMessage implements XGMessageConstants, XGByteArray
 {	protected static final Logger log = Logger.getAnonymousLogger();
@@ -26,14 +26,14 @@ public abstract class XGMessage implements XGMessageConstants, XGByteArray
 
 /****************************************************************************************************************************************/
 
-	private MidiDevice output;				//nur für XGDeviceDetector von Relevanz
+	private MidiDevice output;				//nur für XGDeviceDetector benötigt
 	private long transmissionTimeStamp;
 	private byte[] data;
 
 	protected XGMessage(byte[] array)	// für manuell erzeugte
 	{	this.data = array;
 		setSOX();
-		setSysexId(MU80.device.getSysexId());
+		setSysexId(XGDevice.getDevice().getSysexId());
 		setVendorId();
 		setModelId();
 		this.setTimeStamp(System.currentTimeMillis());
@@ -70,7 +70,7 @@ public abstract class XGMessage implements XGMessageConstants, XGByteArray
 	{	return new XGAdress(getHi(), getMid(), getLo());}
 
 	public void transmit()
-	{	MU80.device.transmit(this);}
+	{	XGDevice.getDevice().transmit(this);}
 
 	@Override public String toString()
 	{	return this.getClass().getSimpleName() + " " + this.getAdress();}

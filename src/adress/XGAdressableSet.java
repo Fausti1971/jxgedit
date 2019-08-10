@@ -16,25 +16,33 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	private SortedMap<XGAdress, T> map = new TreeMap<XGAdress,T>();
 	private Set<XGAdressableSetListener> listeners = new HashSet<XGAdressableSetListener>();
 
-	public void add(T obj)
-	{	if(obj == null) return;
-		if(this.type == null) this.type = obj.getClass();
-		XGAdress adr = obj.getAdress();
-		this.map.put(adr, obj);
-		notifyListeners(adr);
+	public synchronized void add(T obj)
+	{	synchronized(this.map)
+		{	if(obj == null) return;
+			if(this.type == null) this.type = obj.getClass();
+			XGAdress adr = obj.getAdress();
+			this.map.put(adr, obj);
+			notifyListeners(adr);
+		}
 	}
 
-	public void remove(T obj)
-	{	if(obj == null) return;
-		this.map.remove(obj.getAdress(), obj);
-		notifyListeners(obj.getAdress());
+	public synchronized void remove(T obj)
+	{	synchronized(this.map)
+		{	if(obj == null) return;
+			this.map.remove(obj.getAdress(), obj);
+			notifyListeners(obj.getAdress());
+		}
 	}
 
-	public void remove(XGAdress adr)
-	{	this.map.remove(adr);}
+	public synchronized void remove(XGAdress adr)
+	{	synchronized(this.map)
+		{	this.map.remove(adr);}
+	}
 
-	public T get(XGAdress adr)
-	{	return this.map.get(adr);}
+	public synchronized T get(XGAdress adr)
+	{	synchronized(this.map)
+		{	return this.map.get(adr);}
+	}
 
 	public synchronized T get(int index)
 	{	synchronized(this.map)

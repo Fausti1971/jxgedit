@@ -1,15 +1,5 @@
-/value/
-/adress/
-/parm/
+/application/
+/file/
 /gui/
-/obj/
-/application/
+/midi/
 /msg/
-<<<<<<< HEAD
-/application/
-/file/
-/midi/
-=======
-/midi/
-/file/
->>>>>>> refs/heads/StorageTesting

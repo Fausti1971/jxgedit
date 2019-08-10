@@ -3,6 +3,7 @@ package obj;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -22,7 +23,10 @@ import value.XGValue;
 public class XGObjectType implements XGObjectConstants, XGAdressConstants
 {	private static Logger log = Logger.getAnonymousLogger();
 	private static final File FILE = new File(XML_FILE);
-	private static final Set<XGObjectType> OBJECTTYPES = new HashSet<>();
+	private static final Set<XGObjectType> OBJECTTYPES = new LinkedHashSet<>();
+
+	public static Set<XGObjectType> getAllObjectTypes()
+	{	return OBJECTTYPES;}
 
 	public static XGObjectType getObjectTypeOrNew(XGAdress adr)
 	{	for(XGObjectType t : OBJECTTYPES)
@@ -101,6 +105,12 @@ public class XGObjectType implements XGObjectConstants, XGAdressConstants
 	public boolean include(XGAdress adr)
 	{	for(XGBulkDumpSequence s : this.dumpSequences) if(s.include(adr)) return true;
 		return false;
+	}
+
+	public int maxInstanceCount()
+	{	int i = 0;
+		for(XGBulkDumpSequence s : this.dumpSequences) i = Math.max(s.maxInstanceCount(), i);
+		return i;
 	}
 
 	public void addInstance(XGValue v)

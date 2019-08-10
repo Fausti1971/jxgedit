@@ -12,7 +12,7 @@ import adress.XGInstanceSelectionListener;
 import obj.XGObjectInstance;
 import value.XGValue;
 
-public class XGObjectInstanceTable extends JTable implements TableModelListener, ListSelectionListener
+public class XGObjectInstanceTable extends JTable implements TableModelListener, ListSelectionListener, XGInstanceSelector
 {	/**
 	 * 
 	 */

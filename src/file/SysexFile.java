@@ -11,11 +11,12 @@ import javax.sound.midi.SysexMessage;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import adress.InvalidXGAdressException;
-import application.MU80;
-import application.Setting;
+import application.Configuration;
+import application.ConfigurationConstants;
+import gui.XGMainFrame;
 import msg.XGMessage;
 
-public class SysexFile
+public class SysexFile implements ConfigurationConstants
 {	private static final Logger log = Logger.getAnonymousLogger();
 	private static SysexFile defaultDump;
 
@@ -54,16 +55,15 @@ public class SysexFile
 			}
 			log.info(count + " Messages parsed from " + file.getAbsolutePath());
 			if(protocol)
-			{	MU80.getSetting().put(Setting.LASTDUMPFILE, file.getAbsolutePath());
-				MU80.getSetting().put(Setting.LASTDUMPPATH, file.getParent());
-				MU80.getMainFrame().setTitle(file.getAbsolutePath());
+			{	Configuration.getConfig().put(LASTDUMPFILE, file.getAbsolutePath());
+				XGMainFrame.getMainFrame().setTitle(file.getAbsolutePath());
 				
 			}
 		}
 	}
 
 	private void setFile()
-	{	JFileChooser fc = new JFileChooser(MU80.getSetting().get(Setting.LASTDUMPFILE));
+	{	JFileChooser fc = new JFileChooser(Configuration.getConfig().getProperty(LASTDUMPFILE));
 		fc.setDialogTitle("Open A Sysex-File...");
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setFileFilter(new FileFilter()
@@ -75,7 +75,7 @@ public class SysexFile
 			{	return f.exists() && f.canRead() && f.isFile() && f.getName().endsWith(".syx");
 			}
 		});
-		int res = fc.showDialog(MU80.getMainFrame(), "Open");
+		int res = fc.showDialog(XGMainFrame.getMainFrame(), "Open");
 		if(res == JFileChooser.APPROVE_OPTION) this.file = fc.getSelectedFile();
 		else this.file = null;
 		return;

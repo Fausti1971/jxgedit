@@ -4,7 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import application.MU80;
+import midi.XGDevice;
 import value.WrongXGValueTypeException;
 import value.XGValue;
 
@@ -22,7 +22,7 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	public XGMessageParameterRequest(XGAdress adr) throws InvalidXGAdressException, WrongXGValueTypeException
 	{	super(new byte[8]);
 		setMessageId(MSG);
-		setSysexId(MU80.device.getSysexId());
+		setSysexId(XGDevice.getDevice().getSysexId());
 		setHi(adr.getHi());
 		setMid(adr.getMid());
 		setLo(adr.getLo());
