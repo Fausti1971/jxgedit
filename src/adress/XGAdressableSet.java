@@ -36,12 +36,14 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 
 	public synchronized void remove(XGAdress adr)
 	{	synchronized(this.map)
-		{	this.map.remove(adr);}
+		{	this.map.remove(adr);
+		}
 	}
 
 	public synchronized T get(XGAdress adr)
 	{	synchronized(this.map)
-		{	return this.map.get(adr);}
+		{	return this.map.get(adr);
+		}
 	}
 
 	public synchronized T get(int index)

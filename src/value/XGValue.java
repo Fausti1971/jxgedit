@@ -4,9 +4,11 @@ import java.util.Set;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressable;
-import adress.XGAdressableSet;
-import adress.XGAdressableSetListener;
+import msg.XGMessage;
 import msg.XGMessageParameterChange;
+import msg.XGMessenger;
+import msg.XGRequest;
+import msg.XGResponse;
 import obj.XGObjectInstance;
 import obj.XGObjectType;
 import parm.XGParameter;
@@ -14,56 +16,16 @@ import parm.XGParameterConstants;
 
 public abstract class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdressable
 {
-	static XGAdressableSet<XGValue> VALUES = new XGAdressableSet<>();
 
-	private static XGValue factory(XGAdress adr) throws InvalidXGAdressException
+	static XGValue factory(XGAdress adr) throws InvalidXGAdressException
 	{	XGParameter p = XGParameter.getParameter(adr);
 		switch(p.getValueClass())
-		{	default:
+		{	default:		throw new RuntimeException("unknown valueclass: " + p.getValueClass());
 			case Integer:	return new XGIntegerValue(adr);
 			case Image:		return new XGImageValue(adr);
 			case String:	return new XGStringValue(adr);
 		}
 	}
-
-	public static XGValue getValue(XGAdress adr) throws InvalidXGAdressException
-	{	if(!adr.isValueAdress()) throw new InvalidXGAdressException("no valid value-adress: " + adr);
-		return VALUES.get(adr);
-	}
-
-	public static XGAdressableSet<XGValue> getValues()
-	{	return VALUES;}
-
-	public static XGAdressableSet<XGValue> getValues(XGAdress adr) throws InvalidXGAdressException
-	{	return VALUES.getAllValid(adr);}
-
-	public synchronized static XGAdressableSet<XGValue> getValues(String type)
-	{	XGAdressableSet<XGValue> set = new XGAdressableSet<XGValue>();
-		for(XGValue v : VALUES) if(v.getInstance().getType().getName().equals(type)) set.add(v);
-		VALUES.addListener(set);
-		return set;
-	}
-
-	public static XGValue getValueOrNew(XGAdress adr) throws InvalidXGAdressException
-	{	XGValue v = getValue(adr);
-		if(v == null) v = XGValue.factory(adr);
-		return v;
-	}
-
-	public static XGValue getValueOrNewAndStore(XGAdress adr) throws InvalidXGAdressException
-	{	XGValue v = getValue(adr);
-		if(v == null)
-		{	v = XGValue.factory(adr);
-			VALUES.add(v);
-		}
-		return v;
-	}
-
-	public static void addXGValueListener(XGAdressableSetListener l)
-	{	VALUES.addListener(l);}
-
-	public static void removeXGValueListener(XGAdressableSetListener l)
-	{	VALUES.removeListener(l);}
 
 /***********************************************************************************************/
 
@@ -72,7 +34,7 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	private final XGParameter parameter;
 	private final Set<XGValueChangeListener> listeners = new HashSet<>();
 	
-	public XGValue(XGAdress adr) throws InvalidXGAdressException
+	protected XGValue(XGAdress adr) throws InvalidXGAdressException
 	{	if(!adr.isValueAdress()) throw new InvalidXGAdressException("not a value adress: " + adr);
 		this.adress = adr;
 		this.instance = XGObjectType.getObjectTypeOrNew(adr).getInstance(adr);
@@ -110,7 +72,7 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	public boolean setContentAndTransmit(Object o) throws WrongXGValueTypeException, InvalidXGAdressException
 	{	boolean changed = this.setContent(o);
 		if(changed)
-		{	new XGMessageParameterChange(this).transmit();
+		{	new XGMessageParameterChange(this, this).transmit();
 			this.notifyListeners();
 		}
 		return changed;

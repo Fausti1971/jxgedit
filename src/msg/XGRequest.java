@@ -1,12 +1,12 @@
 package msg;
 
-import midi.XGDevice;
+import device.TimeoutException;
 
-public interface XGRequest extends XGMessageConstants
-{	boolean setResponsedBy(XGMessage msg);
+public interface XGRequest extends XGMessage
+{	
+	boolean setResponsedBy(XGResponse msg);
 	boolean isResponsed();
-	XGMessage getResponse();
+	XGResponse getResponse();
 
-	default void request()
-	{	XGDevice.getDevice().getMidi().request(this);}
+	XGResponse request() throws TimeoutException;
 }

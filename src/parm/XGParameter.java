@@ -1,71 +1,19 @@
 package parm;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 import java.util.logging.Logger;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
 import adress.XGAdress;
 import adress.XGAdressable;
-import adress.XGAdressableSet;
 import application.Rest;
 import msg.XGByteArray;
 import msg.XGByteArray.DataType;
 import obj.XGObjectType;
-import value.XGValueTranslator;
 import value.XGValueTranslationMap;
+import value.XGValueTranslator;
 
 public class XGParameter implements XGParameterConstants, XGAdressable
 {	static Logger log = Logger.getAnonymousLogger();
-	static final File FILE = new File(XML_FILE);
-	static final XGAdressableSet<XGParameter> PARAMETERS = new XGAdressableSet<>();
-	
-	public static XGParameter getParameter(XGAdress adr)
-	{	return PARAMETERS.getFirstValidOrDefault(adr, new XGParameter(adr));}
-
-	public static XGAdressableSet<XGParameter> getAllValidParameterSet(XGAdress adr)
-	{	return PARAMETERS.getAllValid(adr);}
-
-	public static XGAdressableSet<XGParameter> getAllValidParameterSet(String type)
-	{	XGAdressableSet<XGParameter> s = new XGAdressableSet<XGParameter>();
-		for(XGParameter p : PARAMETERS) if(p.getObjectType().getName().equals(type)) s.add(p);
-		PARAMETERS.addListener(s);
-		return s;
-	}
-
-	public static void initParameterSet()
-	{	if(!FILE.canRead())
-		{	log.info("can't read file: " + FILE);
-			return;
-		}
-	
-		try
-		{	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-	//		dbf.setValidating(true);
-	//		dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, null);
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(FILE); 
-	
-			Element rootElement = doc.getDocumentElement(); 
-	
-			Node n = rootElement.getFirstChild();
-			while(n.getNextSibling() != null)
-			{	if(n.getNodeName().equals(TAG_PARAMETER))
-				{	XGParameter p = new XGParameter(n);
-					PARAMETERS.add(p);
-				}
-				n = n.getNextSibling();
-			}
-		}
-		catch (IOException | ParserConfigurationException | SAXException e)
-		{ e.printStackTrace();}
-	}
 
 /*****************************************************************************************************/
 
@@ -78,20 +26,23 @@ public class XGParameter implements XGParameterConstants, XGAdressable
 	private final XGByteArray.DataType byteType;
 	private final ValueDataClass valueClass;
 
-	public XGParameter(XGAdress adr)	//automatischer Konstruktor - unbekannter Parameter
+	XGParameter(XGAdress adr, int min, int max, int bc, DataType bt, ValueDataClass vdc)	//für XGMODELNAMEPARAMETER erforderlich
 	{	this.objectType = XGObjectType.getObjectTypeOrNew(adr);
 		this.adress = adr;
-		this.minValue = 0;
-		this.maxValue = 127;
-		this.byteCount = DEF_BYTECOUNT;
+		this.minValue = min;
+		this.maxValue = max;
+		this.byteCount = bc;
 		this.mutableMapIndex = 0;
 		this.masterParameterAdress = null;
 		this.valueTranslator = DEF_TRANSLATOR;
 		this.translationMap = null;
-		this.byteType = DEF_BYTE_TYPE;
-		this.valueClass = DEF_VALUECLASS;
+		this.byteType = bt;
+		this.valueClass = vdc;
 		this.longName = DEF_LONGNAME + " " + adr;
 		this.shortName = DEF_SHORTNAME;
+	}
+	public XGParameter(XGAdress adr)	//automatischer Konstruktor - unbekannter Parameter
+	{	this(adr, 0, 127, DEF_BYTECOUNT, DEF_BYTE_TYPE, DEF_VALUECLASS);
 	}
 
 	public XGParameter(Node e)

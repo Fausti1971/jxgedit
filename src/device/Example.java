@@ -1,4 +1,4 @@
-package midi;
+package device;
 
 import javax.sound.midi.MidiDevice;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;

@@ -3,29 +3,30 @@ package application;
 import java.util.logging.Logger;
 import javax.sound.midi.MidiUnavailableException;
 import adress.InvalidXGAdressException;
-import file.SysexFile;
+import device.XGDevice;
+import file.XGSysexFile;
 import gui.XGMainFrame;
-import midi.XGDevice;
 import obj.XGObjectType;
 import parm.XGParameter;
+import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
 
 public class XG implements ConfigurationConstants
 {	private static final Logger log = Logger.getAnonymousLogger(); 
 
 	static
-	{	homePath.toFile().mkdirs();}
+	{	HOMEPATH.toFile().mkdirs();}
 
 	public static void main(String[] args)
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 //		%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
 
-		Runtime.getRuntime().addShutdownHook
-		(	new Thread()
-			{	@Override public void run()
-				{	log.info("application exited");
-				}
-			}
-		);
+//		Runtime.getRuntime().addShutdownHook
+//		(	new Thread()
+//			{	@Override public void run()
+//				{	log.info("application exited");
+//				}
+//			}
+//		);
 /*TODO	config laden,
 			midi in config vorhanden:
 				initialisieren,
@@ -44,29 +45,31 @@ public class XG implements ConfigurationConstants
 				ordner nicht vorhanden:
 					xml aus rsc laden, nach devicePath kopieren und initialisieren,
 					dumps abfragen (complete XG, dauert), dumps nach devicePath/default.syx speichern (fragen);
+		Messengerkonzept überarbeiten: nur XGValue und XGBulkdump ist zum request und transmit imstande, Ziele dafür könnten aber weiterhin XGMessenger sein;
 */		
 		
 		Configuration.initConfig();
-		try
-		{	XGDevice.initDevice();
-		}
-		catch(MidiUnavailableException e)
-		{	e.printStackTrace();
-			quit();
-		}
-		XGObjectType.initObjectTypeMap();
-		XGParameter.initParameterSet();
-		XGMainFrame.initMainFrame();
+		quit();
+//		try
+//		{	XGDevice.initDevice();
+//		}
+//		catch(MidiUnavailableException | InvalidXGAdressException | CoreMidiException e)
+//		{	e.printStackTrace();
+//			quit();
+//		}
+//		XGObjectType.initObjectTypeMap();
+//		XGParameter.initParameterSet();
+//		XGMainFrame.initMainFrame();
 
 //		mainFrame = new TreeFrame();
 //		new XGTextReader().run();
-		SysexFile.getDefaultDump();
+//		SysexFile.getDefaultDump();
 	}
 
 	public static void quit()
 	{	log.info("exiting application");
-		Configuration.getConfig().save();
-		XGDevice.getDevice().close();
+		Configuration.close();
+//		XGDevice.getDevice().close();
 		System.exit(0);
 	}
 

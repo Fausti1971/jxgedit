@@ -43,7 +43,7 @@ public class XGObjectType implements XGObjectConstants, XGAdressConstants
 	public static void requestAll()
 	{	for(XGObjectType o : OBJECTTYPES)
 			for(XGBulkDumpSequence s : o.dumpSequences) s.requestAll();
-		log.info("complete request queued");
+		log.info("request completetd");
 	}
 
 	public static void initObjectTypeMap()

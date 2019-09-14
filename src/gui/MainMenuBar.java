@@ -8,7 +8,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import application.XG;
-import file.SysexFile;
+import file.XGSysexFile;
 import obj.XGObjectType;
 
 public class MainMenuBar extends JMenuBar
@@ -36,7 +36,7 @@ public class MainMenuBar extends JMenuBar
 		
 		this.load.addActionListener(new ActionListener()
 		{	public void actionPerformed(ActionEvent e)
-			{	new SysexFile().load(true);
+			{	new XGSysexFile().load();
 			}
 		});
 		this.save.addActionListener(new ActionListener()

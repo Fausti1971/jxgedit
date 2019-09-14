@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGObjects.xsd">
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/object.xsd">
 <!-- this table is used to identify ObjectType by adress and request dumps sequentially, if give ranges by using "-" dumps will be requested recursively-->
 	<object>
 		<name>System</name>
@@ -20,7 +20,7 @@
 	</object>
 
 	<object>
-		<name>System FX 1</name>
+		<name>Reverb</name>
 		<dumpSequence>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -34,7 +34,7 @@
 	</object>
 
 	<object>
-		<name>System FX 2</name>
+		<name>Chorus</name>
 		<dumpSequence>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -48,7 +48,7 @@
 	</object>
 
 	<object>
-		<name>System FX 3</name>
+		<name>Variation</name>
 		<dumpSequence>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -71,7 +71,7 @@
 	</object>
 
 	<object>
-		<name>Insertion FX</name>
+		<name>Insertion</name>
 		<dumpSequence>
 			<hi>3</hi>
 			<mid>0</mid>

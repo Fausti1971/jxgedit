@@ -1,5 +1,10 @@
-/application/
+/device/
 /file/
-/gui/
-/midi/
 /msg/
+/value/
+/gui/
+/adress/
+/obj/
+/application/
+/xml/
+/parm/

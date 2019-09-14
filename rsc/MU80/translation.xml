@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<maps xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGTranslationMaps.xsd">
+<maps xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/translation.xsd">
 	<map name="midi_channels">
 		<entry>
 			<value>0</value>

@@ -6,17 +6,17 @@ import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import value.XGValue;
 
-public class XGMessageBulkDump extends XGMessage
+public class XGMessageBulkDump extends XGSuperMessage implements XGBulkDump
 {	private static final int SIZE_SIZE = 2, SIZE_OFFS = 4, MSG = 0, HI_OFFS = 6, MID_OFFS = 7, LO_OFFS = 8, DATA_OFFS = 9;
 
-	protected XGMessageBulkDump(byte[] array) throws InvalidMidiDataException
-	{	super(array);
+	protected XGMessageBulkDump(XGMessenger src, byte[] array) throws InvalidMidiDataException
+	{	super(src, array);
 		checkSum();
 	}
 
-	public XGMessageBulkDump(XGAdress adr) throws InvalidXGAdressException	//wird als response benötigt
-	{	super(new byte[11]);
-		setMessageId(MSG);
+	public XGMessageBulkDump(XGMessenger src, XGAdress adr) throws InvalidXGAdressException	//wird manuell angelegt und als response benötigt
+	{	super(src, new byte[11]);
+		setMessageID(MSG);
 		setDumpSize(0);
 		encodeMidiByteFromInteger(HI_OFFS, adr.getHi());
 		encodeMidiByteFromInteger(MID_OFFS, adr.getMid());
@@ -24,8 +24,8 @@ public class XGMessageBulkDump extends XGMessage
 		setEOX(10);
 	}
 
-	public XGMessageBulkDump(SysexMessage msg) throws InvalidMidiDataException, InvalidXGAdressException	//für MIDI und FILE
-	{	super(msg);
+	public XGMessageBulkDump(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAdressException	//für MIDI und FILE
+	{	super(src, msg);
 		checkSum();
 	}
 
@@ -47,7 +47,7 @@ public class XGMessageBulkDump extends XGMessage
 	protected void setLo(int lo)
 	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
 
-	private int getDumpSize()
+	public int getDumpSize()
 	{	return decodeMidiBytesToInteger(SIZE_OFFS, SIZE_SIZE);}
 
 	private void setDumpSize(int size)
@@ -62,7 +62,8 @@ public class XGMessageBulkDump extends XGMessage
 	public void storeMessage() throws InvalidXGAdressException
 	{	int end = getDumpSize() + DATA_OFFS, offset = getLo();
 		for(int i = DATA_OFFS; i < end;)
-		{	XGValue v = XGValue.getValueOrNewAndStore(new XGAdress(getHi(), getMid(), offset));
+		{	XGValue v = XGValue.getValueOrNew(new XGAdress(getHi(), getMid(), offset));
+			XGValue.getValues().add(v);
 			decodeXGValue(i, v);
 			offset += v.getParameter().getByteCount();
 			i += v.getParameter().getByteCount();

@@ -13,7 +13,7 @@ public class XGStringValue extends XGValue
 	public boolean setContent(Object o) throws WrongXGValueTypeException
 	{	this.validate(o);
 		String s = (String)this.limitize(o);
-		boolean changed = !this.content.equals(o);
+		boolean changed = !o.equals(this.content);
 		this.content = s;
 		this.notifyListeners();
 		return changed;

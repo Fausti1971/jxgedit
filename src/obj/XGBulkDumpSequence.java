@@ -1,12 +1,20 @@
 package obj;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 import org.w3c.dom.Node;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import application.Rest;
+import device.TimeoutException;
 import msg.XGMessageDumpRequest;
+import msg.XGMessenger;
+import msg.XGRequest;
+
 public class XGBulkDumpSequence implements XGObjectConstants
-{	private final XGAdress min, max;
+{	private static Logger log = Logger.getAnonymousLogger();
+
+
+	private final XGAdress min, max;
 
 	public XGBulkDumpSequence(XGAdress min, XGAdress max) throws InvalidXGAdressException
 	{	if(!min.isValueAdress()) throw new InvalidXGAdressException("invalid value-adress (min): " + min);
@@ -39,13 +47,7 @@ public class XGBulkDumpSequence implements XGObjectConstants
 		this.min = new XGAdress(hiMin, midMin, loMin);
 		this.max = new XGAdress(hiMax, midMax, loMax);
 	}
-/*
-	public Set<XGBulkDumpSequence> toHashSet()
-	{	Set<XGBulkDumpSequence> set = new HashSet<>();
-		set.add(this);
-		return set;
-	}
-*/
+
 	public boolean include(XGAdress adr)
 	{	if(adr.compareTo(this.min) < 0) return false;
 		if(adr.compareTo(this.max) > 0) return false;
@@ -55,15 +57,22 @@ public class XGBulkDumpSequence implements XGObjectConstants
 	@Override public String toString()
 	{	return min + "..." + max;}
 
-	public void requestAll()
+	public void requestAll(XGMessenger src, XGMessenger dest)
 	{	try
 		{	int hi, mid, lo = this.min.getLo();
 			for(hi = this.min.getHi(); hi <= this.max.getHi(); hi++)
 				for(mid = this.min.getMid(); mid <= this.max.getMid(); mid++)
-					new XGMessageDumpRequest(new XGAdress(hi, mid, lo)).request();
+				{	XGRequest r = new XGMessageDumpRequest(src, new XGAdress(hi, mid, lo));
+					r.setDestination(dest);
+					src.take(r.request());
+				}
 		}
 		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();}
+		{	e.printStackTrace();
+		}
+		catch(TimeoutException e)
+		{	log.info(e.getMessage());
+		}
 	}
 
 	public int maxInstanceCount()

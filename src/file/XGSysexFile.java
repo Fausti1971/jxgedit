@@ -11,59 +11,59 @@ import javax.sound.midi.SysexMessage;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import adress.InvalidXGAdressException;
+import adress.XGAdressableSet;
 import application.Configuration;
 import application.ConfigurationConstants;
 import gui.XGMainFrame;
 import msg.XGMessage;
+import msg.XGMessenger;
+import msg.XGRequest;
+import msg.XGResponse;
 
-public class SysexFile implements ConfigurationConstants
+public class XGSysexFile implements ConfigurationConstants, XGMessenger
 {	private static final Logger log = Logger.getAnonymousLogger();
-	private static SysexFile defaultDump;
+	private static XGSysexFile defaultDump;
 
-	public static SysexFile getDefaultDump()
-	{	if(defaultDump == null) defaultDump = new SysexFile(new File("rsc/default.syx"));
+	public static XGSysexFile getDefaultDump()
+	{	if(defaultDump == null) defaultDump = new XGSysexFile(new File("rsc/default.syx"));
 		return defaultDump;
 	}
 
 /******************************************************************************************************************************************/
 
-//	private Path path;
+	private int sysexID = 0;
 	private File file;
+	private XGAdressableSet<XGMessage> buffer = new XGAdressableSet<XGMessage>();
 
-	private SysexFile(File f)
+	private XGSysexFile(File f)
 	{	this.file = f;
-		load(false);
+		this.load();
 	}
 
-	public SysexFile()
-	{	//this.path = Paths.get(MU80.getSetting().get(Setting.LASTDUMPPATH));
-		setFile();
+	public XGSysexFile()
+	{	selectFile();
 	}
 	
-	public void load(boolean protocol)
+	public void load()
 	{	if(file != null)
-		{	int count = 0;
-			log.info("parsing started: " + file.getAbsolutePath());
+		{	log.info("parsing started: " + file.getAbsolutePath());
 			for(SysexMessage s : parse())
 			{	try
-				{	XGMessage.factory(s).storeMessage();
-					count++;
+				{	XGMessage m = XGMessage.newMessage(this, s);
+					XGMessenger dest = m.getDestination();
+					if(dest == null) buffer.add(m);
+					else dest.take(m);
 				}
 				catch (InvalidMidiDataException | InvalidXGAdressException e)
 				{	log.severe(e.getMessage());
 				}
 			}
-			log.info(count + " Messages parsed from " + file.getAbsolutePath());
-			if(protocol)
-			{	Configuration.getConfig().put(LASTDUMPFILE, file.getAbsolutePath());
-				XGMainFrame.getMainFrame().setTitle(file.getAbsolutePath());
-				
-			}
+			log.info(buffer.size() + " Messages parsed from " + file.getAbsolutePath());
 		}
 	}
 
-	private void setFile()
-	{	JFileChooser fc = new JFileChooser(Configuration.getConfig().getProperty(LASTDUMPFILE));
+	private void selectFile()
+	{	JFileChooser fc = new JFileChooser(Configuration.getCurrentConfig().getProperty(LASTDUMPFILE));
 		fc.setDialogTitle("Open A Sysex-File...");
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setFileFilter(new FileFilter()
@@ -112,6 +112,26 @@ public class SysexFile implements ConfigurationConstants
 			return null;
 		}
 		return array;
+	}
+
+	public XGMessengerType getMessengerType()
+	{	return XGMessengerType.File;
+	}
+
+	public String getMessengerName()
+	{	return this.file.getAbsolutePath();
+	}
+
+	public void take(XGMessage m)//zum SysexFile ("datei.syx")
+	{
+	}
+
+	public XGResponse pull(XGRequest msg)//von SysexFile ("datei.syx")
+	{	return null;
+	}
+
+	public int getSysexID()
+	{	return this.sysexID;
 	}
 }
 

@@ -1,4 +1,4 @@
-package midi;
+package device;
 
 import java.util.HashSet;
 import java.util.Set;

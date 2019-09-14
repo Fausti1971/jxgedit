@@ -49,7 +49,7 @@ public class XGMainFrame extends JFrame implements WindowListener, ComponentList
 
 		root.add(new MainProgressBar(), BorderLayout.SOUTH);
 
-		this.listeners.add(Configuration.getConfig());
+		this.listeners.add(Configuration.getCurrentConfig());
 		this.pack();
 		this.setVisible(true);
 	}

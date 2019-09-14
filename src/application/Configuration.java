@@ -3,66 +3,80 @@ package application;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import java.util.logging.Logger;
-//TOD: Umbau nach XML
-//Config.xml: Version, Date, Time, MidiInput, MidiOutput, MIidiTimeout, SysexID, WindowX, WindowY, WindowW, WindowH, LastDumpFile
+//TODO: Umbau nach XML
+//homePath/config.xml: Version, Date, Time, WindowX, WindowY, WindowW, WindowH, lastConfig
+//homePath/config.xml: MidiInput, MidiOutput, MIidiTimeout, SysexID, LastDumpFile
 
 public class Configuration extends Properties implements ConfigurationChangeListener
 {	/**
 	 * 
 	 */
-	private static Configuration CONFIG = null;
+	private static Set<Configuration> CONFIGS = new HashSet<>();
+	private static Configuration CURRENTCONFIG;
+	private static Configuration MAINCONFIG;
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getAnonymousLogger();
 
-	public static Configuration getConfig()
-	{	return CONFIG;	
+	public static Configuration getCurrentConfig()
+	{	return CURRENTCONFIG;
 	}
 
 	public static void initConfig()
-	{	CONFIG = new Configuration();
+	{	MAINCONFIG = new Configuration(CONFIGFILEPATH);
+		File[] files = HOMEPATH.toFile().listFiles(new FilenameFilter()
+		{	public boolean accept(File dir, String name)
+			{	if(!dir.equals(HOMEPATH.toFile())) return false;
+				if(!name.equalsIgnoreCase(".xml")) return false;
+				return true;
+			}
+		});
+		for(File f : files) log.info(f.toString());
+	}
+
+	public static void close()
+	{	MAINCONFIG.save();
+		for(Configuration c : CONFIGS) c.save();
 	}
 
 /***********************************************************************************************/
 
-	private File file = ConfigurationConstants.getHomePath().resolve("config.xml").toFile();
-/*
-	public Setting(String filename, Setting set)		//Konstruktor für Devicesettings
-	{	this.file = (MU80.getDevicePath().resolve(filename)).toFile();
-		for(String s : set.stringPropertyNames()) this.setProperty(s, set.getProperty(s));
-	}
-*/
-	public Configuration()				//Konstruktor für Settingsfile als File
-	{	this.loadSetting();
-		
+	private File file;
+
+	public Configuration(Path filePath)				//Konstruktor für Settingsfile als File
+	{	this.file = filePath.toFile();
+		this.load();
 	}
 
-	private boolean loadSetting()
+	private void load()
 	{	if(this.file.exists())
 		{	try(FileInputStream fis = new FileInputStream(this.file))
 			{	this.loadFromXML(fis);
 			}
 			catch (IOException e)
 			{	log.info(e.getMessage());
-				return false;
+				return;
 			}
 			log.info("properties loaded: " + this.file);
-			return true;
+			return;
 		}
 		log.info("file not found: " + this.file.toString());
-		return false;
 	}
 
-	private boolean saveSetting()
+	private void save()
 	{	if(!this.file.exists())
 		{	try
 			{	this.file.createNewFile();
 			}
 			catch (IOException e)
 			{	log.info(e.getMessage());
-				return false;
+				return;
 			}
 		}
 		try(FileOutputStream fos = new FileOutputStream(this.file))
@@ -70,10 +84,9 @@ public class Configuration extends Properties implements ConfigurationChangeList
 		}
 		catch (IOException e)
 		{	e.printStackTrace();
-			return false;
+			return;
 		}
 		log.info("properties stored: " + this.file);
-		return true;
 	}
 
 	public void setInt(String key, int value)
@@ -94,14 +107,6 @@ public class Configuration extends Properties implements ConfigurationChangeList
 
 	public String getOrDefault(String key, String def)
 	{	return(this.getProperty(key, def));
-	}
-
-	public void save()
-	{	saveSetting();
-	}
-
-	public void close()
-	{
 	}
 
 	public void configurationChanged(ConfigurationEvent e)

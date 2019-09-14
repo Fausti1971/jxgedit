@@ -1,33 +1,38 @@
 package msg;
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import midi.XGDevice;
-import value.WrongXGValueTypeException;
 import value.XGValue;
 
-public class XGMessageParameterRequest extends XGMessage implements XGRequest
+public class XGMessageParameterRequest extends XGSuperMessage implements XGRequest
 {	private static final int MSG = 0x30, HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6;
 
-	private XGMessage response;
+/*******************************************************************************************/
 
-	protected XGMessageParameterRequest(byte[] array, long time)
-	{	super(array);}
+	private Set<XGResponseListener> responseListeners = new HashSet<>();
+	private XGResponse response;
 
-	public XGMessageParameterRequest(SysexMessage msg) throws InvalidMidiDataException
-	{	super(msg);}
+	protected XGMessageParameterRequest(XGMessenger src, byte[] array, long time)
+	{	super(src, array);
+	}
 
-	public XGMessageParameterRequest(XGAdress adr) throws InvalidXGAdressException, WrongXGValueTypeException
-	{	super(new byte[8]);
-		setMessageId(MSG);
-		setSysexId(XGDevice.getDevice().getSysexId());
+	public XGMessageParameterRequest(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException
+	{	super(src, msg);
+	}
+
+	public XGMessageParameterRequest(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
+	{	super(src, new byte[8]);
+		setMessageID(MSG);
+		setSysexID(src.getSysexID());
 		setHi(adr.getHi());
 		setMid(adr.getMid());
 		setLo(adr.getLo());
 		setEOX(7);
-		this.response = new XGMessageParameterChange(XGValue.getValueOrNew(adr));
+		this.response = new XGMessageParameterChange(src, XGValue.getValueOrNew(adr));
 	}
 
 	protected int getHi()
@@ -48,11 +53,11 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	protected void setLo(int lo)
 	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
 
-	public boolean setResponsedBy(XGMessage msg)
+	public boolean setResponsedBy(XGResponse msg)
 	{	if(msg == null) return false;
 		if(msg instanceof XGMessageParameterChange)
 		{	XGMessageParameterChange x = (XGMessageParameterChange)msg;
-			if(x.getSysexId() == response.getSysexId() && x.getAdress().equals(response.getAdress())) return true;
+			if(x.getSysexID() == response.getSysexID() && x.getAdress().equals(response.getAdress())) return true;
 		}
 		return false;
 	}
@@ -61,14 +66,27 @@ public class XGMessageParameterRequest extends XGMessage implements XGRequest
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
 	}
 
-	public void storeMessage()
-	{}
-
 	public boolean isResponsed()
 	{	return false;
 	}
 
-	public XGMessage getResponse()
+	public XGResponse getResponse()
 	{	return this.response;
+	}
+
+	public void addResponseListener(XGResponseListener l)
+	{	this.responseListeners.add(l);
+	}
+
+	public void removeResponseListener(XGResponseListener l)
+	{	this.responseListeners.remove(l);
+	}
+
+	public void notifyResponseListeners()
+	{	for(XGResponseListener l : this.responseListeners) l.requestResponsed();
+	}
+
+	public void request()
+	{	this.getDestination().pull(this);//and wait for response
 	}
 }

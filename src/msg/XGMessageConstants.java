@@ -26,35 +26,35 @@ public interface XGMessageConstants extends XGByteArray
 	{	encodeMidiByteFromInteger(index, EOX);
 	}
 
-	default int getSysexId()
+	default int getSysexID()
 	{	return decodeLowerNibble(SYSEX_OFFS);
 	}
 
-	default void setSysexId(int id)
+	default void setSysexID(int id)
 	{	encodeLowerNibble(SYSEX_OFFS, id);
 	}
 
-	default int getMessageId()
+	default int getMessageID()
 	{	return decodeHigherNibbleToInteger(MSG_OFFS);
 	}
 
-	default void setMessageId(int id)
+	default void setMessageID(int id)
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, id);
 	}
 
-	default int getVendorId()
+	default int getVendorID()
 	{	return decodeMidiByteToInteger(VENDOR_OFFS);
 	}
 
-	default void setVendorId()
+	default void setVendorID()
 	{	encodeMidiByteFromInteger(VENDOR_OFFS, VENDOR);
 	}
 
-	default int getModelId()
+	default int getModelID()
 	{	return decodeMidiByteToInteger(MODEL_OFFS);
 	}
 
-	default void setModelId()
+	default void setModelID()
 	{	encodeMidiByteFromInteger(MODEL_OFFS, MODEL);
 	}
 }

@@ -3,13 +3,15 @@ package msg;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 
-public class XGMessageUnknown extends XGMessage
+public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 {
-	protected XGMessageUnknown(SysexMessage msg) throws InvalidMidiDataException
-	{	super(msg);}
+	protected XGMessageUnknown(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException
+	{	super(src, msg);
+	}
 
-	protected XGMessageUnknown(byte[] msg)
-	{	super(msg);}
+	protected XGMessageUnknown(XGMessenger src, byte[] msg)
+	{	super(src, msg);
+	}
 
 	@Override protected int getHi()
 	{	return 0;}
@@ -33,5 +35,5 @@ public class XGMessageUnknown extends XGMessage
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, 0);}
 
 	public void storeMessage()
-	{	log.info("unknown message received: " + getMessageId());}
+	{	log.info("unknown message received: " + getMessageID());}
 }

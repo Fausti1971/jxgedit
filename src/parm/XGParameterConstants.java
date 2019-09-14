@@ -1,5 +1,6 @@
 package parm;
 
+import adress.XGAdress;
 import msg.XGByteArray;
 import value.XGValueTranslator;
 
@@ -22,7 +23,6 @@ public interface XGParameterConstants
 		TAG_LONGNAME = "longName",
 		TAG_SHORTNAME = "shortName";
 
-	static final int HI = 0, MID = 1, LO = 2;
 	static enum ValueDataClass {Integer, String, Image};
 
 	static final String DEF_LONGNAME = "unknown parameter", DEF_SHORTNAME = "unknow", DEF_OBJTYPE = "unknown object";
@@ -30,6 +30,7 @@ public interface XGParameterConstants
 	static final XGByteArray.DataType DEF_BYTE_TYPE = XGByteArray.DataType.MIDIBYTE;
 	static final ValueDataClass DEF_VALUECLASS = ValueDataClass.Integer;
 	static final XGValueTranslator DEF_TRANSLATOR = XGValueTranslator.translateToText;
+	static final XGAdress XGMODELNAMEADRESS = new XGAdress(1,0,0);
 
 	public static final int
 	SYS_TUNE = 0x00,

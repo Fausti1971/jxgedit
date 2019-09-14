@@ -1,4 +1,4 @@
-package midi;
+package device;
 
 import adress.InvalidXGAdressException;
 import adress.XGAdress;

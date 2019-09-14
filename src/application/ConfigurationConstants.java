@@ -6,17 +6,19 @@ import java.nio.file.Paths;
 public interface ConfigurationConstants
 {
 
-	static final String	APPNAME = "XG";
+	static final String APPNAME = "XG";
 	static final String SYSFILESEP = System.getProperty("file.separator");
-	static final Path homePath = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
+	static final Path HOMEPATH = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
+	static final Path CONFIGFILEPATH = HOMEPATH.resolve("config.xml");
 
-	static final String DEVICEXML = "XGDevice.xml";
-	static final String OBJECTXML = "XGObjects.xml";
-	static final String XGPARAMETERXML = "XGParameter.xml";
-	static final String XGTRANSLATIONS = "XGTranslations.xml";
+	static final String OBJECTXML = "object.xml";
+	static final String XGPARAMETERXML = "parameter.xml";
+	static final String XGTRANSLATIONXML = "translation.xml";
+
+	static final int DEF_MIDITIMEOUT = 150;
 
 	public static Path getHomePath()
-	{	return homePath;}
+	{	return HOMEPATH;}
 
 	public static String getAppName()
 	{	return APPNAME;}
@@ -36,5 +38,6 @@ public interface ConfigurationConstants
 		WINW = "WindowW",
 		WINH = "WindowH";
 
-//	Version, Date, Time, MidiInput, MidiOutput, MIidiTimeout, SysexID, WindowX, WindowY, WindowW, WindowH, LastDumpFile
+//	Version, Date, Time, WindowX, WindowY, WindowW, WindowH, lastConfig
+//	MidiInput, MidiOutput, MIidiTimeout, SysexID, LastDumpFile
 }
