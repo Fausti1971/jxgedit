@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<maps xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="XGMutableParameterMaps.xsd">
+	<map name="Hall 1,Hall 2,Room 1,Room 2,Room 3,Stage 1,Stage 2,Plate">
+		<parameter>
+			<longName>Reverb Time</longName>
+			<shortName>RevTime</shortName>
+			<valueMin>0</valueMin>
+			<valueMax>69</valueMax>
+			<translator>translateMap</translator>
+			<translationMap>reverb_time</translationMap>
+		</parameter>
+	</map>
+</maps>

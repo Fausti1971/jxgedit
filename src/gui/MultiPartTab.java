@@ -3,14 +3,12 @@ package gui;
 import java.awt.BorderLayout;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import adress.XGAdress;
-import obj.XGObjectConstants;
 import parm.XGParameterConstants;
 
 public class MultiPartTab extends JComponent implements XGParameterConstants
-{	private static XGObjectTableView tv = new XGObjectTableView(new XGAdress(XGObjectConstants.MULTI));
+{	private static XGObjectInstanceTable tv = new XGObjectInstanceTable("Multipart");
 
-	public static XGObjectTableView getTableView()
+	public static XGObjectInstanceTable getTableView()
 	{	return tv;}
 
 	/**

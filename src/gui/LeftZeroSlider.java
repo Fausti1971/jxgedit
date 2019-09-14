@@ -12,14 +12,17 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
-import midi.Bytes;
-import obj.XGObject;
+import adress.InvalidXGAdressException;
+import adress.XGAdress;
+import adress.XGInstanceSelectionListener;
+import application.Rest;
+import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.WrongXGValueTypeException;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGParameterConstants, XGValueChangeListener
+public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGParameterConstants, XGValueChangeListener, XGInstanceSelectionListener
 {	/**
 	 * 
 	 */
@@ -27,16 +30,16 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 /*****************************************************************************************************************************/
 
-	private final int offset;
+	private final XGAdress adress;
 	private XGValue value;
 
-	public LeftZeroSlider(int offset)
-	{	this.offset = offset;
+	public LeftZeroSlider(XGAdress adr) throws InvalidXGAdressException
+	{	this.adress = adr;
+		this.valueChanged(this.value);
 		setSize(SL_DIM);
 		setMinimumSize(SL_DIM);
 		setPreferredSize(SL_DIM);
 		setMaximumSize(SL_DIM);
-		setVisible(false);
 		setFocusable(true);
 		addMouseMotionListener(this);
 		addMouseListener(this);
@@ -46,13 +49,11 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 	@Override protected void paintComponent(Graphics g)
 	{	Graphics2D g2 = (Graphics2D)g;
+		XGParameter p = this.value.getParameter();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		int w = 0;
-		try
-		{	w = Bytes.linearIO(this.value.getNumberValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, SL_W);}
-		catch(WrongXGValueTypeException e)
-		{	e.printStackTrace();}
+		w = Rest.linearIO((int)this.value.getContent(), p.getMinValue(), p.getMaxValue(), 0, SL_W);
 
 		g2.setColor(BACK);
 		g2.fillRoundRect(0, 0 , SL_W, SL_H, SL_RADI, SL_RADI);
@@ -62,16 +63,10 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		g2.fillRoundRect(0, 0 , w - 1, SL_H - 1, SL_RADI, SL_RADI);
 
 		g2.setColor(Color.BLACK);
-		g2.drawString(this.value.getParameter().getShortName(), GAP, FONTMIDDLE);
+		g2.drawString(p.getShortName(), GAP, FONTMIDDLE);
 
 		String t;
-		try
-		{	t = this.value.getTextValue();
-		}
-		catch(WrongXGValueTypeException e)
-		{	e.printStackTrace();
-			t = "no value";
-		}
+		t = this.value.toString();
 		if(t != null) g2.drawString(t, SL_W - GAP - g2.getFontMetrics().stringWidth(t), FONTMIDDLE);
 	}
 
@@ -88,12 +83,19 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	}
 
 	public void mouseWheelMoved(MouseWheelEvent e)
-	{	if(this.value.addValue(e.getWheelRotation())) repaint();
+	{	try
+		{	if(this.value.addAndTransmit(e.getWheelRotation())) repaint();}
+		catch(WrongXGValueTypeException e1)
+		{	e1.printStackTrace();}
 		e.consume();
 	}
 
 	public void mouseDragged(MouseEvent e)
-	{	if(this.value.changeValue(Bytes.linearIO(e.getX(), 0, this.getWidth(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue())))repaint();
+	{	XGParameter p = this.value.getParameter();
+		try
+		{	if(this.value.setContentAndTransmit(Rest.linearIO(e.getX(), 0, this.getWidth(), p.getMinValue(), p.getMaxValue())))repaint();}
+		catch(WrongXGValueTypeException|InvalidXGAdressException e1)
+		{	e1.printStackTrace();}
 		e.consume();
 	}
 
@@ -103,17 +105,19 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 	public void mouseClicked(MouseEvent e)
 	{	this.grabFocus();
+		XGParameter p = this.value.getParameter();
 		if(e.getButton() == MouseEvent.BUTTON1)
-		{	try
-			{	if(Bytes.linearIO(this.value.getNumberValue(), this.value.getParameter().getMinValue(), this.value.getParameter().getMaxValue(), 0, this.getWidth()) < e.getX())
-				{	if(this.value.addValue(1)) repaint();
-				}
-				else
-				{	if(this.value.addValue(-1)) repaint();
-				}
+		{	if(Rest.linearIO((int)this.value.getContent(), p.getMinValue(), p.getMaxValue(), 0, this.getWidth()) < e.getX())
+			{	try
+				{	if(this.value.addAndTransmit(1)) repaint();}
+				catch(WrongXGValueTypeException e1)
+				{	e1.printStackTrace();}
 			}
-			catch(WrongXGValueTypeException e1)
-			{	e1.printStackTrace();
+			else
+			{	try
+				{	if(this.value.addAndTransmit(-1)) repaint();}
+				catch(WrongXGValueTypeException e1)
+				{	e1.printStackTrace();}
 			}
 		}
 	}
@@ -134,20 +138,27 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	{
 	}
 
-	public void xgObjectSelected(XGObject o)
-	{	this.value = o.getXGValue(this.offset);
-		try
-		{	this.setToolTipText(this.value.getParameter().getLongName());
-			this.setVisible(true);
+	@Override public boolean isVisible()
+	{	return this.value != null;}
+
+
+	public void contentChanged(XGValue v)
+	{	if(this.isVisible()) this.repaint();}
+
+	public void valueChanged(XGValue v)
+	{	if(this.value != null) this.value.removeListener(this);
+		this.value = v;
+		if(v != null)
+		{	this.value.addListener(this);
+			this.setToolTipText(v.getParameter().getLongName());
 		}
-		catch(NullPointerException e)
-		{	e.printStackTrace();
-			setVisible(false);
-		}
+		this.setVisible(this.isVisible());
 		this.repaint();
 	}
 
-	public void valueChanged(XGValue v)
-	{
-	}
+	public XGAdress getAdress()
+	{	return this.adress;}
+
+	public String getInfo()
+	{	return this.toString();}
 }

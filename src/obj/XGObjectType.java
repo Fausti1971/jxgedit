@@ -1,81 +1,145 @@
 package obj;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
-import java.util.Map;
+import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.logging.Logger;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import parm.XGParameter;
-import parm.XGParameterMap;
+import adress.XGAdressConstants;
+import adress.XGAdressableSet;
+import application.Rest;
+import value.XGValue;
 
-public class XGObjectType
+public class XGObjectType implements XGObjectConstants, XGAdressConstants
 {	private static Logger log = Logger.getAnonymousLogger();
-	private static Set<XGObjectType> objectTypes = XGObjectDescriptionMap.getObjectDescriptionMap();
+	private static final File FILE = new File(XML_FILE);
+	private static final Set<XGObjectType> OBJECTTYPES = new LinkedHashSet<>();
 
-	public static XGObjectType getObjectType(XGAdress adr) throws InvalidXGAdressException
-	{	for(XGObjectType d : objectTypes) if(adr.equalsValidFields(d.adress)) return d;
+	public static Set<XGObjectType> getAllObjectTypes()
+	{	return OBJECTTYPES;}
+
+	public static XGObjectType getObjectTypeOrNew(XGAdress adr)
+	{	for(XGObjectType t : OBJECTTYPES)
+		{	if(t.include(adr)) return t;}
 		return new XGObjectType(adr);
 	}
 
-	public static XGObject getObjectInstance(XGAdress adr)
-	{	try
-		{	return getObjectType(adr).getObject(adr);}
-		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();
-			return null;
+	public static XGObjectType getObjectType(String name)
+	{	for(XGObjectType t : OBJECTTYPES) if(t.getName().equals(name)) return t;
+		return new XGObjectType(INVALIDADRESS);
+	}
+
+
+	public static void requestAll()
+	{	for(XGObjectType o : OBJECTTYPES)
+			for(XGBulkDumpSequence s : o.dumpSequences) s.requestAll();
+		log.info("request completetd");
+	}
+
+	public static void initObjectTypeMap()
+	{	if(!FILE.canRead())
+		{	log.info("can't read file: " + FILE);
+			return;
 		}
+	
+		try
+		{	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	//		dbf.setValidating(true);
+	//		dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, null);
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document doc = db.parse(FILE); 
+	
+			Element rootElement = doc.getDocumentElement(); 
+	
+			Node n = rootElement.getFirstChild();
+			while(n != null)
+			{	if(n.getNodeName().equals(TAG_OBJECT))
+				{	XGObjectType t = new XGObjectType(n);
+					OBJECTTYPES.add(t);
+				}
+				n = n.getNextSibling();
+			}
+		}
+		catch (IOException | ParserConfigurationException | SAXException e)
+		{	e.printStackTrace();}
 	}
 
 /******************************************************************************************************************/
 
-	private final XGAdress adress;//0,0=System; 2,1=FX1; 2,64=EQ; 3=FX2, 8=MultiPart;  
-	private final String objectName;
-	private final String parameterMapName;
-	private final Map<Integer, XGParameter> parameterMap;
-	private final Set<XGDumpDescription> dumpSequence;
-	private Map<Integer, XGObject> objects = new TreeMap<>();
+	private final String name;
+	private final Set<XGBulkDumpSequence> dumpSequences;
+	private final XGAdressableSet<XGObjectInstance> instances = new XGAdressableSet<XGObjectInstance>();
 
-	public XGObjectType(XGAdress adr) throws InvalidXGAdressException
-	{	this(adr, "unknown object", "unknown_parametermap", new HashSet(){{add(adr); add(adr);}});}
-
-	public XGObjectType(XGAdress adr, String name, String pMapName, Set<XGDumpDescription> dseq)
-	{	this.adress = adr;
-		this.objectName = name;
-		this.parameterMapName = pMapName;
-		this.parameterMap = XGParameterMap.getParameterMap(pMapName);
-		this.dumpSequence = dseq;
-		log.info("" + this);
+	private XGObjectType(XGAdress adr)
+	{	this(DEF_OBJECTTYPENAME, null);
 	}
 
-	public XGObject getObject(XGAdress adr)
-	{	try
-		{	XGObject o;
-			if(this.objects.containsKey(adr.getMid())) return this.objects.get(adr.getMid());
-			else
-			{	this.objects.put(adr.getMid(), o = new XGObject(adr));
-				return o;
-			}
+	private XGObjectType(String name, Set<XGBulkDumpSequence> dseq)
+	{	this.name = name;
+		this.dumpSequences = dseq;
+	}
+
+	private XGObjectType(Node n)
+	{	this(Rest.getFirstNodeChildTextContentByTagAsString(n, TAG_NAME), new HashSet<>());
+
+		Node seq = Rest.getFirstChildNodeByTag(n, TAG_DUMPSEQ);
+		while(seq != null)
+		{	if(seq.getNodeName().equals(TAG_DUMPSEQ)) this.dumpSequences.add(new XGBulkDumpSequence(seq));
+			seq = seq.getNextSibling();
 		}
+	}
+
+	public Set<XGBulkDumpSequence> getDumpsequences()
+	{	return this.dumpSequences;}
+
+	public boolean include(XGAdress adr)
+	{	for(XGBulkDumpSequence s : this.dumpSequences) if(s.include(adr)) return true;
+		return false;
+	}
+
+	public int maxInstanceCount()
+	{	int i = 0;
+		for(XGBulkDumpSequence s : this.dumpSequences) i = Math.max(s.maxInstanceCount(), i);
+		return i;
+	}
+
+	public void addInstance(XGValue v)
+	{	if(this.instances.contains(v.getAdress())) return;
+		try
+		{	this.instances.add(new XGObjectInstance(v.getAdress()));}
 		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();
-			return null;
-		}
+		{	e.printStackTrace();}
 	}
 
-	public Map<Integer, XGObject> getObjects()
-	{	return this.objects;}
+	public XGAdressableSet<XGObjectInstance> getXGObjectInstances()
+	{	return this.instances;}
 
-	public Map<Integer, XGParameter> getParameterMap()
-	{	return this.parameterMap;}
+	public XGObjectInstance getInstance(XGAdress adr)
+	{	XGObjectInstance i = this.instances.getFirstValid(adr);
+		if(i == null)
+			try
+			{	this.instances.add(i = new XGObjectInstance(adr));}
+			catch(InvalidXGAdressException e)
+			{	e.printStackTrace();}
+		return i;
+	}
 
-	public XGParameter getParameter(int offs)
-	{	return this.parameterMap.getOrDefault(offs, new XGParameter(offs));}
+	public boolean hasInstances()
+	{	return this.instances.size() != 0;}
 
 	public String getName()
-	{	return this.objectName;}
+	{	return this.name;}
 
 	@Override public String toString()
-	{	return objectName + adress + ", " + parameterMapName + ", " + dumpSequence;}
+	{	return this.name;}
 }

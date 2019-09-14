@@ -1,34 +1,36 @@
 package parm;
 
-import midi.Bytes;
-import value.ValueTranslator;
+import adress.XGAdress;
+import msg.XGByteArray;
+import value.XGValueTranslator;
 
 public interface XGParameterConstants
 {	static final String XML_FILE = "rsc/XGParameterMaps.xml"; 
 	static final String
 		TAG_MAP = "map",
 		TAG_PARAMETER = "parameter",
-		TAG_OFFSET = "offset",
+		TAG_ADRESS = "adress",
+		ATTR_FILTER = "filter",
 		TAG_BYTECOUNT = "byteCount",
 		TAG_BYTETYPE = "byteType",
-		TAG_VALUETYPE = "valueType",
+		TAG_VALUECLASS = "valueClass",
 		TAG_MIN = "valueMin",
 		TAG_MAX = "valueMax",
 		TAG_TRANSLATOR = "translator",
 		TAG_TRANSLATIONMAP = "translationMap",
 		TAG_DESCMAPINDEX = "descriptionMapIndex",
-		TAG_DEPENDSOF = "descriptionDependsOf",
+		TAG_DEPENDSOFADRESS = "dependsOfAdress",
 		TAG_LONGNAME = "longName",
 		TAG_SHORTNAME = "shortName";
 
-	static enum ParameterType {UNKNOWN, COMPLETE, OPCODE, DESCRIPTION};
-	static enum ValueType {NUMBER, TEXT, BITMAP};
+	static enum ValueDataClass {Integer, String, Image};
 
-	static final String DEF_LONGNAME = "unknown parameter", DEF_SHORTNAME = "unknow";
-	static final int DEF_BYTECOUNT = 1;
-	static final Bytes.ByteType DEF_BYTE_TYPE = Bytes.ByteType.MIDIBYTE;
-	static final ValueType DEF_VALUE_TYPE = ValueType.NUMBER;
-	static final ValueTranslator DEF_TRANSLATOR = ValueTranslator.translateToText;
+	static final String DEF_LONGNAME = "unknown parameter", DEF_SHORTNAME = "unknow", DEF_OBJTYPE = "unknown object";
+	static final int DEF_BYTECOUNT = 1, DEF_MIN = 0, DEF_MAX = 127;
+	static final XGByteArray.DataType DEF_BYTE_TYPE = XGByteArray.DataType.MIDIBYTE;
+	static final ValueDataClass DEF_VALUECLASS = ValueDataClass.Integer;
+	static final XGValueTranslator DEF_TRANSLATOR = XGValueTranslator.translateToText;
+	static final XGAdress XGMODELNAMEADRESS = new XGAdress(1,0,0);
 
 	public static final int
 	SYS_TUNE = 0x00,

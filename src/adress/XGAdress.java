@@ -1,113 +1,152 @@
 package adress;
 
-public class XGAdress implements XGAdressConstants
-{	private final int hi, mid, lo, mask, hashCode;
+import java.util.logging.Logger;
+import org.w3c.dom.Node;
+import application.Rest;
+public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdressable
+{	private static Logger log =Logger.getAnonymousLogger();
+
+	private final XGAdressField hi, mid, lo;
 
 	public XGAdress(String hi, String mid, String lo)
-	{	int temp = 0;
-
-		if(hi != null)
-		{	this.hi = Integer.parseInt(hi) & 0xF7;
-			temp |= ADR_HI;
-		}
-		else this.hi = 0;
-
-		if(mid != null)
-		{	this.mid = Integer.parseInt(mid) & 0xF7;
-			temp |= ADR_MID;
-		}
-		else this.mid = 0;
-
-		if(lo != null)
-		{	this.lo = Integer.parseInt(lo) & 0xF7;
-			temp |= ADR_LO;
-		}
-		else this.lo = 0;
-		this.mask = temp;
-		this.hashCode = computeHashCode();
+	{	this.hi = new XGAdressField(hi);
+		this.mid = new XGAdressField(mid);
+		this.lo = new XGAdressField(lo);
 	}
 
 	public XGAdress(int hi, int mid, int lo)
-	{	this.hi = hi & 0xF7;
-		this.mid = mid & 0xF7;
-		this.lo = lo & 0xF7;
-		this.mask = ADR_HI | ADR_MID | ADR_LO;
-		this.hashCode = computeHashCode();
+	{	this.hi = new XGAdressField(hi);
+		this.mid = new XGAdressField(mid);
+		this.lo = new XGAdressField(lo);
 	}
 
-	public XGAdress(int hi, int mid)
-	{	this.hi = hi & 0xF7;
-		this.mid = mid & 0xF7;
-		this.lo = 0;
-		this.mask = ADR_HI | ADR_MID;
-		this.hashCode = computeHashCode();
+	public XGAdress(XGAdressField h, XGAdressField m, XGAdressField l)
+	{	if(h != null) this.hi = h;
+		else this.hi = new XGAdressField();
+		if(m != null) this.mid = m;
+		else this.mid = new XGAdressField();
+		if(l != null) this.lo = l;
+		else this.lo = new XGAdressField();
 	}
 
-	public XGAdress(int hi)
-	{	this.hi = hi & 0xF7;
-		this.mid = 0;
-		this.lo = 0;
-		this.mask = ADR_HI;
-		this.hashCode = computeHashCode();
+	public XGAdress(Node item)
+	{	this.hi = new XGAdressField(Rest.getFirstNodeChildTextContentByTagAsString(item, TAG_HI));
+		this.mid = new XGAdressField(Rest.getFirstNodeChildTextContentByTagAsString(item, TAG_MID));
+		this.lo = new XGAdressField(Rest.getFirstNodeChildTextContentByTagAsString(item, TAG_LO));
 	}
-
+/**
+ * extrahiert und returniert das Hi-Field der XGAdress this
+ * @return Wert des Fields als int
+ * @throws InvalidXGAdressException falls das Field invalid ist
+ */
 	public int getHi() throws InvalidXGAdressException
-	{	if(this.isHiValdi()) return this.hi;
-		else throw new InvalidXGAdressException("acces to ivalid hi-adress");
-	}
+	{	return this.hi.getValue();}
 
+	/**
+	 * extrahiert und returniert das Mid-Field der XGAdress this
+	 * @return Wert des Fields als int
+	 * @throws InvalidXGAdressException falls das Field invalid ist
+	 */
 	public int getMid() throws InvalidXGAdressException
-	{	if(this.isMidValdi()) return this.mid;
-		else throw new InvalidXGAdressException("access to invalid mid-adress");
-	}
+	{	return this.mid.getValue();}
 
+	/**
+	 * extrahiert und returniert das Lo-Field der XGAdress this
+	 * @return Wert des Fields als int
+	 * @throws InvalidXGAdressException falls das Field invalid ist
+	 */
 	public int getLo() throws InvalidXGAdressException
-	{	if(this.isLoValdi()) return this.lo;
-		else throw new InvalidXGAdressException("access to invalid lo-adress");
-	}
+	{	return this.lo.getValue();}
 
+/**
+ * testet, ob die Adresse vollständig ist, und somit einen XGValue adressieren kann
+ * @return true, wenn alle Fields valide sind
+ */
 	public boolean isValueAdress()
-	{	return (this.hashCode & 0xE00000) != 0;}
+	{	return this.isHiValid() && this.isMidValid() && this.isLoValid();}
 
-	private boolean isHiValdi()
-	{	return (this.mask & ADR_HI) != 0;}
+/**
+ * testet das Hi-Field auf Validität
+ * @return true, wenn Field valide
+ */
+	public boolean isHiValid()
+	{	return this.hi.isValid();}
 
-	private boolean isMidValdi()
-	{	return (this.mask & ADR_MID) != 0;}
+	/**
+	 * testet das Mid-Field auf Validität
+	 * @return true, wenn Field valide
+	 */
+	public boolean isMidValid()
+	{	return this.mid.isValid();}
 
-	private boolean isLoValdi()
-	{	return (this.mask & ADR_LO) != 0;}
+	/**
+	 * testet das Lo-Field auf Validität
+	 * @return true, wenn Field valide
+	 */
+	public boolean isLoValid()
+	{	return this.lo.isValid();}
 
-	private int computeHashCode()
-	{	int temp = this.mask << 21;
-		temp |= this.hi << 14;
-		temp |= this.mid << 7;
-		temp |= this.lo;
-		return temp;
+/**
+ * komplettiert this mittels adr, indem invalide Fields durch diese aus adr ersetzt werden 
+ * @param adr Adresse mittels this ergänzt werden soll
+ * @return  die erfolgreich komplettierte Adresse
+ */
+	public XGAdress complement(XGAdress adr)
+	{	if(this.isValueAdress()) return this;
+		if(adr.isValueAdress()) return adr;
+		try
+		{	return new XGAdress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
+		}
+		catch(InvalidXGAdressException e)
+		{	log.info("can't complement adress " + this + " with " + adr);
+			return this;
+		}
 	}
+
+/**
+ * testet ausschließlich valide Fields von this mit validen Fields von adr
+ * @param adr Adresse gegen deren valide Field getestet wird
+ * @return true, wenn alle valieden Fields gleich sind
+ */
 	public boolean equalsValidFields(XGAdress adr)
-	{	if(this.isHiValdi() && adr.isHiValdi())
-			if(this.hi != adr.hi) return false;
-		if(this.isMidValdi() && adr.isMidValdi())
-			if(this.mid != adr.mid) return false;
-		if(this.isLoValdi() && adr.isLoValdi())
-			if(this.lo != adr.lo) return false;
+	{	if(!(this.hi.equalsValid(adr.hi))) return false;
+		if(!(this.mid.equalsValid(adr.mid))) return false;
+		if(!(this.lo.equalsValid(adr.lo))) return false;
 		return true;
 	}
 
+/**
+ * testet alle Fields, inklusive ihrer Validität auf Gleichheit
+ */
 	@Override public boolean equals(Object obj)
 	{	if(!(obj instanceof XGAdress)) return false;
-		return this.hashCode == ((XGAdress)obj).hashCode;
+		XGAdress adr = (XGAdress)obj;
+		try
+		{	return this.hi.equals(adr.hi) && this.mid.equals(adr.mid) && this.lo.equals(adr.lo);
+		}
+		catch(NullPointerException e)
+		{	e.printStackTrace();
+			return false;
+		}
 	}
 
-	@Override public int hashCode()
-	{	return this.hashCode;}
-
+/**
+ * Stringrepresäntation einer Adresse
+ */
 	@Override public String toString()
-	{	String h = "-", m = "-", l = "-";
-		if(this.isHiValdi()) h = "" + this.hi;
-		if(this.isMidValdi()) m = "" + this.mid;
-		if(this.isLoValdi()) l = "" + this.lo;
-		return "(" + h + "/" + m + "/" + l + ")";
+	{	return "(" + this.hi + "/" + this.mid + "/" + this.lo + ")";}
+
+	public int compareTo(XGAdress o)
+	{	int temp = 0;
+		if(this.isHiValid() && o.isHiValid()) temp = this.hi.compare(o.hi);
+		if(temp == 0 && this.isMidValid() && o.isMidValid()) temp = this.mid.compare(o.mid);
+		if(temp == 0 && this.isLoValid() && o.isLoValid()) temp = this.lo.compare(o.lo);
+		return temp;
 	}
+
+	public XGAdress getAdress()
+	{	return this;}
+
+	public String getInfo()
+	{	return this.getClass().getSimpleName() + " " + this.toString();}
 }

@@ -1,9 +1,8 @@
 package msg;
 
 import javax.sound.midi.SysexMessage;
-import midi.Bytes;
 
-public interface XGMessageConstants extends Bytes
+public interface XGMessageConstants extends XGByteArray
 {	public static final int
 		VENDOR = 0x43,
 		VENDOR_OFFS = 1,
@@ -20,42 +19,42 @@ public interface XGMessageConstants extends Bytes
 		PR = 0x30;
 
 	default void setSOX()
-	{	encodeMidiByte(SOX_OFFS, SOX);
+	{	encodeMidiByteFromInteger(SOX_OFFS, SOX);
 	}
 
 	default void setEOX(int index)
-	{	encodeMidiByte(index, EOX);
+	{	encodeMidiByteFromInteger(index, EOX);
 	}
 
-	default int getSysexId()
+	default int getSysexID()
 	{	return decodeLowerNibble(SYSEX_OFFS);
 	}
 
-	default void setSysexId(int id)
+	default void setSysexID(int id)
 	{	encodeLowerNibble(SYSEX_OFFS, id);
 	}
 
-	default int getMessageId()
-	{	return decodeHigherNibble(MSG_OFFS);
+	default int getMessageID()
+	{	return decodeHigherNibbleToInteger(MSG_OFFS);
 	}
 
-	default void setMessageId(int id)
-	{	encodeHigherNibble(MSG_OFFS, id);
+	default void setMessageID(int id)
+	{	encodeHigherNibbleFromInteger(MSG_OFFS, id);
 	}
 
-	default int getVendorId()
-	{	return decodeMidiByte(VENDOR_OFFS);
+	default int getVendorID()
+	{	return decodeMidiByteToInteger(VENDOR_OFFS);
 	}
 
-	default void setVendorId()
-	{	encodeMidiByte(VENDOR_OFFS, VENDOR);
+	default void setVendorID()
+	{	encodeMidiByteFromInteger(VENDOR_OFFS, VENDOR);
 	}
 
-	default int getModelId()
-	{	return decodeMidiByte(MODEL_OFFS);
+	default int getModelID()
+	{	return decodeMidiByteToInteger(MODEL_OFFS);
 	}
 
-	default void setModelId()
-	{	encodeMidiByte(MODEL_OFFS, MODEL);
+	default void setModelID()
+	{	encodeMidiByteFromInteger(MODEL_OFFS, MODEL);
 	}
 }

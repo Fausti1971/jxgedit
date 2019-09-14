@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/object.xsd">
+<!-- this table is used to identify ObjectType by adress and request dumps sequentially, if give ranges by using "-" dumps will be requested recursively-->
+	<object>
+		<name>System</name>
+		<dumpSequence>
+			<hi>0</hi>
+			<mid>0</mid>
+			<lo>0-6</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>System Info</name>
+		<dumpSequence>
+			<hi>1</hi>
+			<mid>0</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>Reverb</name>
+		<dumpSequence>
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>0-13</lo>
+		</dumpSequence>
+		<dumpSequence>
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>16-21</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>Chorus</name>
+		<dumpSequence>
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>32-46</lo>
+		</dumpSequence>
+		<dumpSequence>
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>48-53</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>Variation</name>
+		<dumpSequence>
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>64-96</lo>
+		</dumpSequence>
+		<dumpSequence>
+			<hi>2</hi>
+			<mid>1</mid>
+			<lo>112-117</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>System EQ</name>
+		<dumpSequence>
+			<hi>2</hi>
+			<mid>64</mid>
+			<lo>0-21</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>Insertion</name>
+		<dumpSequence>
+			<hi>3</hi>
+			<mid>0</mid>
+			<lo>0-17</lo>
+		</dumpSequence>
+		<dumpSequence>
+			<hi>3</hi>
+			<mid>0</mid>
+			<lo>32-37</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>Multipart</name>
+		<dumpSequence>
+			<hi>8</hi>
+			<mid>0-31</mid>
+			<lo>0-40</lo>
+		</dumpSequence>
+		<dumpSequence>
+			<hi>8</hi>
+			<mid>0-31</mid>
+			<lo>48-110</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>A/D-Part</name>
+		<dumpSequence>
+			<hi>16</hi>
+			<mid>0-1</mid>
+			<lo>0-20</lo>
+		</dumpSequence>
+		<dumpSequence>
+			<hi>16</hi>
+			<mid>0-1</mid>
+			<lo>48-96</lo>
+		</dumpSequence>
+	</object>
+
+	<object>
+		<name>Drumsets</name>
+		<dumpSequence>
+			<hi>48-51</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</dumpSequence>
+	</object>
+</map>

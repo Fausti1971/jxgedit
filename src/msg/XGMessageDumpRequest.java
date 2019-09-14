@@ -1,70 +1,105 @@
 package msg;
 
+import java.util.HashSet;
+import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
+import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import application.MU80;
 
-public class XGMessageDumpRequest extends XGMessage implements XGRequest
+public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20;
 
-	XGMessageBulkDump response = null;
+/********************************************************************************/
 
-	public XGMessageDumpRequest(byte[] array, long time) throws InvalidMidiDataException
-	{	super(array);
+	private Set<XGResponseListener> responseListeners = new HashSet<>();
+	private boolean responsed = false;
+
+	XGResponse response = null;
+
+	public XGMessageDumpRequest(XGMessenger src, byte[] array, long time) throws InvalidMidiDataException
+	{	super(src, array);
 	}
 
-	public XGMessageDumpRequest(XGAdress adr) throws Exception
-	{	super(new byte[8]);
-		setSysexId(MU80.device.getSysexId());
+	public XGMessageDumpRequest(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
+	{	super(src, new byte[8]);
+		setSysexID(src.getSysexID());
 		setMessageID();
-		encodeMidiByte(HI_OFFS, adr.getHi());
-		encodeMidiByte(MID_OFFS, adr.getMid());
-		encodeMidiByte(LO_OFFS, adr.getLo());
+		encodeMidiByteFromInteger(HI_OFFS, adr.getHi());
+		encodeMidiByteFromInteger(MID_OFFS, adr.getMid());
+		encodeMidiByteFromInteger(LO_OFFS, adr.getLo());
 		setEOX(7);
-		this.response = new XGMessageBulkDump(adr);
+		this.response = new XGMessageBulkDump(src, adr);
 	}
 
-	public XGMessageDumpRequest(SysexMessage msg)
-	{	super(msg);
+	public XGMessageDumpRequest(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException
+	{	super(src, msg);
 	}
 
-	public boolean isResponsed(XGMessage msg)
-	{	if(msg == null) return false;
+	public boolean setResponsedBy(XGResponse msg)
+	{	if(msg == null) return this.responsed = false;
 		if(msg instanceof XGMessageBulkDump)
-		{	XGMessageBulkDump x = (XGMessageBulkDump)msg;
-			if(x.getSysexId() == response.getSysexId() && x.getAdress().equals(response.getAdress())) return true;
+		{	if(msg.getSysexID() == this.response.getSysexID() && msg.getAdress().equals(this.response.getAdress()))
+			this.response = msg;
+			this.notifyResponseListeners();
+			return this.responsed = true;
 		}
-		return false;
+		return this.responsed = false;
 	}
 
-	public XGMessageBulkDump getResponse()
-	{	return response;}
+	public boolean isResponsed()
+	{	return this.responsed;
+	}
+
+	public XGResponse getResponse()
+	{	return this.response;
+	}
 
 	protected int getHi()
-	{	return decodeMidiByte(HI_OFFS);}
+	{	return decodeMidiByteToInteger(HI_OFFS);
+	}
 
 	protected int getMid()
-	{return decodeMidiByte(MID_OFFS);}
+	{return decodeMidiByteToInteger(MID_OFFS);
+	}
 
 	protected int getLo()
-	{	return decodeMidiByte(LO_OFFS);}
+	{	return decodeMidiByteToInteger(LO_OFFS);
+	}
 
 	protected void setHi(int hi)
-	{	encodeMidiByte(HI_OFFS, hi);}
+	{	encodeMidiByteFromInteger(HI_OFFS, hi);
+	}
 
 	protected void setMid(int mid)
-	{	encodeMidiByte(MID_OFFS, mid);}
+	{	encodeMidiByteFromInteger(MID_OFFS, mid);
+	}
 
 	protected void setLo(int lo)
-	{	encodeMidiByte(LO_OFFS, lo);}
+	{	encodeMidiByteFromInteger(LO_OFFS, lo);
+	}
 
 	@Override public String toString()
-	{	return "requesting hi: " + getHi() + " mid: " + getMid() + " lo: " + getLo();}
+	{	return this.getAdress().toString();
+	}
 
 	protected void setMessageID()
-	{	encodeHigherNibble(MSG_OFFS, MSG);}
+	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
+	}
 
-	public void storeMessage()
-	{}
+	public void addResponseListener(XGResponseListener l)
+	{	this.responseListeners.add(l);
+	}
+
+	public void removeResponseListener(XGResponseListener l)
+	{	this.responseListeners.remove(l);
+	}
+
+	public void notifyResponseListeners()
+	{	for(XGResponseListener l : this.responseListeners) l.requestResponsed();
+	}
+
+	public void request()
+	{	this.getDestination().pull(this);//and wait for respose
+	}
 }
