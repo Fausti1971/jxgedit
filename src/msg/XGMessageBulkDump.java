@@ -4,7 +4,6 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import value.XGValue;
 
 public class XGMessageBulkDump extends XGSuperMessage implements XGBulkDump
 {	private static final int SIZE_SIZE = 2, SIZE_OFFS = 4, MSG = 0, HI_OFFS = 6, MID_OFFS = 7, LO_OFFS = 8, DATA_OFFS = 9;
@@ -58,6 +57,10 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGBulkDump
 
 	private void checkSum() throws InvalidMidiDataException
 	{	if(((calcChecksum(SIZE_OFFS, DATA_OFFS + getDumpSize()) & 0x7F) != 0)) throw new InvalidMidiDataException("Checksum Error!");}
+
+	public int getBaseOffset()
+	{	return DATA_OFFS;
+	}
 
 	//public void storeMessage() throws InvalidXGAdressException
 	//{	int end = getDumpSize() + DATA_OFFS, offset = getLo();

@@ -1,7 +1,5 @@
 package device;
 
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Vector;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
@@ -15,15 +13,12 @@ import javax.sound.midi.Synthesizer;
 import javax.swing.JOptionPane;
 import adress.InvalidXGAdressException;
 import adress.XGAdressableSet;
-import application.Configuration;
-import application.ConfigurationChangeListener;
 import application.ConfigurationConstants;
 import application.NamedVector;
 import msg.XGMessage;
 import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
-import msg.XGMessenger.XGMessengerType;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
@@ -86,15 +81,15 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 	private Receiver transmitter;
 	private MidiDevice midiOutput;
 	private MidiDevice midiInput;
-	private int midiTimeout = DEF_MIDITIMEOUT;
-	private final Set<ConfigurationChangeListener> configurationListeners = new HashSet<>();
+//	private int midiTimeout = DEF_MIDITIMEOUT;
+//	private final Set<ConfigurationChangeListener> configurationListeners = new HashSet<>();
 	private XGAdressableSet<XGMessage> buffer = new XGAdressableSet<>();
 
 	public XGMidi(XGDevice dev) throws MidiUnavailableException
 	{	this.device = dev;
 		String input = dev.getConfig().getProperty(MIDIINPUT);
 		String output = dev.getConfig().getProperty(MIDIOUTPUT);
-		this.midiTimeout = dev.getConfig().getInt(MIDITIMEOUT, DEF_MIDITIMEOUT);
+//		this.midiTimeout = dev.getConfig().getInt(MIDITIMEOUT, DEF_MIDITIMEOUT);
 
 		boolean cancel = false;
 		while(cancel == true)

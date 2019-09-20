@@ -1,6 +1,5 @@
 package msg;
 
-import device.TimeoutException;
 import java.util.HashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
@@ -24,7 +23,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	public XGMessageDumpRequest(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
 	{	super(src, new byte[8]);
-		setSysexID(src.getSysexID());
+		setSysexID(src.getDevice().getSysexID());
 		setMessageID();
 		encodeMidiByteFromInteger(HI_OFFS, adr.getHi());
 		encodeMidiByteFromInteger(MID_OFFS, adr.getMid());

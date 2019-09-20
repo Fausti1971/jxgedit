@@ -20,7 +20,7 @@ abstract class XGSuperMessage implements XGMessage, XGAdressable
 	{	this.source = src;
 		this.data = array;
 		setSOX();
-		setSysexID(src.getSysexID());
+		setSysexID(src.getDevice().getSysexID());
 		setVendorID();
 		setModelID();
 		this.setTimeStamp(System.currentTimeMillis());
