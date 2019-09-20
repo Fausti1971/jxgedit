@@ -59,14 +59,14 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGBulkDump
 	private void checkSum() throws InvalidMidiDataException
 	{	if(((calcChecksum(SIZE_OFFS, DATA_OFFS + getDumpSize()) & 0x7F) != 0)) throw new InvalidMidiDataException("Checksum Error!");}
 
-	public void storeMessage() throws InvalidXGAdressException
-	{	int end = getDumpSize() + DATA_OFFS, offset = getLo();
-		for(int i = DATA_OFFS; i < end;)
-		{	XGValue v = XGValue.getValueOrNew(new XGAdress(getHi(), getMid(), offset));
-			XGValue.getValues().add(v);
-			decodeXGValue(i, v);
-			offset += v.getParameter().getByteCount();
-			i += v.getParameter().getByteCount();
-		}
-	}
+	//public void storeMessage() throws InvalidXGAdressException
+	//{	int end = getDumpSize() + DATA_OFFS, offset = getLo();
+	//	for(int i = DATA_OFFS; i < end;)
+	//	{	XGValue v = XGValue.getValueOrNew(new XGAdress(getHi(), getMid(), offset));
+	//		XGValue.getValues().add(v);
+	//		decodeXGValue(i, v);
+	//		offset += v.getParameter().getByteCount();
+	//		i += v.getParameter().getByteCount();
+	//	}
+	//}
 }

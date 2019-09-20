@@ -1,5 +1,6 @@
 package msg;
 
+import device.TimeoutException;
 import java.util.HashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
@@ -97,9 +98,5 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	public void notifyResponseListeners()
 	{	for(XGResponseListener l : this.responseListeners) l.requestResponsed();
-	}
-
-	public void request()
-	{	this.getDestination().pull(this);//and wait for respose
 	}
 }

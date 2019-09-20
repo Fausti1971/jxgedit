@@ -1,5 +1,6 @@
 package parm;
 
+import device.XGDevice;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -20,11 +21,13 @@ public class XGParameterStorage implements XGParameterConstants
 
 /*****************************************************************************************************/
 
-	final File xml;
+	private final File xml;
+	private final XGDevice device;
 	private final XGAdressableSet<XGParameter> parameters = new XGAdressableSet<>();
 
-	public XGParameterStorage(String filename)
-	{	this.xml = new File(filename);
+	public XGParameterStorage(XGDevice dev)
+	{	this.device = dev;
+		this.xml = dev.getTemplatePath().resolve("parameter.xml").toFile();
 		this.parameters.add(XGMODELNAMEPARAMETER);
 		this.initParameterSet();
 	}
@@ -67,7 +70,7 @@ public class XGParameterStorage implements XGParameterConstants
 			while(n.getNextSibling() != null)
 			{	if(n.getNodeName().equals(TAG_PARAMETER))
 				{	XGParameter p = new XGParameter(n);
-					parameters.add(p);
+					this.parameters.add(p);
 				}
 				n = n.getNextSibling();
 			}

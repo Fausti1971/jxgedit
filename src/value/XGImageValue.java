@@ -20,7 +20,7 @@ public class XGImageValue extends XGValue
 	public Object getContent()
 	{	return this.content;}
 
-	public boolean addAndTransmit(Object o) throws WrongXGValueTypeException
+	public boolean addContent(Object o) throws WrongXGValueTypeException
 	{	return this.setContent(o);}
 
 	protected Object limitize(Object o)

@@ -1,5 +1,6 @@
 package msg;
 
+import adress.XGAdress;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
@@ -59,11 +60,5 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	protected void setMessageID()
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
-	}
-
-	public void storeMessage() throws InvalidXGAdressException
-	{	XGValue v = XGValue.getValueOrNew(this.getAdress());
-		XGValue.getValues().add(v);
-		decodeXGValue(DATA_OFFS, v);
 	}
 }

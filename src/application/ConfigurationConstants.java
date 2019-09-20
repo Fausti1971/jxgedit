@@ -16,6 +16,7 @@ public interface ConfigurationConstants
 	static final String XGTRANSLATIONXML = "translation.xml";
 
 	static final int DEF_MIDITIMEOUT = 150;
+	static final int DEF_SYSEXID = 0;
 
 	public static Path getHomePath()
 	{	return HOMEPATH;}

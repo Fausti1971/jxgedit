@@ -1,14 +1,16 @@
 package msg;
 
 import device.TimeoutException;
+import device.XGDevice;
 
 /**
  * qualifiziert das implementierende Object als XGMessage-Source und -Destination
  */
 public interface XGMessenger
 {
-	public static enum XGMessengerType{Memory, Device, File}
+	public static enum XGMessengerType{Memory, Midi, File}
 
+	public XGDevice getDevice();
 /**
  * @return returniert den MessengerType des implementierende Objects
  */
@@ -29,9 +31,4 @@ public interface XGMessenger
  *  erfragt eine Nachricht (msg) von einem entfernten Sender (request)
  */
 	public XGResponse pull(XGRequest msg) throws TimeoutException;
-
-/**
- * returniert die SystemExclusiveID des Messengers
- */
-	public int getSysexID();
 }

@@ -8,5 +8,7 @@ public interface XGRequest extends XGMessage
 	boolean isResponsed();
 	XGResponse getResponse();
 
-	XGResponse request() throws TimeoutException;
-}
+	public default XGResponse request() throws TimeoutException
+	{	this.getDestination().pull(this);//and wait for respose
+		return null;
+	}}

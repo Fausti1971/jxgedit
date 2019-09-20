@@ -6,7 +6,7 @@ import javax.sound.midi.SysexMessage;
 import adress.XGAdress;
 import adress.XGAdressable;
 
-abstract class XGSuperMessage implements XGMessage, XGByteArray, XGAdressable
+abstract class XGSuperMessage implements XGMessage, XGAdressable
 {	protected static final Logger log = Logger.getAnonymousLogger();
 
 /****************************************************************************************************************************************/
@@ -66,10 +66,6 @@ abstract class XGSuperMessage implements XGMessage, XGByteArray, XGAdressable
 
 	public XGAdress getAdress()
 	{	return new XGAdress(getHi(), getMid(), getLo());
-	}
-
-	public void transmit()
-	{	this.destination.take(this);
 	}
 
 	public String getInfo()

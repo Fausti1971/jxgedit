@@ -6,7 +6,9 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
+import value.XGIntegerValue;
 import value.XGValue;
+import value.XGValueStorage;
 
 public class XGMessageParameterRequest extends XGSuperMessage implements XGRequest
 {	private static final int MSG = 0x30, HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6;
@@ -32,7 +34,7 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 		setMid(adr.getMid());
 		setLo(adr.getLo());
 		setEOX(7);
-		this.response = new XGMessageParameterChange(src, XGValue.getValueOrNew(adr));
+		this.response = new XGMessageParameterChange(src, new XGIntegerValue(adr));
 	}
 
 	protected int getHi()
@@ -84,9 +86,5 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 
 	public void notifyResponseListeners()
 	{	for(XGResponseListener l : this.responseListeners) l.requestResponsed();
-	}
-
-	public void request()
-	{	this.getDestination().pull(this);//and wait for response
 	}
 }

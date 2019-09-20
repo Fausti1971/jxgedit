@@ -20,7 +20,7 @@ public class XGValueStorage implements XGMessenger
 	}
 
 	public XGValue getValue(XGAdress adr) throws InvalidXGAdressException
-	{	if(!adr.isValueAdress()) throw new InvalidXGAdressException("no valid value-adress: " + adr);
+	{	if(!adr.isValidAdress()) throw new InvalidXGAdressException("no valid value-adress: " + adr);
 		return this.values.get(adr);
 	}
 
@@ -51,6 +51,11 @@ public class XGValueStorage implements XGMessenger
 	public void removeXGValueListener(XGAdressableSetListener l)
 	{	this.values.removeListener(l);}
 
+	@Override
+	public XGDevice getDevice()
+	{	return this.device;
+	}
+
 	public XGMessengerType getMessengerType()
 	{	return XGMessengerType.Memory;
 	}
@@ -72,11 +77,4 @@ public class XGValueStorage implements XGMessenger
 	public XGResponse pull(XGRequest msg)
 	{	return null;
 	}
-
-	public int getSysexID()
-	{
-	// TODO Auto-generated method stub
-	return 0;
-	}
-
 }

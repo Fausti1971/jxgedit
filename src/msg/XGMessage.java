@@ -5,8 +5,6 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdressable;
-//TODO zum Annehmen und Versenden von Messages bedarf es immer eines XGMessenger; folglich alle diesbezüglichen Methoden entfernen;
-//Gegenentwurf: sobald der DestinationMessenger gesetzt ist, kann die Message autark versendet werden (msg.getDestination().take(msg);
 
 public interface XGMessage extends XGMessageConstants, XGAdressable
 {
@@ -22,11 +20,53 @@ public interface XGMessage extends XGMessageConstants, XGAdressable
 		return x;
 	}
 
+/***************************************************************************************************/
+
+	default void setSOX()
+	{	encodeMidiByteFromInteger(SOX_OFFS, SOX);
+	}
+
+	default void setEOX(int index)
+	{	encodeMidiByteFromInteger(index, EOX);
+	}
+
+	default int getSysexID()
+	{	return decodeLowerNibble(SYSEX_OFFS);
+	}
+
+	default void setSysexID(int id)
+	{	encodeLowerNibble(SYSEX_OFFS, id);
+	}
+
+	default int getMessageID()
+	{	return decodeHigherNibbleToInteger(MSG_OFFS);
+	}
+
+	default void setMessageID(int id)
+	{	encodeHigherNibbleFromInteger(MSG_OFFS, id);
+	}
+
+	default int getVendorID()
+	{	return decodeMidiByteToInteger(VENDOR_OFFS);
+	}
+
+	default void setVendorID()
+	{	encodeMidiByteFromInteger(VENDOR_OFFS, VENDOR);
+	}
+
+	default int getModelID()
+	{	return decodeMidiByteToInteger(MODEL_OFFS);
+	}
+
+	default void setModelID()
+	{	encodeMidiByteFromInteger(MODEL_OFFS, MODEL);
+	}
+
 	public XGMessenger getDestination();
 	public void setDestination(XGMessenger dest);
 	public XGMessenger getSource();
 	public long getTimeStamp();
-	public void setTimeStamp(long currentTimeMillis);
+	public void setTimeStamp(long time);
 
 	default public void setTimeStamp()
 	{	this.setTimeStamp(System.currentTimeMillis());
@@ -34,6 +74,4 @@ public interface XGMessage extends XGMessageConstants, XGAdressable
 
 	public SysexMessage asSysexMessage() throws InvalidMidiDataException;
 	void validate() throws InvalidMidiDataException;
-	public void transmit();
-
 }

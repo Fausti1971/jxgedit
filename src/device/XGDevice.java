@@ -38,21 +38,31 @@ public class XGDevice implements ConfigurationConstants
 	private final Configuration config;
 	private XGValue name, info1, info2;
 	private final XGValueStorage values;
-	private final XGParameterStorage parameters = new XGParameterStorage();
-	private final XGObjectTypeStorage objectTypes = new XGObjectTypeStorage();
+	private final XGParameterStorage parameters;
+	private final XGObjectTypeStorage objectTypes;
 	private XGSysexFile file;
 	private XGMidi midi;
 	private int sysexID;
 
 	private XGDevice(Configuration cfg) throws MidiUnavailableException, InvalidXGAdressException, CoreMidiException	//für Initialisation via Config
 	{	this.config = cfg;
-		this.midi = new XGMidi(cfg);
+		this.sysexID = cfg.getInt(SYSEXID, DEF_SYSEXID);
+		this.midi = new XGMidi(this);
+		this.parameters = new XGParameterStorage(this);
 		this.values = new XGValueStorage(this);
 		this.notifyConfigurationListeners();
 	}
 
+	public Configuration getConfig()
+	{	return this.config;
+	}
+
 	public Path getTemplatePath()
 	{	return HOMEPATH.resolve(this.getName());
+	}
+
+	public int getSysexID()
+	{	return this.sysexID;
 	}
 
 	void setSysexID(int id)
@@ -61,7 +71,7 @@ public class XGDevice implements ConfigurationConstants
 		this.notifyConfigurationListeners();
 	}
 
-	public void requestInfo() throws InvalidXGAdressException		//SystemInfo ignoriert parameterrequest?!;
+	public void requestInfo() throws InvalidXGAdressException, TimeoutException        //SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m = new XGMessageDumpRequest(this.values, XGParameterConstants.XGMODELNAMEADRESS);
 		m.setDestination(this.midi);
 		XGResponse r = m.request();

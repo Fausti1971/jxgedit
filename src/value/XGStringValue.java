@@ -22,12 +22,12 @@ public class XGStringValue extends XGValue
 	public Object getContent()
 	{	return this.getContent();}
 
-	public boolean addAndTransmit(Object o) throws WrongXGValueTypeException
+	public boolean addContent(Object o) throws WrongXGValueTypeException
 	{	this.validate(o);
 		try
-		{	return this.setContentAndTransmit(this.limitize(this.content + (String)o));
+		{	return this.setContent(this.limitize(this.content + (String)o));
 		}
-		catch(InvalidXGAdressException | WrongXGValueTypeException e)
+		catch(WrongXGValueTypeException e)
 		{	e.printStackTrace();
 			return false;
 		}

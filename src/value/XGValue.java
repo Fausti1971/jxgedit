@@ -1,14 +1,12 @@
 package value;
+import device.XGMidi;
 import java.util.HashSet;
 import java.util.Set;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressable;
-import msg.XGMessage;
+import msg.XGMessageException;
 import msg.XGMessageParameterChange;
-import msg.XGMessenger;
-import msg.XGRequest;
-import msg.XGResponse;
 import obj.XGObjectInstance;
 import obj.XGObjectType;
 import parm.XGParameter;
@@ -20,10 +18,10 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	static XGValue factory(XGAdress adr) throws InvalidXGAdressException
 	{	XGParameter p = XGParameter.getParameter(adr);
 		switch(p.getValueClass())
-		{	default:		throw new RuntimeException("unknown valueclass: " + p.getValueClass());
-			case Integer:	return new XGIntegerValue(adr);
+		{	case Integer:	return new XGIntegerValue(adr);
 			case Image:		return new XGImageValue(adr);
 			case String:	return new XGStringValue(adr);
+			default:		throw new RuntimeException("unknown valueclass: " + p.getValueClass());
 		}
 	}
 
@@ -35,7 +33,7 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	private final Set<XGValueChangeListener> listeners = new HashSet<>();
 	
 	protected XGValue(XGAdress adr) throws InvalidXGAdressException
-	{	if(!adr.isValueAdress()) throw new InvalidXGAdressException("not a value adress: " + adr);
+	{	if(!adr.isValidAdress()) throw new InvalidXGAdressException("not a valid adress: " + adr);
 		this.adress = adr;
 		this.instance = XGObjectType.getObjectTypeOrNew(adr).getInstance(adr);
 		this.parameter = XGParameter.getParameter(adr);
@@ -67,15 +65,10 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 
 	public abstract Object getContent();
 
-	public abstract boolean addAndTransmit(Object v) throws WrongXGValueTypeException;
+	public abstract boolean addContent(Object v) throws WrongXGValueTypeException;
 
-	public boolean setContentAndTransmit(Object o) throws WrongXGValueTypeException, InvalidXGAdressException
-	{	boolean changed = this.setContent(o);
-		if(changed)
-		{	new XGMessageParameterChange(this, this).transmit();
-			this.notifyListeners();
-		}
-		return changed;
+	public void transmit(XGMidi midi) throws XGMessageException, InvalidXGAdressException
+	{	new XGMessageParameterChange(midi, this).transmit();
 	}
 
 	protected abstract Object limitize(Object v);

@@ -17,8 +17,8 @@ public class XGBulkDumpSequence implements XGObjectConstants
 	private final XGAdress min, max;
 
 	public XGBulkDumpSequence(XGAdress min, XGAdress max) throws InvalidXGAdressException
-	{	if(!min.isValueAdress()) throw new InvalidXGAdressException("invalid value-adress (min): " + min);
-		if(!max.isValueAdress()) throw new InvalidXGAdressException("invalid value-adress (max): " + max);
+	{	if(!min.isValidAdress()) throw new InvalidXGAdressException("invalid value-adress (min): " + min);
+		if(!max.isValidAdress()) throw new InvalidXGAdressException("invalid value-adress (max): " + max);
 		this.min = min;
 		this.max = max;
 	}

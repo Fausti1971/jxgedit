@@ -1,5 +1,6 @@
 package file;
 //const mit file für default, const mit path mit filechooser
+import device.XGDevice;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -24,26 +25,23 @@ public class XGSysexFile implements ConfigurationConstants, XGMessenger
 {	private static final Logger log = Logger.getAnonymousLogger();
 	private static XGSysexFile defaultDump;
 
-	public static XGSysexFile getDefaultDump()
-	{	if(defaultDump == null) defaultDump = new XGSysexFile(new File("rsc/default.syx"));
-		return defaultDump;
-	}
-
 /******************************************************************************************************************************************/
 
-	private int sysexID = 0;
 	private File file;
+	private final XGDevice device;
 	private XGAdressableSet<XGMessage> buffer = new XGAdressableSet<XGMessage>();
 
-	private XGSysexFile(File f)
-	{	this.file = f;
+	private XGSysexFile(XGDevice dev, File f)
+	{	this.device = dev;
+		this.file = f;
 		this.load();
 	}
 
-	public XGSysexFile()
-	{	selectFile();
+	public XGSysexFile(XGDevice dev)
+	{	this.device = dev;
+		this.selectFile();
 	}
-	
+
 	public void load()
 	{	if(file != null)
 		{	log.info("parsing started: " + file.getAbsolutePath());
@@ -114,6 +112,10 @@ public class XGSysexFile implements ConfigurationConstants, XGMessenger
 		return array;
 	}
 
+	public XGDevice getDevice()
+	{	return this.device;
+	}
+
 	public XGMessengerType getMessengerType()
 	{	return XGMessengerType.File;
 	}
@@ -131,7 +133,7 @@ public class XGSysexFile implements ConfigurationConstants, XGMessenger
 	}
 
 	public int getSysexID()
-	{	return this.sysexID;
+	{	return this.device.getSysexID();
 	}
 }
 

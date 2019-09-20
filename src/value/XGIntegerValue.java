@@ -26,15 +26,9 @@ public class XGIntegerValue extends XGValue
 	public Object getContent()
 	{	return this.content;}
 
-	public boolean addAndTransmit(Object o) throws WrongXGValueTypeException
+	public boolean addContent(Object o) throws WrongXGValueTypeException
 	{	this.validate(o);
-		try
-		{	return setContentAndTransmit(this.content + (int)o);
-		}
-		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();
-			return false;
-		}
+		return setContent(this.content + (int)o);
 	}
 
 	protected Object limitize(Object o)

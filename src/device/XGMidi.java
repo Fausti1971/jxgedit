@@ -82,18 +82,19 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 
 /******************************************************************************************************************/
 
+	private final XGDevice device;
 	private Receiver transmitter;
 	private MidiDevice midiOutput;
 	private MidiDevice midiInput;
-	private int midiTimeout = DEF_MIDITIMEOUT, sysexID = 0;
+	private int midiTimeout = DEF_MIDITIMEOUT;
 	private final Set<ConfigurationChangeListener> configurationListeners = new HashSet<>();
 	private XGAdressableSet<XGMessage> buffer = new XGAdressableSet<>();
 
-	public XGMidi(Configuration cfg) throws MidiUnavailableException
-	{	String input = cfg.getProperty(MIDIINPUT);
-		String output = cfg.getProperty(MIDIOUTPUT);
-		this.sysexID = cfg.getInt(SYSEXID, 0);
-		this.midiTimeout = cfg.getInt(MIDITIMEOUT, DEF_MIDITIMEOUT);
+	public XGMidi(XGDevice dev) throws MidiUnavailableException
+	{	this.device = dev;
+		String input = dev.getConfig().getProperty(MIDIINPUT);
+		String output = dev.getConfig().getProperty(MIDIOUTPUT);
+		this.midiTimeout = dev.getConfig().getInt(MIDITIMEOUT, DEF_MIDITIMEOUT);
 
 		boolean cancel = false;
 		while(cancel == true)
@@ -108,10 +109,6 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 		}
 	}
 
-	public int getSysexID()
-	{	return this.sysexID;
-	}
-
 	public boolean setOutput(MidiDevice dev) throws MidiUnavailableException
 	{	if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
 		if(dev == null) return false;
@@ -119,8 +116,8 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 		this.midiOutput = dev;
 		this.transmitter = dev.getReceiver();
 		log.info(getOutputName());
-		this.config.set(MIDIOUTPUT, this.getOutputName());
-		this.notifyConfigurationListeners();
+		this.device.getConfig().set(MIDIOUTPUT, this.getOutputName());
+//		this.notifyConfigurationListeners();
 		return true;
 	}
 
@@ -131,8 +128,8 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 		dev.open();
 		this.midiInput = dev;
 		log.info(getInputName());
-		this.config.set(MIDIINPUT, this.getInputName());
-		this.notifyConfigurationListeners();
+		this.device.getConfig().set(MIDIINPUT, this.getInputName());
+//		this.notifyConfigurationListeners();
 		return true;
 	}
 
@@ -190,12 +187,16 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 	{	return null;//TODO transmit, wait for response or timeout and return it or null?
 	}
 
+	@Override
+	public XGDevice getDevice()
+	{	return this.device;
+	}
+
 	public XGMessengerType getMessengerType()
-	{	return XGMessengerType.Device;
+	{	return XGMessengerType.Midi;
 	}
 
 	public String getMessengerName()
-	{	return this.getName();
+	{	return this.getMessengerType().name();
 	}
-
 }

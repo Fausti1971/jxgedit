@@ -62,7 +62,7 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdre
  * testet, ob die Adresse vollständig ist, und somit einen XGValue adressieren kann
  * @return true, wenn alle Fields valide sind
  */
-	public boolean isValueAdress()
+	public boolean isValidAdress()
 	{	return this.isHiValid() && this.isMidValid() && this.isLoValid();}
 
 /**
@@ -92,8 +92,8 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdre
  * @return  die erfolgreich komplettierte Adresse
  */
 	public XGAdress complement(XGAdress adr)
-	{	if(this.isValueAdress()) return this;
-		if(adr.isValueAdress()) return adr;
+	{	if(this.isValidAdress()) return this;
+		if(adr.isValidAdress()) return adr;
 		try
 		{	return new XGAdress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
 		}
