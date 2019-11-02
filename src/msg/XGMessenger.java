@@ -28,7 +28,7 @@ public interface XGMessenger
 	public void take(XGMessage m);
 
 /**
- *  erfragt eine Nachricht (msg) von einem entfernten Sender (request)
+ *  erfragt (und wartet maximal timeout s auf) eine Nachricht (msg) von einem entfernten Sender (request)
  */
 	public XGResponse pull(XGRequest msg) throws TimeoutException;
 }

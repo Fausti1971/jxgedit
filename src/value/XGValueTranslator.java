@@ -48,7 +48,7 @@ public interface XGValueTranslator
 	static XGValueTranslator translateMap = new XGValueTranslator()
 	{	public String translate(XGValue v)
 		{	try
-			{	return v.getParameter().getTranslationMap().get((int)v.getContent());}
+			{	return v.getParameter().getTranslationMap().getValue((int)v.getContent());}
 			catch(NullPointerException e)
 			{	e.printStackTrace();
 				return "no value";}

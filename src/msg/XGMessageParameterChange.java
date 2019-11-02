@@ -1,9 +1,9 @@
 package msg;
 
-import adress.XGAdress;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
+import adress.XGAdressableSet;
 import value.XGValue;
 
 public class XGMessageParameterChange extends XGSuperMessage implements XGResponse
@@ -16,13 +16,13 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	}
 
 	public XGMessageParameterChange(XGMessenger src, XGValue v) throws InvalidXGAdressException
-	{	super(src, new byte[OVERHEAD + v.getParameter().getByteCount()]);
+	{	super(src, new byte[OVERHEAD + v.getOpcode().getByteCount()]);
 		setMessageID();
 		setHi(v.getAdress().getHi());
 		setMid(v.getAdress().getMid());
 		setLo(v.getAdress().getLo());
 		setData(v);
-		setEOX(DATA_OFFS + v.getParameter().getByteCount());
+		setEOX(DATA_OFFS + v.getOpcode().getByteCount());
 	}
 
 	public XGMessageParameterChange(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException
@@ -60,5 +60,9 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	protected void setMessageID()
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
+	}
+
+	public XGAdressableSet<XGValue> getValues()
+	{	return null;
 	}
 }

@@ -1,22 +1,20 @@
 	package msg;
 
 import java.util.Arrays;
-import parm.XGParameter;
-import parm.XGParameterConstants.ValueDataClass;
+import opcode.XGOpcode;
+import opcode.XGOpcodeConstants;
 import value.WrongXGValueTypeException;
 import value.XGValue;
 
 public interface XGByteArray
-{	enum DataType{MIDIBYTE, NIBBLE}
-
-	byte[] getByteArray();
+{	byte[] getByteArray();
 
 	default void decodeXGValue(int offset, XGValue v)	//dekodiert und setzt (in v) die Anzahl byteCount byteType/s am/ab offset des byteArray
-	{	XGParameter p = v.getParameter();
-		if(p == null) return;
-		DataType bt = p.getByteType();
-		ValueDataClass vc = p.getValueClass();
-		int bc = p.getByteCount();
+	{	XGOpcode o = v.getOpcode();
+		if(o == null) return;
+		XGOpcodeConstants.DataType bt = o.getDataType();
+		XGOpcodeConstants.ValueDataClass vc = o.getValueClass();
+		int bc = o.getByteCount();
 		try
 		{	switch(vc)
 			{	case String:		v.setContent(getString(offset, offset + bc)); break;
@@ -35,11 +33,11 @@ public interface XGByteArray
 	}
 
 	default void encodeXGValue(int offset, XGValue v)
-	{	XGParameter p = v.getParameter();
-		if(p == null) return;
-		DataType bt = p.getByteType();
-		ValueDataClass vc = p.getValueClass();
-		int bc = p.getByteCount();
+	{	XGOpcode o = v.getOpcode();
+		if(o == null) return;
+		XGOpcodeConstants.DataType bt = o.getDataType();
+		XGOpcodeConstants.ValueDataClass vc = o.getValueClass();
+		int bc = o.getByteCount();
 		switch(vc)
 			{	case String:	setString(offset, bc, v.toString()); break;
 				case Image:		return;

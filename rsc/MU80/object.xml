@@ -3,121 +3,121 @@
 <!-- this table is used to identify ObjectType by adress and request dumps sequentially, if give ranges by using "-" dumps will be requested recursively-->
 	<object>
 		<name>System</name>
-		<dumpSequence>
+		<bulk>
 			<hi>0</hi>
 			<mid>0</mid>
 			<lo>0-6</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 
 	<object>
 		<name>System Info</name>
-		<dumpSequence>
+		<bulk>
 			<hi>1</hi>
 			<mid>0</mid>
 			<lo>0-15</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 
 	<object>
 		<name>Reverb</name>
-		<dumpSequence>
+		<bulk>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>0-13</lo>
-		</dumpSequence>
-		<dumpSequence>
+		</bulk>
+		<bulk>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>16-21</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 
 	<object>
 		<name>Chorus</name>
-		<dumpSequence>
+		<bulk>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>32-46</lo>
-		</dumpSequence>
-		<dumpSequence>
+		</bulk>
+		<bulk>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>48-53</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 
 	<object>
 		<name>Variation</name>
-		<dumpSequence>
+		<bulk>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>64-96</lo>
-		</dumpSequence>
-		<dumpSequence>
+		</bulk>
+		<bulk>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>112-117</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 
 	<object>
 		<name>System EQ</name>
-		<dumpSequence>
+		<bulk>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>0-21</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 
 	<object>
 		<name>Insertion</name>
-		<dumpSequence>
+		<bulk>
 			<hi>3</hi>
 			<mid>0</mid>
 			<lo>0-17</lo>
-		</dumpSequence>
-		<dumpSequence>
+		</bulk>
+		<bulk>
 			<hi>3</hi>
 			<mid>0</mid>
 			<lo>32-37</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 
 	<object>
 		<name>Multipart</name>
-		<dumpSequence>
+		<bulk>
 			<hi>8</hi>
 			<mid>0-31</mid>
 			<lo>0-40</lo>
-		</dumpSequence>
-		<dumpSequence>
+		</bulk>
+		<bulk>
 			<hi>8</hi>
 			<mid>0-31</mid>
 			<lo>48-110</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 
 	<object>
 		<name>A/D-Part</name>
-		<dumpSequence>
+		<bulk>
 			<hi>16</hi>
 			<mid>0-1</mid>
 			<lo>0-20</lo>
-		</dumpSequence>
-		<dumpSequence>
+		</bulk>
+		<bulk>
 			<hi>16</hi>
 			<mid>0-1</mid>
 			<lo>48-96</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 
 	<object>
 		<name>Drumsets</name>
-		<dumpSequence>
+		<bulk>
 			<hi>48-51</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>
-		</dumpSequence>
+		</bulk>
 	</object>
 </map>

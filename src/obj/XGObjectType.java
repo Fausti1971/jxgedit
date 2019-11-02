@@ -1,122 +1,111 @@
 package obj;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import msg.XGMessenger;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.SAXException;
+import javax.xml.stream.XMLStreamException;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressConstants;
 import adress.XGAdressableSet;
-import application.Rest;
+import application.ConfigurationConstants;
+import device.XGDevice;
+import msg.XGMessenger;
 import value.XGValue;
+import xml.XMLNode;
 
-public class XGObjectType implements XGObjectConstants, XGAdressConstants
+public class XGObjectType implements ConfigurationConstants, XGObjectConstants, XGAdressConstants
 {	private static Logger log = Logger.getAnonymousLogger();
-	private static final File FILE = new File(XML_FILE);
-	private static final Set<XGObjectType> OBJECTTYPES = new LinkedHashSet<>();
 
-	public static Set<XGObjectType> getAllObjectTypes()
-	{	return OBJECTTYPES;}
+	private static Map<XGDevice, Set<XGObjectType>> STORAGE = new HashMap<>();
 
-	public static XGObjectType getObjectTypeOrNew(XGAdress adr)
-	{	for(XGObjectType t : OBJECTTYPES)
-		{	if(t.include(adr)) return t;}
-		return new XGObjectType(adr);
+	public static void init(XGDevice dev)
+	{	Set<XGObjectType> set = new HashSet<>();
+		File file = dev.getResourceFile(XML_OBJECT);
+		try
+		{	XMLNode xml = XMLNode.parse(file);
+			for(XMLNode x : xml.getChildren())
+			{	if(x.getTag().equals(TAG_OBJECT))
+				{	XGObjectType t = new XGObjectType(dev, x);
+				set.add(t);
+				}
+			}
+		}
+		catch(XMLStreamException e1)
+		{	e1.printStackTrace();
+		}
+		STORAGE.put(dev, set);
+		log.info(set.size() + " object-types initialized");
 	}
 
-	public static XGObjectType getObjectType(String name)
-	{	for(XGObjectType t : OBJECTTYPES) if(t.getName().equals(name)) return t;
-		return new XGObjectType(INVALIDADRESS);
+	public static Set<XGObjectType> getAllObjectTypes(XGDevice dev)
+	{	return STORAGE.get(dev);
 	}
-
+	
+	public static XGObjectType getObjectTypeOrNew(XGDevice dev, XGAdress adr)
+	{	for(XGObjectType t : getAllObjectTypes(dev))
+		{	if(t.include(adr)) return t;
+		}
+		return new XGObjectType(dev, adr);
+	}
+	
+	public static XGObjectType getObjectType(XGDevice dev, String name)
+	{	for(XGObjectType t : getAllObjectTypes(dev)) if(t.getName().equals(name)) return t;
+		return new XGObjectType(dev, INVALIDADRESS);
+	}
+	
 	public static void requestAll(XGMessenger src, XGMessenger dest)
-	{	for(XGObjectType o : OBJECTTYPES)
-			for(XGBulkDumpSequence s : o.dumpSequences) s.requestAll(src, dest);
+	{	for(XGObjectType o : getAllObjectTypes(src.getDevice()))
+			for(XGBulkDumpSequence s : o.getDumpsequences()) s.requestAll(src, dest);
 		log.info("request completetd");
 	}
 
-	public static void initObjectTypeMap()
-	{	if(!FILE.canRead())
-		{	log.info("can't read file: " + FILE);
-			return;
-		}
-	
-		try
-		{	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-	//		dbf.setValidating(true);
-	//		dbf.setAttribute(XMLConstants.ACCESS_EXTERNAL_SCHEMA, null);
-			DocumentBuilder db = dbf.newDocumentBuilder();
-			Document doc = db.parse(FILE); 
-	
-			Element rootElement = doc.getDocumentElement(); 
-	
-			Node n = rootElement.getFirstChild();
-			while(n != null)
-			{	if(n.getNodeName().equals(TAG_OBJECT))
-				{	XGObjectType t = new XGObjectType(n);
-					OBJECTTYPES.add(t);
-				}
-				n = n.getNextSibling();
-			}
-		}
-		catch (IOException | ParserConfigurationException | SAXException e)
-		{	e.printStackTrace();}
-	}
+/**********************************************************************************************************/
 
-/******************************************************************************************************************/
-
+	private final XGDevice device;
 	private final String name;
-	private final Set<XGBulkDumpSequence> dumpSequences;
+	private final Set<XGBulkDumpSequence> bulks;
 	private final XGAdressableSet<XGObjectInstance> instances = new XGAdressableSet<XGObjectInstance>();
 
-	private XGObjectType(XGAdress adr)
-	{	this(DEF_OBJECTTYPENAME, null);
+	XGObjectType(XGDevice dev, XGAdress adr)
+	{	this(dev, DEF_OBJECTTYPENAME, null);
 	}
 
-	private XGObjectType(String name, Set<XGBulkDumpSequence> dseq)
-	{	this.name = name;
-		this.dumpSequences = dseq;
+	private XGObjectType(XGDevice dev, String name, Set<XGBulkDumpSequence> dseq)
+	{	this.device = dev;
+		this.name = name;
+		this.bulks = dseq;
+		log.info("object initialized: " + this);
 	}
 
-	private XGObjectType(Node n)
-	{	this(Rest.getFirstNodeChildTextContentByTagAsString(n, TAG_NAME), new HashSet<>());
+	XGObjectType(XGDevice dev, XMLNode n)
+	{	this(dev, n.getChildNode(TAG_NAME).getTextContent(), new HashSet<>());
 
-		Node seq = Rest.getFirstChildNodeByTag(n, TAG_DUMPSEQ);
-		while(seq != null)
-		{	if(seq.getNodeName().equals(TAG_DUMPSEQ)) this.dumpSequences.add(new XGBulkDumpSequence(seq));
-			seq = seq.getNextSibling();
-		}
+		for(XMLNode seq : n.getChildren())
+			if(seq.getTag().equals(TAG_DUMPSEQ)) this.bulks.add(new XGBulkDumpSequence(seq));
 	}
 
 	public Set<XGBulkDumpSequence> getDumpsequences()
-	{	return this.dumpSequences;}
+	{	return this.bulks;}
 
 	public boolean include(XGAdress adr)
-	{	for(XGBulkDumpSequence s : this.dumpSequences) if(s.include(adr)) return true;
+	{	for(XGBulkDumpSequence s : this.bulks) if(s.include(adr)) return true;
 		return false;
 	}
 
 	public int maxInstanceCount()
 	{	int i = 0;
-		for(XGBulkDumpSequence s : this.dumpSequences) i = Math.max(s.maxInstanceCount(), i);
+		for(XGBulkDumpSequence s : this.bulks) i = Math.max(s.maxInstanceCount(), i);
 		return i;
 	}
 
 	public void addInstance(XGValue v)
 	{	if(this.instances.contains(v.getAdress())) return;
 		try
-		{	this.instances.add(new XGObjectInstance(v.getAdress()));}
+		{	this.instances.add(new XGObjectInstance(this.device, v.getAdress()));}
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();}
 	}
@@ -128,7 +117,7 @@ public class XGObjectType implements XGObjectConstants, XGAdressConstants
 	{	XGObjectInstance i = this.instances.getFirstValid(adr);
 		if(i == null)
 			try
-			{	this.instances.add(i = new XGObjectInstance(adr));}
+			{	this.instances.add(i = new XGObjectInstance(this.device, adr));}
 			catch(InvalidXGAdressException e)
 			{	e.printStackTrace();}
 		return i;

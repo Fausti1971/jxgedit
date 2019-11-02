@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:
-	offset = 0 (dezimal, dei descriptions (variable Parameter) ist dies der Parameterindex bspw. "REVERB PARAMETER 1")
-	byteCount = 1 (dezimal)
-	byteType = MIDIBYTE, NIBBLE
-	valueClass = Integer, String, BITMAP
 	translator = translateToText, translateNot, translateToTextPlus1, translateDiv10, translateSub128Div10, translateMap
 	translationMap = ""
 	translationMapFilter = ""
@@ -13,35 +9,34 @@
 <map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
 
 	<parameter>
-		<tag>info_name</tag>
+		<name>info_name</name>
 		<longName>Model Name</longName>
 		<shortName>Model</shortName>
 	</parameter>
 
 	<parameter>
-		<tag>display_letter</tag>
+		<name>display_letter</name>
 		<longName>DisplayText</longName>
 		<shortName>Text</shortName>
 	</parameter>
 
 	<parameter>
-		<tag>rev_type</tag>
+		<name>rev_type</name>
 		<longName>Reverb Program</longName>
 		<shortName>RevPrg</shortName>
 		<valueMin>0</valueMin>
 		<valueMax>69</valueMax>
 		<translator>translateMap</translator>
-		<translationMap filter="reverb">fx_programs</translationMap>
+		<translationMap>fx_programs</translationMap>
 	</parameter>
 
 	<parameter>
-		<tag>rev_P01</tag>
+		<name>rev_1</name>	<!-- number behind underscore determines the mutableMapKey -->
 		<dependsOf>rev_type</dependsOf>
-		<mutableMapIndex>1</mutableMapIndex>
 	</parameter>
 
 	<parameter>
-		<tag>mp_elRes</tag>
+		<name>mp_elRes</name>
 		<longName>Element Reserve</longName>
 		<shortName>ElmRsv</shortName>
 		<valueMin>0</valueMin>
@@ -49,7 +44,7 @@
 		<translator>translateToText</translator>
 	</parameter>
 	<parameter>
-		<tag>mp_bankMsb</tag>
+		<name>mp_bankMsb</name>
 		<longName>Bank Select MSB</longName>
 		<shortName>BnkMSB</shortName>
 		<valueMin>0</valueMin>
@@ -58,7 +53,7 @@
 	</parameter>
 
 	<parameter>
-		<tag>mp_ch</tag>
+		<name>mp_ch</name>
 		<longName>MIDI Channel</longName>
 		<shortName>Ch</shortName>
 		<valueMin>0</valueMin>
@@ -68,7 +63,7 @@
 	</parameter>
 
 	<parameter>
-		<tag>mp_detune</tag>
+		<name>mp_detune</name>
 		<longName>Detune</longName>
 		<shortName>Tune</shortName>
 		<valueMin>0</valueMin>
@@ -77,17 +72,17 @@
 	</parameter>
 
 	<parameter>
-		<tag>mp_envAtk</tag>
+		<name>mp_envAtk</name>
 		<longName>Attack Time</longName>
 		<shortName>Atck</shortName>
 		<valueMin>0</valueMin>
 		<valueMax>127</valueMax>
 	</parameter>
 
-<!-- mutable parameters TODO: doppelte Inhalte (tags) per xsd verhindern -->
+<!-- mutable parameters TODO: doppelte Inhalte (names) per xsd verhindern -->
 
 	<parameter>
-		<tag>rev_time</tag>
+		<name>rev_time</name>
 		<longName>Reverb Time</longName>
 		<shortName>RevTime</shortName>
 		<valueMin>0</valueMin>

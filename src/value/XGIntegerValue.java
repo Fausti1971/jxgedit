@@ -2,12 +2,14 @@ package value;
 
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
+import device.XGDevice;
+import opcode.NoSuchOpcodeException;
 
 public class XGIntegerValue extends XGValue
 {	int content;
 
-	public XGIntegerValue(XGAdress adr) throws InvalidXGAdressException
-	{	super(adr);}
+	public XGIntegerValue(XGDevice dev, XGAdress adr) throws InvalidXGAdressException, NoSuchOpcodeException
+	{	super(dev, adr);}
 
 	protected void validate(Object o) throws WrongXGValueTypeException
 	{	if(o instanceof Integer) return;

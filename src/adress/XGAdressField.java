@@ -1,50 +1,45 @@
 package adress;
 
+import application.Rest;
+import xml.XMLNode;
+
 public class XGAdressField implements XGAdressConstants
 {	private static String EXCEPTIONTEXT = "access to invald XGAdressField: ";
 
 /******************************************************************************************************************/
 
 	private final int value;
-	private final boolean valid;
 
 	public XGAdressField()
-	{	this.valid = false;
-		this.value = 0;
+	{	this.value = INVALIDFIELD;
+	}
+
+	public XGAdressField(XMLNode n)
+	{	if(n == null) this.value = INVALIDFIELD;
+		else this.value = Rest.parseIntOrDefault(n.getTextContent(), INVALIDFIELD);
 	}
 
 	public XGAdressField(String v)
-	{	int tempValue;
-		boolean tempValid = true;
-		try
-		{	tempValue = Integer.parseInt(v);
-		}
-		catch(NumberFormatException e)
-		{	tempValid = false;
-			tempValue = 0;
-		}
-		this.valid = tempValid;
-		this.value = tempValue;
-	
+	{	this.value = Rest.parseIntOrDefault(v, INVALIDFIELD);
 	}
+
 	public XGAdressField(int v)
 	{	this.value = v;
-		if(v == INVALIDFIELD) this.valid = false;
-		else this.valid = true;
 	}
 
 	public boolean isValid()
-	{	return this.valid;}
+	{	return (this.value & ~MIDIBYTEMASK) == 0;
+	}
 
 	public int getValue() throws InvalidXGAdressException
-	{	if(this.valid) return this.value;
+	{	if(this.isValid()) return this.value;
 		else throw new InvalidXGAdressException(EXCEPTIONTEXT);
 	}
 
 	public XGAdressField complement(XGAdressField f) throws InvalidXGAdressException
 	{	int status = 0;
-		if(this.valid) status = 1;
-		if(f.valid) status |= 2;
+		if(this.isValid()) status = 1;
+		if(f.isValid()) status |= 2;
 		switch(status)
 		{	case 1:	return this;
 			case 2:	return f;
@@ -55,23 +50,23 @@ public class XGAdressField implements XGAdressConstants
 	}
 
 	public int compare(XGAdressField o)
-	{	if(this.valid && o.valid) return Integer.compare(this.value, o.value);
+	{	if(this.isValid() && o.isValid()) return Integer.compare(this.value, o.value);
 		else return 0;
 	}
 
 	public boolean equalsValid(XGAdressField a)
-	{	if(this.valid && a.valid) return this.value == a.value;
+	{	if(this.isValid() && a.isValid()) return this.value == a.value;
 		return true;
 	}
 
 	@Override public boolean equals(Object o)
 	{	if(!(o instanceof XGAdressField)) return false;
 		XGAdressField a = (XGAdressField)o;
-		return this.valid == a.valid && this.value == a.value;
+		return this.isValid() == a.isValid() && this.value == a.value;
 	}
 
 	@Override public String toString()
-	{	if(this.valid) return "" + this.value;
+	{	if(this.isValid()) return "" + this.value;
 		else return "-";
 	}
 }

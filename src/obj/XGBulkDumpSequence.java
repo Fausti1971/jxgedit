@@ -1,14 +1,13 @@
 package obj;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-import org.w3c.dom.Node;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import application.Rest;
 import device.TimeoutException;
 import msg.XGMessageDumpRequest;
 import msg.XGMessenger;
 import msg.XGRequest;
+import xml.XMLNode;
 
 public class XGBulkDumpSequence implements XGObjectConstants
 {	private static Logger log = Logger.getAnonymousLogger();
@@ -26,20 +25,20 @@ public class XGBulkDumpSequence implements XGObjectConstants
 	public XGBulkDumpSequence(XGAdress adr) throws InvalidXGAdressException
 	{	this(adr, adr);}
 
-	public XGBulkDumpSequence(Node seq)
+	public XGBulkDumpSequence(XMLNode seq)
 	{	String hiMin, hiMax, midMin, midMax, loMin, loMax, temp;
 
-		temp = Rest.getFirstNodeChildTextContentByTagAsString(seq, TAG_HI);
+		temp = seq.getChildNode(TAG_HI).getTextContent();
 		StringTokenizer t = new StringTokenizer(temp, "-");
 		hiMin = hiMax = t.nextToken();
 		while(t.hasMoreTokens()) hiMax = t.nextToken();
 
-		temp = Rest.getFirstNodeChildTextContentByTagAsString(seq, TAG_MID);
+		temp = seq.getChildNode(TAG_MID).getTextContent();
 		t = new StringTokenizer(temp, "-");
 		midMin = midMax = t.nextToken();
 		while(t.hasMoreTokens()) midMax = t.nextToken();
 
-		temp = Rest.getFirstNodeChildTextContentByTagAsString(seq, TAG_LO);
+		temp = seq.getChildNode(TAG_LO).getTextContent();
 		t = new StringTokenizer(temp, "-");
 		loMin = loMax = t.nextToken();
 		while(t.hasMoreTokens()) loMax = t.nextToken();

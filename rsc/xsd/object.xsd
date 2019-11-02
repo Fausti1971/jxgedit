@@ -7,7 +7,7 @@
 					<xs:complexType mixed="true" >
 						<xs:sequence>
 							<xs:element name="name" type="xs:string"/>
-							<xs:element name="dumpSequence" maxOccurs="unbounded">
+							<xs:element name="bulk" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:all>
 										<xs:element name="hi">

@@ -10,10 +10,10 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JFrame;
 import adress.InvalidXGAdressException;
-import application.Configuration;
+import application.DomNode;
 import application.ConfigurationChangeListener;
 import application.ConfigurationConstants.ConfigurationEvent;
-import application.XG;
+import application.JXG;
 
 public class XGMainFrame extends JFrame implements WindowListener, ComponentListener
 {	/**
@@ -49,7 +49,7 @@ public class XGMainFrame extends JFrame implements WindowListener, ComponentList
 
 		root.add(new MainProgressBar(), BorderLayout.SOUTH);
 
-		this.listeners.add(Configuration.getCurrentConfig());
+//		this.listeners.add(Configuration.getCurrentConfig());
 		this.pack();
 		this.setVisible(true);
 	}
@@ -67,7 +67,7 @@ public class XGMainFrame extends JFrame implements WindowListener, ComponentList
 	}
 
 	public void windowClosing(WindowEvent e)
-	{	XG.quit();
+	{	JXG.quit();
 	}
 
 	public void windowClosed(WindowEvent e)

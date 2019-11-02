@@ -9,4 +9,6 @@ public interface XGAdressConstants
 		TAG_LO = "lo";
 	
 	public final XGAdress INVALIDADRESS = new XGAdress(INVALIDFIELD, INVALIDFIELD, INVALIDFIELD);
+	static final XGAdress XGMODELNAMEADRESS = new XGAdress(1,0,0);
+
 }

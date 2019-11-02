@@ -3,13 +3,14 @@ package obj;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressable;
+import device.XGDevice;
 
 public class XGObjectInstance implements XGAdressable
 {	private final XGObjectType type;
 	private final XGAdress adress;
 
-	public XGObjectInstance(XGAdress adr) throws InvalidXGAdressException
-	{	this.type = XGObjectType.getObjectTypeOrNew(adr);
+	public XGObjectInstance(XGDevice dev, XGAdress adr) throws InvalidXGAdressException
+	{	this.type = XGObjectType.getObjectTypeOrNew(dev, adr);
 		this.adress = new XGAdress(INVALIDFIELD, adr.getMid(), INVALIDFIELD);
 	}
 

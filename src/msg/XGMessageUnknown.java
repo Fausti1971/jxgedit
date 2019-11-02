@@ -2,6 +2,8 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
+import adress.XGAdressableSet;
+import value.XGValue;
 
 public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 {
@@ -36,4 +38,10 @@ public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 
 	public void storeMessage()
 	{	log.info("unknown message received: " + getMessageID());}
+
+	public XGAdressableSet<XGValue> getValues()
+	{
+	// TODO Auto-generated method stub
+	return null;
+	}
 }

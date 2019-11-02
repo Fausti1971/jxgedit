@@ -29,3 +29,8 @@ Parameter:
 	{	if(this.isMutable) return XGParameterMaps.getParameter((int)XGObject.getValue(adr), nr);
 		else return this;
 	}
+
+	nicht vergessen:
+		XGParameter und XGTranslation kann nicht global, sondern nur via Device initialisiert werden, da die Wertebereiche der Parameter der verschiedenen Devices differieren;
+		XGObjectType kann nicht global, sondern nur via Device initialisiert werden, da die Instancenanzahl der ObjectTypes der verschiedenen Devices differieren;
+	denkbar wäre evtl. globale Initialisation mittels XG-Referenz als Fallbackoption;

@@ -1,6 +1,4 @@
 package file;
-//const mit file für default, const mit path mit filechooser
-import device.XGDevice;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,8 +11,9 @@ import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileFilter;
 import adress.InvalidXGAdressException;
 import adress.XGAdressableSet;
-import application.Configuration;
 import application.ConfigurationConstants;
+//const mit file für default, const mit path mit filechooser
+import device.XGDevice;
 import gui.XGMainFrame;
 import msg.XGMessage;
 import msg.XGMessenger;
@@ -61,7 +60,7 @@ public class XGSysexFile implements ConfigurationConstants, XGMessenger
 	}
 
 	private void selectFile()
-	{	JFileChooser fc = new JFileChooser(Configuration.getCurrentConfig().getProperty(LASTDUMPFILE));
+	{	JFileChooser fc = new JFileChooser(this.device.getConfig().getChildNode(TAG_LASTDUMPFILE).getTextContent());
 		fc.setDialogTitle("Open A Sysex-File...");
 		fc.setAcceptAllFileFilterUsed(false);
 		fc.setFileFilter(new FileFilter()

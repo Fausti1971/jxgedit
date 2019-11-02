@@ -15,6 +15,7 @@ import adress.InvalidXGAdressException;
 import adress.XGAdressableSet;
 import application.ConfigurationConstants;
 import application.NamedVector;
+import application.Rest;
 import msg.XGMessage;
 import msg.XGMessenger;
 import msg.XGRequest;
@@ -81,15 +82,16 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 	private Receiver transmitter;
 	private MidiDevice midiOutput;
 	private MidiDevice midiInput;
-//	private int midiTimeout = DEF_MIDITIMEOUT;
+	private XGRequest request = null;
+	private int midiTimeout = DEF_MIDITIMEOUT;
 //	private final Set<ConfigurationChangeListener> configurationListeners = new HashSet<>();
 	private XGAdressableSet<XGMessage> buffer = new XGAdressableSet<>();
 
 	public XGMidi(XGDevice dev) throws MidiUnavailableException
 	{	this.device = dev;
-		String input = dev.getConfig().getProperty(MIDIINPUT);
-		String output = dev.getConfig().getProperty(MIDIOUTPUT);
-//		this.midiTimeout = dev.getConfig().getInt(MIDITIMEOUT, DEF_MIDITIMEOUT);
+		String input = dev.getConfig().getChildNode(TAG_MIDIINPUT).getTextContent();
+		String output = dev.getConfig().getChildNode(TAG_MIDIOUTPUT).getTextContent();
+		this.midiTimeout = Rest.parseIntOrDefault(dev.getConfig().getChildNode(TAG_MIDITIMEOUT).getTextContent(), DEF_MIDITIMEOUT);
 
 		boolean cancel = false;
 		while(cancel == true)
@@ -111,7 +113,7 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 		this.midiOutput = dev;
 		this.transmitter = dev.getReceiver();
 		log.info(getOutputName());
-		this.device.getConfig().set(MIDIOUTPUT, this.getOutputName());
+		this.device.getConfig().getChildNode(TAG_MIDIOUTPUT).setTextContent(this.getOutputName());
 //		this.notifyConfigurationListeners();
 		return true;
 	}
@@ -123,7 +125,7 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 		dev.open();
 		this.midiInput = dev;
 		log.info(getInputName());
-		this.device.getConfig().set(MIDIINPUT, this.getInputName());
+		this.device.getConfig().getChildNode(TAG_MIDIINPUT).setTextContent(this.getInputName());
 //		this.notifyConfigurationListeners();
 		return true;
 	}
@@ -147,6 +149,10 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	try
 		{	XGMessage m = XGMessage.newMessage(this, mmsg);
+			if(this.request != null && this.request.setResponsedBy((XGResponse)m))
+			{	this.notify();
+				return;
+			}
 			if(m.getDestination() == null) this.buffer.add(m);
 			else m.getDestination().take(m);
 		}
@@ -178,8 +184,19 @@ public class XGMidi implements XGMessenger, CoreMidiNotification, ConfigurationC
 		}
 	}
 
-	public XGResponse pull(XGRequest msg)//vom MIDI-Eingang
-	{	return null;//TODO transmit, wait for response or timeout and return it or null?
+	public XGResponse pull(XGRequest msg) throws TimeoutException//vom MIDI-Eingang
+	{	this.take(msg);
+		this.request = msg;
+		try
+		{	this.wait(this.midiTimeout);
+		}
+		catch(InterruptedException e)
+		{	e.printStackTrace();
+			this.request = null;
+			return msg.getResponse();
+		}
+		this.request = null;
+		throw new TimeoutException("MIDI-Timeout: " + this.getInputName());
 	}
 
 	@Override

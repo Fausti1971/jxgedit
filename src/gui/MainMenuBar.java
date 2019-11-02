@@ -7,7 +7,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
-import application.XG;
+import application.JXG;
 import file.XGSysexFile;
 import obj.XGObjectType;
 
@@ -46,7 +46,7 @@ public class MainMenuBar extends JMenuBar
 		});
 		this.quit.addActionListener(new ActionListener()
 		{	public void actionPerformed(ActionEvent e)
-			{	XG.quit();
+			{	JXG.quit();
 			}
 		});
 		this.file.add(this.load);

@@ -1,8 +1,7 @@
 package adress;
 
 import java.util.logging.Logger;
-import org.w3c.dom.Node;
-import application.Rest;
+import xml.XMLNode;
 public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdressable
 {	private static Logger log =Logger.getAnonymousLogger();
 
@@ -29,10 +28,10 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdre
 		else this.lo = new XGAdressField();
 	}
 
-	public XGAdress(Node item)
-	{	this.hi = new XGAdressField(Rest.getFirstNodeChildTextContentByTagAsString(item, TAG_HI));
-		this.mid = new XGAdressField(Rest.getFirstNodeChildTextContentByTagAsString(item, TAG_MID));
-		this.lo = new XGAdressField(Rest.getFirstNodeChildTextContentByTagAsString(item, TAG_LO));
+	public XGAdress(XMLNode item)
+	{	this.hi = new XGAdressField(item.getChildNode(TAG_HI));
+		this.mid = new XGAdressField(item.getChildNode(TAG_MID));
+		this.lo = new XGAdressField(item.getChildNode(TAG_LO));
 	}
 /**
  * extrahiert und returniert das Hi-Field der XGAdress this
@@ -40,7 +39,8 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdre
  * @throws InvalidXGAdressException falls das Field invalid ist
  */
 	public int getHi() throws InvalidXGAdressException
-	{	return this.hi.getValue();}
+	{	return this.hi.getValue();
+	}
 
 	/**
 	 * extrahiert und returniert das Mid-Field der XGAdress this

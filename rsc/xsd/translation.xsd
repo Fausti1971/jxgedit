@@ -3,14 +3,14 @@
 	<xs:element name="maps">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="map">
+				<xs:element name="map" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:sequence>
 							<xs:element name="entry" maxOccurs="unbounded">
 								<xs:complexType>
 									<xs:sequence>
-										<xs:element name="value" type="xs:nonNegativeInteger"/>
-										<xs:element name="text" type="xs:string"/>
+										<xs:element name="key" type="xs:nonNegativeInteger"/>
+										<xs:element name="value" type="xs:string"/>
 									</xs:sequence>
 								<xs:attribute name="filter" type="xs:string" use="optional"/>
 								</xs:complexType>

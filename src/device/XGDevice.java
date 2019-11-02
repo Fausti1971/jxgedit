@@ -1,60 +1,92 @@
 package device;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiDevice;
-import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
 import adress.InvalidXGAdressException;
-import adress.XGAdressableSet;
-import application.Configuration;
-import application.ConfigurationChangeListener;
-import application.ConfigurationConstants;
+import adress.XGAdressConstants;
+import application.Configurable;
+import application.JXG;
 import file.XGSysexFile;
-import msg.XGMessage;
 import msg.XGMessageDumpRequest;
-import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
-import obj.XGObjectType;
-import parm.XGParameter;
-import parm.XGParameterConstants;
-import parm.XGParameterStorage;
-import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
+import opcode.NoSuchOpcodeException;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
-import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
-import value.XGValue;
-import value.XGValueStorage;
+import xml.XMLNode;
 
-public class XGDevice implements ConfigurationConstants
+public class XGDevice implements Configurable
 {	private static Logger log = Logger.getAnonymousLogger();
+	private static Set<XGDevice> DEVICES = new HashSet<>();
+	private static XGDevice DEF = new XGDevice();
+
+	public static XGDevice getDefaultDevice()
+	{	if(DEF == null) DEF = new XGDevice();
+		return DEF;
+	}
+
+	public static void init()
+	{	XGDevice d;
+		for(XMLNode n : JXG.getConfig().getChildren())
+		{	if(n.getTag().equals(TAG_DEVICE))
+			{	try
+				{	d = new XGDevice(n);
+					DEVICES.add(d);
+				}
+				catch(MidiUnavailableException|InvalidXGAdressException|CoreMidiException | TimeoutException | NoSuchOpcodeException e)
+				{	e.printStackTrace();
+				}
+			}
+		}
+		log.info(DEVICES.size() + " devices initialized");
+	}
 
 /***************************************************************************************************************************/
 
-	private final Configuration config;
-	private XGValue name, info1, info2;
-	private final XGValueStorage values;
-	private final XGParameterStorage parameters;
-	private final XGObjectTypeStorage objectTypes;
+	private final XMLNode config;
+	private final String name;
+	private final int info1, info2;
 	private XGSysexFile file;
 	private XGMidi midi;
 	private int sysexID;
 
-	private XGDevice(Configuration cfg) throws MidiUnavailableException, InvalidXGAdressException, CoreMidiException	//für Initialisation via Config
-	{	this.config = cfg;
-		this.sysexID = cfg.getInt(SYSEXID, DEF_SYSEXID);
-		this.midi = new XGMidi(this);
-		this.parameters = new XGParameterStorage(this);
-		this.values = new XGValueStorage(this);
-		this.notifyConfigurationListeners();
+	private XGDevice()	//DefaultDevice (XG)
+	{	this.config = null;
+		this.name = "XG";
+		this.info1 = 1;
+		this.info2 = 1;
 	}
 
-	public Configuration getConfig()
-	{	return this.config;
+	private XGDevice(XMLNode cfg) throws MidiUnavailableException, InvalidXGAdressException, CoreMidiException, TimeoutException, NoSuchOpcodeException
+	{	this.config = cfg;
+		this.sysexID = Integer.parseInt(this.config.getChildNode(TAG_SYSEXID).getTextContent());
+		this.midi = new XGMidi(this);
+		this.name = this.requestName();
+		this.info1 = requestInfo1();
+		this.info2 = requestInfo2();
+	}
+
+	public File getResourceFile(String fName)
+	{	Path extPath = this.getTemplatePath();
+		File extFile = extPath.resolve(fName).toFile();
+		File intFile = RSCPATH.resolve(fName).toFile();
+		if(!extFile.canRead() || !extFile.exists())
+		{	try
+			{	Files.createDirectories(extPath);
+				Files.copy(intFile.toPath(), extFile.toPath());
+			}
+			catch(IOException e)
+			{	log.info(e.getMessage() + ", using default");
+				return intFile;
+			}
+			log.info("can't read file: " + extFile + "; default was copied from: " + intFile);
+		}
+		return extFile;
 	}
 
 	public Path getTemplatePath()
@@ -67,36 +99,33 @@ public class XGDevice implements ConfigurationConstants
 
 	void setSysexID(int id)
 	{	this.sysexID = id & 0xF;
-		this.config.setInt(SYSEXID, this.sysexID);
-		this.notifyConfigurationListeners();
+//		this.config.setInt(TAG_SYSEXID, this.sysexID);
 	}
 
-	public void requestInfo() throws InvalidXGAdressException, TimeoutException        //SystemInfo ignoriert parameterrequest?!;
-	{	XGRequest m = new XGMessageDumpRequest(this.values, XGParameterConstants.XGMODELNAMEADRESS);
+	public String requestName() throws InvalidXGAdressException, TimeoutException, NoSuchOpcodeException        //SystemInfo ignoriert parameterrequest?!;
+	{	XGRequest m = new XGMessageDumpRequest(null, XGAdressConstants.XGMODELNAMEADRESS);
 		m.setDestination(this.midi);
 		XGResponse r = m.request();
-		this.values.take(r);
-//		r.decodeXGValue(0, this.name);
-		log.info(this.name.toString());
+		return r.getValues().get(XGAdressConstants.XGMODELNAMEADRESS).toString().strip();
 	}
-/*
-	public XGMidi getMidi()
-	{	return this.midi;
+
+	public int requestInfo1()
+	{	return 0;
 	}
-*/
-	public XGValueStorage getValueStore()
-	{	return this.values;
+
+	public int requestInfo2()
+	{	return 0;
 	}
 
 	public String getName()
-	{	return this.name.toString();
-	}
-
-	private void notifyConfigurationListeners()
-	{	for(ConfigurationChangeListener l : this.configurationListeners) l.configurationChanged(ConfigurationEvent.Device);
+	{	return this.name;
 	}
 
 	@Override public String toString()
 	{	return(this.getName() + " (" + this.sysexID + ")");
+	}
+
+	public XMLNode getConfig()
+	{	return this.config;
 	}
 }

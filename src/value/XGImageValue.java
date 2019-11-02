@@ -3,12 +3,14 @@ package value;
 import java.awt.Image;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
+import device.XGDevice;
+import opcode.NoSuchOpcodeException;
 
 public class XGImageValue extends XGValue
 {	Image content;
 
-	public XGImageValue(XGAdress adr) throws InvalidXGAdressException
-	{	super(adr);}
+	public XGImageValue(XGDevice dev, XGAdress adr) throws InvalidXGAdressException, NoSuchOpcodeException
+	{	super(dev, adr);}
 
 	public boolean setContent(Object o) throws WrongXGValueTypeException
 	{	this.validate(o);
