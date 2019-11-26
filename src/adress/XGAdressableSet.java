@@ -61,10 +61,12 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	}
 
 	public int size()
-	{	return this.map.size();}
+	{	return this.map.size();
+	}
 
 	public boolean contains(XGAdress adr)
-	{	return this.map.containsKey(adr);}
+	{	return this.map.containsKey(adr);
+	}
 
 	public T getOrDefault(XGAdress adr, T def)
 	{	if(this.map.containsKey(adr)) return this.map.get(adr);
@@ -90,28 +92,36 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	}
 
 	public T[] toArray(T[] a)
-	{	return this.map.values().toArray(a);}
+	{	return this.map.values().toArray(a);
+	}
 
 	public synchronized Collection<T> values()
-	{	return this.map.values();}
+	{	return this.map.values();
+	}
 
 	public synchronized Collection<XGAdress> adresses()
-	{	return this.map.keySet();}
+	{	return this.map.keySet();
+	}
 
 	public synchronized Iterator<T> iterator()
-	{	return this.map.values().iterator();}
+	{	return this.map.values().iterator();
+	}
 
 	public void addListener(XGAdressableSetListener l)
-	{	listeners.add(l);}
+	{	listeners.add(l);
+	}
 
 	public void removeListener(XGAdressableSetListener l)
-	{	listeners.remove(l);}
+	{	listeners.remove(l);
+	}
 
 	private synchronized void notifyListeners(XGAdress adr)
-	{	if(adr != null) for(XGAdressableSetListener l : listeners) l.setChanged(adr);}
+	{	if(adr != null) for(XGAdressableSetListener l : listeners) l.setChanged(adr);
+	}
 
 	public void setChanged(XGAdress adr)
-	{	this.notifyListeners(adr);}
+	{	this.notifyListeners(adr);
+	}
 
 	@Override public String toString()
 	{	if(this.map.isEmpty()) return "empty set";

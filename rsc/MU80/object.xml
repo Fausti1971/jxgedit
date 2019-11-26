@@ -11,15 +11,6 @@
 	</object>
 
 	<object>
-		<name>System Info</name>
-		<bulk>
-			<hi>1</hi>
-			<mid>0</mid>
-			<lo>0-15</lo>
-		</bulk>
-	</object>
-
-	<object>
 		<name>Reverb</name>
 		<bulk>
 			<hi>2</hi>
@@ -113,9 +104,36 @@
 	</object>
 
 	<object>
-		<name>Drumsets</name>
+		<name>Drumset 1</name>
 		<bulk>
-			<hi>48-51</hi>
+			<hi>48</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</bulk>
+	</object>
+
+	<object>
+		<name>Drumset 2</name>
+		<bulk>
+			<hi>49</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</bulk>
+	</object>
+
+	<object>
+		<name>Drumset 3</name>
+		<bulk>
+			<hi>50</hi>
+			<mid>13-91</mid>
+			<lo>0-15</lo>
+		</bulk>
+	</object>
+
+	<object>
+		<name>Drumset 4</name>
+		<bulk>
+			<hi>51</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>
 		</bulk>

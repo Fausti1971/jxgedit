@@ -1,7 +1,5 @@
 package parm;
 
-import value.XGValueTranslator;
-
 public interface XGParameterConstants
 {
 	static final String
@@ -17,6 +15,7 @@ public interface XGParameterConstants
 		TAG_DEPENDSOF = "dependsOf";
 
 	static final String DEF_OBJTYPE = "unknown object";
+	static final String DEF_PARAMETERNAME = "unknown parameter: ";
 	static final int  DEF_MIN = 0, DEF_MAX = 127;
 	static final XGValueTranslator DEF_TRANSLATOR = XGValueTranslator.translateToText;
 /*

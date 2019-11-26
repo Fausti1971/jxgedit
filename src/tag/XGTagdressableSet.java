@@ -24,6 +24,11 @@ public class XGTagdressableSet<T extends XGAdressable & XGTagable> implements It
 	{	return this.adrSet.get(adr);
 	}
 
+	public T getOrDefault(XGAdress adr, T def)
+	{	if(this.adrSet.contains(adr)) return this.get(adr);
+		else return def;
+	}
+
 	public int size()
 	{	return adrSet.size();
 	}

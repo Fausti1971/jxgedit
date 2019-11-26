@@ -8,14 +8,13 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import adress.XGInstanceSelectionListener;
-import parm.XGParameter;
+import msg.XGMessageException;
 import parm.XGParameterConstants;
 import value.WrongXGValueTypeException;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class MyCombo extends JButton implements ActionListener, GuiConstants, XGParameterConstants, XGValueChangeListener, XGInstanceSelectionListener
+public class MyCombo extends JButton implements ActionListener, GuiConstants, XGParameterConstants, XGValueChangeListener
 {	/**
 	 * 
 	 */
@@ -75,17 +74,20 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 			this.setInvoker(c);
 			this.setLocation(c.getLocationOnScreen());
 			int v = (int)c.value.getContent();
-				for(Entry<Integer, String> e : XGParameter.getParameter(c.getAdress()).getTranslationMap().entrySet())
+				for(Entry<Integer, String> e : c.value.getParameter().getTranslationMap().entrySet())
 				{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
 					if(e.getKey() == v) m.setSelected(true);
 					m.addActionListener(new ActionListener()
 					{	public void actionPerformed(ActionEvent ae)
 						{	try
-							{	c.value.setContentAndTransmit(e.getKey());}
-							catch(WrongXGValueTypeException|InvalidXGAdressException e)
-							{	e.printStackTrace();}
-							instance.setVisible(false);
-							instance.setEnabled(false);
+							{	c.value.setContent(e.getKey());
+								c.value.transmit(c.value.getDevice().getMidi());
+							}
+							catch(WrongXGValueTypeException|InvalidXGAdressException | XGMessageException e)
+							{	e.printStackTrace();
+								instance.setVisible(false);
+								instance.setEnabled(false);
+							}
 						}
 					});
 					this.add(m);

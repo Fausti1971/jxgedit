@@ -1,8 +1,8 @@
 package opcode;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.logging.Logger;
-import javax.xml.stream.XMLStreamException;
 import adress.XGAdress;
 import adress.XGAdressable;
 import application.ConfigurationConstants;
@@ -14,32 +14,34 @@ import xml.XMLNode;
 public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAdressable, XGTagable
 {	private static Logger log = Logger.getAnonymousLogger();
 
-	private static final XGTagdressableSet<XGOpcode> OPCODES = new XGTagdressableSet<>();
-
-	public static void init(XGDevice dev)
-	{	File file = dev.getResourceFile(XML_OPCODE);
+	public static XGTagdressableSet<XGOpcode> init(XGDevice dev)
+	{	XGTagdressableSet<XGOpcode> opcodes = new XGTagdressableSet<>();
+		File file;
 		try
-		{	XMLNode xml = XMLNode.parse(file);
+		{	file = dev.getResourceFile(XML_OPCODE);
+		}
+		catch(FileNotFoundException e)
+		{	log.info(e.getMessage());
+			return opcodes;
+		}
+		XMLNode xml = XMLNode.parse(file);
 			for(XMLNode n : xml.getChildren())
 				if(n.getTag().equals(TAG_OPCODE))
-					OPCODES.add(new XGOpcode(n));
-		}
-		catch(XMLStreamException e)
-		{	e.printStackTrace();
-		}
-		log.info(OPCODES.size() + " opcodes initialized from: " + file);
+					opcodes.add(new XGOpcode(n));
+		log.info(opcodes.size() + " opcodes initialized from: " + file);
+		return opcodes;
 	}
-
-	public static XGOpcode getOpcode(XGAdress adr) throws NoSuchOpcodeException
+/*
+	public static XGOpcode getOpcode(XGAdress adr)
 	{	if(OPCODES.containsKey(adr)) return OPCODES.get(adr);
-		else throw new NoSuchOpcodeException(adr.toString());
+		else return new XGOpcode(adr);
 	}
 
-	public static XGOpcode getOpcode(String tag) throws NoSuchOpcodeException
+	public static XGOpcode getOpcode(String tag)
 	{	if(OPCODES.containsKey(tag)) return OPCODES.get(tag);
-		else throw new NoSuchOpcodeException(tag);
+		return new XGOpcode(tag);
 	}
-
+*/
 /*********************************************************************************************************/
 
 	private final String name;
@@ -48,6 +50,21 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 	private final DataType dType;
 	private final ValueDataClass vType;
 
+	public XGOpcode(XGAdress adr)
+	{	this.name = DEF_OPCODENAME + adr;
+		this.adress = adr;
+		this.byteCount = DEF_BYTECOUNT;
+		this.dType = DEF_DATATYPE;
+		this.vType = DEF_VALUECLASS;
+	}
+
+	private XGOpcode(String name)
+	{	this.name = DEF_OPCODENAME + name;
+		this.adress = null;
+		this.byteCount = DEF_BYTECOUNT;
+		this.dType = DEF_DATATYPE;
+		this.vType = DEF_VALUECLASS;
+	}
 
 	public XGOpcode(XMLNode n)
 	{	String s;
@@ -56,7 +73,7 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 
 		this.adress = new XGAdress(n.getChildNode(TAG_ADRESS));
 
-		this.byteCount = n.parseChildNodeTextContent(TAG_BYTECOUNT, DEF_BYTECOUNT);
+		this.byteCount = n.parseChildNodeIntegerContent(TAG_BYTECOUNT, DEF_BYTECOUNT);
 
 		s = n.getChildNodeTextContent(TAG_DATATYPE, "");
 		DataType t;

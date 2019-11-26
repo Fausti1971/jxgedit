@@ -1,51 +1,57 @@
 package gui;
 
-import java.util.Enumeration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.logging.Logger;
+import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
+import application.ConfigurationConstants;
 
-public class XGTreeNode implements TreeNode
-{
+/**
+ * qualifiziert das implementierende Objekt als in einem Baum darstellbar.
+ * @author thomas
+ *
+ */
+public interface XGTreeNode extends TreeNode, ConfigurationConstants, XGWindowSource
+{	static final Logger log = Logger.getAnonymousLogger();
 
-	
-	public TreeNode getChildAt(int childIndex)
-	{
-	// TODO Auto-generated method stub
-	return null;
+	public void nodeSelected();
+	public void unselectNode();
+	public void selectNode();
+
+	default void windowOpened()
+	{	this.selectNode();
 	}
-	
-	public int getChildCount()
-	{
-	// TODO Auto-generated method stub
-	return 0;
+
+	default void windowClosed()
+	{	this.unselectNode();
 	}
-	
-	public TreeNode getParent()
-	{
-	// TODO Auto-generated method stub
-	return null;
+
+	default void reloadTree(XGTree tree)
+	{	((DefaultTreeModel)tree.getModel()).reload();
 	}
-	
-	public int getIndex(TreeNode node)
-	{
-	// TODO Auto-generated method stub
-	return 0;
+
+	default public TreePath getTreePath()
+	{	List<TreeNode> array = new ArrayList<>();
+		TreeNode n = this;
+		while(n != null)
+		{	array.add(0, n);
+			n = n.getParent();
+		}
+		return new TreePath(array);
 	}
-	
-	public boolean getAllowsChildren()
-	{
-	// TODO Auto-generated method stub
-	return false;
+
+	default public int getIndex(TreeNode node)
+	{	return Collections.list(this.children()).indexOf(node);
 	}
-	
-	public boolean isLeaf()
-	{
-	// TODO Auto-generated method stub
-	return false;
+
+	default public TreeNode getChildAt(int childIndex)
+	{	return Collections.list(this.children()).get(childIndex);
 	}
-	
-	public Enumeration<? extends TreeNode> children()
-	{
-	// TODO Auto-generated method stub
-	return null;
+
+	default public boolean isLeaf()
+	{	return this.getChildCount() == 0;
 	}
 }

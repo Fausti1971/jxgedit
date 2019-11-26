@@ -1,4 +1,6 @@
-package value;
+package parm;
+
+import value.XGValue;
 
 //TODO determiniere ValueType und differenziere Methoden
 

@@ -30,6 +30,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 		encodeMidiByteFromInteger(LO_OFFS, adr.getLo());
 		setEOX(7);
 		this.response = new XGMessageBulkDump(src, adr);
+		this.response.setDestination(src);
 	}
 
 	public XGMessageDumpRequest(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException
@@ -37,14 +38,15 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	}
 
 	public boolean setResponsedBy(XGResponse msg)
-	{	if(msg == null) return this.responsed = false;
-		if(msg instanceof XGMessageBulkDump)
-		{	if(msg.getSysexID() == this.response.getSysexID() && msg.getAdress().equals(this.response.getAdress()))
-			this.response = msg;
-			this.notifyResponseListeners();
-			return this.responsed = true;
-		}
-		return this.responsed = false;
+	{	if(msg == null ||
+			!(msg instanceof XGMessageBulkDump) ||
+			msg.getSysexID() != this.response.getSysexID() ||
+			!(msg.getAdress().equals(this.response.getAdress())))
+				return this.responsed = false;
+		this.response = msg;
+		this.response.setDestination(this.getSource());
+		this.notifyResponseListeners();
+		return this.responsed = true;
 	}
 
 	public boolean isResponsed()

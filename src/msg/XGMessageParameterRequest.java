@@ -6,7 +6,6 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import opcode.NoSuchOpcodeException;
 import value.XGIntegerValue;
 
 public class XGMessageParameterRequest extends XGSuperMessage implements XGRequest
@@ -16,6 +15,7 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 
 	private Set<XGResponseListener> responseListeners = new HashSet<>();
 	private XGResponse response;
+	private boolean responsed;
 
 	protected XGMessageParameterRequest(XGMessenger src, byte[] array, long time)
 	{	super(src, array);
@@ -25,7 +25,7 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	{	super(src, msg);
 	}
 
-	public XGMessageParameterRequest(XGMessenger src, XGAdress adr) throws InvalidXGAdressException, NoSuchOpcodeException
+	public XGMessageParameterRequest(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
 	{	super(src, new byte[8]);
 		setMessageID(MSG);
 		setSysexID(src.getDevice().getSysexID());
@@ -33,7 +33,8 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 		setMid(adr.getMid());
 		setLo(adr.getLo());
 		setEOX(7);
-		this.response = new XGMessageParameterChange(src, new XGIntegerValue(src.getDevice(), adr));
+		this.response = new XGMessageParameterChange(src, new XGIntegerValue(src, adr));
+		this.response.setDestination(src);
 	}
 
 	protected int getHi()
@@ -55,12 +56,13 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
 
 	public boolean setResponsedBy(XGResponse msg)
-	{	if(msg == null) return false;
-		if(msg instanceof XGMessageParameterChange)
-		{	XGMessageParameterChange x = (XGMessageParameterChange)msg;
-			if(x.getSysexID() == response.getSysexID() && x.getAdress().equals(response.getAdress())) return true;
-		}
-		return false;
+	{	if(msg == null ||
+			!(msg instanceof XGMessageParameterChange) ||
+			msg.getSysexID() != response.getSysexID() ||
+			!msg.getAdress().equals(response.getAdress())) return this.responsed = false;
+		this.response = msg;
+		this.response.setDestination(this.getSource());
+		return this.responsed = true;
 	}
 
 	protected void setMessageID()
@@ -68,7 +70,7 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	}
 
 	public boolean isResponsed()
-	{	return false;
+	{	return this.responsed;
 	}
 
 	public XGResponse getResponse()

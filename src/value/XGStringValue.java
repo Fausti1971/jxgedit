@@ -2,14 +2,13 @@ package value;
 
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import device.XGDevice;
-import opcode.NoSuchOpcodeException;
+import msg.XGMessenger;
 
 public class XGStringValue extends XGValue
 {	String content;
 
-	public XGStringValue(XGDevice dev, XGAdress adr) throws InvalidXGAdressException, NoSuchOpcodeException
-	{	super(dev, adr);
+	public XGStringValue(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
+	{	super(src, adr);
 	}
 
 	public boolean setContent(Object o) throws WrongXGValueTypeException
@@ -36,10 +35,12 @@ public class XGStringValue extends XGValue
 	}
 
 	protected Object limitize(Object o)
-	{	return ((String)o).substring(0, this.getOpcode().getByteCount());}
+	{	return ((String)o).substring(0, this.getOpcode().getByteCount());
+	}
 
 	public String toString()
-	{	return this.content;}
+	{	return this.content;
+	}
 
 	protected void validate(Object o) throws WrongXGValueTypeException
 	{	if(o instanceof String) return;

@@ -53,13 +53,16 @@ public class XGRequestQueue extends Thread implements XGMessageListener
 	}
 
 	public int size()
-	{	return this.queue.size();}
+	{	return this.queue.size();
+	}
 
 	public XGRequest getRequest()
-	{	return this.request;}
+	{	return this.request;
+	}
 
 	public String getOutputName()
-	{	return this.device.getOutputName();}
+	{	return this.device.getOutputName();
+	}
 
 	public void newXGMessage(XGMessage msg)
 	{	if(request.setResponsedBy((XGResponse)msg));

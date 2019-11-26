@@ -1,82 +1,46 @@
 package value;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import javax.sound.midi.MidiUnavailableException;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressable;
-import device.XGDevice;
 import device.XGMidi;
 import msg.XGMessageException;
 import msg.XGMessageParameterChange;
+import msg.XGMessenger;
 import obj.XGObjectInstance;
-import obj.XGObjectType;
-import opcode.NoSuchOpcodeException;
 import opcode.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import tag.XGTagable;
-import tag.XGTagdressableSet;
-//TODO: ValueStorage integrieren und entsorgen
-public abstract class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdressable, XGTagable
-{	private static Map<XGDevice, XGTagdressableSet<XGValue>> STORAGE = new HashMap<>();
 
-	public static XGValue factory(XGDevice dev, XGAdress adr) throws InvalidXGAdressException, NoSuchOpcodeException
-	{	XGOpcode o = XGOpcode.getOpcode(adr);
+public abstract class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdressable, XGTagable
+{	
+	public static XGValue factory(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
+	{	XGOpcode o = src.getDevice().getOpcodes().getOrDefault(adr, new XGOpcode(adr));
 		switch(o.getValueClass())
-		{	case Integer:	return new XGIntegerValue(dev, adr);
-			case Image:		return new XGImageValue(dev, adr);
-			case String:	return new XGStringValue(dev, adr);
+		{	case Integer:	return new XGIntegerValue(src, adr);
+			case Image:		return new XGImageValue(src, adr);
+			case String:	return new XGStringValue(src, adr);
 			default:		throw new RuntimeException("unknown valueclass: " + o.getValueClass());
 		}
 	}
-	public static XGValue getValue(XGDevice dev, XGAdress adr) throws InvalidXGAdressException
-	{	if(!adr.isValidAdress()) throw new InvalidXGAdressException("no valid value-adress: " + adr);
-		return STORAGE.get(dev).get(adr);
-	}
 
-	public static XGValue getValueOrNew(XGDevice dev, XGAdress adr) throws InvalidXGAdressException, NoSuchOpcodeException
-	{	XGValue v = getValue(dev, adr);
-		if(v == null) v = XGValue.factory(dev, adr);
-		return v;
-	}
-
-	public static XGTagdressableSet<XGValue> getValues(XGDevice dev)
-	{	return STORAGE.get(dev);
-	}
-
-	public static XGValue getValue(XGDevice dev, String tag)
-	{	return STORAGE.get(dev).get(tag);
-	}
-/*
-	public static XGAdressableSet<XGValue> getValues(XGDevice dev, XGAdress adr) throws InvalidXGAdressException
-	{	return STORAGE.getAllValid(adr);
-	}
-
-	public synchronized XGAdressableSet<XGValue> getValues(XGDevice dev, String type)
-	{	XGAdressableSet<XGValue> set = new XGAdressableSet<XGValue>();
-		for(XGValue v : getValues(dev)) if(v.getInstance().getType().getName().equals(type)) set.add(v);
-		this.values.addListener(set);
-		return set;
-	}
-*/
 /***********************************************************************************************/
 
-	private final XGDevice device;
+	private final XGMessenger source;
 	private final XGAdress adress;
 	private final XGObjectInstance instance;
 	private final XGOpcode opcode;
-//	private final XGParameter parameter;
 	private final Set<XGValueChangeListener> listeners = new HashSet<>();
 	
-	protected XGValue(XGDevice dev, XGAdress adr) throws InvalidXGAdressException, NoSuchOpcodeException
+	protected XGValue(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
 	{	if(!adr.isValidAdress()) throw new InvalidXGAdressException("not a valid adress: " + adr);
-		this.device = dev;
-		this.opcode = XGOpcode.getOpcode(adr);
+		this.source = src;
 		this.adress = adr;
-		this.instance = XGObjectType.getObjectTypeOrNew(dev, adr).getInstance(adr);
-//		this.parameter = XGParameter.getParameter(dev, this.opcode.getTag());
+		this.opcode = this.source.getDevice().getOpcodes().getOrDefault(adr, new XGOpcode(adr));
+		this.instance = this.source.getDevice().getType(adr).getInstance(adr);
 	}
 
 	public void addListener(XGValueChangeListener l)
@@ -87,7 +51,10 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 
 	public synchronized void notifyListeners()
 	{	for(XGValueChangeListener l : this.listeners) l.contentChanged(this);
-//		VALUESET.notifyListeners(this.adress);
+	}
+
+	public XGMessenger getSource()
+	{	return this.source;
 	}
 
 	public String getTag()
@@ -103,7 +70,7 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	}
 
 	public XGParameter getParameter()
-	{	return XGParameter.getParameter(this.device, this.getTag());
+	{	return this.source.getDevice().getParameters().getOrDefault(this.getTag(), new XGParameter(this.source.getDevice(), this.getTag()));
 	}
 
 	public XGOpcode getOpcode()
@@ -118,7 +85,7 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 
 	public abstract boolean addContent(Object v) throws WrongXGValueTypeException;
 
-	public void transmit(XGMidi midi) throws XGMessageException, InvalidXGAdressException
+	public void transmit(XGMidi midi) throws XGMessageException, InvalidXGAdressException, MidiUnavailableException
 	{	XGMessageParameterChange m = new XGMessageParameterChange(midi, this);
 		m.setDestination(midi);
 		m.transmit();

@@ -1,16 +1,16 @@
 package msg;
 
+import javax.sound.midi.MidiUnavailableException;
 import adress.InvalidXGAdressException;
 import adress.XGAdressableSet;
-import opcode.NoSuchOpcodeException;
 import value.XGValue;
 
 public interface XGResponse extends XGMessage
 {
-	public default void transmit() throws XGMessageException
-	{	if(this.getDestination() != null) this.getDestination().take(this);
+	public default void transmit() throws XGMessageException, MidiUnavailableException
+	{	if(this.getDestination() != null) this.getDestination().transmit(this);
 		else throw new XGMessageException("message " + this + " has no destination-messenger");
 	}
 
-	public XGAdressableSet<XGValue> getValues() throws InvalidXGAdressException, NoSuchOpcodeException;
+	public XGAdressableSet<XGValue> getValues() throws InvalidXGAdressException;
 }

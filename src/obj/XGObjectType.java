@@ -1,48 +1,53 @@
 package obj;
 
 import java.io.File;
-import java.util.HashMap;
+import java.io.FileNotFoundException;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.xml.stream.XMLStreamException;
+import javax.swing.tree.TreeNode;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressConstants;
 import adress.XGAdressableSet;
 import application.ConfigurationConstants;
 import device.XGDevice;
-import msg.XGMessenger;
+import gui.XGTreeNode;
+import gui.XGWindow;
+import tag.XGTagable;
+import tag.XGTagableSet;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGObjectType implements ConfigurationConstants, XGObjectConstants, XGAdressConstants
+public class XGObjectType implements ConfigurationConstants, XGTagable, XGObjectConstants, XGAdressConstants, XGTreeNode
 {	private static Logger log = Logger.getAnonymousLogger();
 
-	private static Map<XGDevice, Set<XGObjectType>> STORAGE = new HashMap<>();
-
-	public static void init(XGDevice dev)
-	{	Set<XGObjectType> set = new HashSet<>();
-		File file = dev.getResourceFile(XML_OBJECT);
+	public static XGTagableSet<XGObjectType> init(XGDevice dev)
+	{	XGTagableSet<XGObjectType> set = new XGTagableSet<>();
+		File file;
 		try
-		{	XMLNode xml = XMLNode.parse(file);
+		{	file = dev.getResourceFile(XML_OBJECT);
+		}
+		catch(FileNotFoundException e)
+		{	return set;
+		}
+		XMLNode xml = XMLNode.parse(file);
 			for(XMLNode x : xml.getChildren())
 			{	if(x.getTag().equals(TAG_OBJECT))
 				{	XGObjectType t = new XGObjectType(dev, x);
 				set.add(t);
 				}
 			}
-		}
-		catch(XMLStreamException e1)
-		{	e1.printStackTrace();
-		}
-		STORAGE.put(dev, set);
 		log.info(set.size() + " object-types initialized");
+		return set;
 	}
-
-	public static Set<XGObjectType> getAllObjectTypes(XGDevice dev)
-	{	return STORAGE.get(dev);
+/*
+	public static XGTagableSet<XGObjectType> getAllObjectTypes(XGDevice dev)
+	{	if(STORAGE.containsKey(dev)) return STORAGE.get(dev);
+		if(STORAGE.containsKey(XGDevice.getDefaultDevice())) return STORAGE.get(XGDevice.getDefaultDevice());
+		return new XGTagableSet<XGObjectType>();
 	}
 	
 	public static XGObjectType getObjectTypeOrNew(XGDevice dev, XGAdress adr)
@@ -52,9 +57,10 @@ public class XGObjectType implements ConfigurationConstants, XGObjectConstants, 
 		return new XGObjectType(dev, adr);
 	}
 	
-	public static XGObjectType getObjectType(XGDevice dev, String name)
-	{	for(XGObjectType t : getAllObjectTypes(dev)) if(t.getName().equals(name)) return t;
-		return new XGObjectType(dev, INVALIDADRESS);
+	public static XGObjectType getObjectTypeOrNew(XGDevice dev, String name)
+	{	XGTagableSet<XGObjectType> set = getAllObjectTypes(dev);
+		if(set.containsKey(name)) return set.get(name);
+		return new XGObjectType(dev, name, null);
 	}
 	
 	public static void requestAll(XGMessenger src, XGMessenger dest)
@@ -62,7 +68,7 @@ public class XGObjectType implements ConfigurationConstants, XGObjectConstants, 
 			for(XGBulkDumpSequence s : o.getDumpsequences()) s.requestAll(src, dest);
 		log.info("request completetd");
 	}
-
+*/
 /**********************************************************************************************************/
 
 	private final XGDevice device;
@@ -70,15 +76,15 @@ public class XGObjectType implements ConfigurationConstants, XGObjectConstants, 
 	private final Set<XGBulkDumpSequence> bulks;
 	private final XGAdressableSet<XGObjectInstance> instances = new XGAdressableSet<XGObjectInstance>();
 
-	XGObjectType(XGDevice dev, XGAdress adr)
-	{	this(dev, DEF_OBJECTTYPENAME, null);
+	public XGObjectType(XGDevice dev, XGAdress adr)
+	{	this(dev, DEF_OBJECTTYPENAME + adr, null);
 	}
 
 	private XGObjectType(XGDevice dev, String name, Set<XGBulkDumpSequence> dseq)
 	{	this.device = dev;
 		this.name = name;
 		this.bulks = dseq;
-		log.info("object initialized: " + this);
+		log.info("object-type initialized: " + this);
 	}
 
 	XGObjectType(XGDevice dev, XMLNode n)
@@ -89,7 +95,8 @@ public class XGObjectType implements ConfigurationConstants, XGObjectConstants, 
 	}
 
 	public Set<XGBulkDumpSequence> getDumpsequences()
-	{	return this.bulks;}
+	{	return this.bulks;
+	}
 
 	public boolean include(XGAdress adr)
 	{	for(XGBulkDumpSequence s : this.bulks) if(s.include(adr)) return true;
@@ -105,30 +112,86 @@ public class XGObjectType implements ConfigurationConstants, XGObjectConstants, 
 	public void addInstance(XGValue v)
 	{	if(this.instances.contains(v.getAdress())) return;
 		try
-		{	this.instances.add(new XGObjectInstance(this.device, v.getAdress()));}
+		{	this.instances.add(new XGObjectInstance(this.device, v.getAdress()));
+		}
 		catch(InvalidXGAdressException e)
 		{	e.printStackTrace();}
 	}
 
 	public XGAdressableSet<XGObjectInstance> getXGObjectInstances()
-	{	return this.instances;}
+	{	return this.instances;
+	}
 
 	public XGObjectInstance getInstance(XGAdress adr)
 	{	XGObjectInstance i = this.instances.getFirstValid(adr);
 		if(i == null)
 			try
-			{	this.instances.add(i = new XGObjectInstance(this.device, adr));}
+			{	this.instances.add(i = new XGObjectInstance(this.device, adr));
+			}
 			catch(InvalidXGAdressException e)
-			{	e.printStackTrace();}
+			{	e.printStackTrace();
+			}
 		return i;
 	}
 
 	public boolean hasInstances()
-	{	return this.instances.size() != 0;}
+	{	return this.instances.size() != 0;
+	}
 
 	public String getName()
-	{	return this.name;}
+	{	return this.name;
+	}
 
 	@Override public String toString()
-	{	return this.name;}
+	{	return this.name;
+	}
+
+	public TreeNode getChildAt(int childIndex)
+	{	return this.instances.get(childIndex);
+	}
+
+	public int getChildCount()
+	{	return this.instances.size();
+	}
+
+	public TreeNode getParent()
+	{	return this.device;
+	}
+
+	public boolean getAllowsChildren()
+	{	return true;
+	}
+
+	public Enumeration<? extends TreeNode> children()
+	{	return Collections.enumeration(this.instances.values());
+	}
+
+	public XGWindow getWindow()
+	{	return null;
+	}
+
+	public XMLNode getTemplate()
+	{	return null;
+	}
+
+	public void setWindow(XGWindow win)
+	{
+	}
+
+	public String getTag()
+	{	return this.name;
+	}
+
+	public void nodeSelected()
+	{	System.out.println(this + " selected");
+	}
+
+	public void selectNode()
+	{	System.out.println(this + " select");
+	}
+
+	public void unselectNode()
+	{	System.out.println(this + " unselected");
+	}
+
 }

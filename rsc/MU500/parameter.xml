@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:
-	offset = 0 (dezimal, dei descriptions (variable Parameter) ist dies der Parameterindex bspw. "REVERB PARAMETER 1")
-	byteCount = 1 (dezimal)
-	byteType = MIDIBYTE, NIBBLE
-	valueClass = Integer, String, BITMAP
 	translator = translateToText, translateNot, translateToTextPlus1, translateDiv10, translateSub128Div10, translateMap
 	translationMap = ""
 	translationMapFilter = ""
@@ -31,11 +27,11 @@
 		<valueMin>0</valueMin>
 		<valueMax>69</valueMax>
 		<translator>translateMap</translator>
-		<translationMap filter="reverb">fx_programs</translationMap>
+		<translationMap>fx_programs</translationMap>
 	</parameter>
 
 	<parameter>
-		<name>rev_1</name>
+		<name>rev_1</name>	<!-- number behind underscore determines the mutableMapKey -->
 		<dependsOf>rev_type</dependsOf>
 	</parameter>
 

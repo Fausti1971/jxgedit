@@ -1,6 +1,7 @@
 package obj;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
+import javax.sound.midi.MidiUnavailableException;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import device.TimeoutException;
@@ -11,7 +12,6 @@ import xml.XMLNode;
 
 public class XGBulkDumpSequence implements XGObjectConstants
 {	private static Logger log = Logger.getAnonymousLogger();
-
 
 	private final XGAdress min, max;
 
@@ -63,7 +63,7 @@ public class XGBulkDumpSequence implements XGObjectConstants
 				for(mid = this.min.getMid(); mid <= this.max.getMid(); mid++)
 				{	XGRequest r = new XGMessageDumpRequest(src, new XGAdress(hi, mid, lo));
 					r.setDestination(dest);
-					src.take(r.request());
+					src.transmit(r.request());
 				}
 		}
 		catch(InvalidXGAdressException e)
@@ -71,6 +71,10 @@ public class XGBulkDumpSequence implements XGObjectConstants
 		}
 		catch(TimeoutException e)
 		{	log.info(e.getMessage());
+		}catch(MidiUnavailableException e)
+		{
+		// TODO Auto-generated catch block
+		e.printStackTrace();
 		}
 	}
 

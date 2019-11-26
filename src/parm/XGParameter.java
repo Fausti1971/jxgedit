@@ -1,56 +1,61 @@
 package parm;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.FileNotFoundException;
 import java.util.logging.Logger;
-import javax.xml.stream.XMLStreamException;
 import application.ConfigurationConstants;
 import application.Rest;
 import device.XGDevice;
-import opcode.NoSuchOpcodeException;
 import tag.XGTagable;
 import tag.XGTagableSet;
-import value.XGValue;
-import value.XGValueTranslator;
 import xml.XMLNode;
-//TODO: Nachdenken: braucht tatsächlich der parameter den opcode und den objecttyp? eher doch der opcode...
+
 public class XGParameter implements ConfigurationConstants, XGParameterConstants, XGTagable
 {	private static final Logger log = Logger.getAnonymousLogger();
-	private static final Map<XGDevice, XGTagableSet<XGParameter>> STORAGE = new HashMap<>();
 
-	public static void init(XGDevice dev)
+	public static XGTagableSet<XGParameter> init(XGDevice dev)
 	{	XGTagableSet<XGParameter> set = new XGTagableSet<>();
-		File file = dev.getResourceFile(XML_PARAMETER);
+		File file;
 		try
-		{	XMLNode xml = XMLNode.parse(file);
-			for(XMLNode x : xml.getChildren())
-				if(x.getTag().equals(TAG_PARAMETER))
-					set.add(new XGParameter(dev, x));
+		{	file = dev.getResourceFile(XML_PARAMETER);
 		}
-		catch(XMLStreamException | NoSuchOpcodeException e1)
-		{	e1.printStackTrace();
+		catch(FileNotFoundException e)
+		{	return set;
 		}
-		STORAGE.put(dev, set);
-		log.info(dev + ": " + set.size() + " parameters initialized");
+		XMLNode xml = XMLNode.parse(file);
+		for(XMLNode x : xml.getChildren())
+			if(x.getTag().equals(TAG_PARAMETER))
+				set.add(new XGParameter(dev, x));
+		
+		log.info(set.size() + " parameters initialized");
+		return set;
 	}
+/*
+	public static XGParameter getParameter(XGDevice dev, XGValue val)
+	{	XGTagableSet<XGParameter> set;
+		XGParameter p;
 
-	public static XGParameter getParameter(XGDevice dev, String tag)
-	{	if(STORAGE.containsKey(dev))
-			if(STORAGE.get(dev).containsKey(tag))
-			{	XGParameter p = STORAGE.get(dev).get(tag);
-				if(p.isMutable())
-				{	XGValue v = XGValue.getValue(dev, p.getDependsOf());
-					String s = XGTranslationMap.getTranslatedValue(dev, v.toString(), p.getMutableKey());
-					return XGParameter.getParameter(dev, s);
-				}
+		if(STORAGE.containsKey(dev)) set = STORAGE.get(dev);
+		else set = STORAGE.get(XGDevice.getDefaultDevice());
+
+		if(set.containsKey(val.getTag())) p = set.get(val.getTag());
+		else return new XGParameter(dev, val.getTag());
+
+		if(p.isMutable())
+		{	try
+			{	XGAdress a = XGOpcode.getOpcode(p.getDependsOf()).getAdress().complement(val.getAdress());
+				XGValue v = XGValue.getValue(dev, a);
+				String s = XGTranslationMap.getTranslatedValue(dev, v.toString(), p.getMutableKey());
+				return set.get(s);
 			}
-		return STORAGE.get(XGDevice.getDefaultDevice()).get(tag);
+			catch(InvalidXGAdressException e)
+			{	log.info(e.getMessage());
+				return new XGParameter(dev, val.getTag());
+			}
+		}
+		else return p;
 	}
-
-	public XGDevice getDevice()
-	{	return this.device;
-	}
+*/
 
 /*****************************************************************************************************/
 
@@ -64,31 +69,32 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 	private final XGTranslationMap translationMap;
 	private final int mutableKey;
 	private final String dependsOf;
-/*
-	XGParameter(String tag, int min, int max)	//für XGMODELNAMEPARAMETER erforderlich
-	{	this.tag = tag;
-		this.opcode = XGOpcode.getOpcode(tag);
-		this.objectType = XGObjectType.getObjectTypeOrNew(this.opcode.getAdress());
-		this.minValue = min;
-		this.maxValue = max;
+
+	public XGParameter(XGDevice dev, String tag)
+	{	this.device = dev;
+		this.name = tag;
+		this.minValue = DEF_MIN;
+		this.maxValue = DEF_MAX;
 		this.valueTranslator = DEF_TRANSLATOR;
 		this.translationMap = null;
-		this.longName = this.opcode.getInfo();
-		this.shortName = this.tag;
+		this.longName = DEF_PARAMETERNAME + tag;
+		this.shortName = DEF_PARAMETERNAME;
+		this.mutableKey = 0;
+		this.dependsOf = null;
 	}
-*/
-	public XGParameter(XGDevice dev, XMLNode n) throws NoSuchOpcodeException
+
+	public XGParameter(XGDevice dev, XMLNode n)
 	{	this.device = dev;
 		this.name = n.getChildNode(TAG_NAME).getTextContent();
 //		this.opcode = XGOpcode.getOpcode(this.tag);
 //		this.objectType = XGObjectType.getObjectTypeOrNew(this.device, this.opcode.getAdress());
-		this.minValue = n.parseChildNodeTextContent(TAG_MIN, DEF_MIN);
-		this.maxValue = n.parseChildNodeTextContent(TAG_MAX, DEF_MAX);
+		this.minValue = n.parseChildNodeIntegerContent(TAG_MIN, DEF_MIN);
+		this.maxValue = n.parseChildNodeIntegerContent(TAG_MAX, DEF_MAX);
 		this.longName = n.getChildNodeTextContent(TAG_LONGNAME, this.name);
 		this.shortName = n.getChildNodeTextContent(TAG_SHORTNAME, this.name);
 		this.valueTranslator = XGValueTranslator.getTranslator(n.getChildNodeTextContent(TAG_TRANSLATOR, ""));
 		XMLNode t = n.getChildNode(TAG_TRANSLATIONMAP);
-		if(t != null) this.translationMap = XGTranslationMap.getTranslationMap(dev, t.getTextContent());
+		if(t != null) this.translationMap = dev.getTranslations().get(t.getTextContent());
 		else this.translationMap = null;
 		this.dependsOf = n.getChildNodeTextContent(TAG_DEPENDSOF, null);
 		this.mutableKey = Rest.parseIntOrDefault(Rest.splitStringByUnderscore(this.name), 0);

@@ -1,20 +1,15 @@
 package msg;
 
+import javax.sound.midi.MidiUnavailableException;
 import device.TimeoutException;
 import device.XGDevice;
 
 /**
- * qualifiziert das implementierende Object als XGMessage-Source und -Destination
+ * qualifiziert das implementierende Object als XGMessage-Source und -Destinatio und stellt damit die Schnittstelle zu einem Endpunkt der Außenwelt (midi) dar oder ist selbst Endpunkt
  */
 public interface XGMessenger
 {
-	public static enum XGMessengerType{Memory, Midi, File}
-
 	public XGDevice getDevice();
-/**
- * @return returniert den MessengerType des implementierende Objects
- */
-	public XGMessengerType getMessengerType();
 
 /**
  * @return returniert den Namen des XGMessengers
@@ -22,13 +17,15 @@ public interface XGMessenger
 	public String getMessengerName();
 
 /**
- * sendet eine Nachricht (msg) an einen entfernten Empfänger (transmit)
+ * verarbeitet (store, file) oder transportiert eine Nachricht (msg) an einen entfernten Endpunkt (midi)
  * @param m zu sendende XGMessage
+ * @throws MidiUnavailableException 
  */
-	public void take(XGMessage m);
+	public void transmit(XGMessage m) throws MidiUnavailableException;
 
 /**
- *  erfragt (und wartet maximal timeout s auf) eine Nachricht (msg) von einem entfernten Sender (request)
+ *  erfragt eine Nachricht (msg) von einem entfernten Endpunkt (midi) oder ist selbst Endpunkt (store, file)
+ * @throws MidiUnavailableException 
  */
-	public XGResponse pull(XGRequest msg) throws TimeoutException;
+	public XGResponse request(XGRequest msg) throws TimeoutException, MidiUnavailableException;
 }

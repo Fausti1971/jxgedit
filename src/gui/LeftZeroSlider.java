@@ -14,7 +14,6 @@ import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
-import adress.XGInstanceSelectionListener;
 import application.Rest;
 import parm.XGParameter;
 import parm.XGParameterConstants;
@@ -22,7 +21,7 @@ import value.WrongXGValueTypeException;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGParameterConstants, XGValueChangeListener, XGInstanceSelectionListener
+public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListener, MouseWheelListener, MouseMotionListener, MouseListener, XGParameterConstants, XGValueChangeListener
 {	/**
 	 * 
 	 */

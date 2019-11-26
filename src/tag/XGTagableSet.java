@@ -1,5 +1,7 @@
 package tag;
 
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -32,5 +34,9 @@ public class XGTagableSet<T extends XGTagable> implements Iterable<T>
 
 	public Iterator<T> iterator()
 	{	return this.map.values().iterator();
+	}
+
+	public Enumeration<T> enumeration()
+	{	return Collections.enumeration(this.map.values());
 	}
 }

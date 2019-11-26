@@ -5,7 +5,6 @@ import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressableSet;
-import opcode.NoSuchOpcodeException;
 import value.XGValue;
 
 public class XGMessageBulkDump extends XGSuperMessage implements XGBulkDump
@@ -65,11 +64,11 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGBulkDump
 	{	return DATA_OFFS;
 	}
 
-	public XGAdressableSet<XGValue> getValues() throws InvalidXGAdressException, NoSuchOpcodeException
+	public XGAdressableSet<XGValue> getValues() throws InvalidXGAdressException
 	{	XGAdressableSet<XGValue> set = new XGAdressableSet<XGValue>();
 		int end = getDumpSize() + DATA_OFFS, offset = getLo();
 		for(int i = DATA_OFFS; i < end;)
-		{	XGValue v = XGValue.factory(this.getSource().getDevice(), new XGAdress(getHi(), getMid(), offset));
+		{	XGValue v = XGValue.factory(this.getSource(), new XGAdress(getHi(), getMid(), offset));
 			set.add(v);
 			decodeXGValue(i, v);
 			offset += v.getOpcode().getByteCount();

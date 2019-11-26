@@ -1,5 +1,6 @@
 package msg;
 
+import javax.sound.midi.MidiUnavailableException;
 import device.TimeoutException;
 
 public interface XGRequest extends XGMessage
@@ -8,7 +9,7 @@ public interface XGRequest extends XGMessage
 	boolean isResponsed();
 	XGResponse getResponse();
 
-	public default XGResponse request() throws TimeoutException
-	{	this.getDestination().pull(this);//and wait for respose
-		return null;
-	}}
+	public default XGResponse request() throws TimeoutException, MidiUnavailableException
+	{	return this.getDestination().request(this);//and wait for respose
+	}
+}
