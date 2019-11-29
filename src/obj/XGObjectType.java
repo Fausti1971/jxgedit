@@ -1,5 +1,6 @@
 package obj;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -7,6 +8,8 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
@@ -14,14 +17,16 @@ import adress.XGAdressConstants;
 import adress.XGAdressableSet;
 import application.ConfigurationConstants;
 import device.XGDevice;
-import gui.XGTreeNode;
+import gui.XGTree;
+import gui.XGTreeNodeComponent;
 import gui.XGWindow;
+import gui.XGWindowSourceTreeNode;
 import tag.XGTagable;
 import tag.XGTagableSet;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGObjectType implements ConfigurationConstants, XGTagable, XGObjectConstants, XGAdressConstants, XGTreeNode
+public class XGObjectType implements ConfigurationConstants, XGTagable, XGObjectConstants, XGAdressConstants, XGWindowSourceTreeNode
 {	private static Logger log = Logger.getAnonymousLogger();
 
 	public static XGTagableSet<XGObjectType> init(XGDevice dev)
@@ -72,6 +77,8 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 /**********************************************************************************************************/
 
 	private final XGDevice device;
+	private final XGTreeNodeComponent nodeComponent;
+	private XGWindow window = null;
 	private final String name;
 	private final Set<XGBulkDumpSequence> bulks;
 	private final XGAdressableSet<XGObjectInstance> instances = new XGAdressableSet<XGObjectInstance>();
@@ -84,6 +91,7 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	this.device = dev;
 		this.name = name;
 		this.bulks = dseq;
+		this.nodeComponent = new XGTreeNodeComponent(this.toString());
 		log.info("object-type initialized: " + this);
 	}
 
@@ -167,31 +175,40 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	}
 
 	public XGWindow getWindow()
-	{	return null;
+	{	return this.window;
+	}
+
+	public void setWindow(XGWindow win)
+	{	this.window = win;
+	}
+
+	public Component getWindowContent()
+	{	return this.getConfigurationGuiComponents();
 	}
 
 	public XMLNode getTemplate()
 	{	return null;
 	}
 
-	public void setWindow(XGWindow win)
-	{
-	}
-
 	public String getTag()
 	{	return this.name;
 	}
 
-	public void nodeSelected()
-	{	System.out.println(this + " selected");
+	public XGTree getTree()
+	{	return XGWindow.getRootWindow().getTree();
 	}
 
-	public void selectNode()
-	{	System.out.println(this + " select");
+	public void nodeClicked()
+	{	if(this.getWindow() != null) this.getWindow().toFront();
+		else new XGWindow(this, XGWindow.getRootWindow(), false, this.toString()); //TODO: nur zum testen, WindowSource evtl. wieder entferenen
 	}
 
-	public void unselectNode()
-	{	System.out.println(this + " unselected");
+	public XGTreeNodeComponent getGuiComponent()
+	{	return this.nodeComponent;
+	}
+
+	public JComponent getConfigurationGuiComponents()
+	{	return new JLabel(this.name);
 	}
 
 }

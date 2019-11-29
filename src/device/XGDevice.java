@@ -1,5 +1,6 @@
 package device;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -18,6 +19,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -28,13 +30,13 @@ import javax.swing.tree.TreeNode;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressConstants;
-import application.Configurable;
 import application.JXG;
 import file.XGSysexFile;
-import gui.Displayable;
-import gui.GuiConstants;
-import gui.XGTreeNode;
+import gui.GuiConfigurable;
+import gui.XGTree;
+import gui.XGTreeNodeComponent;
 import gui.XGWindow;
+import gui.XGWindowSourceTreeNode;
 import msg.XGMessageDumpRequest;
 import msg.XGRequest;
 import msg.XGResponse;
@@ -48,7 +50,7 @@ import value.XGValue;
 import value.XGValueStore;
 import xml.XMLNode;
 
-public class XGDevice implements XGDeviceConstants, GuiConstants, Configurable, Displayable, XGTreeNode
+public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSourceTreeNode
 {	private static Logger log = Logger.getAnonymousLogger();
 	private static Set<XGDevice> DEVICES = new HashSet<>();
 	private static XGDevice DEF = new XGDevice();
@@ -68,7 +70,7 @@ public class XGDevice implements XGDeviceConstants, GuiConstants, Configurable, 
 			{	try
 				{	XGDevice d = new XGDevice(n);
 					DEVICES.add(d);
-					d.reloadTree(XGWindow.getRootWindow().getTree());
+					d.reloadTree(d.getTree());
 				}
 				catch(InvalidXGAdressException|MidiUnavailableException | TimeoutException e)
 				{	int result = JOptionPane.showConfirmDialog(JXG.getJXG().getWindow(), e.getMessage() + "\nremove from configuration?", "device not responding...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -84,6 +86,7 @@ public class XGDevice implements XGDeviceConstants, GuiConstants, Configurable, 
 /***************************************************************************************************************************/
 
 	private XGWindow window;
+	private final XGTreeNodeComponent nodeComponent;
 	private final XMLNode template;
 	private final XMLNode config;
 	private final XGValueStore values;
@@ -110,13 +113,14 @@ public class XGDevice implements XGDeviceConstants, GuiConstants, Configurable, 
 		this.translations = XGTranslationMap.init(this);
 		this.parameters = XGParameter.init(this);
 		this.template = null;
+		this.nodeComponent = null;
 	}
 
 	public XGDevice(XMLNode cfg) throws InvalidXGAdressException, MidiUnavailableException, TimeoutException
 	{	if(cfg == null)
 		{	this.config = new XMLNode(TAG_DEVICE, null);
 			this.midi = new XGMidi(this);
-			this.setWindow(new XGWindow(this, XGWindow.getRootWindow(), true, this, "new device"));
+			this.setWindow(new XGWindow(this, XGWindow.getRootWindow(), true, "new device"));
 		}
 		else
 		{	this.config = cfg;
@@ -144,6 +148,7 @@ public class XGDevice implements XGDeviceConstants, GuiConstants, Configurable, 
 		{	log.info(e.getMessage());
 		}
 		this.template = temp;
+		this.nodeComponent = new XGTreeNodeComponent(this.toString());
 	}
 
 	public File getResourceFile(String fName) throws FileNotFoundException
@@ -220,16 +225,16 @@ public class XGDevice implements XGDeviceConstants, GuiConstants, Configurable, 
 		this.config.getChildNodeOrNew(TAG_SYSEXID).setTextContent(id);
 	}
 
-	public void nodeSelected()
-	{	new XGWindow(this, XGWindow.getRootWindow(), true, this, this.name);
+	public XGTree getTree()
+	{	return XGWindow.getRootWindow().getTree();
 	}
 
-	public void selectNode()
-	{	System.out.println(this + " select");
+	public JLabel getGuiComponent()
+	{	return this.nodeComponent;
 	}
 
-	public void unselectNode()
-	{	System.out.println(this + " unselected");
+	public void nodeClicked()
+	{	new XGWindow(this, XGWindow.getRootWindow(), true, this.name);
 	}
 
 	public String detectDevice() throws InvalidXGAdressException, MidiUnavailableException, TimeoutException	//SystemInfo ignoriert parameterrequest?!;
@@ -303,7 +308,11 @@ public class XGDevice implements XGDeviceConstants, GuiConstants, Configurable, 
 	{	this.window = win;
 	}
 
-	public JComponent getGuiComponents()
+	public Component getWindowContent()
+	{	return this.getConfigurationGuiComponents();
+	}
+
+	public JComponent getConfigurationGuiComponents()
 	{	JPanel root = new JPanel();
 		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 		root.setBorder(getDefaultBorder("device"));
@@ -338,4 +347,8 @@ public class XGDevice implements XGDeviceConstants, GuiConstants, Configurable, 
 
 		return root;
 	}
+
+
+
+
 }

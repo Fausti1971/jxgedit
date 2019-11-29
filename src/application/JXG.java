@@ -1,5 +1,6 @@
 package application;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
@@ -8,24 +9,23 @@ import java.util.Enumeration;
 import java.util.logging.Logger;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.AbstractAction;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
 import adress.InvalidXGAdressException;
 import device.TimeoutException;
 import device.XGDevice;
-import gui.Displayable;
-import gui.GuiConstants;
-import gui.XGTreeNode;
+import gui.GuiConfigurable;
+import gui.XGTree;
+import gui.XGTreeNodeComponent;
 import gui.XGWindow;
+import gui.XGWindowSourceTreeNode;
 import xml.XMLNode;
 
-public class JXG implements Configurable, Displayable, XGTreeNode, GuiConstants
+public class JXG implements GuiConfigurable, XGWindowSourceTreeNode
 {	private static final Logger log = Logger.getAnonymousLogger();
 	private static final JXG jxg = new JXG();
 
@@ -45,7 +45,7 @@ public class JXG implements Configurable, Displayable, XGTreeNode, GuiConstants
 //			}
 //		);
 		
-		XGWindow.getRootWindow().open();
+		XGWindow.getRootWindow().setVisible(true);
 		XGDevice.init();
 //		quit();
 	}
@@ -64,6 +64,7 @@ public class JXG implements Configurable, Displayable, XGTreeNode, GuiConstants
 /***************************************************************************************************************/
 
 	private XMLNode config;
+	private final XGTreeNodeComponent nodeComponent;
 	private XGWindow window;
 
 	private JXG()
@@ -73,7 +74,7 @@ public class JXG implements Configurable, Displayable, XGTreeNode, GuiConstants
 		if(f.exists())
 			this.config = XMLNode.parse(f);
 		else this.config = new XMLNode(APPNAME, null);
-
+		this.nodeComponent = new XGTreeNodeComponent(APPNAME);
 		log.info("JXG config initialized");
 	}
 
@@ -97,6 +98,10 @@ public class JXG implements Configurable, Displayable, XGTreeNode, GuiConstants
 	{	return this.window;
 	}
 
+	public void setWindow(XGWindow win)
+	{	this.window = win;
+	}
+
 	public XMLNode getTemplate()
 	{	return null;
 	}
@@ -105,27 +110,27 @@ public class JXG implements Configurable, Displayable, XGTreeNode, GuiConstants
 	{	return APPNAME;
 	}
 
-	public void setWindow(XGWindow win)
-	{	this.window = win;
+	public XGTree getTree()
+	{	return XGWindow.getRootWindow().getTree();
 	}
 
-	public void nodeSelected()
-	{	new XGWindow(this, XGWindow.getRootWindow(), true, this, "settings");
+	public void nodeClicked()
+	{	new XGWindow(this, XGWindow.getRootWindow(), true, "settings");
 	}
 
-	public void selectNode()
-	{	System.out.println(this + " select");
-	}
-
-	public void unselectNode()
-	{	System.out.println(this + " unselected");
+	public XGTreeNodeComponent getGuiComponent()
+	{	return this.nodeComponent;
 	}
 
 	public XMLNode getConfig()
 	{	return this.config;
 	}
 
-	public JComponent getGuiComponents()
+	public Component getWindowContent()
+	{	return this.getConfigurationGuiComponents();
+	}
+
+	public JComponent getConfigurationGuiComponents()
 	{	JPanel root = new JPanel();
 		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 		root.setBorder(getDefaultBorder("settings"));
@@ -133,7 +138,6 @@ public class JXG implements Configurable, Displayable, XGTreeNode, GuiConstants
 		JButton btn = new JButton("add device...");
 		btn.addActionListener(new AbstractAction()
 		{	private static final long serialVersionUID=2717877286233170533L;
-	
 			public void actionPerformed(ActionEvent e)
 			{	try
 				{	XGDevice dev = new XGDevice(null);
@@ -163,4 +167,7 @@ public class JXG implements Configurable, Displayable, XGTreeNode, GuiConstants
 
 		return root;
 	}
+
+
+
 }

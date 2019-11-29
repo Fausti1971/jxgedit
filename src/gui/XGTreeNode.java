@@ -1,36 +1,41 @@
 package gui;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
-import application.ConfigurationConstants;
 
 /**
  * qualifiziert das implementierende Objekt als in einem Baum darstellbar.
  * @author thomas
  *
  */
-public interface XGTreeNode extends TreeNode, ConfigurationConstants, XGWindowSource
+public interface XGTreeNode extends TreeNode, Displayable
 {	static final Logger log = Logger.getAnonymousLogger();
-
-	public void nodeSelected();
-	public void unselectNode();
-	public void selectNode();
-
-	default void windowOpened()
-	{	this.selectNode();
+	
+	static final TreeCellRenderer defaultTreeCellRenderer = new TreeCellRenderer()
+	{	public Component getTreeCellRendererComponent(JTree tree,Object value,boolean selected,boolean expanded,boolean leaf,int row,boolean hasFocus)
+		{	XGTreeNode n = (XGTreeNode)value;
+			return n.getGuiComponent();
+		}
+	};
+	static TreeCellRenderer getDefaultNodeRenderer()
+	{	return defaultTreeCellRenderer;
 	}
 
-	default void windowClosed()
-	{	this.unselectNode();
-	}
+/*****************************************************************************************************************/
+
+	public XGTree getTree();
+	public void nodeClicked();
 
 	default void reloadTree(XGTree tree)
-	{	((DefaultTreeModel)tree.getModel()).reload();
+	{	((DefaultTreeModel)tree.getModel()).reload(this.getParent());
 	}
 
 	default public TreePath getTreePath()

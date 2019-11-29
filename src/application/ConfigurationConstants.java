@@ -1,5 +1,4 @@
 package application;
-//Idee: Configuration lädt, hält und speichert "config.xml" und übergibt bei Initialisation Zeiger auf Nodes an Konstruktoren, über die Veränderungen direkt im Document durchgeführt werden.
 import java.nio.file.Path;
 import java.nio.file.Paths;
 

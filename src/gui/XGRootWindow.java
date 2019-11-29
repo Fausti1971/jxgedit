@@ -2,15 +2,16 @@ package gui;
 
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
-import javax.swing.JComponent;
+import java.awt.event.WindowListener;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import application.Configurable;
 import application.JXG;
 import xml.XMLNode;
 
-public class XGRootWindow extends XGWindow implements Configurable
+public class XGRootWindow extends XGWindow implements Configurable, WindowListener, ComponentListener
 {	/**
 	 * 
 	 */
@@ -86,8 +87,11 @@ public class XGRootWindow extends XGWindow implements Configurable
 		this.getConfig().getChildNodeOrNew(TAG_WINY).setTextContent(e.getComponent().getY());
 	}
 
-	public JComponent getGuiComponents()
-	{	return null;
+	public void componentShown(ComponentEvent e)
+	{
 	}
 
+	public void componentHidden(ComponentEvent e)
+	{
+	}
 }
