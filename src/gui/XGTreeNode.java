@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Component;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +17,7 @@ import javax.swing.tree.TreePath;
  * @author thomas
  *
  */
-public interface XGTreeNode extends TreeNode, Displayable
+public interface XGTreeNode extends TreeNode, XGDisplayable
 {	static final Logger log = Logger.getAnonymousLogger();
 	
 	static final TreeCellRenderer defaultTreeCellRenderer = new TreeCellRenderer()
@@ -31,11 +32,11 @@ public interface XGTreeNode extends TreeNode, Displayable
 
 /*****************************************************************************************************************/
 
-	public XGTree getTree();
-	public void nodeClicked();
+	void nodeClicked();
+	JTree getTree();
 
-	default void reloadTree(XGTree tree)
-	{	((DefaultTreeModel)tree.getModel()).reload(this.getParent());
+	default void reloadTree()
+	{	((DefaultTreeModel)this.getTree().getModel()).reload(this.getParent());
 	}
 
 	default public TreePath getTreePath()
@@ -46,6 +47,10 @@ public interface XGTreeNode extends TreeNode, Displayable
 			n = n.getParent();
 		}
 		return new TreePath(array);
+	}
+
+	default int getChildCount()
+	{	return Collections.list(this.children()).size();
 	}
 
 	default public int getIndex(TreeNode node)

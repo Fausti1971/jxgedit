@@ -2,8 +2,6 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import javax.swing.BorderFactory;
-import javax.swing.border.Border;
 import application.ConfigurationConstants;
 
 public interface GuiConstants extends ConfigurationConstants
@@ -17,6 +15,7 @@ public interface GuiConstants extends ConfigurationConstants
 		COL_BORDER = Color.gray;
 
 	static int
+		COL_STEP = 16,
 		FONTSIZE = 10,
 		GAP = 5,
 		SL_W = 160,
@@ -32,10 +31,10 @@ public interface GuiConstants extends ConfigurationConstants
 		TAG_WINX = "X",
 		TAG_WINY = "Y",
 		TAG_WINW = "W",
-		TAG_WINH = "H";
-//		TAG_NAME = "name";
+		TAG_WINH = "H",
 
-	public default Border getDefaultBorder(String text)
-	{	return BorderFactory.createTitledBorder(BorderFactory.createLineBorder(COL_BORDER, 1, true), text);
-	}
+		TAG_COLOR = "color",
+		TAG_BASECOLOR = "base",
+		TAG_FOCUSCOLOR = "focus";
+
 }

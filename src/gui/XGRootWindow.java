@@ -5,8 +5,8 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.JDialog;
 import javax.swing.JScrollPane;
+import javax.swing.JTree;
 import application.Configurable;
 import application.JXG;
 import xml.XMLNode;
@@ -19,18 +19,20 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 
 /**********************************************************************************************************************/
 
-	private final XMLNode config = JXG.getJXG().getConfig().getChildNodeOrNew(TAG_WIN);
-	private final XGTree tree = new XGTree(JXG.getJXG());
+	private final XMLNode config = JXG.config.getChildNodeOrNew(TAG_WIN);
 
 	public XGRootWindow()
-	{	JDialog.setDefaultLookAndFeelDecorated(true);
-
-		this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+	{	this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.addWindowListener(this);
 		this.addComponentListener(this);
 	
 		this.setTitle(APPNAME);
-		this.getContentPane().add(new JScrollPane(this.tree));
+		JTree tree = (JTree)this.getRootComponent();
+		tree.setCellRenderer(XGTreeNode.getDefaultNodeRenderer());
+		tree.setSelectionModel(null);
+		tree.setShowsRootHandles(true);
+		this.getContentPane().add(new JScrollPane(tree));
+
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
 		this.setBounds(
 			this.getConfig().parseChildNodeIntegerContent(TAG_WINX, 20),
@@ -39,10 +41,6 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 			this.getConfig().parseChildNodeIntegerContent(TAG_WINH, MIN_H));
 		this.setModal(false);
 		this.setVisible(true);
-	}
-
-	public XGTree getTree()
-	{	return this.tree;
 	}
 
 	public XMLNode getConfig()
@@ -54,11 +52,11 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 	}
 
 	public void windowClosing(WindowEvent e)
-	{	JXG.quit();
+	{
 	}
 
 	public void windowClosed(WindowEvent e)
-	{
+	{	JXG.quit();
 	}
 
 	public void windowIconified(WindowEvent e)

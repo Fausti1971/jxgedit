@@ -1,5 +1,6 @@
 package device;
 
+import java.awt.Component;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -13,10 +14,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.sound.midi.Sequencer;
 import javax.sound.midi.Synthesizer;
-import javax.swing.BoxLayout;
-import javax.swing.JComponent;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
@@ -25,8 +23,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import adress.InvalidXGAdressException;
 import adress.XGAdressableSet;
-import application.Configurable;
-import gui.GuiConstants;
+import gui.GuiConfigurable;
+import gui.XGFrame;
 import msg.XGMessage;
 import msg.XGMessenger;
 import msg.XGRequest;
@@ -36,7 +34,7 @@ import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
 import xml.XMLNode;
 
-public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotification, Configurable, Receiver, AutoCloseable, GuiConstants
+public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotification, GuiConfigurable, Receiver, AutoCloseable
 {	static Logger log = Logger.getAnonymousLogger();
 
 	public static Map<String, Info> getInputs()
@@ -257,16 +255,15 @@ public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotificat
 	{	return this.config;
 	}
 
-	public JComponent getGuiComponents()
-	{	JPanel root = new JPanel();
-		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
-		root.setBorder(getDefaultBorder("midi"));
+	public Component getConfigurationGuiComponents()
+	{	XGFrame root = new XGFrame("midi");
+//		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 
 		JList<String> inp = new JList<>(new Vector<>(XGMidi.getInputs().keySet()));
 		inp.setBackground(root.getBackground());
 		inp.setAlignmentX(0.5f);
 		inp.setAlignmentY(0.5f);
-		inp.setBorder(getDefaultBorder("input"));
+//		inp.setBorder(getDefaultBorder("input"));
 		inp.setSelectedValue(this.getInputName(), true);
 		inp.addListSelectionListener(new ListSelectionListener()
 		{	public void valueChanged(ListSelectionEvent e)
@@ -286,7 +283,7 @@ public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotificat
 		out.setBackground(root.getBackground());
 		out.setAlignmentX(0.5f);
 		out.setAlignmentY(0.5f);
-		out.setBorder(getDefaultBorder("output"));
+//		out.setBorder(getDefaultBorder("output"));
 		out.setSelectedValue(this.getOutputName(), true);
 		out.addListSelectionListener(new ListSelectionListener()
 		{	public void valueChanged(ListSelectionEvent e)
@@ -305,7 +302,7 @@ public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotificat
 		JSpinner timeout = new JSpinner();
 		timeout.setAlignmentX(0.5f);
 		timeout.setAlignmentY(0.5f);
-		timeout.setBorder(getDefaultBorder("timeout"));
+//		timeout.setBorder(getDefaultBorder("timeout"));
 		timeout.setModel(new SpinnerNumberModel(this.getTimeout(), 30, 1000, 10));
 		timeout.addChangeListener(new ChangeListener()
 		{	public void stateChanged(ChangeEvent e)

@@ -16,13 +16,10 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.sound.midi.MidiUnavailableException;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -33,7 +30,8 @@ import adress.XGAdressConstants;
 import application.JXG;
 import file.XGSysexFile;
 import gui.GuiConfigurable;
-import gui.XGTree;
+import gui.XGFrame;
+import gui.XGTreeNode;
 import gui.XGTreeNodeComponent;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
@@ -70,7 +68,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 			{	try
 				{	XGDevice d = new XGDevice(n);
 					DEVICES.add(d);
-					d.reloadTree(d.getTree());
+					((XGTreeNode)d.getGuiComponent()).reloadTree();
 				}
 				catch(InvalidXGAdressException|MidiUnavailableException | TimeoutException e)
 				{	int result = JOptionPane.showConfirmDialog(JXG.getJXG().getWindow(), e.getMessage() + "\nremove from configuration?", "device not responding...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -225,11 +223,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 		this.config.getChildNodeOrNew(TAG_SYSEXID).setTextContent(id);
 	}
 
-	public XGTree getTree()
-	{	return XGWindow.getRootWindow().getTree();
-	}
-
-	public JLabel getGuiComponent()
+	public XGTreeNodeComponent getGuiComponent()
 	{	return this.nodeComponent;
 	}
 
@@ -280,10 +274,6 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	{	return this.config;
 	}
 
-	public int getChildCount()
-	{	return this.getTypes().size();
-	}
-
 	public TreeNode getParent()
 	{	return JXG.getJXG();
 	}
@@ -297,7 +287,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	}
 
 	public XGWindow getWindow()
-	{	return null;
+	{	return this.window;
 	}
 
 	public XMLNode getTemplate()
@@ -312,17 +302,16 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	{	return this.getConfigurationGuiComponents();
 	}
 
-	public JComponent getConfigurationGuiComponents()
-	{	JPanel root = new JPanel();
-		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
-		root.setBorder(getDefaultBorder("device"));
+	public Component getConfigurationGuiComponents()
+	{	XGFrame root = new XGFrame("device");
+//		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 
-		root.add(this.midi.getGuiComponents());
+		root.add(this.midi.getConfigurationGuiComponents());
 
 		JSpinner sp = new JSpinner();
 		sp.setAlignmentX(0.5f);
 		sp.setAlignmentY(0.5f);
-		sp.setBorder(getDefaultBorder("sysex ID"));
+//		sp.setBorder(getDefaultBorder("sysex ID"));
 		sp.setModel(new SpinnerNumberModel(this.getSysexID(), 0, 15, 1));
 		sp.addChangeListener(new ChangeListener()
 		{	public void stateChanged(ChangeEvent e)
@@ -349,6 +338,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	}
 
 
-
-
+	public JTree getTree()
+	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
+	}
 }

@@ -3,12 +3,12 @@ package obj;
 import java.awt.Component;
 import java.util.Enumeration;
 import javax.swing.JLabel;
+import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressable;
 import device.XGDevice;
-import gui.XGTree;
 import gui.XGTreeNodeComponent;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
@@ -49,10 +49,6 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 	{	return this.getType().getName() + " " + this.toString();
 	}
 
-	public int getChildCount()
-	{	return 0;
-	}
-
 	public TreeNode getParent()
 	{	return this.type;
 	}
@@ -81,10 +77,6 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 	{	return new JLabel("XML-Templates noch nicht implementiert...");
 	}
 
-	public XGTree getTree()
-	{	return XGWindow.getRootWindow().getTree();
-	}
-
 	public void nodeClicked()
 	{	if(this.getWindow() != null) this.getWindow().toFront();
 		else this.setWindow(new XGWindow(this, XGWindow.getRootWindow(), false, this.getInfo()));
@@ -92,6 +84,10 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 
 	public Component getGuiComponent()
 	{	return this.nodeComponent;
+	}
+
+	public JTree getTree()
+	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.sound.midi.MidiUnavailableException;
 import msg.XGMessage;
 import msg.XGMessageListener;
 import msg.XGRequest;
@@ -38,7 +39,14 @@ public class XGRequestQueue extends Thread implements XGMessageListener
 			if(!this.queue.isEmpty())
 			{	synchronized(this.queue)
 				{	this.request = this.queue.poll();
+					try
+					{
 					this.request.request();
+					}catch(TimeoutException|MidiUnavailableException e)
+					{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -61,7 +69,7 @@ public class XGRequestQueue extends Thread implements XGMessageListener
 	}
 
 	public String getOutputName()
-	{	return this.device.getOutputName();
+	{	return this.device.getName();
 	}
 
 	public void newXGMessage(XGMessage msg)

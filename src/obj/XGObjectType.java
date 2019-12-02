@@ -8,8 +8,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
-import javax.swing.JLabel;
+import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
@@ -17,7 +16,7 @@ import adress.XGAdressConstants;
 import adress.XGAdressableSet;
 import application.ConfigurationConstants;
 import device.XGDevice;
-import gui.XGTree;
+import gui.XGFrame;
 import gui.XGTreeNodeComponent;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
@@ -158,10 +157,6 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	return this.instances.get(childIndex);
 	}
 
-	public int getChildCount()
-	{	return this.instances.size();
-	}
-
 	public TreeNode getParent()
 	{	return this.device;
 	}
@@ -194,10 +189,6 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	return this.name;
 	}
 
-	public XGTree getTree()
-	{	return XGWindow.getRootWindow().getTree();
-	}
-
 	public void nodeClicked()
 	{	if(this.getWindow() != null) this.getWindow().toFront();
 		else new XGWindow(this, XGWindow.getRootWindow(), false, this.toString()); //TODO: nur zum testen, WindowSource evtl. wieder entferenen
@@ -207,8 +198,12 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	return this.nodeComponent;
 	}
 
-	public JComponent getConfigurationGuiComponents()
-	{	return new JLabel(this.name);
+	public Component getConfigurationGuiComponents()
+	{	return new XGFrame(this.name);
+	}
+
+	public JTree getTree()
+	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
 	}
 
 }

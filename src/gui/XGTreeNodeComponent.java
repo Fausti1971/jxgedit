@@ -1,8 +1,9 @@
 package gui;
 
+import java.awt.Component;
 import javax.swing.JLabel;
 
-public class XGTreeNodeComponent extends JLabel implements GuiConstants
+public class XGTreeNodeComponent extends JLabel implements XGComponent
 {	/**
 	 * 
 	 */
@@ -16,7 +17,16 @@ public class XGTreeNodeComponent extends JLabel implements GuiConstants
 
 	public XGTreeNodeComponent(String text)
 	{	super(text);
+//		this.setText(text);
+//		this.setSize(this.getPreferredSize());
+
+		System.out.println("Node: " + text + this.getSize());
 		this.setStatus(Status.unselected);
+		this.setOpaque(true);
+		this.addMouseListener(this);	//funktioniert nicht, da CellRenderer nur zeichnet; keine Objekte einfügt;
+
+		this.colorize();
+		this.framize(text);
 	}
 
 	public void setStatus(Status s)
@@ -42,5 +52,9 @@ public class XGTreeNodeComponent extends JLabel implements GuiConstants
 
 	public Status getStatus()
 	{	return this.status;
+	}
+
+	public Component getGuiComponent()
+	{	return this;
 	}
 }

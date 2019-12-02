@@ -1,10 +1,10 @@
 package gui;
 
-import javax.swing.JComponent;
+import java.awt.Component;
 import application.Configurable;
 
 public interface GuiConfigurable extends Configurable, GuiConstants
 {
-	JComponent getConfigurationGuiComponents();
+	Component getConfigurationGuiComponents();
 
 }

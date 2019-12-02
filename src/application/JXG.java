@@ -9,34 +9,45 @@ import java.util.Enumeration;
 import java.util.logging.Logger;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.AbstractAction;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
+import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
 import adress.InvalidXGAdressException;
 import device.TimeoutException;
 import device.XGDevice;
 import gui.GuiConfigurable;
-import gui.XGTree;
+import gui.XGFrame;
+import gui.XGTreeNode;
 import gui.XGTreeNodeComponent;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
 import xml.XMLNode;
 
 public class JXG implements GuiConfigurable, XGWindowSourceTreeNode
-{	private static final Logger log = Logger.getAnonymousLogger();
-	private static final JXG jxg = new JXG();
+{	static
+	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
+		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
+	}
+
+	private static final Logger log = Logger.getAnonymousLogger();
+	public static final XMLNode config = initConfig(); 
+	private final static JXG jxg = new JXG();
+
+	private static XMLNode  initConfig()
+	{	XMLNode x = new XMLNode(APPNAME, null);
+		HOMEPATH.toFile().mkdirs();
+		File f = CONFIGFILEPATH.toFile();
+		if(f.exists()) x = XMLNode.parse(f);
+		return x;
+	}
 
 	public static JXG getJXG()
 	{	return jxg;
 	}
 
 	public static void main(String[] args)
-	{	//System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
-//		%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
-
+	{	
 //		Runtime.getRuntime().addShutdownHook
 //		(	new Thread()
 //			{	@Override public void run()
@@ -44,7 +55,6 @@ public class JXG implements GuiConfigurable, XGWindowSourceTreeNode
 //				}
 //			}
 //		);
-		
 		XGWindow.getRootWindow().setVisible(true);
 		XGDevice.init();
 //		quit();
@@ -63,23 +73,13 @@ public class JXG implements GuiConfigurable, XGWindowSourceTreeNode
 
 /***************************************************************************************************************/
 
-	private XMLNode config;
-	private final XGTreeNodeComponent nodeComponent;
+	private XGTreeNodeComponent nodeComponent;
 	private XGWindow window;
 
 	private JXG()
-	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
-		HOMEPATH.toFile().mkdirs();
-		File f = CONFIGFILEPATH.toFile();
-		if(f.exists())
-			this.config = XMLNode.parse(f);
-		else this.config = new XMLNode(APPNAME, null);
+	{	//System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 		this.nodeComponent = new XGTreeNodeComponent(APPNAME);
 		log.info("JXG config initialized");
-	}
-
-	public int getChildCount()
-	{	return XGDevice.getDevices().size();
 	}
 
 	public TreeNode getParent()
@@ -110,10 +110,6 @@ public class JXG implements GuiConfigurable, XGWindowSourceTreeNode
 	{	return APPNAME;
 	}
 
-	public XGTree getTree()
-	{	return XGWindow.getRootWindow().getTree();
-	}
-
 	public void nodeClicked()
 	{	new XGWindow(this, XGWindow.getRootWindow(), true, "settings");
 	}
@@ -123,17 +119,16 @@ public class JXG implements GuiConfigurable, XGWindowSourceTreeNode
 	}
 
 	public XMLNode getConfig()
-	{	return this.config;
+	{	return JXG.config;
 	}
 
 	public Component getWindowContent()
 	{	return this.getConfigurationGuiComponents();
 	}
 
-	public JComponent getConfigurationGuiComponents()
-	{	JPanel root = new JPanel();
-		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
-		root.setBorder(getDefaultBorder("settings"));
+	public Component getConfigurationGuiComponents()
+	{	XGFrame root = new XGFrame("settigs");
+//		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 
 		JButton btn = new JButton("add device...");
 		btn.addActionListener(new AbstractAction()
@@ -144,7 +139,7 @@ public class JXG implements GuiConfigurable, XGWindowSourceTreeNode
 					if(dev != null)
 					{	if(XGDevice.getDevices().add(dev))
 						{	config.addChild(dev.getConfig());
-							reloadTree(XGWindow.getRootWindow().getTree());
+							((XGTreeNode)getGuiComponent()).reloadTree();
 						}
 					}
 				}
@@ -169,5 +164,7 @@ public class JXG implements GuiConfigurable, XGWindowSourceTreeNode
 	}
 
 
-
+	public JTree getTree()
+	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
+	}
 }
