@@ -1,7 +1,7 @@
 package obj;
 
-import java.awt.Component;
 import java.util.Enumeration;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
@@ -19,11 +19,12 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 	private final XGAdress adress;
 	private XGWindow window;
 	private final XGTreeNodeComponent nodeComponent;
+	private boolean isSelected = false;
 
 	public XGObjectInstance(XGDevice dev, XGAdress adr) throws InvalidXGAdressException
 	{	this.type = dev.getType(adr);
 		this.adress = new XGAdress(INVALIDFIELD, adr.getMid(), INVALIDFIELD);
-		this.nodeComponent = new XGTreeNodeComponent(this.getInfo());
+		this.nodeComponent = new XGTreeNodeComponent(this);
 	}
 
 	public XGAdress getAdress()
@@ -73,7 +74,7 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 	{	this.window = win;
 	}
 
-	public Component getWindowContent()
+	public JComponent getChildWindowContent()
 	{	return new JLabel("XML-Templates noch nicht implementiert...");
 	}
 
@@ -82,12 +83,21 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 		else this.setWindow(new XGWindow(this, XGWindow.getRootWindow(), false, this.getInfo()));
 	}
 
-	public Component getGuiComponent()
+	public JComponent getGuiComponent()
 	{	return this.nodeComponent;
 	}
 
 	public JTree getTree()
 	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
+	}
+
+	public boolean isSelected()
+	{	return this.isSelected;
+	}
+
+	public void setSelected(boolean s)
+	{	this.isSelected = s;
+		this.nodeComponent.setStatus();
 	}
 
 }

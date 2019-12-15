@@ -8,18 +8,21 @@ public interface XGColorable extends XGDisplayable
 {
 	void setForeground(Color col);
 	void setBackground(Color col);
-	Component getParent();
+
+	default Component getParentComponent()
+	{	return this.getGuiComponent().getParent();
+	}
 
 	default Color getBaseColor()
-	{	return new Color(JXG.config.getChildNodeOrNew(TAG_COLOR).parseChildNodeIntegerContentOrNew(TAG_BASECOLOR, Color.white.getRGB()));
+	{	return new Color(JXG.config.getChildNodeOrNew(TAG_COLOR).parseChildNodeIntegerContentOrNew(TAG_BASECOLOR, Color.gray.getRGB()));
 	}
 	
 	default Color getFocusColor()
-	{	return new Color(JXG.config.getChildNodeOrNew(TAG_COLOR).parseChildNodeIntegerContentOrNew(TAG_FOCUSCOLOR, Color.black.getRGB()));
+	{	return new Color(JXG.config.getChildNodeOrNew(TAG_COLOR).parseChildNodeIntegerContentOrNew(TAG_FOCUSCOLOR, Color.blue.getRGB()));
 	}
 
 	default void colorize()
-	{	Component p = this.getParent();
+	{	Component p = this.getParentComponent();
 		if(p != null)
 		{	this.setBackground(increase(p.getBackground()));
 			this.setForeground(increase(p.getForeground()));

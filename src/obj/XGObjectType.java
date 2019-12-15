@@ -1,6 +1,5 @@
 package obj;
 
-import java.awt.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
@@ -8,6 +7,7 @@ import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAdressException;
@@ -24,7 +24,7 @@ import tag.XGTagable;
 import tag.XGTagableSet;
 import value.XGValue;
 import xml.XMLNode;
-
+//TODO: unsupported types (nicht in object.xml vorgefunden, sondern aus "XG" entnommen) hervorheben (in rot darstellen); zum laden "falscher" bulks...
 public class XGObjectType implements ConfigurationConstants, XGTagable, XGObjectConstants, XGAdressConstants, XGWindowSourceTreeNode
 {	private static Logger log = Logger.getAnonymousLogger();
 
@@ -77,6 +77,7 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 
 	private final XGDevice device;
 	private final XGTreeNodeComponent nodeComponent;
+	private boolean isSelected = false;
 	private XGWindow window = null;
 	private final String name;
 	private final Set<XGBulkDumpSequence> bulks;
@@ -90,7 +91,7 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	this.device = dev;
 		this.name = name;
 		this.bulks = dseq;
-		this.nodeComponent = new XGTreeNodeComponent(this.toString());
+		this.nodeComponent = new XGTreeNodeComponent(this);
 		log.info("object-type initialized: " + this);
 	}
 
@@ -177,7 +178,7 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	this.window = win;
 	}
 
-	public Component getWindowContent()
+	public JComponent getChildWindowContent()
 	{	return this.getConfigurationGuiComponents();
 	}
 
@@ -191,19 +192,28 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 
 	public void nodeClicked()
 	{	if(this.getWindow() != null) this.getWindow().toFront();
-		else new XGWindow(this, XGWindow.getRootWindow(), false, this.toString()); //TODO: nur zum testen, WindowSource evtl. wieder entferenen
+		else new XGWindow(this, XGWindow.getRootWindow(), false, this.getTreePath().toString()); //TODO: nur zum testen, WindowSource evtl. wieder entferenen
 	}
 
 	public XGTreeNodeComponent getGuiComponent()
 	{	return this.nodeComponent;
 	}
 
-	public Component getConfigurationGuiComponents()
+	public JComponent getConfigurationGuiComponents()
 	{	return new XGFrame(this.name);
 	}
 
 	public JTree getTree()
 	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
+	}
+
+	public boolean isSelected()
+	{	return this.isSelected;
+	}
+
+	public void setSelected(boolean s)
+	{	this.isSelected = s;
+		this.nodeComponent.setStatus();
 	}
 
 }

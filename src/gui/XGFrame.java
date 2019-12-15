@@ -1,9 +1,10 @@
 package gui;
 
 import java.awt.Component;
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-public class XGFrame extends JPanel implements XGComponent
+public class XGFrame extends JPanel implements XGComponent, XGColorable, XGFrameable
 {	/**
 	 * 
 	 */
@@ -19,7 +20,19 @@ public class XGFrame extends JPanel implements XGComponent
 		this.framize(txt);
 	}
 
-	public Component getGuiComponent()
+	public JComponent getGuiComponent()
 	{	return this;
+	}
+
+	public Component getParentComponent()
+	{	return this.getGuiComponent().getParent();
+	}
+
+	public void leftClicked()
+	{	
+	}
+
+	public void rightClicked()
+	{	
 	}
 }

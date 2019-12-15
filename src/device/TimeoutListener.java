@@ -2,5 +2,6 @@ package device;
 
 public interface TimeoutListener
 {
-	void timeOut(long time);
+	void timeOut(long time) throws TimeoutException;
 }
+

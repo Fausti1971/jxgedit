@@ -212,7 +212,7 @@ public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotificat
 			this.request = msg;
 			try
 			{	this.wait(this.timeout);
-//				throw new TimeoutException("MIDI-Timeout: " + this.getInputName()); 
+				if(!this.request.isResponsed()) throw new TimeoutException("midi-timeout: " + this.getInputName() + " after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms"); //Thread läuft nach notify() ganz normal weiter
 			}
 			catch(InterruptedException e)
 			{	System.out.println("interrupted");
@@ -314,4 +314,5 @@ public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotificat
 
 		return root;
 	}
+
 }

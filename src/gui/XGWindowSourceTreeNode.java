@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.event.WindowEvent;
-import gui.XGTreeNodeComponent.Status;
 /**
  * qualifiziert das implementierende Object als kindfenster-besitzende, darstellbare TreeNode
  * @author thomas
@@ -9,23 +8,32 @@ import gui.XGTreeNodeComponent.Status;
  */
 public interface XGWindowSourceTreeNode extends XGWindowSource, XGTreeNode
 {
+	default boolean isValid(WindowEvent e)
+	{	if(!(e.getSource() instanceof XGWindow)) return false;
+		if((XGWindow)e.getSource() != this.getWindow()) return false;
+		return true;
+	}
+
 	public default void windowOpened(WindowEvent e)
-	{	System.out.println(e.getSource() + " opened");
-		this.setWindow((XGWindow)e.getSource());
-		((XGTreeNodeComponent)this.getGuiComponent()).setStatus(Status.active);
-		this.reloadTree();
+	{	if(!this.isValid(e)) return;
+		XGWindow w = (XGWindow)e.getSource();
+		System.out.println(w + " opened");
+		this.setWindow(w);
+		this.repaintNode();
 	}
 
 	public default void windowClosing(WindowEvent e)
-	{	System.out.println(e.getSource() + " closing");
-		((XGTreeNodeComponent)this.getGuiComponent()).setStatus(Status.unselected);
+	{	if(!this.isValid(e)) return;
+		System.out.println(e.getSource() + " closing");
+//		this.setStatus();
 		this.reloadTree();
 	}
 
 	public default void windowClosed(WindowEvent e)
-	{	System.out.println(e.getSource() + " closed");
+	{	if(!this.isValid(e)) return;
+		System.out.println(e.getSource() + " closed");
 		this.setWindow(null);
-		((XGTreeNodeComponent)this.getGuiComponent()).setStatus(Status.unselected);
+//		((XGTreeNodeComponent)this.getGuiComponent()).setSelected(false);
 		this.reloadTree();
 	}
 
@@ -38,16 +46,16 @@ public interface XGWindowSourceTreeNode extends XGWindowSource, XGTreeNode
 	}
 
 	public default void windowActivated(WindowEvent e)
-	{	System.out.println(e.getSource() + " activated");
-		((XGTreeNodeComponent)this.getGuiComponent()).setStatus(Status.active);
+	{	if(!this.isValid(e)) return; 
+		System.out.println(e.getSource() + " activated");
+//		((XGTreeNodeComponent)this.getGuiComponent()).setActive(true);
 		this.reloadTree();
 	}
 
 	public default void windowDeactivated(WindowEvent e)
-	{	System.out.println(e.getSource() + " deactivated");
-		Status s = Status.selected;
-		if(this.getWindow() == null) s = Status.unselected;
-		((XGTreeNodeComponent)this.getGuiComponent()).setStatus(s);
+	{	if(!this.isValid(e)) return;
+		System.out.println(e.getSource() + " deactivated");
+//		((XGTreeNodeComponent)this.getGuiComponent()).setSelected(this.getWindow() != null);
 		this.reloadTree();
 	}
 }

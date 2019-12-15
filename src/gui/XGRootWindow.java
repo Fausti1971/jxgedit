@@ -5,13 +5,13 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import javax.swing.JTree;
 import application.Configurable;
 import application.JXG;
 import xml.XMLNode;
 
-public class XGRootWindow extends XGWindow implements Configurable, WindowListener, ComponentListener
+public class XGRootWindow extends XGWindow implements Configurable, WindowListener, ComponentListener, XGColorable
 {	/**
 	 * 
 	 */
@@ -27,11 +27,7 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 		this.addComponentListener(this);
 	
 		this.setTitle(APPNAME);
-		JTree tree = (JTree)this.getRootComponent();
-		tree.setCellRenderer(XGTreeNode.getDefaultNodeRenderer());
-		tree.setSelectionModel(null);
-		tree.setShowsRootHandles(true);
-		this.getContentPane().add(new JScrollPane(tree));
+		this.getContentPane().add(new JScrollPane(this.getRootComponent()));
 
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
 		this.setBounds(
@@ -91,5 +87,9 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 
 	public void componentHidden(ComponentEvent e)
 	{
+	}
+
+	public JComponent getGuiComponent()
+	{	return this.getRootComponent();
 	}
 }

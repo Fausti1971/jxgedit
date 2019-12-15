@@ -2,8 +2,8 @@ package gui;
 
 import java.awt.Component;
 import java.util.logging.Logger;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
-import javax.swing.JTree;
 import application.ConfigurationConstants;
 import application.JXG;
 
@@ -25,14 +25,18 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 
 /*************************************************************************************************************/
 
-	private final Component rootComponent;
+	private final JComponent rootComponent;
+	private final XGWindowSource source;
+
 	XGWindow()	//nur für Root-Window
-	{	this.rootComponent = new JTree(JXG.getJXG());
+	{	this.source = null;
+		this.rootComponent = new XGTree(JXG.getJXG());
 	}
 
 	public XGWindow(XGWindowSource src, XGWindow own, boolean mod, String name)
 	{	super(own, name, mod);
-		this.rootComponent = src.getWindowContent();
+		this.source = src;
+		this.rootComponent = src.getChildWindowContent();
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.addWindowListener(src);
 		this.getContentPane().add(this.rootComponent);
@@ -45,7 +49,11 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 		this.setVisible(true);
 	}
 
-	public Component getRootComponent()
+	public XGWindowSource getSource()
+	{	return this.source;
+	}
+
+	public JComponent getRootComponent()
 	{	return this.rootComponent;
 	}
 

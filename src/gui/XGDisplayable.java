@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.Component;
+import javax.swing.JComponent;
 
 /**  qualifiziert das implementierende Object als darstellbar, das heißt, es muss eine JComponent erzeugen können oder sein;
  * 
@@ -9,5 +9,5 @@ import java.awt.Component;
  */
 public interface XGDisplayable extends GuiConstants
 {
-	Component getGuiComponent();
+	JComponent getGuiComponent();
 }
