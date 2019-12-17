@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 import javax.sound.midi.MidiUnavailableException;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
-import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
 import adress.InvalidXGAdressException;
@@ -20,7 +19,6 @@ import gui.GuiConfigurable;
 import gui.XGFrame;
 import gui.XGTree;
 import gui.XGTreeNode;
-import gui.XGTreeNodeComponent;
 import gui.XGWindow;
 import xml.XMLNode;
 
@@ -73,12 +71,10 @@ public class JXG implements GuiConfigurable, XGTreeNode
 
 /***************************************************************************************************************/
 
-	private XGTreeNodeComponent nodeComponent;
 	private boolean isSelected = false;
 
 	private JXG()
 	{	//System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
-		this.nodeComponent = new XGTreeNodeComponent(this);
 		log.info("JXG config initialized");
 	}
 
@@ -98,8 +94,8 @@ public class JXG implements GuiConfigurable, XGTreeNode
 	{	return APPNAME;
 	}
 
-	public XGTreeNodeComponent getGuiComponent()
-	{	return this.nodeComponent;
+	@Override public XGTree getGuiComponent()
+	{	return (XGTree)XGWindow.getRootWindow().getRootComponent();
 	}
 
 	public XMLNode getConfig()
@@ -143,10 +139,6 @@ public class JXG implements GuiConfigurable, XGTreeNode
 		return root;
 	}
 
-	public JTree getTree()
-	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
-	}
-
 
 	public boolean isSelected()
 	{	return this.isSelected;
@@ -154,6 +146,5 @@ public class JXG implements GuiConfigurable, XGTreeNode
 
 	public void setSelected(boolean s)
 	{	this.isSelected = s;
-		this.nodeComponent.setStatus();
 	}
 }

@@ -17,19 +17,19 @@ public class XGValueStore extends XGAdressableSet<XGValue> implements XGMessenge
 	{	this.device = dev;
 	}
 	
-	public XGDevice getDevice()
+	@Override public XGDevice getDevice()
 	{	return this.device;
 	}
 
-	public String getMessengerName()
+	@Override public String getMessengerName()
 	{	return null;
 	}
 
-	public void transmit(XGMessage m) throws MidiUnavailableException
+	@Override public void transmit(XGMessage m) throws MidiUnavailableException
 	{
 	}
 
-	public XGResponse request(XGRequest msg) throws TimeoutException,MidiUnavailableException
+	@Override public XGResponse request(XGRequest msg) throws TimeoutException,MidiUnavailableException
 	{	return null;
 	}
 

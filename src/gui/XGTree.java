@@ -1,60 +1,78 @@
 package gui;
 
+import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JComponent;
+import javax.swing.JButton;
 import javax.swing.JTree;
-import javax.swing.tree.TreePath;
-//TODO: denke bezüglich Tastaturbedienbarkeit nochmal über die Benutzung des DefaultTreeSelectionModel nach: focus up=previous sibling, down=next sibling, left=parent, enter=expand/open editor
-//man muss dem TreeSelctionModel seine Eigenarten abgewöhnen, oder es zum FocusSelectionModel degradieren...
-public class XGTree extends JTree implements MouseListener, XGColorable, KeyListener
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import javax.swing.tree.TreeCellRenderer;
+import javax.swing.tree.TreeSelectionModel;
+
+public class XGTree extends JTree implements MouseListener, KeyListener, GuiConstants
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=4038224172565298441L;
+	private static JButton BUTTON = new JButton();
+	private static Border BORDER = new LineBorder(COL_FOCUS, 1, true);
+
+	private static final TreeCellRenderer defaultTreeCellRenderer = new TreeCellRenderer()
+	{	public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
+		{	//selected == hasFocus
+			XGTreeNode n = (XGTreeNode)value;
+			BUTTON.setBorder(BORDER);
+
+			if(hasFocus)
+			{	BUTTON.setBorderPainted(true);
+			}
+			else
+			{	BUTTON.setBorderPainted(false);
+			}
+
+			if(n.isSelected())
+			{	BUTTON.setOpaque(true);
+				BUTTON.setBackground(GuiConstants.COL_NODESELECTEDBACK);
+			}
+			else BUTTON.setOpaque(false);
+
+			BUTTON.setText(n.toString());
+			return BUTTON;
+		}
+	};
 
 /*************************************************************************************************************/
 
-	private XGTreeNode focus;
-
 	public XGTree(XGTreeNode root)
 	{	super(root);
-	if(root == null) System.out.println("Alarm!");
 		this.addMouseListener(this);
 //		this.addTreeSelectionListener(this);
 		this.addKeyListener(this);
+		this.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 //		this.setOpaque(true);
 //		this.colorize();
-//		this.setCellRenderer(XGTreeNode.defaultTreeCellRenderer);
+		this.setCellRenderer(defaultTreeCellRenderer);
 //		this.setSelectionModel(null);
 		this.setExpandsSelectedPaths(true);
 		this.setScrollsOnExpand(true);
 		this.setShowsRootHandles(true);
-		this.setFocus(root);
 	}
 
 	public void mouseClicked(MouseEvent e)
-	{	TreePath p = this.getPathForLocation(e.getX(), e.getY());
-		if(p == null) return;
-		this.setFocus((XGTreeNode)p.getLastPathComponent());
-		System.out.println("clicked: " + this.focus);
-	}
-
-	public XGTreeNode getFocus()
-	{	return this.focus;
-	}
-
-	private void setFocus(XGTreeNode n)
-	{	XGTreeNode old = this.focus;
-		this.focus = n;
-		if(this.focus != null) ((XGTreeNodeComponent)this.focus.getGuiComponent()).setStatus();
-		if(old != null) ((XGTreeNodeComponent)old.getGuiComponent()).setStatus();
-	}
-
-	public JComponent getGuiComponent()
-	{	return this;
+	{	XGTreeNode n = (XGTreeNode)this.getLastSelectedPathComponent();
+		if(e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2)
+		{	System.out.println("double: " + n);
+//			n.getActions(null).actionPerformed();
+		}
+		if(e.getButton() == MouseEvent.BUTTON3)
+		{	this.setSelectionPath(this.getPathForLocation(e.getX(), e.getY()));
+			n = (XGTreeNode)this.getLastSelectedPathComponent();
+			System.out.println("popup: " + n);
+//			n.getActions(popup()).actionPerformed();
+		}
 	}
 
 	public void mousePressed(MouseEvent e)
@@ -78,22 +96,9 @@ public class XGTree extends JTree implements MouseListener, XGColorable, KeyList
 	}
 
 	public void keyPressed(KeyEvent e)	//zuerst
-	{	TreePath p = this.focus.getTreePath();
-		switch(e.getKeyCode())
-		{	case KeyEvent.VK_UP:		this.setFocus(this.focus.getPreviousOrLast()); break;
-			case KeyEvent.VK_DOWN:		this.setFocus(this.focus.getNextOrFirst()); break; 
-			case KeyEvent.VK_LEFT:		if(this.focus.getParent() == null) break;
-										this.setFocus((XGTreeNode)this.focus.getParent()); break;
-			case KeyEvent.VK_RIGHT:		if(this.focus.isLeaf() || !this.isExpanded(p)) break;
-										this.setFocus((XGTreeNode)this.focus.getChildAt(0)); break;
-			case KeyEvent.VK_ENTER:		if(this.focus.isLeaf())
-										{	this.focus.setSelected(true);
-											System.out.println("action: " + this.focus);
-											break;
-										}
-										if(this.isCollapsed(p)) this.expandPath(p);
-										else this.collapsePath(p); break;
-			default:					break;
+	{	XGTreeNode n = (XGTreeNode)this.getLastSelectedPathComponent();
+		if(e.getKeyCode() == KeyEvent.VK_ENTER)
+		{	System.out.println("key: " + n);
 		}
 	}
 

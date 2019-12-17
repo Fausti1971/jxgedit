@@ -19,7 +19,6 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
-import javax.swing.JTree;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -31,7 +30,7 @@ import application.JXG;
 import file.XGSysexFile;
 import gui.GuiConfigurable;
 import gui.XGFrame;
-import gui.XGTreeNodeComponent;
+import gui.XGTree;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
 import msg.XGMessageDumpRequest;
@@ -89,7 +88,6 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 
 	private XGWindow window;
 	private boolean isSelected = false;
-	private final XGTreeNodeComponent nodeComponent;
 	private final XMLNode template;
 	private final XMLNode config;
 	private final XGValueStore values;
@@ -116,7 +114,6 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 		this.translations = XGTranslationMap.init(this);
 		this.parameters = XGParameter.init(this);
 		this.template = null;
-		this.nodeComponent = null;
 	}
 
 	public XGDevice(XMLNode cfg) throws InvalidXGAdressException, MidiUnavailableException, TimeoutException
@@ -151,7 +148,6 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 		{	log.info(e.getMessage());
 		}
 		this.template = temp;
-		this.nodeComponent = new XGTreeNodeComponent(this);
 	}
 
 	public File getResourceFile(String fName) throws FileNotFoundException
@@ -228,14 +224,6 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 		this.config.getChildNodeOrNew(TAG_SYSEXID).setTextContent(id);
 	}
 
-	public XGTreeNodeComponent getGuiComponent()
-	{	return this.nodeComponent;
-	}
-/*
-	public void nodeClicked()
-	{	new XGWindow(this, XGWindow.getRootWindow(), true, this.name);
-	}
-*/
 	public String requestName() throws InvalidXGAdressException, MidiUnavailableException, TimeoutException	//SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m = new XGMessageDumpRequest(this.midi, XGAdressConstants.XGMODELNAMEADRESS);
 		m.setDestination(this.midi);
@@ -275,35 +263,36 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	{	return(this.getName() + " (ID" + this.sysexID + ")");
 	}
 
-	public XMLNode getConfig()
+	@Override public XMLNode getConfig()
 	{	return this.config;
 	}
 
-	public TreeNode getParent()
+	@Override public TreeNode getParent()
 	{	return JXG.getJXG();
 	}
 
-	public boolean getAllowsChildren()
+	@Override public boolean getAllowsChildren()
 	{	return true;
 	}
 
-	public Enumeration<? extends TreeNode> children()
-	{	return this.getTypes().enumeration();
+	@Override public Enumeration<? extends TreeNode> children()
+	{	//return this.getTypes().enumeration();
+		return this.values.get
 	}
 
-	public XGWindow getWindow()
+	@Override public XGWindow getWindow()
 	{	return this.window;
 	}
 
-	public void setWindow(XGWindow win)
+	@Override public void setWindow(XGWindow win)
 	{	this.window = win;
 	}
 
-	public JComponent getChildWindowContent()
+	@Override public JComponent getChildWindowContent()
 	{	return this.getConfigurationGuiComponents();
 	}
 
-	public JComponent getConfigurationGuiComponents()
+	@Override public JComponent getConfigurationGuiComponents()
 	{	XGFrame root = new XGFrame("device");
 //		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 
@@ -315,7 +304,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 //		sp.setBorder(getDefaultBorder("sysex ID"));
 		sp.setModel(new SpinnerNumberModel(this.getSysexID(), 0, 15, 1));
 		sp.addChangeListener(new ChangeListener()
-		{	public void stateChanged(ChangeEvent e)
+		{	@Override public void stateChanged(ChangeEvent e)
 			{	JSpinner s = (JSpinner)e.getSource();
 				setSysexID((int)s.getModel().getValue());
 			}
@@ -325,7 +314,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 		JButton btn = new JButton(this.getDefDumpPath().toString());
 		btn.setAlignmentX(0.5f);
 		btn.addActionListener(new ActionListener()
-		{	public void actionPerformed(ActionEvent e)
+		{	@Override public void actionPerformed(ActionEvent e)
 			{	XGSysexFile f = new XGSysexFile(null, getDefDumpPath().toString());
 				Path p = f.selectPath(f.toString());
 				setDefDumpPath(p);
@@ -338,19 +327,14 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 		return root;
 	}
 
-	public JTree getTree()
-	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
-	}
 
-
-	public boolean isSelected()
+	@Override public boolean isSelected()
 	{	return this.isSelected;
 	}
 
 
-	public void setSelected(boolean s)
+	@Override public void setSelected(boolean s)
 	{	this.isSelected = s;
-		this.nodeComponent.setStatus();
 	}
 
 

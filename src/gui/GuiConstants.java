@@ -8,7 +8,7 @@ public interface GuiConstants extends ConfigurationConstants
 {
 	static Color
 		COL_NODESELECTEDBACK = Color.lightGray,
-		COL_NODEFOCUSEDBACK = Color.darkGray,
+		COL_FOCUS = Color.blue,
 		COL_NODETEXT = Color.darkGray,
 		COL_NODESELECTEDTEXT = Color.white,
 

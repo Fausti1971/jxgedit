@@ -1,12 +1,6 @@
-/application/
 /gui/
-/opcode/
-/device/
-/file/
 /obj/
-/parm/
-/xml/
-/adress/
-/tag/
 /value/
-/msg/
+/adress/
+/device/
+/tag/

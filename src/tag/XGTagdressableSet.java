@@ -13,7 +13,7 @@ public class XGTagdressableSet<T extends XGAdressable & XGTagable> implements It
 	public void add(T obj)
 	{	this.adrSet.add(obj);
 		this.tagSet.add(obj);
-		if(this.tagSet.size() != this.adrSet.size()) throw new RuntimeException("opcodeset differenz!");
+		if(this.tagSet.size() != this.adrSet.size()) throw new RuntimeException("opcodeset difference!");
 	}
 
 	public T get(String tag)
@@ -41,7 +41,7 @@ public class XGTagdressableSet<T extends XGAdressable & XGTagable> implements It
 	{	return this.tagSet.containsKey(tag);
 	}
 
-	public Iterator<T> iterator()
+	@Override public Iterator<T> iterator()
 	{	return this.adrSet.iterator();
 	}
 }

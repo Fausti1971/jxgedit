@@ -3,13 +3,11 @@ package obj;
 import java.util.Enumeration;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAdressException;
 import adress.XGAdress;
 import adress.XGAdressable;
 import device.XGDevice;
-import gui.XGTreeNodeComponent;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
 import xml.XMLNode;
@@ -18,16 +16,14 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 {	private final XGObjectType type;
 	private final XGAdress adress;
 	private XGWindow window;
-	private final XGTreeNodeComponent nodeComponent;
 	private boolean isSelected = false;
 
 	public XGObjectInstance(XGDevice dev, XGAdress adr) throws InvalidXGAdressException
 	{	this.type = dev.getType(adr);
 		this.adress = new XGAdress(INVALIDFIELD, adr.getMid(), INVALIDFIELD);
-		this.nodeComponent = new XGTreeNodeComponent(this);
 	}
 
-	public XGAdress getAdress()
+	@Override public XGAdress getAdress()
 	{	return this.adress;
 	}
 
@@ -46,23 +42,23 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 		}
 	}
 
-	public String getInfo()
+	@Override public String getInfo()
 	{	return this.getType().getName() + " " + this.toString();
 	}
 
-	public TreeNode getParent()
+	@Override public TreeNode getParent()
 	{	return this.type;
 	}
 
-	public boolean getAllowsChildren()
+	@Override public boolean getAllowsChildren()
 	{	return false;
 	}
 
-	public Enumeration<? extends TreeNode> children()
+	@Override public Enumeration<? extends TreeNode> children()
 	{	return null;
 	}
 
-	public XGWindow getWindow()
+	@Override public XGWindow getWindow()
 	{	return this.window;
 	}
 
@@ -70,11 +66,11 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 	{	return this.type.getTemplate();
 	}
 
-	public void setWindow(XGWindow win)
+	@Override public void setWindow(XGWindow win)
 	{	this.window = win;
 	}
 
-	public JComponent getChildWindowContent()
+	@Override public JComponent getChildWindowContent()
 	{	return new JLabel("XML-Templates noch nicht implementiert...");
 	}
 
@@ -83,21 +79,11 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 		else this.setWindow(new XGWindow(this, XGWindow.getRootWindow(), false, this.getInfo()));
 	}
 
-	public JComponent getGuiComponent()
-	{	return this.nodeComponent;
-	}
-
-	public JTree getTree()
-	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
-	}
-
-	public boolean isSelected()
+	@Override public boolean isSelected()
 	{	return this.isSelected;
 	}
 
-	public void setSelected(boolean s)
+	@Override public void setSelected(boolean s)
 	{	this.isSelected = s;
-		this.nodeComponent.setStatus();
 	}
-
 }

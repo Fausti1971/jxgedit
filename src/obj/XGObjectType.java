@@ -17,7 +17,6 @@ import adress.XGAdressableSet;
 import application.ConfigurationConstants;
 import device.XGDevice;
 import gui.XGFrame;
-import gui.XGTreeNodeComponent;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
 import tag.XGTagable;
@@ -41,7 +40,7 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 			for(XMLNode x : xml.getChildren())
 			{	if(x.getTag().equals(TAG_OBJECT))
 				{	XGObjectType t = new XGObjectType(dev, x);
-				set.add(t);
+					set.add(t);
 				}
 			}
 		log.info(set.size() + " object-types initialized");
@@ -76,7 +75,6 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 /**********************************************************************************************************/
 
 	private final XGDevice device;
-	private final XGTreeNodeComponent nodeComponent;
 	private boolean isSelected = false;
 	private XGWindow window = null;
 	private final String name;
@@ -91,7 +89,6 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	this.device = dev;
 		this.name = name;
 		this.bulks = dseq;
-		this.nodeComponent = new XGTreeNodeComponent(this);
 		log.info("object-type initialized: " + this);
 	}
 
@@ -123,7 +120,8 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 		{	this.instances.add(new XGObjectInstance(this.device, v.getAdress()));
 		}
 		catch(InvalidXGAdressException e)
-		{	e.printStackTrace();}
+		{	e.printStackTrace();
+		}
 	}
 
 	public XGAdressableSet<XGObjectInstance> getXGObjectInstances()
@@ -154,31 +152,31 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	return this.name;
 	}
 
-	public TreeNode getChildAt(int childIndex)
+	@Override public TreeNode getChildAt(int childIndex)
 	{	return this.instances.get(childIndex);
 	}
 
-	public TreeNode getParent()
+	@Override public TreeNode getParent()
 	{	return this.device;
 	}
 
-	public boolean getAllowsChildren()
+	@Override public boolean getAllowsChildren()
 	{	return true;
 	}
 
-	public Enumeration<? extends TreeNode> children()
+	@Override public Enumeration<? extends TreeNode> children()
 	{	return Collections.enumeration(this.instances.values());
 	}
 
-	public XGWindow getWindow()
+	@Override public XGWindow getWindow()
 	{	return this.window;
 	}
 
-	public void setWindow(XGWindow win)
+	@Override public void setWindow(XGWindow win)
 	{	this.window = win;
 	}
 
-	public JComponent getChildWindowContent()
+	@Override public JComponent getChildWindowContent()
 	{	return this.getConfigurationGuiComponents();
 	}
 
@@ -186,17 +184,13 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	return null;
 	}
 
-	public String getTag()
+	@Override public String getTag()
 	{	return this.name;
 	}
 
 	public void nodeClicked()
 	{	if(this.getWindow() != null) this.getWindow().toFront();
 		else new XGWindow(this, XGWindow.getRootWindow(), false, this.getTreePath().toString()); //TODO: nur zum testen, WindowSource evtl. wieder entferenen
-	}
-
-	public XGTreeNodeComponent getGuiComponent()
-	{	return this.nodeComponent;
 	}
 
 	public JComponent getConfigurationGuiComponents()
@@ -207,13 +201,12 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
 	}
 
-	public boolean isSelected()
+	@Override public boolean isSelected()
 	{	return this.isSelected;
 	}
 
-	public void setSelected(boolean s)
+	@Override public void setSelected(boolean s)
 	{	this.isSelected = s;
-		this.nodeComponent.setStatus();
 	}
 
 }

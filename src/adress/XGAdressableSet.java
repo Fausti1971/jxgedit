@@ -103,7 +103,7 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	{	return this.map.keySet();
 	}
 
-	public synchronized Iterator<T> iterator()
+	@Override public synchronized Iterator<T> iterator()
 	{	return this.map.values().iterator();
 	}
 
@@ -119,7 +119,7 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	{	if(adr != null) for(XGAdressableSetListener l : listeners) l.setChanged(adr);
 	}
 
-	public void setChanged(XGAdress adr)
+	@Override public void setChanged(XGAdress adr)
 	{	this.notifyListeners(adr);
 	}
 
