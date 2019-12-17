@@ -8,14 +8,14 @@ import adress.XGAdressable;
 import application.ConfigurationConstants;
 import device.XGDevice;
 import tag.XGTagable;
-import tag.XGTagdressableSet;
+import tag.XGTagableAdressableSet;
 import xml.XMLNode;
 
 public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAdressable, XGTagable
 {	private static Logger log = Logger.getAnonymousLogger();
 
-	public static XGTagdressableSet<XGOpcode> init(XGDevice dev)
-	{	XGTagdressableSet<XGOpcode> opcodes = new XGTagdressableSet<>();
+	public static XGTagableAdressableSet<XGOpcode> init(XGDevice dev)
+	{	XGTagableAdressableSet<XGOpcode> opcodes = new XGTagableAdressableSet<>();
 		File file;
 		try
 		{	file = dev.getResourceFile(XML_OPCODE);

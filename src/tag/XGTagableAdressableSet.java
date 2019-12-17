@@ -5,7 +5,7 @@ import adress.XGAdress;
 import adress.XGAdressable;
 import adress.XGAdressableSet;
 
-public class XGTagdressableSet<T extends XGAdressable & XGTagable> implements Iterable<T>
+public class XGTagableAdressableSet<T extends XGAdressable & XGTagable> implements Iterable<T>
 {
 	private XGAdressableSet<T> adrSet = new XGAdressableSet<>();
 	private XGTagableSet<T> tagSet = new XGTagableSet<T>();
@@ -13,7 +13,7 @@ public class XGTagdressableSet<T extends XGAdressable & XGTagable> implements It
 	public void add(T obj)
 	{	this.adrSet.add(obj);
 		this.tagSet.add(obj);
-		if(this.tagSet.size() != this.adrSet.size()) throw new RuntimeException("opcodeset difference!");
+		if(this.tagSet.size() != this.adrSet.size()) throw new RuntimeException("tagset/adressset difference!");
 	}
 
 	public T get(String tag)

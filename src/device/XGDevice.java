@@ -30,7 +30,6 @@ import application.JXG;
 import file.XGSysexFile;
 import gui.GuiConfigurable;
 import gui.XGFrame;
-import gui.XGTree;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
 import msg.XGMessageDumpRequest;
@@ -40,8 +39,8 @@ import obj.XGObjectType;
 import opcode.XGOpcode;
 import parm.XGParameter;
 import parm.XGTranslationMap;
+import tag.XGTagableAdressableSet;
 import tag.XGTagableSet;
-import tag.XGTagdressableSet;
 import value.XGValue;
 import value.XGValueStore;
 import xml.XMLNode;
@@ -91,7 +90,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	private final XMLNode template;
 	private final XMLNode config;
 	private final XGValueStore values;
-	private final XGTagdressableSet<XGOpcode> opcodes;
+	private final XGTagableAdressableSet<XGOpcode> opcodes;
 	private final XGTagableSet<XGObjectType> types;
 	private final XGTagableSet<XGTranslationMap> translations;
 	private final XGTagableSet<XGParameter> parameters;
@@ -181,7 +180,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	{	return values;
 	}
 
-	public XGTagdressableSet<XGOpcode> getOpcodes()
+	public XGTagableAdressableSet<XGOpcode> getOpcodes()
 	{	if(this.opcodes == null) return XGDevice.getDefaultDevice().getOpcodes();
 		else return this.opcodes;
 	}
@@ -276,8 +275,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	}
 
 	@Override public Enumeration<? extends TreeNode> children()
-	{	//return this.getTypes().enumeration();
-		return this.values.get
+	{	return this.getTypes().enumeration();
 	}
 
 	@Override public XGWindow getWindow()
