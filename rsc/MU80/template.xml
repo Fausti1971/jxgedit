@@ -1,0 +1,63 @@
+<!-- denke drüber nach, die steuerelementtypen an den parameter zu binden!
+	knob = 2 x 2
+	spinner
+	slider = 6 x 1
+	button = 4 x 1
+
+ -->
+
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/template.xsd">
+	<template type = "System">
+		<panel orientation = "horizontal">
+			<control>
+				<type>knob</type>
+				<zero>center</zero>
+				<opcode>master_tune</opcode>
+			</control>
+			<control>
+				<type>knob</type>
+				<zero>left</zero>
+				<opcode>master_volume</opcode>
+			</control>
+			<control>
+				<type>knob</type>
+				<zero>left</zero>
+				<opcode>master_attenuator</opcode>
+			</control>
+			<control>
+				<type>popup</type>
+				<opcode>master_transpose</opcode>
+			</control>
+		</panel>
+	</template>
+	<template>
+		<panel>
+			<control>
+				<type>envelope</type>
+				<point/>	<!-- nullpunkt (x = y = 0) -->
+				<point>
+					<x>
+						<opcode>mp_eg_attack</opcode>
+					</x>
+					<y>
+						<opcode>mp_volume</opcode>
+					</y>
+				</point>
+				<point>
+					<x>
+						<opcode>mp_eg_decay</opcode>
+					</x>
+					<y>
+						<opcode>mp_volume</opcode>
+					</y>
+				</point>
+				<point>
+					<x>
+						<opcode>mp_eg_release</opcode>
+					</x>
+					<y/>	<!-- nullkoordinate -->
+				</point>
+			</control>
+		</panel>
+	</template>
+</map>
