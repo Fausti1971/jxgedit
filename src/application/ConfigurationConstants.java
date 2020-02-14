@@ -6,7 +6,7 @@ public interface ConfigurationConstants
 {
 	static final String XML_CONFIG = "config.xml";
 	static final String XML_OPCODE = "opcode.xml";
-	static final String XML_OBJECT = "object.xml";
+	static final String XML_TYPE = "type.xml";
 	static final String XML_PARAMETER = "parameter.xml";
 	static final String XML_TRANSLATION = "translation.xml";
 	static final String XML_TEMPLATE = "template.xml";
@@ -28,6 +28,6 @@ public interface ConfigurationConstants
 		TAG_VERSION = "version",
 		TAG_DEVICE = "device";
 
-//	Version, Date, Time, WindowX, WindowY, WindowW, WindowH, lastConfig
-//	MidiInput, MidiOutput, MIidiTimeout, SysexID, LastDumpFile
+//	JXG: Version, Date, Time, WindowX, WindowY, WindowW, WindowH
+//	Device: MidiInput, MidiOutput, MIidiTimeout, SysexID, LastDumpFile, Name
 }

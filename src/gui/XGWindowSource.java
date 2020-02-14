@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JComponent;
 
@@ -10,7 +11,36 @@ import javax.swing.JComponent;
  */
 public interface XGWindowSource extends WindowListener
 {
-	public XGWindow getWindow();
-	public void setWindow(XGWindow win);
+	public XGWindow getChildWindow();
+	public void setChildWindow(XGWindow win);
 	public JComponent getChildWindowContent();
+
+
+	@Override public default void windowOpened(WindowEvent e)
+	{
+	}
+
+	@Override public default void windowClosing(WindowEvent e)
+	{
+	}
+
+	@Override public default void windowClosed(WindowEvent e)
+	{
+	}
+
+	@Override public default void windowIconified(WindowEvent e)
+	{
+	}
+
+	@Override public default void windowDeiconified(WindowEvent e)
+	{
+	}
+
+	@Override public default void windowActivated(WindowEvent e)
+	{
+	}
+
+	@Override public default void windowDeactivated(WindowEvent e)
+	{
+	}
 }

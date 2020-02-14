@@ -3,11 +3,12 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map.Entry;
+import javax.sound.midi.MidiUnavailableException;
 import javax.swing.JButton;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import msg.XGMessageException;
 import parm.XGParameterConstants;
 import value.WrongXGValueTypeException;
@@ -21,20 +22,20 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 	private static final long serialVersionUID=1L;
 
 	private XGValue value;
-	private final XGAdress adress;
+	private final XGAddress adress;
 
-	public MyCombo(XGAdress adr)
+	public MyCombo(XGAddress adr)
 	{	this.adress = adr;
 		setSize(SL_DIM);
 		this.valueChanged(this.value);
 	}
 
-	public void contentChanged(XGValue v)
+	@Override public void contentChanged(XGValue v)
 	{	this.setText(this.value.toString());
 		if(this.isVisible()) this.repaint();
 	}
 
-	public void valueChanged(XGValue v)
+	@Override public void valueChanged(XGValue v)
 	{	if(this.value != null)
 		{	this.value.removeListener(this);
 			this.removeActionListener(this);
@@ -50,14 +51,17 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 		this.repaint();
 	}
 
-	public void actionPerformed(ActionEvent e)
-	{	new MyPopup(this);}
+	@Override public void actionPerformed(ActionEvent e)
+	{	new MyPopup(this);
+	}
 
-	public XGAdress getAdress()
-	{	return this.adress;}
+	public XGAddress getAdress()
+	{	return this.adress;
+	}
 
 	@Override public boolean isVisible()
-	{	return this.value != null;}
+	{	return this.value != null;
+	}
 
 /*******************************************************************************************************/
 
@@ -74,29 +78,32 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 			this.setInvoker(c);
 			this.setLocation(c.getLocationOnScreen());
 			int v = (int)c.value.getContent();
-				for(Entry<Integer, String> e : c.value.getParameter().getTranslationMap().entrySet())
-				{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
-					if(e.getKey() == v) m.setSelected(true);
-					m.addActionListener(new ActionListener()
-					{	public void actionPerformed(ActionEvent ae)
-						{	try
-							{	c.value.setContent(e.getKey());
-								c.value.transmit(c.value.getDevice().getMidi());
-							}
-							catch(WrongXGValueTypeException|InvalidXGAdressException | XGMessageException e)
-							{	e.printStackTrace();
-								instance.setVisible(false);
-								instance.setEnabled(false);
-							}
+			for(Entry<Integer, String> e : c.value.getParameter().getTranslationMap().entrySet())
+			{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
+				if(e.getKey() == v) m.setSelected(true);
+				m.addActionListener(new ActionListener()
+				{	@Override public void actionPerformed(ActionEvent ae)
+					{	try
+						{	c.value.setContent(e.getKey());
+							c.value.transmit(c.value.getSource().getDevice().getMidi());
+							setEnabled(false);
+							setVisible(false);
 						}
-					});
-					this.add(m);
-				}
+						catch(WrongXGValueTypeException|InvalidXGAddressException | XGMessageException | MidiUnavailableException e)
+						{	e.printStackTrace();
+							instance.setVisible(false);
+							instance.setEnabled(false);
+						}
+					}
+				});
+				this.add(m);
+			}
 			this.setEnabled(true);
 			this.setVisible(true);
 		}
 	}
 
 	public String getInfo()
-	{	return this.toString();}
+	{	return this.toString();
+	}
 }

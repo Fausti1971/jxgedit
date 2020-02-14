@@ -2,8 +2,8 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import adress.InvalidXGAdressException;
-import adress.XGAdressableSet;
+import adress.InvalidXGAddressException;
+import adress.XGAddressableSet;
 import value.XGValue;
 
 public class XGMessageParameterChange extends XGSuperMessage implements XGResponse
@@ -15,7 +15,7 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	{	super(src, array);
 	}
 
-	public XGMessageParameterChange(XGMessenger src, XGValue v) throws InvalidXGAdressException
+	public XGMessageParameterChange(XGMessenger src, XGValue v) throws InvalidXGAddressException
 	{	super(src, new byte[OVERHEAD + v.getOpcode().getByteCount()]);
 		setMessageID();
 		setHi(v.getAdress().getHi());
@@ -30,15 +30,15 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 		log.info(this.getClass().toString());
 	}
 
-	protected void setHi(int value)
+	@Override protected void setHi(int value)
 	{	encodeMidiByteFromInteger(HI_OFFS, value);
 	}
 
-	protected void setMid(int value)
+	@Override protected void setMid(int value)
 	{	encodeMidiByteFromInteger(MID_OFFS, value);
 	}
 
-	protected void setLo(int value)
+	@Override protected void setLo(int value)
 	{	encodeMidiByteFromInteger(LO_OFFS, value);
 	}
 
@@ -46,23 +46,23 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	{	encodeXGValue(DATA_OFFS, v);
 	}
 
-	protected int getHi()
+	@Override protected int getHi()
 	{	return decodeMidiByteToInteger(HI_OFFS);
 	}
 
-	protected int getMid()
+	@Override protected int getMid()
 	{	return decodeMidiByteToInteger(MID_OFFS);
 	}
 
-	protected int getLo()
+	@Override protected int getLo()
 	{	return decodeMidiByteToInteger(LO_OFFS);
 	}
 
-	protected void setMessageID()
+	@Override protected void setMessageID()
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
 	}
 
-	public XGAdressableSet<XGValue> getValues()
+	@Override public XGAddressableSet<XGValue> getValues()
 	{	return null;
 	}
 }

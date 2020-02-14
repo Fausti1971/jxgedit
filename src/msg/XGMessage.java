@@ -3,19 +3,19 @@ package msg;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
-import adress.InvalidXGAdressException;
-import adress.XGAdressable;
+import adress.InvalidXGAddressException;
+import adress.XGAddressable;
 
-public interface XGMessage extends XGMessageConstants, XGAdressable
+public interface XGMessage extends XGMessageConstants, XGAddressable
 {
-	public static XGMessage newMessage(XGMessenger src, MidiMessage msg) throws InvalidMidiDataException, InvalidXGAdressException
+	public static XGMessage newMessage(XGMessenger src, MidiMessage msg) throws InvalidMidiDataException, InvalidXGAddressException
 	{	if(!(msg instanceof SysexMessage)) throw new InvalidMidiDataException("no sysex message");
 		XGMessage x = new XGMessageUnknown(src, (SysexMessage)msg);
 		switch(x.getMessageID())
-		{	case XGMessageConstants.BD:	return new XGMessageBulkDump(src, (SysexMessage)msg);
-			case XGMessageConstants.PC:	return new XGMessageParameterChange(src, (SysexMessage)msg);
-			case XGMessageConstants.DR:	return new XGMessageDumpRequest(src, (SysexMessage)msg);
-			case XGMessageConstants.PR:	return new XGMessageParameterRequest(src, (SysexMessage)msg);
+		{	case BD:	return new XGMessageBulkDump(src, (SysexMessage)msg);
+			case PC:	return new XGMessageParameterChange(src, (SysexMessage)msg);
+			case DR:	return new XGMessageDumpRequest(src, (SysexMessage)msg);
+			case PR:	return new XGMessageParameterRequest(src, (SysexMessage)msg);
 		}
 		return x;
 	}

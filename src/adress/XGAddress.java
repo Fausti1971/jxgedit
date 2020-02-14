@@ -2,60 +2,60 @@ package adress;
 
 import java.util.logging.Logger;
 import xml.XMLNode;
-public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdressable
+public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGAddressable
 {	private static Logger log =Logger.getAnonymousLogger();
 
-	private final XGAdressField hi, mid, lo;
+	private final XGAddressField hi, mid, lo;
 
-	public XGAdress(String hi, String mid, String lo)
-	{	this.hi = new XGAdressField(hi);
-		this.mid = new XGAdressField(mid);
-		this.lo = new XGAdressField(lo);
+	public XGAddress(String hi, String mid, String lo)
+	{	this.hi = new XGAddressField(hi);
+		this.mid = new XGAddressField(mid);
+		this.lo = new XGAddressField(lo);
 	}
 
-	public XGAdress(int hi, int mid, int lo)
-	{	this.hi = new XGAdressField(hi);
-		this.mid = new XGAdressField(mid);
-		this.lo = new XGAdressField(lo);
+	public XGAddress(int hi, int mid, int lo)
+	{	this.hi = new XGAddressField(hi);
+		this.mid = new XGAddressField(mid);
+		this.lo = new XGAddressField(lo);
 	}
 
-	public XGAdress(XGAdressField h, XGAdressField m, XGAdressField l)
+	public XGAddress(XGAddressField h, XGAddressField m, XGAddressField l)
 	{	if(h != null) this.hi = h;
-		else this.hi = new XGAdressField();
+		else this.hi = new XGAddressField();
 		if(m != null) this.mid = m;
-		else this.mid = new XGAdressField();
+		else this.mid = new XGAddressField();
 		if(l != null) this.lo = l;
-		else this.lo = new XGAdressField();
+		else this.lo = new XGAddressField();
 	}
 
-	public XGAdress(XMLNode item)
-	{	this.hi = new XGAdressField(item.getChildNode(TAG_HI));
-		this.mid = new XGAdressField(item.getChildNode(TAG_MID));
-		this.lo = new XGAdressField(item.getChildNode(TAG_LO));
+	public XGAddress(XMLNode item)
+	{	this.hi = new XGAddressField(item.getChildNode(TAG_HI));
+		this.mid = new XGAddressField(item.getChildNode(TAG_MID));
+		this.lo = new XGAddressField(item.getChildNode(TAG_LO));
 	}
 /**
  * extrahiert und returniert das Hi-Field der XGAdress this
  * @return Wert des Fields als int
- * @throws InvalidXGAdressException falls das Field invalid ist
+ * @throws InvalidXGAddressException falls das Field invalid ist
  */
-	public int getHi() throws InvalidXGAdressException
+	public int getHi() throws InvalidXGAddressException
 	{	return this.hi.getValue();
 	}
 
 	/**
 	 * extrahiert und returniert das Mid-Field der XGAdress this
 	 * @return Wert des Fields als int
-	 * @throws InvalidXGAdressException falls das Field invalid ist
+	 * @throws InvalidXGAddressException falls das Field invalid ist
 	 */
-	public int getMid() throws InvalidXGAdressException
+	public int getMid() throws InvalidXGAddressException
 	{	return this.mid.getValue();}
 
 	/**
 	 * extrahiert und returniert das Lo-Field der XGAdress this
 	 * @return Wert des Fields als int
-	 * @throws InvalidXGAdressException falls das Field invalid ist
+	 * @throws InvalidXGAddressException falls das Field invalid ist
 	 */
-	public int getLo() throws InvalidXGAdressException
+	public int getLo() throws InvalidXGAddressException
 	{	return this.lo.getValue();}
 
 /**
@@ -91,24 +91,24 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdre
  * @param adr Adresse mittels this ergänzt werden soll
  * @return  die erfolgreich komplettierte Adresse
  */
-	public XGAdress complement(XGAdress adr)
+	public XGAddress complement(XGAddress adr)
 	{	if(this.isValidAdress()) return this;
 		if(adr.isValidAdress()) return adr;
 		try
-		{	return new XGAdress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
+		{	return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
 		}
-		catch(InvalidXGAdressException e)
+		catch(InvalidXGAddressException e)
 		{	log.info("can't complement adress " + this + " with " + adr);
 			return this;
 		}
 	}
 
 /**
- * testet ausschließlich valide Fields von this mit validen Fields von adr
- * @param adr Adresse gegen deren valide Field getestet wird
- * @return true, wenn alle valieden Fields gleich sind
+ * testet ausschließlich valide Felder von this mit validen Feldern von adr
+ * @param adr Adresse gegen deren valide Felder getestet wird
+ * @return true, wenn alle validen Felder gleich sind
  */
-	public boolean equalsValidFields(XGAdress adr)
+	public boolean equalsValidFields(XGAddress adr)
 	{	if(!(this.hi.equalsValid(adr.hi))) return false;
 		if(!(this.mid.equalsValid(adr.mid))) return false;
 		if(!(this.lo.equalsValid(adr.lo))) return false;
@@ -116,11 +116,11 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdre
 	}
 
 /**
- * testet alle Fields, inklusive ihrer Validität auf Gleichheit
+ * testet alle Felder, inklusive ihrer Validität auf Gleichheit
  */
 	@Override public boolean equals(Object obj)
-	{	if(!(obj instanceof XGAdress)) return false;
-		XGAdress adr = (XGAdress)obj;
+	{	if(!(obj instanceof XGAddress)) return false;
+		XGAddress adr = (XGAddress)obj;
 		try
 		{	return this.hi.equals(adr.hi) && this.mid.equals(adr.mid) && this.lo.equals(adr.lo);
 		}
@@ -136,7 +136,7 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdre
 	@Override public String toString()
 	{	return "(" + this.hi + "/" + this.mid + "/" + this.lo + ")";}
 
-	public int compareTo(XGAdress o)
+	@Override public int compareTo(XGAddress o)
 	{	int temp = 0;
 		if(this.isHiValid() && o.isHiValid()) temp = this.hi.compare(o.hi);
 		if(temp == 0 && this.isMidValid() && o.isMidValid()) temp = this.mid.compare(o.mid);
@@ -144,9 +144,6 @@ public class XGAdress implements XGAdressConstants, Comparable<XGAdress>, XGAdre
 		return temp;
 	}
 
-	public XGAdress getAdress()
+	@Override public XGAddress getAdress()
 	{	return this;}
-
-	public String getInfo()
-	{	return this.getClass().getSimpleName() + " " + this.toString();}
 }

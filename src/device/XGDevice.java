@@ -1,7 +1,6 @@
 package device;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,27 +14,23 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.sound.midi.MidiUnavailableException;
-import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.tree.TreeNode;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
-import adress.XGAdressConstants;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
+import adress.XGAddressConstants;
+import application.Configurable;
 import application.JXG;
 import file.XGSysexFile;
-import gui.GuiConfigurable;
-import gui.XGFrame;
+import gui.XGAction;
+import gui.XGDeviceConfigurator;
+import gui.XGTreeNode;
 import gui.XGWindow;
-import gui.XGWindowSourceTreeNode;
+import gui.XGWindowSource;
 import msg.XGMessageDumpRequest;
 import msg.XGRequest;
 import msg.XGResponse;
-import obj.XGObjectType;
+import obj.XGType;
 import opcode.XGOpcode;
 import parm.XGParameter;
 import parm.XGTranslationMap;
@@ -45,10 +40,16 @@ import value.XGValue;
 import value.XGValueStore;
 import xml.XMLNode;
 
-public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSourceTreeNode
+public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XGAction, XGWindowSource
 {	private static Logger log = Logger.getAnonymousLogger();
 	private static Set<XGDevice> DEVICES = new HashSet<>();
 	private static XGDevice DEF = new XGDevice();
+	static
+	{	ACTIONS.add(ACTION_CONFIGURE);
+		ACTIONS.add(ACTION_REMOVE);
+		ACTIONS.add(ACTION_LOADFILE);
+		ACTIONS.add(ACTION_SAVEFILE);
+	}
 
 	public static Set<XGDevice> getDevices()
 	{	return DEVICES;
@@ -59,47 +60,34 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	}
 
 	public static void init()
-	{	Set<XMLNode> deadDev = new HashSet<>();
-		for(XMLNode n : JXG.getJXG().getConfig().getChildren())
+	{	for(XMLNode n : JXG.getJXG().getConfig().getChildren())
 		{	if(n.getTag().equals(TAG_DEVICE))
-			{	try
-				{	XGDevice d = new XGDevice(n);
-					if(DEVICES.add(d)) d.reloadTree();
-				}
-				catch(TimeoutException e)
-				{	int result = JOptionPane.showConfirmDialog(XGWindow.getRootWindow(), e.getMessage() + "\nremove it from configuration?", "device is not responding...", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-					if(result == JOptionPane.YES_OPTION) deadDev.add(n);
-					log.info("device initialisation aborted: " + e.getMessage());
-				}
-				catch(InvalidXGAdressException e)
-				{	e.printStackTrace();
-				}
-				catch(MidiUnavailableException e)
-				{	e.printStackTrace();
-				}
+			{	XGDevice d = new XGDevice(n);
+				if(DEVICES.add(d)) d.reloadTree();
 			}
 		}
-		for(XMLNode n : deadDev) n.removeNode();
-		log.info(DEVICES.size() + " devices initialized / " + deadDev.size() + " devices removed");
+		log.info(DEVICES.size() + " devices initialized");
 	}
 
 /***************************************************************************************************************************/
 
-	private XGWindow window;
 	private boolean isSelected = false;
-	private final XMLNode template;
+//	private final XMLNode template;
 	private final XMLNode config;
 	private final XGValueStore values;
+//	private final XGTagableSet<XGModule> modules;	//modules - bulks - opcodes
 	private final XGTagableAdressableSet<XGOpcode> opcodes;
-	private final XGTagableSet<XGObjectType> types;
+	private final XGTagableSet<XGType> types;
 	private final XGTagableSet<XGTranslationMap> translations;
 	private final XGTagableSet<XGParameter> parameters;
 	private final String name;
 	private final int info1, info2;
 	private Path defDumpPath;
 	private final Queue<XGSysexFile> files = new LinkedList<>();
+	private final XGSysexFile defaultSyx;
 	private final XGMidi midi;
 	private int sysexID;
+	private XGWindow childWindow;
 
 	private XGDevice()	//DefaultDevice (XG)
 	{	this.config = null;
@@ -109,17 +97,16 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 		this.info2 = 1;
 		this.values = null;
 		this.opcodes = XGOpcode.init(this);
-		this.types = XGObjectType.init(this);
+		this.types = XGType.init(this);
 		this.translations = XGTranslationMap.init(this);
 		this.parameters = XGParameter.init(this);
-		this.template = null;
+		this.defaultSyx = null;
 	}
 
-	public XGDevice(XMLNode cfg) throws InvalidXGAdressException, MidiUnavailableException, TimeoutException
+	public XGDevice(XMLNode cfg)
 	{	if(cfg == null)
 		{	this.config = new XMLNode(TAG_DEVICE, null);
 			this.midi = new XGMidi(this);
-			this.setWindow(new XGWindow(this, XGWindow.getRootWindow(), true, "new device"));
 		}
 		else
 		{	this.config = cfg;
@@ -128,31 +115,24 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 		}
 		this.name = this.requestName();
 		if(this.name == null)
-		{	throw new MidiUnavailableException("device (ID " + this.sysexID + ") not responding for " + this.midi.getInputName());
+		{	log.info("device (ID " + this.sysexID + ") not responding for " + this.midi.getInputName());
 		}
 		this.defDumpPath = Paths.get(this.config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).getTextContent());
 		this.info1 = requestInfo1();
 		this.info2 = requestInfo2();
 		this.values = new XGValueStore(this);
 		this.opcodes = XGOpcode.init(this);
-		this.types = XGObjectType.init(this);
+		this.types = XGType.init(this);
 		this.translations = XGTranslationMap.init(this);
 		this.parameters = XGParameter.init(this);
-
-		XMLNode temp = null;
-		try
-		{	temp = XMLNode.parse(this.getResourceFile(XML_TEMPLATE));
-		}
-		catch(FileNotFoundException e)
-		{	log.info(e.getMessage());
-		}
-		this.template = temp;
+		this.defaultSyx = new XGSysexFile(this, this.defDumpPath.resolve("default.syx").toString());
+		this.defaultSyx.load(this.values);
 	}
 
 	public File getResourceFile(String fName) throws FileNotFoundException
 	{	Path extPath = this.getResourcePath();
 		File extFile = extPath.resolve(fName).toFile();
-		File intFile = RSCPATH.resolve(this.getName()).resolve(fName).toFile();
+		File intFile = RSCPATH.resolve(this.name).resolve(fName).toFile();
 		if(!extFile.canRead() && intFile.canRead())
 		{	try
 			{	Files.createDirectories(extPath);
@@ -169,7 +149,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	}
 
 	public Path getResourcePath()
-	{	return HOMEPATH.resolve(this.getName());
+	{	return HOMEPATH.resolve(this.name);
 	}
 
 	public XGSysexFile getLastDumpFile()
@@ -181,18 +161,18 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	}
 
 	public XGTagableAdressableSet<XGOpcode> getOpcodes()
-	{	if(this.opcodes == null) return XGDevice.getDefaultDevice().getOpcodes();
-		else return this.opcodes;
+	{	return XGDevice.getDefaultDevice().opcodes;
 	}
 
-	public XGTagableSet<XGObjectType> getTypes()
+	public XGTagableSet<XGType> getTypes()
 	{	if(this.types == null) return XGDevice.getDefaultDevice().getTypes();
 		else return this.types;
 	}
 
-	public XGObjectType getType(XGAdress adr)
-	{	for(XGObjectType t : this.getTypes()) if(t.include(adr)) return t;
-		return new XGObjectType(this, adr);
+	public XGType getType(XGAddress adr)
+	{	for(XGType t : this.getTypes()) if(t.include(adr)) return t;
+		for(XGType t : XGDevice.getDefaultDevice().getTypes()) if(t.include(adr)) return new XGType(this, t);
+		return new XGType(this, adr);
 	}
 
 	public XGTagableSet<XGTranslationMap> getTranslations()
@@ -200,8 +180,7 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	}
 
 	public XGTagableSet<XGParameter> getParameters()
-	{	if(this.parameters == null) return XGDevice.getDefaultDevice().getParameters();
-	else return this.parameters;
+	{	return XGDevice.getDefaultDevice().parameters;
 	}
 
 	public Path getDefDumpPath()
@@ -220,16 +199,22 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 
 	void setSysexID(int id)
 	{	this.sysexID = id & 0xF;
-		this.config.getChildNodeOrNew(TAG_SYSEXID).setTextContent(id);
+		this.config.getChildNodeOrNew(TAG_SYSEXID).setTextContent(this.sysexID);
 	}
 
-	public String requestName() throws InvalidXGAdressException, MidiUnavailableException, TimeoutException	//SystemInfo ignoriert parameterrequest?!;
-	{	XGRequest m = new XGMessageDumpRequest(this.midi, XGAdressConstants.XGMODELNAMEADRESS);
-		m.setDestination(this.midi);
-		XGResponse r = m.request();
-		XGValue v = r.getValues().get(XGAdressConstants.XGMODELNAMEADRESS);
-		if(v == null) return null;
-		else return v.toString().strip();
+	public String requestName()	//SystemInfo ignoriert parameterrequest?!;
+	{	XGRequest m;
+		try
+		{	m = new XGMessageDumpRequest(this.midi, XGAddressConstants.XGMODELNAMEADRESS);
+			m.setDestination(this.midi);
+			XGResponse r = m.request();
+			XGValue v = r.getValues().get(XGAddressConstants.XGMODELNAMEADRESS);
+			if(v != null) return v.toString().strip();
+		}
+		catch(InvalidXGAddressException | TimeoutException | MidiUnavailableException e)
+		{	e.printStackTrace();
+		}
+		return "unknown device";
 	}
 
 	public int requestInfo1()
@@ -238,10 +223,6 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 
 	public int requestInfo2()
 	{	return 0;
-	}
-
-	public String getName()
-	{	return this.name;
 	}
 
 	public XGMidi getMidi()
@@ -259,7 +240,11 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	}
 
 	@Override public String toString()
-	{	return(this.getName() + " (ID" + this.sysexID + ")");
+	{	return this.name;
+	}
+
+	@Override public String getNodeText()
+	{	return(this.name + "/" + this.sysexID);
 	}
 
 	@Override public XMLNode getConfig()
@@ -275,65 +260,45 @@ public class XGDevice implements XGDeviceConstants, GuiConfigurable, XGWindowSou
 	}
 
 	@Override public Enumeration<? extends TreeNode> children()
-	{	return this.getTypes().enumeration();
+	{	return this.values.getTypes().enumeration();
 	}
-
-	@Override public XGWindow getWindow()
-	{	return this.window;
-	}
-
-	@Override public void setWindow(XGWindow win)
-	{	this.window = win;
-	}
-
-	@Override public JComponent getChildWindowContent()
-	{	return this.getConfigurationGuiComponents();
-	}
-
-	@Override public JComponent getConfigurationGuiComponents()
-	{	XGFrame root = new XGFrame("device");
-//		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
-
-		root.add(this.midi.getConfigurationGuiComponents());
-
-		JSpinner sp = new JSpinner();
-		sp.setAlignmentX(0.5f);
-		sp.setAlignmentY(0.5f);
-//		sp.setBorder(getDefaultBorder("sysex ID"));
-		sp.setModel(new SpinnerNumberModel(this.getSysexID(), 0, 15, 1));
-		sp.addChangeListener(new ChangeListener()
-		{	@Override public void stateChanged(ChangeEvent e)
-			{	JSpinner s = (JSpinner)e.getSource();
-				setSysexID((int)s.getModel().getValue());
-			}
-		});
-		root.add(sp);
-
-		JButton btn = new JButton(this.getDefDumpPath().toString());
-		btn.setAlignmentX(0.5f);
-		btn.addActionListener(new ActionListener()
-		{	@Override public void actionPerformed(ActionEvent e)
-			{	XGSysexFile f = new XGSysexFile(null, getDefDumpPath().toString());
-				Path p = f.selectPath(f.toString());
-				setDefDumpPath(p);
-				btn.setText(p.toString());
-				btn.getTopLevelAncestor().revalidate();
-			}
-		});
-		root.add(btn);
-
-		return root;
-	}
-
 
 	@Override public boolean isSelected()
 	{	return this.isSelected;
 	}
 
-
 	@Override public void setSelected(boolean s)
 	{	this.isSelected = s;
 	}
 
+	@Override public Set<String> getActions()
+	{	return ACTIONS;
+	}
 
+	@Override public void actionPerformed(ActionEvent e)
+	{	switch(e.getActionCommand())
+		{	case ACTION_CONFIGURE:
+				new XGWindow(this, XGWindow.getRootWindow(), true, this.toString()); break;
+			case ACTION_REMOVE:
+				break;
+			case ACTION_LOADFILE:
+				break;
+			case ACTION_SAVEFILE:
+				break;
+			default:
+				break;
+		}
+	}
+
+	@Override public XGWindow getChildWindow()
+	{	return this.childWindow;
+	}
+
+	@Override public void setChildWindow(XGWindow win)
+	{	this.childWindow = win;
+	}
+
+	@Override public JComponent getChildWindowContent()
+	{	return new XGDeviceConfigurator(this).getGuiComponent();
+	}
 }

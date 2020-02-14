@@ -8,21 +8,22 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Vector;
 
-public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGAdressConstants, XGAdressableSetListener
+public class XGAddressableSet<T extends XGAddressable> implements Iterable<T>, XGAddressConstants, XGAddressableSetListener
 {
 /***********************************************************************************************************/
 
 	private Class<?> type = null;
-	private SortedMap<XGAdress, T> map = new TreeMap<XGAdress,T>();
-	private Set<XGAdressableSetListener> listeners = new HashSet<XGAdressableSetListener>();
+	private SortedMap<XGAddress, T> map = new TreeMap<XGAddress,T>();
+	private Set<XGAddressableSetListener> listeners = new HashSet<XGAddressableSetListener>();
 
 	public synchronized void add(T obj)
 	{	synchronized(this.map)
 		{	if(obj == null) return;
 			if(this.type == null) this.type = obj.getClass();
-			XGAdress adr = obj.getAdress();
-			this.map.put(adr, obj);
-			notifyListeners(adr);
+			XGAddress adr;
+			adr = obj.getAdress();
+				this.map.put(adr, obj);
+				notifyListeners(adr);
 		}
 	}
 
@@ -30,17 +31,21 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	{	synchronized(this.map)
 		{	if(obj == null) return;
 			this.map.remove(obj.getAdress(), obj);
-			notifyListeners(obj.getAdress());
+				notifyListeners(obj.getAdress());
 		}
 	}
 
-	public synchronized void remove(XGAdress adr)
+	public synchronized void remove(XGAddress adr)
 	{	synchronized(this.map)
 		{	this.map.remove(adr);
 		}
 	}
 
-	public synchronized T get(XGAdress adr)
+	public synchronized void clear()
+	{	this.map.clear();
+	}
+
+	public synchronized T get(XGAddress adr)
 	{	synchronized(this.map)
 		{	return this.map.get(adr);
 		}
@@ -53,9 +58,9 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 		}
 	}
 
-	public synchronized int indexOf(XGAdress adr)
+	public synchronized int indexOf(XGAddress adr)
 	{	synchronized(this.map)
-		{	Vector<XGAdress> v = new Vector<>(this.adresses());
+		{	Vector<XGAddress> v = new Vector<>(this.adresses());
 			return v.indexOf(adr);
 		}
 	}
@@ -64,28 +69,28 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	{	return this.map.size();
 	}
 
-	public boolean contains(XGAdress adr)
+	public boolean contains(XGAddress adr)
 	{	return this.map.containsKey(adr);
 	}
 
-	public T getOrDefault(XGAdress adr, T def)
+	public T getOrDefault(XGAddress adr, T def)
 	{	if(this.map.containsKey(adr)) return this.map.get(adr);
 		else return def;
 	}
 
-	public T getFirstValidOrDefault(XGAdress adr, T def)
+	public T getFirstValidOrDefault(XGAddress adr, T def)
 	{	T res = getFirstValid(adr);
 		if(res == null) return def;
 		return res;
 	}
 
-	public synchronized T getFirstValid(XGAdress adr)
+	public synchronized T getFirstValid(XGAddress adr)
 	{	for(T a : this.map.values()) if(a.getAdress().equalsValidFields(adr)) return a;
-		return null;
-	}
+				return null;
+			}
 
-	public synchronized XGAdressableSet<T> getAllValid(XGAdress adr)
-	{	XGAdressableSet<T> set = new XGAdressableSet<>();
+	public synchronized XGAddressableSet<T> getAllValid(XGAddress adr)
+	{	XGAddressableSet<T> set = new XGAddressableSet<>();
 		for(T a : this.values()) if(a.getAdress().equalsValidFields(adr)) set.add(a);
 		this.addListener(set);
 		return set;
@@ -99,7 +104,7 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	{	return this.map.values();
 	}
 
-	public synchronized Collection<XGAdress> adresses()
+	public synchronized Collection<XGAddress> adresses()
 	{	return this.map.keySet();
 	}
 
@@ -107,19 +112,19 @@ public class XGAdressableSet<T extends XGAdressable> implements Iterable<T>, XGA
 	{	return this.map.values().iterator();
 	}
 
-	public void addListener(XGAdressableSetListener l)
+	public void addListener(XGAddressableSetListener l)
 	{	listeners.add(l);
 	}
 
-	public void removeListener(XGAdressableSetListener l)
+	public void removeListener(XGAddressableSetListener l)
 	{	listeners.remove(l);
 	}
 
-	private synchronized void notifyListeners(XGAdress adr)
-	{	if(adr != null) for(XGAdressableSetListener l : listeners) l.setChanged(adr);
+	private synchronized void notifyListeners(XGAddress adr)
+	{	if(adr != null) for(XGAddressableSetListener l : listeners) l.setChanged(adr);
 	}
 
-	@Override public void setChanged(XGAdress adr)
+	@Override public void setChanged(XGAddress adr)
 	{	this.notifyListeners(adr);
 	}
 

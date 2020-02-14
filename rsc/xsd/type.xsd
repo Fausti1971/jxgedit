@@ -3,7 +3,7 @@
 	<xs:element name="map">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="object" maxOccurs="unbounded">
+				<xs:element name="type" maxOccurs="unbounded">
 					<xs:complexType mixed="true" >
 						<xs:sequence>
 							<xs:element name="name" type="xs:string"/>

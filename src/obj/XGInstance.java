@@ -1,49 +1,49 @@
 package obj;
 
+import java.awt.event.ActionEvent;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.tree.TreeNode;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
-import adress.XGAdressable;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
+import adress.XGAddressable;
 import device.XGDevice;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
 import xml.XMLNode;
 
-public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
-{	private final XGObjectType type;
-	private final XGAdress adress;
+public class XGInstance implements XGAddressable, XGWindowSourceTreeNode
+{	private final XGType type;
+	private final XGAddress adress;
 	private XGWindow window;
 	private boolean isSelected = false;
 
-	public XGObjectInstance(XGDevice dev, XGAdress adr) throws InvalidXGAdressException
+	public XGInstance(XGDevice dev, XGAddress adr) throws InvalidXGAddressException
 	{	this.type = dev.getType(adr);
-		this.adress = new XGAdress(INVALIDFIELD, adr.getMid(), INVALIDFIELD);
+		this.adress = new XGAddress(INVALIDFIELD, adr.getMid(), INVALIDFIELD);
 	}
 
-	@Override public XGAdress getAdress()
+	@Override public XGAddress getAdress()
 	{	return this.adress;
 	}
 
-	public XGObjectType getType()
+	public XGType getType()
 	{	return this.type;
 	}
 
-//TODO: ausgewählte Values anhängen
+//TODO: die Darstellung muss vom Type definiert werden...
 	@Override public String toString()
 	{	try
 		{	return String.format("%03d", this.adress.getMid() + 1);
 		}
-		catch(InvalidXGAdressException e)
+		catch(InvalidXGAddressException e)
 		{	e.printStackTrace();
-			return this.type.getName();
+			return this.type.getNodeText();
 		}
-	}
-
-	@Override public String getInfo()
-	{	return this.getType().getName() + " " + this.toString();
 	}
 
 	@Override public TreeNode getParent()
@@ -55,10 +55,10 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 	}
 
 	@Override public Enumeration<? extends TreeNode> children()
-	{	return null;
+	{	return Collections.emptyEnumeration();
 	}
 
-	@Override public XGWindow getWindow()
+	@Override public XGWindow getChildWindow()
 	{	return this.window;
 	}
 
@@ -66,17 +66,12 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 	{	return this.type.getTemplate();
 	}
 
-	@Override public void setWindow(XGWindow win)
+	@Override public void setChildWindow(XGWindow win)
 	{	this.window = win;
 	}
 
 	@Override public JComponent getChildWindowContent()
 	{	return new JLabel("XML-Templates noch nicht implementiert...");
-	}
-
-	public void nodeClicked()
-	{	if(this.getWindow() != null) this.getWindow().toFront();
-		else this.setWindow(new XGWindow(this, XGWindow.getRootWindow(), false, this.getInfo()));
 	}
 
 	@Override public boolean isSelected()
@@ -85,5 +80,15 @@ public class XGObjectInstance implements XGAdressable, XGWindowSourceTreeNode
 
 	@Override public void setSelected(boolean s)
 	{	this.isSelected = s;
+	}
+
+	@Override public Set<String> getActions()
+	{
+		return new LinkedHashSet<>();
+	}
+
+	@Override public void actionPerformed(ActionEvent e)
+	{
+		System.out.println("action: " + e.getActionCommand() + " " + this.getClass().getSimpleName());
 	}
 }

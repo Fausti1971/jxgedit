@@ -23,7 +23,8 @@ public interface Rest
 		{	return Integer.parseInt(s);
 		}
 		catch(NumberFormatException e)
-		{	return def;
+		{	e.printStackTrace();
+			return def;
 		}
 	}
 

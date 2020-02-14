@@ -10,7 +10,7 @@ public interface XGWindowSourceTreeNode extends XGWindowSource, XGTreeNode
 {
 	default boolean isValid(WindowEvent e)
 	{	if(!(e.getSource() instanceof XGWindow)) return false;
-		if((XGWindow)e.getSource() != this.getWindow()) return false;
+		if((XGWindow)e.getSource() != this.getChildWindow()) return false;
 		return true;
 	}
 
@@ -18,7 +18,7 @@ public interface XGWindowSourceTreeNode extends XGWindowSource, XGTreeNode
 	{	if(!this.isValid(e)) return;
 		XGWindow w = (XGWindow)e.getSource();
 		System.out.println(w + " opened");
-		this.setWindow(w);
+		this.setChildWindow(w);
 		this.repaintNode();
 	}
 
@@ -32,7 +32,7 @@ public interface XGWindowSourceTreeNode extends XGWindowSource, XGTreeNode
 	public default void windowClosed(WindowEvent e)
 	{	if(!this.isValid(e)) return;
 		System.out.println(e.getSource() + " closed");
-		this.setWindow(null);
+		this.setChildWindow(null);
 //		((XGTreeNodeComponent)this.getGuiComponent()).setSelected(false);
 		this.reloadTree();
 	}

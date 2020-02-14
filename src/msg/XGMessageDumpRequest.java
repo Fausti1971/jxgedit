@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
 
 public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20;
@@ -21,7 +21,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	{	super(src, array);
 	}
 
-	public XGMessageDumpRequest(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
+	public XGMessageDumpRequest(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
 	{	super(src, new byte[8]);
 		setSysexID(src.getDevice().getSysexID());
 		setMessageID();
@@ -37,7 +37,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	{	super(src, msg);
 	}
 
-	public boolean setResponsedBy(XGResponse msg)
+	@Override public boolean setResponsedBy(XGResponse msg)
 	{	if(msg == null ||
 			!(msg instanceof XGMessageBulkDump) ||
 			msg.getSysexID() != this.response.getSysexID() ||
@@ -49,35 +49,35 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 		return this.responsed = true;
 	}
 
-	public boolean isResponsed()
+	@Override public boolean isResponsed()
 	{	return this.responsed;
 	}
 
-	public XGResponse getResponse()
+	@Override public XGResponse getResponse()
 	{	return this.response;
 	}
 
-	protected int getHi()
+	@Override protected int getHi()
 	{	return decodeMidiByteToInteger(HI_OFFS);
 	}
 
-	protected int getMid()
+	@Override protected int getMid()
 	{return decodeMidiByteToInteger(MID_OFFS);
 	}
 
-	protected int getLo()
+	@Override protected int getLo()
 	{	return decodeMidiByteToInteger(LO_OFFS);
 	}
 
-	protected void setHi(int hi)
+	@Override protected void setHi(int hi)
 	{	encodeMidiByteFromInteger(HI_OFFS, hi);
 	}
 
-	protected void setMid(int mid)
+	@Override protected void setMid(int mid)
 	{	encodeMidiByteFromInteger(MID_OFFS, mid);
 	}
 
-	protected void setLo(int lo)
+	@Override protected void setLo(int lo)
 	{	encodeMidiByteFromInteger(LO_OFFS, lo);
 	}
 
@@ -85,7 +85,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	{	return this.getAdress().toString();
 	}
 
-	protected void setMessageID()
+	@Override protected void setMessageID()
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
 	}
 

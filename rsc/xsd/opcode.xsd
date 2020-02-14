@@ -8,7 +8,7 @@
 					<xs:complexType>
 						<xs:all>
 							<xs:element name="name" type="xs:string"/>
-							<xs:element name="adress" type="adress"/>
+							<xs:element name="address" type="address"/>
 							<xs:element name="byteCount" type="xs:nonNegativeInteger" minOccurs="0"/>
 							<xs:element name="byteType" type="byteType" minOccurs="0"/>
 							<xs:element name="valueClass" type="valueClass" minOccurs="0"/>
@@ -17,6 +17,10 @@
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
+		<xs:unique name="tag">
+			<xs:selector xpath="opcode/name"/>
+			<xs:field xpath="."/>
+		</xs:unique>
 	</xs:element>
 
 	<xs:simpleType name="byteType">
@@ -34,7 +38,7 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:complexType name="adress">
+	<xs:complexType name="address">
 		<xs:all>
 			<xs:element name="hi" type="xs:nonNegativeInteger"/>
 			<xs:element name="mid" type="xs:nonNegativeInteger" minOccurs="0"/>

@@ -2,22 +2,22 @@ package value;
 import java.util.HashSet;
 import java.util.Set;
 import javax.sound.midi.MidiUnavailableException;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
-import adress.XGAdressable;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
+import adress.XGAddressable;
 import device.XGMidi;
 import msg.XGMessageException;
 import msg.XGMessageParameterChange;
 import msg.XGMessenger;
-import obj.XGObjectInstance;
+import obj.XGInstance;
 import opcode.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import tag.XGTagable;
 
-public abstract class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdressable, XGTagable
+public abstract class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGTagable
 {	
-	public static XGValue factory(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
+	public static XGValue factory(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
 	{	XGOpcode o = src.getDevice().getOpcodes().getOrDefault(adr, new XGOpcode(adr));
 		switch(o.getValueClass())
 		{	case Integer:	return new XGIntegerValue(src, adr);
@@ -30,13 +30,13 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 /***********************************************************************************************/
 
 	private final XGMessenger source;
-	private final XGAdress adress;
-	private final XGObjectInstance instance;
+	private final XGAddress adress;
+	private final XGInstance instance;
 	private final XGOpcode opcode;
 	private final Set<XGValueChangeListener> listeners = new HashSet<>();
 	
-	protected XGValue(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
-	{	if(!adr.isValidAdress()) throw new InvalidXGAdressException("not a valid adress: " + adr);
+	protected XGValue(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
+	{	if(!adr.isValidAdress()) throw new InvalidXGAddressException("not a valid adress: " + adr);
 		this.source = src;
 		this.adress = adr;
 		this.opcode = this.source.getDevice().getOpcodes().getOrDefault(adr, new XGOpcode(adr));
@@ -57,15 +57,15 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	{	return this.source;
 	}
 
-	public String getTag()
+	@Override public String getTag()
 	{	return this.opcode.getTag();
 	}
 
-	public XGAdress getAdress()
+	@Override public XGAddress getAdress()
 	{	return this.adress;
 	}
 
-	public XGObjectInstance getInstance()
+	public XGInstance getInstance()
 	{	return this.instance;
 	}
 
@@ -85,7 +85,7 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 
 	public abstract boolean addContent(Object v) throws WrongXGValueTypeException;
 
-	public void transmit(XGMidi midi) throws XGMessageException, InvalidXGAdressException, MidiUnavailableException
+	public void transmit(XGMidi midi) throws XGMessageException, InvalidXGAddressException, MidiUnavailableException
 	{	XGMessageParameterChange m = new XGMessageParameterChange(midi, this);
 		m.setDestination(midi);
 		m.transmit();
@@ -102,6 +102,6 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 }
 	@Override public abstract String toString();
 
-	public int compareTo(XGValue o)
+	@Override public int compareTo(XGValue o)
 	{	return this.adress.compareTo(o.adress);}
 }

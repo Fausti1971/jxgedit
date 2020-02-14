@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 import application.ConfigurationConstants;
-import application.Rest;
 import device.XGDevice;
 import tag.XGTagable;
 import tag.XGTagableSet;
@@ -97,11 +96,11 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 		if(t != null) this.translationMap = dev.getTranslations().get(t.getTextContent());
 		else this.translationMap = null;
 		this.dependsOf = n.getChildNodeTextContent(TAG_DEPENDSOF, null);
-		this.mutableKey = Rest.parseIntOrDefault(Rest.splitStringByUnderscore(this.name), 0);
+		this.mutableKey = n.parseChildNodeIntegerContent(TAG_MUTABLEKEY, 0);
 		log.info("parameter initialized: " + this);
 	}
 
-	public String getTag()
+	@Override public String getTag()
 	{	return this.name;
 	}
 

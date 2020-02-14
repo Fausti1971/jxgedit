@@ -1,8 +1,8 @@
 package msg;
 
 import javax.sound.midi.MidiUnavailableException;
-import adress.InvalidXGAdressException;
-import adress.XGAdressableSet;
+import adress.InvalidXGAddressException;
+import adress.XGAddressableSet;
 import value.XGValue;
 
 public interface XGResponse extends XGMessage
@@ -12,5 +12,5 @@ public interface XGResponse extends XGMessage
 		else throw new XGMessageException("message " + this + " has no destination-messenger");
 	}
 
-	public XGAdressableSet<XGValue> getValues() throws InvalidXGAdressException;
+	public XGAddressableSet<XGValue> getValues() throws InvalidXGAddressException;
 }

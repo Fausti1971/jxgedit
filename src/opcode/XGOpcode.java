@@ -3,15 +3,17 @@ package opcode;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
-import adress.XGAdress;
-import adress.XGAdressable;
+import adress.XGAddress;
+import adress.XGAddressable;
 import application.ConfigurationConstants;
 import device.XGDevice;
+import module.XGModule;
+import module.XGModuleConstants.XGModuleTag;
 import tag.XGTagable;
 import tag.XGTagableAdressableSet;
 import xml.XMLNode;
 
-public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAdressable, XGTagable
+public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAddressable, XGTagable
 {	private static Logger log = Logger.getAnonymousLogger();
 
 	public static XGTagableAdressableSet<XGOpcode> init(XGDevice dev)
@@ -31,6 +33,24 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 		log.info(opcodes.size() + " opcodes initialized from: " + file);
 		return opcodes;
 	}
+
+	public static ValueDataClass getValueDataClass(String s)
+	{	try
+		{	return ValueDataClass.valueOf(s);
+		}
+		catch(IllegalArgumentException e)
+		{	return DEF_VALUECLASS;
+		}
+	}
+
+	public static DataType getDataType(String s)
+	{	try
+		{	return DataType.valueOf(s);
+		}
+		catch(IllegalArgumentException e)
+		{	return DEF_DATATYPE;
+		}
+	}
 /*
 	public static XGOpcode getOpcode(XGAdress adr)
 	{	if(OPCODES.containsKey(adr)) return OPCODES.get(adr);
@@ -44,66 +64,49 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 */
 /*********************************************************************************************************/
 
-	private final String name;
-	private final XGAdress adress;
+	private final String tag;
+	private final XGAddress adress;
 	private final int byteCount;
 	private final DataType dType;
 	private final ValueDataClass vType;
+	private final XGModuleTag module;
 
-	public XGOpcode(XGAdress adr)
-	{	this.name = DEF_OPCODENAME + adr;
+	public XGOpcode(XGAddress adr)
+	{	this.tag = DEF_OPCODENAME + adr;
 		this.adress = adr;
 		this.byteCount = DEF_BYTECOUNT;
 		this.dType = DEF_DATATYPE;
 		this.vType = DEF_VALUECLASS;
+		XGModuleTag temp = XGModuleTag.unknown;
+		temp = XGModule.getModuleTag(adr);
+		this.module = temp;
 	}
 
 	private XGOpcode(String name)
-	{	this.name = DEF_OPCODENAME + name;
+	{	this.tag = DEF_OPCODENAME + name;
 		this.adress = null;
 		this.byteCount = DEF_BYTECOUNT;
 		this.dType = DEF_DATATYPE;
 		this.vType = DEF_VALUECLASS;
+		this.module = XGModuleTag.unknown;
 	}
 
 	public XGOpcode(XMLNode n)
-	{	String s;
-
-		this.name = n.getChildNode(TAG_NAME).getTextContent();
-
-		this.adress = new XGAdress(n.getChildNode(TAG_ADRESS));
-
+	{	this.tag = n.getChildNode(TAG_NAME).getTextContent();
+		this.adress = new XGAddress(n.getChildNode(TAG_ADRESS));
 		this.byteCount = n.parseChildNodeIntegerContent(TAG_BYTECOUNT, DEF_BYTECOUNT);
-
-		s = n.getChildNodeTextContent(TAG_DATATYPE, "");
-		DataType t;
-		try
-		{	t = DataType.valueOf(s);
-		}
-		catch(IllegalArgumentException e)
-		{	t = DEF_DATATYPE;
-		}
-		this.dType = t;
-
-		s = n.getChildNodeTextContent(TAG_VALUECLASS, "");
-		ValueDataClass c;
-		try
-		{	c = ValueDataClass.valueOf(s);
-		}
-		catch(IllegalArgumentException e)
-		{	c = DEF_VALUECLASS;
-		}
-		this.vType = c;
-
-		log.info("opcode initialized: " + this);
+		this.dType = getDataType(n.getChildNodeTextContent(TAG_DATATYPE, ""));
+		this.vType = getValueDataClass(n.getChildNodeTextContent(TAG_VALUECLASS, ""));
+		this.module = XGModule.getModuleTag(this.adress);
+		log.info("opcode initialized: " + this.getInfo());
 	}
 
-	public XGAdress getAdress()
+	@Override public XGAddress getAdress()
 	{	return this.adress;
 	}
 
 	public String getInfo()
-	{	return this.name;
+	{	return this.tag + " " + this.adress;
 	}
 
 	public ValueDataClass getValueClass()
@@ -114,8 +117,8 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 	{	return this.byteCount;
 	}
 
-	public String getTag()
-	{	return this.name;
+	@Override public String getTag()
+	{	return this.tag;
 	}
 
 	public DataType getDataType()
@@ -123,6 +126,6 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 	}
 
 	@Override public String toString()
-	{	return this.getTag() + this.getAdress();
+	{	return this.getTag();
 	}
 }

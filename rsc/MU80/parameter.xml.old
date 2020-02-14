@@ -83,7 +83,13 @@
 		<valueMax>127</valueMax>
 	</parameter>
 
-<!-- mutable parameters TODO: doppelte Inhalte (names) per xsd verhindern -->
+	<parameter>
+		<name>ds1_sourcekit</name>
+		<longName>SourceDrumkit</longName>
+		<shortName>src-dk</shortName>
+		<valueMin>264241152</valueMin>
+		<valueMax>4294967295</valueMax>
+	</parameter>
 
 	<parameter>
 		<name>rev_time</name>

@@ -12,7 +12,8 @@ public interface XGParameterConstants
 		TAG_TRANSLATIONMAP = "translationMap",
 		TAG_LONGNAME = "longName",
 		TAG_SHORTNAME = "shortName",
-		TAG_DEPENDSOF = "dependsOf";
+		TAG_DEPENDSOF = "dependsOf",
+		TAG_MUTABLEKEY = "mutableMapKey";
 
 	static final String DEF_OBJTYPE = "unknown object";
 	static final String DEF_PARAMETERNAME = "unknown parameter: ";

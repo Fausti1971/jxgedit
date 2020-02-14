@@ -4,8 +4,8 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import value.XGIntegerValue;
 
 public class XGMessageParameterRequest extends XGSuperMessage implements XGRequest
@@ -25,7 +25,7 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	{	super(src, msg);
 	}
 
-	public XGMessageParameterRequest(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
+	public XGMessageParameterRequest(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
 	{	super(src, new byte[8]);
 		setMessageID(MSG);
 		setSysexID(src.getDevice().getSysexID());

@@ -1,45 +1,45 @@
 package obj;
 
+import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
-import adress.XGAdressConstants;
-import adress.XGAdressableSet;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
+import adress.XGAddressConstants;
+import adress.XGAddressableSet;
 import application.ConfigurationConstants;
 import device.XGDevice;
-import gui.XGFrame;
+import gui.XGTreeNode;
 import gui.XGWindow;
-import gui.XGWindowSourceTreeNode;
 import tag.XGTagable;
 import tag.XGTagableSet;
 import value.XGValue;
 import xml.XMLNode;
 //TODO: unsupported types (nicht in object.xml vorgefunden, sondern aus "XG" entnommen) hervorheben (in rot darstellen); zum laden "falscher" bulks...
-public class XGObjectType implements ConfigurationConstants, XGTagable, XGObjectConstants, XGAdressConstants, XGWindowSourceTreeNode
+public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstants, XGAddressConstants, XGTreeNode
 {	private static Logger log = Logger.getAnonymousLogger();
 
-	public static XGTagableSet<XGObjectType> init(XGDevice dev)
-	{	XGTagableSet<XGObjectType> set = new XGTagableSet<>();
+	public static XGTagableSet<XGType> init(XGDevice dev)
+	{	XGTagableSet<XGType> set = new XGTagableSet<>();
 		File file;
 		try
-		{	file = dev.getResourceFile(XML_OBJECT);
+		{	file = dev.getResourceFile(XML_TYPE);
 		}
 		catch(FileNotFoundException e)
 		{	return set;
 		}
 		XMLNode xml = XMLNode.parse(file);
 			for(XMLNode x : xml.getChildren())
-			{	if(x.getTag().equals(TAG_OBJECT))
-				{	XGObjectType t = new XGObjectType(dev, x);
+			{	if(x.getTag().equals(TAG_TYPE))
+				{	XGType t = new XGType(dev, x);
 					set.add(t);
 				}
 			}
@@ -76,23 +76,28 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 
 	private final XGDevice device;
 	private boolean isSelected = false;
-	private XGWindow window = null;
 	private final String name;
 	private final Set<XGBulkDumpSequence> bulks;
-	private final XGAdressableSet<XGObjectInstance> instances = new XGAdressableSet<XGObjectInstance>();
+	private final XGAddressableSet<XGInstance> instances = new XGAddressableSet<XGInstance>();
 
-	public XGObjectType(XGDevice dev, XGAdress adr)
+	public XGType(XGDevice dev, XGType t)	//für "unsupported" types
+	{	this.device = dev;
+		this.name = "(unsupported) " + t.name;
+		this.bulks = null;
+	}
+
+	public XGType(XGDevice dev, XGAddress adr)
 	{	this(dev, DEF_OBJECTTYPENAME + adr, null);
 	}
 
-	private XGObjectType(XGDevice dev, String name, Set<XGBulkDumpSequence> dseq)
+	private XGType(XGDevice dev, String name, Set<XGBulkDumpSequence> dseq)
 	{	this.device = dev;
 		this.name = name;
 		this.bulks = dseq;
-		log.info("object-type initialized: " + this);
+		log.info("type initialized: " + this);
 	}
 
-	XGObjectType(XGDevice dev, XMLNode n)
+	XGType(XGDevice dev, XMLNode n)
 	{	this(dev, n.getChildNode(TAG_NAME).getTextContent(), new HashSet<>());
 
 		for(XMLNode seq : n.getChildren())
@@ -103,8 +108,8 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	return this.bulks;
 	}
 
-	public boolean include(XGAdress adr)
-	{	for(XGBulkDumpSequence s : this.bulks) if(s.include(adr)) return true;
+	public boolean include(XGAddress adr)
+	{	for(XGBulkDumpSequence s : this.bulks) if(s.contains(adr)) return true;
 		return false;
 	}
 
@@ -117,24 +122,24 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	public void addInstance(XGValue v)
 	{	if(this.instances.contains(v.getAdress())) return;
 		try
-		{	this.instances.add(new XGObjectInstance(this.device, v.getAdress()));
+		{	this.instances.add(new XGInstance(this.device, v.getAdress()));
 		}
-		catch(InvalidXGAdressException e)
+		catch(InvalidXGAddressException e)
 		{	e.printStackTrace();
 		}
 	}
 
-	public XGAdressableSet<XGObjectInstance> getXGObjectInstances()
+	public XGAddressableSet<XGInstance> getXGObjectInstances()
 	{	return this.instances;
 	}
 
-	public XGObjectInstance getInstance(XGAdress adr)
-	{	XGObjectInstance i = this.instances.getFirstValid(adr);
+	public XGInstance getInstance(XGAddress adr)
+	{	XGInstance i = this.instances.getFirstValid(adr);
 		if(i == null)
 			try
-			{	this.instances.add(i = new XGObjectInstance(this.device, adr));
+			{	this.instances.add(i = new XGInstance(this.device, adr));
 			}
-			catch(InvalidXGAdressException e)
+			catch(InvalidXGAddressException e)
 			{	e.printStackTrace();
 			}
 		return i;
@@ -144,8 +149,8 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	return this.instances.size() != 0;
 	}
 
-	public String getName()
-	{	return this.name;
+	@Override public String getNodeText()
+	{	return this.name + " (" + this.instances.size() + ")";
 	}
 
 	@Override public String toString()
@@ -168,33 +173,12 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	return Collections.enumeration(this.instances.values());
 	}
 
-	@Override public XGWindow getWindow()
-	{	return this.window;
-	}
-
-	@Override public void setWindow(XGWindow win)
-	{	this.window = win;
-	}
-
-	@Override public JComponent getChildWindowContent()
-	{	return this.getConfigurationGuiComponents();
-	}
-
 	public XMLNode getTemplate()
 	{	return null;
 	}
 
 	@Override public String getTag()
 	{	return this.name;
-	}
-
-	public void nodeClicked()
-	{	if(this.getWindow() != null) this.getWindow().toFront();
-		else new XGWindow(this, XGWindow.getRootWindow(), false, this.getTreePath().toString()); //TODO: nur zum testen, WindowSource evtl. wieder entferenen
-	}
-
-	public JComponent getConfigurationGuiComponents()
-	{	return new XGFrame(this.name);
 	}
 
 	public JTree getTree()
@@ -209,4 +193,13 @@ public class XGObjectType implements ConfigurationConstants, XGTagable, XGObject
 	{	this.isSelected = s;
 	}
 
+	@Override public Set<String> getActions()
+	{
+		return new LinkedHashSet<>();
+	}
+
+	@Override public void actionPerformed(ActionEvent e)
+	{
+		System.out.println("action: " + e.getActionCommand() + " " + this.getClass().getSimpleName());
+	}
 }

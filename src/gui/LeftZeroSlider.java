@@ -12,8 +12,8 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import application.Rest;
 import parm.XGParameter;
 import parm.XGParameterConstants;
@@ -29,10 +29,10 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 /*****************************************************************************************************************************/
 
-	private final XGAdress adress;
+	private final XGAddress adress;
 	private XGValue value;
 
-	public LeftZeroSlider(XGAdress adr) throws InvalidXGAdressException
+	public LeftZeroSlider(XGAddress adr) throws InvalidXGAddressException
 	{	this.adress = adr;
 		this.valueChanged(this.value);
 		setSize(SL_DIM);
@@ -93,7 +93,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	{	XGParameter p = this.value.getParameter();
 		try
 		{	if(this.value.setContentAndTransmit(Rest.linearIO(e.getX(), 0, this.getWidth(), p.getMinValue(), p.getMaxValue())))repaint();}
-		catch(WrongXGValueTypeException|InvalidXGAdressException e1)
+		catch(WrongXGValueTypeException|InvalidXGAddressException e1)
 		{	e1.printStackTrace();}
 		e.consume();
 	}
@@ -155,7 +155,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		this.repaint();
 	}
 
-	public XGAdress getAdress()
+	public XGAddress getAdress()
 	{	return this.adress;}
 
 	public String getInfo()

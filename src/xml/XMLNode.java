@@ -129,7 +129,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 		return n;
 	}
 
-	public String getTag()
+	@Override public String getTag()
 	{	return this.tag;
 	}
 

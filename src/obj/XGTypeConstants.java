@@ -1,11 +1,11 @@
 package obj;
 
-public interface XGObjectConstants
+public interface XGTypeConstants
 {	public static String
-		DEF_OBJECTTYPENAME ="unknown objecttype ";
+		DEF_OBJECTTYPENAME ="unknown type";
 
 	public static String
-		TAG_OBJECT = "object",
+		TAG_TYPE = "type",
 		TAG_NAME = "name",
 		TAG_HI = "hi",
 		TAG_MID = "mid",

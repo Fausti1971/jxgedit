@@ -31,8 +31,9 @@
 	</parameter>
 
 	<parameter>
-		<name>rev_1</name>	<!-- number behind underscore determines the mutableMapKey -->
-		<dependsOf>rev_type</dependsOf>
+		<name>reverb_1</name>
+		<dependsOf>reverb_type</dependsOf>
+		<mutableMapKey>1</mutableMapKey>
 	</parameter>
 
 	<parameter>
@@ -79,7 +80,13 @@
 		<valueMax>127</valueMax>
 	</parameter>
 
-<!-- mutable parameters TODO: doppelte Inhalte (names) per xsd verhindern -->
+	<parameter>
+		<name>ds1_sourcekit</name>
+		<longName>SourceDrumkit</longName>
+		<shortName>src-dk</shortName>
+		<valueMin>264241152</valueMin>
+		<valueMax>2147483647</valueMax>
+	</parameter>
 
 	<parameter>
 		<name>rev_time</name>

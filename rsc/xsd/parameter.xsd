@@ -15,6 +15,7 @@
 							<xs:element name="translator" type="translatorType" minOccurs="0"/>
 							<xs:element name="translationMap" minOccurs="0"/>
 							<xs:element name="dependsOf" type="xs:string" minOccurs="0"/>
+							<xs:element name="mutableMapKey" type="mapKey" minOccurs="0"/>
 						</xs:all>
 					</xs:complexType>
 				</xs:element>
@@ -33,4 +34,10 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+	<xs:simpleType name="mapKey">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="16"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

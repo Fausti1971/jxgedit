@@ -1,14 +1,14 @@
 package value;
 
 import java.awt.Image;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import msg.XGMessenger;
 
 public class XGImageValue extends XGValue
 {	Image content;
 
-	public XGImageValue(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
+	public XGImageValue(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
 	{	super(src, adr);}
 
 	public boolean setContent(Object o) throws WrongXGValueTypeException

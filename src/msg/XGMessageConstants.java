@@ -11,6 +11,8 @@ public interface XGMessageConstants extends XGByteArray
 		MSG_OFFS = 2,
 		SYSEX_OFFS = 2,
 		SOX = SysexMessage.SYSTEM_EXCLUSIVE,
+		UNRT = 0x7E,
+		UNRT_OFFS = 1,
 		SOX_OFFS = 0,
 		EOX = SysexMessage.SPECIAL_SYSTEM_EXCLUSIVE,
 		BD = 0x00,

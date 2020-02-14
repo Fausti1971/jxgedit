@@ -12,14 +12,14 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.SysexMessage;
 import javax.swing.JFileChooser;
-import adress.InvalidXGAdressException;
-import adress.XGAdressableSet;
+import adress.InvalidXGAddressException;
 import application.ConfigurationConstants;
 import application.JXG;
 //const mit file für default, const mit path mit filechooser
 import device.XGDevice;
 import gui.XGWindow;
 import msg.XGMessage;
+import msg.XGMessageBuffer;
 import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
@@ -30,28 +30,28 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 
 /******************************************************************************************************************************************/
 
-	private final XGMessenger source;
-	private XGAdressableSet<XGMessage> buffer = new XGAdressableSet<XGMessage>();
+	private final XGDevice device;
+	private XGMessageBuffer buffer = new XGMessageBuffer(this);
 
-	public XGSysexFile(XGMessenger src, String path)
+	public XGSysexFile(XGDevice dev, String path)
 	{	super(path);
-		this.source = src;
+		this.device = dev;
 	}
 
 	public void load(XGMessenger dest)
 	{	log.info("parsing started: " + this.getAbsolutePath());
+		if(dest == null) dest = this.buffer;
 		for(SysexMessage s : parse())
 		{	try
 			{	XGMessage m = XGMessage.newMessage(this, s);
 				m.setDestination(dest);
-				if(dest == null) buffer.add(m);
-				else dest.transmit(m);
+				dest.transmit(m);
 			}
-			catch (InvalidMidiDataException | InvalidXGAdressException | MidiUnavailableException e)
-			{	log.severe(e.getMessage());
+			catch (InvalidMidiDataException | InvalidXGAddressException | MidiUnavailableException e)
+			{	log.info(e.getMessage());
 			}
 		}
-		log.info(buffer.size() + " Messages parsed from " + this.getAbsolutePath());
+//		log.info( + " messages transmitted from " + this.getMessengerName() + " to " + dest.getMessengerName());
 	}
 
 	public Path selectFile(String s)
@@ -71,7 +71,6 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 		fc.setDialogTitle("select folder...");
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fc.setAcceptAllFileFilterUsed(false);
-//		fc.setFileFilter(SYX_FILEFILTER);
 		int res = fc.showDialog(XGWindow.getRootWindow(), "select");
 		if(res == JFileChooser.APPROVE_OPTION) return fc.getCurrentDirectory().toPath();
 		else return Paths.get(s);
@@ -105,28 +104,29 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 		}
 		catch (IOException e)
 		{	log.warning(e.getMessage());
-			return null;
+			return array;
 		}
 		return array;
 	}
 
-	public void transmit(XGMessage m)//zum SysexFile ("datei.syx")
-	{
+	@Override public void transmit(XGMessage m)//zum SysexFile ("datei.syx")
+	{	//TODO
 	}
 
-	public XGResponse request(XGRequest msg)//von SysexFile ("datei.syx")
-	{	return null;
+	@Override public XGResponse request(XGRequest msg)//von SysexFile ("datei.syx")
+	{	//TODO
+		return null;
 	}
 
 	public int getSysexID()
 	{	return this.getDevice().getSysexID();
 	}
 
-	public XGDevice getDevice()
-	{	return this.source.getDevice();
+	@Override public XGDevice getDevice()
+	{	return this.device;
 	}
 
-	public String getMessengerName()
+	@Override public String getMessengerName()
 	{	return this.getAbsolutePath();
 	}
 }

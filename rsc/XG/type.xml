@@ -1,16 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/object.xsd">
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/type.xsd">
 
-	<object>
+	<type>
 		<name>System</name>
 		<bulk>
 			<hi>0</hi>	<!-- Range über Minus möglich; rekursiver loop von hi nach lo-->
 			<mid>0</mid>
 			<lo>0-6</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
+		<name>Info</name>
+		<bulk>
+			<hi>1</hi>
+			<mid>0</mid>
+			<lo>0-15</lo>
+		</bulk>
+	</type>
+
+	<type>
 		<name>Reverb</name>
 		<bulk>
 			<hi>2</hi>
@@ -22,9 +31,9 @@
 			<mid>1</mid>
 			<lo>16-21</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Chorus</name>
 		<bulk>
 			<hi>2</hi>
@@ -36,9 +45,9 @@
 			<mid>1</mid>
 			<lo>48-53</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Variation</name>
 		<bulk>
 			<hi>2</hi>
@@ -60,9 +69,18 @@
 			<mid>1</mid>
 			<lo>112-117</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
+		<name>System EQ</name>
+		<bulk>
+			<hi>2</hi>
+			<mid>64</mid>
+			<lo>0-21</lo>
+		</bulk>
+	</type>
+
+	<type>
 		<name>Insertion</name>
 		<bulk>
 			<hi>3</hi>
@@ -89,68 +107,116 @@
 			<mid>0-127</mid>
 			<lo>48-66</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
+		<name>Display Data</name>
+		<bulk>
+			<hi>6</hi>
+			<mid>0</mid>
+			<lo>0-31</lo>
+		</bulk>
+		<bulk>
+			<hi>7</hi>
+			<mid>0</mid>
+			<lo>0-47</lo>
+		</bulk>
+	</type>
+
+	<type>
 		<name>Multipart</name>
 		<bulk>
 			<hi>8</hi>
-			<mid>79</mid>
+			<mid>0-127</mid>
 			<lo>0-40</lo>
 		</bulk>
 		<bulk>
 			<hi>8</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>48-110</lo>
 		</bulk>
 		<bulk>
 			<hi>8</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>112-115</lo>
 		</bulk>
 		<bulk>
 			<hi>8</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>116-127</lo>
 		</bulk>
 		<bulk>
 			<hi>10</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>16</lo>
 		</bulk>
 		<bulk>
 			<hi>10</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>32-33</lo>
 		</bulk>
 		<bulk>
 			<hi>10</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>34-39</lo>
 		</bulk>
 		<bulk>
 			<hi>10</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>48-54</lo>
 		</bulk>
 		<bulk>
 			<hi>10</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>38-62</lo>
 		</bulk>
 		<bulk>
 			<hi>10</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>64-69</lo>
 		</bulk>
 		<bulk>
 			<hi>9</hi>
-			<mid>0-79</mid>
+			<mid>0-127</mid>
 			<lo>0-22</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
+		<name>A/D Part</name>
+		<bulk>
+			<hi>16</hi>
+			<mid>0-127</mid>
+			<lo>0-20</lo>
+		</bulk>
+		<bulk>
+			<hi>16</hi>
+			<mid>0-127</mid>
+			<lo>48-96</lo>
+		</bulk>
+		<bulk>
+			<hi>17</hi>
+			<mid>0-127</mid>
+			<lo>0</lo>
+		</bulk>
+		<bulk>
+			<hi>17</hi>
+			<mid>0-127</mid>
+			<lo>1-3</lo>
+		</bulk>
+		<bulk>
+			<hi>18</hi>
+			<mid>0-127</mid>
+			<lo>48</lo>
+		</bulk>
+		<bulk>
+			<hi>18</hi>
+			<mid>0-127</mid>
+			<lo>56</lo>
+		</bulk>
+	</type>
+
+	<type>
 		<name>Drumset 1</name>
 		<bulk>
 			<hi>48</hi>
@@ -162,7 +228,7 @@
 			<mid>13-91</mid>
 			<lo>32-45</lo>
 		</bulk>
-		<bulk><!-- test -->
+		<bulk>
 			<hi>48</hi>
 			<mid>13-91</mid>
 			<lo>64</lo>
@@ -177,14 +243,14 @@
 			<mid>13-91</mid>
 			<lo>96-97</lo>
 		</bulk>
-		<bulk><!-- test -->
+		<bulk>
 			<hi>48</hi>
 			<mid>13-91</mid>
 			<lo>112-115</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Drumset 2</name>
 		<bulk>
 			<hi>49</hi>
@@ -199,6 +265,11 @@
 		<bulk>
 			<hi>49</hi>
 			<mid>13-91</mid>
+			<lo>64</lo>
+		</bulk>
+		<bulk>
+			<hi>49</hi>
+			<mid>13-91</mid>
 			<lo>80-81</lo>
 		</bulk>
 		<bulk>
@@ -206,9 +277,14 @@
 			<mid>13-91</mid>
 			<lo>96-97</lo>
 		</bulk>
-	</object>
+		<bulk>
+			<hi>49</hi>
+			<mid>13-91</mid>
+			<lo>112-115</lo>
+		</bulk>
+	</type>
 
-	<object>
+	<type>
 		<name>Drumset 3</name>
 		<bulk>
 			<hi>50</hi>
@@ -223,6 +299,11 @@
 		<bulk>
 			<hi>50</hi>
 			<mid>13-91</mid>
+			<lo>64</lo>
+		</bulk>
+		<bulk>
+			<hi>50</hi>
+			<mid>13-91</mid>
 			<lo>80-81</lo>
 		</bulk>
 		<bulk>
@@ -230,9 +311,14 @@
 			<mid>13-91</mid>
 			<lo>96-97</lo>
 		</bulk>
-	</object>
+		<bulk>
+			<hi>50</hi>
+			<mid>13-91</mid>
+			<lo>112-115</lo>
+		</bulk>
+	</type>
 
-	<object>
+	<type>
 		<name>Drumset 4</name>
 		<bulk>
 			<hi>51</hi>
@@ -247,6 +333,11 @@
 		<bulk>
 			<hi>51</hi>
 			<mid>13-91</mid>
+			<lo>64</lo>
+		</bulk>
+		<bulk>
+			<hi>51</hi>
+			<mid>13-91</mid>
 			<lo>80-81</lo>
 		</bulk>
 		<bulk>
@@ -254,9 +345,14 @@
 			<mid>13-91</mid>
 			<lo>96-97</lo>
 		</bulk>
-	</object>
+		<bulk>
+			<hi>51</hi>
+			<mid>13-91</mid>
+			<lo>112-115</lo>
+		</bulk>
+	</type>
 
-	<object><!-- test -->
+	<type>
 		<name>Plugin</name>
 		<bulk>
 			<hi>112</hi>
@@ -268,5 +364,5 @@
 			<mid>0-127</mid>
 			<lo>0-127</lo>
 		</bulk>
-	</object>
+	</type>
 </map>

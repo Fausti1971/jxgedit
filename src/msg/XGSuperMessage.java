@@ -3,10 +3,10 @@ package msg;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import adress.XGAdress;
-import adress.XGAdressable;
+import adress.XGAddress;
+import adress.XGAddressable;
 
-abstract class XGSuperMessage implements XGMessage, XGAdressable
+abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddressable
 {	protected static final Logger log = Logger.getAnonymousLogger();
 
 /****************************************************************************************************************************************/
@@ -33,47 +33,44 @@ abstract class XGSuperMessage implements XGMessage, XGAdressable
 		this.validate();
 	}
 
-	public byte[] getByteArray()
-	{	return this.data;}
+	@Override public byte[] getByteArray()
+	{	return this.data;
+	}
 
-	public XGMessenger getSource()
+	@Override public XGMessenger getSource()
 	{	return this.source;
 	}
 
-	public XGMessenger getDestination()
+	@Override public XGMessenger getDestination()
 	{	return this.destination;
 	}
 
-	public void setDestination(XGMessenger dest)
+	@Override public void setDestination(XGMessenger dest)
 	{	this.destination = dest;
 	}
 	
-	public long getTimeStamp()
+	@Override public long getTimeStamp()
 	{	return this.transmissionTimeStamp;
 	}
 
-	public void setTimeStamp(long time)
+	@Override public void setTimeStamp(long time)
 	{	this.transmissionTimeStamp = time;
 	}
 
-	public void validate() throws InvalidMidiDataException
-	{	if(!(this.getVendorID() == VENDOR && this.getModelID() == MODEL)) throw new InvalidMidiDataException("no xg data");
+	@Override public void validate() throws InvalidMidiDataException
+	{	if(this.getVendorID() != VENDOR || this.getModelID() != MODEL) throw new InvalidMidiDataException("no xg data");
 	}
 
-	public SysexMessage asSysexMessage() throws InvalidMidiDataException
+	@Override public SysexMessage asSysexMessage() throws InvalidMidiDataException
 	{	return new SysexMessage(this.data, this.data.length);
 	}
 
-	public XGAdress getAdress()
-	{	return new XGAdress(getHi(), getMid(), getLo());
-	}
-
-	public String getInfo()
-	{	return this.toString();
+	@Override public XGAddress getAdress()
+	{	return new XGAddress(getHi(), getMid(), getLo());
 	}
 
 	@Override public String toString()
-	{	return this.getClass().getSimpleName() + " " + this.getAdress();
+	{	return this.getClass().getSimpleName() + "/" + this.source.getDevice().getType(this.getAdress()) + "/" + this.getAdress();
 	}
 
 	protected abstract int getHi();

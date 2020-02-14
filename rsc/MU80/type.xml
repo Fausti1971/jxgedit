@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/object.xsd">
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/type.xsd">
 <!-- this table is used to identify ObjectType by adress and request dumps sequentially, if give ranges by using "-" dumps will be requested recursively-->
-	<object>
+	<type>
 		<name>System</name>
 		<bulk>
 			<hi>0</hi>
 			<mid>0</mid>
 			<lo>0-6</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Reverb</name>
 		<bulk>
 			<hi>2</hi>
@@ -22,9 +22,9 @@
 			<mid>1</mid>
 			<lo>16-21</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Chorus</name>
 		<bulk>
 			<hi>2</hi>
@@ -36,9 +36,9 @@
 			<mid>1</mid>
 			<lo>48-53</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Variation</name>
 		<bulk>
 			<hi>2</hi>
@@ -50,18 +50,18 @@
 			<mid>1</mid>
 			<lo>112-117</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>System EQ</name>
 		<bulk>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>0-21</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Insertion</name>
 		<bulk>
 			<hi>3</hi>
@@ -73,9 +73,9 @@
 			<mid>0</mid>
 			<lo>32-37</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Multipart</name>
 		<bulk>
 			<hi>8</hi>
@@ -87,9 +87,9 @@
 			<mid>0-31</mid>
 			<lo>48-110</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>A/D-Part</name>
 		<bulk>
 			<hi>16</hi>
@@ -101,41 +101,41 @@
 			<mid>0-1</mid>
 			<lo>48-96</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Drumset 1</name>
 		<bulk>
 			<hi>48</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Drumset 2</name>
 		<bulk>
 			<hi>49</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Drumset 3</name>
 		<bulk>
 			<hi>50</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>
 		</bulk>
-	</object>
+	</type>
 
-	<object>
+	<type>
 		<name>Drumset 4</name>
 		<bulk>
 			<hi>51</hi>
 			<mid>13-91</mid>
 			<lo>0-15</lo>
 		</bulk>
-	</object>
+	</type>
 </map>

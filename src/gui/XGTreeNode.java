@@ -17,7 +17,7 @@ import javax.swing.tree.TreePath;
  *
  */
 
-public interface XGTreeNode extends TreeNode, XGDisplayable
+public interface XGTreeNode extends TreeNode, XGDisplayable, XGAction
 {
 	static final Logger log = Logger.getAnonymousLogger();
 
@@ -34,7 +34,7 @@ public interface XGTreeNode extends TreeNode, XGDisplayable
 	{	JTree t = (JTree)this.getGuiComponent();
 		TreePath p = this.getTreePath();
 		Rectangle r = t.getPathBounds(p);
-		t.repaint(r);
+		if(r != null) t.repaint(r);	//falls sichtbar
 	}
 
 	default void reloadTree()
@@ -51,22 +51,9 @@ public interface XGTreeNode extends TreeNode, XGDisplayable
 		return new TreePath(array.toArray());
 	}
 
-//	default XGTreeNode getNextOrFirst()
-//	{	TreeNode p = this.getParent();
-//		if(p == null) return this;
-//		int index = p.getIndex(this);
-//		int max = p.getChildCount() - 1;
-//		if(++index > max) index = 0;
-//		return (XGTreeNode)p.getChildAt(index);
-//	}
-//
-//	default XGTreeNode getPreviousOrLast()
-//	{	TreeNode p = this.getParent();
-//		if(p == null) return this;
-//		int index = p.getIndex(this);
-//		if(--index < 0) index = p.getChildCount() - 1;
-//		return (XGTreeNode)p.getChildAt(index);
-//	}
+	default String getNodeText()
+	{	return this.toString();
+	}
 
 	@Override default int getChildCount()
 	{	return Collections.list(this.children()).size();

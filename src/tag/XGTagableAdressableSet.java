@@ -1,39 +1,44 @@
 package tag;
 
 import java.util.Iterator;
-import adress.XGAdress;
-import adress.XGAdressable;
-import adress.XGAdressableSet;
+import java.util.logging.Logger;
+import adress.XGAddress;
+import adress.XGAddressable;
+import adress.XGAddressableSet;
 
-public class XGTagableAdressableSet<T extends XGAdressable & XGTagable> implements Iterable<T>
-{
-	private XGAdressableSet<T> adrSet = new XGAdressableSet<>();
+public class XGTagableAdressableSet<T extends XGAddressable & XGTagable> implements Iterable<T>
+{	private static Logger log = Logger.getAnonymousLogger();
+	private XGAddressableSet<T> adrSet = new XGAddressableSet<>();
 	private XGTagableSet<T> tagSet = new XGTagableSet<T>();
 
 	public void add(T obj)
 	{	this.adrSet.add(obj);
 		this.tagSet.add(obj);
-		if(this.tagSet.size() != this.adrSet.size()) throw new RuntimeException("tagset/adressset difference!");
+		if(this.tagSet.size() != this.adrSet.size()) throw new RuntimeException("adresses/tags =" + this.adrSet.size() + "/" + this.tagSet.size() + " by: " + obj);
 	}
 
 	public T get(String tag)
 	{	return this.tagSet.get(tag);
 	}
 
-	public T get(XGAdress adr)
+	public T get(XGAddress adr)
 	{	return this.adrSet.get(adr);
 	}
 
-	public T getOrDefault(XGAdress adr, T def)
-	{	if(this.adrSet.contains(adr)) return this.get(adr);
-		else return def;
+	public T getOrDefault(XGAddress adr, T def)
+	{	T v = this.adrSet.getFirstValid(adr);
+		if(v == null)
+		{	log.info(def.getClass().getSimpleName() + " " + adr + " not found, using " + def);
+			return def;
+		}
+		return v;
 	}
 
 	public int size()
 	{	return adrSet.size();
 	}
 
-	public boolean containsKey(XGAdress adr)
+	public boolean containsKey(XGAddress adr)
 	{	return this.adrSet.contains(adr);
 	}
 

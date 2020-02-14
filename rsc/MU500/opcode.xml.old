@@ -14,11 +14,11 @@
 
 	<opcode>
 		<name>info_name</name>
-		<adress>
+		<address>
 			<hi>1</hi>
 			<mid>0</mid>
 			<lo>0</lo>
-		</adress>
+		</address>
 		<byteCount>13</byteCount>
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>String</valueClass>
@@ -26,11 +26,11 @@
 
 	<opcode>
 		<name>display_letter</name>
-		<adress>
+		<address>
 			<hi>6</hi>
 			<mid>0</mid>
 			<lo>0</lo>
-		</adress>
+		</address>
 		<byteCount>32</byteCount>
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>String</valueClass>
@@ -38,40 +38,40 @@
 
 	<opcode>
 		<name>rev_type</name>
-		<adress>
+		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>0</lo>
-		</adress>
+		</address>
 		<byteCount>2</byteCount>
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>Integer</valueClass>
 	</opcode>
 	<opcode>
 		<name>rev_1</name>
-		<adress>
+		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>2</lo>
-		</adress>
+		</address>
 	</opcode>
 
 	<opcode>
 		<name>mp_elRes</name>
-		<adress>
+		<address>
 			<hi>8</hi>
 			<lo>0</lo>
-		</adress>
+		</address>
 		<byteCount>1</byteCount>
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>Integer</valueClass>
 	</opcode>
 	<opcode>
 		<name>mp_bankMsb</name>
-		<adress>
+		<address>
 			<hi>8</hi>
 			<lo>1</lo>
-		</adress>
+		</address>
 		<byteCount>1</byteCount>
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>Integer</valueClass>
@@ -79,10 +79,10 @@
 
 	<opcode>
 		<name>mp_ch</name>
-		<adress>
+		<address>
 			<hi>8</hi>
 			<lo>4</lo>
-		</adress>
+		</address>
 		<byteCount>1</byteCount>
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>Integer</valueClass>
@@ -90,10 +90,10 @@
 
 	<opcode>
 		<name>mp_detune</name>
-		<adress>
+		<address>
 			<hi>8</hi>
 			<lo>9</lo>
-		</adress>
+		</address>
 		<byteCount>2</byteCount>
 		<byteType>NIBBLE</byteType>
 		<valueClass>Integer</valueClass>
@@ -101,10 +101,10 @@
 
 	<opcode>
 		<name>mp_envAtk</name>
-		<adress>
+		<address>
 			<hi>8</hi>
 			<lo>26</lo>
-		</adress>
+		</address>
 	</opcode>
 
 </map>

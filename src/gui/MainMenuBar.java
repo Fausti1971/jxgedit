@@ -9,7 +9,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JSeparator;
 import application.JXG;
 import file.XGSysexFile;
-import obj.XGObjectType;
+import obj.XGType;
 
 public class MainMenuBar extends JMenuBar
 {	/**
@@ -58,7 +58,7 @@ public class MainMenuBar extends JMenuBar
 
 		this.download.addActionListener(new ActionListener()
 		{	public void actionPerformed(ActionEvent e)
-			{	XGObjectType.requestAll();
+			{	XGType.requestAll();
 			}
 		});
 		this.midi.add(this.download);

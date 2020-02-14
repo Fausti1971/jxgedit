@@ -1,13 +1,13 @@
 package value;
 
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import msg.XGMessenger;
 
 public class XGStringValue extends XGValue
 {	String content;
 
-	public XGStringValue(XGMessenger src, XGAdress adr) throws InvalidXGAdressException
+	public XGStringValue(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
 	{	super(src, adr);
 	}
 

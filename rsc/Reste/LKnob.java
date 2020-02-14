@@ -11,10 +11,6 @@ public class LKnob extends Control
 
 /**************************************************************************************************************/
 
-	/*Parameter muss folgendes bereitstellen
-	get- und setValue-Methode, getName-Methode, getMin und -Max-Methode
-	*/
-
 	public LKnob(XGParameter p)
 	{	this.setMaxSize(W, H);
 		this.setMinSize(W, H);

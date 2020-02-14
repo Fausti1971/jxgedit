@@ -2,78 +2,104 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import adress.InvalidXGAdressException;
-import adress.XGAdress;
-import adress.XGAdressableSet;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
+import adress.XGAddressableSet;
 import value.XGValue;
 
 public class XGMessageBulkDump extends XGSuperMessage implements XGBulkDump
-{	private static final int SIZE_SIZE = 2, SIZE_OFFS = 4, MSG = 0, HI_OFFS = 6, MID_OFFS = 7, LO_OFFS = 8, DATA_OFFS = 9;
+{	private static final int OVERHAED = 11, SIZE_SIZE = 2, SIZE_OFFS = 4, MSG = 0, HI_OFFS = 6, MID_OFFS = 7, LO_OFFS = 8, DATA_OFFS = 9;
 
-	protected XGMessageBulkDump(XGMessenger src, byte[] array) throws InvalidMidiDataException
+	private XGMessageBulkDump(XGMessenger src, byte[] array) throws InvalidMidiDataException
 	{	super(src, array);
-		checkSum();
+		this.checkSum();
 	}
 
-	public XGMessageBulkDump(XGMessenger src, XGAdress adr) throws InvalidXGAdressException	//wird manuell angelegt und als response benötigt
+	public XGMessageBulkDump(XGMessenger src, XGAddress adr) throws InvalidXGAddressException	//wird manuell angelegt und als response benötigt
 	{	super(src, new byte[11]);
-		setMessageID(MSG);
-		setDumpSize(0);
-		encodeMidiByteFromInteger(HI_OFFS, adr.getHi());
-		encodeMidiByteFromInteger(MID_OFFS, adr.getMid());
-		encodeMidiByteFromInteger(LO_OFFS, adr.getLo());
+		this.setMessageID(MSG);
+		this.setDumpSize(0);
+		this.setHi(adr.getHi());
+		this.setMid(adr.getMid());
+		this.setLo(adr.getLo());
 		setEOX(10);
 	}
 
-	public XGMessageBulkDump(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAdressException	//für MIDI und FILE
+	public XGMessageBulkDump(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException	//für MIDI und FILE
 	{	super(src, msg);
-		checkSum();
+		this.checkSum();
 	}
 
-	protected int getHi()
-	{	return decodeMidiByteToInteger(HI_OFFS);}
+	private XGMessageBulkDump(XGMessenger src, XGBulkDump blk) throws InvalidXGAddressException
+	{	super(src, new byte[OVERHAED + blk.getBulkSize()]);
+		this.setMessageID();
+		this.setHi(blk.getAdress().getHi());
+		this.setMid(blk.getAdress().getMid());
+		this.setLo(blk.getAdress().getLo());
+		this.setDumpSize(blk.getBulkSize());
+		this.encodeByteArray(DATA_OFFS, blk.getBulkData());
+		this.encodeMidiByteFromInteger(DATA_OFFS + blk.getBulkSize(), 0 - this.calcChecksum(SIZE_OFFS, DATA_OFFS + blk.getBulkSize() - 1));
+		this.setEOX(this.getByteArray().length - 1);
+	}
 
-	protected int getMid()
-	{return decodeMidiByteToInteger(MID_OFFS);}
+	@Override protected int getHi()
+	{	return decodeMidiByteToInteger(HI_OFFS);
+	}
 
-	protected int getLo()
-	{	return decodeMidiByteToInteger(LO_OFFS);}
+	@Override protected int getMid()
+	{return decodeMidiByteToInteger(MID_OFFS);
+	}
 
-	protected void setHi(int hi)
-	{	encodeMidiByteFromInteger(HI_OFFS, hi);}
+	@Override protected int getLo()
+	{	return decodeMidiByteToInteger(LO_OFFS);
+	}
 
-	protected void setMid(int mid)
-	{	encodeMidiByteFromInteger(MID_OFFS, mid);}
+	@Override protected void setHi(int hi)
+	{	encodeMidiByteFromInteger(HI_OFFS, hi);
+	}
 
-	protected void setLo(int lo)
-	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
+	@Override protected void setMid(int mid)
+	{	encodeMidiByteFromInteger(MID_OFFS, mid);
+	}
 
-	public int getDumpSize()
-	{	return decodeMidiBytesToInteger(SIZE_OFFS, SIZE_SIZE);}
+	@Override protected void setLo(int lo)
+	{	encodeMidiByteFromInteger(LO_OFFS, lo);
+	}
+
+	@Override public int getBulkSize()
+	{	return decodeMidiBytesToInteger(SIZE_OFFS, SIZE_SIZE);
+	}
 
 	private void setDumpSize(int size)
-	{	encodeMidiBytesFromInteger(SIZE_OFFS, SIZE_SIZE, size);}
+	{	encodeMidiBytesFromInteger(SIZE_OFFS, SIZE_SIZE, size);
+	}
 
-	protected void setMessageID()
-	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);}
+	@Override protected void setMessageID()
+	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
+	}
 
 	private void checkSum() throws InvalidMidiDataException
-	{	if(((calcChecksum(SIZE_OFFS, DATA_OFFS + getDumpSize()) & MIDIBYTEMASK) != 0)) throw new InvalidMidiDataException("Checksum Error!");}
+	{	if(((calcChecksum(SIZE_OFFS, DATA_OFFS + this.getBulkSize()) & MIDIBYTEMASK) != 0)) throw new InvalidMidiDataException("checksum error!");
+	}
 
-	public int getBaseOffset()
+	@Override public int getBaseOffset()
 	{	return DATA_OFFS;
 	}
 
-	public XGAdressableSet<XGValue> getValues() throws InvalidXGAdressException
-	{	XGAdressableSet<XGValue> set = new XGAdressableSet<XGValue>();
-		int end = getDumpSize() + DATA_OFFS, offset = getLo();
+	@Override public XGAddressableSet<XGValue> getValues() throws InvalidXGAddressException
+	{	XGAddressableSet<XGValue> set = new XGAddressableSet<XGValue>();
+		int end = getBulkSize() + DATA_OFFS, offset = getLo();
 		for(int i = DATA_OFFS; i < end;)
-		{	XGValue v = XGValue.factory(this.getSource(), new XGAdress(getHi(), getMid(), offset));
+		{	XGValue v = XGValue.factory(this.getSource(), new XGAddress(getHi(), getMid(), offset));
 			set.add(v);
 			decodeXGValue(i, v);
 			offset += v.getOpcode().getByteCount();
 			i += v.getOpcode().getByteCount();
 		}
 		return set;
+	}
+
+	@Override public byte[] getBulkData()
+	{	return null;
 	}
 }
