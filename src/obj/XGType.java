@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -17,8 +16,8 @@ import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.ConfigurationConstants;
 import device.XGDevice;
+import gui.XGTree;
 import gui.XGTreeNode;
-import gui.XGWindow;
 import tag.XGTagable;
 import tag.XGTagableSet;
 import value.XGValue;
@@ -37,7 +36,7 @@ public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstant
 		{	return set;
 		}
 		XMLNode xml = XMLNode.parse(file);
-			for(XMLNode x : xml.getChildren())
+			for(XMLNode x : xml.getChildNodes())
 			{	if(x.getTag().equals(TAG_TYPE))
 				{	XGType t = new XGType(dev, x);
 					set.add(t);
@@ -74,6 +73,7 @@ public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstant
 */
 /**********************************************************************************************************/
 
+	private XGTree tree;
 	private final XGDevice device;
 	private boolean isSelected = false;
 	private final String name;
@@ -100,7 +100,7 @@ public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstant
 	XGType(XGDevice dev, XMLNode n)
 	{	this(dev, n.getChildNode(TAG_NAME).getTextContent(), new HashSet<>());
 
-		for(XMLNode seq : n.getChildren())
+		for(XMLNode seq : n.getChildNodes())
 			if(seq.getTag().equals(TAG_DUMPSEQ)) this.bulks.add(new XGBulkDumpSequence(seq));
 	}
 
@@ -181,10 +181,6 @@ public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstant
 	{	return this.name;
 	}
 
-	public JTree getTree()
-	{	return (JTree)XGWindow.getRootWindow().getRootComponent();
-	}
-
 	@Override public boolean isSelected()
 	{	return this.isSelected;
 	}
@@ -193,7 +189,7 @@ public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstant
 	{	this.isSelected = s;
 	}
 
-	@Override public Set<String> getActions()
+	@Override public Set<String> getContexts()
 	{
 		return new LinkedHashSet<>();
 	}
@@ -201,5 +197,17 @@ public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstant
 	@Override public void actionPerformed(ActionEvent e)
 	{
 		System.out.println("action: " + e.getActionCommand() + " " + this.getClass().getSimpleName());
+	}
+
+	@Override public void setTree(XGTree t)
+	{	this.tree = t;
+	}
+
+	@Override public XGTree getTree()
+	{	return this.tree;
+	}
+
+	@Override public void nodeFocussed(boolean b)
+	{
 	}
 }

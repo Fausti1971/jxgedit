@@ -1,8 +1,7 @@
 package device;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Vector;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
@@ -11,18 +10,8 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.swing.JComponent;
-import javax.swing.JList;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import adress.InvalidXGAddressException;
 import application.Configurable;
-import gui.XGDisplayable;
-import gui.XGFrame;
 import msg.XGMessage;
 import msg.XGMessageBuffer;
 import msg.XGMessenger;
@@ -33,18 +22,18 @@ import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
 import xml.XMLNode;
 
-public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotification, XGDisplayable, Configurable, Receiver, AutoCloseable
+public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotification, Configurable, Receiver, AutoCloseable
 {	static Logger log = Logger.getAnonymousLogger();
 
-	public static Map<String, Info> getInputs()
-	{	Map<String, Info> inputs = new LinkedHashMap<>();
+	public static Set<Info> getInputs()
+	{	Set<Info> inputs = new LinkedHashSet<>();
 		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
 		MidiDevice tmpDev = null;
-		for (MidiDevice.Info i : infos)
+		for (MidiDevice.Info i : infos)	// i == i.getName() == dev.getDeviceInfo()
 		{	try
 			{	tmpDev = MidiSystem.getMidiDevice(i);
 				if(tmpDev.getMaxTransmitters() == 0) continue;
-				inputs.put(i.getName(), i);
+				inputs.add(i);
 			}
 			catch (MidiUnavailableException e)
 			{	log.info(e.getMessage());
@@ -53,15 +42,15 @@ public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotificat
 		return inputs;
 	}
 	
-	public static Map<String, Info> getOutputs()
-	{	Map<String, Info> outputs = new LinkedHashMap<>();
+	public static Set<Info> getOutputs()
+	{	Set<Info> outputs = new LinkedHashSet<>();
 		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
 		MidiDevice tmpDev = null;
 		for (MidiDevice.Info i : infos)
 		{	try
 			{	tmpDev = MidiSystem.getMidiDevice(i);
 				if(tmpDev.getMaxReceivers() == 0) continue;
-				outputs.put(i.getName(), i);
+				outputs.add(i);
 			}
 			catch (MidiUnavailableException e)
 			{	log.info(e.getMessage());
@@ -72,6 +61,7 @@ public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotificat
 
 /******************************************************************************************************************/
 
+	private final Thread thread;
 	private final XGDevice device;
 	private final XMLNode config;
 	private Receiver transmitter;
@@ -96,68 +86,75 @@ public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotificat
 		catch(CoreMidiException e)
 		{	e.printStackTrace();
 		}
+		this.thread = new Thread(this);
+		this.thread.run();
 	}
 
 	private void setOutput(String s)
-	{	if(s == null || !getOutputs().containsKey(s)) return;
-		try
-		{	this.setOutput(MidiSystem.getMidiDevice(getOutputs().get(s)));
-		}
-		catch(MidiUnavailableException e)
-		{	e.printStackTrace();
+	{	for(Info i : getOutputs())
+		{	if(i.getName().equals(s))
+				try
+				{	this.setOutput(MidiSystem.getMidiDevice(i));
+				}
+				catch(MidiUnavailableException e)
+				{	e.printStackTrace();
+				}
 		}
 	}
 
 	public void setOutput(MidiDevice dev)
 	{	if(this.transmitter != null) this.transmitter.close();
 		if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
-		if(dev == null) return;
-		try
-		{	dev.open();
-			this.midiOutput = dev;
-			this.transmitter = dev.getReceiver();
-		}
-		catch(MidiUnavailableException e)
-		{	e.printStackTrace();
-			try
-			{	this.transmitter = MidiSystem.getReceiver();
+		this.midiOutput = dev;
+		if(dev != null)
+		{	try
+			{	dev.open();
+				this.transmitter = dev.getReceiver();
 			}
-			catch(MidiUnavailableException e1)
-			{	e1.printStackTrace();
+			catch(MidiUnavailableException e)
+			{	e.printStackTrace();
+				try
+				{	this.transmitter = MidiSystem.getReceiver();
+				}
+				catch(MidiUnavailableException e1)
+				{	e1.printStackTrace();
+				}
 			}
 		}
-		log.info(getOutputName());
+		log.info(this.getOutputName());
 		this.config.getChildNodeOrNew(TAG_MIDIOUTPUT).setTextContent(this.getOutputName());
 //		this.notifyConfigurationListeners();
 		return;
 	}
 
 	private void setInput(String s)
-	{	if(s == null || !getInputs().containsKey(s)) return;
-		try
-		{	setInput(MidiSystem.getMidiDevice(getInputs().get(s)));
-		}
-		catch(MidiUnavailableException e)
-		{	e.printStackTrace();
+	{	for(Info i : getInputs())
+		{	if(i.getName().equals(s))
+				try
+				{	this.setInput(MidiSystem.getMidiDevice(i));
+				}
+				catch(MidiUnavailableException e)
+				{	e.printStackTrace();
+				}
 		}
 	}
 
 	public void setInput(MidiDevice dev)
 	{	if(this.midiInput != null && this.midiInput.isOpen()) this.midiInput.close();
-		
-		if(dev == null) return;
-		try
-		{	dev.getTransmitter().setReceiver(this);
-			dev.open();
-			this.midiInput = dev;
-		}
-		catch(MidiUnavailableException e)
-		{	e.printStackTrace();
-			try
-			{	MidiSystem.getTransmitter().setReceiver(this);
+		this.midiInput = dev;
+		if(dev != null)
+		{	try
+			{	dev.getTransmitter().setReceiver(this);
+				dev.open();
 			}
-			catch(MidiUnavailableException e1)
-			{	e1.printStackTrace();
+			catch(MidiUnavailableException e)
+			{	e.printStackTrace();
+				try
+				{	MidiSystem.getTransmitter().setReceiver(this);
+				}
+				catch(MidiUnavailableException e1)
+				{	e1.printStackTrace();
+				}
 			}
 		}
 		log.info(this.getInputName());
@@ -274,54 +271,8 @@ public class XGMidi implements XGDeviceConstants, XGMessenger, CoreMidiNotificat
 	{	return this.config;
 	}
 
-	@Override public JComponent getGuiComponent()
-	{	XGFrame root = new XGFrame("midi");
-//		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
-
-		JList<String> inp = new JList<>(new Vector<>(XGMidi.getInputs().keySet()));
-		inp.setBackground(root.getBackground());
-		inp.setAlignmentX(0.5f);
-		inp.setAlignmentY(0.5f);
-//		inp.setBorder(getDefaultBorder("input"));
-		inp.setSelectedValue(this.getInputName(), true);
-		inp.addListSelectionListener(new ListSelectionListener()
-		{	@Override public void valueChanged(ListSelectionEvent e)
-			{	if(e.getValueIsAdjusting()) return;
-				JList<String> l = (JList<String>)e.getSource();
-				setInput(l.getSelectedValue());
-			}
-		});
-		root.add(inp);
-		
-		JList<String> out = new JList<>(new Vector<>(XGMidi.getOutputs().keySet()));
-		out.setBackground(root.getBackground());
-		out.setAlignmentX(0.5f);
-		out.setAlignmentY(0.5f);
-//		out.setBorder(getDefaultBorder("output"));
-		out.setSelectedValue(this.getOutputName(), true);
-		out.addListSelectionListener(new ListSelectionListener()
-		{	@Override public void valueChanged(ListSelectionEvent e)
-			{	if(e.getValueIsAdjusting()) return;
-				JList<String> l = (JList<String>)e.getSource();
-				setOutput(l.getSelectedValue());
-			}
-		});
-		root.add(out);
-
-		JSpinner timeout = new JSpinner();
-		timeout.setAlignmentX(0.5f);
-		timeout.setAlignmentY(0.5f);
-//		timeout.setBorder(getDefaultBorder("timeout"));
-		timeout.setModel(new SpinnerNumberModel(this.getTimeout(), 30, 1000, 10));
-		timeout.addChangeListener(new ChangeListener()
-		{	@Override public void stateChanged(ChangeEvent e)
-			{	JSpinner s = (JSpinner)e.getSource();
-				setTimeout((int)s.getModel().getValue());
-			}
-		});
-		root.add(timeout);
-
-		return root;
+	@Override public void run()
+	{	
 	}
 
 }

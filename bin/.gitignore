@@ -1,5 +1,12 @@
-/msg/
+/.DS_Store
+/adress/
 /application/
 /device/
-/gui/
+/file/
+/msg/
 /obj/
+/opcode/
+/parm/
+/tag/
+/value/
+/xml/

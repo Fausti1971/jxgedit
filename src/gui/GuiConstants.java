@@ -2,13 +2,15 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import javax.swing.UIManager;
 import application.ConfigurationConstants;
 
 public interface GuiConstants extends ConfigurationConstants
 {
 	static Color
-		COL_NODESELECTEDBACK = Color.lightGray,
-		COL_FOCUS = Color.blue,
+		COL_NODESELECTEDBACK = UIManager.getColor("Tree.selectionBackground"),
+		COL_NODEBACK = UIManager.getColor("Tree.textBackground"),
+		COL_NODEFOCUS = UIManager.getColor("Tree.selectionBorderColor"),
 		COL_NODETEXT = Color.darkGray,
 		COL_NODESELECTEDTEXT = Color.white,
 

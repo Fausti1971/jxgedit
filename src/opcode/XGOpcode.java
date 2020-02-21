@@ -27,7 +27,7 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 			return opcodes;
 		}
 		XMLNode xml = XMLNode.parse(file);
-			for(XMLNode n : xml.getChildren())
+			for(XMLNode n : xml.getChildNodes())
 				if(n.getTag().equals(TAG_OPCODE))
 					opcodes.add(new XGOpcode(n));
 		log.info(opcodes.size() + " opcodes initialized from: " + file);

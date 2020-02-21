@@ -1,10 +1,9 @@
 package gui;
 
-import java.awt.Component;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-public class XGFrame extends JPanel implements XGComponent, XGColorable, XGFrameable
+public class XGFrame extends JPanel implements XGBorderable
 {	/**
 	 * 
 	 */
@@ -12,27 +11,13 @@ public class XGFrame extends JPanel implements XGComponent, XGColorable, XGFrame
 
 /********************************************************************************************************************/
 
-	private String text;
-
-	public XGFrame(String txt)
-	{	this.text = txt;
-		this.colorize();
-		this.framize(txt);
+	public XGFrame(String text)
+	{	super();
+		this.setName(text);
+//		this.colorize();
+		this.borderize();
 	}
-
-	public JComponent getGuiComponent()
+	@Override public JComponent getJComponent()
 	{	return this;
-	}
-
-	public Component getParentComponent()
-	{	return this.getGuiComponent().getParent();
-	}
-
-	public void leftClicked()
-	{	
-	}
-
-	public void rightClicked()
-	{	
 	}
 }

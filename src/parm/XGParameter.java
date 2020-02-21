@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 import application.ConfigurationConstants;
 import device.XGDevice;
+import parm.XGTranslationConstants.XGTranslator;
 import tag.XGTagable;
 import tag.XGTagableSet;
 import xml.XMLNode;
@@ -22,7 +23,7 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 		{	return set;
 		}
 		XMLNode xml = XMLNode.parse(file);
-		for(XMLNode x : xml.getChildren())
+		for(XMLNode x : xml.getChildNodes())
 			if(x.getTag().equals(TAG_PARAMETER))
 				set.add(new XGParameter(dev, x));
 		
@@ -59,11 +60,10 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 /*****************************************************************************************************/
 
 	private final XGDevice device;
-	private final String name;
+	private final String tag, longName, shortName;
 //	private final XGOpcode opcode;
 //	private final XGObjectType objectType;
 	private final int minValue, maxValue;
-	private final String longName, shortName;
 	private final XGValueTranslator valueTranslator;
 	private final XGTranslationMap translationMap;
 	private final int mutableKey;
@@ -71,7 +71,7 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 
 	public XGParameter(XGDevice dev, String tag)
 	{	this.device = dev;
-		this.name = tag;
+		this.tag = tag;
 		this.minValue = DEF_MIN;
 		this.maxValue = DEF_MAX;
 		this.valueTranslator = DEF_TRANSLATOR;
@@ -82,15 +82,28 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 		this.dependsOf = null;
 	}
 
+	public XGParameter(String tag, String longN, String shortN, int min, int max, XGTranslator t, XGTranslationMap translMap)
+	{	this.device = null;
+		this.tag = tag;
+		this.longName = longN;
+		this.shortName = shortN;
+		this.minValue = min;
+		this.maxValue = max;
+		this.valueTranslator = XGValueTranslator.getTranslator(t);
+		this.translationMap = translMap;
+		this.mutableKey = 0;
+		this.dependsOf = null;
+	}
+
 	public XGParameter(XGDevice dev, XMLNode n)
 	{	this.device = dev;
-		this.name = n.getChildNode(TAG_NAME).getTextContent();
+		this.tag = n.getChildNode(TAG_NAME).getTextContent();
 //		this.opcode = XGOpcode.getOpcode(this.tag);
 //		this.objectType = XGObjectType.getObjectTypeOrNew(this.device, this.opcode.getAdress());
 		this.minValue = n.parseChildNodeIntegerContent(TAG_MIN, DEF_MIN);
 		this.maxValue = n.parseChildNodeIntegerContent(TAG_MAX, DEF_MAX);
-		this.longName = n.getChildNodeTextContent(TAG_LONGNAME, this.name);
-		this.shortName = n.getChildNodeTextContent(TAG_SHORTNAME, this.name);
+		this.longName = n.getChildNodeTextContent(TAG_LONGNAME, this.tag);
+		this.shortName = n.getChildNodeTextContent(TAG_SHORTNAME, this.tag);
 		this.valueTranslator = XGValueTranslator.getTranslator(n.getChildNodeTextContent(TAG_TRANSLATOR, ""));
 		XMLNode t = n.getChildNode(TAG_TRANSLATIONMAP);
 		if(t != null) this.translationMap = dev.getTranslations().get(t.getTextContent());
@@ -101,7 +114,7 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 	}
 
 	@Override public String getTag()
-	{	return this.name;
+	{	return this.tag;
 	}
 
 	public int getMinValue()

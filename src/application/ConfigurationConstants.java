@@ -1,9 +1,14 @@
 package application;
+
+//JXG: Version, Date, Time, WindowX, WindowY, WindowW, WindowH
+
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public interface ConfigurationConstants
 {
+	static final int HASH = 17;
+
 	static final String XML_CONFIG = "config.xml";
 	static final String XML_OPCODE = "opcode.xml";
 	static final String XML_TYPE = "type.xml";
@@ -27,7 +32,4 @@ public interface ConfigurationConstants
 		TAG_CONFIG = "config",
 		TAG_VERSION = "version",
 		TAG_DEVICE = "device";
-
-//	JXG: Version, Date, Time, WindowX, WindowY, WindowW, WindowH
-//	Device: MidiInput, MidiOutput, MIidiTimeout, SysexID, LastDumpFile, Name
 }

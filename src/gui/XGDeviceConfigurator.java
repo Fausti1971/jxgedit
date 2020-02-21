@@ -11,53 +11,56 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import application.ConfigurationConstants;
-import device.XGDevice;
+import device.XGDeviceConstants;
+import device.XGMidiConfigurator;
 import file.XGSysexFile;
 import xml.XMLNode;
 
-public class XGDeviceConfigurator implements ConfigurationConstants, XGComponent
-{
-	private XGDevice device;
+public class XGDeviceConfigurator extends XGFrame implements XGComponent, XGDeviceConstants
+{	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	public XGDeviceConfigurator(XGDevice dev)
-	{	if(dev == null) dev = new XGDevice(new XMLNode(TAG_DEVICE, null));
-		this.device = dev;
-	}
+/***************************************************************************************************************/
 
-	@Override public JComponent getGuiComponent()
-	{	XGFrame root = new XGFrame("device");
-		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
+	private final XMLNode config;
 
-		root.add(this.device.getMidi().getGuiComponent());
+	public XGDeviceConfigurator(XMLNode cfg)
+	{	super("device");
+		if(cfg == null) cfg = new XMLNode(TAG_DEVICE, null);
+		this.config = cfg;
+		
+		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+		this.add(new XGMidiConfigurator(this.config));
 
 		JSpinner sp = new JSpinner();
-		sp.setAlignmentX(0.5f);
-		sp.setAlignmentY(0.5f);
 //			sp.setBorder(getDefaultBorder("sysex ID"));
-		sp.setModel(new SpinnerNumberModel(this.device.getSysexID(), 0, 15, 1));
+		sp.setModel(new SpinnerNumberModel(this.config.parseChildNodeIntegerContent(TAG_SYSEXID, 0), 0, 15, 1));
 		sp.addChangeListener(new ChangeListener()
 		{	@Override public void stateChanged(ChangeEvent e)
 			{	JSpinner s = (JSpinner)e.getSource();
-				this.device.setSysexID((int)s.getModel().getValue());
+				config.getChildNodeOrNew(TAG_SYSEXID).setTextContent((int)s.getModel().getValue());
 			}
 		});
-		root.add(sp);
+		this.add(sp);
 
-		JButton btn = new JButton(this.device.getDefDumpPath().toString());
+		String s = this.config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).getTextContent();
+		JButton btn = new JButton(s);
 		btn.setAlignmentX(0.5f);
 		btn.addActionListener(new ActionListener()
 		{	@Override public void actionPerformed(ActionEvent e)
-			{	XGSysexFile f = new XGSysexFile(null, this.device.getDefDumpPath().toString());
+			{	XGSysexFile f = new XGSysexFile(null, s);
 				Path p = f.selectPath(f.toString());
-				this.device.setDefDumpPath(p);
+				config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).setTextContent(p.toString());
 				btn.setText(p.toString());
 				btn.getTopLevelAncestor().revalidate();
 			}
 		});
-		root.add(btn);
+		this.add(btn);
 
-		return root;
+//		this.setVisible(true);
 	}
 
 	@Override public void setForeground(Color col)
@@ -66,5 +69,9 @@ public class XGDeviceConfigurator implements ConfigurationConstants, XGComponent
 
 	@Override public void setBackground(Color col)
 	{
+	}
+
+	@Override public JComponent getJComponent()
+	{	return this;
 	}
 }

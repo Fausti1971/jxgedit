@@ -5,13 +5,12 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import application.Configurable;
 import application.JXG;
 import xml.XMLNode;
 
-public class XGRootWindow extends XGWindow implements Configurable, WindowListener, ComponentListener, XGColorable
+public class XGRootWindow extends XGWindow implements Configurable, WindowListener, ComponentListener
 {	/**
 	 * 
 	 */
@@ -87,9 +86,5 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 
 	@Override public void componentHidden(ComponentEvent e)
 	{
-	}
-
-	@Override public JComponent getGuiComponent()
-	{	return this.getRootComponent();
 	}
 }

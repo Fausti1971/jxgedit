@@ -5,40 +5,45 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
-import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
 /**
- * qualifiziert das implementierende Objekt als in einem Baum darstellbar.
+ * qualifiziert das implementierende Objekt als in einem XGTree darstellbar.
  * @author thomas
  *
  */
 
-public interface XGTreeNode extends TreeNode, XGDisplayable, XGAction
+public interface XGTreeNode extends TreeNode, XGContext
 {
 	static final Logger log = Logger.getAnonymousLogger();
 
 /*****************************************************************************************************************/
 
+/**
+ * this.tree ist im Normalfall null und nur bei rootNodes gesetzt, deshalb immer this.getRootNode().getTree() aufrufen;
+ * @return
+ */
+	XGTree getTree();
+	void setTree(XGTree t);
 	void setSelected(boolean s);
 	boolean isSelected();
+	void nodeFocussed(boolean b);
 
-	@Override default JComponent getGuiComponent()	//für RootNode überschreiben!
-	{	return ((XGTreeNode)this.getParent()).getGuiComponent();
+	default XGTreeNode getRootNode()
+	{	return (XGTreeNode)this.getTreePath().getPathComponent(0);
 	}
 
 	default void repaintNode()
-	{	JTree t = (JTree)this.getGuiComponent();
+	{	XGTree t = this.getRootNode().getTree();
 		TreePath p = this.getTreePath();
 		Rectangle r = t.getPathBounds(p);
 		if(r != null) t.repaint(r);	//falls sichtbar
 	}
 
 	default void reloadTree()
-	{	((DefaultTreeModel)((JTree)this.getGuiComponent()).getModel()).reload(this.getParent());
+	{	((DefaultTreeModel) this.getRootNode().getTree().getModel()).reload(this.getParent());
 	}
 
 	default public TreePath getTreePath()

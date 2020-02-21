@@ -3,7 +3,7 @@ package gui;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public interface XGClickable extends XGDisplayable, MouseListener
+public interface XGClickable extends MouseListener
 {
 	@Override public default void mouseClicked(MouseEvent e)
 	{	System.out.println("mouse clicked: " + e.getSource());

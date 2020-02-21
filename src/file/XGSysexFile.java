@@ -30,12 +30,14 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 
 /******************************************************************************************************************************************/
 
+	private final Thread thread;
 	private final XGDevice device;
 	private XGMessageBuffer buffer = new XGMessageBuffer(this);
 
 	public XGSysexFile(XGDevice dev, String path)
 	{	super(path);
 		this.device = dev;
+		this.thread = new Thread(this);
 	}
 
 	public void load(XGMessenger dest)
@@ -128,6 +130,10 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 
 	@Override public String getMessengerName()
 	{	return this.getAbsolutePath();
+	}
+
+	@Override public void run()
+	{
 	}
 }
 

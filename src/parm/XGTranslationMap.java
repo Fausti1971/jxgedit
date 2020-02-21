@@ -30,7 +30,7 @@ public class XGTranslationMap implements ConfigurationConstants, XGTranslationCo
 		}
 
 		XMLNode xml = XMLNode.parse(file);
-		for(XMLNode x : xml.getChildren())
+		for(XMLNode x : xml.getChildNodes())
 		{	if(x.getTag().equals(TAG_MAP))
 			{	for(String s : Rest.splitStringByComma(x.getAttribute(ATTR_NAME)))
 					set.add(new XGTranslationMap(x, s));
@@ -55,7 +55,7 @@ public class XGTranslationMap implements ConfigurationConstants, XGTranslationCo
 
 	private XGTranslationMap(XMLNode n, String name)
 	{	this.name = name;
-		for(XMLNode e : n.getChildren())
+		for(XMLNode e : n.getChildNodes())
 		{	if(e.getTag().equals(TAG_ENTRY));
 			{	this.map.put(e.parseChildNodeIntegerContent(TAG_KEY, 0), e.getChildNodeTextContent(TAG_VALUE, "no value"));
 			}
@@ -92,7 +92,7 @@ public class XGTranslationMap implements ConfigurationConstants, XGTranslationCo
 	{	return this.name + " (" + this.map.size() + " entries)";
 	}
 
-	public String getTag()
+	@Override public String getTag()
 	{	return this.name;
 	}
 }

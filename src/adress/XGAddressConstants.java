@@ -1,9 +1,12 @@
 package adress;
 
 public interface XGAddressConstants
-{	public final int MIDIBYTEMASK = 0x7F, INVALIDFIELD = -1;
-	public enum AdressFieldType{HI, MID, LO};
-	String
+{	
+	public final int
+		MIDIBYTEMASK = 0x7F,
+		INVALIDFIELD = -1;
+
+	public final String
 		TAG_HI = "hi",
 		TAG_MID = "mid",
 		TAG_LO = "lo";

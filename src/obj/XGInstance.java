@@ -12,12 +12,14 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import device.XGDevice;
+import gui.XGTree;
 import gui.XGWindow;
 import gui.XGWindowSourceTreeNode;
 import xml.XMLNode;
 
 public class XGInstance implements XGAddressable, XGWindowSourceTreeNode
-{	private final XGType type;
+{	private XGTree tree;
+	private final XGType type;
 	private final XGAddress adress;
 	private XGWindow window;
 	private boolean isSelected = false;
@@ -82,13 +84,25 @@ public class XGInstance implements XGAddressable, XGWindowSourceTreeNode
 	{	this.isSelected = s;
 	}
 
-	@Override public Set<String> getActions()
+	@Override public Set<String> getContexts()
 	{
 		return new LinkedHashSet<>();
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
 	{
-		System.out.println("action: " + e.getActionCommand() + " " + this.getClass().getSimpleName());
+		new XGWindow(this, XGWindow.getRootWindow(), false, this.toString());
+	}
+
+	@Override public void setTree(XGTree t)
+	{	this.tree = t;
+	}
+
+	@Override public XGTree getTree()
+	{	return this.tree;
+	}
+
+	@Override public void nodeFocussed(boolean b)
+	{
 	}
 }

@@ -13,11 +13,13 @@ import obj.XGType;
 import tag.XGTagableSet;
 
 public class XGValueStore extends XGAddressableSet<XGValue> implements XGMessenger
-{
+{	private final Thread thread;
 	private final XGDevice device;
 
 	public XGValueStore(XGDevice dev)
 	{	this.device = dev;
+		this.thread = new Thread(this);
+		this.thread.run();
 	}
 
 	public XGTagableSet<XGType> getTypes()
@@ -45,6 +47,10 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 
 	@Override public XGResponse request(XGRequest msg) throws TimeoutException,MidiUnavailableException
 	{	return null;
+	}
+
+	@Override public void run()
+	{
 	}
 
 }

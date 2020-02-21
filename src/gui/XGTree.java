@@ -5,58 +5,45 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JButton;
 import javax.swing.JTree;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-public class XGTree extends JTree implements MouseListener, KeyListener, GuiConstants
+public class XGTree extends JTree implements MouseListener, KeyListener, GuiConstants, TreeSelectionListener
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=4038224172565298441L;
-	private static JButton BUTTON = new JButton();
-	private static Border BORDER = new LineBorder(COL_FOCUS, 2, true);
 
-	private static final TreeCellRenderer defaultTreeCellRenderer = new TreeCellRenderer()
+	private static final DefaultTreeCellRenderer DTCR = new DefaultTreeCellRenderer();
+	private static final TreeCellRenderer XGTreeCellRenderer = new TreeCellRenderer()
 	{	@Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
-		{	//selected == hasFocus
+		{	
 			XGTreeNode n = (XGTreeNode)value;
 			XGTree t = (XGTree)tree;
-			BUTTON.setBorder(BORDER);
-
-			if(n == t.getFocussedNode())
-			{	BUTTON.setBorderPainted(true);
-			}
-			else
-			{	BUTTON.setBorderPainted(false);
-			}
-
-			if(n.isSelected())
-			{	BUTTON.setOpaque(true);
-				BUTTON.setBackground(GuiConstants.COL_NODESELECTEDBACK);
-			}
-			else BUTTON.setOpaque(false);
-
-			BUTTON.setText(n.getNodeText());
-			return BUTTON;
+			return DTCR.getTreeCellRendererComponent(tree, value, n.isSelected(), expanded, leaf, row, n == t.getFocussedNode());
 		}
 	};
 
 /*************************************************************************************************************/
 
 	private XGTreeNode focussedNode;
-
+/**
+ * Im Konstruktor muss der XGTree (mittels root.setTree(this)) in der root-node abgelegt werden.
+ * @param root
+ */
 	public XGTree(XGTreeNode root)
 	{	super(root);
+		root.setTree(this);
 		this.addMouseListener(this);
 		this.addKeyListener(this);
-//		this.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);	//"selected" bedeutet hier "focussed"
-		this.setSelectionModel(null);
+		this.addTreeSelectionListener(this);
+//		this.setSelectionModel(null);
 		this.setToggleClickCount(10);
-		this.setCellRenderer(defaultTreeCellRenderer);
+		this.setCellRenderer(XGTreeCellRenderer);
 		this.setExpandsSelectedPaths(true);
 		this.setScrollsOnExpand(true);
 		this.setShowsRootHandles(true);
@@ -65,8 +52,15 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	private void setFocussedNode(XGTreeNode n)
 	{	XGTreeNode old = this.focussedNode;
 		this.focussedNode = n;
-		if(this.focussedNode != null) this.focussedNode.repaintNode();
-		if(old != null) old.repaintNode();
+		if(this.focussedNode != null)
+		{	this.focussedNode.repaintNode();
+			n.nodeFocussed(true);
+		}
+		if(old != null)
+		{	old.repaintNode();
+			old.nodeFocussed(false);
+		}
+		
 	}
 
 	private XGTreeNode getFocussedNode()
@@ -74,7 +68,8 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	}
 
 	@Override public void mouseClicked(MouseEvent e)
-	{	TreePath p = this.getPathForLocation(e.getX(), e.getY());
+	{	
+		TreePath p = this.getPathForLocation(e.getX(), e.getY());
 		if(p == null)
 		{	this.setFocussedNode(null);
 			return;
@@ -87,23 +82,17 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 		}
 		this.setFocussedNode((XGTreeNode)c);
 
-		if(e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() == 2)
-		{	if(this.focussedNode != null) this.focussedNode.performDefaultAction();
-		}
-
-		if(e.getButton() == MouseEvent.BUTTON3)
-		{	this.setComponentPopupMenu(new XGPopup(this, this.focussedNode, e.getLocationOnScreen()));
-			this.setComponentPopupMenu(null);	//TODO: ?
-			System.out.println("popup: " + this.focussedNode);
+		if(e.isPopupTrigger() && this.focussedNode != null && !this.focussedNode.getContexts().isEmpty())
+		{	new XGPopup(this, this.focussedNode, e.getLocationOnScreen());
 		}
 	}
 
 	@Override public void mousePressed(MouseEvent e)
-	{
+	{	if(e.isPopupTrigger()) this.mouseClicked(e);
 	}
 
 	@Override public void mouseReleased(MouseEvent e)
-	{
+	{	if(e.isPopupTrigger()) this.mouseClicked(e);
 	}
 
 	@Override public void mouseEntered(MouseEvent e)
@@ -115,17 +104,24 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	}
 
 	@Override public void keyTyped(KeyEvent e)
-	{
+	{	if(this.focussedNode != null && e.getExtendedKeyCode() == KeyEvent.VK_ENTER) System.out.println("nothing to do...");
 	}
 
 	@Override public void keyPressed(KeyEvent e)	//zuerst
-	{	XGTreeNode n = (XGTreeNode)this.getLastSelectedPathComponent();
-		if(e.getKeyCode() == KeyEvent.VK_ENTER)
-		{	System.out.println("key: " + n);
-		}
+	{	//if(this.focussedNode != null && e.getKeyCode() == KeyEvent.VK_ENTER) System.out.println("nothing to do...");
 	}
 
 	@Override public void keyReleased(KeyEvent e)
 	{
+	}
+
+	@Override public void valueChanged(TreeSelectionEvent e)	//Kompromiss zur Tastatursteuerung
+	{	Object c = e.getNewLeadSelectionPath().getLastPathComponent();
+
+		if(!(c instanceof XGTreeNode))
+		{	this.setFocussedNode(null);
+			return;
+		}
+		this.setFocussedNode((XGTreeNode)c);
 	}
 }

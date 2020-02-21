@@ -8,17 +8,17 @@ import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
 import device.XGDevice;
-import gui.XGAction;
+import gui.XGContext;
+import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
 import xml.XMLNode;
 
-public class JXG implements Configurable, XGTreeNode, XGAction
+public class JXG implements Configurable, XGTreeNode, XGContext
 {	static
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
@@ -73,6 +73,7 @@ public class JXG implements Configurable, XGTreeNode, XGAction
 
 /***************************************************************************************************************/
 
+	private XGTree tree;
 	private boolean isSelected = false;
 
 	private JXG()
@@ -98,17 +99,9 @@ public class JXG implements Configurable, XGTreeNode, XGAction
 	@Override public String toString()
 	{	return APPNAME;
 	}
-/*
-	@Override public XGTree getGuiComponent()
-	{	return (XGTree)XGWindow.getRootWindow().getRootComponent();
-	}
-*/
+
 	@Override public XMLNode getConfig()
 	{	return JXG.config;
-	}
-
-	@Override public JComponent getGuiComponent()
-	{	return XGWindow.getRootWindow().getRootComponent();
 	}
 
 	@Override public boolean isSelected()
@@ -119,7 +112,7 @@ public class JXG implements Configurable, XGTreeNode, XGAction
 	{	this.isSelected = s;
 	}
 
-	@Override public Set<String> getActions()
+	@Override public Set<String> getContexts()
 	{	return JXG.actions;
 	}
 
@@ -127,13 +120,12 @@ public class JXG implements Configurable, XGTreeNode, XGAction
 	{	if(e == null || e.getActionCommand() == null) return;
 		switch(e.getActionCommand())
 		{	case ACTION_CONFIGURE:
-//				System.out.println("action not implemented: " + e.getActionCommand());
 				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
 				break;
 			case ACTION_ADDNEWDEVICE:
 				XGDevice dev = new XGDevice(null);
 				if(XGDevice.getDevices().add(dev))
-				{	config.addChild(dev.getConfig());
+				{	config.addChildNode(dev.getConfig());
 					dev.reloadTree();
 				};
 				break;
@@ -143,5 +135,17 @@ public class JXG implements Configurable, XGTreeNode, XGAction
 			default:
 				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
 		}
+	}
+
+	@Override public void setTree(XGTree t)
+	{	this.tree = t;
+	}
+
+	@Override public XGTree getTree()
+	{	return this.tree;
+	}
+
+	@Override public void nodeFocussed(boolean b)
+	{
 	}
 }

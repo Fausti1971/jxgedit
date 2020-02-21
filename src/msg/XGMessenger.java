@@ -7,7 +7,7 @@ import device.XGDevice;
 /**
  * qualifiziert das implementierende Object als XGMessage-Source und -Destination und stellt damit die Schnittstelle zu einem Endpunkt der Außenwelt (midi) dar oder ist selbst Endpunkt
  */
-public interface XGMessenger
+public interface XGMessenger extends Runnable
 {
 	public XGDevice getDevice();
 

@@ -13,17 +13,18 @@ public class XGPopup extends JPopupMenu
 	 */
 	private static final long serialVersionUID=-8590959410134092274L;
 
-	public XGPopup(JComponent inv, XGAction action, Point p)
-	{	JMenuItem i = new JMenuItem(action.toString());
+	public XGPopup(JComponent inv, XGContext context, Point p)
+	{
+		JMenuItem i = new JMenuItem(context.toString());
 		i.setEnabled(false);
 		this.add(i);
 		this.addSeparator();
 		this.setInvoker(inv);
-		for(String s : action.getActions())
+		for(String s : context.getContexts())
 		{	i = new JMenuItem(s);
 			i.addActionListener(new ActionListener()
 			{	@Override public void actionPerformed(ActionEvent e)
-				{	action.actionPerformed(new ActionEvent(action, 0, s));
+				{	context.actionPerformed(new ActionEvent(context, 0, s));
 				}
 			});
 			this.add(i);

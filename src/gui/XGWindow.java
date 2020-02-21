@@ -28,7 +28,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 	private final JComponent rootComponent;
 	private final XGWindowSource source;
 
-	XGWindow()	//nur für Root-Window
+	protected XGWindow()	//nur für Root-Window
 	{	this.source = null;
 		this.rootComponent = new XGTree(JXG.getJXG());
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
@@ -38,6 +38,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 	{	super(own, name, mod);
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 		this.source = src;
+		this.source.setChildWindow(this);
 		this.rootComponent = src.getChildWindowContent();
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.addWindowListener(src);
@@ -47,6 +48,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 		this.setLocation(x, y);
 		this.pack();
 		this.setResizable(true);
+		this.setVisible(true);
 	}
 
 	public XGWindowSource getSource()

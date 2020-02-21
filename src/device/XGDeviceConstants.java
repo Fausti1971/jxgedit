@@ -1,21 +1,26 @@
 package device;
 
+//Device: Midi, SysexID, LastDumpFile, defaultDumpFolder, Name, Color
+
 import java.util.LinkedHashSet;
 import java.util.Set;
+import parm.XGParameter;
+import parm.XGTranslationConstants;
 
 public interface XGDeviceConstants
 {
-	static final int HASH = 17;
-
 	static final String
 		TAG_NAME = "name",
-		TAG_MIDI = "midi",
-		TAG_MIDIINPUT = "input",
-		TAG_MIDIOUTPUT = "output",
-		TAG_MIDITIMEOUT = "timeout",
+		TAG_COLOR = "color",
 		TAG_SYSEXID = "sysexID",
 		TAG_LASTDUMPFILE = "lastDumpFile",
 		TAG_DEFAULTDUMPFOLDER = "defaultDumpFolder";
+
+	static final int
+		DEF_DEVCOLOR = 0xFFFFFF;
+
+	static final String
+		DEF_DEVNAME = "nameless device";
 
 	static final String
 		ACTION_CONFIGURE = "configure...",
@@ -26,4 +31,8 @@ public interface XGDeviceConstants
 		ACTION_TRANSMIT = "transmit";
 
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
+
+	static final XGParameter
+		PARAM_SYSEXID = new XGParameter(TAG_SYSEXID, "System Exclusive ID", "sysexID", 0, 15, XGTranslationConstants.XGTranslator.translateToText, null);
+		;
 }

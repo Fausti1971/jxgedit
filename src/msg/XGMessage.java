@@ -62,16 +62,15 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	{	encodeMidiByteFromInteger(MODEL_OFFS, MODEL);
 	}
 
+	default public void setTimeStamp()
+	{	this.setTimeStamp(System.currentTimeMillis());
+	}
+
 	public XGMessenger getDestination();
 	public void setDestination(XGMessenger dest);
 	public XGMessenger getSource();
 	public long getTimeStamp();
 	public void setTimeStamp(long time);
-
-	default public void setTimeStamp()
-	{	this.setTimeStamp(System.currentTimeMillis());
-	}
-
 	public SysexMessage asSysexMessage() throws InvalidMidiDataException;
 	void validate() throws InvalidMidiDataException;
 }
