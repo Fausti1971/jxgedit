@@ -22,13 +22,34 @@ public interface XGTreeNode extends TreeNode, XGContext
 /*****************************************************************************************************************/
 
 /**
- * this.tree ist im Normalfall null und nur bei rootNodes gesetzt, deshalb immer this.getRootNode().getTree() aufrufen;
- * @return
+ * returniert den XGTree, zu dem diese XGTreeNode gehört;
+ * this.tree ist im Normalfall null und nur bei rootNodes gesetzt, deshalb im Regelfall this.getRootNode().getTreeComponent() aufrufen;
+ * @return tree
  */
-	XGTree getTree();
-	void setTree(XGTree t);
+	XGTree getTreeComponent();
+
+/**
+ * setzt den übergebenen XGTree in dieser XGTreeNode; wird standardmäßig bei der XGTree-Konstruktion mittels RootNode in derselben gesetzt;
+ * @param t
+ */
+	void setTreeComponent(XGTree t);
+
+/**
+ * übergibt den selected-Status an die XGTreeNode, damit diese darauf reagieren kann; Darstellung und Aktualisierung übernimmt weiterhin der XGTree;
+ * @param s
+ */
 	void setSelected(boolean s);
+
+/**
+ * returniert den selected-Status der XGTreeNode; erfragt XGTree zur Darstellung
+ * @return Status
+ */
 	boolean isSelected();
+
+/**
+ * informiert die XGTreeNode darüber, dass sich der focussed-Status der Node verändert hat und gibt dieser somit die Möglichkeit, darauf zu reagieren;
+ * @param b status
+ */
 	void nodeFocussed(boolean b);
 
 	default XGTreeNode getRootNode()
@@ -36,14 +57,14 @@ public interface XGTreeNode extends TreeNode, XGContext
 	}
 
 	default void repaintNode()
-	{	XGTree t = this.getRootNode().getTree();
+	{	XGTree t = this.getRootNode().getTreeComponent();
 		TreePath p = this.getTreePath();
 		Rectangle r = t.getPathBounds(p);
 		if(r != null) t.repaint(r);	//falls sichtbar
 	}
 
 	default void reloadTree()
-	{	((DefaultTreeModel) this.getRootNode().getTree().getModel()).reload(this.getParent());
+	{	((DefaultTreeModel) this.getRootNode().getTreeComponent().getModel()).reload(this.getParent());
 	}
 
 	default public TreePath getTreePath()

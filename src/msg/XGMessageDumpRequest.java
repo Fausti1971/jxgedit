@@ -17,18 +17,17 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	XGResponse response = null;
 
-	public XGMessageDumpRequest(XGMessenger src, byte[] array, long time) throws InvalidMidiDataException
-	{	super(src, array);
+	public XGMessageDumpRequest(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
+	{	super(src, array, init);
 	}
 
-	public XGMessageDumpRequest(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
-	{	super(src, new byte[8]);
-		setSysexID(src.getDevice().getSysexID());
-		setMessageID();
-		encodeMidiByteFromInteger(HI_OFFS, adr.getHi());
-		encodeMidiByteFromInteger(MID_OFFS, adr.getMid());
-		encodeMidiByteFromInteger(LO_OFFS, adr.getLo());
-		setEOX(7);
+	public XGMessageDumpRequest(XGMessenger src, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
+	{	super(src, new byte[8], true);
+		this.setMessageID();
+		this.setHi(adr.getHi());
+		this.setMid(adr.getMid());
+		this.setLo(adr.getLo());
+		this.setEOX(7);
 		this.response = new XGMessageBulkDump(src, adr);
 		this.response.setDestination(src);
 	}
@@ -57,27 +56,27 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	{	return this.response;
 	}
 
-	@Override protected int getHi()
+	@Override public int getHi()
 	{	return decodeMidiByteToInteger(HI_OFFS);
 	}
 
-	@Override protected int getMid()
+	@Override public int getMid()
 	{return decodeMidiByteToInteger(MID_OFFS);
 	}
 
-	@Override protected int getLo()
+	@Override public int getLo()
 	{	return decodeMidiByteToInteger(LO_OFFS);
 	}
 
-	@Override protected void setHi(int hi)
+	@Override public void setHi(int hi)
 	{	encodeMidiByteFromInteger(HI_OFFS, hi);
 	}
 
-	@Override protected void setMid(int mid)
+	@Override public void setMid(int mid)
 	{	encodeMidiByteFromInteger(MID_OFFS, mid);
 	}
 
-	@Override protected void setLo(int lo)
+	@Override public void setLo(int lo)
 	{	encodeMidiByteFromInteger(LO_OFFS, lo);
 	}
 
@@ -85,7 +84,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	{	return this.getAdress().toString();
 	}
 
-	@Override protected void setMessageID()
+	@Override public void setMessageID()
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
 	}
 

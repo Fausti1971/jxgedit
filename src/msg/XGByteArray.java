@@ -52,7 +52,7 @@ public interface XGByteArray
 	}
 
 	default int decodeMidiByteToInteger(int index)
-	{	return (getByteArray()[index]) & 0x7F;}
+	{	return (this.getByteArray()[index]) & 0x7F;}
 
 	default void encodeMidiByteFromInteger(int index, int i)
 	{	getByteArray()[index] = (byte)(i & 0xFF);}

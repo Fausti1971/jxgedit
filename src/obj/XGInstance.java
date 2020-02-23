@@ -94,11 +94,11 @@ public class XGInstance implements XGAddressable, XGWindowSourceTreeNode
 		new XGWindow(this, XGWindow.getRootWindow(), false, this.toString());
 	}
 
-	@Override public void setTree(XGTree t)
+	@Override public void setTreeComponent(XGTree t)
 	{	this.tree = t;
 	}
 
-	@Override public XGTree getTree()
+	@Override public XGTree getTreeComponent()
 	{	return this.tree;
 	}
 

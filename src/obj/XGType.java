@@ -199,11 +199,11 @@ public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstant
 		System.out.println("action: " + e.getActionCommand() + " " + this.getClass().getSimpleName());
 	}
 
-	@Override public void setTree(XGTree t)
+	@Override public void setTreeComponent(XGTree t)
 	{	this.tree = t;
 	}
 
-	@Override public XGTree getTree()
+	@Override public XGTree getTreeComponent()
 	{	return this.tree;
 	}
 

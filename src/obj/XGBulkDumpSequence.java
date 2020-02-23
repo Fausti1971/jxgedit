@@ -1,10 +1,9 @@
 package obj;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import device.TimeoutException;
 import msg.XGMessageDumpRequest;
 import msg.XGMessenger;
 import msg.XGRequest;
@@ -65,16 +64,10 @@ public class XGBulkDumpSequence implements XGTypeConstants
 				for(mid = this.min.getMid(); mid <= this.max.getMid(); mid++)
 				{	XGRequest r = new XGMessageDumpRequest(src, new XGAddress(hi, mid, lo));
 					r.setDestination(dest);
-					src.transmit(r.request());
+					src.submit(r);
 				}
 		}
-		catch(InvalidXGAddressException e)
-		{	e.printStackTrace();
-		}
-		catch(TimeoutException e)
-		{	log.info(e.getMessage());
-		}
-		catch(MidiUnavailableException e)
+		catch(InvalidXGAddressException | InvalidMidiDataException e)
 		{	e.printStackTrace();
 		}
 	}

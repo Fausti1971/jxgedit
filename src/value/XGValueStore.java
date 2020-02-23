@@ -1,13 +1,11 @@
 package value;
 
-import javax.sound.midi.MidiUnavailableException;
 import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import adress.XGAddressableSet;
-import device.TimeoutException;
 import device.XGDevice;
 import msg.XGMessage;
 import msg.XGMessenger;
-import msg.XGRequest;
 import msg.XGResponse;
 import obj.XGType;
 import tag.XGTagableSet;
@@ -33,20 +31,29 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	}
 
 	@Override public String getMessengerName()
-	{	return this.getDevice().toString() + " memory";
+	{	return this.getDevice().toString() + " ValueStore";
 	}
 
-	@Override public void transmit(XGMessage m) throws MidiUnavailableException
-	{	try
-		{	for(XGValue v : ((XGResponse)m).getValues()) this.add(v);
-		}
-		catch(InvalidXGAddressException e)
-		{	e.printStackTrace();
-		}
+	@Override public void submit(XGMessage m) throws InvalidXGAddressException
+	{	if(m instanceof XGResponse) this.receiveResponse((XGResponse)m);
 	}
 
-	@Override public XGResponse request(XGRequest msg) throws TimeoutException,MidiUnavailableException
-	{	return null;
+	private void receiveResponse(XGResponse r)
+	{	int end = r.getBulkSize() + r.getBaseOffset(), offset = r.getLo();
+		for(int i = r.getBaseOffset(); i < end;)
+		{	XGValue v;
+			try
+			{
+				v = XGValue.factory(r.getSource(), new XGAddress(r.getHi(), r.getMid(), offset));
+				this.add(v);
+				r.decodeXGValue(i, v);
+				offset += v.getOpcode().getByteCount();
+				i += v.getOpcode().getByteCount();
+			}
+			catch(InvalidXGAddressException e)
+			{	e.printStackTrace();
+			}
+		}
 	}
 
 	@Override public void run()

@@ -106,7 +106,10 @@
                 </TitledPane>
                 <TitledPane fx:id="accPane_control" animated="false" text="Control">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <LKnob layoutX="7.0" layoutY="6.0" />
+                           </children></AnchorPane>
                   </content>
                 </TitledPane>
                   <TitledPane fx:id="accPane_drum" animated="false" text="Drum">

@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import javax.sound.midi.MidiUnavailableException;
 import javax.swing.AbstractAction;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -16,8 +15,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
+import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
-import device.TimeoutException;
 import device.XGDevice;
 import gui.XGWindow;
 import gui.XGWindowSource;
@@ -43,7 +42,7 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	{	return this.source.getMessengerName() + " buffer";
 	}
 
-	@Override public void transmit(XGMessage m) throws MidiUnavailableException
+	@Override public void submit(XGMessage m)
 	{	this.add(m);
 		((DefaultListModel<XGMessage>)this.list.getModel()).addElement(m);
 		if(this.window == null) this.setChildWindow(new XGWindow(this, XGWindow.getRootWindow(), false, this.getMessengerName()));
@@ -57,10 +56,6 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 		{	this.window.pack();
 			this.window.setVisible(true);
 		}
-	}
-
-	@Override public XGResponse request(XGRequest msg) throws TimeoutException, MidiUnavailableException
-	{	return null;
 	}
 
 	private void rm(XGMessage m)
@@ -144,12 +139,12 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 			{	for(XGMessage m : list.getSelectedValuesList())
 				{	m.setDestination(source.getDevice().getValues());
 					try
-					{	source.getDevice().getValues().transmit(m);
-						rm(m);
+					{	source.getDevice().getValues().submit(m);
 					}
-					catch(MidiUnavailableException e1)
+					catch(InvalidXGAddressException e1)
 					{	e1.printStackTrace();
 					}
+					rm(m);
 				}
 			}
 		});

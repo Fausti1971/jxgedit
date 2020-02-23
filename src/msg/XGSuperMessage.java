@@ -3,7 +3,6 @@ package msg;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import adress.XGAddress;
 import adress.XGAddressable;
 
 abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddressable
@@ -14,27 +13,44 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
 	private final XGMessenger source;
 	private XGMessenger destination;
 	private long transmissionTimeStamp;
-	private byte[] data;
-
-	protected XGSuperMessage(XGMessenger src, byte[] array)	// für manuell erzeugte
-	{	this.source = src;
-		this.data = array;
-		setSOX();
-		setSysexID(src.getDevice().getSysexID());
-		setVendorID();
-		setModelID();
-		this.setTimeStamp(System.currentTimeMillis());
-	}
-
-	protected XGSuperMessage(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException	//für Midi und File
-	{	this.source = src;
-		this.setTimeStamp(System.currentTimeMillis());
-		this.data = msg.getMessage();
+/**
+ * Konstruktor für XGMessages aus ByteArrays
+ * @param src Herkunft
+ * @param array Daten
+ * @param init initialisiert eine neu erzeugte XGMessage mit SOX, SysexID, VendorID, ModelID und TimeStamp
+ * @throws InvalidMidiDataException
+ */
+	protected XGSuperMessage(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException	// für manuell erzeugte
+	{	super(array);
+		this.source = src;
+		if(init) this.init();
 		this.validate();
+	}
+/**
+ * Konstruktor für über Midi empfangene SysexMessages; keine Initialisierung
+ * @param src
+ * @param msg
+ * @throws InvalidMidiDataException
+ */
+	protected XGSuperMessage(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException	//für Midi
+	{	super(msg.getMessage());
+		this.source = src;
+		this.setTimeStamp(System.currentTimeMillis());
+		this.validate();
+	}
+/**
+ * initialisiert eine neu erzeugte XGMessage mit SOX, SysexID, VendorID, ModelID und TimeStamp
+ */
+	@Override public void init()
+	{	this.setSOX();
+		this.setSysexID(this.source.getDevice().getSysexID());
+		this.setVendorID();
+		this.setModelID();
+		this.setTimeStamp(System.currentTimeMillis());
 	}
 
 	@Override public byte[] getByteArray()
-	{	return this.data;
+	{	return this.getMessage();
 	}
 
 	@Override public XGMessenger getSource()
@@ -56,28 +72,15 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
 	@Override public void setTimeStamp(long time)
 	{	this.transmissionTimeStamp = time;
 	}
-
+/**
+ * überprüft anhand vendorID und modelID, ob es sich um eine XG-Message handelt und wirft bei Fehlschlag eine Exception
+ */
 	@Override public void validate() throws InvalidMidiDataException
-	{	if(this.getVendorID() != VENDOR || this.getModelID() != MODEL) throw new InvalidMidiDataException("no xg data");
-	}
-
-	@Override public SysexMessage asSysexMessage() throws InvalidMidiDataException
-	{	return new SysexMessage(this.data, this.data.length);
-	}
-
-	@Override public XGAddress getAdress()
-	{	return new XGAddress(getHi(), getMid(), getLo());
+	{	if(this.getVendorID() != VENDOR || this.getModelID() != MODEL) throw new InvalidMidiDataException("no xg message");
 	}
 
 	@Override public String toString()
 	{	return this.getClass().getSimpleName() + "/" + this.source.getDevice().getType(this.getAdress()) + "/" + this.getAdress();
 	}
 
-	protected abstract int getHi();
-	protected abstract int getMid();
-	protected abstract int getLo();
-	protected abstract void setHi(int hi);
-	protected abstract void setMid(int mid);
-	protected abstract void setLo(int lo);
-	protected abstract void setMessageID();
 }

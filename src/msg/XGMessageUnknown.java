@@ -2,8 +2,6 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import adress.XGAddressableSet;
-import value.XGValue;
 
 public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 {
@@ -11,37 +9,59 @@ public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 	{	super(src, msg);
 	}
 
-	protected XGMessageUnknown(XGMessenger src, byte[] msg)
-	{	super(src, msg);
+	protected XGMessageUnknown(XGMessenger src, byte[] msg, boolean init) throws InvalidMidiDataException
+	{	super(src, msg, init);
 	}
 
-	@Override protected int getHi()
-	{	return 0;}
+	@Override public int getHi()
+	{	return 0;
+	}
 
-	@Override protected int getMid()
-	{	return 0;}
+	@Override public int getMid()
+	{	return 0;
+	}
 
-	@Override protected int getLo()
-	{	return 0;}
+	@Override public int getLo()
+	{	return 0;
+	}
 
-	protected void setHi(int hi)
-	{}
+	@Override public void setHi(int hi)
+	{
+	}
 
-	protected void setMid(int mid)
-	{}
+	@Override public void setMid(int mid)
+	{
+	}
 
-	protected void setLo(int lo)
-	{}
+	@Override public void setLo(int lo)
+	{
+	}
 
-	protected void setMessageID()
-	{	encodeHigherNibbleFromInteger(MSG_OFFS, 0);}
+	@Override public void setMessageID()
+	{	encodeHigherNibbleFromInteger(MSG_OFFS, 0);
+	}
 
 	public void storeMessage()
-	{	log.info("unknown message received: " + getMessageID());}
+	{	log.info("unknown message received: " + getMessageID());
+	}
 
-	public XGAddressableSet<XGValue> getValues()
+	@Override public int getBulkSize()
+	{	return 1;
+	}
+
+	@Override public void setBulkSize(int size)
 	{
-	// TODO Auto-generated method stub
-	return null;
+	}
+
+	@Override public int getBaseOffset()
+	{	return 0;
+	}
+
+	@Override public void checkSum() throws InvalidMidiDataException
+	{
+	}
+
+	@Override public int setChecksum()
+	{	return 0;
 	}
 }

@@ -190,9 +190,9 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 					return;
 				}
 				if(m.getDestination() == null) m.setDestination(this.buffer);
-				m.getDestination().transmit((XGResponse)m);
+				m.getDestination().submit((XGResponse)m);
 			}
-			catch(InvalidMidiDataException|InvalidXGAddressException | MidiUnavailableException e)
+			catch(InvalidMidiDataException|InvalidXGAddressException e)
 			{	log.info(e.getMessage());
 			}
 		}
@@ -207,37 +207,45 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	}
 
 	@Override public void midiSystemUpdated() throws CoreMidiException
-	{//	this.notifyConfigurationListeners();
+	{	log.info("CoreMidiSystem updated!");
+		//	this.notifyConfigurationListeners();
 	}
 
-	@Override public void transmit(XGMessage msg) throws MidiUnavailableException
-	{	if(this.transmitter == null) throw new MidiUnavailableException("no transmitter initialized!");
-		if(msg == null) return;
-		try
-		{	msg.setTimeStamp();
-			this.transmitter.send(msg.asSysexMessage(), -1L);
+	private boolean transmit(XGMessage m)
+	{	if(this.transmitter == null)
+		{	log.info("no transmitter initialized!");
+			return false;
 		}
-		catch (InvalidMidiDataException e)
-		{	log.severe(e.getMessage() + msg);
+		if(m == null)
+		{	log.info("message was null");
+			return false;
 		}
+		m.setTimeStamp();
+		this.transmitter.send((MidiMessage)m, -1L);
+		return true;
 	}
 
-	@Override public XGResponse request(XGRequest msg) throws TimeoutException, MidiUnavailableException//vom MIDI-Eingang
+	@Override public void submit(XGMessage msg)
+	{	this.transmit(msg);
+	}
+/*
+	@Override public XGResponse pull(XGRequest msg) throws TimeoutException	//TODO:
 	{	synchronized(this)
-		{	this.transmit(msg);
-			this.request = msg;
-			try
-			{	this.wait(this.timeout);
-				if(!this.request.isResponsed()) throw new TimeoutException("midi timeout: " + this.getInputName() + " after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms"); //Thread läuft nach notify() ganz normal weiter
-			}
-			catch(InterruptedException e)
-			{	System.out.println("interrupted");
+		{	if(this.transmit(msg))
+			{	this.request = msg;
+				try
+				{	this.wait(this.timeout);
+					if(!this.request.isResponsed()) throw new TimeoutException("midi timeout: " + this.getInputName() + " after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms"); //Thread läuft nach notify() ganz normal weiter
+				}
+				catch(InterruptedException e)
+				{	System.out.println("interrupted");
+				}
 			}
 			this.request = null;
 			return msg.getResponse();
 		}
 	}
-
+*/
 	@Override public int hashCode()
 	{	if(this.midiInput == null || this.midiOutput == null) return HASH;
 		return HASH * this.midiInput.hashCode() + HASH * this.midiOutput.hashCode();

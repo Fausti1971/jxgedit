@@ -1,8 +1,5 @@
-/.DS_Store
-/adress/
-/application/
-/device/
-/file/
+/gui/
+/module/
 /msg/
 /obj/
 /opcode/
@@ -10,3 +7,6 @@
 /tag/
 /value/
 /xml/
+/device/
+/file/
+/adress/

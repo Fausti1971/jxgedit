@@ -42,16 +42,14 @@ import java.util.Set;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
-import adress.XGAddressableSet;
-import msg.XGBulkDump;
+import gui.XGTreeNode;
 import tag.XGTagable;
 
-public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants
+public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, XGTreeNode
 {
 	public static XGModuleTag getModuleTag(XGAddress adr)
 	{	try
-		{
-			switch(adr.getHi())
+		{	switch(adr.getHi())
 				{	case 0:		return XGModuleTag.system;
 					case 1:		return XGModuleTag.info;
 					case 2:
@@ -84,8 +82,5 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants
 
 /********************************************************************************************************************/
 
-	public XGModule getParent();
 	public Set<XGModule> getChildren();
-
-	public XGAddressableSet<XGBulkDump> getBulks();
 }

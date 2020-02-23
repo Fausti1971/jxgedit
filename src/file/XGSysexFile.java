@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.SysexMessage;
 import javax.swing.JFileChooser;
 import adress.InvalidXGAddressException;
@@ -21,8 +20,6 @@ import gui.XGWindow;
 import msg.XGMessage;
 import msg.XGMessageBuffer;
 import msg.XGMessenger;
-import msg.XGRequest;
-import msg.XGResponse;
 
 public class XGSysexFile extends File implements XGSysexFileConstants, ConfigurationConstants, XGMessenger
 {	private static final long serialVersionUID=870648549558099401L;
@@ -41,18 +38,43 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 	}
 
 	public void load(XGMessenger dest)
-	{	log.info("parsing started: " + this.getAbsolutePath());
+	{	log.info("start parsing: " + this.getAbsolutePath());
 		if(dest == null) dest = this.buffer;
-		for(SysexMessage s : parse())
-		{	try
-			{	XGMessage m = XGMessage.newMessage(this, s);
-				m.setDestination(dest);
-				dest.transmit(m);
+		
+
+		try(FileInputStream fis = new FileInputStream(this))
+		{	byte[] tmp = new byte[fis.available()];
+			boolean start = false, end = false;
+			int first = 0, i = 0, messageCont = 0;
+			while(fis.available() != 0)
+			{	tmp[i] = (byte) fis.read();
+				if(tmp[i] == (byte)SysexMessage.SYSTEM_EXCLUSIVE)
+				{	start = true;
+					first = i;
+				}
+				if(tmp[i] == (byte)SysexMessage.SPECIAL_SYSTEM_EXCLUSIVE) end = true;
+				if(start && end)
+				{	try
+					{	XGMessage m = XGMessage.newMessage(dest, Arrays.copyOfRange(tmp, first, i + 1), false);
+						m.setDestination(dest);
+						dest.submit(m);
+						messageCont++;
+					}
+					catch (InvalidMidiDataException | InvalidXGAddressException e)
+					{	log.info(e.getMessage());
+					}
+					start = false;
+					end = false;
+				}
+				i++;
 			}
-			catch (InvalidMidiDataException | InvalidXGAddressException | MidiUnavailableException e)
-			{	log.info(e.getMessage());
-			}
+			log.info("parsing finished: " + messageCont + " messages parsed to " + dest.getMessengerName());
 		}
+		catch (IOException e)
+		{	log.warning(e.getMessage());
+		}
+
+
 //		log.info( + " messages transmitted from " + this.getMessengerName() + " to " + dest.getMessengerName());
 	}
 
@@ -111,15 +133,6 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 		return array;
 	}
 
-	@Override public void transmit(XGMessage m)//zum SysexFile ("datei.syx")
-	{	//TODO
-	}
-
-	@Override public XGResponse request(XGRequest msg)//von SysexFile ("datei.syx")
-	{	//TODO
-		return null;
-	}
-
 	public int getSysexID()
 	{	return this.getDevice().getSysexID();
 	}
@@ -134,6 +147,10 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 
 	@Override public void run()
 	{
+	}
+
+	@Override public void submit(XGMessage msg) throws InvalidXGAddressException
+	{	//TODO:
 	}
 }
 

@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
@@ -32,14 +32,12 @@ import gui.XGWindow;
 import gui.XGWindowSource;
 import msg.XGMessageDumpRequest;
 import msg.XGRequest;
-import msg.XGResponse;
 import obj.XGType;
 import opcode.XGOpcode;
 import parm.XGParameter;
 import parm.XGTranslationMap;
 import tag.XGTagableAdressableSet;
 import tag.XGTagableSet;
-import value.XGValue;
 import value.XGValueStore;
 import xml.XMLNode;
 
@@ -86,7 +84,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private final XGTagableSet<XGTranslationMap> translations;
 	private final XGTagableSet<XGParameter> parameters;
 	private String name;
-	private final int info1, info2;
+	private int info1, info2;
 	private Path defDumpPath;
 	private final Queue<XGSysexFile> files = new LinkedList<>();
 	private final XGSysexFile defaultSyx;
@@ -121,8 +119,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		this.setName(this.config.getChildNodeTextContent(TAG_NAME, DEF_DEVNAME));
 		this.setColor(new Color(this.config.parseChildNodeIntegerContent(TAG_COLOR, DEF_DEVCOLOR)));
 		this.defDumpPath = Paths.get(this.config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).getTextContent());
-		this.info1 = requestInfo1();
-		this.info2 = requestInfo2();
 		this.values = new XGValueStore(this);
 		this.opcodes = XGOpcode.init(this);
 		this.types = XGType.init(this);
@@ -224,27 +220,20 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		this.config.getChildNodeOrNew(TAG_SYSEXID).setTextContent(this.sysexID);
 	}
 
-	public String requestName()	//SystemInfo ignoriert parameterrequest?!;
+	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m;
 		try
 		{	m = new XGMessageDumpRequest(this.midi, XGAddressConstants.XGMODELNAMEADRESS);
-			m.setDestination(this.midi);
-			XGResponse r = m.request();
-			XGValue v = r.getValues().get(XGAddressConstants.XGMODELNAMEADRESS);
-			if(v != null) return v.toString().strip();
+			m.setDestination(this.values);
+			this.midi.submit(m);
+			//TODO: wait for response...
+			this.setName(this.values.get(XGAddressConstants.XGMODELNAMEADRESS).toString().strip());
+			this.info1 = (int)this.values.get(XGAddressConstants.XGMODELINFO1ADDRESS).getContent();
+			this.info2 = (int)this.values.get(XGAddressConstants.XGMODELINFO2ADDRESS).getContent();
 		}
-		catch(InvalidXGAddressException | TimeoutException | MidiUnavailableException e)
+		catch(InvalidXGAddressException | InvalidMidiDataException e)
 		{	e.printStackTrace();
 		}
-		return "unknown device";
-	}
-
-	public int requestInfo1()
-	{	return 0;
-	}
-
-	public int requestInfo2()
-	{	return 0;
 	}
 
 	public XGMidi getMidi()
@@ -338,11 +327,11 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return new XGDeviceConfigurator(this.config);
 	}
 
-	@Override public void setTree(XGTree t)
+	@Override public void setTreeComponent(XGTree t)
 	{	this.tree = t;
 	}
 
-	@Override public XGTree getTree()
+	@Override public XGTree getTreeComponent()
 	{	return this.tree;
 	}
 

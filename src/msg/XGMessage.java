@@ -4,20 +4,25 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import adress.XGAddressable;
 
 public interface XGMessage extends XGMessageConstants, XGAddressable
 {
-	public static XGMessage newMessage(XGMessenger src, MidiMessage msg) throws InvalidMidiDataException, InvalidXGAddressException
-	{	if(!(msg instanceof SysexMessage)) throw new InvalidMidiDataException("no sysex message");
-		XGMessage x = new XGMessageUnknown(src, (SysexMessage)msg);
+	public static XGMessage newMessage(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
+	{	XGMessage x = new XGMessageUnknown(src, array, init);
 		switch(x.getMessageID())
-		{	case BD:	return new XGMessageBulkDump(src, (SysexMessage)msg);
-			case PC:	return new XGMessageParameterChange(src, (SysexMessage)msg);
-			case DR:	return new XGMessageDumpRequest(src, (SysexMessage)msg);
-			case PR:	return new XGMessageParameterRequest(src, (SysexMessage)msg);
+		{	case MSG_BD:	return new XGMessageBulkDump(src, array, init);
+			case MSG_PC:	return new XGMessageParameterChange(src, array, init);
+			case MSG_DR:	return new XGMessageDumpRequest(src, array, init);
+			case MSG_PR:	return new XGMessageParameterRequest(src, array, init);
 		}
 		return x;
+	}
+
+	public static XGMessage newMessage(XGMessenger src, MidiMessage msg) throws InvalidMidiDataException, InvalidXGAddressException
+	{	if(!(msg instanceof SysexMessage)) throw new InvalidMidiDataException("no sysex message");
+		return newMessage(src, msg.getMessage(), false);
 	}
 
 /***************************************************************************************************/
@@ -66,11 +71,22 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	{	this.setTimeStamp(System.currentTimeMillis());
 	}
 
+	@Override public default XGAddress getAdress()
+	{	return new XGAddress(getHi(), getMid(), getLo());
+	}
+
+	public void init();
 	public XGMessenger getDestination();
 	public void setDestination(XGMessenger dest);
 	public XGMessenger getSource();
 	public long getTimeStamp();
 	public void setTimeStamp(long time);
-	public SysexMessage asSysexMessage() throws InvalidMidiDataException;
 	void validate() throws InvalidMidiDataException;
+	public int getHi();
+	public int getMid();
+	public int getLo();
+	public void setHi(int hi);
+	public void setMid(int mid);
+	public void setLo(int lo);
+	public void setMessageID();
 }

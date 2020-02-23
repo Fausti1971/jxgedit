@@ -17,45 +17,44 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	private XGResponse response;
 	private boolean responsed;
 
-	protected XGMessageParameterRequest(XGMessenger src, byte[] array, long time)
-	{	super(src, array);
+	protected XGMessageParameterRequest(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
+	{	super(src, array, init);
 	}
 
 	public XGMessageParameterRequest(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException
 	{	super(src, msg);
 	}
 
-	public XGMessageParameterRequest(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
-	{	super(src, new byte[8]);
-		setMessageID(MSG);
-		setSysexID(src.getDevice().getSysexID());
-		setHi(adr.getHi());
-		setMid(adr.getMid());
-		setLo(adr.getLo());
-		setEOX(7);
+	public XGMessageParameterRequest(XGMessenger src, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
+	{	super(src, new byte[8], true);
+		this.setMessageID(MSG);
+		this.setHi(adr.getHi());
+		this.setMid(adr.getMid());
+		this.setLo(adr.getLo());
+		this.setEOX(7);
 		this.response = new XGMessageParameterChange(src, new XGIntegerValue(src, adr));
 		this.response.setDestination(src);
 	}
 
-	protected int getHi()
+	@Override public int getHi()
 	{	return decodeMidiByteToInteger(HI_OFFS);}
 
-	protected int getMid()
+	@Override public int getMid()
 	{	return decodeMidiByteToInteger(MID_OFFS);}
 
-	protected int getLo()
+	@Override public int getLo()
 	{	return decodeMidiByteToInteger(LO_OFFS);}
 
-	protected void setHi(int hi)
+	@Override public void setHi(int hi)
 	{	encodeMidiByteFromInteger(HI_OFFS, hi);}
 
-	protected void setMid(int mid)
+	@Override public void setMid(int mid)
 	{	encodeMidiByteFromInteger(MID_OFFS, mid);}
 
-	protected void setLo(int lo)
+	@Override public void setLo(int lo)
 	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
 
-	public boolean setResponsedBy(XGResponse msg)
+	@Override public boolean setResponsedBy(XGResponse msg)
 	{	if(msg == null ||
 			!(msg instanceof XGMessageParameterChange) ||
 			msg.getSysexID() != response.getSysexID() ||
@@ -65,15 +64,15 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 		return this.responsed = true;
 	}
 
-	protected void setMessageID()
+	@Override public void setMessageID()
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
 	}
 
-	public boolean isResponsed()
+	@Override public boolean isResponsed()
 	{	return this.responsed;
 	}
 
-	public XGResponse getResponse()
+	@Override public XGResponse getResponse()
 	{	return this.response;
 	}
 

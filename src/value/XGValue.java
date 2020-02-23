@@ -1,13 +1,9 @@
 package value;
 import java.util.HashSet;
 import java.util.Set;
-import javax.sound.midi.MidiUnavailableException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
-import device.XGMidi;
-import msg.XGMessageException;
-import msg.XGMessageParameterChange;
 import msg.XGMessenger;
 import obj.XGInstance;
 import opcode.XGOpcode;
@@ -16,7 +12,7 @@ import parm.XGParameterConstants;
 import tag.XGTagable;
 
 public abstract class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGTagable
-{	
+{
 	public static XGValue factory(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
 	{	XGOpcode o = src.getDevice().getOpcodes().getOrDefault(adr, new XGOpcode(adr));
 		switch(o.getValueClass())
@@ -84,12 +80,6 @@ public abstract class XGValue implements XGParameterConstants, Comparable<XGValu
 	public abstract Object getContent();
 
 	public abstract boolean addContent(Object v) throws WrongXGValueTypeException;
-
-	public void transmit(XGMidi midi) throws XGMessageException, InvalidXGAddressException, MidiUnavailableException
-	{	XGMessageParameterChange m = new XGMessageParameterChange(midi, this);
-		m.setDestination(midi);
-		m.transmit();
-	}
 
 	protected abstract Object limitize(Object v);
 

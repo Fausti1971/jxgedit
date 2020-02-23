@@ -3,20 +3,21 @@ package msg;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
-import adress.XGAddressableSet;
 import value.XGValue;
 
 public class XGMessageParameterChange extends XGSuperMessage implements XGResponse
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x10, DATA_OFFS = 7, OVERHEAD = 8;
 
-/****************************************************************************************************************/
+/**
+ * @param init 
+ * @throws InvalidMidiDataException **************************************************************************************************************/
 
-	public XGMessageParameterChange(XGMessenger src, byte[] array, long time)
-	{	super(src, array);
+	public XGMessageParameterChange(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
+	{	super(src, array, init);
 	}
 
-	public XGMessageParameterChange(XGMessenger src, XGValue v) throws InvalidXGAddressException
-	{	super(src, new byte[OVERHEAD + v.getOpcode().getByteCount()]);
+	public XGMessageParameterChange(XGMessenger src, XGValue v) throws InvalidXGAddressException, InvalidMidiDataException
+	{	super(src, new byte[OVERHEAD + v.getOpcode().getByteCount()], true);
 		setMessageID();
 		setHi(v.getAdress().getHi());
 		setMid(v.getAdress().getMid());
@@ -30,15 +31,15 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 		log.info(this.getClass().toString());
 	}
 
-	@Override protected void setHi(int value)
+	@Override public void setHi(int value)
 	{	encodeMidiByteFromInteger(HI_OFFS, value);
 	}
 
-	@Override protected void setMid(int value)
+	@Override public void setMid(int value)
 	{	encodeMidiByteFromInteger(MID_OFFS, value);
 	}
 
-	@Override protected void setLo(int value)
+	@Override public void setLo(int value)
 	{	encodeMidiByteFromInteger(LO_OFFS, value);
 	}
 
@@ -46,23 +47,40 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	{	encodeXGValue(DATA_OFFS, v);
 	}
 
-	@Override protected int getHi()
+	@Override public int getHi()
 	{	return decodeMidiByteToInteger(HI_OFFS);
 	}
 
-	@Override protected int getMid()
+	@Override public int getMid()
 	{	return decodeMidiByteToInteger(MID_OFFS);
 	}
 
-	@Override protected int getLo()
+	@Override public int getLo()
 	{	return decodeMidiByteToInteger(LO_OFFS);
 	}
 
-	@Override protected void setMessageID()
+	@Override public void setMessageID()
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
 	}
 
-	@Override public XGAddressableSet<XGValue> getValues()
-	{	return null;
+	@Override public int getBulkSize()
+	{	return this.getSource().getDevice().getOpcodes().get(this.getAdress()).getByteCount();
+	}
+
+	@Override public void setBulkSize(int size)
+	{	//überflüssig für ParameterChange
+	}
+
+	@Override public int getBaseOffset()
+	{	return DATA_OFFS;
+	}
+
+	@Override public void checkSum() throws InvalidMidiDataException
+	{	//überflüssig für ParameterChange
+	}
+
+	@Override public int setChecksum()
+	{	//überflüssig für ParameterChange
+		return 0;
 	}
 }

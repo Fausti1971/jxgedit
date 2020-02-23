@@ -1,0 +1,128 @@
+package memory;
+
+import java.util.Arrays;
+import java.util.logging.Logger;
+
+public class XByteArray
+{	private static final Logger log = Logger.getAnonymousLogger();
+
+	public static boolean compare(byte[] array1, byte[] array2)
+	{	int len = Math.min(array1.length, array2.length);
+		for(int i = 0; i < len; i++) if(array1[i] != array2[i]) return false;
+		return true;
+	}
+
+/**********************************************************************************************/
+
+	private byte[] data;	//Nutzdaten
+
+	public ByteArray(byte[] buff)
+	{	this.data = buff;
+	}
+
+	public ByteArray(int i)
+	{	this(new byte[i]);}
+
+	public byte[] getData()
+	{	return this.data;}
+
+	public int calcChecksum(int from, int to)
+	{	byte sum = 0;
+		Math.min(data.length, to);
+		for(int i = from; i <= to; sum += data[i++]);
+		return sum;
+	}
+
+	public ByteArray cut(int from, int to)
+	{	this.data = Arrays.copyOfRange(this.data, from, to);
+		return(this);}
+
+	public byte[] copy(int from, int to)
+	{	return Arrays.copyOfRange(this.data, from, to);}
+
+	public boolean isEqual(byte[] array)
+	{	return(ByteArray.compare(this.data, array));}
+
+	public int length()
+	{	return this.data.length;}
+
+	public int getInt(int index)
+	{	if(index > this.data.length)
+		{	log.info("out of bounds"); // Type 100(Table) ID 9(?) sendet falsche Daten...
+			return 0;
+		}
+		return(this.data[index]);}
+
+	public int getInt(int index, int size, int mask)
+	{	int temp = mask, shift = 0;
+		while(temp != 0)
+		{	temp >>= 1;
+			shift++;
+		}
+		for(int i = 0; i < size; i++)
+		{	temp <<= shift;
+			temp |= (this.getInt(index + i) & mask);
+		}
+		return temp;
+	}
+
+	public int getInt(Opcode soc)
+	{	return this.getInt(soc.getOffset(), soc.getSize(), soc.getMask());
+	}
+
+	public boolean matchValue(Opcode o)
+	{	return(o.getValue() == this.getInt(o));
+	}
+
+	public void setInt(int index, int size, int value)
+	{	size--;
+		while(size >= 0)
+		{	this.set(index + size, value);
+			size--;
+			value >>= 7;
+		}
+	}
+
+	public void set(int offset, byte[] array)
+	{	int max = this.data.length;
+		if(max < offset) return;
+		for(byte b : array)
+		{	this.data[offset] = b;
+			if(offset++ > max) break;
+		}
+	}
+
+	public void set(int index, byte value)
+	{	this.data[index] = value;
+	}
+
+	public void set(int index, int value)
+	{	this.set(index, (byte)(value & 0xFF));
+	}
+
+	public int getLoNibble(int index)
+	{	return this.data[index] & 0xF;
+	}
+
+	public void setLoNibble(int index, int value)
+	{	this.set(index, getHiNibble(index) | (value & 0xF));
+	}
+
+	public int getHiNibble(int index)
+	{	return this.data[index] & 0xF0;
+	}
+
+	public void setHiNibble(int index, int value)
+	{	this.set(index, getLoNibble(index) | (value & 0xF0));
+	}
+
+
+	@Override public String toString()
+	{	if(this.data == null) return "no data";
+		String s = new String();
+		for(byte c : this.data)
+		{	s = s.concat(Integer.toHexString(c) + ", ");
+		}
+		return s;
+	}
+}
