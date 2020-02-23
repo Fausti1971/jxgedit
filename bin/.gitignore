@@ -1,12 +1,2 @@
-/gui/
-/module/
-/msg/
-/obj/
-/opcode/
-/parm/
-/tag/
-/value/
-/xml/
-/device/
-/file/
-/adress/
+/coremidi4j-1.1-javadoc.jar
+/coremidi4j-1.1.jar
