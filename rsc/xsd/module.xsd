@@ -29,7 +29,7 @@
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
-					<xs:attribute name="tag" use="required" type="xs:string"/>
+					<xs:attribute name="tag" use="required" type="module"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
@@ -52,6 +52,21 @@
 			<xs:enumeration value="Integer"/>
 			<xs:enumeration value="String"/>
 			<xs:enumeration value="Image"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="module">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="system"/>
+			<xs:enumeration value="info"/>
+			<xs:enumeration value="sysfx"/>
+			<xs:enumeration value="syseq"/>
+			<xs:enumeration value="insfx"/>
+			<xs:enumeration value="display"/>
+			<xs:enumeration value="multipart"/>
+			<xs:enumeration value="adpart"/>
+			<xs:enumeration value="drumset"/>
+			<xs:enumeration value="plugin"/>
 		</xs:restriction>
 	</xs:simpleType>
 

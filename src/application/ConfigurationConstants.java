@@ -4,8 +4,9 @@ package application;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import xml.XMLNodeConstants;
 
-public interface ConfigurationConstants
+public interface ConfigurationConstants extends XMLNodeConstants
 {
 	static final int HASH = 17;
 
@@ -27,9 +28,4 @@ public interface ConfigurationConstants
 	static final int DEF_SYSEXID = 0;
 
 	static final int MIN_W = 300, MIN_H = 400;
-
-	static final String
-		TAG_CONFIG = "config",
-		TAG_VERSION = "version",
-		TAG_DEVICE = "device";
 }

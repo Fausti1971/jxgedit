@@ -225,7 +225,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		try
 		{	m = new XGMessageDumpRequest(this.midi, XGAddressConstants.XGMODELNAMEADRESS);
 			m.setDestination(this.values);
-			this.midi.submit(m);
+			this.midi.request(m);
 			//TODO: wait for response...
 			this.setName(this.values.get(XGAddressConstants.XGMODELNAMEADRESS).toString().strip());
 			this.info1 = (int)this.values.get(XGAddressConstants.XGMODELINFO1ADDRESS).getContent();

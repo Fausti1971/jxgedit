@@ -5,7 +5,7 @@
 	valueClass = Integer
 -->
 <map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/module.xsd">
-	<module tag = "master">
+	<module tag = "system">
 		<name>Master</name>
 		<address>
 			<hi>0</hi>
@@ -89,7 +89,7 @@
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "systemfx">
+	<module tag = "sysfx">
 		<name>System Effect</name>
 		<address>
 			<hi>2</hi>
@@ -516,7 +516,7 @@
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "systemeq">
+	<module tag = "syseq">
 		<name>System EQ</name>
 		<address>
 			<hi>2</hi>
@@ -620,7 +620,7 @@
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "insertionfx">
+	<module tag = "insfx">
 		<name>Insertion Effect</name>
 		<address>
 			<hi>3</hi>
@@ -1961,7 +1961,7 @@
 			</opcode>
 		</bulk>
 	</module>
-	<module tag="drumset">
+	<module tag = "drumset">
 		<name>Drumset</name>
 		<address/>
 		<bulk>

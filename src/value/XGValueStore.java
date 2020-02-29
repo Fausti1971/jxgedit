@@ -4,8 +4,8 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
 import device.XGDevice;
-import msg.XGMessage;
 import msg.XGMessenger;
+import msg.XGRequest;
 import msg.XGResponse;
 import obj.XGType;
 import tag.XGTagableSet;
@@ -34,11 +34,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	{	return this.getDevice().toString() + " ValueStore";
 	}
 
-	@Override public void submit(XGMessage m) throws InvalidXGAddressException
-	{	if(m instanceof XGResponse) this.receiveResponse((XGResponse)m);
-	}
-
-	private void receiveResponse(XGResponse r)
+	@Override public void submit(XGResponse r) throws InvalidXGAddressException
 	{	int end = r.getBulkSize() + r.getBaseOffset(), offset = r.getLo();
 		for(int i = r.getBaseOffset(); i < end;)
 		{	XGValue v;
@@ -56,8 +52,13 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 		}
 	}
 
+	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	@Override public void run()
 	{
 	}
-
 }

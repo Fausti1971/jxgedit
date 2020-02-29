@@ -4,7 +4,7 @@ public interface XGAddressable extends XGAddressConstants
 {
 /**
  * zum Sortieren und Iterieren erforderliche XGAdress eines XGAdressable
- * @return
+ * @return XGAddress
  * @throws InvalidXGAddressException 
  */
 	public XGAddress getAdress();

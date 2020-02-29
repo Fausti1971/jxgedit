@@ -13,7 +13,6 @@ public abstract class XGSuperModule implements XGModule
 	private final XGAddress address;
 	private final XGModule parent;
 	private final Set<XGModule> children = new TreeSet<XGModule>();
-
 	private final XMLNode guiTemplate;
 
 	protected XGSuperModule(XGDevice dev, XGModule par, XGAddress adr)

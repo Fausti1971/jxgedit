@@ -186,7 +186,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 		{	try
 			{	XGMessage m = XGMessage.newMessage(this, mmsg);
 				if(this.request != null && this.request.setResponsedBy((XGResponse)m))
-				{	this.notify();
+				{	this.request.getSource().notify();
 					return;
 				}
 				if(m.getDestination() == null) m.setDestination(this.buffer);
@@ -225,17 +225,17 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 		return true;
 	}
 
-	@Override public void submit(XGMessage msg)
+	@Override public void submit(XGResponse msg)
 	{	this.transmit(msg);
 	}
-/*
-	@Override public XGResponse pull(XGRequest msg) throws TimeoutException	//TODO:
+
+	@Override public XGResponse request(XGRequest msg)
 	{	synchronized(this)
 		{	if(this.transmit(msg))
 			{	this.request = msg;
 				try
-				{	this.wait(this.timeout);
-					if(!this.request.isResponsed()) throw new TimeoutException("midi timeout: " + this.getInputName() + " after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms"); //Thread läuft nach notify() ganz normal weiter
+				{	msg.getSource().wait(this.timeout);
+//					if(!this.request.isResponsed()) throw new TimeoutException("midi timeout: " + this.getInputName() + " after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms"); //Thread läuft nach notify() ganz normal weiter
 				}
 				catch(InterruptedException e)
 				{	System.out.println("interrupted");
@@ -245,7 +245,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 			return msg.getResponse();
 		}
 	}
-*/
+
 	@Override public int hashCode()
 	{	if(this.midiInput == null || this.midiOutput == null) return HASH;
 		return HASH * this.midiInput.hashCode() + HASH * this.midiOutput.hashCode();

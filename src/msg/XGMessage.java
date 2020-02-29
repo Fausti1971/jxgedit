@@ -75,6 +75,20 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	{	return new XGAddress(getHi(), getMid(), getLo());
 	}
 
+/**
+ * Testet das übergebene Object o auf null, MessageID, sysexID und XGAddress;
+ * @param o
+ * @return true, wenn o nicht null, MessageID, SysexID und XGAddress übereinstimmt;
+ */
+	public default boolean isEqual(XGMessage o)
+	{	if(o != null)
+		{	if(o.getMessageID() == this.getMessageID() &&
+				o.getSysexID() == this.getSysexID() &&
+				o.getAdress().equals(this.getAdress())) return true;
+		}
+		return false;
+	}
+
 	public void init();
 	public XGMessenger getDestination();
 	public void setDestination(XGMessenger dest);

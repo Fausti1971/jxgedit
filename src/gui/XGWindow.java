@@ -30,7 +30,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 
 	protected XGWindow()	//nur für Root-Window
 	{	this.source = null;
-		this.rootComponent = new XGTree(JXG.getJXG());
+		this.rootComponent = new XGTree(JXG.getJXG(), true);
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 	}
 

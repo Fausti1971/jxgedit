@@ -148,4 +148,8 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 	@Override public void nodeFocussed(boolean b)
 	{
 	}
+
+	@Override public String getNodeText()
+	{	return this.toString();
+	}
 }

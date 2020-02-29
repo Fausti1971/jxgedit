@@ -1,6 +1,8 @@
 package parm;
 
-public interface XGTranslationConstants
+import xml.XMLNodeConstants;
+
+public interface XGTranslationConstants extends XMLNodeConstants
 {
 	static enum XGTranslator
 	{	translateNot,
@@ -11,12 +13,4 @@ public interface XGTranslationConstants
 		translateMap,
 		translateXML
 	}
-
-	static final String
-		TAG_MAPS = "maps",
-		TAG_MAP = "map",
-		TAG_ENTRY = "entry",
-		TAG_KEY = "key",
-		TAG_VALUE = "value",
-		ATTR_NAME = "name";
 }

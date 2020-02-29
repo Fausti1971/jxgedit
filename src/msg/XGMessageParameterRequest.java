@@ -1,7 +1,5 @@
 package msg;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
@@ -13,7 +11,6 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 
 /*******************************************************************************************/
 
-	private Set<XGResponseListener> responseListeners = new HashSet<>();
 	private XGResponse response;
 	private boolean responsed;
 
@@ -55,13 +52,11 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
 
 	@Override public boolean setResponsedBy(XGResponse msg)
-	{	if(msg == null ||
-			!(msg instanceof XGMessageParameterChange) ||
-			msg.getSysexID() != response.getSysexID() ||
-			!msg.getAdress().equals(response.getAdress())) return this.responsed = false;
-		this.response = msg;
-		this.response.setDestination(this.getSource());
-		return this.responsed = true;
+	{	if(this.responsed = this.response.isEqual(msg))
+		{	this.response = msg;
+			this.response.setDestination(this.getSource());
+		}
+		return this.responsed;
 	}
 
 	@Override public void setMessageID()
@@ -74,17 +69,5 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 
 	@Override public XGResponse getResponse()
 	{	return this.response;
-	}
-
-	public void addResponseListener(XGResponseListener l)
-	{	this.responseListeners.add(l);
-	}
-
-	public void removeResponseListener(XGResponseListener l)
-	{	this.responseListeners.remove(l);
-	}
-
-	public void notifyResponseListeners()
-	{	for(XGResponseListener l : this.responseListeners) l.requestResponsed();
 	}
 }

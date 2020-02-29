@@ -42,8 +42,9 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	{	return this.source.getMessengerName() + " buffer";
 	}
 
-	@Override public void submit(XGMessage m)
+	@Override public void submit(XGResponse m)
 	{	this.add(m);
+	System.out.println("msg buffered: " + m);
 		((DefaultListModel<XGMessage>)this.list.getModel()).addElement(m);
 		if(this.window == null) this.setChildWindow(new XGWindow(this, XGWindow.getRootWindow(), false, this.getMessengerName()));
 		this.status.setText(this.size() + " messages buffered");
@@ -139,7 +140,7 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 			{	for(XGMessage m : list.getSelectedValuesList())
 				{	m.setDestination(source.getDevice().getValues());
 					try
-					{	source.getDevice().getValues().submit(m);
+					{	if(m instanceof XGResponse) source.getDevice().getValues().submit((XGResponse)m);
 					}
 					catch(InvalidXGAddressException e1)
 					{	e1.printStackTrace();
@@ -163,5 +164,11 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 
 	@Override public void run()
 	{
+	}
+
+	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

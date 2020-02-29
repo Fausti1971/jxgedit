@@ -27,6 +27,12 @@ import gui.XGTree;
 import gui.XGTreeNode;
 import tag.XGTagable;
 
+/**
+ * XMLNode (from Set) tag = "item", content = "text";
+ * XMLNode (from Map) tag = "entry", tag = "key", tag = "value"
+ * @author thomas
+ *
+ */
 public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 {
 	private static Logger log = Logger.getAnonymousLogger();
@@ -78,9 +84,19 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 		return prop;
 	}
 
-	public static XMLNode fromSet(String name, Set<?> set)
-	{	XMLNode n = new XMLNode(name, null);
-		for(Object o : set) n.addChildNode(new XMLNode(o.toString(), null));
+/**
+ * kreiert und returniert aus einem Set eine XMLNode mit dem TAG_SET ("set"), deren childNodes jeweils das TAG_ITEM ("item") und den Inhalt toString() tragen;
+ * @param selected wird dem XMLRoot als Attribut TAG_SELECTED ("selected") hinzugefügt;
+ * @param name wird dem XMLRoot als Attribut TAG_NAME ("name") hinzugefügt;
+ * @param set das Set, das dem XMLRoot als children hinzugefügt wird
+ * @return XMLRoot
+ */
+	public static XMLNode fromSet(String name, Set<?> set, String selected)
+	{	Properties p = new Properties();
+		p.put(ATTR_SELECTED, selected);
+		p.put(ATTR_NAME, name);
+		XMLNode n = new XMLNode(TAG_SET, p);
+		for(Object o : set) n.addChildNode(new XMLNode(TAG_ITEM, null, o.toString()));
 		return n;
 	}
 
@@ -90,13 +106,18 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 	private XMLNode parent;
 	private final Set<XMLNode> childNodes = new LinkedHashSet<>();
 	private final String tag;
-	private String text = "";
+	private String content = "no content";
 	private final Properties attributes;
-	private boolean isSelected = false;
+//	private boolean isSelected = false;
 
 	public XMLNode(String tag, Properties attr)
 	{	this.tag = tag;
 		this.attributes = attr;
+	}
+
+	public XMLNode(String tag, Properties attr, String txt)
+	{	this(tag, attr);
+		this.content = txt;
 	}
 
 	private XMLNode getParentNode()
@@ -104,12 +125,12 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 	}
 
 	public void setTextContent(String s)
-	{	this.text = s;
+	{	this.content = s;
 //		log.info("text (" + s + ") added to " + this);
 	}
 
 	public void setTextContent(int v)
-	{	this.text = String.valueOf(v);
+	{	this.content = String.valueOf(v);
 	}
 
 	public void addChildNode(XMLNode child)
@@ -148,7 +169,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 	}
 
 	public String getTextContent()
-	{	return this.text;
+	{	return this.content;
 	}
 
 	public String getChildNodeTextContent(String tag, String def)
@@ -190,7 +211,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 	private void writeNode(XMLStreamWriter w, XMLNode n)
 	{	try
 		{	w.writeStartElement(n.tag);
-			w.writeCharacters(n.text);
+			w.writeCharacters(n.content);
 			if(n.attributes != null)
 			{	for(Entry<Object,Object> e : n.attributes.entrySet())
 					w.writeAttribute(e.getKey().toString(), e.getValue().toString());
@@ -203,9 +224,14 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 		}
 	}
 
+	@Override public String getNodeText()
+	{	if(this.tag.equals("item")) return this.content;
+		if(this.tag.equals("entry")) return this.getChildNodeTextContent("value", "no value for " + this.getChildNodeTextContent("key", "no key"));
+		return this.tag;
+	}
+
 	@Override public String toString()
-	{	if(this.isLeaf()) return this.tag;
-		else return this.tag + " (" + this.childNodes.size() + ")";
+	{	return this.getNodeText();
 	}
 
 	@Override public TreeNode getParent()
@@ -235,11 +261,14 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 	}
 
 	@Override public void setSelected(boolean s)
-	{	this.isSelected = s;
+	{	System.out.println(this.content + " " + s);
+		if(s) this.getParentNode().attributes.put(ATTR_SELECTED, this.content);
+		else this.getParentNode().attributes.put(ATTR_SELECTED, "");
 	}
 
 	@Override public boolean isSelected()
-	{	return this.isSelected;
+	{	String s = this.getParentNode().getAttribute(ATTR_SELECTED);
+		return s.equals(this.content);
 	}
 
 	@Override public void setTreeComponent(XGTree t)

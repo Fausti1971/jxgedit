@@ -64,7 +64,7 @@ public class XGBulkDumpSequence implements XGTypeConstants
 				for(mid = this.min.getMid(); mid <= this.max.getMid(); mid++)
 				{	XGRequest r = new XGMessageDumpRequest(src, new XGAddress(hi, mid, lo));
 					r.setDestination(dest);
-					src.submit(r);
+					src.request(r);
 				}
 		}
 		catch(InvalidXGAddressException | InvalidMidiDataException e)

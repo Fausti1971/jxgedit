@@ -1,7 +1,6 @@
 package device;
 
 import java.awt.GridLayout;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -27,10 +26,10 @@ public class XGMidiConfigurator extends XGFrame implements XGMidiConstants
 	{	super("midi");
 		this.config = cfg.getChildNodeOrNew(TAG_MIDI);
 
-		this.setLayout(new GridLayout(2, 2, 2, 2));
+		this.setLayout(new GridLayout(GAP, GAP, GAP, GAP));
 
-		XMLNode n = XMLNode.fromSet("input", XGMidi.getInputs());
-		XGTree t = new XGTree(n);
+		XMLNode n = XMLNode.fromSet("input", XGMidi.getInputs(), this.config.getChildNodeTextContent(TAG_MIDIINPUT, "no input"));
+		XGTree t = new XGTree(n, false);
 		t.setSize(W, H);
 /*
 		inp.setBackground(root.getBackground());
@@ -47,8 +46,8 @@ public class XGMidiConfigurator extends XGFrame implements XGMidiConstants
 		});
 */		this.add(new JScrollPane(t));
 
-		n = XMLNode.fromSet("output",  XGMidi.getOutputs());
-		t = new XGTree(n);
+		n = XMLNode.fromSet("output",  XGMidi.getOutputs(), this.config.getChildNodeTextContent(TAG_MIDIOUTPUT, "no output"));
+		t = new XGTree(n, false);
 		t.setSize(W, H);
 /*
 		JList<Info> out = new JList<>(new Vector<>(XGMidi.getOutputs()));

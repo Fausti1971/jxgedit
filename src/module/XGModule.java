@@ -1,5 +1,7 @@
 package module;
 
+import java.util.Collections;
+import java.util.Enumeration;
 /*
  * config:
  * 
@@ -39,6 +41,7 @@ package module;
  * 	
  */
 import java.util.Set;
+import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
@@ -83,4 +86,14 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 /********************************************************************************************************************/
 
 	public Set<XGModule> getChildren();
+
+	@Override public default boolean getAllowsChildren()
+	{	return true;
+	}
+
+	@Override public default Enumeration<? extends TreeNode> children()
+	{	return Collections.enumeration(this.getChildren());
+	}
+
+
 }

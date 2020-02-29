@@ -20,6 +20,8 @@ import gui.XGWindow;
 import msg.XGMessage;
 import msg.XGMessageBuffer;
 import msg.XGMessenger;
+import msg.XGRequest;
+import msg.XGResponse;
 
 public class XGSysexFile extends File implements XGSysexFileConstants, ConfigurationConstants, XGMessenger
 {	private static final long serialVersionUID=870648549558099401L;
@@ -57,7 +59,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 				{	try
 					{	XGMessage m = XGMessage.newMessage(dest, Arrays.copyOfRange(tmp, first, i + 1), false);
 						m.setDestination(dest);
-						dest.submit(m);
+						if(m instanceof XGResponse) dest.submit((XGResponse)m);
 						messageCont++;
 					}
 					catch (InvalidMidiDataException | InvalidXGAddressException e)
@@ -149,8 +151,14 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 	{
 	}
 
-	@Override public void submit(XGMessage msg) throws InvalidXGAddressException
+	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
 	{	//TODO:
+	}
+
+	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

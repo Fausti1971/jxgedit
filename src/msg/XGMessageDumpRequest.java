@@ -1,7 +1,5 @@
 package msg;
 
-import java.util.HashSet;
-import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
@@ -12,7 +10,6 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 /********************************************************************************/
 
-	private Set<XGResponseListener> responseListeners = new HashSet<>();
 	private boolean responsed = false;
 
 	XGResponse response = null;
@@ -37,15 +34,11 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	}
 
 	@Override public boolean setResponsedBy(XGResponse msg)
-	{	if(msg == null ||
-			!(msg instanceof XGMessageBulkDump) ||
-			msg.getSysexID() != this.response.getSysexID() ||
-			!(msg.getAdress().equals(this.response.getAdress())))
-				return this.responsed = false;
-		this.response = msg;
-		this.response.setDestination(this.getSource());
-		this.notifyResponseListeners();
-		return this.responsed = true;
+	{	if(this.responsed = msg.isEqual(this.response))
+		{	this.response = msg;
+			this.response.setDestination(this.getSource());
+		}
+		return this.responsed;
 	}
 
 	@Override public boolean isResponsed()
@@ -86,17 +79,5 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	@Override public void setMessageID()
 	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
-	}
-
-	public void addResponseListener(XGResponseListener l)
-	{	this.responseListeners.add(l);
-	}
-
-	public void removeResponseListener(XGResponseListener l)
-	{	this.responseListeners.remove(l);
-	}
-
-	public void notifyResponseListeners()
-	{	for(XGResponseListener l : this.responseListeners) l.requestResponsed();
 	}
 }

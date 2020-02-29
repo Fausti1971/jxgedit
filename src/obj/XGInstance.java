@@ -85,8 +85,7 @@ public class XGInstance implements XGAddressable, XGWindowSourceTreeNode
 	}
 
 	@Override public Set<String> getContexts()
-	{
-		return new LinkedHashSet<>();
+	{	return new LinkedHashSet<>();
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
@@ -104,5 +103,9 @@ public class XGInstance implements XGAddressable, XGWindowSourceTreeNode
 
 	@Override public void nodeFocussed(boolean b)
 	{
+	}
+
+	@Override public String getNodeText()
+	{	return this.toString();
 	}
 }
