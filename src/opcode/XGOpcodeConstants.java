@@ -2,9 +2,8 @@ package opcode;
 
 public interface XGOpcodeConstants
 {	static final String
-		TAG_MAP = "map",
-		TAG_OPCODE = "opcode",
-		TAG_NAME = "name",
+		TAG_OPCODE = "opcodes",
+//		TAG_NAME = "name",
 		TAG_ADRESS = "address",
 		TAG_BYTECOUNT = "byteCount",
 		TAG_DATATYPE = "byteType",

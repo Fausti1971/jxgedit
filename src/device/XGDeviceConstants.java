@@ -6,16 +6,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import parm.XGParameter;
 import parm.XGTranslationConstants;
+import xml.XMLNodeConstants;
 
-public interface XGDeviceConstants
+public interface XGDeviceConstants extends XMLNodeConstants
 {
-	static final String
-		TAG_NAME = "name",
-		TAG_COLOR = "color",
-		TAG_SYSEXID = "sysexID",
-		TAG_LASTDUMPFILE = "lastDumpFile",
-		TAG_DEFAULTDUMPFOLDER = "defaultDumpFolder";
-
 	static final int
 		DEF_DEVCOLOR = 0xFFFFFF;
 

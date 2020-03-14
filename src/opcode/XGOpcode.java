@@ -27,9 +27,10 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 			return opcodes;
 		}
 		XMLNode xml = XMLNode.parse(file);
-			for(XMLNode n : xml.getChildNodes())
-				if(n.getTag().equals(TAG_OPCODE))
-					opcodes.add(new XGOpcode(n));
+		if(xml.getTag().equals(TAG_OPCODE))
+		{	for(XMLNode n : xml.getChildNodes())
+				if(n.getTag().equals(TAG_ITEM)) opcodes.add(new XGOpcode(n));
+		}
 		log.info(opcodes.size() + " opcodes initialized from: " + file);
 		return opcodes;
 	}
@@ -92,7 +93,7 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 	}
 
 	public XGOpcode(XMLNode n)
-	{	this.tag = n.getChildNode(TAG_NAME).getTextContent();
+	{	this.tag = n.getAttribute(ATTR_ID);
 		this.adress = new XGAddress(n.getChildNode(TAG_ADRESS));
 		this.byteCount = n.parseChildNodeIntegerContent(TAG_BYTECOUNT, DEF_BYTECOUNT);
 		this.dType = getDataType(n.getChildNodeTextContent(TAG_DATATYPE, ""));

@@ -1,7 +1,11 @@
-/xml/
-/gui/
-/device/
-/obj/
-/application/
 /module/
+/msg/
+/obj/
+/opcode/
 /parm/
+/tag/
+/value/
+/xml/
+/device/
+/gui/
+/application/

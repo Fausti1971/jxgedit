@@ -10,13 +10,6 @@ public interface ConfigurationConstants extends XMLNodeConstants
 {
 	static final int HASH = 17;
 
-	static final String XML_CONFIG = "config.xml";
-	static final String XML_OPCODE = "opcode.xml";
-	static final String XML_TYPE = "type.xml";
-	static final String XML_PARAMETER = "parameter.xml";
-	static final String XML_TRANSLATION = "translation.xml";
-	static final String XML_TEMPLATE = "template.xml";
-
 	static final String APPNAME = "JXG";
 //	static final String SYSFILESEP = System.getProperty("file.separator");
 

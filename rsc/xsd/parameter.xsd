@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- xs: erforderlich, da "byteType" bereits anderweitig belegt ist -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-	<xs:element name="map">
+	<xs:element name="parameters">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element name="parameter" minOccurs="0" maxOccurs="unbounded">
+				<xs:element name="item" minOccurs="0" maxOccurs="unbounded">
 					<xs:complexType>
 						<xs:all>
-							<xs:element name="name" type="xs:string"/>
+							<xs:element name="description" type="xs:string" minOccurs="0"/>
 							<xs:element name="longName" type="xs:string" minOccurs="0"/>
 							<xs:element name="shortName" type="xs:string" minOccurs="0"/>
 							<xs:element name="valueMin" type="xs:nonNegativeInteger" minOccurs="0"/>
 							<xs:element name="valueMax" type="xs:nonNegativeInteger" minOccurs="0"/>
 							<xs:element name="translator" type="translatorType" minOccurs="0"/>
 							<xs:element name="translationMap" minOccurs="0"/>
-							<xs:element name="dependsOf" type="xs:string" minOccurs="0"/>
+							<xs:element name="dependsOf" minOccurs="0">
+								<xs:complexType>
+									<xs:attribute name="REF" type="xs:IDREF" use="required"/>
+								</xs:complexType>
+							</xs:element>
 							<xs:element name="mutableMapKey" type="mapKey" minOccurs="0"/>
 						</xs:all>
+					<xs:attribute name="ID" use="required" type="xs:ID"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

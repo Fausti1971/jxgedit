@@ -10,8 +10,13 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import javax.swing.BoxLayout;
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 import adress.InvalidXGAddressException;
 import application.Configurable;
+import gui.XGFrame;
+import gui.XGSpinner;
 import msg.XGMessage;
 import msg.XGMessageBuffer;
 import msg.XGMessenger;
@@ -20,6 +25,7 @@ import msg.XGResponse;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
+import value.ObservableValue;
 import xml.XMLNode;
 
 public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotification, Configurable, Receiver, AutoCloseable
@@ -61,6 +67,33 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 
 /******************************************************************************************************************/
 
+	public final ObservableValue<Info> input = new ObservableValue<Info>()
+		{	@Override public Info get()
+			{	if(getInput() != null) return getInput().getDeviceInfo();
+				else return null;
+			}
+			@Override public void set(Info s)
+			{	setInput(s);
+			}
+		};
+	public final ObservableValue<Info> output = new ObservableValue<Info>()
+		{	@Override public Info get()
+			{	if(getOutput() != null) return getOutput().getDeviceInfo();
+				else return null;
+			}
+			@Override public void set(Info s)
+			{	setOutput(s);
+			}
+		};
+	public final ObservableValue<Integer> timeout = new ObservableValue<Integer>()
+		{	@Override public Integer get()
+			{	return timeoutValue;
+			}
+			@Override public void set(Integer s)
+			{	setTimeout(s);
+			}
+		};
+
 	private final Thread thread;
 	private final XGDevice device;
 	private final XMLNode config;
@@ -68,8 +101,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	private MidiDevice midiOutput = null;
 	private MidiDevice midiInput = null;
 	private XGRequest request = null;
-	private int timeout = DEF_MIDITIMEOUT;
-//	private final Set<ConfigurationChangeListener> configurationListeners = new HashSet<>();
+	private int timeoutValue;
 	private final XGMessageBuffer buffer;
 
 	public XGMidi(XGDevice dev)
@@ -77,7 +109,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 		this.config = this.device.getConfig().getChildNodeOrNew(TAG_MIDI);
 		this.setInput(this.config.getChildNodeOrNew(TAG_MIDIINPUT).getTextContent());
 		this.setOutput(this.config.getChildNodeOrNew(TAG_MIDIOUTPUT).getTextContent());
-		this.timeout = this.config.parseChildNodeIntegerContent(TAG_MIDITIMEOUT, DEF_MIDITIMEOUT);
+		this.timeout.set(this.config.parseChildNodeIntegerContent(TAG_MIDITIMEOUT, DEF_MIDITIMEOUT));
 		this.buffer = new XGMessageBuffer(this);
 
 		try
@@ -91,18 +123,19 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	}
 
 	private void setOutput(String s)
-	{	for(Info i : getOutputs())
-		{	if(i.getName().equals(s))
-				try
-				{	this.setOutput(MidiSystem.getMidiDevice(i));
-				}
-				catch(MidiUnavailableException e)
-				{	e.printStackTrace();
-				}
+	{	for(Info i : getOutputs()) if(i.getName().equals(s)) this.setOutput(i);
+	}
+
+	private void setOutput(Info i)
+	{	try
+		{	this.setOutput(MidiSystem.getMidiDevice(i));
+		}
+		catch(MidiUnavailableException e)
+		{	e.printStackTrace();
 		}
 	}
 
-	public void setOutput(MidiDevice dev)
+	private void setOutput(MidiDevice dev)
 	{	if(this.transmitter != null) this.transmitter.close();
 		if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
 		this.midiOutput = dev;
@@ -128,18 +161,19 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	}
 
 	private void setInput(String s)
-	{	for(Info i : getInputs())
-		{	if(i.getName().equals(s))
-				try
-				{	this.setInput(MidiSystem.getMidiDevice(i));
-				}
-				catch(MidiUnavailableException e)
-				{	e.printStackTrace();
-				}
+	{	for(Info i : getInputs()) if(i.getName().equals(s)) this.setInput(i);
+	}
+
+	private void setInput(Info i)
+	{	try
+		{	this.setInput(MidiSystem.getMidiDevice(i));
+		}
+		catch(MidiUnavailableException e)
+		{	e.printStackTrace();
 		}
 	}
 
-	public void setInput(MidiDevice dev)
+	private void setInput(MidiDevice dev)
 	{	if(this.midiInput != null && this.midiInput.isOpen()) this.midiInput.close();
 		this.midiInput = dev;
 		if(dev != null)
@@ -163,20 +197,20 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 		return;
 	}
 
-	public MidiDevice getInput()
+	private MidiDevice getInput()
 	{	return this.midiInput;
 	}
 
-	public MidiDevice getOutput()
+	private MidiDevice getOutput()
 	{	return this.midiOutput;
 	}
 
-	public String getInputName()
+	private String getInputName()
 	{	if(getInput() == null) return "no input device";
 		else return this.midiInput.getDeviceInfo().getName();
 	}
 
-	public String getOutputName()
+	private String getOutputName()
 	{	if(getOutput() == null) return "no output device";
 		else return this.midiOutput.getDeviceInfo().getName();
 	}
@@ -234,7 +268,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 		{	if(this.transmit(msg))
 			{	this.request = msg;
 				try
-				{	msg.getSource().wait(this.timeout);
+				{	msg.getSource().wait(this.timeout.get());
 //					if(!this.request.isResponsed()) throw new TimeoutException("midi timeout: " + this.getInputName() + " after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms"); //Thread läuft nach notify() ganz normal weiter
 				}
 				catch(InterruptedException e)
@@ -262,11 +296,11 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	}
 
 	public int getTimeout()
-	{	return this.timeout;
+	{	return this.timeout.get();
 	}
 
 	public void setTimeout(int t)
-	{	this.timeout = t;
+	{	this.timeoutValue = t;
 		this.config.getChildNodeOrNew(TAG_MIDITIMEOUT).setTextContent(t);
 		log.info("timeout set to " + t);
 	}
@@ -277,6 +311,20 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 
 	@Override public XMLNode getConfig()
 	{	return this.config;
+	}
+
+	public JComponent getConfigComponent()
+	{	XGFrame root = new XGFrame("midi", BoxLayout.X_AXIS);
+		XGFrame frame = new XGFrame("input", 0);
+		frame.add(new JScrollPane(new XGList<Info>(XGMidi.getInputs(), this.input)));
+		root.add(frame);
+		frame = new XGFrame("output", 0);
+		frame.add(new JScrollPane(new XGList<Info>(XGMidi.getOutputs(), this.output)));
+		root.add(frame);
+		frame = new XGFrame("timeout", 0);
+		frame.add(new XGSpinner(this.timeout, 30, 1000, 10));
+		root.add(frame);
+		return root;
 	}
 
 	@Override public void run()

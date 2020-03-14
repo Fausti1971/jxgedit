@@ -27,16 +27,4 @@ public interface GuiConstants extends ConfigurationConstants
 
 	static final Dimension
 		SL_DIM = new Dimension(SL_W, SL_H);
-
-	static String
-		TAG_WIN = "window",
-		TAG_WINX = "X",
-		TAG_WINY = "Y",
-		TAG_WINW = "W",
-		TAG_WINH = "H",
-
-		TAG_COLOR = "color",
-		TAG_BASECOLOR = "base",
-		TAG_FOCUSCOLOR = "focus";
-
 }

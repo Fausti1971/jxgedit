@@ -1,5 +1,6 @@
 package gui;
 
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 
@@ -11,8 +12,9 @@ public class XGFrame extends JPanel implements XGBorderable
 
 /********************************************************************************************************************/
 
-	public XGFrame(String text)
+	public XGFrame(String text, int layout)
 	{	super();
+		this.setLayout(new BoxLayout(this, layout));
 		this.setName(text);
 //		this.colorize();
 		this.borderize();

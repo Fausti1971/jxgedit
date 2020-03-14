@@ -23,10 +23,10 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 		{	return set;
 		}
 		XMLNode xml = XMLNode.parse(file);
-		for(XMLNode x : xml.getChildNodes())
-			if(x.getTag().equals(TAG_PARAMETER))
-				set.add(new XGParameter(dev, x));
-		
+		if(xml.getTag().equals(TAG_PARAMETER))
+		{	for(XMLNode x : xml.getChildNodes())
+				if(x.getTag().equals(TAG_ITEM)) set.add(new XGParameter(dev, x));
+		}
 		log.info(set.size() + " parameters initialized");
 		return set;
 	}
@@ -97,7 +97,7 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 
 	public XGParameter(XGDevice dev, XMLNode n)
 	{	this.device = dev;
-		this.tag = n.getChildNode(TAG_NAME).getTextContent();
+		this.tag = n.getAttribute(ATTR_ID);
 //		this.opcode = XGOpcode.getOpcode(this.tag);
 //		this.objectType = XGObjectType.getObjectTypeOrNew(this.device, this.opcode.getAdress());
 		this.minValue = n.parseChildNodeIntegerContent(TAG_MIN, DEF_MIN);

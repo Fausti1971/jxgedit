@@ -3,9 +3,7 @@ package parm;
 public interface XGParameterConstants
 {
 	static final String
-		TAG_MAP = "map",
-		TAG_PARAMETER = "parameter",
-		TAG_NAME = "name",
+		TAG_PARAMETER = "parameters",
 		TAG_MIN = "valueMin",
 		TAG_MAX = "valueMax",
 		TAG_TRANSLATOR = "translator",

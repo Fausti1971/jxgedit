@@ -5,8 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
@@ -16,6 +14,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
@@ -25,7 +24,10 @@ import application.Configurable;
 import application.JXG;
 import file.XGSysexFile;
 import gui.XGContext;
-import gui.XGDeviceConfigurator;
+import gui.XGDeviceDetector;
+import gui.XGFrame;
+import gui.XGPathSelector;
+import gui.XGSpinner;
 import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
@@ -38,6 +40,7 @@ import parm.XGParameter;
 import parm.XGTranslationMap;
 import tag.XGTagableAdressableSet;
 import tag.XGTagableSet;
+import value.ObservableValue;
 import value.XGValueStore;
 import xml.XMLNode;
 
@@ -72,6 +75,32 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 /***************************************************************************************************************************/
 
+	private final ObservableValue<Integer> sysex = new ObservableValue<Integer>()
+	{	@Override public Integer get()
+		{	return getSysexID();
+		}
+		@Override public void set(Integer s)
+		{	setSysexID(s);
+		}
+	};
+
+	private final ObservableValue<Path> defaultDumpFolder = new ObservableValue<Path>()
+	{	@Override public Path get()
+		{	return getDefDumpPath();
+		}
+		@Override public void set(Path s)
+		{	setDefDumpPath(s);
+		}
+	};
+
+	private ObservableValue<String> name = new ObservableValue<String>()
+	{	@Override public String get()
+		{	return config.getChildNodeTextContent(TAG_DEVICE_NAME, DEF_DEVNAME);
+		}
+		@Override public void set(String s)
+		{	config.getChildNodeOrNew(TAG_DEVICE_NAME).setTextContent(s);
+		}
+	};
 	private XGTree tree;
 	private Color color;
 	private boolean isSelected = false;
@@ -83,19 +112,24 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private final XGTagableSet<XGType> types;
 	private final XGTagableSet<XGTranslationMap> translations;
 	private final XGTagableSet<XGParameter> parameters;
-	private String name;
 	private int info1, info2;
-	private Path defDumpPath;
 	private final Queue<XGSysexFile> files = new LinkedList<>();
 	private final XGSysexFile defaultSyx;
-	private final XGMidi midi;
+	private XGMidi midi;
 	private int sysexID;
 	private XGWindow childWindow;
 
 	private XGDevice()	//DefaultDevice (XG)
 	{	this.config = null;
 		this.midi = null;
-		this.name = "XG";
+		this.name = new ObservableValue<String>()
+		{	@Override public String get()
+			{	return "XG";
+			}
+			@Override public void set(String s)
+			{
+			}
+		};
 		this.info1 = 1;
 		this.info2 = 1;
 		this.values = null;
@@ -111,20 +145,21 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	this.config = cfg;
 		if(this.config == null)
 		{	this.config = new XMLNode(TAG_DEVICE, null);
+			this.midi = new XGMidi(this);
 			this.configure();
 		}
-		this.sysexID = this.config.parseChildNodeIntegerContentOrNew(TAG_SYSEXID, DEF_SYSEXID);
+		this.sysex.set(this.config.parseChildNodeIntegerContentOrNew(TAG_SYSEXID, DEF_SYSEXID));
 		this.midi = new XGMidi(this);
 
-		this.setName(this.config.getChildNodeTextContent(TAG_NAME, DEF_DEVNAME));
+		this.name.set(this.config.getChildNodeTextContent(TAG_DEVICE_NAME, DEF_DEVNAME));
 		this.setColor(new Color(this.config.parseChildNodeIntegerContent(TAG_COLOR, DEF_DEVCOLOR)));
-		this.defDumpPath = Paths.get(this.config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).getTextContent());
+		this.defaultDumpFolder.set(Paths.get(this.config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).getTextContent()));
 		this.values = new XGValueStore(this);
 		this.opcodes = XGOpcode.init(this);
 		this.types = XGType.init(this);
 		this.translations = XGTranslationMap.init(this);
 		this.parameters = XGParameter.init(this);
-		this.defaultSyx = new XGSysexFile(this, this.defDumpPath.resolve("default.syx").toString());
+		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.get().resolve("default.syx").toString());
 		this.defaultSyx.load(this.values);
 		log.info("device initialized: " + this);
 	}
@@ -132,34 +167,14 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public File getResourceFile(String fName) throws FileNotFoundException
 	{	Path extPath = this.getResourcePath();
 		File extFile = extPath.resolve(fName).toFile();
-		File intFile = RSCPATH.resolve(this.name).resolve(fName).toFile();
-		if(!extFile.canRead() && intFile.canRead())
-		{	try
-			{	Files.createDirectories(extPath);
-				Files.copy(intFile.toPath(), extFile.toPath());
-				log.info("can't read file: " + extFile + "; default was copied from: " + intFile);
-			}
-			catch(IOException e)
-			{	log.info(e.getMessage() + ", using default");
-				return intFile;
-			}
-		}
-		if(!extFile.canRead() && !intFile.canRead()) throw new FileNotFoundException("can't read files: " + extFile + " nor: " + intFile);
-		return extFile;
+		File intFile = RSCPATH.resolve(this.name.get()).resolve(fName).toFile();
+		if(extFile.canRead()) return extFile;
+		if(intFile.canRead()) return intFile;
+		throw new FileNotFoundException("can't read files, neither: " + extFile + " nor: " + intFile);
 	}
 
 	public Path getResourcePath()
-	{	return HOMEPATH.resolve(this.name);
-	}
-
-	public String getName()
-	{	return this.name;
-	}
-
-	public void setName(String n)
-	{	this.name = n;
-		this.config.getChildNodeOrNew(TAG_NAME).setTextContent(n);
-//TODO: re-init wegen pfadänderung?
+	{	return HOMEPATH.resolve(this.name.get());
 	}
 
 	public Color getColor()
@@ -202,13 +217,11 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public Path getDefDumpPath()
-	{	if(this.defDumpPath == null) return JXG.HOMEPATH;
-		return this.defDumpPath;
+	{	return Paths.get(this.getConfig().getChildNodeTextContent(TAG_DEFAULTDUMPFOLDER.toString(), JXG.HOMEPATH.toString()));
 	}
 
 	public void setDefDumpPath(Path defDumpPath)
-	{	this.defDumpPath = defDumpPath;
-		this.config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).setTextContent(defDumpPath.toString());
+	{	this.config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).setTextContent(defDumpPath.toString());
 	}
 
 	public int getSysexID()
@@ -227,7 +240,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			m.setDestination(this.values);
 			this.midi.request(m);
 			//TODO: wait for response...
-			this.setName(this.values.get(XGAddressConstants.XGMODELNAMEADRESS).toString().strip());
+			this.name.set(this.values.get(XGAddressConstants.XGMODELNAMEADRESS).toString().strip());
 			this.info1 = (int)this.values.get(XGAddressConstants.XGMODELINFO1ADDRESS).getContent();
 			this.info2 = (int)this.values.get(XGAddressConstants.XGMODELINFO2ADDRESS).getContent();
 		}
@@ -255,7 +268,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public String toString()
-	{	return this.name;
+	{	return this.name.get();
 	}
 
 	@Override public String getNodeText()
@@ -324,7 +337,27 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public JComponent getChildWindowContent()
-	{	return new XGDeviceConfigurator(this.config);
+	{	return this.getConfigComponent();
+	}
+
+	public JComponent getConfigComponent()
+	{	XGFrame root = new XGFrame("device", BoxLayout.Y_AXIS);
+
+		root.add(this.getMidi().getConfigComponent());
+
+		XGFrame frame = new XGFrame("sysexID", 0);
+		frame.add(new XGSpinner(this.sysex, 0, 15, 1));
+		root.add(frame);
+
+		frame = new XGFrame("default dump folder", 0);
+		frame.add(new XGPathSelector(this.defaultDumpFolder));
+		root.add(frame);
+
+		frame = new XGFrame("device name", 0);
+		frame.add(new XGDeviceDetector(this.name));
+		root.add(frame);
+		return root;
+
 	}
 
 	@Override public void setTreeComponent(XGTree t)

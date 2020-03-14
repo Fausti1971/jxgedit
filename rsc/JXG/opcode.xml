@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<opcodes xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/opcode.xsd">
+	<item ID="window_x">
+		<address>
+			<hi>128</hi>
+			<mid>0</mid>
+			<lo>0</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>Integer</valueClass>
+	</item>
+	<item ID="window_y">
+		<address>
+			<hi>128</hi>
+			<mid>0</mid>
+			<lo>1</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>Integer</valueClass>
+	</item>
+	<item ID="window_w">
+		<address>
+			<hi>128</hi>
+			<mid>0</mid>
+			<lo>2</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>Integer</valueClass>
+	</item>
+	<item ID="window_h">
+		<address>
+			<hi>128</hi>
+			<mid>0</mid>
+			<lo>3</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>Integer</valueClass>
+	</item>
+	<item ID="device_sysexid">
+		<address>
+			<hi>256</hi>
+			<mid>0</mid>
+			<lo>0</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>Integer</valueClass>
+	</item>
+	<item ID="device_color">
+		<address>
+			<hi>256</hi>
+			<mid>0</mid>
+			<lo>1</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>Integer</valueClass>
+	</item>
+	<item ID="device_midi_timeout">
+		<address>
+			<hi>256</hi>
+			<mid>0</mid>
+			<lo>2</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>Integer</valueClass>
+	</item>
+	<item ID="device_midi_input">
+		<address>
+			<hi>256</hi>
+			<mid>1</mid>
+			<lo>0</lo>
+		</address>
+		<byteType>MIDIBYTE</byteType>
+		<valueClass>String</valueClass>
+	</item>
+	<item ID="device_midi_output">
+		<address>
+			<hi>256</hi>
+			<mid>2</mid>
+			<lo>0</lo>
+		</address>
+		<byteType>MIDIBYTE</byteType>
+		<valueClass>String</valueClass>
+	</item>
+	<item ID="device_name">
+		<address>
+			<hi>256</hi>
+			<mid>3</mid>
+			<lo>0</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>Integer</valueClass>
+	</item>
+	<item ID="device_defaultDumpFolder">
+		<address>
+			<hi>256</hi>
+			<mid>4</mid>
+			<lo>0</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>Integer</valueClass>
+	</item>
+	<item ID="device_lastDumpFile">
+		<address>
+			<hi>256</hi>
+			<mid>5</mid>
+			<lo>0</lo>
+		</address>
+		<byteType>INTEGER</byteType>
+		<valueClass>String</valueClass>
+	</item>
+</opcodes>

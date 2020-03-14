@@ -22,22 +22,18 @@
 													<xs:element name="byteType" type="byteType" minOccurs="0"/>
 													<xs:element name="valueClass" type="valueClass" minOccurs="0"/>
 												</xs:sequence>
-											<xs:attribute name="tag" use="required" type="xs:string"/>
+											<xs:attribute name="ID" use="required" type="xs:ID"/>
 											</xs:complexType>
 										</xs:element>
 									</xs:sequence>
 								</xs:complexType>
 							</xs:element>
 						</xs:sequence>
-					<xs:attribute name="tag" use="required" type="module"/>
+					<xs:attribute name="ID" use="required" type="module"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>
 		</xs:complexType>
-		<xs:unique name="unique-tag">
-			<xs:selector xpath="."/>
-			<xs:field xpath="@tag"/>
-		</xs:unique>
 	</xs:element>
 
 	<xs:simpleType name="byteType">
@@ -56,7 +52,7 @@
 	</xs:simpleType>
 
 	<xs:simpleType name="module">
-		<xs:restriction base="xs:string">
+		<xs:restriction base="xs:NCName">
 			<xs:enumeration value="system"/>
 			<xs:enumeration value="info"/>
 			<xs:enumeration value="sysfx"/>

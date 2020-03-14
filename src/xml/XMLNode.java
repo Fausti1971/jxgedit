@@ -39,7 +39,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 
 	public static XMLNode parse(File f)
 	{	if(!f.canRead()) return null;
-		XMLNode node = null, par = null, root = null;
+		XMLNode current_node = null, parent_node = null, root_node = null;
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, "true");
 
@@ -47,32 +47,23 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 		{	XMLEventReader rd = inputFactory.createXMLEventReader(new StreamSource(f));
 			while(rd.hasNext())
 			{	XMLEvent ev = rd.nextEvent();
-				if(ev.isStartDocument())
-					log.info("parsing started: " + f);
+				if(ev.isStartDocument()) log.info("parsing started: " + f);
 				if(ev.isStartElement())
-				{//	log.info("start: " + ev);
-					par = node;
-					node = new XMLNode(ev.asStartElement().getName().getLocalPart(), XMLNode.createProperties(ev.asStartElement().getAttributes()));
-					if(par != null) par.addChildNode(node);
-					if(par == null) root = node;
+				{	parent_node = current_node;
+					current_node = new XMLNode(ev.asStartElement().getName().getLocalPart(), XMLNode.createProperties(ev.asStartElement().getAttributes()));
+					if(parent_node != null) parent_node.addChildNode(current_node);	//falls parent existiert, füge diesem diese node hinzu
+					else root_node = current_node;	//falls nicht ist diese node root-node
 				}
-				if(ev.isCharacters())
-				{	if(node != null) node.setTextContent(ev.asCharacters().getData().trim());
-				}
-				if(ev.isEndElement())
-				{	//log.info("end: " + ev);
-					if(node != null) node = node.getParentNode();
-				}
-				if(ev.isEndDocument())
-				{	log.info("parsing finished: " + f);
-				}
+				if(ev.isCharacters()) if(current_node != null) current_node.setTextContent(ev.asCharacters().getData().trim());
+				if(ev.isEndElement()) if(current_node != null) current_node = current_node.getParentNode();
+				if(ev.isEndDocument()) log.info("parsing finished: " + f);
 			}
 			rd.close();
 		}
 		catch(XMLStreamException e)
 		{	log.info(e.getMessage() + f);
 		}
-		return root;
+		return root_node;
 	}
 
 	private static Properties createProperties(Iterator<Attribute> i)

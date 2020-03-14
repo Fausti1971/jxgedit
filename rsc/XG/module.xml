@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!--name (tag) und address obligatorisch; alle Werte dezimal; bei fehlendem (optionalem) tag wird Defaultwert benutzt:
+<!--name (ID) und address obligatorisch; alle Werte dezimal; bei fehlendem (optionalem) ID wird Defaultwert benutzt:
 	byteCount = 1
 	byteType = MIDIBYTE
 	valueClass = Integer
 -->
 <map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/module.xsd">
-	<module tag = "system">
+	<module ID = "system">
 		<name>Master</name>
 		<address>
 			<hi>0</hi>
@@ -17,7 +17,7 @@
 				<mid>0</mid>
 			</address>
 			<size>7</size>
-			<opcode tag = "master_tune">
+			<opcode ID = "master_tune">
 				<address>
 					<lo>0</lo>
 				</address>
@@ -25,39 +25,39 @@
 				<byteType>NIBBLE</byteType>
 				<valueClass>Integer</valueClass>
 			</opcode>
-			<opcode tag = "master_volume">
+			<opcode ID = "master_volume">
 				<address>
 					<lo>4</lo>
 				</address>
 			</opcode>
-			<opcode tag = "master_attenuator">
+			<opcode ID = "master_attenuator">
 				<address>
 					<lo>5</lo>
 				</address>
 			</opcode>
-			<opcode tag = "master_transpose">
+			<opcode ID = "master_transpose">
 				<address>
 					<lo>6</lo>
 				</address>
 			</opcode>
-			<opcode tag = "master_reset_drumset">
+			<opcode ID = "master_reset_drumset">
 				<address>
 					<lo>125</lo>
 				</address>
 			</opcode>
-			<opcode tag = "master_xg_on">
+			<opcode ID = "master_xg_on">
 				<address>
 					<lo>126</lo>
 				</address>
 			</opcode>
-			<opcode tag = "master_reset_all">
+			<opcode ID = "master_reset_all">
 				<address>
 					<lo>127</lo>
 				</address>
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "info">
+	<module ID = "info">
 		<name>System Information</name>
 		<address>
 			<hi>1</hi>
@@ -69,7 +69,7 @@
 				<mid>0</mid>
 			</address>
 			<size>16</size>
-			<opcode tag = "info_name">
+			<opcode ID = "info_name">
 				<address>
 					<lo>0</lo>
 				</address>
@@ -77,19 +77,19 @@
 				<byteType>MIDIBYTE</byteType>
 				<valueClass>String</valueClass>
 			</opcode>
-			<opcode tag = "info_xg_level1">
+			<opcode ID = "info_xg_level1">
 				<address>
 					<lo>14</lo>
 				</address>
 			</opcode>
-			<opcode tag = "info_xg_level2">
+			<opcode ID = "info_xg_level2">
 				<address>
 					<lo>15</lo>
 				</address>
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "sysfx">
+	<module ID = "sysfx">
 		<name>System Effect</name>
 		<address>
 			<hi>2</hi>
@@ -101,7 +101,7 @@
 				<mid>1</mid>
 			</address>
 			<size>14</size>
-			<opcode tag = "reverb_type">
+			<opcode ID = "reverb_type">
 				<address>
 					<lo>0</lo>
 				</address>
@@ -109,62 +109,62 @@
 				<byteType>MIDIBYTE</byteType>
 				<valueClass>Integer</valueClass>
 			</opcode>
-			<opcode tag = "reverb_1">
+			<opcode ID = "reverb_1">
 				<address>
 					<lo>2</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_2">
+			<opcode ID = "reverb_2">
 				<address>
 					<lo>3</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_3">
+			<opcode ID = "reverb_3">
 				<address>
 					<lo>4</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_4">
+			<opcode ID = "reverb_4">
 				<address>
 					<lo>5</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_5">
+			<opcode ID = "reverb_5">
 				<address>
 					<lo>6</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_6">
+			<opcode ID = "reverb_6">
 				<address>
 					<lo>7</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_7">
+			<opcode ID = "reverb_7">
 				<address>
 					<lo>8</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_8">
+			<opcode ID = "reverb_8">
 				<address>
 					<lo>9</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_9">
+			<opcode ID = "reverb_9">
 				<address>
 					<lo>10</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_10">
+			<opcode ID = "reverb_10">
 				<address>
 					<lo>11</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_return">
+			<opcode ID = "reverb_return">
 				<address>
 					<lo>12</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_panorama">
+			<opcode ID = "reverb_panorama">
 				<address>
 					<lo>13</lo>
 				</address>
@@ -176,32 +176,32 @@
 				<mid>1</mid>
 			</address>
 			<size>6</size>
-			<opcode tag = "reverb_11">
+			<opcode ID = "reverb_11">
 				<address>
 					<lo>16</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_12">
+			<opcode ID = "reverb_12">
 				<address>
 					<lo>17</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_13">
+			<opcode ID = "reverb_13">
 				<address>
 					<lo>18</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_14">
+			<opcode ID = "reverb_14">
 				<address>
 					<lo>19</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_15">
+			<opcode ID = "reverb_15">
 				<address>
 					<lo>20</lo>
 				</address>
 			</opcode>
-			<opcode tag = "reverb_16">
+			<opcode ID = "reverb_16">
 				<address>
 					<lo>21</lo>
 				</address>
@@ -213,7 +213,7 @@
 				<mid>1</mid>
 			</address>
 			<size>15</size>
-			<opcode tag = "chorus_type">
+			<opcode ID = "chorus_type">
 				<address>
 					<lo>32</lo>
 				</address>
@@ -221,67 +221,67 @@
 				<byteType>MIDIBYTE</byteType>
 				<valueClass>Integer</valueClass>
 			</opcode>
-			<opcode tag = "chorus_1">
+			<opcode ID = "chorus_1">
 				<address>
 					<lo>34</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_2">
+			<opcode ID = "chorus_2">
 				<address>
 					<lo>35</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_3">
+			<opcode ID = "chorus_3">
 				<address>
 					<lo>36</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_4">
+			<opcode ID = "chorus_4">
 				<address>
 					<lo>37</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_5">
+			<opcode ID = "chorus_5">
 				<address>
 					<lo>38</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_6">
+			<opcode ID = "chorus_6">
 				<address>
 					<lo>39</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_7">
+			<opcode ID = "chorus_7">
 				<address>
 					<lo>40</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_8">
+			<opcode ID = "chorus_8">
 				<address>
 					<lo>41</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_9">
+			<opcode ID = "chorus_9">
 				<address>
 					<lo>42</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_10">
+			<opcode ID = "chorus_10">
 				<address>
 					<lo>43</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_return">
+			<opcode ID = "chorus_return">
 				<address>
 					<lo>44</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_panorama">
+			<opcode ID = "chorus_panorama">
 				<address>
 					<lo>45</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_to_reverb">
+			<opcode ID = "chorus_to_reverb">
 				<address>
 					<lo>46</lo>
 				</address>
@@ -293,32 +293,32 @@
 				<mid>1</mid>
 			</address>
 			<size>6</size>
-			<opcode tag = "chorus_11">
+			<opcode ID = "chorus_11">
 				<address>
 					<lo>48</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_12">
+			<opcode ID = "chorus_12">
 				<address>
 					<lo>49</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_13">
+			<opcode ID = "chorus_13">
 				<address>
 					<lo>50</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_14">
+			<opcode ID = "chorus_14">
 				<address>
 					<lo>51</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_15">
+			<opcode ID = "chorus_15">
 				<address>
 					<lo>52</lo>
 				</address>
 			</opcode>
-			<opcode tag = "chorus_16">
+			<opcode ID = "chorus_16">
 				<address>
 					<lo>53</lo>
 				</address>
@@ -330,7 +330,7 @@
 				<mid>1</mid>
 			</address>
 			<size>33</size>
-			<opcode tag = "variation_type">
+			<opcode ID = "variation_type">
 				<address>
 					<lo>64</lo>
 				</address>
@@ -338,117 +338,117 @@
 				<byteType>MIDIBYTE</byteType>
 				<valueClass>Integer</valueClass>
 			</opcode>
-			<opcode tag = "variation_1">
+			<opcode ID = "variation_1">
 				<address>
 					<lo>66</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_2">
+			<opcode ID = "variation_2">
 				<address>
 					<lo>68</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_3">
+			<opcode ID = "variation_3">
 				<address>
 					<lo>70</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_4">
+			<opcode ID = "variation_4">
 				<address>
 					<lo>72</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_5">
+			<opcode ID = "variation_5">
 				<address>
 					<lo>74</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_6">
+			<opcode ID = "variation_6">
 				<address>
 					<lo>76</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_7">
+			<opcode ID = "variation_7">
 				<address>
 					<lo>78</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_8">
+			<opcode ID = "variation_8">
 				<address>
 					<lo>80</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_9">
+			<opcode ID = "variation_9">
 				<address>
 					<lo>82</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_10">
+			<opcode ID = "variation_10">
 				<address>
 					<lo>84</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "variation_return">
+			<opcode ID = "variation_return">
 				<address>
 					<lo>86</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_panorama">
+			<opcode ID = "variation_panorama">
 				<address>
 					<lo>87</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_to_reverb">
+			<opcode ID = "variation_to_reverb">
 				<address>
 					<lo>88</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_to_chorus">
+			<opcode ID = "variation_to_chorus">
 				<address>
 					<lo>89</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_connection">
+			<opcode ID = "variation_connection">
 				<address>
 					<lo>90</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_part">
+			<opcode ID = "variation_part">
 				<address>
 					<lo>91</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_mw">
+			<opcode ID = "variation_mw">
 				<address>
 					<lo>92</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_pb">
+			<opcode ID = "variation_pb">
 				<address>
 					<lo>93</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_cat">
+			<opcode ID = "variation_cat">
 				<address>
 					<lo>94</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_ac1">
+			<opcode ID = "variation_ac1">
 				<address>
 					<lo>95</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_ac2">
+			<opcode ID = "variation_ac2">
 				<address>
 					<lo>96</lo>
 				</address>
@@ -460,7 +460,7 @@
 				<mid>1</mid>
 			</address>
 			<size>1</size>
-			<opcode tag = "variation_cbc1">
+			<opcode ID = "variation_cbc1">
 				<address>
 					<lo>97</lo>
 				</address>
@@ -472,7 +472,7 @@
 				<mid>1</mid>
 			</address>
 			<size>1</size>
-			<opcode tag = "variation_cbc2">
+			<opcode ID = "variation_cbc2">
 				<address>
 					<lo>98</lo>
 				</address>
@@ -484,39 +484,39 @@
 				<mid>1</mid>
 			</address>
 			<size>6</size>
-			<opcode tag = "variation_11">
+			<opcode ID = "variation_11">
 				<address>
 					<lo>112</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_12">
+			<opcode ID = "variation_12">
 				<address>
 					<lo>113</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_13">
+			<opcode ID = "variation_13">
 				<address>
 					<lo>114</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_14">
+			<opcode ID = "variation_14">
 				<address>
 					<lo>115</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_15">
+			<opcode ID = "variation_15">
 				<address>
 					<lo>116</lo>
 				</address>
 			</opcode>
-			<opcode tag = "variation_16">
+			<opcode ID = "variation_16">
 				<address>
 					<lo>117</lo>
 				</address>
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "syseq">
+	<module ID = "syseq">
 		<name>System EQ</name>
 		<address>
 			<hi>2</hi>
@@ -528,99 +528,99 @@
 				<mid>64</mid>
 			</address>
 			<size>15</size>
-			<opcode tag = "eq_type">
+			<opcode ID = "eq_type">
 				<address>
 					<lo>0</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_gain1">
+			<opcode ID = "eq_gain1">
 				<address>
 					<lo>1</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_frequency1">
+			<opcode ID = "eq_frequency1">
 				<address>
 					<lo>2</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_q1">
+			<opcode ID = "eq_q1">
 				<address>
 					<lo>3</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_shape1">
+			<opcode ID = "eq_shape1">
 				<address>
 					<lo>4</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_gain2">
+			<opcode ID = "eq_gain2">
 				<address>
 					<lo>5</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_frequency2">
+			<opcode ID = "eq_frequency2">
 				<address>
 					<lo>6</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_q2">
+			<opcode ID = "eq_q2">
 				<address>
 					<lo>7</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_gain3">
+			<opcode ID = "eq_gain3">
 				<address>
 					<lo>9</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_frequency3">
+			<opcode ID = "eq_frequency3">
 				<address>
 					<lo>10</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_q3">
+			<opcode ID = "eq_q3">
 				<address>
 					<lo>11</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_gain4">
+			<opcode ID = "eq_gain4">
 				<address>
 					<lo>13</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_frequency4">
+			<opcode ID = "eq_frequency4">
 				<address>
 					<lo>14</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_q4">
+			<opcode ID = "eq_q4">
 				<address>
 					<lo>15</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_gain5">
+			<opcode ID = "eq_gain5">
 				<address>
 					<lo>17</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_frequency5">
+			<opcode ID = "eq_frequency5">
 				<address>
 					<lo>18</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_q5">
+			<opcode ID = "eq_q5">
 				<address>
 					<lo>19</lo>
 				</address>
 			</opcode>
-			<opcode tag = "eq_shape5">
+			<opcode ID = "eq_shape5">
 				<address>
 					<lo>20</lo>
 				</address>
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "insfx">
+	<module ID = "insfx">
 		<name>Insertion Effect</name>
 		<address>
 			<hi>3</hi>
@@ -630,7 +630,7 @@
 				<hi>3</hi>
 			</address>
 			<size>18</size>
-			<opcode tag = "insertion_type">
+			<opcode ID = "insertion_type">
 				<address>
 					<lo>0</lo>
 				</address>
@@ -638,82 +638,82 @@
 				<byteType>MIDIBYTE</byteType>
 				<valueClass>Integer</valueClass>
 			</opcode>
-			<opcode tag = "insertion_1">
+			<opcode ID = "insertion_1">
 				<address>
 					<lo>2</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_2">
+			<opcode ID = "insertion_2">
 				<address>
 					<lo>3</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_3">
+			<opcode ID = "insertion_3">
 				<address>
 					<lo>4</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_4">
+			<opcode ID = "insertion_4">
 				<address>
 					<lo>5</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_5">
+			<opcode ID = "insertion_5">
 				<address>
 					<lo>6</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_6">
+			<opcode ID = "insertion_6">
 				<address>
 					<lo>7</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_7">
+			<opcode ID = "insertion_7">
 				<address>
 					<lo>8</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_8">
+			<opcode ID = "insertion_8">
 				<address>
 					<lo>9</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_9">
+			<opcode ID = "insertion_9">
 				<address>
 					<lo>10</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_10">
+			<opcode ID = "insertion_10">
 				<address>
 					<lo>11</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_part">
+			<opcode ID = "insertion_part">
 				<address>
 					<lo>12</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_mw">
+			<opcode ID = "insertion_mw">
 				<address>
 					<lo>13</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_pb">
+			<opcode ID = "insertion_pb">
 				<address>
 					<lo>14</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_cat">
+			<opcode ID = "insertion_cat">
 				<address>
 					<lo>15</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_ac1">
+			<opcode ID = "insertion_ac1">
 				<address>
 					<lo>16</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_ac2">
+			<opcode ID = "insertion_ac2">
 				<address>
 					<lo>17</lo>
 				</address>
@@ -724,7 +724,7 @@
 				<hi>3</hi>
 			</address>
 			<size>1</size>
-			<opcode tag = "insertion_cbc1">
+			<opcode ID = "insertion_cbc1">
 				<address>
 					<lo>18</lo>
 				</address>
@@ -735,7 +735,7 @@
 				<hi>3</hi>
 			</address>
 			<size>1</size>
-			<opcode tag = "insertion_cbc2">
+			<opcode ID = "insertion_cbc2">
 				<address>
 					<lo>19</lo>
 				</address>
@@ -746,32 +746,32 @@
 				<hi>3</hi>
 			</address>
 			<size>6</size>
-			<opcode tag = "insertion_11">
+			<opcode ID = "insertion_11">
 				<address>
 					<lo>32</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_12">
+			<opcode ID = "insertion_12">
 				<address>
 					<lo>33</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_13">
+			<opcode ID = "insertion_13">
 				<address>
 					<lo>34</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_14">
+			<opcode ID = "insertion_14">
 				<address>
 					<lo>35</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_15">
+			<opcode ID = "insertion_15">
 				<address>
 					<lo>36</lo>
 				</address>
 			</opcode>
-			<opcode tag = "insertion_16">
+			<opcode ID = "insertion_16">
 				<address>
 					<lo>37</lo>
 				</address>
@@ -787,61 +787,61 @@
 				<hi>3</hi>
 			</address>
 			<size>20</size>
-			<opcode tag = "insertion_1b">
+			<opcode ID = "insertion_1b">
 				<address>
 					<lo>48</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "insertion_2b">
+			<opcode ID = "insertion_2b">
 				<address>
 					<lo>50</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "insertion_3b">
+			<opcode ID = "insertion_3b">
 				<address>
 					<lo>52</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "insertion_4b">
+			<opcode ID = "insertion_4b">
 				<address>
 					<lo>54</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "insertion_5b">
+			<opcode ID = "insertion_5b">
 				<address>
 					<lo>56</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "insertion_6b">
+			<opcode ID = "insertion_6b">
 				<address>
 					<lo>58</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "insertion_7b">
+			<opcode ID = "insertion_7b">
 				<address>
 					<lo>60</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "insertion_8b">
+			<opcode ID = "insertion_8b">
 				<address>
 					<lo>62</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "insertion_9b">
+			<opcode ID = "insertion_9b">
 				<address>
 					<lo>64</lo>
 				</address>
 				<byteCount>2</byteCount>
 			</opcode>
-			<opcode tag = "insertion_10b">
+			<opcode ID = "insertion_10b">
 				<address>
 					<lo>66</lo>
 				</address>
@@ -849,7 +849,7 @@
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "display">
+	<module ID = "display">
 		<name>Display Letter</name>
 		<address>
 			<hi>6</hi>
@@ -861,7 +861,7 @@
 				<mid>0</mid>
 			</address>
 			<size>32</size>
-			<opcode tag = "display_letter">
+			<opcode ID = "display_letter">
 				<address>
 					<lo>0</lo>
 				</address>
@@ -878,7 +878,7 @@
 				<hi>7</hi>
 			</address>
 			<size>48</size>
-			<opcode tag = "display_bitmap">
+			<opcode ID = "display_bitmap">
 				<address>
 					<lo>0</lo>
 				</address>
@@ -888,7 +888,7 @@
 		</bulk>
 	</module>
 
-	<module tag = "multipart">
+	<module ID = "multipart">
 		<name>Multipart</name>
 		<address/>
 		<bulk>
@@ -896,204 +896,204 @@
 				<hi>8</hi>
 			</address>
 			<size>41</size>
-			<opcode tag = "mp_element_reserve">
+			<opcode ID = "mp_element_reserve">
 				<address>
 					<lo>0</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_bank_msb">
+			<opcode ID = "mp_bank_msb">
 				<address>
 					<lo>1</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_bank_lsb">
+			<opcode ID = "mp_bank_lsb">
 				<address>
 					<lo>2</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_program">
+			<opcode ID = "mp_program">
 				<address>
 					<lo>3</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_channel">
+			<opcode ID = "mp_channel">
 				<address>
 					<lo>4</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_mono_poly">
+			<opcode ID = "mp_mono_poly">
 				<address>
 					<lo>5</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_same_key_assign">
+			<opcode ID = "mp_same_key_assign">
 				<address>
 					<lo>6</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_partmode">
+			<opcode ID = "mp_partmode">
 				<address>
 					<lo>7</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_transpose">
+			<opcode ID = "mp_transpose">
 				<address>
 					<lo>8</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_detune">
+			<opcode ID = "mp_detune">
 				<address>
 					<lo>9</lo>
 				</address>
 				<byteCount>2</byteCount>
 				<byteType>NIBBLE</byteType>
 			</opcode>
-			<opcode tag = "mp_volume">
+			<opcode ID = "mp_volume">
 				<address>
 					<lo>11</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_velocity_depth">
+			<opcode ID = "mp_velocity_depth">
 				<address>
 					<lo>12</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_velocity_offset">
+			<opcode ID = "mp_velocity_offset">
 				<address>
 					<lo>13</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_panorama">
+			<opcode ID = "mp_panorama">
 				<address>
 					<lo>14</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_notelimit_low">
+			<opcode ID = "mp_notelimit_low">
 				<address>
 					<lo>15</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_notelimit_high">
+			<opcode ID = "mp_notelimit_high">
 				<address>
 					<lo>16</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_drylevel">
+			<opcode ID = "mp_drylevel">
 				<address>
 					<lo>17</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_chorus">
+			<opcode ID = "mp_chorus">
 				<address>
 					<lo>18</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_reverb">
+			<opcode ID = "mp_reverb">
 				<address>
 					<lo>19</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_variation">
+			<opcode ID = "mp_variation">
 				<address>
 					<lo>20</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_lfo_rate">
+			<opcode ID = "mp_lfo_rate">
 				<address>
 					<lo>21</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_lfo_depth">
+			<opcode ID = "mp_lfo_depth">
 				<address>
 					<lo>22</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_lfo_delay">
+			<opcode ID = "mp_lfo_delay">
 				<address>
 					<lo>23</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_lpf_cutoff">
+			<opcode ID = "mp_lpf_cutoff">
 				<address>
 					<lo>24</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_lpf_resonance">
+			<opcode ID = "mp_lpf_resonance">
 				<address>
 					<lo>25</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_env_attack">
+			<opcode ID = "mp_env_attack">
 				<address>
 					<lo>26</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_env_decay">
+			<opcode ID = "mp_env_decay">
 				<address>
 					<lo>27</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_env_release">
+			<opcode ID = "mp_env_release">
 				<address>
 					<lo>28</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_mw_pitch_control">
+			<opcode ID = "mp_mw_pitch_control">
 				<address>
 					<lo>29</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_mw_lpf_control">
+			<opcode ID = "mp_mw_lpf_control">
 				<address>
 					<lo>30</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_mw_amp_control">
+			<opcode ID = "mp_mw_amp_control">
 				<address>
 					<lo>31</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_mw_pitch_lfo">
+			<opcode ID = "mp_mw_pitch_lfo">
 				<address>
 					<lo>32</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_mw_lpf_lfo_">
+			<opcode ID = "mp_mw_lpf_lfo_">
 				<address>
 					<lo>33</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_mw_amp_lfo">
+			<opcode ID = "mp_mw_amp_lfo">
 				<address>
 					<lo>34</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pb_pitch_control">
+			<opcode ID = "mp_pb_pitch_control">
 				<address>
 					<lo>35</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pb_lpf_control">
+			<opcode ID = "mp_pb_lpf_control">
 				<address>
 					<lo>36</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pb_amp_control">
+			<opcode ID = "mp_pb_amp_control">
 				<address>
 					<lo>37</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pb_pitch_lfo">
+			<opcode ID = "mp_pb_pitch_lfo">
 				<address>
 					<lo>38</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pb_lpf_lfo_">
+			<opcode ID = "mp_pb_lpf_lfo_">
 				<address>
 					<lo>39</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pb_amp_lfo">
+			<opcode ID = "mp_pb_amp_lfo">
 				<address>
 					<lo>40</lo>
 				</address>
@@ -1104,317 +1104,317 @@
 				<hi>8</hi>
 			</address>
 			<size>63</size>
-			<opcode tag = "mp_receive_pb">
+			<opcode ID = "mp_receive_pb">
 				<address>
 					<lo>48</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_cat">
+			<opcode ID = "mp_receive_cat">
 				<address>
 					<lo>49</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_pc">
+			<opcode ID = "mp_receive_pc">
 				<address>
 					<lo>50</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_cc">
+			<opcode ID = "mp_receive_cc">
 				<address>
 					<lo>51</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_pat">
+			<opcode ID = "mp_receive_pat">
 				<address>
 					<lo>52</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_note">
+			<opcode ID = "mp_receive_note">
 				<address>
 					<lo>53</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_rpn">
+			<opcode ID = "mp_receive_rpn">
 				<address>
 					<lo>54</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_nrpn">
+			<opcode ID = "mp_receive_nrpn">
 				<address>
 					<lo>55</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_mod">
+			<opcode ID = "mp_receive_mod">
 				<address>
 					<lo>56</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_vol">
+			<opcode ID = "mp_receive_vol">
 				<address>
 					<lo>57</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_pan">
+			<opcode ID = "mp_receive_pan">
 				<address>
 					<lo>58</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_expression">
+			<opcode ID = "mp_receive_expression">
 				<address>
 					<lo>59</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_hold1">
+			<opcode ID = "mp_receive_hold1">
 				<address>
 					<lo>60</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_portamento">
+			<opcode ID = "mp_receive_portamento">
 				<address>
 					<lo>61</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_sostenuto">
+			<opcode ID = "mp_receive_sostenuto">
 				<address>
 					<lo>62</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_softpedal">
+			<opcode ID = "mp_receive_softpedal">
 				<address>
 					<lo>63</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_receive_bankselect">
+			<opcode ID = "mp_receive_bankselect">
 				<address>
 					<lo>64</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_c">
+			<opcode ID = "mp_scaletune_c">
 				<address>
 					<lo>65</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_c#">
+			<opcode ID = "mp_scaletune_cis">
 				<address>
 					<lo>66</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_d">
+			<opcode ID = "mp_scaletune_d">
 				<address>
 					<lo>67</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_d#">
+			<opcode ID = "mp_scaletune_dis">
 				<address>
 					<lo>68</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_e">
+			<opcode ID = "mp_scaletune_e">
 				<address>
 					<lo>69</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_f">
+			<opcode ID = "mp_scaletune_f">
 				<address>
 					<lo>70</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_f#">
+			<opcode ID = "mp_scaletune_fis">
 				<address>
 					<lo>71</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_g">
+			<opcode ID = "mp_scaletune_g">
 				<address>
 					<lo>72</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_g#">
+			<opcode ID = "mp_scaletune_gis">
 				<address>
 					<lo>73</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_a">
+			<opcode ID = "mp_scaletune_a">
 				<address>
 					<lo>74</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_a#">
+			<opcode ID = "mp_scaletune_ais">
 				<address>
 					<lo>75</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_scaletune_h">
+			<opcode ID = "mp_scaletune_h">
 				<address>
 					<lo>76</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cat_pitch_control">
+			<opcode ID = "mp_cat_pitch_control">
 				<address>
 					<lo>77</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cat_lpf_control">
+			<opcode ID = "mp_cat_lpf_control">
 				<address>
 					<lo>78</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cat_amp_control">
+			<opcode ID = "mp_cat_amp_control">
 				<address>
 					<lo>79</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cat_pitch_lfo">
+			<opcode ID = "mp_cat_pitch_lfo">
 				<address>
 					<lo>80</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cat_lpf_lfo_">
+			<opcode ID = "mp_cat_lpf_lfo_">
 				<address>
 					<lo>81</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cat_amp_lfo">
+			<opcode ID = "mp_cat_amp_lfo">
 				<address>
 					<lo>82</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pat_pitch_control">
+			<opcode ID = "mp_pat_pitch_control">
 				<address>
 					<lo>83</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pat_lpf_control">
+			<opcode ID = "mp_pat_lpf_control">
 				<address>
 					<lo>84</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pat_amp_control">
+			<opcode ID = "mp_pat_amp_control">
 				<address>
 					<lo>85</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pat_pitch_lfo">
+			<opcode ID = "mp_pat_pitch_lfo">
 				<address>
 					<lo>86</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pat_lpf_lfo_">
+			<opcode ID = "mp_pat_lpf_lfo_">
 				<address>
 					<lo>87</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pat_amp_lfo">
+			<opcode ID = "mp_pat_amp_lfo">
 				<address>
 					<lo>88</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac1_number">
+			<opcode ID = "mp_ac1_number">
 				<address>
 					<lo>89</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac1_pitch_control">
+			<opcode ID = "mp_ac1_pitch_control">
 				<address>
 					<lo>90</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac1_lpf_control">
+			<opcode ID = "mp_ac1_lpf_control">
 				<address>
 					<lo>91</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac1_amp_control">
+			<opcode ID = "mp_ac1_amp_control">
 				<address>
 					<lo>92</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac1_pitch_lfo">
+			<opcode ID = "mp_ac1_pitch_lfo">
 				<address>
 					<lo>93</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac1_lpf_lfo_">
+			<opcode ID = "mp_ac1_lpf_lfo_">
 				<address>
 					<lo>94</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac1_amp_lfo">
+			<opcode ID = "mp_ac1_amp_lfo">
 				<address>
 					<lo>95</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac2_number">
+			<opcode ID = "mp_ac2_number">
 				<address>
 					<lo>96</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac2_pitch_control">
+			<opcode ID = "mp_ac2_pitch_control">
 				<address>
 					<lo>97</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac2_lpf_control">
+			<opcode ID = "mp_ac2_lpf_control">
 				<address>
 					<lo>98</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac2_amp_control">
+			<opcode ID = "mp_ac2_amp_control">
 				<address>
 					<lo>99</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac2_pitch_lfo">
+			<opcode ID = "mp_ac2_pitch_lfo">
 				<address>
 					<lo>100</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac2_lpf_lfo_">
+			<opcode ID = "mp_ac2_lpf_lfo_">
 				<address>
 					<lo>101</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac2_amp_lfo">
+			<opcode ID = "mp_ac2_amp_lfo">
 				<address>
 					<lo>102</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_portamento_switch">
+			<opcode ID = "mp_portamento_switch">
 				<address>
 					<lo>103</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_portamento_time">
+			<opcode ID = "mp_portamento_time">
 				<address>
 					<lo>104</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pitchenv_attacklevel">
+			<opcode ID = "mp_pitchenv_attacklevel">
 				<address>
 					<lo>105</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pitchenv_attacktime">
+			<opcode ID = "mp_pitchenv_attacktime">
 				<address>
 					<lo>106</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pitchenv_releaselevel">
+			<opcode ID = "mp_pitchenv_releaselevel">
 				<address>
 					<lo>107</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pitchenv_releasetime">
+			<opcode ID = "mp_pitchenv_releasetime">
 				<address>
 					<lo>108</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_velocitylimit_low">
+			<opcode ID = "mp_velocitylimit_low">
 				<address>
 					<lo>109</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_velocitylimit_high">
+			<opcode ID = "mp_velocitylimit_high">
 				<address>
 					<lo>110</lo>
 				</address>
@@ -1425,22 +1425,22 @@
 				<hi>8</hi>
 			</address>
 			<size>4</size>
-			<opcode tag = "mp_pb_low_control">
+			<opcode ID = "mp_pb_low_control">
 				<address>
 					<lo>112</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_lpf_env_depth">
+			<opcode ID = "mp_lpf_env_depth">
 				<address>
 					<lo>113</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_bass">
+			<opcode ID = "mp_eq_bass">
 				<address>
 					<lo>114</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_treble">
+			<opcode ID = "mp_eq_treble">
 				<address>
 					<lo>115</lo>
 				</address>
@@ -1451,62 +1451,62 @@
 				<hi>8</hi>
 			</address>
 			<size>12</size>
-			<opcode tag = "mp_eq_midbass">
+			<opcode ID = "mp_eq_midbass">
 				<address>
 					<lo>116</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_midtreble">
+			<opcode ID = "mp_eq_midtreble">
 				<address>
 					<lo>117</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_bass_frequency">
+			<opcode ID = "mp_eq_bass_frequency">
 				<address>
 					<lo>118</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_treble_frequency">
+			<opcode ID = "mp_eq_treble_frequency">
 				<address>
 					<lo>119</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_midbass_frequency">
+			<opcode ID = "mp_eq_midbass_frequency">
 				<address>
 					<lo>120</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_midtreble_frequency">
+			<opcode ID = "mp_eq_midtreble_frequency">
 				<address>
 					<lo>121</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_bass_q">
+			<opcode ID = "mp_eq_bass_q">
 				<address>
 					<lo>122</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_treble_q">
+			<opcode ID = "mp_eq_treble_q">
 				<address>
 					<lo>123</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_midbass_q">
+			<opcode ID = "mp_eq_midbass_q">
 				<address>
 					<lo>124</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_midtreble_q">
+			<opcode ID = "mp_eq_midtreble_q">
 				<address>
 					<lo>125</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_bass_shape">
+			<opcode ID = "mp_eq_bass_shape">
 				<address>
 					<lo>126</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_eq_treble_shape">
+			<opcode ID = "mp_eq_treble_shape">
 				<address>
 					<lo>127</lo>
 				</address>
@@ -1517,7 +1517,7 @@
 				<hi>10</hi>
 			</address>
 			<size>1</size>
-			<opcode tag = "mp_output_select">
+			<opcode ID = "mp_output_select">
 				<address>
 					<lo>16</lo>
 				</address>
@@ -1528,12 +1528,12 @@
 				<hi>10</hi>
 			</address>
 			<size>2</size>
-			<opcode tag = "mp_hpf_cutoff">
+			<opcode ID = "mp_hpf_cutoff">
 				<address>
 					<lo>32</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_hpf_resonance">
+			<opcode ID = "mp_hpf_resonance">
 				<address>
 					<lo>33</lo>
 				</address>
@@ -1544,32 +1544,32 @@
 				<hi>10</hi>
 			</address>
 			<size>6</size>
-			<opcode tag = "mp_mw_hpf_control">
+			<opcode ID = "mp_mw_hpf_control">
 				<address>
 					<lo>34</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pb_hpf_control">
+			<opcode ID = "mp_pb_hpf_control">
 				<address>
 					<lo>35</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cat_hpf_control">
+			<opcode ID = "mp_cat_hpf_control">
 				<address>
 					<lo>36</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pat_hpf_control">
+			<opcode ID = "mp_pat_hpf_control">
 				<address>
 					<lo>37</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac1_hpf_control">
+			<opcode ID = "mp_ac1_hpf_control">
 				<address>
 					<lo>38</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac2_hpf_control">
+			<opcode ID = "mp_ac2_hpf_control">
 				<address>
 					<lo>39</lo>
 				</address>
@@ -1580,37 +1580,37 @@
 				<hi>10</hi>
 			</address>
 			<size>7</size>
-			<opcode tag = "mp_cbc1_number">
+			<opcode ID = "mp_cbc1_number">
 				<address>
 					<lo>48</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc1_pitch_control">
+			<opcode ID = "mp_cbc1_pitch_control">
 				<address>
 					<lo>49</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc1_lpf_control">
+			<opcode ID = "mp_cbc1_lpf_control">
 				<address>
 					<lo>50</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc1_amp_control">
+			<opcode ID = "mp_cbc1_amp_control">
 				<address>
 					<lo>51</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc1_lfo_pitch_depth">
+			<opcode ID = "mp_cbc1_lfo_pitch_depth">
 				<address>
 					<lo>52</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc1_lfo_lpf_depth">
+			<opcode ID = "mp_cbc1_lfo_lpf_depth">
 				<address>
 					<lo>53</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc1_lfo_amp_depth">
+			<opcode ID = "mp_cbc1_lfo_amp_depth">
 				<address>
 					<lo>54</lo>
 				</address>
@@ -1621,37 +1621,37 @@
 				<hi>10</hi>
 			</address>
 			<size>7</size>
-			<opcode tag = "mp_cbc2_number">
+			<opcode ID = "mp_cbc2_number">
 				<address>
 					<lo>56</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc2_pitch_control">
+			<opcode ID = "mp_cbc2_pitch_control">
 				<address>
 					<lo>57</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc2_lpf_control">
+			<opcode ID = "mp_cbc2_lpf_control">
 				<address>
 					<lo>58</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc2_amp_control">
+			<opcode ID = "mp_cbc2_amp_control">
 				<address>
 					<lo>59</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc2_lfo_pitch_depth">
+			<opcode ID = "mp_cbc2_lfo_pitch_depth">
 				<address>
 					<lo>60</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc2_lfo_lpf_depth">
+			<opcode ID = "mp_cbc2_lfo_lpf_depth">
 				<address>
 					<lo>61</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cbc2_lfo_amp_depth">
+			<opcode ID = "mp_cbc2_lfo_amp_depth">
 				<address>
 					<lo>62</lo>
 				</address>
@@ -1662,32 +1662,32 @@
 				<hi>10</hi>
 			</address>
 			<size>6</size>
-			<opcode tag = "mp_mw_offset_level">
+			<opcode ID = "mp_mw_offset_level">
 				<address>
 					<lo>64</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pb_offset_level">
+			<opcode ID = "mp_pb_offset_level">
 				<address>
 					<lo>65</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_cat_offset_level">
+			<opcode ID = "mp_cat_offset_level">
 				<address>
 					<lo>66</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_pat_offset_level">
+			<opcode ID = "mp_pat_offset_level">
 				<address>
 					<lo>67</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac1_offset_level">
+			<opcode ID = "mp_ac1_offset_level">
 				<address>
 					<lo>68</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_ac2_offset_level">
+			<opcode ID = "mp_ac2_offset_level">
 				<address>
 					<lo>69</lo>
 				</address>
@@ -1698,119 +1698,119 @@
 				<hi>9</hi>
 			</address>
 			<size>23</size>
-			<opcode tag = "mp_vl_note_assign">
+			<opcode ID = "mp_vl_note_assign">
 				<address>
 					<lo>0</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_note_filter">
+			<opcode ID = "mp_vl_note_filter">
 				<address>
 					<lo>2</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_pressure_control">
+			<opcode ID = "mp_vl_pressure_control">
 				<address>
 					<lo>3</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_pressure_depth">
+			<opcode ID = "mp_vl_pressure_depth">
 				<address>
 					<lo>4</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_embouchure_control">
+			<opcode ID = "mp_vl_embouchure_control">
 				<address>
 					<lo>5</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_embouchure_depth">
+			<opcode ID = "mp_vl_embouchure_depth">
 				<address>
 					<lo>6</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_tonguing_control">
+			<opcode ID = "mp_vl_tonguing_control">
 				<address>
 					<lo>7</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_tonguing_depth">
+			<opcode ID = "mp_vl_tonguing_depth">
 				<address>
 					<lo>8</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_screaming_control">
+			<opcode ID = "mp_vl_screaming_control">
 				<address>
 					<lo>9</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_screaming_depth">
+			<opcode ID = "mp_vl_screaming_depth">
 				<address>
 					<lo>10</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_breath_control">
+			<opcode ID = "mp_vl_breath_control">
 				<address>
 					<lo>11</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_breath_depth">
+			<opcode ID = "mp_vl_breath_depth">
 				<address>
 					<lo>12</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_growl_control">
+			<opcode ID = "mp_vl_growl_control">
 				<address>
 					<lo>13</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_growl_depth">
+			<opcode ID = "mp_vl_growl_depth">
 				<address>
 					<lo>14</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_throatformant_control">
+			<opcode ID = "mp_vl_throatformant_control">
 				<address>
 					<lo>15</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_throatformant_depth">
+			<opcode ID = "mp_vl_throatformant_depth">
 				<address>
 					<lo>16</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_harmonicenhancer_control">
+			<opcode ID = "mp_vl_harmonicenhancer_control">
 				<address>
 					<lo>17</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_harmonicenhancer_depth">
+			<opcode ID = "mp_vl_harmonicenhancer_depth">
 				<address>
 					<lo>18</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_damping_control">
+			<opcode ID = "mp_vl_damping_control">
 				<address>
 					<lo>19</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_damping_depth">
+			<opcode ID = "mp_vl_damping_depth">
 				<address>
 					<lo>20</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_absorption_control">
+			<opcode ID = "mp_vl_absorption_control">
 				<address>
 					<lo>21</lo>
 				</address>
 			</opcode>
-			<opcode tag = "mp_vl_absorption_depth">
+			<opcode ID = "mp_vl_absorption_depth">
 				<address>
 					<lo>22</lo>
 				</address>
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "adpart">
+	<module ID = "adpart">
 		<name>A/D-Part</name>
 		<address/>
 		<bulk>
@@ -1818,57 +1818,57 @@
 				<hi>16</hi>
 			</address>
 			<size>21</size>
-			<opcode tag = "ad_input_gain">
+			<opcode ID = "ad_input_gain">
 				<address>
 					<lo>0</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_bank_msb">
+			<opcode ID = "ad_bank_msb">
 				<address>
 					<lo>1</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_bank_lsb">
+			<opcode ID = "ad_bank_lsb">
 				<address>
 					<lo>2</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_program">
+			<opcode ID = "ad_program">
 				<address>
 					<lo>3</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_midichannel">
+			<opcode ID = "ad_midichannel">
 				<address>
 					<lo>4</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_volume">
+			<opcode ID = "ad_volume">
 				<address>
 					<lo>11</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_panorama">
+			<opcode ID = "ad_panorama">
 				<address>
 					<lo>14</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_drylevel">
+			<opcode ID = "ad_drylevel">
 				<address>
 					<lo>17</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_chorus">
+			<opcode ID = "ad_chorus">
 				<address>
 					<lo>18</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_reverb">
+			<opcode ID = "ad_reverb">
 				<address>
 					<lo>19</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_variation">
+			<opcode ID = "ad_variation">
 				<address>
 					<lo>20</lo>
 				</address>
@@ -1879,42 +1879,42 @@
 				<hi>16</hi>
 			</address>
 			<size>49</size>
-			<opcode tag = "ad_receive_pc">
+			<opcode ID = "ad_receive_pc">
 				<address>
 					<lo>50</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_receive_cc">
+			<opcode ID = "ad_receive_cc">
 				<address>
 					<lo>51</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_receive_volume">
+			<opcode ID = "ad_receive_volume">
 				<address>
 					<lo>57</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_receive_panorama">
+			<opcode ID = "ad_receive_panorama">
 				<address>
 					<lo>58</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_receive_expression">
+			<opcode ID = "ad_receive_expression">
 				<address>
 					<lo>59</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_receive_bank">
+			<opcode ID = "ad_receive_bank">
 				<address>
 					<lo>64</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_ac1_number">
+			<opcode ID = "ad_ac1_number">
 				<address>
 					<lo>89</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_ac2_number">
+			<opcode ID = "ad_ac2_number">
 				<address>
 					<lo>96</lo>
 				</address>
@@ -1925,7 +1925,7 @@
 				<hi>17</hi>
 			</address>
 			<size>1</size>
-			<opcode tag = "ad_mono_stereo">
+			<opcode ID = "ad_mono_stereo">
 				<address>
 					<lo>0</lo>
 				</address>
@@ -1936,7 +1936,7 @@
 				<hi>17</hi>
 			</address>
 			<size>3</size>
-			<opcode tag = "ad_input_category">
+			<opcode ID = "ad_input_category">
 				<address>
 					<lo>1</lo>
 				</address>
@@ -1949,100 +1949,100 @@
 				<hi>18</hi>
 			</address>
 			<size>1</size>
-			<opcode tag = "ad_cbc1_number">
+			<opcode ID = "ad_cbc1_number">
 				<address>
 					<lo>48</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ad_cbc2_number">
+			<opcode ID = "ad_cbc2_number">
 				<address>
 					<lo>56</lo>
 				</address>
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "drumset">
+	<module ID = "drumset">
 		<name>Drumset</name>
 		<address/>
 		<bulk>
 			<address/>
 			<size>16</size>
-			<opcode tag = "ds_pitch_coarse">
+			<opcode ID = "ds_pitch_coarse">
 				<address>
 					<lo>0</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_pitch_fine">
+			<opcode ID = "ds_pitch_fine">
 				<address>
 					<lo>1</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_level">
+			<opcode ID = "ds_level">
 				<address>
 					<lo>2</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_group">
+			<opcode ID = "ds_group">
 				<address>
 					<lo>3</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_panorama">
+			<opcode ID = "ds_panorama">
 				<address>
 					<lo>4</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_reverb">
+			<opcode ID = "ds_reverb">
 				<address>
 					<lo>5</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_chorus">
+			<opcode ID = "ds_chorus">
 				<address>
 					<lo>6</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_variation">
+			<opcode ID = "ds_variation">
 				<address>
 					<lo>7</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_key_assign">
+			<opcode ID = "ds_key_assign">
 				<address>
 					<lo>8</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_receive_noteoff">
+			<opcode ID = "ds_receive_noteoff">
 				<address>
 					<lo>9</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_receive_noteon">
+			<opcode ID = "ds_receive_noteon">
 				<address>
 					<lo>10</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_lpf_cutoff">
+			<opcode ID = "ds_lpf_cutoff">
 				<address>
 					<lo>11</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_lpf_resonance">
+			<opcode ID = "ds_lpf_resonance">
 				<address>
 					<lo>12</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_env_attack_time">
+			<opcode ID = "ds_env_attack_time">
 				<address>
 					<lo>13</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_env_decay_time">
+			<opcode ID = "ds_env_decay_time">
 				<address>
 					<lo>14</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_env_release_time">
+			<opcode ID = "ds_env_release_time">
 				<address>
 					<lo>15</lo>
 				</address>
@@ -2051,72 +2051,72 @@
 		<bulk>
 			<address/>
 			<size>15</size>
-			<opcode tag = "ds_eq_bass">
+			<opcode ID = "ds_eq_bass">
 				<address>
 					<lo>32</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_treble">
+			<opcode ID = "ds_eq_treble">
 				<address>
 					<lo>33</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_midbass">
+			<opcode ID = "ds_eq_midbass">
 				<address>
 					<lo>34</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_midtreble">
+			<opcode ID = "ds_eq_midtreble">
 				<address>
 					<lo>35</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_bass_frequency">
+			<opcode ID = "ds_eq_bass_frequency">
 				<address>
 					<lo>36</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_treble_frequency">
+			<opcode ID = "ds_eq_treble_frequency">
 				<address>
 					<lo>37</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_midbass_frequency">
+			<opcode ID = "ds_eq_midbass_frequency">
 				<address>
 					<lo>38</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_midtreble_frequency">
+			<opcode ID = "ds_eq_midtreble_frequency">
 				<address>
 					<lo>39</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_bass_q">
+			<opcode ID = "ds_eq_bass_q">
 				<address>
 					<lo>40</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_treble_q">
+			<opcode ID = "ds_eq_treble_q">
 				<address>
 					<lo>41</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_midbass_q">
+			<opcode ID = "ds_eq_midbass_q">
 				<address>
 					<lo>42</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_midtreble_q">
+			<opcode ID = "ds_eq_midtreble_q">
 				<address>
 					<lo>43</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_bass_shape">
+			<opcode ID = "ds_eq_bass_shape">
 				<address>
 					<lo>44</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_eq_treble_shape">
+			<opcode ID = "ds_eq_treble_shape">
 				<address>
 					<lo>45</lo>
 				</address>
@@ -2125,7 +2125,7 @@
 		<bulk>
 			<address/>
 			<size>1</size>
-			<opcode tag = "ds_output">
+			<opcode ID = "ds_output">
 				<address>
 					<lo>64</lo>
 				</address>
@@ -2134,12 +2134,12 @@
 		<bulk>
 			<address/>
 			<size>2</size>
-			<opcode tag = "ds_hpf_cutoff">
+			<opcode ID = "ds_hpf_cutoff">
 				<address>
 					<lo>80</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_hpf_resonance">
+			<opcode ID = "ds_hpf_resonance">
 				<address>
 					<lo>81</lo>
 				</address>
@@ -2148,12 +2148,12 @@
 		<bulk>
 			<address/>
 			<size>2</size>
-			<opcode tag = "ds_velocity_pitch">
+			<opcode ID = "ds_velocity_pitch">
 				<address>
 					<lo>96</lo>
 				</address>
 			</opcode>
-			<opcode tag = "ds_velocity_lpf_cutoff">
+			<opcode ID = "ds_velocity_lpf_cutoff">
 				<address>
 					<lo>97</lo>
 				</address>
@@ -2162,7 +2162,7 @@
 		<bulk>
 			<address/>
 			<size>4</size>
-			<opcode tag = "ds1_sourcekit">
+			<opcode ID = "ds1_sourcekit">
 				<address>
 					<lo>112</lo>
 				</address>
@@ -2172,7 +2172,7 @@
 			</opcode>
 		</bulk>
 	</module>
-	<module tag = "plugin">
+	<module ID = "plugin">
 		<name>Plugin</name>
 		<address/>
 		<bulk>
@@ -2180,7 +2180,7 @@
 				<hi>112</hi>
 			</address>
 			<size>1</size>
-			<opcode tag="plugin_partassign">
+			<opcode ID="plugin_partassign">
 				<address>
 					<lo>0</lo>
 				</address>
@@ -2191,7 +2191,7 @@
 				<hi>113</hi>
 			</address>
 			<size>1</size>
-			<opcode tag = "plugin_notefilter">
+			<opcode ID = "plugin_notefilter">
 				<address>
 					<lo>0</lo>
 				</address>

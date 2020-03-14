@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<parameters xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
+	<item ID="window_x">
+		<valueMin>0</valueMin>
+		<valueMax>2147483648</valueMax>
+	</item>
+	<item ID="window_y">
+		<valueMin>0</valueMin>
+		<valueMax>2147483648</valueMax>
+	</item>
+	<item ID="window_w">
+		<valueMin>0</valueMin>
+		<valueMax>2147483648</valueMax>
+	</item>
+	<item ID="window_h">
+		<valueMin>0</valueMin>
+		<valueMax>2147483648</valueMax>
+	</item>
+	<item ID="device_sysexid">
+		<valueMin>0</valueMin>
+		<valueMax>15</valueMax>
+		<translator>translateToTextPlus1</translator>
+	</item>
+	<item ID="device_color">
+		<valueMin>0</valueMin>
+		<valueMax>2147483648</valueMax>
+	</item>
+	<item ID="device_midi_timeout">
+		<valueMin>15</valueMin>
+		<valueMax>1000</valueMax>
+	</item>
+	<item ID="device_midi_input">
+		<translator>translateMap</translator>
+		<translationMap>midi_input_map</translationMap>
+	</item>
+	<item ID="device_midi_output">
+		<translator>translateMap</translator>
+		<translationMap>midi_output_map</translationMap>
+	</item>
+	<item ID="device_name">
+		<translator>translateToText</translator>
+	</item>
+	<item ID="device_defaultDumpFolder">
+		<translator>translateToText</translator>
+	</item>
+	<item ID="device_lastDumpFile">
+		<translator>translateToText</translator>
+	</item>
+</parameters>
