@@ -52,10 +52,12 @@ public interface XGByteArray
 	}
 
 	default int decodeMidiByteToInteger(int index)
-	{	return (this.getByteArray()[index]) & 0x7F;}
+	{	return (this.getByteArray()[index]) & 0x7F;
+	}
 
 	default void encodeMidiByteFromInteger(int index, int i)
-	{	getByteArray()[index] = (byte)(i & 0xFF);}
+	{	this.getByteArray()[index] = (byte)(i & 0xFF);
+	}
 
 	default int decodeMidiBytesToInteger(int index, int size)
 	{	int temp = 0;
@@ -138,7 +140,8 @@ public interface XGByteArray
 	}
 
 	default void setString(int offset, int bc, String s)//TODO
-	{}
+	{
+	}
 
 	public default String toHexString()
 	{	if(getByteArray() == null) return "no data";

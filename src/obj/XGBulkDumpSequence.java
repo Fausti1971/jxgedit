@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
+import device.TimeoutException;
 import msg.XGMessageDumpRequest;
 import msg.XGMessenger;
 import msg.XGRequest;
@@ -67,7 +68,7 @@ public class XGBulkDumpSequence implements XGTypeConstants
 					src.request(r);
 				}
 		}
-		catch(InvalidXGAddressException | InvalidMidiDataException e)
+		catch(InvalidXGAddressException | InvalidMidiDataException | TimeoutException e)
 		{	e.printStackTrace();
 		}
 	}

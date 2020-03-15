@@ -22,16 +22,13 @@ import gui.XGWindow;
 import gui.XGWindowSource;
 
 public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMessenger, XGWindowSource
-{	private final Thread thread;
-	private final XGMessenger source;
+{	private final XGMessenger source;
 	private XGWindow window;
 	private final JList<XGMessage> list = new JList<>(new DefaultListModel<XGMessage>());
 	private JLabel status = new JLabel();
 
 	public XGMessageBuffer(XGMessenger src)
 	{	this.source = src;
-		this.thread = new Thread(this);
-		this.thread.run();
 	}
 
 	@Override public XGDevice getDevice()
@@ -160,10 +157,6 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 		root.add(this.status, BorderLayout.SOUTH);
 
 		return root;
-	}
-
-	@Override public void run()
-	{
 	}
 
 	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException

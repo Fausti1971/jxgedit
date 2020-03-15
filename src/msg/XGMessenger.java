@@ -1,12 +1,13 @@
 package msg;
 
 import adress.InvalidXGAddressException;
+import device.TimeoutException;
 import device.XGDevice;
 
 /**
  * qualifiziert das implementierende Object als XGMessage-Source und -Destination und stellt damit die Schnittstelle zu einem Endpunkt der Außenwelt (midi, file, mem) dar
  */
-public interface XGMessenger extends Runnable
+public interface XGMessenger
 {
 	public XGDevice getDevice();
 
@@ -29,6 +30,7 @@ public interface XGMessenger extends Runnable
  * @param req
  * @return empfangene Antwort
  * @throws InvalidXGAddressException
+ * @throws TimeoutException 
  */
-	XGResponse request(XGRequest req) throws InvalidXGAddressException;
+	XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException;
 }

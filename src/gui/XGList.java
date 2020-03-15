@@ -1,4 +1,4 @@
-package device;
+package gui;
 
 import java.util.Set;
 import java.util.Vector;
@@ -28,6 +28,5 @@ public class XGList<E extends Object> extends JList<E> implements ListSelectionL
 	@Override public void valueChanged(ListSelectionEvent e)
 	{	if(e.getValueIsAdjusting()) return;
 		this.value.set(this.getSelectedValue());
-		System.out.println(this.value);
 	}
 }

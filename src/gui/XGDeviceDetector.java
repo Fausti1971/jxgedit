@@ -1,11 +1,14 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import device.XGDevice;
 import value.ObservableValue;
 
-public class XGDeviceDetector extends JTextField implements DocumentListener
+public class XGDeviceDetector extends JTextField implements DocumentListener, ActionListener
 {	/**
 	 * 
 	 */
@@ -14,13 +17,16 @@ public class XGDeviceDetector extends JTextField implements DocumentListener
 /***********************************************************************************************************************************/
 
 	ObservableValue<String> value;
+	XGDevice device;
 
-	public XGDeviceDetector(ObservableValue<String> v)
+	public XGDeviceDetector(ObservableValue<String> v, XGDevice dev)
 	{	super(v.get());
-		this.setToolTipText("press enter for autodetect");
+		this.setToolTipText("press enter to autodetect device");
 		this.value = v;
+		this.device = dev;
 		this.setAlignmentX(0.5f);
 		this.getDocument().addDocumentListener(this);
+		this.addActionListener(this);
 
 	}
 
@@ -34,5 +40,10 @@ public class XGDeviceDetector extends JTextField implements DocumentListener
 
 	@Override public void changedUpdate(DocumentEvent e)
 	{	value.set(getText());
+	}
+
+	@Override public void actionPerformed(ActionEvent e)
+	{	device.requestInfo();
+		setText(value.get());
 	}
 }

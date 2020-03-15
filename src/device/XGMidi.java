@@ -10,12 +10,12 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import adress.InvalidXGAddressException;
 import application.Configurable;
 import gui.XGFrame;
+import gui.XGList;
 import gui.XGSpinner;
 import msg.XGMessage;
 import msg.XGMessageBuffer;
@@ -94,7 +94,6 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 			}
 		};
 
-	private final Thread thread;
 	private final XGDevice device;
 	private final XMLNode config;
 	private Receiver transmitter;
@@ -102,6 +101,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	private MidiDevice midiInput = null;
 	private XGRequest request = null;
 	private int timeoutValue;
+	private Thread requestThread;
 	private final XGMessageBuffer buffer;
 
 	public XGMidi(XGDevice dev)
@@ -118,8 +118,6 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 		catch(CoreMidiException e)
 		{	e.printStackTrace();
 		}
-		this.thread = new Thread(this);
-		this.thread.run();
 	}
 
 	private void setOutput(String s)
@@ -220,7 +218,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 		{	try
 			{	XGMessage m = XGMessage.newMessage(this, mmsg);
 				if(this.request != null && this.request.setResponsedBy((XGResponse)m))
-				{	this.request.getSource().notify();
+				{	this.requestThread.interrupt();//notify weckt zwar den Thread, interrupted ihn aber nicht und verhindert somit eine Unterscheidung zwischen Timeout und Response
 					return;
 				}
 				if(m.getDestination() == null) m.setDestination(this.buffer);
@@ -263,16 +261,17 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	{	this.transmit(msg);
 	}
 
-	@Override public XGResponse request(XGRequest msg)
-	{	synchronized(this)
+	@Override public XGResponse request(XGRequest msg) throws TimeoutException
+	{	synchronized(this.buffer)
 		{	if(this.transmit(msg))
-			{	this.request = msg;
-				try
-				{	msg.getSource().wait(this.timeout.get());
-//					if(!this.request.isResponsed()) throw new TimeoutException("midi timeout: " + this.getInputName() + " after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms"); //Thread läuft nach notify() ganz normal weiter
+			{	try
+				{	this.request = msg;
+					this.requestThread = Thread.currentThread();
+					Thread.sleep(this.timeoutValue);//wait(ms) funktioniert
+					throw new TimeoutException("timeout: no response after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
 				}
 				catch(InterruptedException e)
-				{	System.out.println("interrupted");
+				{	log.info("response after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
 				}
 			}
 			this.request = null;
@@ -314,21 +313,20 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	}
 
 	public JComponent getConfigComponent()
-	{	XGFrame root = new XGFrame("midi", BoxLayout.X_AXIS);
-		XGFrame frame = new XGFrame("input", 0);
-		frame.add(new JScrollPane(new XGList<Info>(XGMidi.getInputs(), this.input)));
-		root.add(frame);
-		frame = new XGFrame("output", 0);
-		frame.add(new JScrollPane(new XGList<Info>(XGMidi.getOutputs(), this.output)));
-		root.add(frame);
-		frame = new XGFrame("timeout", 0);
-		frame.add(new XGSpinner(this.timeout, 30, 1000, 10));
-		root.add(frame);
+	{	XGFrame root = new XGFrame("midi");
+
+		XGFrame frame = new XGFrame("input");
+		frame.addGB(new JScrollPane(new XGList<Info>(XGMidi.getInputs(), this.input)), 0, 0);
+		root.addGB(frame, 0, 0);
+
+		frame = new XGFrame("output");
+		frame.addGB(new JScrollPane(new XGList<Info>(XGMidi.getOutputs(), this.output)), 0, 0);
+		root.addGB(frame, 1, 0);
+
+		frame = new XGFrame("timeout");
+		frame.addGB(new XGSpinner(this.timeout, 30, 1000, 10), 0, 0);
+		root.addGB(frame, 0, 1);
+
 		return root;
 	}
-
-	@Override public void run()
-	{	
-	}
-
 }

@@ -50,7 +50,7 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
 	}
 
 	@Override public byte[] getByteArray()
-	{	return this.getMessage();
+	{	return this.data;
 	}
 
 	@Override public XGMessenger getSource()
@@ -71,12 +71,6 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
 
 	@Override public void setTimeStamp(long time)
 	{	this.transmissionTimeStamp = time;
-	}
-/**
- * überprüft anhand vendorID und modelID, ob es sich um eine XG-Message handelt und wirft bei Fehlschlag eine Exception
- */
-	@Override public void validate() throws InvalidMidiDataException
-	{	if(this.getVendorID() != VENDOR || this.getModelID() != MODEL) throw new InvalidMidiDataException("no xg message");
 	}
 
 	@Override public String toString()

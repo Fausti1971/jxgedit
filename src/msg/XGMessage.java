@@ -28,19 +28,19 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 /***************************************************************************************************/
 
 	default void setSOX()
-	{	encodeMidiByteFromInteger(SOX_OFFS, SOX);
+	{	this.encodeMidiByteFromInteger(SOX_OFFS, SOX);
 	}
 
 	default void setEOX(int index)
-	{	encodeMidiByteFromInteger(index, EOX);
+	{	this.encodeMidiByteFromInteger(index, EOX);
 	}
 
 	default int getSysexID()
-	{	return decodeLowerNibble(SYSEX_OFFS);
+	{	return this.decodeLowerNibble(SYSEX_OFFS);
 	}
 
 	default void setSysexID(int id)
-	{	encodeLowerNibble(SYSEX_OFFS, id);
+	{	this.encodeLowerNibble(SYSEX_OFFS, id);
 	}
 
 	default int getMessageID()
@@ -48,15 +48,15 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	}
 
 	default void setMessageID(int id)
-	{	encodeHigherNibbleFromInteger(MSG_OFFS, id);
+	{	this.encodeHigherNibbleFromInteger(MSG_OFFS, id);
 	}
 
 	default int getVendorID()
-	{	return decodeMidiByteToInteger(VENDOR_OFFS);
+	{	return this.decodeMidiByteToInteger(VENDOR_OFFS);
 	}
 
 	default void setVendorID()
-	{	encodeMidiByteFromInteger(VENDOR_OFFS, VENDOR);
+	{	this.encodeMidiByteFromInteger(VENDOR_OFFS, VENDOR);
 	}
 
 	default int getModelID()
@@ -64,7 +64,7 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	}
 
 	default void setModelID()
-	{	encodeMidiByteFromInteger(MODEL_OFFS, MODEL);
+	{	this.encodeMidiByteFromInteger(MODEL_OFFS, MODEL);
 	}
 
 	default public void setTimeStamp()
@@ -73,6 +73,13 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 
 	@Override public default XGAddress getAdress()
 	{	return new XGAddress(getHi(), getMid(), getLo());
+	}
+
+/**
+ * überprüft anhand vendorID und modelID, ob es sich um eine XG-Message handelt und wirft bei Fehlschlag eine Exception
+ */
+	public default void validate() throws InvalidMidiDataException
+	{	if(this.getVendorID() != VENDOR || this.getModelID() != MODEL) throw new InvalidMidiDataException("no xg message");
 	}
 
 /**
@@ -95,7 +102,6 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	public XGMessenger getSource();
 	public long getTimeStamp();
 	public void setTimeStamp(long time);
-	void validate() throws InvalidMidiDataException;
 	public int getHi();
 	public int getMid();
 	public int getLo();

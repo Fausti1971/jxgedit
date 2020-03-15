@@ -14,8 +14,8 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -34,6 +34,7 @@ import gui.XGWindow;
 import gui.XGWindowSource;
 import msg.XGMessageDumpRequest;
 import msg.XGRequest;
+import msg.XGResponse;
 import obj.XGType;
 import opcode.XGOpcode;
 import parm.XGParameter;
@@ -236,13 +237,19 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m;
 		try
-		{	m = new XGMessageDumpRequest(this.midi, XGAddressConstants.XGMODELNAMEADRESS);
-			m.setDestination(this.values);
-			this.midi.request(m);
-			//TODO: wait for response...
-			this.name.set(this.values.get(XGAddressConstants.XGMODELNAMEADRESS).toString().strip());
-			this.info1 = (int)this.values.get(XGAddressConstants.XGMODELINFO1ADDRESS).getContent();
-			this.info2 = (int)this.values.get(XGAddressConstants.XGMODELINFO2ADDRESS).getContent();
+		{	m = new XGMessageDumpRequest(this.values, XGAddressConstants.XGMODELNAMEADRESS);
+			m.setDestination(this.midi);
+			try
+			{	XGResponse r = this.midi.request(m);
+				String s = r.getString(r.getBaseOffset(), r.getBaseOffset() + r.getBulkSize());
+				this.name.set(s.trim());
+			}
+			catch(TimeoutException e)
+			{	JOptionPane.showMessageDialog(this.getChildWindow(), e.getMessage());
+			}
+//			this.name.set(this.values.get(XGAddressConstants.XGMODELNAMEADRESS).toString().strip());
+//			this.info1 = (int)this.values.get(XGAddressConstants.XGMODELINFO1ADDRESS).getContent();
+//			this.info2 = (int)this.values.get(XGAddressConstants.XGMODELINFO2ADDRESS).getContent();
 		}
 		catch(InvalidXGAddressException | InvalidMidiDataException e)
 		{	e.printStackTrace();
@@ -341,21 +348,22 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public JComponent getConfigComponent()
-	{	XGFrame root = new XGFrame("device", BoxLayout.Y_AXIS);
+	{	XGFrame root = new XGFrame("device");
 
-		root.add(this.getMidi().getConfigComponent());
+		root.addGB(this.getMidi().getConfigComponent(), 0, 0);
 
-		XGFrame frame = new XGFrame("sysexID", 0);
-		frame.add(new XGSpinner(this.sysex, 0, 15, 1));
-		root.add(frame);
+		XGFrame frame = new XGFrame("sysexID");
+		frame.addGB(new XGSpinner(this.sysex, 0, 15, 1), 0, 0);
+		root.addGB(frame, 0, 1);
 
-		frame = new XGFrame("default dump folder", 0);
-		frame.add(new XGPathSelector(this.defaultDumpFolder));
-		root.add(frame);
+		frame = new XGFrame("default dump folder");
+		frame.addGB(new XGPathSelector(this.defaultDumpFolder), 0, 0);
+		root.addGB(frame, 0, 2);
 
-		frame = new XGFrame("device name", 0);
-		frame.add(new XGDeviceDetector(this.name));
-		root.add(frame);
+		frame = new XGFrame("device name");
+		frame.addGB(new XGDeviceDetector(this.name, this), 0, 0);
+		root.addGB(frame, 0, 3);
+
 		return root;
 
 	}
