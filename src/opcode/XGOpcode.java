@@ -2,6 +2,7 @@ package opcode;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Map;
 import java.util.logging.Logger;
 import adress.XGAddress;
 import adress.XGAddressable;
@@ -9,15 +10,17 @@ import application.ConfigurationConstants;
 import device.XGDevice;
 import module.XGModule;
 import module.XGModuleConstants.XGModuleTag;
+import parm.XGParameter;
 import tag.XGTagable;
-import tag.XGTagableAdressableSet;
+import tag.XGTagableAddressableSet;
 import xml.XMLNode;
 
-public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAddressable, XGTagable
+public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGTagable, XGAddressable
 {	private static Logger log = Logger.getAnonymousLogger();
 
-	public static XGTagableAdressableSet<XGOpcode> init(XGDevice dev)
-	{	XGTagableAdressableSet<XGOpcode> opcodes = new XGTagableAdressableSet<>();
+	public static XGTagableAddressableSet<XGOpcode> init(XGDevice dev)
+	{	
+		XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<>();
 		File file;
 		try
 		{	file = dev.getResourceFile(XML_OPCODE);
@@ -27,9 +30,14 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 			return opcodes;
 		}
 		XMLNode xml = XMLNode.parse(file);
-		if(xml.getTag().equals(TAG_OPCODE))
+		XGOpcode o = null;
+		if(xml.getTag().equals(TAG_OPCODES))
 		{	for(XMLNode n : xml.getChildNodes())
-				if(n.getTag().equals(TAG_ITEM)) opcodes.add(new XGOpcode(n));
+			{	if(n.getTag().equals(TAG_OPCODE))
+				{	o = new XGOpcode(dev, n);
+					opcodes.add(o);
+				}
+			}
 		}
 		log.info(opcodes.size() + " opcodes initialized from: " + file);
 		return opcodes;
@@ -44,9 +52,9 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 		}
 	}
 
-	public static DataType getDataType(String s)
+	public static ValueDataType getDataType(String s)
 	{	try
-		{	return DataType.valueOf(s);
+		{	return ValueDataType.valueOf(s);
 		}
 		catch(IllegalArgumentException e)
 		{	return DEF_DATATYPE;
@@ -65,49 +73,61 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 */
 /*********************************************************************************************************/
 
-	private final String tag;
-	private final XGAddress adress;
+	private final XGDevice device;
+	private final String tag, dependencyTag;
+	private final XGOpcodeConstants.ValueDataType dependencyType;
+	private final XGAddress address, bulkAddress;
 	private final int byteCount;
-	private final DataType dType;
+	private final ValueDataType dType;
 	private final ValueDataClass vType;
-	private final XGModuleTag module;
+	private final XGModuleTag moduleTag;
+	private final Map<Integer, XGParameter> parameters;
 
-	public XGOpcode(XGAddress adr)
-	{	this.tag = DEF_OPCODENAME + adr;
-		this.adress = adr;
+	public XGOpcode(XGDevice dev, XGAddress adr)
+	{	this.device = dev;
+		this.tag = DEF_OPCODENAME + adr;
+		this.address = adr;
+		this.bulkAddress = adr;
 		this.byteCount = DEF_BYTECOUNT;
 		this.dType = DEF_DATATYPE;
 		this.vType = DEF_VALUECLASS;
-		XGModuleTag temp = XGModuleTag.unknown;
-		temp = XGModule.getModuleTag(adr);
-		this.module = temp;
+		this.moduleTag = XGModule.getModuleTag(adr);
+		this.parameters = null;
+		this.dependencyTag = "";
+		this.dependencyType = ValueDataType.LSB;
 	}
 
-	private XGOpcode(String name)
-	{	this.tag = DEF_OPCODENAME + name;
-		this.adress = null;
+	private XGOpcode(XGDevice dev, String name)
+	{	this.device = dev;
+		this.tag = DEF_OPCODENAME + name;
+		this.address = INVALIDADRESS;
+		this.bulkAddress = INVALIDADRESS;
 		this.byteCount = DEF_BYTECOUNT;
 		this.dType = DEF_DATATYPE;
 		this.vType = DEF_VALUECLASS;
-		this.module = XGModuleTag.unknown;
+		this.moduleTag = XGModuleTag.unknown;
+		this.parameters = null;
+		this.dependencyTag = "";
+		this.dependencyType = ValueDataType.LSB;
 	}
 
-	public XGOpcode(XMLNode n)
-	{	this.tag = n.getAttribute(ATTR_ID);
-		this.adress = new XGAddress(n.getChildNode(TAG_ADRESS));
-		this.byteCount = n.parseChildNodeIntegerContent(TAG_BYTECOUNT, DEF_BYTECOUNT);
-		this.dType = getDataType(n.getChildNodeTextContent(TAG_DATATYPE, ""));
-		this.vType = getValueDataClass(n.getChildNodeTextContent(TAG_VALUECLASS, ""));
-		this.module = XGModule.getModuleTag(this.adress);
+	private XGOpcode(XGDevice dev, XMLNode n)
+	{	this.device = dev;
+		this.address = new XGAddress(n);
+		this.bulkAddress = new XGAddress(n.getParentNode());
+		this.moduleTag = XGModuleTag.valueOf(n.getParentNode().getParentNode().getStringAttribute(ATTR_ID));
+		this.tag = n.getStringAttribute(ATTR_ID);
+		this.byteCount = n.getIntegerAttribute(ATTR_BYTECOUNT);
+		this.dType = getDataType(n.getStringAttribute(ATTR_DATATYPE));
+		this.vType = getValueDataClass(n.getStringAttribute(ATTR_VALUECLASS));
+		this.dependencyTag = n.getStringAttribute(ATTR_DEPENDING);
+		this.dependencyType = ValueDataType.valueOf(n.getStringAttribute(ATTR_DEP_TYPE));
+		this.parameters = XGParameter.init(this, n);
 		log.info("opcode initialized: " + this.getInfo());
 	}
 
-	@Override public XGAddress getAdress()
-	{	return this.adress;
-	}
-
 	public String getInfo()
-	{	return this.tag + " " + this.adress;
+	{	return this.tag + " " + this.address;
 	}
 
 	public ValueDataClass getValueClass()
@@ -122,11 +142,40 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGAd
 	{	return this.tag;
 	}
 
-	public DataType getDataType()
-	{	return dType;
+	public String getDependencyTag()
+	{	return this.dependencyTag;
+	}
+
+	public ValueDataType getDataType()
+	{	return this.dType;
+	}
+
+	public XGOpcodeConstants.ValueDataType getDependencyType()
+	{	return this.dependencyType;
 	}
 
 	@Override public String toString()
 	{	return this.getTag();
+	}
+
+	@Override public XGAddress getAddress()
+	{	return this.address;
+	}
+
+	public XGAddress getBulkAddress()
+	{	return this.bulkAddress;
+	}
+
+	public XGModuleTag getModuleTag()
+	{	return moduleTag;
+	}
+
+	public XGParameter getParameter(int i)
+	{	if(this.parameters == null) return null;
+		return this.parameters.get(i);
+	}
+
+	public Map<Integer, XGParameter> getParameters()
+	{	return parameters;
 	}
 }

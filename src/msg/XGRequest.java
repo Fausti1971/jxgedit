@@ -7,17 +7,29 @@ public interface XGRequest extends XGMessage
  * @param msg
  * @return true, wenn dieser XGRequest mit der übergebenen XGResponse beantwortet ist;
  */
-	boolean setResponsedBy(XGResponse msg);
+	public default boolean setResponsed(XGResponse msg)
+	{	this.setResponsed(this.getResponse().isEqual(msg));
+		if(this.getResponsed()) this.setResponse(msg);
+		return this.getResponsed();
+	}
 
 /**
  * wurde dieser XGRequest schon beantwortet?
  * @return true, falls ja;
  */
-	boolean isResponsed();
+	boolean getResponsed();
+
+/**
+ * setzt den Responsed-Status eines Requests auf s
+ * @param s neuer Status
+ */
+	void setResponsed(boolean s);
 
 /**
  * returniert den Prototyp einer erwarteten Antwort (MessageID, SysexID und XGAddress) auf diesen XGRequest;
  * @return s.o.
  */
 	XGResponse getResponse();
+
+	void setResponse(XGMessage m);
 }

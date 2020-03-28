@@ -2,14 +2,18 @@ package adress;
 
 public interface XGAddressConstants
 {	
+	public enum XGAddressModulator
+	{	
+	}
+	
 	public final int
 		MIDIBYTEMASK = 0x7F,
 		INVALIDFIELD = -1;
 
 	public final String
-		TAG_HI = "hi",
-		TAG_MID = "mid",
-		TAG_LO = "lo";
+		ATTR_HI = "hi",
+		ATTR_MID = "mid",
+		ATTR_LO = "lo";
 	
 	public final XGAddress INVALIDADRESS = new XGAddress(INVALIDFIELD, INVALIDFIELD, INVALIDFIELD);
 

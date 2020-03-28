@@ -37,15 +37,15 @@ public class XGFrame extends JPanel implements XGBorderable
 	}
 
 	public void addGB(Component component, int gridx, int gridy, int gridwidth)
-	{	addGB(component, gridx, gridy, gridwidth, 1, GridBagConstraints.BOTH, 0.0, 0.0, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
+	{	addGB(component, gridx, gridy, gridwidth, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
 	public void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight)
-	{	addGB(component, gridx, gridy, gridwidth, gridheight, GridBagConstraints.BOTH, 0.0, 0.0, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
+	{	addGB(component, gridx, gridy, gridwidth, gridheight, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
 	public void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill)
-	{	addGB(component, gridx, gridy, gridwidth, gridheight, fill, 0.0, 0.0, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
+	{	addGB(component, gridx, gridy, gridwidth, gridheight, fill, 0.5, 0.5, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
 	public void addGB(Component component, int gridx, int gridy, double weightx, double weighty)
@@ -91,7 +91,7 @@ public class XGFrame extends JPanel implements XGBorderable
  * @param ipady	Diese Felder geben die Innenpolsterung der Komponente an, das heißt den Raum, welcher der Komponente hinzugefügt wird, wodurch diese größer wird. Dabei wird die Breite der Komponente mit ipadx gepolstert und ihre Höhe mit ipadyFetter Text.
 	Der Standardwert für beide Felder ist 0, was bedeutet, dass die Komponente keine Innenpolsterung hat.
  */
-	private void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill, double weightx, double weighty, int anchor, Insets insets, int ipadx, int ipady)
+	public void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill, double weightx, double weighty, int anchor, Insets insets, int ipadx, int ipady)
 	{	GridBagConstraints constraints = new GridBagConstraints();
 		constraints.gridx = gridx;
 		constraints.gridy = gridy;

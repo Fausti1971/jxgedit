@@ -32,7 +32,7 @@ public class XGTranslationMap implements ConfigurationConstants, XGTranslationCo
 		XMLNode xml = XMLNode.parse(file);
 		for(XMLNode x : xml.getChildNodes())
 		{	if(x.getTag().equals(TAG_MAP))
-			{	for(String s : Rest.splitStringByComma(x.getAttribute(ATTR_NAME)))
+			{	for(String s : Rest.splitStringByComma(x.getStringAttribute(ATTR_NAME)))
 					set.add(new XGTranslationMap(x, s));
 			}
 		}

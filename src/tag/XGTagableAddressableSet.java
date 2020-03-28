@@ -6,7 +6,7 @@ import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 
-public class XGTagableAdressableSet<T extends XGAddressable & XGTagable> implements Iterable<T>
+public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implements Iterable<T>
 {	private static Logger log = Logger.getAnonymousLogger();
 	private XGAddressableSet<T> adrSet = new XGAddressableSet<>();
 	private XGTagableSet<T> tagSet = new XGTagableSet<T>();
@@ -17,7 +17,7 @@ public class XGTagableAdressableSet<T extends XGAddressable & XGTagable> impleme
 		if(this.tagSet.size() != this.adrSet.size()) throw new RuntimeException("adresses/tags =" + this.adrSet.size() + "/" + this.tagSet.size() + " by: " + obj);
 	}
 
-	public T get(String tag)
+	public T get(Object tag)
 	{	return this.tagSet.get(tag);
 	}
 
@@ -42,7 +42,7 @@ public class XGTagableAdressableSet<T extends XGAddressable & XGTagable> impleme
 	{	return this.adrSet.contains(adr);
 	}
 
-	public boolean containsKey(String tag)
+	public boolean containsKey(Object tag)
 	{	return this.tagSet.containsKey(tag);
 	}
 

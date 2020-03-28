@@ -7,7 +7,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.SysexMessage;
 import javax.swing.JFileChooser;
 import adress.InvalidXGAddressException;
 import application.ConfigurationConstants;
@@ -38,25 +37,24 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 	public void load(XGMessenger dest)
 	{	log.info("start parsing: " + this.getAbsolutePath());
 		if(dest == null) dest = this.buffer;
-		
 
 		try(FileInputStream fis = new FileInputStream(this))
 		{	byte[] tmp = new byte[fis.available()];
 			boolean start = false, end = false;
-			int first = 0, i = 0, messageCont = 0;
+			int first = 0, i = 0, messageCount = 0;
 			while(fis.available() != 0)
 			{	tmp[i] = (byte) fis.read();
-				if(tmp[i] == (byte)SysexMessage.SYSTEM_EXCLUSIVE)
+				if(tmp[i] == (byte)XGMessage.SOX)
 				{	start = true;
 					first = i;
 				}
-				if(tmp[i] == (byte)SysexMessage.SPECIAL_SYSTEM_EXCLUSIVE) end = true;
+				if(tmp[i] == (byte)XGMessage.EOX) end = true;
 				if(start && end)
 				{	try
-					{	XGMessage m = XGMessage.newMessage(dest, Arrays.copyOfRange(tmp, first, i + 1), false);
+					{	XGMessage m = XGMessage.newMessage(this, dest, Arrays.copyOfRange(tmp, first, i + 1), false);
 						m.setDestination(dest);
 						if(m instanceof XGResponse) dest.submit((XGResponse)m);
-						messageCont++;
+						messageCount++;
 					}
 					catch (InvalidMidiDataException | InvalidXGAddressException e)
 					{	log.info(e.getMessage());
@@ -66,7 +64,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 				}
 				i++;
 			}
-			log.info("parsing finished: " + messageCont + " messages parsed to " + dest.getMessengerName());
+			log.info("parsing finished: " + messageCount + " messages parsed from " + this + " to " + dest.getMessengerName());
 		}
 		catch (IOException e)
 		{	log.warning(e.getMessage());

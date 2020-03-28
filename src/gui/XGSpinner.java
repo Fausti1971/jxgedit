@@ -4,7 +4,7 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import value.ObservableValue;
+import value.ChangeableContent;
 
 public class XGSpinner extends JSpinner implements ChangeListener
 {
@@ -16,9 +16,9 @@ public class XGSpinner extends JSpinner implements ChangeListener
 
 /**************************************************************************************************/
 
-	private ObservableValue<Integer> value;
+	private ChangeableContent<Integer> value;
 
-	public XGSpinner(ObservableValue<Integer> v, int min, int max, int step)
+	public XGSpinner(ChangeableContent<Integer> v, int min, int max, int step)
 	{	super();
 		this.value = v;
 		this.setModel(new SpinnerNumberModel((int)v.get(), min, max, step));

@@ -1,18 +1,14 @@
 package xml;
 
-import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
-import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -23,8 +19,6 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.stream.StreamSource;
 import application.ConfigurationConstants;
 import application.Rest;
-import gui.XGTree;
-import gui.XGTreeNode;
 import tag.XGTagable;
 
 /**
@@ -33,7 +27,7 @@ import tag.XGTagable;
  * @author thomas
  *
  */
-public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
+public class XMLNode implements XGTagable, ConfigurationConstants
 {
 	private static Logger log = Logger.getAnonymousLogger();
 
@@ -75,25 +69,9 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 		return prop;
 	}
 
-/**
- * kreiert und returniert aus einem Set eine XMLNode mit dem TAG_SET ("set"), deren childNodes jeweils das TAG_ITEM ("item") und den Inhalt toString() tragen;
- * @param selected wird dem XMLRoot als Attribut TAG_SELECTED ("selected") hinzugefügt;
- * @param name wird dem XMLRoot als Attribut TAG_NAME ("name") hinzugefügt;
- * @param set das Set, das dem XMLRoot als children hinzugefügt wird
- * @return XMLRoot
- */
-	public static XMLNode fromSet(String name, Set<?> set, String selected)
-	{	Properties p = new Properties();
-		p.put(ATTR_SELECTED, selected);
-		p.put(ATTR_NAME, name);
-		XMLNode n = new XMLNode(TAG_SET, p);
-		for(Object o : set) n.addChildNode(new XMLNode(TAG_ITEM, null, o.toString()));
-		return n;
-	}
-
 /*************************************************************************************************************/
 
-	private XGTree tree;
+//	private XGTree tree;
 	private XMLNode parent;
 	private final Set<XMLNode> childNodes = new LinkedHashSet<>();
 	private final String tag;
@@ -111,7 +89,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 		this.content = txt;
 	}
 
-	private XMLNode getParentNode()
+	public XMLNode getParentNode()
 	{	return this.parent;
 	}
 
@@ -185,8 +163,12 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 		return Rest.parseIntOrDefault(n.getTextContent(), def);
 	}
 
-	public String getAttribute(String a)
+	public String getStringAttribute(String a)
 	{	return this.attributes.getProperty(a);
+	}
+
+	public int getIntegerAttribute(String a)
+	{	return Integer.parseInt((String)this.attributes.get(a));
 	}
 
 	public void save(File file) throws IOException, XMLStreamException
@@ -215,14 +197,16 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 		}
 	}
 
+	@Override public String toString()
+	{	return this.tag;
+	}
+
+/*	XGTreeNode
+
 	@Override public String getNodeText()
 	{	if(this.tag.equals("item")) return this.content;
 		if(this.tag.equals("entry")) return this.getChildNodeTextContent("value", "no value for " + this.getChildNodeTextContent("key", "no key"));
 		return this.tag;
-	}
-
-	@Override public String toString()
-	{	return this.getNodeText();
 	}
 
 	@Override public TreeNode getParent()
@@ -258,7 +242,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 	}
 
 	@Override public boolean isSelected()
-	{	String s = this.getParentNode().getAttribute(ATTR_SELECTED);
+	{	String s = this.getParentNode().getStringAttribute(ATTR_SELECTED);
 		return s.equals(this.content);
 	}
 
@@ -269,4 +253,5 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGTreeNode
 	@Override public XGTree getTreeComponent()
 	{	return this.tree;
 	}
+*/
 }

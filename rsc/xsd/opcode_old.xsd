@@ -12,7 +12,7 @@
 							<xs:element name="byteType" type="byteType" minOccurs="0"/>
 							<xs:element name="valueClass" type="valueClass" minOccurs="0"/>
 						</xs:all>
-						<xs:attribute name="ID" use="required" type="xs:ID"/>
+						<xs:attribute name="id" use="required" type="xs:ID"/>
 					</xs:complexType>
 				</xs:element>
 			</xs:sequence>

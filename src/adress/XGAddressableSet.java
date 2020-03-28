@@ -8,41 +8,45 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Vector;
 
-public class XGAddressableSet<T extends XGAddressable> implements Iterable<T>, XGAddressConstants, XGAddressableSetListener
+public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterable<T>, XGAddressConstants, XGAddressableSetListener
 {
+
 /***********************************************************************************************************/
 
 	private Class<?> type = null;
-	private SortedMap<XGAddress, T> map = new TreeMap<XGAddress,T>();
-	private Set<XGAddressableSetListener> listeners = new HashSet<XGAddressableSetListener>();
+	private final SortedMap<XGAddress, T> map = new TreeMap<XGAddress,T>();
+	private final Set<XGAddressableSetListener> listeners = new HashSet<XGAddressableSetListener>();
 
-	public synchronized void add(T obj)
+	@Override public synchronized boolean add(T obj)
 	{	synchronized(this.map)
-		{	if(obj == null) return;
+		{	if(obj == null) return false;
 			if(this.type == null) this.type = obj.getClass();
 			XGAddress adr;
-			adr = obj.getAdress();
-				this.map.put(adr, obj);
-				notifyListeners(adr);
+			adr = obj.getAddress();
+			this.map.put(adr, obj);
+			this.notifyListeners(adr);
 		}
+		return true;
 	}
 
 	public synchronized void remove(T obj)
 	{	synchronized(this.map)
 		{	if(obj == null) return;
-			this.map.remove(obj.getAdress(), obj);
-				notifyListeners(obj.getAdress());
+			this.map.remove(obj.getAddress(), obj);
+			this.notifyListeners(obj.getAddress());
 		}
 	}
 
 	public synchronized void remove(XGAddress adr)
 	{	synchronized(this.map)
 		{	this.map.remove(adr);
+			this.notifyListeners(adr);
 		}
 	}
 
-	public synchronized void clear()
+	@Override public synchronized void clear()
 	{	this.map.clear();
+		this.notifyListeners(INVALIDADRESS);
 	}
 
 	public synchronized T get(XGAddress adr)
@@ -65,7 +69,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Iterable<T>, X
 		}
 	}
 
-	public int size()
+	@Override public int size()
 	{	return this.map.size();
 	}
 
@@ -85,13 +89,13 @@ public class XGAddressableSet<T extends XGAddressable> implements Iterable<T>, X
 	}
 
 	public synchronized T getFirstValid(XGAddress adr)
-	{	for(T a : this.map.values()) if(a.getAdress().equalsValidFields(adr)) return a;
-				return null;
-			}
+	{	for(T a : this.map.values()) if(a.getAddress().equalsValidFields(adr)) return a;
+		return null;
+	}
 
 	public synchronized XGAddressableSet<T> getAllValid(XGAddress adr)
 	{	XGAddressableSet<T> set = new XGAddressableSet<>();
-		for(T a : this.values()) if(a.getAdress().equalsValidFields(adr)) set.add(a);
+		for(T a : this.values()) if(a.getAddress().equalsValidFields(adr)) set.add(a);
 		this.addListener(set);
 		return set;
 	}
@@ -131,5 +135,51 @@ public class XGAddressableSet<T extends XGAddressable> implements Iterable<T>, X
 	@Override public String toString()
 	{	if(this.map.isEmpty()) return "empty set";
 		return (this.type.getSimpleName()) + " (" + size() + ")";
+	}
+
+	@Override public boolean isEmpty()
+	{	return this.map.isEmpty();
+	}
+
+	@Override public boolean contains(Object o)
+	{	return this.map.containsValue(o);
+	}
+
+	@Override public Object[] toArray()
+	{	return this.map.values().toArray();
+	}
+
+	@Override public <A> A[] toArray(A[] a)
+	{	return this.map.values().toArray(a);
+	}
+
+	@Override public boolean remove(Object o)
+	{	return this.remove(o);
+	}
+
+	@Override public boolean containsAll(Collection<?> c)
+	{	return this.map.values().containsAll(c);
+	}
+
+	@Override public boolean addAll(Collection<? extends T> c)
+	{	Iterator<? extends T> i = c.iterator();
+		while(i.hasNext()) this.add(i.next());
+		return true;
+	}
+
+	@Override public boolean retainAll(Collection<?> c)
+	{	Iterator<?> i = c.iterator();
+		while(i.hasNext())
+		{	Object o = i.next();
+			if(this.map.containsValue(o)) continue;
+			this.remove(o);
+		}
+		return true;
+	}
+
+	@Override public boolean removeAll(Collection<?> c)
+	{	Iterator<?> i = c.iterator();
+		while(i.hasNext()) this.remove(i.next());
+		return true;
 	}
 }

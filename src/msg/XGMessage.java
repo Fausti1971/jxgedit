@@ -9,20 +9,20 @@ import adress.XGAddressable;
 
 public interface XGMessage extends XGMessageConstants, XGAddressable
 {
-	public static XGMessage newMessage(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
-	{	XGMessage x = new XGMessageUnknown(src, array, init);
+	public static XGMessage newMessage(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
+	{	XGMessage x = new XGMessageUnknown(src, dest, array, init);
 		switch(x.getMessageID())
-		{	case MSG_BD:	return new XGMessageBulkDump(src, array, init);
-			case MSG_PC:	return new XGMessageParameterChange(src, array, init);
-			case MSG_DR:	return new XGMessageDumpRequest(src, array, init);
-			case MSG_PR:	return new XGMessageParameterRequest(src, array, init);
+		{	case MSG_BD:	return new XGMessageBulkDump(src, dest, array, init);
+			case MSG_PC:	return new XGMessageParameterChange(src, dest, array, init);
+			case MSG_DR:	return new XGMessageDumpRequest(src, dest, array, init);
+			case MSG_PR:	return new XGMessageParameterRequest(src, dest, array, init);
 		}
 		return x;
 	}
 
-	public static XGMessage newMessage(XGMessenger src, MidiMessage msg) throws InvalidMidiDataException, InvalidXGAddressException
+	public static XGMessage newMessage(XGMessenger src, XGMessenger dest, MidiMessage msg) throws InvalidMidiDataException, InvalidXGAddressException
 	{	if(!(msg instanceof SysexMessage)) throw new InvalidMidiDataException("no sysex message");
-		return newMessage(src, msg.getMessage(), false);
+		return newMessage(src, dest, msg.getMessage(), false);
 	}
 
 /***************************************************************************************************/
@@ -71,7 +71,7 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	{	this.setTimeStamp(System.currentTimeMillis());
 	}
 
-	@Override public default XGAddress getAdress()
+	@Override public default XGAddress getAddress()
 	{	return new XGAddress(getHi(), getMid(), getLo());
 	}
 
@@ -83,15 +83,16 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	}
 
 /**
- * Testet das übergebene Object o auf null, MessageID, sysexID und XGAddress;
+ * Testet das übergebene Object o auf null, MessageID, sysexID, XGAddress und Destination;
  * @param o
- * @return true, wenn o nicht null, MessageID, SysexID und XGAddress übereinstimmt;
+ * @return true, wenn o nicht null, MessageID, SysexID, XGAddress und Destination übereinstimmt;
  */
 	public default boolean isEqual(XGMessage o)
 	{	if(o != null)
 		{	if(o.getMessageID() == this.getMessageID() &&
 				o.getSysexID() == this.getSysexID() &&
-				o.getAdress().equals(this.getAdress())) return true;
+				o.getAddress().equals(this.getAddress()) &&
+				o.getDestination().equals(this.getDestination())) return true;
 		}
 		return false;
 	}

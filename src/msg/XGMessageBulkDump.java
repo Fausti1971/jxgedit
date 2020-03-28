@@ -11,13 +11,13 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 
 /********************************************************************************************************************************************************/
 
-	XGMessageBulkDump(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
-	{	super(src, array, init);
+	XGMessageBulkDump(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
+	{	super(src, dest, array, init);
 		this.checkSum();
 	}
 
-	public XGMessageBulkDump(XGMessenger src, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException //wird manuell angelegt und als response benötigt
-	{	super(src, new byte[OVERHAED], true);
+	public XGMessageBulkDump(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException //wird manuell angelegt und als response benötigt
+	{	super(src, dest, new byte[OVERHAED], true);
 		this.setMessageID(MSG);
 		this.setBulkSize(0);
 		this.setHi(adr.getHi());
@@ -26,8 +26,8 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 		this.setEOX(10);
 	}
 
-	public XGMessageBulkDump(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException	//für MIDI und FILE
-	{	super(src, msg);
+	public XGMessageBulkDump(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException	//für MIDI und FILE
+	{	super(src, dest, msg);
 		this.checkSum();
 	}
 /*

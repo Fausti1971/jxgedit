@@ -63,8 +63,7 @@ public class XGBulkDumpSequence implements XGTypeConstants
 		{	int hi, mid, lo = this.min.getLo();
 			for(hi = this.min.getHi(); hi <= this.max.getHi(); hi++)
 				for(mid = this.min.getMid(); mid <= this.max.getMid(); mid++)
-				{	XGRequest r = new XGMessageDumpRequest(src, new XGAddress(hi, mid, lo));
-					r.setDestination(dest);
+				{	XGRequest r = new XGMessageDumpRequest(src, dest, new XGAddress(hi, mid, lo));
 					src.request(r);
 				}
 		}

@@ -10,24 +10,27 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 /**
  * @param init 
- * @throws InvalidMidiDataException **************************************************************************************************************/
+ * @throws InvalidMidiDataException
+ */
 
-	public XGMessageParameterChange(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
-	{	super(src, array, init);
+/**************************************************************************************************************/
+
+	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
+	{	super(src, dest, array, init);
 	}
 
-	public XGMessageParameterChange(XGMessenger src, XGValue v) throws InvalidXGAddressException, InvalidMidiDataException
-	{	super(src, new byte[OVERHEAD + v.getOpcode().getByteCount()], true);
+	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, XGValue v) throws InvalidXGAddressException, InvalidMidiDataException
+	{	super(src, dest, new byte[OVERHEAD + v.getOpcode().getByteCount()], true);
 		setMessageID();
-		setHi(v.getAdress().getHi());
-		setMid(v.getAdress().getMid());
-		setLo(v.getAdress().getLo());
-		setData(v);
+		setHi(v.getAddress().getHi());
+		setMid(v.getAddress().getMid());
+		setLo(v.getAddress().getLo());
+		v.encodeBytes(this, v.getContent());
 		setEOX(DATA_OFFS + v.getOpcode().getByteCount());
 	}
 
-	public XGMessageParameterChange(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException
-	{	super(src, msg);
+	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
+	{	super(src, dest, msg);
 		log.info(this.getClass().toString());
 	}
 
@@ -41,10 +44,6 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	@Override public void setLo(int value)
 	{	encodeMidiByteFromInteger(LO_OFFS, value);
-	}
-
-	protected void setData(XGValue v)
-	{	encodeXGValue(DATA_OFFS, v);
 	}
 
 	@Override public int getHi()
@@ -64,7 +63,7 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	}
 
 	@Override public int getBulkSize()
-	{	return this.getSource().getDevice().getOpcodes().get(this.getAdress()).getByteCount();
+	{	return this.getSource().getDevice().getModule(this.getAddress()).getOpcodes().get(this.getAddress()).getByteCount();
 	}
 
 	@Override public void setBulkSize(int size)

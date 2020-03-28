@@ -3,11 +3,14 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import file.XGSysexFile;
-import value.ObservableValue;
+import value.ChangeableContent;
 
-public class XGPathSelector extends JTextField implements ActionListener
+public class XGPathSelector extends JTextField implements DocumentListener, ActionListener
 {
 	/**
 	 * 
@@ -16,9 +19,9 @@ public class XGPathSelector extends JTextField implements ActionListener
 
 /*****************************************************************************************************************************/
 
-	ObservableValue<Path> value;
+	ChangeableContent<Path> value;
 
-	public XGPathSelector(ObservableValue<Path> v)
+	public XGPathSelector(ChangeableContent<Path> v)
 	{	super(v.get().toString());
 		this.setToolTipText("press enter for fileselector");
 		this.value = v;
@@ -32,5 +35,17 @@ public class XGPathSelector extends JTextField implements ActionListener
 		value.set(p);
 		setText(p.toString());
 		getTopLevelAncestor().revalidate();
+	}
+
+	@Override public void insertUpdate(DocumentEvent e)
+	{	value.set(Paths.get(getText()));
+	}
+
+	@Override public void removeUpdate(DocumentEvent e)
+	{	value.set(Paths.get(getText()));
+	}
+
+	@Override public void changedUpdate(DocumentEvent e)
+	{	value.set(Paths.get(getText()));
 	}
 }

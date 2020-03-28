@@ -1,42 +1,96 @@
 package tag;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Set;
 
-public class XGTagableSet<T extends XGTagable> implements Iterable<T>
+public class XGTagableSet<T extends XGTagable> implements Iterable<T>, Set<T> 
 {
 
-	private final Map<String, T> map = new LinkedHashMap<>();
+	private final Map<Object, T> map = new LinkedHashMap<>();
 
-	public void add(T t)
+	@Override public boolean add(T t)
 	{	this.map.put(t.getTag(), t);
+		return true;
 	}
 
-	public T get(String tag)
+	public T get(Object tag)
 	{	return this.map.get(tag);
 	}
 
-	public T getOrDefault(String tag, T def)
-	{	if(this.get(tag) == null) return def;
+	public T getOrDefault(Object tag, T def)
+	{	if(!this.containsKey(tag)) return def;
 		else return this.get(tag);
 	}
 
-	public int size()
+	@Override public int size()
 	{	return map.size();
 	}
 
-	public boolean containsKey(String tag)
+	public boolean containsKey(Object tag)
 	{	return this.map.containsKey(tag);
 	}
 
-	public Iterator<T> iterator()
+	@Override public Iterator<T> iterator()
 	{	return this.map.values().iterator();
 	}
 
 	public Enumeration<T> enumeration()
 	{	return Collections.enumeration(this.map.values());
+	}
+
+	@Override public boolean isEmpty()
+	{	return this.map.isEmpty();
+	}
+
+	@Override public boolean contains(Object o)
+	{	return this.map.containsValue(o);
+	}
+
+	@Override public Object[] toArray()
+	{	return this.map.values().toArray();
+	}
+
+	@Override public <A> A[] toArray(A[] a)
+	{	return this.map.values().toArray(a);
+	}
+
+	@Override public boolean remove(Object o)
+	{	if(o instanceof XGTagable) this.map.remove(((XGTagable)o).getTag());
+		return true;
+	}
+
+	@Override public boolean containsAll(Collection<?> c)
+	{	return this.map.values().containsAll(c);
+	}
+
+	@Override public boolean addAll(Collection<? extends T> c)
+	{	Iterator<? extends T> i = c.iterator();
+		while(i.hasNext()) this.add(i.next());
+		return true;
+	}
+
+	@Override public boolean retainAll(Collection<?> c)
+	{	Iterator<?> i = c.iterator();
+		while(i.hasNext())
+		{	Object o = i.next();
+			if(this.map.containsValue(o)) continue;
+			this.remove(o);
+		}
+		return true;
+	}
+
+	@Override public boolean removeAll(Collection<?> c)
+	{	Iterator<?> i = c.iterator();
+		while(i.hasNext()) this.remove(i.next());
+		return true;
+	}
+
+	@Override public void clear()
+	{	this.map.clear();
 	}
 }

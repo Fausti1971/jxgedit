@@ -5,12 +5,12 @@ import javax.sound.midi.SysexMessage;
 
 public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 {
-	protected XGMessageUnknown(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException
-	{	super(src, msg);
+	protected XGMessageUnknown(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
+	{	super(src, dest, msg);
 	}
 
-	protected XGMessageUnknown(XGMessenger src, byte[] msg, boolean init) throws InvalidMidiDataException
-	{	super(src, msg, init);
+	protected XGMessageUnknown(XGMessenger src, XGMessenger dest, byte[] msg, boolean init) throws InvalidMidiDataException
+	{	super(src, dest, msg, init);
 	}
 
 	@Override public int getHi()

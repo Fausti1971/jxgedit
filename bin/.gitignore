@@ -1,3 +1,11 @@
+/README.TXT
+/doc/
+/package.bluej
+/adress/
+/application/
+/device/
+/file/
+/gui/
 /module/
 /msg/
 /obj/
@@ -6,7 +14,3 @@
 /tag/
 /value/
 /xml/
-/device/
-/gui/
-/application/
-/file/

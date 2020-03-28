@@ -25,7 +25,7 @@ import msg.XGResponse;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
-import value.ObservableValue;
+import value.ChangeableContent;
 import xml.XMLNode;
 
 public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotification, Configurable, Receiver, AutoCloseable
@@ -67,7 +67,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 
 /******************************************************************************************************************/
 
-	public final ObservableValue<Info> input = new ObservableValue<Info>()
+	public final ChangeableContent<Info> input = new ChangeableContent<Info>()
 		{	@Override public Info get()
 			{	if(getInput() != null) return getInput().getDeviceInfo();
 				else return null;
@@ -76,7 +76,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 			{	setInput(s);
 			}
 		};
-	public final ObservableValue<Info> output = new ObservableValue<Info>()
+	public final ChangeableContent<Info> output = new ChangeableContent<Info>()
 		{	@Override public Info get()
 			{	if(getOutput() != null) return getOutput().getDeviceInfo();
 				else return null;
@@ -85,7 +85,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 			{	setOutput(s);
 			}
 		};
-	public final ObservableValue<Integer> timeout = new ObservableValue<Integer>()
+	public final ChangeableContent<Integer> timeout = new ChangeableContent<Integer>()
 		{	@Override public Integer get()
 			{	return timeoutValue;
 			}
@@ -216,8 +216,8 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	synchronized(this)
 		{	try
-			{	XGMessage m = XGMessage.newMessage(this, mmsg);
-				if(this.request != null && this.request.setResponsedBy((XGResponse)m))
+			{	XGMessage m = XGMessage.newMessage(this, null, mmsg);
+				if(this.request != null && this.request.setResponsed((XGResponse)m))
 				{	this.requestThread.interrupt();//notify weckt zwar den Thread, interrupted ihn aber nicht und verhindert somit eine Unterscheidung zwischen Timeout und Response
 					return;
 				}
@@ -267,7 +267,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 			{	try
 				{	this.request = msg;
 					this.requestThread = Thread.currentThread();
-					Thread.sleep(this.timeoutValue);//wait(ms) funktioniert
+					Thread.sleep(this.timeoutValue);
 					throw new TimeoutException("timeout: no response after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
 				}
 				catch(InterruptedException e)
@@ -325,7 +325,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 
 		frame = new XGFrame("timeout");
 		frame.addGB(new XGSpinner(this.timeout, 30, 1000, 10), 0, 0);
-		root.addGB(frame, 0, 1);
+		root.addGB(frame, 0, 1, 2);
 
 		return root;
 	}

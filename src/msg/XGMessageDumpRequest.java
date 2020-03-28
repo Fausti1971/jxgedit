@@ -14,39 +14,38 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	XGResponse response = null;
 
-	public XGMessageDumpRequest(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
-	{	super(src, array, init);
+	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
+	{	super(src, dest, array, init);
 	}
 
-	public XGMessageDumpRequest(XGMessenger src, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
-	{	super(src, new byte[8], true);
+	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
+	{	super(src, dest, new byte[8], true);
 		this.setMessageID();
 		this.setHi(adr.getHi());
 		this.setMid(adr.getMid());
 		this.setLo(adr.getLo());
 		this.setEOX(7);
-		this.response = new XGMessageBulkDump(src, adr);
-		this.response.setDestination(src);
+		this.response = new XGMessageBulkDump(dest, src, adr);
 	}
 
-	public XGMessageDumpRequest(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException
-	{	super(src, msg);
+	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
+	{	super(src, dest, msg);
 	}
 
-	@Override public boolean setResponsedBy(XGResponse msg)
-	{	if(this.responsed = msg.isEqual(this.response))
-		{	this.response = msg;
-			this.response.setDestination(this.getSource());
-		}
-		return this.responsed;
-	}
-
-	@Override public boolean isResponsed()
+	@Override public boolean getResponsed()
 	{	return this.responsed;
+	}
+
+	@Override public void setResponsed(boolean s)
+	{	this.responsed = s;
 	}
 
 	@Override public XGResponse getResponse()
 	{	return this.response;
+	}
+
+	@Override public void setResponse(XGMessage m)
+	{	this.response = (XGResponse)m;
 	}
 
 	@Override public int getHi()
@@ -74,7 +73,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	}
 
 	@Override public String toString()
-	{	return this.getAdress().toString();
+	{	return this.getAddress().toString();
 	}
 
 	@Override public void setMessageID()

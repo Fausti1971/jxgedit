@@ -20,9 +20,10 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
  * @param init initialisiert eine neu erzeugte XGMessage mit SOX, SysexID, VendorID, ModelID und TimeStamp
  * @throws InvalidMidiDataException
  */
-	protected XGSuperMessage(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException	// für manuell erzeugte
+	protected XGSuperMessage(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException	// für manuell erzeugte
 	{	super(array);
 		this.source = src;
+		this.destination = dest;
 		if(init) this.init();
 		this.validate();
 	}
@@ -32,9 +33,10 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
  * @param msg
  * @throws InvalidMidiDataException
  */
-	protected XGSuperMessage(XGMessenger src, SysexMessage msg) throws InvalidMidiDataException	//für Midi
+	protected XGSuperMessage(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException	//für Midi
 	{	super(msg.getMessage());
 		this.source = src;
+		this.destination = dest;
 		this.setTimeStamp(System.currentTimeMillis());
 		this.validate();
 	}
@@ -74,7 +76,7 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
 	}
 
 	@Override public String toString()
-	{	return this.getClass().getSimpleName() + "/" + this.source.getDevice().getType(this.getAdress()) + "/" + this.getAdress();
+	{	return this.getClass().getSimpleName() + "/" + this.getAddress();
 	}
 
 }

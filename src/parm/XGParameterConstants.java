@@ -1,18 +1,9 @@
 package parm;
 
-public interface XGParameterConstants
-{
-	static final String
-		TAG_PARAMETER = "parameters",
-		TAG_MIN = "valueMin",
-		TAG_MAX = "valueMax",
-		TAG_TRANSLATOR = "translator",
-		TAG_TRANSLATIONMAP = "translationMap",
-		TAG_LONGNAME = "longName",
-		TAG_SHORTNAME = "shortName",
-		TAG_DEPENDSOF = "dependsOf",
-		TAG_MUTABLEKEY = "mutableMapKey";
+import xml.XMLNodeConstants;
 
+public interface XGParameterConstants extends XMLNodeConstants
+{
 	static final String DEF_OBJTYPE = "unknown object";
 	static final String DEF_PARAMETERNAME = "unknown parameter: ";
 	static final int  DEF_MIN = 0, DEF_MAX = 127;

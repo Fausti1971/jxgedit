@@ -6,7 +6,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import device.XGDevice;
-import value.ObservableValue;
+import value.ChangeableContent;
 
 public class XGDeviceDetector extends JTextField implements DocumentListener, ActionListener
 {	/**
@@ -16,10 +16,10 @@ public class XGDeviceDetector extends JTextField implements DocumentListener, Ac
 
 /***********************************************************************************************************************************/
 
-	ObservableValue<String> value;
+	ChangeableContent<String> value;
 	XGDevice device;
 
-	public XGDeviceDetector(ObservableValue<String> v, XGDevice dev)
+	public XGDeviceDetector(ChangeableContent<String> v, XGDevice dev)
 	{	super(v.get());
 		this.setToolTipText("press enter to autodetect device");
 		this.value = v;
@@ -27,7 +27,6 @@ public class XGDeviceDetector extends JTextField implements DocumentListener, Ac
 		this.setAlignmentX(0.5f);
 		this.getDocument().addDocumentListener(this);
 		this.addActionListener(this);
-
 	}
 
 	@Override public void insertUpdate(DocumentEvent e)

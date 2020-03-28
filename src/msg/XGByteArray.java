@@ -1,55 +1,9 @@
 	package msg;
 
 import java.util.Arrays;
-import opcode.XGOpcode;
-import opcode.XGOpcodeConstants;
-import value.WrongXGValueTypeException;
-import value.XGValue;
 
 public interface XGByteArray
 {	byte[] getByteArray();
-
-	default void decodeXGValue(int offset, XGValue v)	//dekodiert und setzt (in v) die Anzahl byteCount byteType/s am/ab offset des byteArray
-	{	XGOpcode o = v.getOpcode();
-		if(o == null) return;
-		XGOpcodeConstants.DataType bt = o.getDataType();
-		XGOpcodeConstants.ValueDataClass vc = o.getValueClass();
-		int bc = o.getByteCount();
-		try
-		{	switch(vc)
-			{	case String:		v.setContent(getString(offset, offset + bc)); break;
-				case Image:			return;
-				default:
-				case Integer:
-					switch(bt)
-					{	default:
-						case MIDIBYTE:	v.setContent(decodeMidiBytesToInteger(offset, bc)); break;
-						case NIBBLE:	v.setContent(decodeLowerNibbles(offset, bc)); break;
-					}
-			}
-		}
-		catch(WrongXGValueTypeException e)
-		{	e.printStackTrace();}
-	}
-
-	default void encodeXGValue(int offset, XGValue v)
-	{	XGOpcode o = v.getOpcode();
-		if(o == null) return;
-		XGOpcodeConstants.DataType bt = o.getDataType();
-		XGOpcodeConstants.ValueDataClass vc = o.getValueClass();
-		int bc = o.getByteCount();
-		switch(vc)
-			{	case String:	setString(offset, bc, v.toString()); break;
-				case Image:		return;
-				default:
-				case Integer:
-					switch(bt)
-					{	default:
-						case MIDIBYTE:	encodeMidiBytesFromInteger(offset, bc, (int)v.getContent()); break;
-						case NIBBLE:	encodeLowerNibblesFromInteger(offset, bc, (int)v.getContent()); break;
-					}
-			}
-	}
 
 	default int decodeMidiByteToInteger(int index)
 	{	return (this.getByteArray()[index]) & 0x7F;

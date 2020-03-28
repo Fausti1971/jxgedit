@@ -1,90 +1,73 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:
-	translator = translateToText, translateNot, translateToTextPlus1, translateDiv10, translateSub128Div10, translateMap
-	translationMap = ""
-	translationMapFilter = ""
-	descriptionMapIndex = 0... (der Index des Descriptions in der MutableParameterMap)
-	descriptionDependsOf = 0 (dezimal, Offset des die Description definierenden Parameters bspw. ReverbType...)
--->
-<parameters xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
+<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:-->
 
-	<item ID = "info_name">
-		<longName>Model Name</longName>
-		<shortName>Model</shortName>
-	</item>
+<modules xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
 
-	<item ID = "display_letter">
-		<longName>DisplayText</longName>
-		<shortName>Text</shortName>
-	</item>
+	<module id="system" name="Master">
+		<bulk hi="0" mid="0" lo="0" size="7">
+			<opcode id="master_tune" hi="0" mid="0" lo="0" byteCount="4" byteType="LSN" valueClass="Integer">
+				<parameter longName="Master Tune" shortName="Tune" max="2047" translator="translateSub128Div10"/>
+			</opcode>
+		</bulk>
+	</module>
 
-	<item ID = "reverb_type">
-		<longName>Reverb Program</longName>
-		<shortName>RevPrg</shortName>
-		<valueMin>0</valueMin>
-		<valueMax>69</valueMax>
-		<translator>translateMap</translator>
-		<translationMap>fx_programs</translationMap>
-	</item>
+	<module id="sysfx" name="System Effect">
+		<bulk hi="2" mid="1" lo="0" size="14">
+			<opcode id="reverb_type" hi="2" mid="1" lo="0" byteCount="2" byteType="LSB">
+				<parameter longName="Reverb Program" shortName="Prog" max="69" translator="translateMap" translationMap="fx_programs"/>
+			</opcode>
+			<opcode id="reverb_1" hi="2" mid="1" lo="2" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" max="69" translator="translateMap" translationMap="reverb_time"/>
+			</opcode>
+			<opcode id="reverb_2" hi="2" mid="1" lo="3" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Diffusion" shortName="Diff" max="10" translator="translatePercent"/>
+			</opcode>
+			<opcode id="reverb_3" hi="2" mid="1" lo="4" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Initial Delay" shortName="Delay" max="63" translator="translateMap" translationMap="delay_time_400"/>
+			</opcode>
+			<opcode id="reverb_4" hi="2" mid="1" lo="5" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="HPF Cutoff" shortName="HPF" max="52" translator="translateMap" translationMap="filter_freq"/>
+			</opcode>
+			<opcode id="reverb_5" hi="2" mid="1" lo="6" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" min="34" max="60" translator="translateMap" translationMap="filter_freq"/>
+			</opcode>
+			<opcode id="reverb_6" hi="2" mid="1" lo="7" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="16,17,18,19" longName="Width" shortName="Width" max="37" translator="translateMap" translationMap="reverb_dimension"/>
+			</opcode>
+			<opcode id="reverb_7" hi="2" mid="1" lo="8" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="16,17,18,19" longName="Height" shortName="Hight" max="73" translator="translateMap" translationMap="reverb_dimension"/>
+			</opcode>
+			<opcode id="reverb_8" hi="2" mid="1" lo="9" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="16,17,18,19" longName="Depth" shortName="Depth" max="104" translator="translateMap" translationMap="reverb_dimension"/>
+			</opcode>
+			<opcode id="reverb_9" hi="2" mid="1" lo="10" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="16,17,18,19" longName="Wall Vary" shortName="Wall" max="30"/>
+			</opcode>
+			<opcode id="reverb_10" hi="2" mid="1" lo="11" dependingOn="reverb_type" dependencyType="MSB">
+				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Dry/Wet" shortName="Wet" min="1" translator="translatePercent"/>
+			</opcode>
+			<opcode id="reverb_return" hi="2" mid="1" lo="12">
+				<parameter longName="Reverb Return" shortName="Retrn"/>
+			</opcode>
+			<opcode id="reverb_pan" hi="2" mid="1" lo="13">
+				<parameter longName="Reverb Panorama" shortName="Pan" min="1" translator="translateMap" translationMap="reverb_dimension"/>
+			</opcode>
+		</bulk>
+	</module>
 
-	<item ID = "reverb_1">
-		<dependsOf REF = "reverb_type"/>
-		<mutableMapKey>1</mutableMapKey>
-	</item>
+	<module id="multipart" name="Multipart">
+		<bulk hi="8" mid="0-31" lo="0" size="41">
+			<opcode id="mp_elementReserve" hi="8" mid="0-31" lo="0">
+				<parameter longName="Element Reserve" shortName="ElRes" max="32"/>
+			</opcode>
+		</bulk>
+	</module>
 
-	<item ID = "mp_elRes">
-		<longName>Element Reserve</longName>
-		<shortName>ElmRsv</shortName>
-		<valueMin>0</valueMin>
-		<valueMax>32</valueMax>
-		<translator>translateToText</translator>
-	</item>
-	<item ID = "mp_bankMsb">
-		<longName>Bank Select MSB</longName>
-		<shortName>BnkMSB</shortName>
-		<valueMin>0</valueMin>
-		<valueMax>127</valueMax>
-		<translator>translateToText</translator>
-	</item>
-
-	<item ID = "mp_ch">
-		<longName>MIDI Channel</longName>
-		<shortName>Ch</shortName>
-		<valueMin>0</valueMin>
-		<valueMax>127</valueMax>
-		<translator>translateMap</translator>
-		<translationMap>midi_channels</translationMap>
-	</item>
-
-	<item ID = "mp_detune">
-		<longName>Detune</longName>
-		<shortName>Tune</shortName>
-		<valueMin>0</valueMin>
-		<valueMax>255</valueMax>
-		<translator>translateSub128Div10</translator>
-	</item>
-
-	<item ID = "mp_envAtk">
-		<longName>Attack Time</longName>
-		<shortName>Atck</shortName>
-		<valueMin>0</valueMin>
-		<valueMax>127</valueMax>
-	</item>
-
-	<item ID = "ds_sourcekit">
-		<longName>SourceDrumkit</longName>
-		<shortName>src-dk</shortName>
-		<valueMin>264241152</valueMin>
-		<valueMax>2147483647</valueMax>
-	</item>
-
-	<item ID = "reverb_time">
-		<longName>Reverb Time</longName>
-		<shortName>RevTime</shortName>
-		<valueMin>0</valueMin>
-		<valueMax>69</valueMax>
-		<translator>translateMap</translator>
-		<translationMap>reverb_time</translationMap>
-	</item>
-
-</parameters>
+	<module id="drumset" name="Drumset">
+		<bulk hi="48-51" mid="13-91" lo="0" size="16">
+			<opcode id="dr_pitch_coarse" hi="48-51" mid="13-91" lo="0">
+				<parameter longName="Pitch Coarse" shortName="Tune" translator="translateSub64"/>
+			</opcode>
+		</bulk>
+	</module>
+</modules>

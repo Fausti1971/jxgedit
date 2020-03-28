@@ -29,9 +29,9 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
 	}
 
 	public XGAddress(XMLNode item)
-	{	this.hi = new XGAddressField(item.getChildNode(TAG_HI));
-		this.mid = new XGAddressField(item.getChildNode(TAG_MID));
-		this.lo = new XGAddressField(item.getChildNode(TAG_LO));
+	{	this.hi = new XGAddressField(item.getIntegerAttribute(ATTR_HI));
+		this.mid = new XGAddressField(item.getIntegerAttribute(ATTR_MID));
+		this.lo = new XGAddressField(item.getIntegerAttribute(ATTR_LO));
 	}
 /**
  * extrahiert und returniert das Hi-Field der XGAdress this
@@ -90,17 +90,12 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
  * komplettiert this mittels adr, indem invalide Fields durch diese aus adr ersetzt werden 
  * @param adr Adresse mittels this ergänzt werden soll
  * @return  die erfolgreich komplettierte Adresse
+ * @throws InvalidXGAddressException 
  */
-	public XGAddress complement(XGAddress adr)
+	public XGAddress complement(XGAddress adr) throws InvalidXGAddressException
 	{	if(this.isValidAdress()) return this;
 		if(adr.isValidAdress()) return adr;
-		try
-		{	return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
-		}
-		catch(InvalidXGAddressException e)
-		{	log.info("can't complement adress " + this + " with " + adr);
-			return this;
-		}
+		return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
 	}
 
 /**
@@ -144,6 +139,6 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
 		return temp;
 	}
 
-	@Override public XGAddress getAdress()
+	@Override public XGAddress getAddress()
 	{	return this;}
 }

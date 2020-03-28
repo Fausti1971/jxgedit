@@ -1,19 +1,14 @@
 package opcode;
 
-public interface XGOpcodeConstants
-{	static final String
-		TAG_OPCODE = "opcodes",
-//		TAG_NAME = "name",
-		TAG_ADRESS = "address",
-		TAG_BYTECOUNT = "byteCount",
-		TAG_DATATYPE = "byteType",
-		TAG_VALUECLASS = "valueClass";
+import xml.XMLNodeConstants;
 
+public interface XGOpcodeConstants extends XMLNodeConstants
+{
 	static enum ValueDataClass{Integer, String, Image};
-	static enum DataType{MIDIBYTE, NIBBLE}
+	static enum ValueDataType{MSB, LSB, MSN, LSN}
 
 	static final String DEF_OPCODENAME = "unknown opcode ";
 	static final ValueDataClass DEF_VALUECLASS = ValueDataClass.Integer;
 	static final int DEF_BYTECOUNT = 1;
-	static final DataType DEF_DATATYPE = DataType.MIDIBYTE;
+	static final ValueDataType DEF_DATATYPE = ValueDataType.LSB;
 }

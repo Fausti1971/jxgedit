@@ -69,40 +69,44 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		if(t != null) g2.drawString(t, SL_W - GAP - g2.getFontMetrics().stringWidth(t), FONTMIDDLE);
 	}
 
-	public void keyTyped(KeyEvent e)
+	@Override public void keyTyped(KeyEvent e)
 	{
 	}
 
-	public void keyPressed(KeyEvent e)
+	@Override public void keyPressed(KeyEvent e)
 	{
 	}
 
-	public void keyReleased(KeyEvent e)
+	@Override public void keyReleased(KeyEvent e)
 	{
 	}
 
-	public void mouseWheelMoved(MouseWheelEvent e)
+	@Override public void mouseWheelMoved(MouseWheelEvent e)
 	{	try
-		{	if(this.value.addAndTransmit(e.getWheelRotation())) repaint();}
+		{	if(this.value.addAndTransmit(e.getWheelRotation())) repaint();
+		}
 		catch(WrongXGValueTypeException e1)
-		{	e1.printStackTrace();}
+		{	e1.printStackTrace();
+		}
 		e.consume();
 	}
 
-	public void mouseDragged(MouseEvent e)
+	@Override public void mouseDragged(MouseEvent e)
 	{	XGParameter p = this.value.getParameter();
 		try
-		{	if(this.value.setContentAndTransmit(Rest.linearIO(e.getX(), 0, this.getWidth(), p.getMinValue(), p.getMaxValue())))repaint();}
+		{	if(this.value.setContentAndTransmit(Rest.linearIO(e.getX(), 0, this.getWidth(), p.getMinValue(), p.getMaxValue())))repaint();
+		}
 		catch(WrongXGValueTypeException|InvalidXGAddressException e1)
-		{	e1.printStackTrace();}
+		{	e1.printStackTrace();
+		}
 		e.consume();
 	}
 
-	public void mouseMoved(MouseEvent e)
+	@Override public void mouseMoved(MouseEvent e)
 	{
 	}
 
-	public void mouseClicked(MouseEvent e)
+	@Override public void mouseClicked(MouseEvent e)
 	{	this.grabFocus();
 		XGParameter p = this.value.getParameter();
 		if(e.getButton() == MouseEvent.BUTTON1)
@@ -121,30 +125,31 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 		}
 	}
 
-	public void mousePressed(MouseEvent e)
+	@Override public void mousePressed(MouseEvent e)
 	{
 	}
 
-	public void mouseReleased(MouseEvent e)
+	@Override public void mouseReleased(MouseEvent e)
 	{
 	}
 
-	public void mouseEntered(MouseEvent e)
+	@Override public void mouseEntered(MouseEvent e)
 	{
 	}
 
-	public void mouseExited(MouseEvent e)
+	@Override public void mouseExited(MouseEvent e)
 	{
 	}
 
 	@Override public boolean isVisible()
-	{	return this.value != null;}
+	{	return this.value != null;
+	}
 
+	@Override public void contentChanged(XGValue v)
+	{	if(this.isVisible()) this.repaint();
+	}
 
-	public void contentChanged(XGValue v)
-	{	if(this.isVisible()) this.repaint();}
-
-	public void valueChanged(XGValue v)
+	@Override public void valueChanged(XGValue v)
 	{	if(this.value != null) this.value.removeListener(this);
 		this.value = v;
 		if(v != null)
@@ -156,8 +161,10 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	}
 
 	public XGAddress getAdress()
-	{	return this.adress;}
+	{	return this.adress;
+	}
 
 	public String getInfo()
-	{	return this.toString();}
+	{	return this.toString();
+	}
 }

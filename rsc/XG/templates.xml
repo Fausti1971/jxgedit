@@ -1,0 +1,22 @@
+<templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="../xsd/template.xsd">
+	<template module="system">
+		<item control="frame">
+			<item id="master_tune" control="knob" zero="center"/>
+			<item id="master_volume" control="knob" zero="center"/>
+			<item id="master_attenuator" control="knob" zero="left"/>
+			<item id="master_transpose" control="spinner"/>
+		</item>
+	</template>
+	<template module="multipart">
+		<item id="mp_ampeg" control="envelope">
+			<item value="0"/>
+			<item value="0"/>
+			<item id="mp_eg_attack"/>
+			<item id="mp_volume"/>
+			<item id="mp_eg_decay"/>
+			<item id="mp_volume"/>
+			<item id="mp_eg_release"/>
+			<item value="0"/>
+		</item>
+	</template>
+</templates>

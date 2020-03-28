@@ -29,7 +29,7 @@ public class XGInstance implements XGAddressable, XGWindowSourceTreeNode
 		this.adress = new XGAddress(INVALIDFIELD, adr.getMid(), INVALIDFIELD);
 	}
 
-	@Override public XGAddress getAdress()
+	@Override public XGAddress getAddress()
 	{	return this.adress;
 	}
 

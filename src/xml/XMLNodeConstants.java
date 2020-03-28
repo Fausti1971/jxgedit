@@ -4,18 +4,22 @@ public interface XMLNodeConstants
 {
 	static final String
 		XML_CONFIG = "config.xml",
-		XML_OPCODE = "opcode.xml",
-		XML_TYPE = "type.xml",
-		XML_PARAMETER = "parameter.xml",
-		XML_TRANSLATION = "translation.xml",
-		XML_TEMPLATE = "template.xml";
+		XML_OPCODE = "opcodes.xml",
+		XML_TYPE = "types.xml",
+		XML_PARAMETER = "parameters.xml",
+		XML_TRANSLATION = "translations.xml",
+		XML_TEMPLATE = "templates.xml";
 
-	static String
+	static final String
 		TAG_WIN = "window",
 		TAG_WINX = "window_x",
 		TAG_WINY = "window_y",
 		TAG_WINW = "window_w",
 		TAG_WINH = "window_h",
+
+		TAG_CONFIG = "config",
+		TAG_VERSION = "version",
+		TAG_DEVICE = "device",
 
 		TAG_COLOR = "device_color",
 //		TAG_BASECOLOR = "base",
@@ -26,9 +30,33 @@ public interface XMLNodeConstants
 		TAG_LASTDUMPFILE = "device_lastDumpFile",
 		TAG_DEFAULTDUMPFOLDER = "device_defaultDumpFolder",
 
-		ATTR_SELECTED = "selected",
+		TAG_MODULES = "modules",
+
+		TAG_MODULE = "module",
+		ATTR_ID = "id",
 		ATTR_NAME = "name",
-		ATTR_ID = "ID",
+
+		TAG_BULK = "bulk",
+		TAG_HI = "hi",
+		TAG_MID = "mid",
+		TAG_LO = "lo",
+		TAG_SIZE = "size",
+
+		TAG_OPCODE = "opcode",
+		ATTR_BYTECOUNT = "byteCount",
+		ATTR_DATATYPE = "byteType",
+		ATTR_VALUECLASS = "valueClass",
+		ATTR_DEP_VALUES = "dependencyValues",
+		ATTR_DEP_TYPE = "dependencyType",
+		ATTR_DEPENDING = "dependingOf",
+
+		TAG_PARAMETER = "parameter",
+		ATTR_MIN = "min",
+		ATTR_MAX = "max",
+		ATTR_TRANSLATOR = "translator",
+		ATTR_TRANSLATIONMAP = "translationMap",
+		ATTR_LONGNAME = "longName",
+		ATTR_SHORTNAME = "shortName",
 
 		TAG_MAPS = "maps",
 		TAG_MAP = "map",
@@ -38,10 +66,5 @@ public interface XMLNodeConstants
 
 		TAG_SETS = "sets",
 		TAG_SET = "set",
-		TAG_ITEM = "item",
-	
-		TAG_CONFIG = "config",
-		TAG_VERSION = "version",
-		TAG_DEVICE = "device";
-
+		TAG_ITEM = "item";
 }

@@ -4,13 +4,14 @@ import xml.XMLNodeConstants;
 
 public interface XGTranslationConstants extends XMLNodeConstants
 {
-	static enum XGTranslator
+	static enum XGTranslatorTag
 	{	translateNot,
 		translateToText,
-		translateToTextPlus1,
+		translateToTextAdd1,
 		translateDiv10,
 		translateSub128Div10,
 		translateMap,
+		translatePercent,
 		translateXML
 	}
 }

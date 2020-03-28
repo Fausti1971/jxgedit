@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!--name (tag) und address obligatorisch; alle Werte dezimal; bei fehlendem (optionalem) tag wird Defaultwert benutzt:
 	byteCount = 1
-	byteType = MIDIBYTE
+	byteType = MidIBYTE
 	valueClass = Integer
 -->
 <opcodes xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/opcode.xsd">
 
-	<item ID = "master_tune">
+	<item id = "master_tune">
 		<address>
 			<hi>0</hi>
 			<mid>0</mid>
@@ -16,42 +16,42 @@
 		<byteType>NIBBLE</byteType>
 		<valueClass>Integer</valueClass>
 	</item>
-	<item ID = "master_volume">
+	<item id = "master_volume">
 		<address>
 			<hi>0</hi>
 			<mid>0</mid>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "master_attenuator">
+	<item id = "master_attenuator">
 		<address>
 			<hi>0</hi>
 			<mid>0</mid>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "master_transpose">
+	<item id = "master_transpose">
 		<address>
 			<hi>0</hi>
 			<mid>0</mid>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "master_reset_drumset">
+	<item id = "master_reset_drumset">
 		<address>
 			<hi>0</hi>
 			<mid>0</mid>
 			<lo>125</lo>
 		</address>
 	</item>
-	<item ID = "master_xg_on">
+	<item id = "master_xg_on">
 		<address>
 			<hi>0</hi>
 			<mid>0</mid>
 			<lo>126</lo>
 		</address>
 	</item>
-	<item ID = "master_reset_all">
+	<item id = "master_reset_all">
 		<address>
 			<hi>0</hi>
 			<mid>0</mid>
@@ -59,7 +59,7 @@
 		</address>
 	</item>
 
-	<item ID = "info_name">
+	<item id = "info_name">
 		<address>
 			<hi>1</hi>
 			<mid>0</mid>
@@ -69,14 +69,14 @@
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>String</valueClass>
 	</item>
-	<item ID = "info_xg_level1">
+	<item id = "info_xg_level1">
 		<address>
 			<hi>1</hi>
 			<mid>0</mid>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "info_xg_level2">
+	<item id = "info_xg_level2">
 		<address>
 			<hi>1</hi>
 			<mid>0</mid>
@@ -84,7 +84,7 @@
 		</address>
 	</item>
 
-	<item ID = "reverb_type">
+	<item id = "reverb_type">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -94,126 +94,126 @@
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>Integer</valueClass>
 	</item>
-	<item ID = "reverb_1">
+	<item id = "reverb_1">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "reverb_2">
+	<item id = "reverb_2">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "reverb_3">
+	<item id = "reverb_3">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "reverb_4">
+	<item id = "reverb_4">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "reverb_5">
+	<item id = "reverb_5">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "reverb_6">
+	<item id = "reverb_6">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>7</lo>
 		</address>
 	</item>
-	<item ID = "reverb_7">
+	<item id = "reverb_7">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>8</lo>
 		</address>
 	</item>
-	<item ID = "reverb_8">
+	<item id = "reverb_8">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>9</lo>
 		</address>
 	</item>
-	<item ID = "reverb_9">
+	<item id = "reverb_9">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>10</lo>
 		</address>
 	</item>
-	<item ID = "reverb_10">
+	<item id = "reverb_10">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "reverb_return">
+	<item id = "reverb_return">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>12</lo>
 		</address>
 	</item>
-	<item ID = "reverb_panorama">
+	<item id = "reverb_panorama">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>13</lo>
 		</address>
 	</item>
-	<item ID = "reverb_11">
+	<item id = "reverb_11">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>16</lo>
 		</address>
 	</item>
-	<item ID = "reverb_12">
+	<item id = "reverb_12">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>17</lo>
 		</address>
 	</item>
-	<item ID = "reverb_13">
+	<item id = "reverb_13">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>18</lo>
 		</address>
 	</item>
-	<item ID = "reverb_14">
+	<item id = "reverb_14">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>19</lo>
 		</address>
 	</item>
-	<item ID = "reverb_15">
+	<item id = "reverb_15">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>20</lo>
 		</address>
 	</item>
-	<item ID = "reverb_16">
+	<item id = "reverb_16">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -221,7 +221,7 @@
 		</address>
 	</item>
 
-	<item ID = "chorus_type">
+	<item id = "chorus_type">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -231,133 +231,133 @@
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>Integer</valueClass>
 	</item>
-	<item ID = "chorus_1">
+	<item id = "chorus_1">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>34</lo>
 		</address>
 	</item>
-	<item ID = "chorus_2">
+	<item id = "chorus_2">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>35</lo>
 		</address>
 	</item>
-	<item ID = "chorus_3">
+	<item id = "chorus_3">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>36</lo>
 		</address>
 	</item>
-	<item ID = "chorus_4">
+	<item id = "chorus_4">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>37</lo>
 		</address>
 	</item>
-	<item ID = "chorus_5">
+	<item id = "chorus_5">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>38</lo>
 		</address>
 	</item>
-	<item ID = "chorus_6">
+	<item id = "chorus_6">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>39</lo>
 		</address>
 	</item>
-	<item ID = "chorus_7">
+	<item id = "chorus_7">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>40</lo>
 		</address>
 	</item>
-	<item ID = "chorus_8">
+	<item id = "chorus_8">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>41</lo>
 		</address>
 	</item>
-	<item ID = "chorus_9">
+	<item id = "chorus_9">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>42</lo>
 		</address>
 	</item>
-	<item ID = "chorus_10">
+	<item id = "chorus_10">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>43</lo>
 		</address>
 	</item>
-	<item ID = "chorus_return">
+	<item id = "chorus_return">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>44</lo>
 		</address>
 	</item>
-	<item ID = "chorus_panorama">
+	<item id = "chorus_panorama">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>45</lo>
 		</address>
 	</item>
-	<item ID = "chorus_to_reverb">
+	<item id = "chorus_to_reverb">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>46</lo>
 		</address>
 	</item>
-	<item ID = "chorus_11">
+	<item id = "chorus_11">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>48</lo>
 		</address>
 	</item>
-	<item ID = "chorus_12">
+	<item id = "chorus_12">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>49</lo>
 		</address>
 	</item>
-	<item ID = "chorus_13">
+	<item id = "chorus_13">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>50</lo>
 		</address>
 	</item>
-	<item ID = "chorus_14">
+	<item id = "chorus_14">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>51</lo>
 		</address>
 	</item>
-	<item ID = "chorus_15">
+	<item id = "chorus_15">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>52</lo>
 		</address>
 	</item>
-	<item ID = "chorus_16">
+	<item id = "chorus_16">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -365,7 +365,7 @@
 		</address>
 	</item>
 
-	<item ID = "variation_type">
+	<item id = "variation_type">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -375,7 +375,7 @@
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>Integer</valueClass>
 	</item>
-	<item ID = "variation_1">
+	<item id = "variation_1">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -383,7 +383,7 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_2">
+	<item id = "variation_2">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -391,7 +391,7 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_3">
+	<item id = "variation_3">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -399,7 +399,7 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_4">
+	<item id = "variation_4">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -407,7 +407,7 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_5">
+	<item id = "variation_5">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -415,7 +415,7 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_6">
+	<item id = "variation_6">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -423,7 +423,7 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_7">
+	<item id = "variation_7">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -431,7 +431,7 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_8">
+	<item id = "variation_8">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -439,7 +439,7 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_9">
+	<item id = "variation_9">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -447,7 +447,7 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_10">
+	<item id = "variation_10">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -455,133 +455,133 @@
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "variation_return">
+	<item id = "variation_return">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>86</lo>
 		</address>
 	</item>
-	<item ID = "variation_panorama">
+	<item id = "variation_panorama">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>87</lo>
 		</address>
 	</item>
-	<item ID = "variation_to_reverb">
+	<item id = "variation_to_reverb">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>88</lo>
 		</address>
 	</item>
-	<item ID = "variation_to_chorus">
+	<item id = "variation_to_chorus">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>89</lo>
 		</address>
 	</item>
-	<item ID = "variation_connection">
+	<item id = "variation_connection">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>90</lo>
 		</address>
 	</item>
-	<item ID = "variation_part">
+	<item id = "variation_part">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>91</lo>
 		</address>
 	</item>
-	<item ID = "variation_mw">
+	<item id = "variation_mw">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>92</lo>
 		</address>
 	</item>
-	<item ID = "variation_pb">
+	<item id = "variation_pb">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>93</lo>
 		</address>
 	</item>
-	<item ID = "variation_cat">
+	<item id = "variation_cat">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>94</lo>
 		</address>
 	</item>
-	<item ID = "variation_ac1">
+	<item id = "variation_ac1">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>95</lo>
 		</address>
 	</item>
-	<item ID = "variation_ac2">
+	<item id = "variation_ac2">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>96</lo>
 		</address>
 	</item>
-	<item ID = "variation_cbc1">
+	<item id = "variation_cbc1">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>97</lo>
 		</address>
 	</item>
-	<item ID = "variation_cbc2">
+	<item id = "variation_cbc2">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>98</lo>
 		</address>
 	</item>
-	<item ID = "variation_11">
+	<item id = "variation_11">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>112</lo>
 		</address>
 	</item>
-	<item ID = "variation_12">
+	<item id = "variation_12">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>113</lo>
 		</address>
 	</item>
-	<item ID = "variation_13">
+	<item id = "variation_13">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>114</lo>
 		</address>
 	</item>
-	<item ID = "variation_14">
+	<item id = "variation_14">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>115</lo>
 		</address>
 	</item>
-	<item ID = "variation_15">
+	<item id = "variation_15">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
 			<lo>116</lo>
 		</address>
 	</item>
-	<item ID = "variation_16">
+	<item id = "variation_16">
 		<address>
 			<hi>2</hi>
 			<mid>1</mid>
@@ -589,126 +589,126 @@
 		</address>
 	</item>
 
-	<item ID = "eq_type">
+	<item id = "eq_type">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>0</lo>
 		</address>
 	</item>
-	<item ID = "eq_gain1">
+	<item id = "eq_gain1">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>1</lo>
 		</address>
 	</item>
-	<item ID = "eq_frequency1">
+	<item id = "eq_frequency1">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "eq_q1">
+	<item id = "eq_q1">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "eq_shape1">
+	<item id = "eq_shape1">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "eq_gain2">
+	<item id = "eq_gain2">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "eq_frequency2">
+	<item id = "eq_frequency2">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "eq_q2">
+	<item id = "eq_q2">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>7</lo>
 		</address>
 	</item>
-	<item ID = "eq_gain3">
+	<item id = "eq_gain3">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>9</lo>
 		</address>
 	</item>
-	<item ID = "eq_frequency3">
+	<item id = "eq_frequency3">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>10</lo>
 		</address>
 	</item>
-	<item ID = "eq_q3">
+	<item id = "eq_q3">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "eq_gain4">
+	<item id = "eq_gain4">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>13</lo>
 		</address>
 	</item>
-	<item ID = "eq_frequency4">
+	<item id = "eq_frequency4">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "eq_q4">
+	<item id = "eq_q4">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>15</lo>
 		</address>
 	</item>
-	<item ID = "eq_gain5">
+	<item id = "eq_gain5">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>17</lo>
 		</address>
 	</item>
-	<item ID = "eq_frequency5">
+	<item id = "eq_frequency5">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>18</lo>
 		</address>
 	</item>
-	<item ID = "eq_q5">
+	<item id = "eq_q5">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
 			<lo>19</lo>
 		</address>
 	</item>
-	<item ID = "eq_shape5">
+	<item id = "eq_shape5">
 		<address>
 			<hi>2</hi>
 			<mid>64</mid>
@@ -716,7 +716,7 @@
 		</address>
 	</item>
 
-	<item ID = "insertion_type">
+	<item id = "insertion_type">
 		<address>
 			<hi>3</hi>
 			<lo>0</lo>
@@ -725,145 +725,145 @@
 		<byteType>MIDIBYTE</byteType>
 		<valueClass>Integer</valueClass>
 	</item>
-	<item ID = "insertion_1">
+	<item id = "insertion_1">
 		<address>
 			<hi>3</hi>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "insertion_2">
+	<item id = "insertion_2">
 		<address>
 			<hi>3</hi>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "insertion_3">
+	<item id = "insertion_3">
 		<address>
 			<hi>3</hi>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "insertion_4">
+	<item id = "insertion_4">
 		<address>
 			<hi>3</hi>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "insertion_5">
+	<item id = "insertion_5">
 		<address>
 			<hi>3</hi>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "insertion_6">
+	<item id = "insertion_6">
 		<address>
 			<hi>3</hi>
 			<lo>7</lo>
 		</address>
 	</item>
-	<item ID = "insertion_7">
+	<item id = "insertion_7">
 		<address>
 			<hi>3</hi>
 			<lo>8</lo>
 		</address>
 	</item>
-	<item ID = "insertion_8">
+	<item id = "insertion_8">
 		<address>
 			<hi>3</hi>
 			<lo>9</lo>
 		</address>
 	</item>
-	<item ID = "insertion_9">
+	<item id = "insertion_9">
 		<address>
 			<hi>3</hi>
 			<lo>10</lo>
 		</address>
 	</item>
-	<item ID = "insertion_10">
+	<item id = "insertion_10">
 		<address>
 			<hi>3</hi>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "insertion_part">
+	<item id = "insertion_part">
 		<address>
 			<hi>3</hi>
 			<lo>12</lo>
 		</address>
 	</item>
-	<item ID = "insertion_mw">
+	<item id = "insertion_mw">
 		<address>
 			<hi>3</hi>
 			<lo>13</lo>
 		</address>
 	</item>
-	<item ID = "insertion_pb">
+	<item id = "insertion_pb">
 		<address>
 			<hi>3</hi>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "insertion_cat">
+	<item id = "insertion_cat">
 		<address>
 			<hi>3</hi>
 			<lo>15</lo>
 		</address>
 	</item>
-	<item ID = "insertion_ac1">
+	<item id = "insertion_ac1">
 		<address>
 			<hi>3</hi>
 			<lo>16</lo>
 		</address>
 	</item>
-	<item ID = "insertion_ac2">
+	<item id = "insertion_ac2">
 		<address>
 			<hi>3</hi>
 			<lo>17</lo>
 		</address>
 	</item>
-	<item ID = "insertion_cbc1">
+	<item id = "insertion_cbc1">
 		<address>
 			<hi>3</hi>
 			<lo>18</lo>
 		</address>
 	</item>
-	<item ID = "insertion_cbc2">
+	<item id = "insertion_cbc2">
 		<address>
 			<hi>3</hi>
 			<lo>19</lo>
 		</address>
 	</item>
-	<item ID = "insertion_11">
+	<item id = "insertion_11">
 		<address>
 			<hi>3</hi>
 			<lo>32</lo>
 		</address>
 	</item>
-	<item ID = "insertion_12">
+	<item id = "insertion_12">
 		<address>
 			<hi>3</hi>
 			<lo>33</lo>
 		</address>
 	</item>
-	<item ID = "insertion_13">
+	<item id = "insertion_13">
 		<address>
 			<hi>3</hi>
 			<lo>34</lo>
 		</address>
 	</item>
-	<item ID = "insertion_14">
+	<item id = "insertion_14">
 		<address>
 			<hi>3</hi>
 			<lo>35</lo>
 		</address>
 	</item>
-	<item ID = "insertion_15">
+	<item id = "insertion_15">
 		<address>
 			<hi>3</hi>
 			<lo>36</lo>
 		</address>
 	</item>
-	<item ID = "insertion_16">
+	<item id = "insertion_16">
 		<address>
 			<hi>3</hi>
 			<lo>37</lo>
@@ -874,70 +874,70 @@
 Bulk transmissions that include effect-type information will always send parameters at addresses 02 to 0B, but if the effect type requires the MSB, the bulk receiving side shall ignore parameters at addresses 02 to 0B. At present, the folloiwng four effect types require MSBs.
 Delay L,C,R Delay L,R Echo Cross Delay *Data range varies according to effect-type value. -->
 
-	<item ID = "insertion_1b">
+	<item id = "insertion_1b">
 		<address>
 			<hi>3</hi>
 			<lo>48</lo>
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "insertion_2b">
+	<item id = "insertion_2b">
 		<address>
 			<hi>3</hi>
 			<lo>50</lo>
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "insertion_3b">
+	<item id = "insertion_3b">
 		<address>
 			<hi>3</hi>
 			<lo>52</lo>
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "insertion_4b">
+	<item id = "insertion_4b">
 		<address>
 			<hi>3</hi>
 			<lo>54</lo>
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "insertion_5b">
+	<item id = "insertion_5b">
 		<address>
 			<hi>3</hi>
 			<lo>56</lo>
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "insertion_6b">
+	<item id = "insertion_6b">
 		<address>
 			<hi>3</hi>
 			<lo>58</lo>
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "insertion_7b">
+	<item id = "insertion_7b">
 		<address>
 			<hi>3</hi>
 			<lo>60</lo>
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "insertion_8b">
+	<item id = "insertion_8b">
 		<address>
 			<hi>3</hi>
 			<lo>62</lo>
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "insertion_9b">
+	<item id = "insertion_9b">
 		<address>
 			<hi>3</hi>
 			<lo>64</lo>
 		</address>
 		<byteCount>2</byteCount>
 	</item>
-	<item ID = "insertion_10b">
+	<item id = "insertion_10b">
 		<address>
 			<hi>3</hi>
 			<lo>66</lo>
@@ -945,7 +945,7 @@ Delay L,C,R Delay L,R Echo Cross Delay *Data range varies according to effect-ty
 		<byteCount>2</byteCount>
 	</item>
 
-	<item ID = "display_letter">
+	<item id = "display_letter">
 		<address>
 			<hi>6</hi>
 			<mid>0</mid>
@@ -959,7 +959,7 @@ Delay L,C,R Delay L,R Echo Cross Delay *Data range varies according to effect-ty
 <!-- address.mid (high nibble) = v : vertical extension (0 to 7) address.mid (low nibble) = h : horizontal extension (0 to F)
 	For data 32 to 47, only bits 6 and 5 are used.
 -->
-	<item ID = "display_bitmap">
+	<item id = "display_bitmap">
 		<address>
 			<hi>7</hi>
 			<lo>0</lo>
@@ -968,61 +968,61 @@ Delay L,C,R Delay L,R Echo Cross Delay *Data range varies according to effect-ty
 		<valueClass>Image</valueClass>
 	</item>
 
-	<item ID = "mp_element_reserve">
+	<item id = "mp_element_reserve">
 		<address>
 			<hi>8</hi>
 			<lo>0</lo>
 		</address>
 	</item>
-	<item ID = "mp_bank_msb">
+	<item id = "mp_bank_msb">
 		<address>
 			<hi>8</hi>
 			<lo>1</lo>
 		</address>
 	</item>
-	<item ID = "mp_bank_lsb">
+	<item id = "mp_bank_lsb">
 		<address>
 			<hi>8</hi>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "mp_program">
+	<item id = "mp_program">
 		<address>
 			<hi>8</hi>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "mp_channel">
+	<item id = "mp_channel">
 		<address>
 			<hi>8</hi>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "mp_mono_poly">
+	<item id = "mp_mono_poly">
 		<address>
 			<hi>8</hi>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "mp_same_key_assign">
+	<item id = "mp_same_key_assign">
 		<address>
 			<hi>8</hi>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "mp_partmode">
+	<item id = "mp_partmode">
 		<address>
 			<hi>8</hi>
 			<lo>7</lo>
 		</address>
 	</item>
-	<item ID = "mp_transpose">
+	<item id = "mp_transpose">
 		<address>
 			<hi>8</hi>
 			<lo>8</lo>
 		</address>
 	</item>
-	<item ID = "mp_detune">
+	<item id = "mp_detune">
 		<address>
 			<hi>8</hi>
 			<lo>9</lo>
@@ -1030,1088 +1030,1088 @@ Delay L,C,R Delay L,R Echo Cross Delay *Data range varies according to effect-ty
 		<byteCount>2</byteCount>
 		<byteType>NIBBLE</byteType>
 	</item>
-	<item ID = "mp_volume">
+	<item id = "mp_volume">
 		<address>
 			<hi>8</hi>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "mp_velocity_depth">
+	<item id = "mp_velocity_depth">
 		<address>
 			<hi>8</hi>
 			<lo>12</lo>
 		</address>
 	</item>
-	<item ID = "mp_velocity_offset">
+	<item id = "mp_velocity_offset">
 		<address>
 			<hi>8</hi>
 			<lo>13</lo>
 		</address>
 	</item>
-	<item ID = "mp_panorama">
+	<item id = "mp_panorama">
 		<address>
 			<hi>8</hi>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "mp_notelimit_low">
+	<item id = "mp_notelimit_low">
 		<address>
 			<hi>8</hi>
 			<lo>15</lo>
 		</address>
 	</item>
-	<item ID = "mp_notelimit_high">
+	<item id = "mp_notelimit_high">
 		<address>
 			<hi>8</hi>
 			<lo>16</lo>
 		</address>
 	</item>
-	<item ID = "mp_drylevel">
+	<item id = "mp_drylevel">
 		<address>
 			<hi>8</hi>
 			<lo>17</lo>
 		</address>
 	</item>
-	<item ID = "mp_chorus">
+	<item id = "mp_chorus">
 		<address>
 			<hi>8</hi>
 			<lo>18</lo>
 		</address>
 	</item>
-	<item ID = "mp_reverb">
+	<item id = "mp_reverb">
 		<address>
 			<hi>8</hi>
 			<lo>19</lo>
 		</address>
 	</item>
-	<item ID = "mp_variation">
+	<item id = "mp_variation">
 		<address>
 			<hi>8</hi>
 			<lo>20</lo>
 		</address>
 	</item>
-	<item ID = "mp_lfo_rate">
+	<item id = "mp_lfo_rate">
 		<address>
 			<hi>8</hi>
 			<lo>21</lo>
 		</address>
 	</item>
-	<item ID = "mp_lfo_depth">
+	<item id = "mp_lfo_depth">
 		<address>
 			<hi>8</hi>
 			<lo>22</lo>
 		</address>
 	</item>
-	<item ID = "mp_lfo_delay">
+	<item id = "mp_lfo_delay">
 		<address>
 			<hi>8</hi>
 			<lo>23</lo>
 		</address>
 	</item>
-	<item ID = "mp_lpf_cutoff">
+	<item id = "mp_lpf_cutoff">
 		<address>
 			<hi>8</hi>
 			<lo>24</lo>
 		</address>
 	</item>
-	<item ID = "mp_lpf_resonance">
+	<item id = "mp_lpf_resonance">
 		<address>
 			<hi>8</hi>
 			<lo>25</lo>
 		</address>
 	</item>
-	<item ID = "mp_env_attack">
+	<item id = "mp_env_attack">
 		<address>
 			<hi>8</hi>
 			<lo>26</lo>
 		</address>
 	</item>
-	<item ID = "mp_env_decay">
+	<item id = "mp_env_decay">
 		<address>
 			<hi>8</hi>
 			<lo>27</lo>
 		</address>
 	</item>
-	<item ID = "mp_env_release">
+	<item id = "mp_env_release">
 		<address>
 			<hi>8</hi>
 			<lo>28</lo>
 		</address>
 	</item>
-	<item ID = "mp_mw_pitch_control">
+	<item id = "mp_mw_pitch_control">
 		<address>
 			<hi>8</hi>
 			<lo>29</lo>
 		</address>
 	</item>
-	<item ID = "mp_mw_lpf_control">
+	<item id = "mp_mw_lpf_control">
 		<address>
 			<hi>8</hi>
 			<lo>30</lo>
 		</address>
 	</item>
-	<item ID = "mp_mw_amp_control">
+	<item id = "mp_mw_amp_control">
 		<address>
 			<hi>8</hi>
 			<lo>31</lo>
 		</address>
 	</item>
-	<item ID = "mp_mw_pitch_lfo">
+	<item id = "mp_mw_pitch_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>32</lo>
 		</address>
 	</item>
-	<item ID = "mp_mw_lpf_lfo_">
+	<item id = "mp_mw_lpf_lfo_">
 		<address>
 			<hi>8</hi>
 			<lo>33</lo>
 		</address>
 	</item>
-	<item ID = "mp_mw_amp_lfo">
+	<item id = "mp_mw_amp_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>34</lo>
 		</address>
 	</item>
-	<item ID = "mp_pb_pitch_control">
+	<item id = "mp_pb_pitch_control">
 		<address>
 			<hi>8</hi>
 			<lo>35</lo>
 		</address>
 	</item>
-	<item ID = "mp_pb_lpf_control">
+	<item id = "mp_pb_lpf_control">
 		<address>
 			<hi>8</hi>
 			<lo>36</lo>
 		</address>
 	</item>
-	<item ID = "mp_pb_amp_control">
+	<item id = "mp_pb_amp_control">
 		<address>
 			<hi>8</hi>
 			<lo>37</lo>
 		</address>
 	</item>
-	<item ID = "mp_pb_pitch_lfo">
+	<item id = "mp_pb_pitch_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>38</lo>
 		</address>
 	</item>
-	<item ID = "mp_pb_lpf_lfo_">
+	<item id = "mp_pb_lpf_lfo_">
 		<address>
 			<hi>8</hi>
 			<lo>39</lo>
 		</address>
 	</item>
-	<item ID = "mp_pb_amp_lfo">
+	<item id = "mp_pb_amp_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>40</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_pb">
+	<item id = "mp_receive_pb">
 		<address>
 			<hi>8</hi>
 			<lo>48</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_cat">
+	<item id = "mp_receive_cat">
 		<address>
 			<hi>8</hi>
 			<lo>49</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_pc">
+	<item id = "mp_receive_pc">
 		<address>
 			<hi>8</hi>
 			<lo>50</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_cc">
+	<item id = "mp_receive_cc">
 		<address>
 			<hi>8</hi>
 			<lo>51</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_pat">
+	<item id = "mp_receive_pat">
 		<address>
 			<hi>8</hi>
 			<lo>52</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_note">
+	<item id = "mp_receive_note">
 		<address>
 			<hi>8</hi>
 			<lo>53</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_rpn">
+	<item id = "mp_receive_rpn">
 		<address>
 			<hi>8</hi>
 			<lo>54</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_nrpn">
+	<item id = "mp_receive_nrpn">
 		<address>
 			<hi>8</hi>
 			<lo>55</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_mod">
+	<item id = "mp_receive_mod">
 		<address>
 			<hi>8</hi>
 			<lo>56</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_vol">
+	<item id = "mp_receive_vol">
 		<address>
 			<hi>8</hi>
 			<lo>57</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_pan">
+	<item id = "mp_receive_pan">
 		<address>
 			<hi>8</hi>
 			<lo>58</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_expression">
+	<item id = "mp_receive_expression">
 		<address>
 			<hi>8</hi>
 			<lo>59</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_hold1">
+	<item id = "mp_receive_hold1">
 		<address>
 			<hi>8</hi>
 			<lo>60</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_portamento">
+	<item id = "mp_receive_portamento">
 		<address>
 			<hi>8</hi>
 			<lo>61</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_sostenuto">
+	<item id = "mp_receive_sostenuto">
 		<address>
 			<hi>8</hi>
 			<lo>62</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_softpedal">
+	<item id = "mp_receive_softpedal">
 		<address>
 			<hi>8</hi>
 			<lo>63</lo>
 		</address>
 	</item>
-	<item ID = "mp_receive_bankselect">
+	<item id = "mp_receive_bankselect">
 		<address>
 			<hi>8</hi>
 			<lo>64</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_c">
+	<item id = "mp_scaletune_c">
 		<address>
 			<hi>8</hi>
 			<lo>65</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_cis">
+	<item id = "mp_scaletune_cis">
 		<address>
 			<hi>8</hi>
 			<lo>66</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_d">
+	<item id = "mp_scaletune_d">
 		<address>
 			<hi>8</hi>
 			<lo>67</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_dis">
+	<item id = "mp_scaletune_dis">
 		<address>
 			<hi>8</hi>
 			<lo>68</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_e">
+	<item id = "mp_scaletune_e">
 		<address>
 			<hi>8</hi>
 			<lo>69</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_f">
+	<item id = "mp_scaletune_f">
 		<address>
 			<hi>8</hi>
 			<lo>70</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_fis">
+	<item id = "mp_scaletune_fis">
 		<address>
 			<hi>8</hi>
 			<lo>71</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_g">
+	<item id = "mp_scaletune_g">
 		<address>
 			<hi>8</hi>
 			<lo>72</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_gis">
+	<item id = "mp_scaletune_gis">
 		<address>
 			<hi>8</hi>
 			<lo>73</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_a">
+	<item id = "mp_scaletune_a">
 		<address>
 			<hi>8</hi>
 			<lo>74</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_ais">
+	<item id = "mp_scaletune_ais">
 		<address>
 			<hi>8</hi>
 			<lo>75</lo>
 		</address>
 	</item>
-	<item ID = "mp_scaletune_h">
+	<item id = "mp_scaletune_h">
 		<address>
 			<hi>8</hi>
 			<lo>76</lo>
 		</address>
 	</item>
-	<item ID = "mp_cat_pitch_control">
+	<item id = "mp_cat_pitch_control">
 		<address>
 			<hi>8</hi>
 			<lo>77</lo>
 		</address>
 	</item>
-	<item ID = "mp_cat_lpf_control">
+	<item id = "mp_cat_lpf_control">
 		<address>
 			<hi>8</hi>
 			<lo>78</lo>
 		</address>
 	</item>
-	<item ID = "mp_cat_amp_control">
+	<item id = "mp_cat_amp_control">
 		<address>
 			<hi>8</hi>
 			<lo>79</lo>
 		</address>
 	</item>
-	<item ID = "mp_cat_pitch_lfo">
+	<item id = "mp_cat_pitch_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>80</lo>
 		</address>
 	</item>
-	<item ID = "mp_cat_lpf_lfo_">
+	<item id = "mp_cat_lpf_lfo_">
 		<address>
 			<hi>8</hi>
 			<lo>81</lo>
 		</address>
 	</item>
-	<item ID = "mp_cat_amp_lfo">
+	<item id = "mp_cat_amp_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>82</lo>
 		</address>
 	</item>
-	<item ID = "mp_pat_pitch_control">
+	<item id = "mp_pat_pitch_control">
 		<address>
 			<hi>8</hi>
 			<lo>83</lo>
 		</address>
 	</item>
-	<item ID = "mp_pat_lpf_control">
+	<item id = "mp_pat_lpf_control">
 		<address>
 			<hi>8</hi>
 			<lo>84</lo>
 		</address>
 	</item>
-	<item ID = "mp_pat_amp_control">
+	<item id = "mp_pat_amp_control">
 		<address>
 			<hi>8</hi>
 			<lo>85</lo>
 		</address>
 	</item>
-	<item ID = "mp_pat_pitch_lfo">
+	<item id = "mp_pat_pitch_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>86</lo>
 		</address>
 	</item>
-	<item ID = "mp_pat_lpf_lfo_">
+	<item id = "mp_pat_lpf_lfo_">
 		<address>
 			<hi>8</hi>
 			<lo>87</lo>
 		</address>
 	</item>
-	<item ID = "mp_pat_amp_lfo">
+	<item id = "mp_pat_amp_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>88</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac1_number">
+	<item id = "mp_ac1_number">
 		<address>
 			<hi>8</hi>
 			<lo>89</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac1_pitch_control">
+	<item id = "mp_ac1_pitch_control">
 		<address>
 			<hi>8</hi>
 			<lo>90</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac1_lpf_control">
+	<item id = "mp_ac1_lpf_control">
 		<address>
 			<hi>8</hi>
 			<lo>91</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac1_amp_control">
+	<item id = "mp_ac1_amp_control">
 		<address>
 			<hi>8</hi>
 			<lo>92</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac1_pitch_lfo">
+	<item id = "mp_ac1_pitch_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>93</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac1_lpf_lfo_">
+	<item id = "mp_ac1_lpf_lfo_">
 		<address>
 			<hi>8</hi>
 			<lo>94</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac1_amp_lfo">
+	<item id = "mp_ac1_amp_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>95</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac2_number">
+	<item id = "mp_ac2_number">
 		<address>
 			<hi>8</hi>
 			<lo>96</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac2_pitch_control">
+	<item id = "mp_ac2_pitch_control">
 		<address>
 			<hi>8</hi>
 			<lo>97</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac2_lpf_control">
+	<item id = "mp_ac2_lpf_control">
 		<address>
 			<hi>8</hi>
 			<lo>98</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac2_amp_control">
+	<item id = "mp_ac2_amp_control">
 		<address>
 			<hi>8</hi>
 			<lo>99</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac2_pitch_lfo">
+	<item id = "mp_ac2_pitch_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>100</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac2_lpf_lfo_">
+	<item id = "mp_ac2_lpf_lfo_">
 		<address>
 			<hi>8</hi>
 			<lo>101</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac2_amp_lfo">
+	<item id = "mp_ac2_amp_lfo">
 		<address>
 			<hi>8</hi>
 			<lo>102</lo>
 		</address>
 	</item>
-	<item ID = "mp_portamento_switch">
+	<item id = "mp_portamento_switch">
 		<address>
 			<hi>8</hi>
 			<lo>103</lo>
 		</address>
 	</item>
-	<item ID = "mp_portamento_time">
+	<item id = "mp_portamento_time">
 		<address>
 			<hi>8</hi>
 			<lo>104</lo>
 		</address>
 	</item>
-	<item ID = "mp_pitchenv_attacklevel">
+	<item id = "mp_pitchenv_attacklevel">
 		<address>
 			<hi>8</hi>
 			<lo>105</lo>
 		</address>
 	</item>
-	<item ID = "mp_pitchenv_attacktime">
+	<item id = "mp_pitchenv_attacktime">
 		<address>
 			<hi>8</hi>
 			<lo>106</lo>
 		</address>
 	</item>
-	<item ID = "mp_pitchenv_releaselevel">
+	<item id = "mp_pitchenv_releaselevel">
 		<address>
 			<hi>8</hi>
 			<lo>107</lo>
 		</address>
 	</item>
-	<item ID = "mp_pitchenv_releasetime">
+	<item id = "mp_pitchenv_releasetime">
 		<address>
 			<hi>8</hi>
 			<lo>108</lo>
 		</address>
 	</item>
-	<item ID = "mp_velocitylimit_low">
+	<item id = "mp_velocitylimit_low">
 		<address>
 			<hi>8</hi>
 			<lo>109</lo>
 		</address>
 	</item>
-	<item ID = "mp_velocitylimit_high">
+	<item id = "mp_velocitylimit_high">
 		<address>
 			<hi>8</hi>
 			<lo>110</lo>
 		</address>
 	</item>
-	<item ID = "mp_pb_low_control">
+	<item id = "mp_pb_low_control">
 		<address>
 			<hi>8</hi>
 			<lo>112</lo>
 		</address>
 	</item>
-	<item ID = "mp_lpf_env_depth">
+	<item id = "mp_lpf_env_depth">
 		<address>
 			<hi>8</hi>
 			<lo>113</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_bass">
+	<item id = "mp_eq_bass">
 		<address>
 			<hi>8</hi>
 			<lo>114</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_treble">
+	<item id = "mp_eq_treble">
 		<address>
 			<hi>8</hi>
 			<lo>115</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_midbass">
+	<item id = "mp_eq_midbass">
 		<address>
 			<hi>8</hi>
 			<lo>116</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_midtreble">
+	<item id = "mp_eq_midtreble">
 		<address>
 			<hi>8</hi>
 			<lo>117</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_bass_frequency">
+	<item id = "mp_eq_bass_frequency">
 		<address>
 			<hi>8</hi>
 			<lo>118</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_treble_frequency">
+	<item id = "mp_eq_treble_frequency">
 		<address>
 			<hi>8</hi>
 			<lo>119</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_midbass_frequency">
+	<item id = "mp_eq_midbass_frequency">
 		<address>
 			<hi>8</hi>
 			<lo>120</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_midtreble_frequency">
+	<item id = "mp_eq_midtreble_frequency">
 		<address>
 			<hi>8</hi>
 			<lo>121</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_bass_q">
+	<item id = "mp_eq_bass_q">
 		<address>
 			<hi>8</hi>
 			<lo>122</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_treble_q">
+	<item id = "mp_eq_treble_q">
 		<address>
 			<hi>8</hi>
 			<lo>123</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_midbass_q">
+	<item id = "mp_eq_midbass_q">
 		<address>
 			<hi>8</hi>
 			<lo>124</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_midtreble_q">
+	<item id = "mp_eq_midtreble_q">
 		<address>
 			<hi>8</hi>
 			<lo>125</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_bass_shape">
+	<item id = "mp_eq_bass_shape">
 		<address>
 			<hi>8</hi>
 			<lo>126</lo>
 		</address>
 	</item>
-	<item ID = "mp_eq_treble_shape">
+	<item id = "mp_eq_treble_shape">
 		<address>
 			<hi>8</hi>
 			<lo>127</lo>
 		</address>
 	</item>
-	<item ID = "mp_output_select">
+	<item id = "mp_output_select">
 		<address>
 			<hi>10</hi>
 			<lo>16</lo>
 		</address>
 	</item>
-	<item ID = "mp_hpf_cutoff">
+	<item id = "mp_hpf_cutoff">
 		<address>
 			<hi>10</hi>
 			<lo>32</lo>
 		</address>
 	</item>
-	<item ID = "mp_hpf_resonance">
+	<item id = "mp_hpf_resonance">
 		<address>
 			<hi>10</hi>
 			<lo>33</lo>
 		</address>
 	</item>
-	<item ID = "mp_mw_hpf_control">
+	<item id = "mp_mw_hpf_control">
 		<address>
 			<hi>10</hi>
 			<lo>34</lo>
 		</address>
 	</item>
-	<item ID = "mp_pb_hpf_control">
+	<item id = "mp_pb_hpf_control">
 		<address>
 			<hi>10</hi>
 			<lo>35</lo>
 		</address>
 	</item>
-	<item ID = "mp_cat_hpf_control">
+	<item id = "mp_cat_hpf_control">
 		<address>
 			<hi>10</hi>
 			<lo>36</lo>
 		</address>
 	</item>
-	<item ID = "mp_pat_hpf_control">
+	<item id = "mp_pat_hpf_control">
 		<address>
 			<hi>10</hi>
 			<lo>37</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac1_hpf_control">
+	<item id = "mp_ac1_hpf_control">
 		<address>
 			<hi>10</hi>
 			<lo>38</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac2_hpf_control">
+	<item id = "mp_ac2_hpf_control">
 		<address>
 			<hi>10</hi>
 			<lo>39</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc1_number">
+	<item id = "mp_cbc1_number">
 		<address>
 			<hi>10</hi>
 			<lo>48</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc1_pitch_control">
+	<item id = "mp_cbc1_pitch_control">
 		<address>
 			<hi>10</hi>
 			<lo>49</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc1_lpf_control">
+	<item id = "mp_cbc1_lpf_control">
 		<address>
 			<hi>10</hi>
 			<lo>50</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc1_amp_control">
+	<item id = "mp_cbc1_amp_control">
 		<address>
 			<hi>10</hi>
 			<lo>51</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc1_lfo_pitch_depth">
+	<item id = "mp_cbc1_lfo_pitch_depth">
 		<address>
 			<hi>10</hi>
 			<lo>52</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc1_lfo_lpf_depth">
+	<item id = "mp_cbc1_lfo_lpf_depth">
 		<address>
 			<hi>10</hi>
 			<lo>53</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc1_lfo_amp_depth">
+	<item id = "mp_cbc1_lfo_amp_depth">
 		<address>
 			<hi>10</hi>
 			<lo>54</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc2_number">
+	<item id = "mp_cbc2_number">
 		<address>
 			<hi>10</hi>
 			<lo>56</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc2_pitch_control">
+	<item id = "mp_cbc2_pitch_control">
 		<address>
 			<hi>10</hi>
 			<lo>57</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc2_lpf_control">
+	<item id = "mp_cbc2_lpf_control">
 		<address>
 			<hi>10</hi>
 			<lo>58</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc2_amp_control">
+	<item id = "mp_cbc2_amp_control">
 		<address>
 			<hi>10</hi>
 			<lo>59</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc2_lfo_pitch_depth">
+	<item id = "mp_cbc2_lfo_pitch_depth">
 		<address>
 			<hi>10</hi>
 			<lo>60</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc2_lfo_lpf_depth">
+	<item id = "mp_cbc2_lfo_lpf_depth">
 		<address>
 			<hi>10</hi>
 			<lo>61</lo>
 		</address>
 	</item>
-	<item ID = "mp_cbc2_lfo_amp_depth">
+	<item id = "mp_cbc2_lfo_amp_depth">
 		<address>
 			<hi>10</hi>
 			<lo>62</lo>
 		</address>
 	</item>
-	<item ID = "mp_mw_offset_level">
+	<item id = "mp_mw_offset_level">
 		<address>
 			<hi>10</hi>
 			<lo>64</lo>
 		</address>
 	</item>
-	<item ID = "mp_pb_offset_level">
+	<item id = "mp_pb_offset_level">
 		<address>
 			<hi>10</hi>
 			<lo>65</lo>
 		</address>
 	</item>
-	<item ID = "mp_cat_offset_level">
+	<item id = "mp_cat_offset_level">
 		<address>
 			<hi>10</hi>
 			<lo>66</lo>
 		</address>
 	</item>
-	<item ID = "mp_pat_offset_level">
+	<item id = "mp_pat_offset_level">
 		<address>
 			<hi>10</hi>
 			<lo>67</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac1_offset_level">
+	<item id = "mp_ac1_offset_level">
 		<address>
 			<hi>10</hi>
 			<lo>68</lo>
 		</address>
 	</item>
-	<item ID = "mp_ac2_offset_level">
+	<item id = "mp_ac2_offset_level">
 		<address>
 			<hi>10</hi>
 			<lo>69</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_note_assign">
+	<item id = "mp_vl_note_assign">
 		<address>
 			<hi>9</hi>
 			<lo>0</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_note_filter">
+	<item id = "mp_vl_note_filter">
 		<address>
 			<hi>9</hi>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_pressure_control">
+	<item id = "mp_vl_pressure_control">
 		<address>
 			<hi>9</hi>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_pressure_depth">
+	<item id = "mp_vl_pressure_depth">
 		<address>
 			<hi>9</hi>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_embouchure_control">
+	<item id = "mp_vl_embouchure_control">
 		<address>
 			<hi>9</hi>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_embouchure_depth">
+	<item id = "mp_vl_embouchure_depth">
 		<address>
 			<hi>9</hi>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_tonguing_control">
+	<item id = "mp_vl_tonguing_control">
 		<address>
 			<hi>9</hi>
 			<lo>7</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_tonguing_depth">
+	<item id = "mp_vl_tonguing_depth">
 		<address>
 			<hi>9</hi>
 			<lo>8</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_screaming_control">
+	<item id = "mp_vl_screaming_control">
 		<address>
 			<hi>9</hi>
 			<lo>9</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_screaming_depth">
+	<item id = "mp_vl_screaming_depth">
 		<address>
 			<hi>9</hi>
 			<lo>10</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_breath_control">
+	<item id = "mp_vl_breath_control">
 		<address>
 			<hi>9</hi>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_breath_depth">
+	<item id = "mp_vl_breath_depth">
 		<address>
 			<hi>9</hi>
 			<lo>12</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_growl_control">
+	<item id = "mp_vl_growl_control">
 		<address>
 			<hi>9</hi>
 			<lo>13</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_growl_depth">
+	<item id = "mp_vl_growl_depth">
 		<address>
 			<hi>9</hi>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_throatformant_control">
+	<item id = "mp_vl_throatformant_control">
 		<address>
 			<hi>9</hi>
 			<lo>15</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_throatformant_depth">
+	<item id = "mp_vl_throatformant_depth">
 		<address>
 			<hi>9</hi>
 			<lo>16</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_harmonicenhancer_control">
+	<item id = "mp_vl_harmonicenhancer_control">
 		<address>
 			<hi>9</hi>
 			<lo>17</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_harmonicenhancer_depth">
+	<item id = "mp_vl_harmonicenhancer_depth">
 		<address>
 			<hi>9</hi>
 			<lo>18</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_damping_control">
+	<item id = "mp_vl_damping_control">
 		<address>
 			<hi>9</hi>
 			<lo>19</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_damping_depth">
+	<item id = "mp_vl_damping_depth">
 		<address>
 			<hi>9</hi>
 			<lo>20</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_absorption_control">
+	<item id = "mp_vl_absorption_control">
 		<address>
 			<hi>9</hi>
 			<lo>21</lo>
 		</address>
 	</item>
-	<item ID = "mp_vl_absorption_depth">
+	<item id = "mp_vl_absorption_depth">
 		<address>
 			<hi>9</hi>
 			<lo>22</lo>
 		</address>
 	</item>
 
-	<item ID = "ad_input_gain">
+	<item id = "ad_input_gain">
 		<address>
 			<hi>16</hi>
 			<lo>0</lo>
 		</address>
 	</item>
-	<item ID = "ad_bank_msb">
+	<item id = "ad_bank_msb">
 		<address>
 			<hi>16</hi>
 			<lo>1</lo>
 		</address>
 	</item>
-	<item ID = "ad_bank_lsb">
+	<item id = "ad_bank_lsb">
 		<address>
 			<hi>16</hi>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "ad_program">
+	<item id = "ad_program">
 		<address>
 			<hi>16</hi>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "ad_midichannel">
+	<item id = "ad_midichannel">
 		<address>
 			<hi>16</hi>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "ad_volume">
+	<item id = "ad_volume">
 		<address>
 			<hi>16</hi>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "ad_panorama">
+	<item id = "ad_panorama">
 		<address>
 			<hi>16</hi>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "ad_drylevel">
+	<item id = "ad_drylevel">
 		<address>
 			<hi>16</hi>
 			<lo>17</lo>
 		</address>
 	</item>
-	<item ID = "ad_chorus">
+	<item id = "ad_chorus">
 		<address>
 			<hi>16</hi>
 			<lo>18</lo>
 		</address>
 	</item>
-	<item ID = "ad_reverb">
+	<item id = "ad_reverb">
 		<address>
 			<hi>16</hi>
 			<lo>19</lo>
 		</address>
 	</item>
-	<item ID = "ad_variation">
+	<item id = "ad_variation">
 		<address>
 			<hi>16</hi>
 			<lo>20</lo>
 		</address>
 	</item>
-	<item ID = "ad_receive_pc">
+	<item id = "ad_receive_pc">
 		<address>
 			<hi>16</hi>
 			<lo>50</lo>
 		</address>
 	</item>
-	<item ID = "ad_receive_cc">
+	<item id = "ad_receive_cc">
 		<address>
 			<hi>16</hi>
 			<lo>51</lo>
 		</address>
 	</item>
-	<item ID = "ad_receive_volume">
+	<item id = "ad_receive_volume">
 		<address>
 			<hi>16</hi>
 			<lo>57</lo>
 		</address>
 	</item>
-	<item ID = "ad_receive_panorama">
+	<item id = "ad_receive_panorama">
 		<address>
 			<hi>16</hi>
 			<lo>58</lo>
 		</address>
 	</item>
-	<item ID = "ad_receive_expression">
+	<item id = "ad_receive_expression">
 		<address>
 			<hi>16</hi>
 			<lo>59</lo>
 		</address>
 	</item>
-	<item ID = "ad_receive_bank">
+	<item id = "ad_receive_bank">
 		<address>
 			<hi>16</hi>
 			<lo>64</lo>
 		</address>
 	</item>
-	<item ID = "ad_ac1_number">
+	<item id = "ad_ac1_number">
 		<address>
 			<hi>16</hi>
 			<lo>89</lo>
 		</address>
 	</item>
-	<item ID = "ad_ac2_number">
+	<item id = "ad_ac2_number">
 		<address>
 			<hi>16</hi>
 			<lo>96</lo>
 		</address>
 	</item>
-	<item ID = "ad_mono_stereo">
+	<item id = "ad_mono_stereo">
 		<address>
 			<hi>17</hi>
 			<lo>0</lo>
 		</address>
 	</item>
-	<item ID = "ad_input_category">
+	<item id = "ad_input_category">
 		<address>
 			<hi>17</hi>
 			<lo>1</lo>
@@ -2119,230 +2119,230 @@ Delay L,C,R Delay L,R Echo Cross Delay *Data range varies according to effect-ty
 		<byteCount>3</byteCount>
 		<byteType>MIDIBYTE</byteType>
 	</item>
-	<item ID = "ad_cbc1_number">
+	<item id = "ad_cbc1_number">
 		<address>
 			<hi>18</hi>
 			<lo>48</lo>
 		</address>
 	</item>
-	<item ID = "ad_cbc2_number">
+	<item id = "ad_cbc2_number">
 		<address>
 			<hi>18</hi>
 			<lo>56</lo>
 		</address>
 	</item>
 
-	<item ID = "ds1_pitch_coarse">
+	<item id = "ds1_pitch_coarse">
 		<address>
 			<hi>48</hi>
 			<lo>0</lo>
 		</address>
 	</item>
-	<item ID = "ds1_pitch_fine">
+	<item id = "ds1_pitch_fine">
 		<address>
 			<hi>48</hi>
 			<lo>1</lo>
 		</address>
 	</item>
-	<item ID = "ds1_level">
+	<item id = "ds1_level">
 		<address>
 			<hi>48</hi>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "ds1_group">
+	<item id = "ds1_group">
 		<address>
 			<hi>48</hi>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "ds1_panorama">
+	<item id = "ds1_panorama">
 		<address>
 			<hi>48</hi>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "ds1_reverb">
+	<item id = "ds1_reverb">
 		<address>
 			<hi>48</hi>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "ds1_chorus">
+	<item id = "ds1_chorus">
 		<address>
 			<hi>48</hi>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "ds1_variation">
+	<item id = "ds1_variation">
 		<address>
 			<hi>48</hi>
 			<lo>7</lo>
 		</address>
 	</item>
-	<item ID = "ds1_key_assign">
+	<item id = "ds1_key_assign">
 		<address>
 			<hi>48</hi>
 			<lo>8</lo>
 		</address>
 	</item>
-	<item ID = "ds1_receive_noteoff">
+	<item id = "ds1_receive_noteoff">
 		<address>
 			<hi>48</hi>
 			<lo>9</lo>
 		</address>
 	</item>
-	<item ID = "ds1_receive_noteon">
+	<item id = "ds1_receive_noteon">
 		<address>
 			<hi>48</hi>
 			<lo>10</lo>
 		</address>
 	</item>
-	<item ID = "ds1_lpf_cutoff">
+	<item id = "ds1_lpf_cutoff">
 		<address>
 			<hi>48</hi>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "ds1_lpf_resonance">
+	<item id = "ds1_lpf_resonance">
 		<address>
 			<hi>48</hi>
 			<lo>12</lo>
 		</address>
 	</item>
-	<item ID = "ds1_env_attack_time">
+	<item id = "ds1_env_attack_time">
 		<address>
 			<hi>48</hi>
 			<lo>13</lo>
 		</address>
 	</item>
-	<item ID = "ds1_env_decay_time">
+	<item id = "ds1_env_decay_time">
 		<address>
 			<hi>48</hi>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "ds1_env_release_time">
+	<item id = "ds1_env_release_time">
 		<address>
 			<hi>48</hi>
 			<lo>15</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_bass">
+	<item id = "ds1_eq_bass">
 		<address>
 			<hi>48</hi>
 			<lo>32</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_treble">
+	<item id = "ds1_eq_treble">
 		<address>
 			<hi>48</hi>
 			<lo>33</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_midbass">
+	<item id = "ds1_eq_midbass">
 		<address>
 			<hi>48</hi>
 			<lo>34</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_midtreble">
+	<item id = "ds1_eq_midtreble">
 		<address>
 			<hi>48</hi>
 			<lo>35</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_bass_frequency">
+	<item id = "ds1_eq_bass_frequency">
 		<address>
 			<hi>48</hi>
 			<lo>36</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_treble_frequency">
+	<item id = "ds1_eq_treble_frequency">
 		<address>
 			<hi>48</hi>
 			<lo>37</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_midbass_frequency">
+	<item id = "ds1_eq_midbass_frequency">
 		<address>
 			<hi>48</hi>
 			<lo>38</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_midtreble_frequency">
+	<item id = "ds1_eq_midtreble_frequency">
 		<address>
 			<hi>48</hi>
 			<lo>39</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_bass_q">
+	<item id = "ds1_eq_bass_q">
 		<address>
 			<hi>48</hi>
 			<lo>40</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_treble_q">
+	<item id = "ds1_eq_treble_q">
 		<address>
 			<hi>48</hi>
 			<lo>41</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_midbass_q">
+	<item id = "ds1_eq_midbass_q">
 		<address>
 			<hi>48</hi>
 			<lo>42</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_midtreble_q">
+	<item id = "ds1_eq_midtreble_q">
 		<address>
 			<hi>48</hi>
 			<lo>43</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_bass_shape">
+	<item id = "ds1_eq_bass_shape">
 		<address>
 			<hi>48</hi>
 			<lo>44</lo>
 		</address>
 	</item>
-	<item ID = "ds1_eq_treble_shape">
+	<item id = "ds1_eq_treble_shape">
 		<address>
 			<hi>48</hi>
 			<lo>45</lo>
 		</address>
 	</item>
-	<item ID = "ds1_output">
+	<item id = "ds1_output">
 		<address>
 			<hi>48</hi>
 			<lo>64</lo>
 		</address>
 	</item>
-	<item ID = "ds1_hpf_cutoff">
+	<item id = "ds1_hpf_cutoff">
 		<address>
 			<hi>48</hi>
 			<lo>80</lo>
 		</address>
 	</item>
-	<item ID = "ds1_hpf_resonance">
+	<item id = "ds1_hpf_resonance">
 		<address>
 			<hi>48</hi>
 			<lo>81</lo>
 		</address>
 	</item>
-	<item ID = "ds1_velocity_pitch">
+	<item id = "ds1_velocity_pitch">
 		<address>
 			<hi>48</hi>
 			<lo>96</lo>
 		</address>
 	</item>
-	<item ID = "ds1_velocity_lpf_cutoff">
+	<item id = "ds1_velocity_lpf_cutoff">
 		<address>
 			<hi>48</hi>
 			<lo>97</lo>
 		</address>
 	</item>
-	<item ID = "ds1_sourcekit">
+	<item id = "ds1_sourcekit">
 		<address>
 			<hi>48</hi>
 			<lo>112</lo>
@@ -2352,217 +2352,217 @@ Delay L,C,R Delay L,R Echo Cross Delay *Data range varies according to effect-ty
 		<valueClass>Integer</valueClass>
 	</item>
 
-	<item ID = "ds2_pitch_coarse">
+	<item id = "ds2_pitch_coarse">
 		<address>
 			<hi>49</hi>
 			<lo>0</lo>
 		</address>
 	</item>
-	<item ID = "ds2_pitch_fine">
+	<item id = "ds2_pitch_fine">
 		<address>
 			<hi>49</hi>
 			<lo>1</lo>
 		</address>
 	</item>
-	<item ID = "ds2_level">
+	<item id = "ds2_level">
 		<address>
 			<hi>49</hi>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "ds2_group">
+	<item id = "ds2_group">
 		<address>
 			<hi>49</hi>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "ds2_panorama">
+	<item id = "ds2_panorama">
 		<address>
 			<hi>49</hi>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "ds2_reverb">
+	<item id = "ds2_reverb">
 		<address>
 			<hi>49</hi>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "ds2_chorus">
+	<item id = "ds2_chorus">
 		<address>
 			<hi>49</hi>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "ds2_variation">
+	<item id = "ds2_variation">
 		<address>
 			<hi>49</hi>
 			<lo>7</lo>
 		</address>
 	</item>
-	<item ID = "ds2_key_assign">
+	<item id = "ds2_key_assign">
 		<address>
 			<hi>49</hi>
 			<lo>8</lo>
 		</address>
 	</item>
-	<item ID = "ds2_receive_noteoff">
+	<item id = "ds2_receive_noteoff">
 		<address>
 			<hi>49</hi>
 			<lo>9</lo>
 		</address>
 	</item>
-	<item ID = "ds2_receive_noteon">
+	<item id = "ds2_receive_noteon">
 		<address>
 			<hi>49</hi>
 			<lo>10</lo>
 		</address>
 	</item>
-	<item ID = "ds2_lpf_cutoff">
+	<item id = "ds2_lpf_cutoff">
 		<address>
 			<hi>49</hi>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "ds2_lpf_resonance">
+	<item id = "ds2_lpf_resonance">
 		<address>
 			<hi>49</hi>
 			<lo>12</lo>
 		</address>
 	</item>
-	<item ID = "ds2_env_attack_time">
+	<item id = "ds2_env_attack_time">
 		<address>
 			<hi>49</hi>
 			<lo>13</lo>
 		</address>
 	</item>
-	<item ID = "ds2_env_decay_time">
+	<item id = "ds2_env_decay_time">
 		<address>
 			<hi>49</hi>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "ds2_env_release_time">
+	<item id = "ds2_env_release_time">
 		<address>
 			<hi>49</hi>
 			<lo>15</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_bass">
+	<item id = "ds2_eq_bass">
 		<address>
 			<hi>49</hi>
 			<lo>32</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_treble">
+	<item id = "ds2_eq_treble">
 		<address>
 			<hi>49</hi>
 			<lo>33</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_midbass">
+	<item id = "ds2_eq_midbass">
 		<address>
 			<hi>49</hi>
 			<lo>34</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_midtreble">
+	<item id = "ds2_eq_midtreble">
 		<address>
 			<hi>49</hi>
 			<lo>35</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_bass_frequency">
+	<item id = "ds2_eq_bass_frequency">
 		<address>
 			<hi>49</hi>
 			<lo>36</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_treble_frequency">
+	<item id = "ds2_eq_treble_frequency">
 		<address>
 			<hi>49</hi>
 			<lo>37</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_midbass_frequency">
+	<item id = "ds2_eq_midbass_frequency">
 		<address>
 			<hi>49</hi>
 			<lo>38</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_midtreble_frequency">
+	<item id = "ds2_eq_midtreble_frequency">
 		<address>
 			<hi>49</hi>
 			<lo>39</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_bass_q">
+	<item id = "ds2_eq_bass_q">
 		<address>
 			<hi>49</hi>
 			<lo>40</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_treble_q">
+	<item id = "ds2_eq_treble_q">
 		<address>
 			<hi>49</hi>
 			<lo>41</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_midbass_q">
+	<item id = "ds2_eq_midbass_q">
 		<address>
 			<hi>49</hi>
 			<lo>42</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_midtreble_q">
+	<item id = "ds2_eq_midtreble_q">
 		<address>
 			<hi>49</hi>
 			<lo>43</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_bass_shape">
+	<item id = "ds2_eq_bass_shape">
 		<address>
 			<hi>49</hi>
 			<lo>44</lo>
 		</address>
 	</item>
-	<item ID = "ds2_eq_treble_shape">
+	<item id = "ds2_eq_treble_shape">
 		<address>
 			<hi>49</hi>
 			<lo>45</lo>
 		</address>
 	</item>
-	<item ID = "ds2_output">
+	<item id = "ds2_output">
 		<address>
 			<hi>49</hi>
 			<lo>64</lo>
 		</address>
 	</item>
-	<item ID = "ds2_hpf_cutoff">
+	<item id = "ds2_hpf_cutoff">
 		<address>
 			<hi>49</hi>
 			<lo>80</lo>
 		</address>
 	</item>
-	<item ID = "ds2_hpf_resonance">
+	<item id = "ds2_hpf_resonance">
 		<address>
 			<hi>49</hi>
 			<lo>81</lo>
 		</address>
 	</item>
-	<item ID = "ds2_velocity_pitch">
+	<item id = "ds2_velocity_pitch">
 		<address>
 			<hi>49</hi>
 			<lo>96</lo>
 		</address>
 	</item>
-	<item ID = "ds2_velocity_lpf_cutoff">
+	<item id = "ds2_velocity_lpf_cutoff">
 		<address>
 			<hi>49</hi>
 			<lo>97</lo>
 		</address>
 	</item>
-	<item ID = "ds2_sourcekit">
+	<item id = "ds2_sourcekit">
 		<address>
 			<hi>49</hi>
 			<lo>112</lo>
@@ -2573,217 +2573,217 @@ Delay L,C,R Delay L,R Echo Cross Delay *Data range varies according to effect-ty
 	</item>
 
 
-	<item ID = "ds3_pitch_coarse">
+	<item id = "ds3_pitch_coarse">
 		<address>
 			<hi>50</hi>
 			<lo>0</lo>
 		</address>
 	</item>
-	<item ID = "ds3_pitch_fine">
+	<item id = "ds3_pitch_fine">
 		<address>
 			<hi>50</hi>
 			<lo>1</lo>
 		</address>
 	</item>
-	<item ID = "ds3_level">
+	<item id = "ds3_level">
 		<address>
 			<hi>50</hi>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "ds3_group">
+	<item id = "ds3_group">
 		<address>
 			<hi>50</hi>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "ds3_panorama">
+	<item id = "ds3_panorama">
 		<address>
 			<hi>50</hi>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "ds3_reverb">
+	<item id = "ds3_reverb">
 		<address>
 			<hi>50</hi>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "ds3_chorus">
+	<item id = "ds3_chorus">
 		<address>
 			<hi>50</hi>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "ds3_variation">
+	<item id = "ds3_variation">
 		<address>
 			<hi>50</hi>
 			<lo>7</lo>
 		</address>
 	</item>
-	<item ID = "ds3_key_assign">
+	<item id = "ds3_key_assign">
 		<address>
 			<hi>50</hi>
 			<lo>8</lo>
 		</address>
 	</item>
-	<item ID = "ds3_receive_noteoff">
+	<item id = "ds3_receive_noteoff">
 		<address>
 			<hi>50</hi>
 			<lo>9</lo>
 		</address>
 	</item>
-	<item ID = "ds3_receive_noteon">
+	<item id = "ds3_receive_noteon">
 		<address>
 			<hi>50</hi>
 			<lo>10</lo>
 		</address>
 	</item>
-	<item ID = "ds3_lpf_cutoff">
+	<item id = "ds3_lpf_cutoff">
 		<address>
 			<hi>50</hi>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "ds3_lpf_resonance">
+	<item id = "ds3_lpf_resonance">
 		<address>
 			<hi>50</hi>
 			<lo>12</lo>
 		</address>
 	</item>
-	<item ID = "ds3_env_attack_time">
+	<item id = "ds3_env_attack_time">
 		<address>
 			<hi>50</hi>
 			<lo>13</lo>
 		</address>
 	</item>
-	<item ID = "ds3_env_decay_time">
+	<item id = "ds3_env_decay_time">
 		<address>
 			<hi>50</hi>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "ds3_env_release_time">
+	<item id = "ds3_env_release_time">
 		<address>
 			<hi>50</hi>
 			<lo>15</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_bass">
+	<item id = "ds3_eq_bass">
 		<address>
 			<hi>50</hi>
 			<lo>32</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_treble">
+	<item id = "ds3_eq_treble">
 		<address>
 			<hi>50</hi>
 			<lo>33</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_midbass">
+	<item id = "ds3_eq_midbass">
 		<address>
 			<hi>50</hi>
 			<lo>34</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_midtreble">
+	<item id = "ds3_eq_midtreble">
 		<address>
 			<hi>50</hi>
 			<lo>35</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_bass_frequency">
+	<item id = "ds3_eq_bass_frequency">
 		<address>
 			<hi>50</hi>
 			<lo>36</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_treble_frequency">
+	<item id = "ds3_eq_treble_frequency">
 		<address>
 			<hi>50</hi>
 			<lo>37</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_midbass_frequency">
+	<item id = "ds3_eq_midbass_frequency">
 		<address>
 			<hi>50</hi>
 			<lo>38</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_midtreble_frequency">
+	<item id = "ds3_eq_midtreble_frequency">
 		<address>
 			<hi>50</hi>
 			<lo>39</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_bass_q">
+	<item id = "ds3_eq_bass_q">
 		<address>
 			<hi>50</hi>
 			<lo>40</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_treble_q">
+	<item id = "ds3_eq_treble_q">
 		<address>
 			<hi>50</hi>
 			<lo>41</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_midbass_q">
+	<item id = "ds3_eq_midbass_q">
 		<address>
 			<hi>50</hi>
 			<lo>42</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_midtreble_q">
+	<item id = "ds3_eq_midtreble_q">
 		<address>
 			<hi>50</hi>
 			<lo>43</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_bass_shape">
+	<item id = "ds3_eq_bass_shape">
 		<address>
 			<hi>50</hi>
 			<lo>44</lo>
 		</address>
 	</item>
-	<item ID = "ds3_eq_treble_shape">
+	<item id = "ds3_eq_treble_shape">
 		<address>
 			<hi>50</hi>
 			<lo>45</lo>
 		</address>
 	</item>
-	<item ID = "ds3_output">
+	<item id = "ds3_output">
 		<address>
 			<hi>50</hi>
 			<lo>64</lo>
 		</address>
 	</item>
-	<item ID = "ds3_hpf_cutoff">
+	<item id = "ds3_hpf_cutoff">
 		<address>
 			<hi>50</hi>
 			<lo>80</lo>
 		</address>
 	</item>
-	<item ID = "ds3_hpf_resonance">
+	<item id = "ds3_hpf_resonance">
 		<address>
 			<hi>50</hi>
 			<lo>81</lo>
 		</address>
 	</item>
-	<item ID = "ds3_velocity_pitch">
+	<item id = "ds3_velocity_pitch">
 		<address>
 			<hi>50</hi>
 			<lo>96</lo>
 		</address>
 	</item>
-	<item ID = "ds3_velocity_lpf_cutoff">
+	<item id = "ds3_velocity_lpf_cutoff">
 		<address>
 			<hi>50</hi>
 			<lo>97</lo>
 		</address>
 	</item>
-	<item ID = "ds3_sourcekit">
+	<item id = "ds3_sourcekit">
 		<address>
 			<hi>50</hi>
 			<lo>112</lo>
@@ -2793,217 +2793,217 @@ Delay L,C,R Delay L,R Echo Cross Delay *Data range varies according to effect-ty
 		<valueClass>Integer</valueClass>
 	</item>
 
-	<item ID = "ds4_pitch_coarse">
+	<item id = "ds4_pitch_coarse">
 		<address>
 			<hi>51</hi>
 			<lo>0</lo>
 		</address>
 	</item>
-	<item ID = "ds4_pitch_fine">
+	<item id = "ds4_pitch_fine">
 		<address>
 			<hi>51</hi>
 			<lo>1</lo>
 		</address>
 	</item>
-	<item ID = "ds4_level">
+	<item id = "ds4_level">
 		<address>
 			<hi>51</hi>
 			<lo>2</lo>
 		</address>
 	</item>
-	<item ID = "ds4_group">
+	<item id = "ds4_group">
 		<address>
 			<hi>51</hi>
 			<lo>3</lo>
 		</address>
 	</item>
-	<item ID = "ds4_panorama">
+	<item id = "ds4_panorama">
 		<address>
 			<hi>51</hi>
 			<lo>4</lo>
 		</address>
 	</item>
-	<item ID = "ds4_reverb">
+	<item id = "ds4_reverb">
 		<address>
 			<hi>51</hi>
 			<lo>5</lo>
 		</address>
 	</item>
-	<item ID = "ds4_chorus">
+	<item id = "ds4_chorus">
 		<address>
 			<hi>51</hi>
 			<lo>6</lo>
 		</address>
 	</item>
-	<item ID = "ds4_variation">
+	<item id = "ds4_variation">
 		<address>
 			<hi>51</hi>
 			<lo>7</lo>
 		</address>
 	</item>
-	<item ID = "ds4_key_assign">
+	<item id = "ds4_key_assign">
 		<address>
 			<hi>51</hi>
 			<lo>8</lo>
 		</address>
 	</item>
-	<item ID = "ds4_receive_noteoff">
+	<item id = "ds4_receive_noteoff">
 		<address>
 			<hi>51</hi>
 			<lo>9</lo>
 		</address>
 	</item>
-	<item ID = "ds4_receive_noteon">
+	<item id = "ds4_receive_noteon">
 		<address>
 			<hi>51</hi>
 			<lo>10</lo>
 		</address>
 	</item>
-	<item ID = "ds4_lpf_cutoff">
+	<item id = "ds4_lpf_cutoff">
 		<address>
 			<hi>51</hi>
 			<lo>11</lo>
 		</address>
 	</item>
-	<item ID = "ds4_lpf_resonance">
+	<item id = "ds4_lpf_resonance">
 		<address>
 			<hi>51</hi>
 			<lo>12</lo>
 		</address>
 	</item>
-	<item ID = "ds4_env_attack_time">
+	<item id = "ds4_env_attack_time">
 		<address>
 			<hi>51</hi>
 			<lo>13</lo>
 		</address>
 	</item>
-	<item ID = "ds4_env_decay_time">
+	<item id = "ds4_env_decay_time">
 		<address>
 			<hi>51</hi>
 			<lo>14</lo>
 		</address>
 	</item>
-	<item ID = "ds4_env_release_time">
+	<item id = "ds4_env_release_time">
 		<address>
 			<hi>51</hi>
 			<lo>15</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_bass">
+	<item id = "ds4_eq_bass">
 		<address>
 			<hi>51</hi>
 			<lo>32</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_treble">
+	<item id = "ds4_eq_treble">
 		<address>
 			<hi>51</hi>
 			<lo>33</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_midbass">
+	<item id = "ds4_eq_midbass">
 		<address>
 			<hi>51</hi>
 			<lo>34</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_midtreble">
+	<item id = "ds4_eq_midtreble">
 		<address>
 			<hi>51</hi>
 			<lo>35</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_bass_frequency">
+	<item id = "ds4_eq_bass_frequency">
 		<address>
 			<hi>51</hi>
 			<lo>36</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_treble_frequency">
+	<item id = "ds4_eq_treble_frequency">
 		<address>
 			<hi>51</hi>
 			<lo>37</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_midbass_frequency">
+	<item id = "ds4_eq_midbass_frequency">
 		<address>
 			<hi>51</hi>
 			<lo>38</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_midtreble_frequency">
+	<item id = "ds4_eq_midtreble_frequency">
 		<address>
 			<hi>51</hi>
 			<lo>39</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_bass_q">
+	<item id = "ds4_eq_bass_q">
 		<address>
 			<hi>51</hi>
 			<lo>40</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_treble_q">
+	<item id = "ds4_eq_treble_q">
 		<address>
 			<hi>51</hi>
 			<lo>41</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_midbass_q">
+	<item id = "ds4_eq_midbass_q">
 		<address>
 			<hi>51</hi>
 			<lo>42</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_midtreble_q">
+	<item id = "ds4_eq_midtreble_q">
 		<address>
 			<hi>51</hi>
 			<lo>43</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_bass_shape">
+	<item id = "ds4_eq_bass_shape">
 		<address>
 			<hi>51</hi>
 			<lo>44</lo>
 		</address>
 	</item>
-	<item ID = "ds4_eq_treble_shape">
+	<item id = "ds4_eq_treble_shape">
 		<address>
 			<hi>51</hi>
 			<lo>45</lo>
 		</address>
 	</item>
-	<item ID = "ds4_output">
+	<item id = "ds4_output">
 		<address>
 			<hi>51</hi>
 			<lo>64</lo>
 		</address>
 	</item>
-	<item ID = "ds4_hpf_cutoff">
+	<item id = "ds4_hpf_cutoff">
 		<address>
 			<hi>51</hi>
 			<lo>80</lo>
 		</address>
 	</item>
-	<item ID = "ds4_hpf_resonance">
+	<item id = "ds4_hpf_resonance">
 		<address>
 			<hi>51</hi>
 			<lo>81</lo>
 		</address>
 	</item>
-	<item ID = "ds4_velocity_pitch">
+	<item id = "ds4_velocity_pitch">
 		<address>
 			<hi>51</hi>
 			<lo>96</lo>
 		</address>
 	</item>
-	<item ID = "ds4_velocity_lpf_cutoff">
+	<item id = "ds4_velocity_lpf_cutoff">
 		<address>
 			<hi>51</hi>
 			<lo>97</lo>
 		</address>
 	</item>
-	<item ID = "ds4_sourcekit">
+	<item id = "ds4_sourcekit">
 		<address>
 			<hi>51</hi>
 			<lo>112</lo>

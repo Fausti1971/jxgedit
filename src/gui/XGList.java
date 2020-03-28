@@ -5,7 +5,7 @@ import java.util.Vector;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import value.ObservableValue;
+import value.ChangeableContent;
 
 public class XGList<E extends Object> extends JList<E> implements ListSelectionListener
 {
@@ -16,9 +16,9 @@ public class XGList<E extends Object> extends JList<E> implements ListSelectionL
 
 /******************************************************************************************************/
 
-	private ObservableValue<E> value;
+	private ChangeableContent<E> value;
 
-	public XGList(Set<E> list, ObservableValue<E> s)
+	public XGList(Set<E> list, ChangeableContent<E> s)
 	{	super(new Vector<E>(list));
 		this.setSelectedValue(s.get(), true);
 		this.value = s;

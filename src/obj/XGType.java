@@ -23,7 +23,7 @@ import tag.XGTagableSet;
 import value.XGValue;
 import xml.XMLNode;
 //TODO: unsupported types (nicht in object.xml vorgefunden, sondern aus "XG" entnommen) hervorheben (in rot darstellen); zum laden "falscher" bulks...
-public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstants, XGAddressConstants, XGTreeNode
+public class XGType implements ConfigurationConstants, XGTagable<String>, XGTypeConstants, XGAddressConstants, XGTreeNode
 {	private static Logger log = Logger.getAnonymousLogger();
 
 	public static XGTagableSet<XGType> init(XGDevice dev)
@@ -120,9 +120,9 @@ public class XGType implements ConfigurationConstants, XGTagable, XGTypeConstant
 	}
 
 	public void addInstance(XGValue v)
-	{	if(this.instances.contains(v.getAdress())) return;
+	{	if(this.instances.contains(v.getAddress())) return;
 		try
-		{	this.instances.add(new XGInstance(this.device, v.getAdress()));
+		{	this.instances.add(new XGInstance(this.device, v.getAddress()));
 		}
 		catch(InvalidXGAddressException e)
 		{	e.printStackTrace();
