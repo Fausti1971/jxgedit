@@ -46,7 +46,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 
 	@Override public synchronized void clear()
 	{	this.map.clear();
-		this.notifyListeners(INVALIDADRESS);
+		this.notifyListeners(XGALLADDRESS);
 	}
 
 	public synchronized T get(XGAddress adr)
@@ -89,13 +89,13 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	}
 
 	public synchronized T getFirstValid(XGAddress adr)
-	{	for(T a : this.map.values()) if(a.getAddress().equalsValidFields(adr)) return a;
+	{	for(T a : this.map.values()) if(a.getAddress().contains(adr)) return a;
 		return null;
 	}
 
 	public synchronized XGAddressableSet<T> getAllValid(XGAddress adr)
 	{	XGAddressableSet<T> set = new XGAddressableSet<>();
-		for(T a : this.values()) if(a.getAddress().equalsValidFields(adr)) set.add(a);
+		for(T a : this.values()) if(a.getAddress().contains(adr)) set.add(a);
 		this.addListener(set);
 		return set;
 	}

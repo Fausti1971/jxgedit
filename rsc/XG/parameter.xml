@@ -1,71 +1,74 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:-->
+<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt
+	ein fehlendes addressfield wird durch das entsprechende parent-addressfield ersetzt
+	ein vorhandenes opcode-addressfield überschreibt des entsprechende parent-addressfield, aber nur falls es dort enthalten ist
+-->
 
 <modules xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
 
-	<module id="system" name="Master">
-		<bulk hi="0" mid="0" lo="0" size="7">
-			<opcode id="master_tune" hi="0" mid="0" lo="0" byteCount="4" byteType="LSN" valueClass="Integer">
+	<module id="system" name="Master" hi="0" mid="0">
+		<bulk lo="0" size="7">
+			<opcode id="master_tune" lo="0" size="4" byteType="LSN" valueClass="Integer">
 				<parameter longName="Master Tune" shortName="Tune" max="2047" translator="translateSub128Div10"/>
 			</opcode>
 		</bulk>
 	</module>
 
-	<module id="sysfx" name="System Effect">
-		<bulk hi="2" mid="1" lo="0" size="14">
-			<opcode id="reverb_type" hi="2" mid="1" lo="0" byteCount="2" byteType="LSB">
+	<module id="sysfx" name="System Effect" hi="2" mid="1">
+		<bulk lo="0" size="14">
+			<opcode id="reverb_type" lo="0" size="2" byteType="LSB">
 				<parameter longName="Reverb Program" shortName="Prog" max="69" translator="translateMap" translationMap="fx_programs"/>
 			</opcode>
-			<opcode id="reverb_1" hi="2" mid="1" lo="2" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_1" lo="2" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" max="69" translator="translateMap" translationMap="reverb_time"/>
 			</opcode>
-			<opcode id="reverb_2" hi="2" mid="1" lo="3" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_2" lo="3" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Diffusion" shortName="Diff" max="10" translator="translatePercent"/>
 			</opcode>
-			<opcode id="reverb_3" hi="2" mid="1" lo="4" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_3" lo="4" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Initial Delay" shortName="Delay" max="63" translator="translateMap" translationMap="delay_time_400"/>
 			</opcode>
-			<opcode id="reverb_4" hi="2" mid="1" lo="5" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_4" lo="5" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="HPF Cutoff" shortName="HPF" max="52" translator="translateMap" translationMap="filter_freq"/>
 			</opcode>
-			<opcode id="reverb_5" hi="2" mid="1" lo="6" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_5" lo="6" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" min="34" max="60" translator="translateMap" translationMap="filter_freq"/>
 			</opcode>
-			<opcode id="reverb_6" hi="2" mid="1" lo="7" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_6" lo="7" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="16,17,18,19" longName="Width" shortName="Width" max="37" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
-			<opcode id="reverb_7" hi="2" mid="1" lo="8" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_7" lo="8" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="16,17,18,19" longName="Height" shortName="Hight" max="73" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
-			<opcode id="reverb_8" hi="2" mid="1" lo="9" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_8" lo="9" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="16,17,18,19" longName="Depth" shortName="Depth" max="104" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
-			<opcode id="reverb_9" hi="2" mid="1" lo="10" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_9" lo="10" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="16,17,18,19" longName="Wall Vary" shortName="Wall" max="30"/>
 			</opcode>
-			<opcode id="reverb_10" hi="2" mid="1" lo="11" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_10" lo="11" dependingOn="reverb_type" dependencyType="MSB">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Dry/Wet" shortName="Wet" min="1" translator="translatePercent"/>
 			</opcode>
-			<opcode id="reverb_return" hi="2" mid="1" lo="12">
+			<opcode id="reverb_return" lo="12">
 				<parameter longName="Reverb Return" shortName="Retrn"/>
 			</opcode>
-			<opcode id="reverb_pan" hi="2" mid="1" lo="13">
+			<opcode id="reverb_pan" lo="13">
 				<parameter longName="Reverb Panorama" shortName="Pan" min="1" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
 		</bulk>
 	</module>
 
-	<module id="multipart" name="Multipart">
-		<bulk hi="8" mid="0-31" lo="0" size="41">
-			<opcode id="mp_elementReserve" hi="8" mid="0-31" lo="0">
+	<module id="multipart" name="Multipart" hi="8-10" mid="0-31">
+		<bulk hi="8" lo="0" size="41">
+			<opcode id="mp_elementReserve" lo="0">
 				<parameter longName="Element Reserve" shortName="ElRes" max="32"/>
 			</opcode>
 		</bulk>
 	</module>
 
-	<module id="drumset" name="Drumset">
-		<bulk hi="48-51" mid="13-91" lo="0" size="16">
-			<opcode id="dr_pitch_coarse" hi="48-51" mid="13-91" lo="0">
+	<module id="drumset" name="Drumset" hi="48-51" mid="13-91">
+		<bulk lo="0" size="16">
+			<opcode id="dr_pitch_coarse" lo="0">
 				<parameter longName="Pitch Coarse" shortName="Tune" translator="translateSub64"/>
 			</opcode>
 		</bulk>

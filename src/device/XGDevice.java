@@ -112,9 +112,9 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private boolean isSelected = false;
 	private XMLNode config;
 	private final XGAddressableSet<XGMessageBulkDump> messages = new XGAddressableSet<XGMessageBulkDump>();
-	private final XGTagableSet<XGModule> modules;
 	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<XGOpcode>();
 	private final XGTagableSet<XGTranslationMap> translations = new XGTagableSet<XGTranslationMap>();
+	private final XGTagableSet<XGModule> modules;
 	private int info1, info2;
 	private final Queue<XGSysexFile> files = new LinkedList<>();
 	private final XGSysexFile defaultSyx;
@@ -189,7 +189,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public XGModule getModule(XGAddress adr)
-	{	return this.modules.get(XGModule.getModuleTag(adr));
+	{	for(XGModule m : this.modules) if(m.getAddress().contains(adr)) return m;
+		return null;
 	}
 
 	public XGModule getModule(XGModuleTag tag)
@@ -376,7 +377,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	if(msg instanceof XGMessageParameterChange) this.getModule(msg.getAddress()).submit(msg);
 		else
 		{	this.messages.add((XGMessageBulkDump)msg);
-			
 		}
 	}
 

@@ -14,6 +14,7 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
+import adress.XGBulkDump;
 import application.ConfigurationConstants;
 import device.XGDevice;
 import gui.XGTree;
@@ -77,7 +78,7 @@ public class XGType implements ConfigurationConstants, XGTagable<String>, XGType
 	private final XGDevice device;
 	private boolean isSelected = false;
 	private final String name;
-	private final Set<XGBulkDumpSequence> bulks;
+	private final Set<XGBulkDump> bulks;
 	private final XGAddressableSet<XGInstance> instances = new XGAddressableSet<XGInstance>();
 
 	public XGType(XGDevice dev, XGType t)	//für "unsupported" types
@@ -90,7 +91,7 @@ public class XGType implements ConfigurationConstants, XGTagable<String>, XGType
 	{	this(dev, DEF_OBJECTTYPENAME + adr, null);
 	}
 
-	private XGType(XGDevice dev, String name, Set<XGBulkDumpSequence> dseq)
+	private XGType(XGDevice dev, String name, Set<XGBulkDump> dseq)
 	{	this.device = dev;
 		this.name = name;
 		this.bulks = dseq;
@@ -101,21 +102,21 @@ public class XGType implements ConfigurationConstants, XGTagable<String>, XGType
 	{	this(dev, n.getChildNode(TAG_NAME).getTextContent(), new HashSet<>());
 
 		for(XMLNode seq : n.getChildNodes())
-			if(seq.getTag().equals(TAG_DUMPSEQ)) this.bulks.add(new XGBulkDumpSequence(seq));
+			if(seq.getTag().equals(TAG_DUMPSEQ)) this.bulks.add(new XGBulkDump(seq));
 	}
 
-	public Set<XGBulkDumpSequence> getDumpsequences()
+	public Set<XGBulkDump> getDumpsequences()
 	{	return this.bulks;
 	}
 
 	public boolean include(XGAddress adr)
-	{	for(XGBulkDumpSequence s : this.bulks) if(s.contains(adr)) return true;
+	{	for(XGBulkDump s : this.bulks) if(s.contains(adr)) return true;
 		return false;
 	}
 
 	public int maxInstanceCount()
 	{	int i = 0;
-		for(XGBulkDumpSequence s : this.bulks) i = Math.max(s.maxInstanceCount(), i);
+		for(XGBulkDump s : this.bulks) i = Math.max(s.maxInstanceCount(), i);
 		return i;
 	}
 

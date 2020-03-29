@@ -1,72 +1,138 @@
 package adress;
 
-import application.Rest;
-import xml.XMLNode;
+import java.util.Iterator;
+import java.util.LinkedHashSet;
+import java.util.Set;
+import java.util.StringTokenizer;
 
-public class XGAddressField implements XGAddressConstants
-{	private static String EXCEPTIONTEXT = "access to invald XGAdressField: ";
+/**
+ * eines der drei Felder einer XGAddress, kann fix, und variabel (Range) sein, was dem einstmaligen Status "invalid" entspricht
+ * @author thomas
+ *
+ */
+public class XGAddressField implements XGAddressConstants, Comparable<XGAddressField>, Iterable<Integer>
+{
+	private static String EXCEPTIONTEXT = "access to variable XGAdressField: ";
 
 /******************************************************************************************************************/
 
-	private final int value;
+	private final int min, max;
 
-	public XGAddressField()
-	{	this.value = INVALIDFIELD;
+	public XGAddressField(int v)
+	{	this(v, v);
 	}
 
-	public XGAddressField(XMLNode n)
-	{	if(n == null) this.value = INVALIDFIELD;
-		else this.value = Rest.parseIntOrDefault(n.getTextContent(), INVALIDFIELD);
+	public XGAddressField(int vMin, int vMax)
+	{	this.min = vMin;
+		this.max = vMax;
 	}
 
 	public XGAddressField(String v)
-	{	this.value = Rest.parseIntOrDefault(v, INVALIDFIELD);
-	}
-
-	public XGAddressField(int v)
-	{	this.value = v;
-	}
-
-	public boolean isValid()
-	{	return (this.value & ~MIDIBYTEMASK) == 0;
-	}
-
-	public int getValue() throws InvalidXGAddressException
-	{	if(this.isValid()) return this.value;
-		else throw new InvalidXGAddressException(EXCEPTIONTEXT);
-	}
-
-	public XGAddressField complement(XGAddressField f) throws InvalidXGAddressException
-	{	int status = 0;
-		if(this.isValid()) status = 1;
-		if(f.isValid()) status |= 2;
-		switch(status)
-		{	case 1:	return this;
-			case 2:	return f;
-			case 3:	if(this.value == f.value) return this;
-			default:
-			case 0:	throw new InvalidXGAddressException("can't complement adress-field " + this + " with " + f);
+	{	if(v == null)
+		{	this.min = DEF_ADDRESSFILED.min;
+			this.max = DEF_ADDRESSFILED.max;
+		}
+		else
+		{	String vMin, vMax;
+			StringTokenizer t = new StringTokenizer(v, "-");
+			vMin = vMax = t.nextToken();
+			while(t.hasMoreTokens()) vMax = t.nextToken();
+			this.min = Integer.parseInt(vMin);
+			this.max = Integer.parseInt(vMax);
 		}
 	}
 
-	public int compare(XGAddressField o)
-	{	if(this.isValid() && o.isValid()) return Integer.compare(this.value, o.value);
-		else return 0;
+/**
+ * 
+ * @return true, wenn sowohl min und max definiert als auch gleich sind
+ */
+	public boolean isFix()
+	{	return this.min == this.max ;
 	}
 
-	public boolean equalsValid(XGAddressField a)
-	{	if(this.isValid() && a.isValid()) return this.value == a.value;
-		return true;
+/**
+ * negiertes isFix(); nur aus Lesbarkeitsgründen
+ */
+	public boolean isRange()
+	{	return this.min != this.max ;
+	}
+
+/**
+ * 
+ * @return einen eventuellen festen Wert
+ * @throws InvalidXGAddressException wenn der Wert variabel (Range) ist
+ */
+	public int getValue() throws InvalidXGAddressException
+	{	if(this.isFix()) return this.min;
+		else throw new InvalidXGAddressException(EXCEPTIONTEXT + this);
+	}
+
+/**
+ * versucht die Verschmelzung zweier Addressfelder zu einem möglichst konkreten Wert
+ * zwei Ranges ergeben eine eventuelle gemeinsame Teilmenge, ansonsten eine Exception
+ * zwei fixe, gleiche Werte ergeben eben diesen, ansonsten eine Exception
+ * @param f	das Addressfeld, durch das this komplettiert werden soll
+ * @return ein neues Addressfeld als Komplement
+ * @throws InvalidXGAddressException falls die variablen Werte keine Schnittmenge haben, oder fixe Werte verschieden sind
+ */
+	public XGAddressField complement(XGAddressField f) throws InvalidXGAddressException
+	{
+		if(f.isFix())
+		{	if(this.isFix())
+			{	if(this.equals(f)) return f;
+			}
+			else
+				if(this.contains(f)) return f;
+		}
+		else
+		{	if(this.isFix())
+			{	if(f.contains(this)) return this;
+			}
+			else
+				if(this.contains(f)) return this.intersection(f);
+		}
+		throw new InvalidXGAddressException(EXCEPTIONTEXT + this + " and " + f);
+	}
+
+/**
+ * versucht festzustellen, ob ein definiertes, festes f in einem definierten this enthalten ist
+ * @param f	Addressfeld
+ * @return	true, true, wenn eines oder beide Felder variabel sind und eine gemeinsame Teilmenge haben (bei fixen Werten, wenn gleich)
+ */
+	public boolean contains(XGAddressField f)
+	{	return this.min <= f.max && this.max >= f.min;
+	}
+
+/**
+ * ermittelt und returniert eine eventuelle gemeinsame Teilmenge
+ * @param f
+ * @return die eventuell vorhandene Teilmenge von this und f
+ * @throws InvalidXGAddressException falls keine solche existiert
+ */
+	public XGAddressField intersection(XGAddressField f) throws InvalidXGAddressException
+	{	if(this.contains(f) || f.contains(this)) return new XGAddressField(Math.max(this.min, f.min), Math.min(this.max, f.max));
+		throw new InvalidXGAddressException("no intersection of " + this + " and " + f);
 	}
 
 	@Override public boolean equals(Object o)
 	{	if(!(o instanceof XGAddressField)) return false;
 		XGAddressField a = (XGAddressField)o;
-		return this.isValid() == a.isValid() && this.value == a.value;
+		return this.min == a.min && this.max == a.max;
 	}
 
 	@Override public String toString()
-	{	if(this.isValid()) return "" + this.value;
-		else return "-";
+	{	return this.min + "-" + this.max;
+	}
+
+	@Override public int compareTo(XGAddressField o)
+	{	int res = Integer.compare(this.min, o.min);
+		if(res == 0) Integer.compare(this.max, o.max);
+		return res;
+	}
+
+	@Override public Iterator<Integer> iterator()
+	{	Set<Integer> set = new LinkedHashSet<>();
+		for(int i = this.min; i <= this.max; i++) set.add(i);
+		return set.iterator();
 	}
 }

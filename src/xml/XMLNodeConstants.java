@@ -6,7 +6,7 @@ public interface XMLNodeConstants
 		XML_CONFIG = "config.xml",
 		XML_OPCODE = "opcodes.xml",
 		XML_TYPE = "types.xml",
-		XML_PARAMETER = "parameters.xml",
+		XML_PARAMETER = "parameter.xml",
 		XML_TRANSLATION = "translations.xml",
 		XML_TEMPLATE = "templates.xml";
 
@@ -37,13 +37,12 @@ public interface XMLNodeConstants
 		ATTR_NAME = "name",
 
 		TAG_BULK = "bulk",
-		TAG_HI = "hi",
-		TAG_MID = "mid",
-		TAG_LO = "lo",
-		TAG_SIZE = "size",
+		ATTR_HI = "hi",
+		ATTR_MID = "mid",
+		ATTR_LO = "lo",
+		ATTR_SIZE = "size",
 
 		TAG_OPCODE = "opcode",
-		ATTR_BYTECOUNT = "byteCount",
 		ATTR_DATATYPE = "byteType",
 		ATTR_VALUECLASS = "valueClass",
 		ATTR_DEP_VALUES = "dependencyValues",

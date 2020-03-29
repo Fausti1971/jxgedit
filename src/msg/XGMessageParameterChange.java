@@ -3,6 +3,7 @@ package msg;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import value.XGValue;
 
 public class XGMessageParameterChange extends XGSuperMessage implements XGResponse
@@ -20,13 +21,13 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	}
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, XGValue v) throws InvalidXGAddressException, InvalidMidiDataException
-	{	super(src, dest, new byte[OVERHEAD + v.getOpcode().getByteCount()], true);
+	{	super(src, dest, new byte[OVERHEAD + v.getOpcode().getSize()], true);
 		setMessageID();
 		setHi(v.getAddress().getHi());
 		setMid(v.getAddress().getMid());
 		setLo(v.getAddress().getLo());
 		v.encodeBytes(this, v.getContent());
-		setEOX(DATA_OFFS + v.getOpcode().getByteCount());
+		setEOX(DATA_OFFS + v.getOpcode().getSize());
 	}
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
@@ -63,7 +64,8 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	}
 
 	@Override public int getBulkSize()
-	{	return this.getSource().getDevice().getModule(this.getAddress()).getOpcodes().get(this.getAddress()).getByteCount();
+	{	XGAddress adr = this.getAddress();
+		return this.getSource().getDevice().getModule(adr).getBulks().get(adr).getOpcodes().get(adr).getSize();
 	}
 
 	@Override public void setBulkSize(int size)

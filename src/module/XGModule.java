@@ -9,6 +9,8 @@ import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
+import adress.XGAddressableSet;
+import adress.XGBulkDump;
 import device.XGDevice;
 import gui.XGTree;
 import gui.XGTreeNode;
@@ -31,16 +33,17 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 			return set;
 		}
 		XMLNode xml = XMLNode.parse(file);
-		XGModule o = null;
+		if(xml == null) return set;
+		XGModule m = null;
 		if(xml.getTag().equals(TAG_MODULES))
 		{	for(XMLNode n : xml.getChildNodes())
 			{	if(n.getTag().equals(TAG_MODULE))
-				{	o = newInstance(dev, n);
-					set.add(o);
+				{	m = new XGSuperModule(dev, n);
+					set.add(m);
 				}
 			}
 		}
-		log.info(set.size() + " opcodes initialized from: " + file);
+		log.info(set.size() + " modules initialized from: " + file);
 		return set;
 	};
 
@@ -77,17 +80,12 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 		}
 	}
 
-	static XGModule newInstance(XGDevice dev, XMLNode n)
-	{	XGModuleTag tag = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
-		String name = n.getStringAttribute(ATTR_NAME);
-		
-	}
-
 /********************************************************************************************************************/
 
 	Set<XGModule> getChildModules();
 	XGModule getParentModule();
 	XMLNode getGuiTemplate();
+	XGAddressableSet<XGBulkDump> getBulks();
 //	XGTagableAddressableSet<XGOpcode>getOpcodes();
 //	XGTagableAddressableSet<XGValue> getValues();
 
@@ -97,7 +95,7 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 
 	public default XGModule getModule(XGAddress adr) throws XGModuleNotFoundException
 	{	for(XGModule m : this.getChildModules())
-		{	if(m.getAddress().equalsValidFields(adr))
+		{	if(m.getAddress().contains(adr))
 			{	if(m.getChildCount() == 0) return m;
 				else return m.getModule(adr);
 			}
@@ -111,7 +109,7 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 	}
 
 	@Override public default boolean getAllowsChildren()
-	{	return this.getAddress().isRange();
+	{	return this.getAddress().isFixedAddress();
 	}
 
 	@Override public default Enumeration<? extends TreeNode> children()

@@ -48,7 +48,7 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 	public XGParameter(XMLNode n)
 	{
 		this.minValue = n.getIntegerAttribute(ATTR_MIN);
-		this.maxValue = n.parseChildNodeIntegerContent(ATTR_MAX, DEF_MAX);
+		this.maxValue = n.getIntegerAttribute(ATTR_MAX);
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
 		this.valueTranslator = XGValueTranslator.getTranslator(n.getStringAttribute(ATTR_TRANSLATOR));

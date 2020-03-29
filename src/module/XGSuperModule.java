@@ -1,43 +1,37 @@
 package module;
 
 import java.awt.event.ActionEvent;
-import java.io.FileNotFoundException;
 import java.util.Set;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
+import adress.XGAddress;
+import adress.XGAddressableSet;
+import adress.XGBulkDump;
 import device.TimeoutException;
 import device.XGDevice;
 import gui.XGTree;
 import msg.XGRequest;
 import msg.XGResponse;
-import obj.XGBulkDumpSequence;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
 
-public abstract class XGSuperModule implements XGModule, XMLNodeConstants
+public class XGSuperModule implements XGModule, XMLNodeConstants
 {
 	private final XGModuleTag tag;
-	private final Set<XGBulkDumpSequence> bulks;
+	private final XGAddress address;
+	private final XGAddressableSet<XGBulkDump> bulks;
 	private final XGDevice device;
 	private final XGModule parentModule;
 //	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<XGValue>();
 	private final XMLNode guiTemplate;
 
-	protected XGSuperModule(XGDevice dev, Set<XGBulkDumpSequence> bulks, XGModuleTag tag)
-	{	this.tag = tag;
-		this.bulks = bulks;
+	public XGSuperModule(XGDevice dev, XMLNode n)
+	{	this.parentModule = null;
 		this.device = dev;
-		this.parentModule = null;
-		this.guiTemplate = 
-	}
-
-	protected XGSuperModule(XGModule par)
-	{	if(par == null) return;
-		this.parentModule = par;
-
-		this.device = par.getDevice();
-		this.tag = (XGModuleTag)par.getTag();
-		this.guiTemplate = par.getGuiTemplate();
+		this.tag = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
+		this.address = new XGAddress(n);
+		this.bulks = XGBulkDump.init(n);
+		this.guiTemplate = null; //TODO:
 	}
 
 	@Override public XGModuleTag getTag()
@@ -56,7 +50,7 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	{	return this.device;
 	}
 
-	public XMLNode getGuiTemplate()
+	@Override public XMLNode getGuiTemplate()
 	{	return guiTemplate;
 	}
 /*
@@ -120,5 +114,19 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override public XGAddress getAddress()
+	{	return this.address;
+	}
+
+	@Override public String getNodeText()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override public XGAddressableSet<XGBulkDump> getBulks()
+	{	return this.bulks;
 	}
 }

@@ -14,6 +14,7 @@ public interface ConfigurationConstants extends XMLNodeConstants
 //	static final String SYSFILESEP = System.getProperty("file.separator");
 
 	static final Path RSCPATH = Path.of("rsc");
+	static final Path XSDPATH = RSCPATH.resolve("xsd");
 	static final Path HOMEPATH = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
 	static final Path CONFIGFILEPATH = HOMEPATH.resolve(XML_CONFIG);
 

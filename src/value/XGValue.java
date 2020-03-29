@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
+import adress.XGAddressableSetListener;
 import module.XGModule;
 import module.XGModuleNotFoundException;
 import msg.XGMessageBulkDump;
@@ -19,14 +20,14 @@ import tag.XGTagable;
  * @author thomas
  *
  */
-public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddressable, XGTagable, XGValueChangeListener
+public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddressable, XGTagable, XGValueChangeListener, XGAddressableSetListener
 {
 	private static Logger log = Logger.getAnonymousLogger();
 
 /***********************************************************************************************/
 
 	private final XGAddress address;
-	private final XGMessageBulkDump message;
+	private XGMessageBulkDump message;
 	private final XGOpcode opcode;
 	private final XGModule module;
 	private final XGValueDependency dependency;
@@ -35,10 +36,11 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 	public XGValue(XGModule mod, XGOpcode opc) throws XGModuleNotFoundException, InvalidXGAddressException
 	{	this.opcode = opc;
 		this.address = mod.getAddress().complement(opc.getAddress());
-		if(!this.address.isValidAdress()) throw new InvalidXGAddressException("invalid adress: " + this.address);
+		if(!this.address.isFixedAddress()) throw new InvalidXGAddressException("value needs an fixed address: " + this.address);
 		this.module = mod;
 		this.message = this.module.getDevice().getMessages().get(this.module.getAddress().complement(this.opcode.getBulkAddress()));
-		this.dependency = new XGValueDependency(this, module.getValues().get(this.opcode.getDependencyTag()), this.opcode.getDependencyType());
+		this.module.getDevice().getMessages().addListener(this);
+		this.dependency = null;
 	}
 
 	public XGValue(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
@@ -46,7 +48,7 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 		this.opcode = src.getDevice().getOpcodes().get(adr);
 		this.module = src.getDevice().getModule(adr);
 		this.message = this.module.getDevice().getMessages().get(this.module.getAddress().complement(this.opcode.getBulkAddress()));
-		this.dependency = new XGValueDependency(this, module.getValues().get(this.opcode.getDependencyTag()), this.opcode.getDependencyType());
+		this.dependency = null;
 	}
 
 	public void addListener(XGValueChangeListener l)
@@ -93,14 +95,14 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 	public Object decodeBytes(XGResponse msg) throws InvalidXGAddressException
 	{	int offset = msg.getBaseOffset() + this.address.getLo();
 		switch(this.opcode.getValueClass())
-			{	case String:		return msg.getString(offset, this.opcode.getByteCount());
+			{	case String:		return msg.getString(offset, this.opcode.getSize());
 				case Image:			return null;
 				default:
 				case Integer:
 					switch(this.opcode.getDataType())
 					{	default:
-						case LSB:	return msg.decodeMidiBytesToInteger(offset, this.opcode.getByteCount());
-						case LSN:	return msg.decodeLowerNibbles(offset, this.opcode.getByteCount());
+						case LSB:	return msg.decodeMidiBytesToInteger(offset, this.opcode.getSize());
+						case LSN:	return msg.decodeLowerNibbles(offset, this.opcode.getSize());
 					}
 			}
 	}
@@ -108,14 +110,14 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 	public void encodeBytes(XGResponse msg, Object o) throws InvalidXGAddressException
 	{	int offset = this.getAddress().getLo();
 		switch(this.opcode.getValueClass())
-			{	case String:	msg.setString(offset, this.opcode.getByteCount(), this.toString());
+			{	case String:	msg.setString(offset, this.opcode.getSize(), this.toString());
 				case Image:		return;
 				default:
 				case Integer:
 					switch(this.opcode.getDataType())
 					{	default:
-						case LSB:	msg.encodeMidiBytesFromInteger(offset, this.opcode.getByteCount(), (int)o); break;
-						case LSN:	msg.encodeLowerNibblesFromInteger(offset, this.opcode.getByteCount(), (int)o); break;
+						case LSB:	msg.encodeMidiBytesFromInteger(offset, this.opcode.getSize(), (int)o); break;
+						case LSN:	msg.encodeLowerNibblesFromInteger(offset, this.opcode.getSize(), (int)o); break;
 					}
 			}
 	}
@@ -161,5 +163,15 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 
 	@Override public String getTag()
 	{	return this.opcode.getTag();
+	}
+
+	@Override public void setChanged(XGAddress adr)
+	{	try
+		{	this.message = this.module.getDevice().getMessages().get(adr.complement(this.opcode.getBulkAddress()));
+			this.notifyListeners();
+		}
+		catch(InvalidXGAddressException e)
+		{	e.printStackTrace();
+		}
 	}
 }

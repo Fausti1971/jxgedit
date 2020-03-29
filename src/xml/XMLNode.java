@@ -17,6 +17,9 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.stream.StreamSource;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import org.xml.sax.SAXException;
 import application.ConfigurationConstants;
 import application.Rest;
 import tag.XGTagable;
@@ -31,17 +34,39 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 {
 	private static Logger log = Logger.getAnonymousLogger();
 
-	public static XMLNode parse(File f)
-	{	if(!f.canRead()) return null;
+/**
+ * lokalisiert die zur xml gehörige xsd und valisiert xml
+ * @param xml
+ * @return true, wenn xml valide oder xsd nicht vorhanden
+ */
+	private static boolean validate(File xml)
+	{	File xsd = XSDPATH.resolve(xml.getName()).toFile();//TODO: Extension ersetzen...
+		if(xsd == null || !xsd.canRead()) return true;
+		Schema schema = null;
+		try
+		{	SchemaFactory factory = null;
+			factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+			schema = factory.newSchema(xsd);
+			schema.newValidator().validate(new StreamSource(xml));
+			return true;
+		}
+		catch(SAXException | IOException e)
+		{	return false;
+		}
+	}
+
+	public static XMLNode parse(File xml)
+	{	if(xml == null || !xml.canRead()) return null;
+		if(!validate(xml)) return null;
 		XMLNode current_node = null, parent_node = null, root_node = null;
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, "true");
 
 		try
-		{	XMLEventReader rd = inputFactory.createXMLEventReader(new StreamSource(f));
+		{	XMLEventReader rd = inputFactory.createXMLEventReader(new StreamSource(xml));
 			while(rd.hasNext())
 			{	XMLEvent ev = rd.nextEvent();
-				if(ev.isStartDocument()) log.info("parsing started: " + f);
+				if(ev.isStartDocument()) log.info("parsing started: " + xml);
 				if(ev.isStartElement())
 				{	parent_node = current_node;
 					current_node = new XMLNode(ev.asStartElement().getName().getLocalPart(), XMLNode.createProperties(ev.asStartElement().getAttributes()));
@@ -50,12 +75,12 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 				}
 				if(ev.isCharacters()) if(current_node != null) current_node.setTextContent(ev.asCharacters().getData().trim());
 				if(ev.isEndElement()) if(current_node != null) current_node = current_node.getParentNode();
-				if(ev.isEndDocument()) log.info("parsing finished: " + f);
+				if(ev.isEndDocument()) log.info("parsing finished: " + xml);
 			}
 			rd.close();
 		}
 		catch(XMLStreamException e)
-		{	log.info(e.getMessage() + f);
+		{	log.info(e.getMessage() + xml);
 		}
 		return root_node;
 	}
@@ -163,12 +188,20 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 		return Rest.parseIntOrDefault(n.getTextContent(), def);
 	}
 
+	public String getStringAttribute(String a, String def)
+	{	String s = this.attributes.getProperty(a);
+		if(s == null) return def;
+		return s;
+	}
+
 	public String getStringAttribute(String a)
 	{	return this.attributes.getProperty(a);
 	}
 
 	public int getIntegerAttribute(String a)
-	{	return Integer.parseInt((String)this.attributes.get(a));
+	{	String s = (String)this.attributes.get(a);
+		log.info("attribute " + a + " = " + s);
+		return Integer.parseInt(s);
 	}
 
 	public void save(File file) throws IOException, XMLStreamException

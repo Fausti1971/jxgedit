@@ -26,7 +26,7 @@ public class XGInstance implements XGAddressable, XGWindowSourceTreeNode
 
 	public XGInstance(XGDevice dev, XGAddress adr) throws InvalidXGAddressException
 	{	this.type = dev.getType(adr);
-		this.adress = new XGAddress(INVALIDFIELD, adr.getMid(), INVALIDFIELD);
+		this.adress = new XGAddress(INDEFINITE, adr.getMid(), INDEFINITE);
 	}
 
 	@Override public XGAddress getAddress()

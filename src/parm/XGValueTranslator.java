@@ -98,7 +98,7 @@ public interface XGValueTranslator
 	static XGValueTranslator translateMap = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	try
-			{	return v.getSource().getDevice().getTranslations().get(v.getOpcode().getParameter().getTranslationMapName()).getValue((int)v.getContent());
+			{	return v.getSource().getDevice().getTranslations().get(v.getOpcode().getParameter(0).getTranslationMapName()).getValue((int)v.getContent());//TODO:
 			}
 			catch(NullPointerException | InvalidXGAddressException e)
 			{	e.printStackTrace();
