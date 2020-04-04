@@ -17,7 +17,7 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 		for(XMLNode x : n.getChildNodes())
 			if(x.getTag().equals(TAG_PARAMETER))
 			{	XGParameter p = new XGParameter(x);
-				for(String o : Rest.splitStringByComma(x.getStringAttribute(ATTR_DEP_VALUES)))
+				for(String o : Rest.splitCSV(x.getStringAttribute(ATTR_DEP_VALUES)))
 				{	map.put(Integer.parseInt(o), p);
 				}
 			}
@@ -47,13 +47,13 @@ public class XGParameter implements ConfigurationConstants, XGParameterConstants
 
 	public XGParameter(XMLNode n)
 	{
-		this.minValue = n.getIntegerAttribute(ATTR_MIN);
-		this.maxValue = n.getIntegerAttribute(ATTR_MAX);
+		this.minValue = n.getIntegerAttribute(ATTR_MIN, DEF_MIN);
+		this.maxValue = n.getIntegerAttribute(ATTR_MAX, DEF_MAX);
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
 		this.valueTranslator = XGValueTranslator.getTranslator(n.getStringAttribute(ATTR_TRANSLATOR));
 		this.translationMapName = n.getStringAttribute(ATTR_TRANSLATIONMAP);
-		log.info("parameter initialized: " + this);
+//		log.info("parameter initialized: " + this);
 	}
 
 	public int getMinValue()

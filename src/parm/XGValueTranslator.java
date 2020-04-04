@@ -25,7 +25,8 @@ public interface XGValueTranslator
 	}
 
 	static XGValueTranslator getTranslator(String name)
-	{	try
+	{	if(name == null) return translateToText;
+		try
 		{	return getTranslator(XGTranslatorTag.valueOf(name));
 		}
 		catch(IllegalArgumentException e)

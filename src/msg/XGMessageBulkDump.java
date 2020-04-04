@@ -20,9 +20,9 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	{	super(src, dest, new byte[OVERHAED], true);
 		this.setMessageID(MSG);
 		this.setBulkSize(0);
-		this.setHi(adr.getHi());
-		this.setMid(adr.getMid());
-		this.setLo(adr.getLo());
+		this.setHi(adr.getHi().getValue());
+		this.setMid(adr.getMid().getValue());
+		this.setLo(adr.getLo().getValue());
 		this.setEOX(10);
 	}
 
@@ -44,43 +44,43 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	}
 */
 	@Override public int getHi()
-	{	return decodeMidiByteToInteger(HI_OFFS);
+	{	return decodeLSB(HI_OFFS);
 	}
 
 	@Override public int getMid()
-	{return decodeMidiByteToInteger(MID_OFFS);
+	{return decodeLSB(MID_OFFS);
 	}
 
 	@Override public int getLo()
-	{	return decodeMidiByteToInteger(LO_OFFS);
+	{	return decodeLSB(LO_OFFS);
 	}
 
 	@Override public void setHi(int hi)
-	{	encodeMidiByteFromInteger(HI_OFFS, hi);
+	{	encodeLSB(HI_OFFS, hi);
 	}
 
 	@Override public void setMid(int mid)
-	{	encodeMidiByteFromInteger(MID_OFFS, mid);
+	{	encodeLSB(MID_OFFS, mid);
 	}
 
 	@Override public void setLo(int lo)
-	{	encodeMidiByteFromInteger(LO_OFFS, lo);
+	{	encodeLSB(LO_OFFS, lo);
 	}
 
 	@Override public int getBulkSize()
-	{	return decodeMidiBytesToInteger(SIZE_OFFS, SIZE_SIZE);
+	{	return decodeLSB(SIZE_OFFS, SIZE_SIZE);
 	}
 
 	@Override public void setBulkSize(int size)
-	{	encodeMidiBytesFromInteger(SIZE_OFFS, SIZE_SIZE, size);
+	{	encodeLSB(SIZE_OFFS, SIZE_SIZE, size);
 	}
 
 	@Override public void setMessageID()
-	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
+	{	encodeMSN(MSG_OFFS, MSG);
 	}
 
 	@Override public void checkSum() throws InvalidMidiDataException
-	{	if(((calcChecksum(SIZE_OFFS, DATA_OFFS + this.getBulkSize()) & MIDIBYTEMASK) != 0)) throw new InvalidMidiDataException("checksum error!");
+	{	if(((calcChecksum(SIZE_OFFS, DATA_OFFS + this.getBulkSize()) & LSB) != 0)) throw new InvalidMidiDataException("checksum error!");
 	}
 
 	@Override public int setChecksum()

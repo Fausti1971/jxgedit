@@ -26,34 +26,34 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException, XGModuleNotFoundException
 	{	super(src, dest, new byte[8], true);
 		this.setMessageID(MSG);
-		this.setHi(adr.getHi());
-		this.setMid(adr.getMid());
-		this.setLo(adr.getLo());
+		this.setHi(adr.getHi().getValue());
+		this.setMid(adr.getMid().getValue());
+		this.setLo(adr.getLo().getValue());
 		this.setEOX(7);
 		this.response = new XGMessageParameterChange(dest, src, new XGValue(src, adr));
 	}
 
 	@Override public int getHi()
-	{	return decodeMidiByteToInteger(HI_OFFS);}
+	{	return decodeLSB(HI_OFFS);}
 
 	@Override public int getMid()
-	{	return decodeMidiByteToInteger(MID_OFFS);}
+	{	return decodeLSB(MID_OFFS);}
 
 	@Override public int getLo()
-	{	return decodeMidiByteToInteger(LO_OFFS);}
+	{	return decodeLSB(LO_OFFS);}
 
 	@Override public void setHi(int hi)
-	{	encodeMidiByteFromInteger(HI_OFFS, hi);}
+	{	encodeLSB(HI_OFFS, hi);}
 
 	@Override public void setMid(int mid)
-	{	encodeMidiByteFromInteger(MID_OFFS, mid);}
+	{	encodeLSB(MID_OFFS, mid);}
 
 	@Override public void setLo(int lo)
-	{	encodeMidiByteFromInteger(LO_OFFS, lo);}
+	{	encodeLSB(LO_OFFS, lo);}
 
 
 	@Override public void setMessageID()
-	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
+	{	encodeMSN(MSG_OFFS, MSG);
 	}
 
 	@Override public boolean getResponsed()

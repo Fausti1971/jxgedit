@@ -28,43 +28,43 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 /***************************************************************************************************/
 
 	default void setSOX()
-	{	this.encodeMidiByteFromInteger(SOX_OFFS, SOX);
+	{	this.encodeLSB(SOX_OFFS, SOX);
 	}
 
 	default void setEOX(int index)
-	{	this.encodeMidiByteFromInteger(index, EOX);
+	{	this.encodeLSB(index, EOX);
 	}
 
 	default int getSysexID()
-	{	return this.decodeLowerNibble(SYSEX_OFFS);
+	{	return this.decodeLSN(SYSEX_OFFS);
 	}
 
 	default void setSysexID(int id)
-	{	this.encodeLowerNibble(SYSEX_OFFS, id);
+	{	this.encodeLSN(SYSEX_OFFS, id);
 	}
 
 	default int getMessageID()
-	{	return decodeHigherNibbleToInteger(MSG_OFFS);
+	{	return decodeMSN(MSG_OFFS);
 	}
 
 	default void setMessageID(int id)
-	{	this.encodeHigherNibbleFromInteger(MSG_OFFS, id);
+	{	this.encodeMSN(MSG_OFFS, id);
 	}
 
 	default int getVendorID()
-	{	return this.decodeMidiByteToInteger(VENDOR_OFFS);
+	{	return this.decodeLSB(VENDOR_OFFS);
 	}
 
 	default void setVendorID()
-	{	this.encodeMidiByteFromInteger(VENDOR_OFFS, VENDOR);
+	{	this.encodeLSB(VENDOR_OFFS, VENDOR);
 	}
 
 	default int getModelID()
-	{	return decodeMidiByteToInteger(MODEL_OFFS);
+	{	return decodeLSB(MODEL_OFFS);
 	}
 
 	default void setModelID()
-	{	this.encodeMidiByteFromInteger(MODEL_OFFS, MODEL);
+	{	this.encodeLSB(MODEL_OFFS, MODEL);
 	}
 
 	default public void setTimeStamp()

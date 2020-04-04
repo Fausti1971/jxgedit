@@ -2,7 +2,6 @@ package module;
 
 import java.awt.event.ActionEvent;
 import java.util.Set;
-import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
@@ -15,23 +14,55 @@ import msg.XGResponse;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
 
-public class XGSuperModule implements XGModule, XMLNodeConstants
-{
+public abstract class XGSuperModule implements XGModule, XMLNodeConstants
+{	static
+	{	ACTIONS.add(ACTION_EDIT);
+		ACTIONS.add(ACTION_REQUEST);
+		ACTIONS.add(ACTION_TRANSMIT);
+		ACTIONS.add(ACTION_LOADFILE);
+		ACTIONS.add(ACTION_SAVEFILE);
+	}
+
+/***************************************************************************************************************/
+
+	private boolean selected;
+	private final String name;
 	private final XGModuleTag tag;
 	private final XGAddress address;
-	private final XGAddressableSet<XGBulkDump> bulks;
 	private final XGDevice device;
 	private final XGModule parentModule;
-//	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<XGValue>();
+	private final XGAddressableSet<XGModule> childModule = new XGAddressableSet<XGModule>();
+	private final XGAddressableSet<XGBulkDump> bulks;
 	private final XMLNode guiTemplate;
+
+	protected XGSuperModule(XGDevice dev)
+	{	this.device = dev;
+		this.tag = XGModuleTag.unknown;
+		this.address = XGALLADDRESS;
+		this.name = "root";
+		this.parentModule = null;
+		this.bulks = null;
+		this.guiTemplate = null;
+	}
 
 	public XGSuperModule(XGDevice dev, XMLNode n)
 	{	this.parentModule = null;
+		this.name = n.getStringAttribute(ATTR_NAME);
 		this.device = dev;
 		this.tag = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
-		this.address = new XGAddress(n);
-		this.bulks = XGBulkDump.init(n);
+		this.address = new XGAddress(null, n);
+		this.bulks = XGBulkDump.init(this, n);
 		this.guiTemplate = null; //TODO:
+	}
+	public XGSuperModule(XGModule par, XGAddress adr)
+	{	this.parentModule = par;
+		this.address = adr;
+		this.name = par.getName();
+		this.device = par.getDevice();
+		this.tag = (XGModuleTag)par.getTag();
+		this.bulks = par.getBulks();
+		this.guiTemplate = par.getGuiTemplate();
+		par.getChildModules().add(this);
 	}
 
 	@Override public XGModuleTag getTag()
@@ -42,68 +73,45 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 	{	return this.parentModule;
 	}
 
-	@Override public Set<XGModule> getChildModules()
-	{	return null; //TODO
-	}
-
 	@Override public XGDevice getDevice()
-	{	return this.device;
+	{	if(this.parentModule == null) return this.device;
+		else return this.parentModule.getDevice();
 	}
 
 	@Override public XMLNode getGuiTemplate()
-	{	return guiTemplate;
-	}
-/*
-	@Override public XGTagableAddressableSet<XGValue> getValues()
-	{	return this.values;
+	{	return this.guiTemplate;
 	}
 
-	@Override public XGTagableAddressableSet<XGOpcode> getOpcodes()
-	{	return this.device.getOpcodes(this.tag);
+	@Override public XGAddressableSet<XGBulkDump> getBulks()
+	{	return this.bulks;
 	}
-*/
+
 	@Override public void setTreeComponent(XGTree t)
 	{
 	}
 
-	@Override public TreeNode getParent()
-	{	return this.parentModule;
-	}
-
 	@Override public void setSelected(boolean s)
-	{
-		// TODO Auto-generated method stub
-		
+	{	this.selected = s;
 	}
 
 	@Override public boolean isSelected()
-	{
-		// TODO Auto-generated method stub
-		return false;
+	{	return this.selected;
 	}
 
 	@Override public void nodeFocussed(boolean b)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override public Set<String> getContexts()
-	{
-		// TODO Auto-generated method stub
-		return null;
+	{	return ACTIONS;
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
 	{
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override public String getMessengerName()
-	{
-		// TODO Auto-generated method stub
-		return null;
+	{	return this.getDevice() + " (" + this.name + ")";
 	}
 
 	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
@@ -111,22 +119,22 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 	}
 
 	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException
-	{
-		// TODO Auto-generated method stub
-		return null;
+	{	return null;
+	}
+
+	@Override public String getName()
+	{	return this.name;
+	}
+
+	@Override public Set<XGModule> getChildModules()
+	{	return this.childModule;
 	}
 
 	@Override public XGAddress getAddress()
 	{	return this.address;
 	}
 
-	@Override public String getNodeText()
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override public XGAddressableSet<XGBulkDump> getBulks()
-	{	return this.bulks;
+	@Override public String toString()
+	{	return this.name;
 	}
 }

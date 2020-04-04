@@ -29,10 +29,10 @@ public class XGTranslationMap implements ConfigurationConstants, XGTranslationCo
 		{	return null;
 		}
 
-		XMLNode xml = XMLNode.parse(file, null);
+		XMLNode xml = XMLNode.parse(file);
 		for(XMLNode x : xml.getChildNodes())
 		{	if(x.getTag().equals(TAG_MAP))
-			{	for(String s : Rest.splitStringByComma(x.getStringAttribute(ATTR_NAME)))
+			{	for(String s : Rest.splitCSV(x.getStringAttribute(ATTR_NAME)))
 					set.add(new XGTranslationMap(x, s));
 			}
 		}

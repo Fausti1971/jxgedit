@@ -1,6 +1,7 @@
 package module;
 
 import adress.XGAddress;
+import adress.XGAddressField;
 import device.XGDevice;
 import xml.XMLNode;
 
@@ -12,14 +13,17 @@ public class XGADPart extends XGSuperModule
 
 	protected XGADPart(XGDevice dev, XMLNode n)
 	{	super(dev, n);
+		if(this.getAddress().getMid().isRange())
+		{	for(int i : this.getAddress().getMid())
+				this.getChildModules().add(new XGADPart(this, new XGAddress(this.getAddress().getHi(), new XGAddressField(i), this.getAddress().getLo())));
+		}
 	}
 
-	protected XGADPart(XGDevice dev, XGModule par, XGAddress adr)
-	{
-		super(dev, par, TAG, adr);
+	public XGADPart(XGModule par, XGAddress adr)
+	{	super(par, adr);
 	}
 
-	@Override public String getNodeText()
-	{	return this.getTag().name();
+	@Override public String toString()
+	{	return this.getName() + " (" + this.getAddress().getMid() + ")";
 	}
 }

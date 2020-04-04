@@ -2,6 +2,10 @@ package xml;
 
 public interface XMLNodeConstants
 {
+	static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+	static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
+	static final String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
+
 	static final String
 		XML_CONFIG = "config.xml",
 		XML_OPCODE = "opcodes.xml",
@@ -40,7 +44,7 @@ public interface XMLNodeConstants
 		ATTR_HI = "hi",
 		ATTR_MID = "mid",
 		ATTR_LO = "lo",
-		ATTR_SIZE = "size",
+//		ATTR_SIZE = "size",
 
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",

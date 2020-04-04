@@ -9,12 +9,13 @@ import xml.XMLNode;
 public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGAddressable, Iterable<XGAddress>
 {	private static Logger log =Logger.getAnonymousLogger();
 
+	private XGAddress parent;
 	private final XGAddressField hi, mid, lo;
 
 	public XGAddress(String hi, String mid, String lo)
-	{	this.hi = new XGAddressField(hi);
-		this.mid = new XGAddressField(mid);
-		this.lo = new XGAddressField(lo);
+	{	this.hi = new XGAddressField(hi, DEF_ADDRESSFILED);
+		this.mid = new XGAddressField(mid, DEF_ADDRESSFILED);
+		this.lo = new XGAddressField(lo, DEF_ADDRESSFILED);
 	}
 
 	public XGAddress(int hi, int mid, int lo)
@@ -29,18 +30,25 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
 		this.lo = l;
 	}
 
-	public XGAddress(XMLNode item)
-	{	this.hi = new XGAddressField(item.getStringAttribute(ATTR_HI));
-		this.mid = new XGAddressField(item.getStringAttribute(ATTR_MID));
-		this.lo = new XGAddressField(item.getStringAttribute(ATTR_LO));
+	public XGAddress(XGAddress adr, XMLNode n)
+	{	XGAddressField h = DEF_ADDRESSFILED, m = DEF_ADDRESSFILED, l = DEF_ADDRESSFILED;
+		if(adr != null)
+		{	h = adr.getHi();
+			m = adr.getMid();
+			l = adr.getLo();
+		}
+		this.hi = new XGAddressField(n.getStringAttribute(ATTR_HI), h);
+		this.mid = new XGAddressField(n.getStringAttribute(ATTR_MID), m);
+		this.lo = new XGAddressField(n.getStringAttribute(ATTR_LO), l);
 	}
+
 /**
  * extrahiert und returniert das Hi-Field der XGAdress this
  * @return Wert des Fields als int
  * @throws InvalidXGAddressException falls das Field variabel ist
  */
-	public int getHi() throws InvalidXGAddressException
-	{	return this.hi.getValue();
+	public XGAddressField getHi()
+	{	return this.hi;
 	}
 
 	/**
@@ -48,8 +56,8 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
 	 * @return Wert des Fields als int
 	 * @throws InvalidXGAddressException falls das Field invalid ist
 	 */
-	public int getMid() throws InvalidXGAddressException
-	{	return this.mid.getValue();
+	public XGAddressField getMid()
+	{	return this.mid;
 	}
 
 	/**
@@ -57,8 +65,8 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
 	 * @return Wert des Fields als int
 	 * @throws InvalidXGAddressException falls das Field invalid ist
 	 */
-	public int getLo() throws InvalidXGAddressException
-	{	return this.lo.getValue();
+	public XGAddressField getLo()
+	{	return this.lo;
 	}
 
 /**
@@ -70,12 +78,12 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
 	}
 
 /**
- * komplettiert this mittels adr, indem invalide Fields durch diese aus adr ersetzt werden 
- * @param adr Adresse mittels this ergänzt werden soll
+ * komplettiert this mittels adr, indem variable Fields durch diese aus adr möglichst konkretisiert werden 
+ * @param adr Adresse mittels derer this konkretisiert werden soll
  * @return  die erfolgreich komplettierte Adresse
  * @throws InvalidXGAddressException 
  */
-	public XGAddress complement(XGAddress adr) throws InvalidXGAddressException
+	public XGAddress complement(XGAddress adr)
 	{	if(this.isFixedAddress()) return this;
 		if(adr.isFixedAddress()) return adr;
 		return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));

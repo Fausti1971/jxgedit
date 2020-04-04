@@ -19,7 +19,6 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.Configurable;
@@ -35,17 +34,12 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import module.XGModule;
-import module.XGModuleConstants.XGModuleTag;
 import msg.XGMessageBulkDump;
 import msg.XGMessageDumpRequest;
-import msg.XGMessageParameterChange;
-import msg.XGMessageParameterRequest;
 import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
-import opcode.XGOpcode;
 import parm.XGTranslationMap;
-import tag.XGTagableAddressableSet;
 import tag.XGTagableSet;
 import value.ChangeableContent;
 import xml.XMLNode;
@@ -111,10 +105,9 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private Color color;
 	private boolean isSelected = false;
 	private XMLNode config;
-	private final XGAddressableSet<XGMessageBulkDump> messages = new XGAddressableSet<XGMessageBulkDump>();
-	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<XGOpcode>();
+	private final XGAddressableSet<XGMessageBulkDump> data = new XGAddressableSet<XGMessageBulkDump>();
 	private final XGTagableSet<XGTranslationMap> translations = new XGTagableSet<XGTranslationMap>();
-	private final XGTagableSet<XGModule> modules;
+	private final XGAddressableSet<XGModule> modules;
 	private int info1, info2;
 	private final Queue<XGSysexFile> files = new LinkedList<>();
 	private final XGSysexFile defaultSyx;
@@ -184,35 +177,12 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.files.peek();
 	}
 
-	public XGTagableSet<XGModule> getModules()
+	public XGAddressableSet<XGModule> getModules()
 	{	return this.modules;
 	}
 
-	public XGModule getModule(XGAddress adr)
-	{	for(XGModule m : this.modules) if(m.getAddress().contains(adr)) return m;
-		return null;
-	}
-
-	public XGModule getModule(XGModuleTag tag)
-	{	return this.modules.get(tag);
-	}
-
-	public XGTagableAddressableSet<XGOpcode> getOpcodes()
-	{	return this.opcodes;
-	}
-
-	public XGTagableAddressableSet<XGOpcode> getOpcodes(XGModuleTag tag)
-	{	XGTagableAddressableSet<XGOpcode> set = new XGTagableAddressableSet<XGOpcode>();
-		for(XGOpcode o : this.opcodes) if(o.getModuleTag().equals(tag)) set.add(o);
-		return set;
-	}
-
-	public XGAddressableSet<XGMessageBulkDump> getMessages()
-	{	return this.messages;
-	}
-
 	public XGTagableSet<XGTranslationMap> getTranslations()
-	{	return translations;
+	{	return this.translations;
 	}
 
 	public int getSysexID()
@@ -261,11 +231,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public String toString()
-	{	return this.name.get();
-	}
-
-	@Override public String getNodeText()
-	{	return(this.name + "/" + this.sysexID);
+	{	return this.name.get() + " (" + this.sysexID + ")";
 	}
 
 	@Override public XMLNode getConfig()
@@ -374,14 +340,13 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
-	{	if(msg instanceof XGMessageParameterChange) this.getModule(msg.getAddress()).submit(msg);
-		else
-		{	this.messages.add((XGMessageBulkDump)msg);
-		}
+	{	if(msg instanceof XGMessageBulkDump) this.data.add((XGMessageBulkDump)msg);
+		//TODO: XGMessageParameterChange
 	}
 
 	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException
-	{	if(req instanceof XGMessageParameterRequest) return this.modules.get(req.getAddress()).request(req);
-		else return this.messages.get(req.getAddress());
+	{	if(req instanceof XGMessageDumpRequest) return this.data.get(req.getAddress());
+		//TODO: XGMessageParameterRequest
+		return null;
 	}
 }

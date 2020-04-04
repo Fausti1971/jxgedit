@@ -1,19 +1,22 @@
 package module;
 
+import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import device.XGDevice;
 
 public class XGDrum extends XGSuperModule
-{
-	protected XGDrum(XGDevice dev, XGModule par, XGModuleTag tag, XGAddress adr)
-	{
-		super(dev, par, tag, adr);
-		// TODO Auto-generated constructor stub
+{	private static final String NAME = "Drum";
+
+	public XGDrum(XGModule par, XGAddress adr)
+	{	super(par, adr);
 	}
 
-	@Override public String getNodeText()
-	{
-		// TODO Auto-generated method stub
-		return null;
+	@Override public String toString()
+	{	try
+		{	return NAME + " (" + this.getAddress().getMid().getValue() + ")";
+		}
+		catch(InvalidXGAddressException e)
+		{	e.printStackTrace();
+			return NAME + " (" + this.getAddress().getMid() + ")";
+		}
 	}
 }

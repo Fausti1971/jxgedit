@@ -20,9 +20,11 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	private static final TreeCellRenderer XGTreeCellRenderer = new TreeCellRenderer()
 	{	@Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
 		{	
-			XGTreeNode n = (XGTreeNode)value;
 			XGTree t = (XGTree)tree;
-			return DTCR.getTreeCellRendererComponent(tree, value, n.isSelected(), expanded, leaf, row, n == t.getFocussedNode());
+			XGTreeNode n = (XGTreeNode)value;
+			XGTreeNode f = t.getFocussedNode();
+			hasFocus = f != null && f.equals(n);
+			return DTCR.getTreeCellRendererComponent(tree, value, n.isSelected(), expanded, leaf, row, hasFocus);
 		}
 	};
 
@@ -60,7 +62,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 		}
 	}
 
-	private XGTreeNode getFocussedNode()
+	XGTreeNode getFocussedNode()
 	{	return this.focussedNode;
 	}
 
@@ -78,8 +80,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 			return;
 		}
 		this.setFocussedNode((XGTreeNode)c);
-//e.isPopupTrigger() funktioniert manchmal nicht
-		if(e.getButton() == MouseEvent.BUTTON3 && this.focussedNode != null && !this.focussedNode.getContexts().isEmpty())
+		if(e.getButton() == MouseEvent.BUTTON3 && this.focussedNode != null && !this.focussedNode.getContexts().isEmpty()) //e.isPopupTrigger() funktioniert manchmal nicht
 		{	new XGPopup(this, this.focussedNode, e.getLocationOnScreen());
 		}
 	}

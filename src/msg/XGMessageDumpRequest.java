@@ -21,9 +21,9 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
 	{	super(src, dest, new byte[8], true);
 		this.setMessageID();
-		this.setHi(adr.getHi());
-		this.setMid(adr.getMid());
-		this.setLo(adr.getLo());
+		this.setHi(adr.getHi().getValue());
+		this.setMid(adr.getMid().getValue());
+		this.setLo(adr.getLo().getValue());
 		this.setEOX(7);
 		this.response = new XGMessageBulkDump(dest, src, adr);
 	}
@@ -49,27 +49,27 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	}
 
 	@Override public int getHi()
-	{	return decodeMidiByteToInteger(HI_OFFS);
+	{	return decodeLSB(HI_OFFS);
 	}
 
 	@Override public int getMid()
-	{return decodeMidiByteToInteger(MID_OFFS);
+	{return decodeLSB(MID_OFFS);
 	}
 
 	@Override public int getLo()
-	{	return decodeMidiByteToInteger(LO_OFFS);
+	{	return decodeLSB(LO_OFFS);
 	}
 
 	@Override public void setHi(int hi)
-	{	encodeMidiByteFromInteger(HI_OFFS, hi);
+	{	encodeLSB(HI_OFFS, hi);
 	}
 
 	@Override public void setMid(int mid)
-	{	encodeMidiByteFromInteger(MID_OFFS, mid);
+	{	encodeLSB(MID_OFFS, mid);
 	}
 
 	@Override public void setLo(int lo)
-	{	encodeMidiByteFromInteger(LO_OFFS, lo);
+	{	encodeLSB(LO_OFFS, lo);
 	}
 
 	@Override public String toString()
@@ -77,6 +77,6 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	}
 
 	@Override public void setMessageID()
-	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
+	{	encodeMSN(MSG_OFFS, MSG);
 	}
 }

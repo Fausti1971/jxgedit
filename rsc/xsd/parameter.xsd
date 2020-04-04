@@ -36,8 +36,7 @@
 			</xs:sequence>
 		<xs:attribute name="hi" use="optional" type="addressRange"/>
 		<xs:attribute name="mid" use="optional" type="addressRange"/>
-		<xs:attribute name="lo" use="required" type="xs:nonNegativeInteger"/>
-		<xs:attribute name="size" use="required" type="xs:nonNegativeInteger"/>
+		<xs:attribute name="lo" use="required" type="addressRange"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -46,17 +45,19 @@
 			<xs:sequence>
 				<xs:element ref="parameter" maxOccurs="unbounded"/>
 			</xs:sequence>
-			<xs:attributeGroup ref="opcodeAttr"/>
+			<xs:attribute name="id" use="required" type="xs:ID"/>
+			<xs:attribute name="hi" use="optional" type="addressRange"/>
+			<xs:attribute name="mid" use="optional" type="addressRange"/>
+			<xs:attribute name="lo" use="required" type="addressRange"/>
+			<xs:attribute name="byteType" use="optional" type="byteTypes" default="LSB"/>
+			<xs:attribute name="valueClass" use="optional" type="valueClasses" default="Integer"/>
+			<xs:attribute name="dependingOn" use="optional" type="xs:IDREF"/>
+			<xs:attribute name="dependencyType" use="optional" type="byteTypes"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="parameter">
 		<xs:complexType>
-			<xs:attributeGroup ref="paramAttr"/>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:attributeGroup name="paramAttr">
 		<xs:attribute name="dependencyValues" use="optional" type="csv"/>
 		<xs:attribute name="longName" use="optional" type="xs:string"/>
 		<xs:attribute name="shortName" use="optional" type="shortString"/>
@@ -64,7 +65,8 @@
 		<xs:attribute name="max" use="optional" type="xs:nonNegativeInteger" default="127"/>
 		<xs:attribute name="translator" use="optional" type="translators" default="translateToText"/>
 		<xs:attribute name="translationMap" use="optional" type="xs:string"/>
-	</xs:attributeGroup>
+		</xs:complexType>
+	</xs:element>
 
 	<xs:simpleType name="shortString">
 		<xs:restriction base="xs:string">
@@ -85,16 +87,6 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:attributeGroup name="opcodeAttr">
-		<xs:attribute name="id" use="required" type="xs:ID"/>
-		<xs:attribute name="lo" use="required" type="xs:nonNegativeInteger"/>
-		<xs:attribute name="size" use="optional" default="1"/>
-		<xs:attribute name="byteType" use="optional" type="byteTypes" default="LSB"/>
-		<xs:attribute name="valueClass" use="optional" type="valueClasses" default="Integer"/>
-		<xs:attribute name="dependingOn" use="optional" type="xs:IDREF"/>
-		<xs:attribute name="dependencyType" use="optional" type="byteTypes"/>
-	</xs:attributeGroup>
-
 	<xs:simpleType name="modules">
 		<xs:restriction base="xs:NCName">
 			<xs:enumeration value="system"/>
@@ -106,7 +98,6 @@
 			<xs:enumeration value="multipart"/>
 			<xs:enumeration value="adpart"/>
 			<xs:enumeration value="drumset"/>
-			<xs:enumeration value="drum"/>
 			<xs:enumeration value="plugin"/>
 			<xs:enumeration value="board"/>
 		</xs:restriction>

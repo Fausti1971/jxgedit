@@ -16,14 +16,13 @@ import gui.XGTree;
 import gui.XGTreeNode;
 import msg.XGMessenger;
 import tag.XGTagable;
-import tag.XGTagableSet;
 import xml.XMLNode;
 
 public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, XGMessenger, XGTreeNode
 {
-	public static XGTagableSet<XGModule> init(XGDevice dev)
+	public static XGAddressableSet<XGModule> init(XGDevice dev)
 	{
-		XGTagableSet<XGModule> set = new XGTagableSet<>();
+		XGAddressableSet<XGModule> set = new XGAddressableSet<XGModule>();
 		File file;
 		try
 		{	file = dev.getResourceFile(XML_PARAMETER);
@@ -34,12 +33,11 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 		}
 		XMLNode xml = XMLNode.parse(file);
 		if(xml == null) return set;
-		XGModule m = null;
+//		XGModule m = null;
 		if(xml.getTag().equals(TAG_MODULES))
 		{	for(XMLNode n : xml.getChildNodes())
 			{	if(n.getTag().equals(TAG_MODULE))
-				{	m = new XGSuperModule(dev, n);
-					set.add(m);
+				{	set.add(XGModule.newInstances(dev, null, n));
 				}
 			}
 		}
@@ -47,13 +45,31 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 		return set;
 	};
 
+	private static XGModule newInstances(XGDevice dev, XGModule par, XMLNode n)
+	{	XGModuleTag t = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
+		switch(t)
+		{	case adpart:		return new XGADPart(dev, n); 
+			case display:		return new XGDisplay(dev, n); 
+			case drumset:		return new XGDrumset(dev, n); 
+			case info:			return new XGInfo(dev, n); 
+			case insfx:			return new XGInsertionFX(dev, n); 
+			case multipart:		return new XGMultipart(dev, n); 
+			case plugin:		return new XGPlugin(dev, n); 
+			case syseq:			return new XGMultiEQ(dev, n); 
+			case sysfx:			return new XGSystemFX(dev, n); 
+			case system:		return new XGSystem(dev, n); 
+			default:
+			case unknown:		return new XGUnknown(dev, n);
+		}
+	}
+
 	public static XGModuleTag getModuleTag(XGAddress adr)
 	{	try
-		{	switch(adr.getHi())
+		{	switch(adr.getHi().getValue())
 			{	case 0:		return XGModuleTag.system;
 				case 1:		return XGModuleTag.info;
 				case 2:
-					switch(adr.getMid())
+					switch(adr.getMid().getValue())
 					{	case 1:		return XGModuleTag.sysfx;
 						case 64:	return XGModuleTag.syseq;
 					}
@@ -82,10 +98,12 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 
 /********************************************************************************************************************/
 
+	String getName();
 	Set<XGModule> getChildModules();
 	XGModule getParentModule();
-	XMLNode getGuiTemplate();
 	XGAddressableSet<XGBulkDump> getBulks();
+	XMLNode getGuiTemplate();
+//	XGAddressableSet<XGBulkDump> getBulks();
 //	XGTagableAddressableSet<XGOpcode>getOpcodes();
 //	XGTagableAddressableSet<XGValue> getValues();
 
@@ -103,9 +121,14 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 		throw new XGModuleNotFoundException("module not found " + adr);
 	}
 
-	public default XGModule getRootModule()
-	{	if(this.getParent() != null) return ((XGModule)this.getParent()).getRootModule();
-		else return this;
+//	public default XGModule getRootModule()
+//	{	if(this.getParent() != null) return ((XGModule)this.getParent()).getRootModule();
+//		else return this;
+//	}
+
+	@Override public default TreeNode getParent()
+	{	if(this.getParentModule() == null) return this.getDevice();
+		else return this.getParentModule();
 	}
 
 	@Override public default boolean getAllowsChildren()

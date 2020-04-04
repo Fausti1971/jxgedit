@@ -14,6 +14,5 @@ public interface XGOpcodeConstants extends XMLNodeConstants
 
 	static final String DEF_OPCODENAME = "unknown opcode ";
 	static final ValueDataClass DEF_VALUECLASS = ValueDataClass.Integer;
-	static final int DEF_OPCODESIZE = 1;
 	static final ValueDataType DEF_DATATYPE = ValueDataType.LSB;
 }

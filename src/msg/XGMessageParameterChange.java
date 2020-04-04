@@ -4,6 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
+import module.XGModuleNotFoundException;
 import value.XGValue;
 
 public class XGMessageParameterChange extends XGSuperMessage implements XGResponse
@@ -21,13 +22,13 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	}
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, XGValue v) throws InvalidXGAddressException, InvalidMidiDataException
-	{	super(src, dest, new byte[OVERHEAD + v.getOpcode().getSize()], true);
+	{	super(src, dest, new byte[OVERHEAD + v.getOpcode().getAddress().getLo().getSize()], true);
 		setMessageID();
-		setHi(v.getAddress().getHi());
-		setMid(v.getAddress().getMid());
-		setLo(v.getAddress().getLo());
+		setHi(v.getAddress().getHi().getValue());
+		setMid(v.getAddress().getMid().getValue());
+		setLo(v.getAddress().getLo().getValue());
 		v.encodeBytes(this, v.getContent());
-		setEOX(DATA_OFFS + v.getOpcode().getSize());
+		setEOX(DATA_OFFS + v.getOpcode().getAddress().getLo().getSize());
 	}
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
@@ -36,36 +37,42 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	}
 
 	@Override public void setHi(int value)
-	{	encodeMidiByteFromInteger(HI_OFFS, value);
+	{	encodeLSB(HI_OFFS, value);
 	}
 
 	@Override public void setMid(int value)
-	{	encodeMidiByteFromInteger(MID_OFFS, value);
+	{	encodeLSB(MID_OFFS, value);
 	}
 
 	@Override public void setLo(int value)
-	{	encodeMidiByteFromInteger(LO_OFFS, value);
+	{	encodeLSB(LO_OFFS, value);
 	}
 
 	@Override public int getHi()
-	{	return decodeMidiByteToInteger(HI_OFFS);
+	{	return decodeLSB(HI_OFFS);
 	}
 
 	@Override public int getMid()
-	{	return decodeMidiByteToInteger(MID_OFFS);
+	{	return decodeLSB(MID_OFFS);
 	}
 
 	@Override public int getLo()
-	{	return decodeMidiByteToInteger(LO_OFFS);
+	{	return decodeLSB(LO_OFFS);
 	}
 
 	@Override public void setMessageID()
-	{	encodeHigherNibbleFromInteger(MSG_OFFS, MSG);
+	{	encodeMSN(MSG_OFFS, MSG);
 	}
 
 	@Override public int getBulkSize()
 	{	XGAddress adr = this.getAddress();
-		return this.getSource().getDevice().getModule(adr).getBulks().get(adr).getOpcodes().get(adr).getSize();
+		try
+		{	return this.getSource().getDevice().getModule().getModule(adr).getBulks().get(adr).getOpcodes().get(adr).getAddress().getLo().getSize();
+		}
+		catch(XGModuleNotFoundException e)
+		{	e.printStackTrace();
+			return 1;
+		}
 	}
 
 	@Override public void setBulkSize(int size)

@@ -5,7 +5,13 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 public interface Rest
-{	static Set<String> splitStringByComma(String s)
+{
+/**
+ * zerlegt einen String an eventuell vorhandenen Kommas und returniert ein Set an (von führenden und folgenden Leerzeichen bereinigten) Strings;
+ * @param s	Eingangsstring mit (oder ohne) Kommas
+ * @return	Set der einzelnen Stringabschnitte
+ */
+	static Set<String> splitCSV(String s)
 	{	Set<String> a = new HashSet<>();
 		if(s != null)
 		{	StringTokenizer t = new StringTokenizer(s, ",");
@@ -26,10 +32,6 @@ public interface Rest
 		{	e.printStackTrace();
 			return def;
 		}
-	}
-
-	static String splitStringByUnderscore(String s)
-	{	return s.substring(s.lastIndexOf("_")).trim();
 	}
 
 	static String getStringOrDefault(String s, String def)

@@ -52,12 +52,6 @@ public interface XGTreeNode extends TreeNode, XGContext
  */
 	void nodeFocussed(boolean b);
 
-/**
- * returnniert einen repräsentativen String; für die Darstellung im Tree wird allerding weiterhin toString() verwendet;
- * @return Text
- */
-	String getNodeText();
-
 	default XGTreeNode getRootNode()
 	{	return (XGTreeNode)this.getTreePath().getPathComponent(0);
 	}

@@ -1,18 +1,26 @@
 package module;
 
 import adress.XGAddress;
+import adress.XGAddressField;
 import device.XGDevice;
+import xml.XMLNode;
 
 public class XGInsertionFX extends XGSuperModule
 {	private static XGModuleTag TAG = XGModuleTag.insfx;
 
-	protected XGInsertionFX(XGDevice dev, XGModule par, XGAddress adr)
-	{
-		super(dev, par, TAG, adr);
-		// TODO Auto-generated constructor stub
+	public XGInsertionFX(XGDevice dev, XMLNode n)
+	{	super(dev, n);
+		if(this.getAddress().getMid().isRange())
+		{	for(int i : this.getAddress().getMid())
+				new XGInsertionFX(this, new XGAddress(this.getAddress().getHi(), new XGAddressField(i), this.getAddress().getLo()));
+		}
 	}
 
-	@Override public String getNodeText()
-	{	return this.getTag().name();
+	public XGInsertionFX(XGModule par, XGAddress adr)
+	{	super(par, adr);
+	}
+
+	@Override public String toString()
+	{	return this.getName() + " (" + this.getAddress().getMid() + ")";
 	}
 }

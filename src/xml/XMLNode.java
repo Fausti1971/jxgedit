@@ -20,6 +20,7 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 import application.ConfigurationConstants;
 import application.Rest;
 import tag.XGTagable;
@@ -57,10 +58,10 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 
 	public static XMLNode parse(File xml)
 	{	if(xml == null || !xml.canRead()) return null;
-		if(!validate(xml)) return null;
 		XMLNode current_node = null, parent_node = null, root_node = null;
+
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-		inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, "true");
+//		inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, true);//nur für DTDs
 
 		try
 		{	XMLEventReader rd = inputFactory.createXMLEventReader(new StreamSource(xml));
@@ -93,6 +94,10 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 		}
 		return prop;
 	}
+	public class SAXLocalNameCount extends DefaultHandler
+	{
+		
+	}
 
 /*************************************************************************************************************/
 
@@ -103,6 +108,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 	private String content = "no content";
 	private final Properties attributes;
 //	private boolean isSelected = false;
+
 
 	public XMLNode(String tag, Properties attr)
 	{	this.tag = tag;
@@ -198,10 +204,14 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 	{	return this.attributes.getProperty(a);
 	}
 
-	public int getIntegerAttribute(String a)
+	public int getIntegerAttribute(String a, int def)
 	{	String s = (String)this.attributes.get(a);
-		log.info("attribute " + a + " = " + s);
-		return Integer.parseInt(s);
+		if(s == null) return def;
+		return Integer.parseInt((String)this.attributes.get(a));
+	}
+
+	public int getIntegerAttribute(String a)
+	{	return Integer.parseInt((String)this.attributes.get(a));
 	}
 
 	public void save(File file) throws IOException, XMLStreamException
