@@ -1,14 +1,18 @@
 package module;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.util.Set;
+import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
 import adress.XGBulkDump;
 import device.TimeoutException;
 import device.XGDevice;
+import gui.XGComponent;
 import gui.XGTree;
+import gui.XGWindow;
 import msg.XGRequest;
 import msg.XGResponse;
 import xml.XMLNode;
@@ -26,6 +30,7 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 /***************************************************************************************************************/
 
 	private boolean selected;
+	private XGWindow window;
 	private final String name;
 	private final XGModuleTag tag;
 	private final XGAddress address;
@@ -34,7 +39,7 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	private final XGAddressableSet<XGModule> childModule = new XGAddressableSet<XGModule>();
 	private final XGAddressableSet<XGBulkDump> bulks;
 	private final XMLNode guiTemplate;
-
+/*
 	protected XGSuperModule(XGDevice dev)
 	{	this.device = dev;
 		this.tag = XGModuleTag.unknown;
@@ -42,9 +47,9 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 		this.name = "root";
 		this.parentModule = null;
 		this.bulks = null;
-		this.guiTemplate = null;
+		this.guiTemplate = dev.getTemplates().getChildNodeWithID(TAG_TEMPLATE, this.tag.name());
 	}
-
+*/
 	public XGSuperModule(XGDevice dev, XMLNode n)
 	{	this.parentModule = null;
 		this.name = n.getStringAttribute(ATTR_NAME);
@@ -52,8 +57,10 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 		this.tag = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
 		this.address = new XGAddress(null, n);
 		this.bulks = XGBulkDump.init(this, n);
-		this.guiTemplate = null; //TODO:
+		if(dev.getTemplates() != null) this.guiTemplate = dev.getTemplates().getChildNodeWithID(TAG_TEMPLATE, this.tag.name());
+		else this.guiTemplate = null;
 	}
+
 	public XGSuperModule(XGModule par, XGAddress adr)
 	{	this.parentModule = par;
 		this.address = adr;
@@ -102,12 +109,37 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	{
 	}
 
+	@Override public void windowOpened(WindowEvent e)
+	{	this.setSelected(true);
+		this.repaintNode();
+	}
+
+	@Override public void windowClosed(WindowEvent e)
+	{	this.setSelected(false);
+		this.repaintNode();
+	}
+
 	@Override public Set<String> getContexts()
 	{	return ACTIONS;
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{
+	{	log.info(e.getActionCommand());
+		switch(e.getActionCommand())
+		{	case ACTION_EDIT:	new XGWindow(this, XGWindow.getRootWindow(), false, this.toString()); break;
+		}
+	}
+
+	@Override public XGWindow getChildWindow()
+	{	return this.window;
+	}
+
+	@Override public void setChildWindow(XGWindow win)
+	{	this.window = win;
+	}
+
+	@Override public JComponent getChildWindowContent()
+	{	return XGComponent.init(this.guiTemplate);
 	}
 
 	@Override public String getMessengerName()

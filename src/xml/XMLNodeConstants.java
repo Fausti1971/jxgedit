@@ -29,7 +29,7 @@ public interface XMLNodeConstants
 //		TAG_BASECOLOR = "base",
 //		TAG_FOCUSCOLOR = "focus",
 
-		TAG_DEVICE_NAME = "device_name",
+		TAG_DEVICE_NAME = "device_name",//TODO: umrüsten auf Attribute
 		TAG_SYSEXID = "device_sysexID",
 		TAG_LASTDUMPFILE = "device_lastDumpFile",
 		TAG_DEFAULTDUMPFOLDER = "device_defaultDumpFolder",
@@ -61,6 +61,8 @@ public interface XMLNodeConstants
 		ATTR_LONGNAME = "longName",
 		ATTR_SHORTNAME = "shortName",
 
+		TAG_TEMPLATES = "templates",
+		TAG_TEMPLATE = "template",
 		TAG_MAPS = "maps",
 		TAG_MAP = "map",
 		TAG_ENTRY = "entry",

@@ -1,8 +1,10 @@
 package module;
 
+import javax.swing.JComponent;
 import adress.XGAddress;
 import adress.XGAddressField;
 import device.XGDevice;
+import gui.XGWindow;
 import xml.XMLNode;
 
 public class XGADPart extends XGSuperModule

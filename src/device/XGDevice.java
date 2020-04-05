@@ -114,6 +114,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private XGMidi midi;
 	private int sysexID;
 	private XGWindow childWindow;
+	private final XMLNode templates;
 
 	private XGDevice()	//DefaultDevice (XG)
 	{	this.config = null;
@@ -129,6 +130,14 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		this.info1 = 1;
 		this.info2 = 1;
 		this.modules = XGModule.init(this);
+		XMLNode x = null;
+		try
+		{	x = XMLNode.parse(this.getResourceFile(XML_TEMPLATE));
+		}
+		catch(FileNotFoundException e)
+		{	log.info(e.getMessage());
+		}
+		this.templates = x;
 		this.defaultSyx = null;
 		log.info("device initialized: " + this);
 	}
@@ -142,10 +151,19 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 		this.sysex.set(this.config.parseChildNodeIntegerContentOrNew(TAG_SYSEXID, DEF_SYSEXID));
 		this.midi = new XGMidi(this);
-
 		this.name.set(this.config.getChildNodeTextContent(TAG_DEVICE_NAME, DEF_DEVNAME));
 		this.modules = XGModule.init(this);
 		this.setColor(new Color(this.config.parseChildNodeIntegerContent(TAG_COLOR, DEF_DEVCOLOR)));
+		XMLNode x = null;
+		try
+		{	x = XMLNode.parse(this.getResourceFile(XML_TEMPLATE));
+			System.out.println(x);
+		}
+		catch(FileNotFoundException e)
+		{	log.info(e.getMessage());
+		}
+		this.templates = x;
+
 		this.defaultDumpFolder.set(Paths.get(this.config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).getTextContent()));
 		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.get().resolve("default.syx").toString());
 		this.defaultSyx.load(this);
@@ -181,6 +199,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.modules;
 	}
 
+	public XMLNode getTemplates()
+	{	return templates;
+	}
+
 	public XGTagableSet<XGTranslationMap> getTranslations()
 	{	return this.translations;
 	}
@@ -192,6 +214,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public void setSysexID(int id)
 	{	this.sysexID = id & 0xF;
 		this.config.getChildNodeOrNew(TAG_SYSEXID).setTextContent(this.sysexID);
+	}
+
+	public XGAddressableSet<XGMessageBulkDump> getData()
+	{	return this.data;
 	}
 
 	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;

@@ -14,11 +14,12 @@ import adress.XGBulkDump;
 import device.XGDevice;
 import gui.XGTree;
 import gui.XGTreeNode;
+import gui.XGWindowSource;
 import msg.XGMessenger;
 import tag.XGTagable;
 import xml.XMLNode;
 
-public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, XGMessenger, XGTreeNode
+public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, XGMessenger, XGTreeNode, XGWindowSource
 {
 	public static XGAddressableSet<XGModule> init(XGDevice dev)
 	{
@@ -33,7 +34,6 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 		}
 		XMLNode xml = XMLNode.parse(file);
 		if(xml == null) return set;
-//		XGModule m = null;
 		if(xml.getTag().equals(TAG_MODULES))
 		{	for(XMLNode n : xml.getChildNodes())
 			{	if(n.getTag().equals(TAG_MODULE))
@@ -45,7 +45,7 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 		return set;
 	};
 
-	private static XGModule newInstances(XGDevice dev, XGModule par, XMLNode n)
+	private static XGModule newInstances(XGDevice dev, XGModule par, XMLNode n)//TODO: vielleicht nochmal mittels Reflection probieren (inkl. XGModuleTag)
 	{	XGModuleTag t = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
 		switch(t)
 		{	case adpart:		return new XGADPart(dev, n); 
@@ -58,8 +58,7 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 			case syseq:			return new XGMultiEQ(dev, n); 
 			case sysfx:			return new XGSystemFX(dev, n); 
 			case system:		return new XGSystem(dev, n); 
-			default:
-			case unknown:		return new XGUnknown(dev, n);
+			default:			return null;
 		}
 	}
 
@@ -88,11 +87,11 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 				case 51:	return XGModuleTag.drumset;
 				case 112:
 				case 113:	return XGModuleTag.plugin;
-				default:	return XGModuleTag.unknown;
+				default:	return null;
 			}
 		}
 		catch(InvalidXGAddressException e)
-		{	return XGModuleTag.unknown;
+		{	return null;
 		}
 	}
 
@@ -121,18 +120,13 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 		throw new XGModuleNotFoundException("module not found " + adr);
 	}
 
-//	public default XGModule getRootModule()
-//	{	if(this.getParent() != null) return ((XGModule)this.getParent()).getRootModule();
-//		else return this;
-//	}
-
 	@Override public default TreeNode getParent()
 	{	if(this.getParentModule() == null) return this.getDevice();
 		else return this.getParentModule();
 	}
 
 	@Override public default boolean getAllowsChildren()
-	{	return this.getAddress().isFixedAddress();
+	{	return this.getAddress().isFixed();
 	}
 
 	@Override public default Enumeration<? extends TreeNode> children()

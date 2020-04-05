@@ -1,10 +1,12 @@
 package gui;
 
 import java.awt.Component;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Set;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
@@ -102,7 +104,10 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	}
 
 	@Override public void keyTyped(KeyEvent e)
-	{	if(this.focussedNode != null && e.getExtendedKeyCode() == KeyEvent.VK_ENTER) System.out.println("nothing to do...");
+	{	if(!(e.getExtendedKeyCode() == KeyEvent.VK_ENTER)) return;
+		if(this.focussedNode == null || this.focussedNode.getContexts().isEmpty()) return;
+		this.focussedNode.actionPerformed(new ActionEvent(this, 0, this.focussedNode.getContexts().iterator().next()));
+//		System.out.println("nothing to do...");
 	}
 
 	@Override public void keyPressed(KeyEvent e)	//zuerst

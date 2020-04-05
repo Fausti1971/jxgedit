@@ -1,5 +1,5 @@
 <templates xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="../xsd/template.xsd">
-	<template module="system">
+	<template id="system">
 		<item control="frame">
 			<item id="master_tune" control="knob" zero="center"/>
 			<item id="master_volume" control="knob" zero="center"/>
@@ -7,7 +7,7 @@
 			<item id="master_transpose" control="spinner"/>
 		</item>
 	</template>
-	<template module="multipart">
+	<template id="multipart">
 		<item id="mp_ampeg" control="envelope">
 			<item value="0"/>
 			<item value="0"/>

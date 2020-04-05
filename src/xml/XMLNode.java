@@ -194,6 +194,13 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 		return Rest.parseIntOrDefault(n.getTextContent(), def);
 	}
 
+	public XMLNode getChildNodeWithID(String tagTemplate, String name)
+	{	for(XMLNode x : this.childNodes)
+			if(x.getTag().equals(tagTemplate) && name.equals(x.getStringAttribute(ATTR_ID)))
+				return x;
+		return null;
+	}
+
 	public String getStringAttribute(String a, String def)
 	{	String s = this.attributes.getProperty(a);
 		if(s == null) return def;

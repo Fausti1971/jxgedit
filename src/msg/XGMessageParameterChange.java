@@ -4,7 +4,6 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import module.XGModuleNotFoundException;
 import value.XGValue;
 
 public class XGMessageParameterChange extends XGSuperMessage implements XGResponse
@@ -66,13 +65,7 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	@Override public int getBulkSize()
 	{	XGAddress adr = this.getAddress();
-		try
-		{	return this.getSource().getDevice().getModule().getModule(adr).getBulks().get(adr).getOpcodes().get(adr).getAddress().getLo().getSize();
-		}
-		catch(XGModuleNotFoundException e)
-		{	e.printStackTrace();
-			return 1;
-		}
+		return this.getSource().getDevice().getModules().get(adr).getBulks().get(adr).getOpcodes().get(adr).getAddress().getLo().getSize();
 	}
 
 	@Override public void setBulkSize(int size)

@@ -14,7 +14,7 @@ public interface XGWindowSourceTreeNode extends XGWindowSource, XGTreeNode
 		return true;
 	}
 
-	public default void windowOpened(WindowEvent e)
+	@Override public default void windowOpened(WindowEvent e)
 	{	if(!this.isValid(e)) return;
 		XGWindow w = (XGWindow)e.getSource();
 		System.out.println(w + " opened");
@@ -22,14 +22,14 @@ public interface XGWindowSourceTreeNode extends XGWindowSource, XGTreeNode
 		this.repaintNode();
 	}
 
-	public default void windowClosing(WindowEvent e)
+	@Override public default void windowClosing(WindowEvent e)
 	{	if(!this.isValid(e)) return;
 		System.out.println(e.getSource() + " closing");
 //		this.setStatus();
 		this.reloadTree();
 	}
 
-	public default void windowClosed(WindowEvent e)
+	@Override public default void windowClosed(WindowEvent e)
 	{	if(!this.isValid(e)) return;
 		System.out.println(e.getSource() + " closed");
 		this.setChildWindow(null);
@@ -37,22 +37,22 @@ public interface XGWindowSourceTreeNode extends XGWindowSource, XGTreeNode
 		this.reloadTree();
 	}
 
-	public default void windowIconified(WindowEvent e)
+	@Override public default void windowIconified(WindowEvent e)
 	{	System.out.println(e.getSource() + " iconified");
 	}
 	
-	public default void windowDeiconified(WindowEvent e)
+	@Override public default void windowDeiconified(WindowEvent e)
 	{	System.out.println(e.getSource() + " deiconified");
 	}
 
-	public default void windowActivated(WindowEvent e)
+	@Override public default void windowActivated(WindowEvent e)
 	{	if(!this.isValid(e)) return; 
 		System.out.println(e.getSource() + " activated");
 //		((XGTreeNodeComponent)this.getGuiComponent()).setActive(true);
 		this.reloadTree();
 	}
 
-	public default void windowDeactivated(WindowEvent e)
+	@Override public default void windowDeactivated(WindowEvent e)
 	{	if(!this.isValid(e)) return;
 		System.out.println(e.getSource() + " deactivated");
 //		((XGTreeNodeComponent)this.getGuiComponent()).setSelected(this.getWindow() != null);

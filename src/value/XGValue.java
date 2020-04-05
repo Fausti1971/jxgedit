@@ -14,9 +14,10 @@ import msg.XGMessenger;
 import msg.XGResponse;
 import opcode.XGOpcode;
 import opcode.XGOpcodeConstants;
+import parm.XGParameter;
 import tag.XGTagable;
 /**
- * Inkarnation eines XGOpcodes
+ * Quasi Inkarnation eines XGOpcodes; dazu benötigt: message (datenbasis) und opcode (interpretation);
  * @author thomas
  *
  */
@@ -35,19 +36,19 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 
 	public XGValue(XGModule mod, XGOpcode opc) throws XGModuleNotFoundException, InvalidXGAddressException
 	{	this.opcode = opc;
-		this.address = mod.getAddress().complement(opc.getAddress());
-		if(!this.address.isFixedAddress()) throw new InvalidXGAddressException("value needs an fixed address: " + this.address);
 		this.module = mod;
-		this.message = this.module.getDevice().getMessages().get(this.module.getAddress().complement(this.opcode.getBulk().getAddress()));
-		this.module.getDevice().getMessages().addListener(this);
-		this.dependency = null;
+		this.address = mod.getAddress().complement(opc.getAddress());
+		if(!this.address.isFixed()) throw new InvalidXGAddressException("value needs an fixed address: " + this.address);
+		this.message = this.module.getDevice().getData().get(this.module.getAddress().complement(this.opcode.getBulk().getAddress()));
+		this.module.getDevice().getData().addListener(this);
+		this.dependency = null;//TODO:
 	}
 
-	public XGValue(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
+	public XGValue(XGMessenger src, XGAddress adr) throws InvalidXGAddressException//als Responseprototyp für manuell erzeugte XGParameterRequests
 	{	this.address = adr;
-		this.opcode = src.getDevice().getOpcodes().get(adr);
-		this.module = src.getDevice().getModule(adr);
-		this.message = this.module.getDevice().getMessages().get(this.module.getAddress().complement(this.opcode.getBulk().getAddress()));
+		this.opcode = src.getDevice().getModules().get(adr).getBulks().get(adr).getOpcodes().get(adr);
+		this.module = src.getDevice().getModules().get(adr);
+		this.message = this.module.getDevice().getData().get(this.module.getAddress().complement(this.opcode.getBulk().getAddress()));
 		this.dependency = null;
 	}
 
@@ -83,15 +84,6 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 	{	return module;
 	}
 
-	protected void validate(Object o) throws WrongXGValueTypeException
-	{	switch(this.opcode.getValueClass())
-		{	case Image:		if(o instanceof Image) return;
-			case Integer:	if(o instanceof Integer) return;
-			case String:	if(o instanceof String) return;
-			default:		throw new WrongXGValueTypeException("unsupported valuetype: " + o.getClass().getSimpleName());
-		}
-	}
-
 	public Object decodeBytes(XGResponse msg) throws InvalidXGAddressException
 	{	int offset = msg.getBaseOffset() + this.opcode.getAddress().getLo().getValue();
 		int size = this.opcode.getAddress().getLo().getSize();
@@ -124,10 +116,29 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 			}
 	}
 
+	protected Object validate(Object o) throws WrongXGValueTypeException
+	{	switch(this.opcode.getValueClass())
+		{	case Image:		if(o instanceof Image) return o;
+			case Integer:	if(o instanceof Integer)
+							{	int i = (int)o;
+								XGParameter p = this.opcode.getParameter(this.dependency.getValue());
+								i = Math.min(i, p.getMaxValue());
+								i = Math.max(i, p.getMinValue());
+								return i;
+							}
+			case String:	if(o instanceof String)
+							{	String s = (String)o;
+								s.substring(0, this.opcode.getAddress().getLo().getSize());
+								return s;
+							}
+			default:		throw new WrongXGValueTypeException("unsupported value class: " + o.getClass().getSimpleName());
+		}
+	}
+
+
 	public boolean setContent(Object o) throws WrongXGValueTypeException, InvalidXGAddressException
 	{	Object old = this.getContent();
-		this.validate(o);
-		o = this.limitize(o);
+		o = this.validate(o);
 		this.encodeBytes(this.getMessage(), o);
 		return o.equals(old);
 	}
@@ -138,10 +149,6 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 
 	public boolean addContent(Object v) throws WrongXGValueTypeException
 	{	return false;//TODO
-	}
-
-	protected Object limitize(Object v)
-	{	return v; //TODO
 	}
 
 	public String getInfo()
@@ -168,7 +175,7 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 	}
 
 	@Override public void setChanged(XGAddress adr)
-	{	this.message = this.module.getDevice().getMessages().get(adr.complement(this.opcode.getBulk().getAddress()));
+	{	this.message = this.module.getDevice().getData().get(adr.complement(this.opcode.getBulk().getAddress()));
 		this.notifyListeners();
 	}
 }

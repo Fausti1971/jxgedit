@@ -73,7 +73,7 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
  * testet, ob die Adresse vollständig ist, und somit einen XGValue adressieren kann
  * @return true, wenn alle Fields valide sind
  */
-	public boolean isFixedAddress()
+	public boolean isFixed()
 	{	return this.hi.isFix() && this.mid.isFix() && this.lo.isFix();
 	}
 
@@ -84,8 +84,8 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
  * @throws InvalidXGAddressException 
  */
 	public XGAddress complement(XGAddress adr)
-	{	if(this.isFixedAddress()) return this;
-		if(adr.isFixedAddress()) return adr;
+	{	if(this.isFixed()) return this;
+		if(adr.isFixed()) return adr;
 		return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
 	}
 

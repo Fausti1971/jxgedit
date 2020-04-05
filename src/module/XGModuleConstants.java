@@ -7,7 +7,7 @@ import xml.XMLNodeConstants;
 public interface XGModuleConstants extends XMLNodeConstants
 {
 	public static enum XGModuleTag
-	{	system, info, sysfx, syseq, insfx, display, multipart, adpart, drumset, plugin, unknown
+	{	system, info, sysfx, syseq, insfx, display, multipart, adpart, drumset, plugin
 	};
 
 	static final String
