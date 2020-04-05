@@ -86,19 +86,19 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	private final ChangeableContent<Path> defaultDumpFolder = new ChangeableContent<Path>()
 	{	@Override public Path get()
-		{	return Paths.get(config.getChildNodeTextContent(TAG_DEFAULTDUMPFOLDER.toString(), JXG.HOMEPATH.toString()));
+		{	return Paths.get(config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER.toString(), JXG.HOMEPATH.toString()));
 		}
 		@Override public void set(Path s)
-		{	config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).setTextContent(s.toString());
+		{	config.setStringAttribute(ATTR_DEFAULTDUMPFOLDER, s.toString());
 		}
 	};
 
 	private ChangeableContent<String> name = new ChangeableContent<String>()
 	{	@Override public String get()
-		{	return config.getChildNodeTextContent(TAG_DEVICE_NAME, DEF_DEVNAME);
+		{	return config.getStringAttribute(ATTR_NAME, DEF_DEVNAME);
 		}
 		@Override public void set(String s)
-		{	config.getChildNodeOrNew(TAG_DEVICE_NAME).setTextContent(s);
+		{	config.setStringAttribute(ATTR_NAME, s);
 		}
 	};
 	private XGTree tree;
@@ -149,11 +149,11 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			this.midi = new XGMidi(this);
 			this.configure();
 		}
-		this.sysex.set(this.config.parseChildNodeIntegerContentOrNew(TAG_SYSEXID, DEF_SYSEXID));
+		this.sysex.set(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
 		this.midi = new XGMidi(this);
-		this.name.set(this.config.getChildNodeTextContent(TAG_DEVICE_NAME, DEF_DEVNAME));
+		this.name.set(this.config.getStringAttribute(ATTR_NAME, DEF_DEVNAME));
 		this.modules = XGModule.init(this);
-		this.setColor(new Color(this.config.parseChildNodeIntegerContent(TAG_COLOR, DEF_DEVCOLOR)));
+		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
 		XMLNode x = null;
 		try
 		{	x = XMLNode.parse(this.getResourceFile(XML_TEMPLATE));
@@ -164,7 +164,9 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 		this.templates = x;
 
-		this.defaultDumpFolder.set(Paths.get(this.config.getChildNodeOrNew(TAG_DEFAULTDUMPFOLDER).getTextContent()));
+		String s = this.config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER);
+		if(s == null) s = JXG.HOMEPATH.toString();
+		this.defaultDumpFolder.set(Paths.get(s));
 		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.get().resolve("default.syx").toString());
 		this.defaultSyx.load(this);
 		log.info("device initialized: " + this);
@@ -213,7 +215,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	public void setSysexID(int id)
 	{	this.sysexID = id & 0xF;
-		this.config.getChildNodeOrNew(TAG_SYSEXID).setTextContent(this.sysexID);
+		this.config.setIntegerAttribute(ATTR_SYSEXID, this.sysexID);
 	}
 
 	public XGAddressableSet<XGMessageBulkDump> getData()

@@ -105,14 +105,15 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 	private XMLNode parent;
 	private final Set<XMLNode> childNodes = new LinkedHashSet<>();
 	private final String tag;
-	private String content = "no content";
+	private String content = null;
 	private final Properties attributes;
 //	private boolean isSelected = false;
 
 
 	public XMLNode(String tag, Properties attr)
 	{	this.tag = tag;
-		this.attributes = attr;
+		if(attr != null) this.attributes = attr;
+		else this.attributes = new Properties();
 	}
 
 	public XMLNode(String tag, Properties attr, String txt)
@@ -194,9 +195,9 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 		return Rest.parseIntOrDefault(n.getTextContent(), def);
 	}
 
-	public XMLNode getChildNodeWithID(String tagTemplate, String name)
+	public XMLNode getChildNodeWithID(String tag, String id)
 	{	for(XMLNode x : this.childNodes)
-			if(x.getTag().equals(tagTemplate) && name.equals(x.getStringAttribute(ATTR_ID)))
+			if(x.getTag().equals(tag) && id.equals(x.getStringAttribute(ATTR_ID)))
 				return x;
 		return null;
 	}
@@ -211,6 +212,10 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 	{	return this.attributes.getProperty(a);
 	}
 
+	public void setStringAttribute(String attrMidioutput, String outputName)
+	{	this.attributes.put(attrMidioutput, outputName);
+	}
+
 	public int getIntegerAttribute(String a, int def)
 	{	String s = (String)this.attributes.get(a);
 		if(s == null) return def;
@@ -219,6 +224,10 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 
 	public int getIntegerAttribute(String a)
 	{	return Integer.parseInt((String)this.attributes.get(a));
+	}
+
+	public void setIntegerAttribute(String attr, int t)
+	{	this.attributes.put(attr, String.valueOf(t));
 	}
 
 	public void save(File file) throws IOException, XMLStreamException
@@ -234,11 +243,11 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 	private void writeNode(XMLStreamWriter w, XMLNode n)
 	{	try
 		{	w.writeStartElement(n.tag);
-			w.writeCharacters(n.content);
-			if(n.attributes != null)
+			if(n.attributes != null)//Attribute müssen VOR dem text geschrieben werden, sonst javax.xml.stream.XMLStreamException: Attribute not associated with any element
 			{	for(Entry<Object,Object> e : n.attributes.entrySet())
 					w.writeAttribute(e.getKey().toString(), e.getValue().toString());
 			}
+			if(n.content != null) w.writeCharacters(n.content);
 			for(XMLNode n2 : n.childNodes) n2.writeNode(w, n2);
 			w.writeEndElement();
 		}

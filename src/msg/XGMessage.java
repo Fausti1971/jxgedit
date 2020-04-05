@@ -91,8 +91,7 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	{	if(o != null)
 		{	if(o.getMessageID() == this.getMessageID() &&
 				o.getSysexID() == this.getSysexID() &&
-				o.getAddress().equals(this.getAddress()) &&
-				o.getDestination().equals(this.getDestination())) return true;
+				o.getAddress().equals(this.getAddress())) return true;
 		}
 		return false;
 	}

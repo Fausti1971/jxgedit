@@ -30,10 +30,10 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
 		this.setBounds(
-			this.getConfig().parseChildNodeIntegerContent(TAG_WINX, 20),
-			this.getConfig().parseChildNodeIntegerContent(TAG_WINY, 20),
-			this.getConfig().parseChildNodeIntegerContent(TAG_WINW, MIN_W),
-			this.getConfig().parseChildNodeIntegerContent(TAG_WINH, MIN_H));
+			this.config.getIntegerAttribute(ATTR_WINX, 20),
+			this.config.getIntegerAttribute(ATTR_WINY, 20),
+			this.config.getIntegerAttribute(ATTR_WINW, MIN_W),
+			this.config.getIntegerAttribute(ATTR_WINH, MIN_H));
 		this.setModal(false);
 		this.setVisible(true);
 	}
@@ -71,13 +71,13 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 	}
 
 	@Override public void componentResized(ComponentEvent e)
-	{	this.getConfig().getChildNodeOrNew(TAG_WINW).setTextContent(e.getComponent().getWidth());
-		this.getConfig().getChildNodeOrNew(TAG_WINH).setTextContent(e.getComponent().getHeight());
+	{	this.config.setIntegerAttribute(ATTR_WINW, e.getComponent().getWidth());
+		this.config.setIntegerAttribute(ATTR_WINH, e.getComponent().getHeight());
 	}
 
 	@Override public void componentMoved(ComponentEvent e)
-	{	this.getConfig().getChildNodeOrNew(TAG_WINX).setTextContent(e.getComponent().getX());
-		this.getConfig().getChildNodeOrNew(TAG_WINY).setTextContent(e.getComponent().getY());
+	{	this.config.setIntegerAttribute(ATTR_WINX, e.getComponent().getX());
+		this.config.setIntegerAttribute(ATTR_WINY, e.getComponent().getY());
 	}
 
 	@Override public void componentShown(ComponentEvent e)

@@ -18,8 +18,5 @@ public interface ConfigurationConstants extends XMLNodeConstants
 	static final Path HOMEPATH = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
 	static final Path CONFIGFILEPATH = HOMEPATH.resolve(XML_CONFIG);
 
-	static final int DEF_MIDITIMEOUT = 150;
-	static final int DEF_SYSEXID = 0;
-
 	static final int MIN_W = 300, MIN_H = 400;
 }

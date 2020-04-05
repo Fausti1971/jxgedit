@@ -16,23 +16,26 @@ public interface XMLNodeConstants
 
 	static final String
 		TAG_WIN = "window",
-		TAG_WINX = "window_x",
-		TAG_WINY = "window_y",
-		TAG_WINW = "window_w",
-		TAG_WINH = "window_h",
+		ATTR_WINX = "x",
+		ATTR_WINY = "y",
+		ATTR_WINW = "w",
+		ATTR_WINH = "h",
 
 		TAG_CONFIG = "config",
 		TAG_VERSION = "version",
-		TAG_DEVICE = "device",
 
-		TAG_COLOR = "device_color",
+		TAG_DEVICE = "device",
+		ATTR_SYSEXID = "sysexID",
+		ATTR_LASTDUMPFILE = "lastDumpFile",
+		ATTR_DEFAULTDUMPFOLDER = "defaultDumpFolder",
+
+		TAG_MIDI = "midi",
+		ATTR_MIDIINPUT = "input",
+		ATTR_MIDIOUTPUT = "output",
+		ATTR_MIDITIMEOUT = "timeout",
+		ATTR_COLOR = "color",
 //		TAG_BASECOLOR = "base",
 //		TAG_FOCUSCOLOR = "focus",
-
-		TAG_DEVICE_NAME = "device_name",//TODO: umrüsten auf Attribute
-		TAG_SYSEXID = "device_sysexID",
-		TAG_LASTDUMPFILE = "device_lastDumpFile",
-		TAG_DEFAULTDUMPFOLDER = "device_defaultDumpFolder",
 
 		TAG_MODULES = "modules",
 

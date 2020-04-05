@@ -107,9 +107,9 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 	public XGMidi(XGDevice dev)
 	{	this.device = dev;
 		this.config = this.device.getConfig().getChildNodeOrNew(TAG_MIDI);
-		this.setInput(this.config.getChildNodeOrNew(TAG_MIDIINPUT).getTextContent());
-		this.setOutput(this.config.getChildNodeOrNew(TAG_MIDIOUTPUT).getTextContent());
-		this.timeout.set(this.config.parseChildNodeIntegerContent(TAG_MIDITIMEOUT, DEF_MIDITIMEOUT));
+		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT));
+		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT));
+		this.timeout.set(this.config.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
 		this.buffer = new XGMessageBuffer(this);
 
 		try
@@ -153,7 +153,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 			}
 		}
 		log.info(this.getOutputName());
-		this.config.getChildNodeOrNew(TAG_MIDIOUTPUT).setTextContent(this.getOutputName());
+		this.config.setStringAttribute(ATTR_MIDIOUTPUT, this.getOutputName());
 //		this.notifyConfigurationListeners();
 		return;
 	}
@@ -190,7 +190,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 			}
 		}
 		log.info(this.getInputName());
-		this.config.getChildNodeOrNew(TAG_MIDIINPUT).setTextContent(this.getInputName());
+		this.config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
 //		this.notifyConfigurationListeners();
 		return;
 	}
@@ -300,7 +300,7 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 
 	public void setTimeout(int t)
 	{	this.timeoutValue = t;
-		this.config.getChildNodeOrNew(TAG_MIDITIMEOUT).setTextContent(t);
+		this.config.setIntegerAttribute(ATTR_MIDITIMEOUT, t);
 		log.info("timeout set to " + t);
 	}
 
