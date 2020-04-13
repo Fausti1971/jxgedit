@@ -2,5 +2,5 @@ package adress;
 
 public interface XGAddressableSetListener
 {
-	void setChanged(XGAddress adr);
+	void setChanged(XGAddressable t);
 }

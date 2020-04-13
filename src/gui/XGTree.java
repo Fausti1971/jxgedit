@@ -6,7 +6,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Set;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
@@ -42,8 +41,6 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 		root.setTreeComponent(this);
 		this.addMouseListener(this);
 		this.addKeyListener(this);
-//		this.addTreeSelectionListener(this);
-//		this.setSelectionModel(null);
 		this.setToggleClickCount(10);
 		this.setCellRenderer(XGTreeCellRenderer);
 		this.setExpandsSelectedPaths(true);
@@ -118,7 +115,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	{
 	}
 /*
-	@Override public void valueChanged(TreeSelectionEvent e)	//Kompromiss zur Tastatursteuerung, verdoppelt aber MouseClicked
+	@Override public void valueChanged(TreeSelectionEvent e)	//Kompromiss zur Tastatursteuerung, doppelt aber MouseClicked
 	{
 		TreePath p = e.getNewLeadSelectionPath();
 		if(p == null)

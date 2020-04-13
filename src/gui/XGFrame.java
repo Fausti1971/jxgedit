@@ -4,8 +4,11 @@ import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import value.XGValue;
+import xml.XMLNode;
 
 public class XGFrame extends JPanel implements XGBorderable
 {	/**
@@ -24,6 +27,10 @@ public class XGFrame extends JPanel implements XGBorderable
 		this.setName(text);
 //		this.colorize();
 		this.borderize();
+	}
+
+	public XGFrame(XMLNode n, Set<XGValue> set)
+	{	this(n.getStringAttribute(ATTR_NAME) + " " + set.size());
 	}
 
 /**Bequemlichkeitsmethoden für das Hinzufügen von Komponenten mit den benötigten GridBagConstraints:

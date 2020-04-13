@@ -36,7 +36,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 	private static Logger log = Logger.getAnonymousLogger();
 
 /**
- * lokalisiert die zur xml gehörige xsd und valisiert xml
+ * lokalisiert die zur xml gehörige xsd und validiert xml
  * @param xml
  * @return true, wenn xml valide oder xsd nicht vorhanden
  */
@@ -101,13 +101,11 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 
 /*************************************************************************************************************/
 
-//	private XGTree tree;
 	private XMLNode parent;
 	private final Set<XMLNode> childNodes = new LinkedHashSet<>();
 	private final String tag;
 	private String content = null;
 	private final Properties attributes;
-//	private boolean isSelected = false;
 
 
 	public XMLNode(String tag, Properties attr)
@@ -127,7 +125,6 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 
 	public void setTextContent(String s)
 	{	this.content = s;
-//		log.info("text (" + s + ") added to " + this);
 	}
 
 	public void setTextContent(int v)
@@ -154,6 +151,14 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 	public XMLNode getChildNode(String tag)
 	{	for(XMLNode n : this.childNodes) if(n.getTag().equals(tag)) return n;
 		return null;
+	}
+
+	public Set<XMLNode> getChildNodes(String tag)
+	{	Set<XMLNode> set = new LinkedHashSet<>();
+		for(XMLNode x : this.childNodes)
+			if(x.getTag().equals(tag))
+				set.add(x);
+		return set;
 	}
 
 	public XMLNode getChildNodeOrNew(String tag)
@@ -259,58 +264,4 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 	@Override public String toString()
 	{	return this.tag;
 	}
-
-/*	XGTreeNode
-
-	@Override public String getNodeText()
-	{	if(this.tag.equals("item")) return this.content;
-		if(this.tag.equals("entry")) return this.getChildNodeTextContent("value", "no value for " + this.getChildNodeTextContent("key", "no key"));
-		return this.tag;
-	}
-
-	@Override public TreeNode getParent()
-	{	return this.getParentNode();
-	}
-
-	@Override public boolean getAllowsChildren()
-	{	return true;
-	}
-
-	@Override public Enumeration<? extends TreeNode> children()
-	{	return Collections.enumeration(this.getChildNodes());
-	}
-
-	@Override public Set<String> getContexts()
-	{	Set<String> set = new LinkedHashSet<>();
-		set.add("select");
-		return set;
-	}
-
-	@Override public void actionPerformed(ActionEvent e)
-	{	this.setSelected(true);
-	}
-
-	@Override public void nodeFocussed(boolean b)
-	{	this.setSelected(b);
-	}
-
-	@Override public void setSelected(boolean s)
-	{	System.out.println(this.content + " " + s);
-		if(s) this.getParentNode().attributes.put(ATTR_SELECTED, this.content);
-		else this.getParentNode().attributes.put(ATTR_SELECTED, "");
-	}
-
-	@Override public boolean isSelected()
-	{	String s = this.getParentNode().getStringAttribute(ATTR_SELECTED);
-		return s.equals(this.content);
-	}
-
-	@Override public void setTreeComponent(XGTree t)
-	{	this.tree = t;
-	}
-
-	@Override public XGTree getTreeComponent()
-	{	return this.tree;
-	}
-*/
 }

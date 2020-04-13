@@ -79,7 +79,7 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
  * überprüft anhand vendorID und modelID, ob es sich um eine XG-Message handelt und wirft bei Fehlschlag eine Exception
  */
 	public default void validate() throws InvalidMidiDataException
-	{	if(this.getVendorID() != VENDOR || this.getModelID() != MODEL) throw new InvalidMidiDataException("no xg message");
+	{	if(this.getVendorID() != VENDOR || this.getModelID() != MODEL) throw new InvalidMidiDataException("no xg message: " + this.toHexString());
 	}
 
 /**
@@ -108,5 +108,4 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	public void setHi(int hi);
 	public void setMid(int mid);
 	public void setLo(int lo);
-	public void setMessageID();
 }

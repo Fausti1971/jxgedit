@@ -1,5 +1,8 @@
 package opcode;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 import adress.XGAddress;
@@ -11,24 +14,37 @@ import module.XGModule;
 import module.XGModuleConstants.XGModuleTag;
 import parm.XGParameter;
 import tag.XGTagable;
-import tag.XGTagableAddressableSet;
 import xml.XMLNode;
 
 public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGTagable, XGAddressable
 {	private static Logger log = Logger.getAnonymousLogger();
 
-	public static XGTagableAddressableSet<XGOpcode> init(XGBulkDump bulk, XMLNode x)
+	public static void init(XGDevice dev)
 	{	
-		XGTagableAddressableSet<XGOpcode> set = new XGTagableAddressableSet<>();
-		XGOpcode o = null;
-		for(XMLNode n : x.getChildNodes())
-		{	if(n.getTag().equals(TAG_OPCODE))
-			{	o = new XGOpcode(bulk, n);
-				set.add(o);
+		File file;
+		try
+		{	file = dev.getResourceFile(XML_PARAMETER);
+		}
+		catch(FileNotFoundException e)
+		{	log.info(e.getMessage());
+			return;
+		}
+
+		XMLNode xml = XMLNode.parse(file);
+		for(XMLNode m : xml.getChildNodes(TAG_MODULE))
+		{	XGModule mod = XGModule.newInstances(dev, m);
+			dev.getModules().add(mod);
+			for(XMLNode b : m.getChildNodes(TAG_BULK))
+			{	XGBulkDump blk = new XGBulkDump(mod, b);
+				dev.getBulks().add(blk);
+				for(XMLNode o : b.getChildNodes(TAG_OPCODE))
+				{	XGOpcode opc = new XGOpcode(mod, blk, o);
+					dev.getOpcodes().add(opc);
+				}
 			}
 		}
-		log.info(set.size() + " opcodes initialized");
-		return set;
+		log.info(dev.getOpcodes().size() + " opcodes initialized");
+		return;
 	}
 
 	public static ValueDataClass getValueDataClass(String s)
@@ -55,44 +71,38 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGTa
 
 	private final String tag, dependencyTag;
 	private final XGOpcodeConstants.ValueDataType dependencyType;
+	private final XGModule module;
 	private final XGBulkDump bulk;
 	private final XGAddress address;
 	private final ValueDataType dType;
-	private final ValueDataClass vType;
-	private final XGModuleTag moduleTag;
 	private final Map<Integer, XGParameter> parameters;
 
-	public XGOpcode(XGDevice dev, XGAddress adr)
-	{	this.tag = DEF_OPCODENAME + adr;
-		this.address = adr;
-		this.bulk = null;
-		this.dType = DEF_DATATYPE;
-		this.vType = DEF_VALUECLASS;
-		this.moduleTag = XGModule.getModuleTag(adr);
-		this.parameters = null;
-		this.dependencyTag = "";
-		this.dependencyType = ValueDataType.LSB;
-	}
-
-	private XGOpcode(XGBulkDump bulk, XMLNode n)
-	{	this.bulk = bulk;
+	private XGOpcode(XGModule mod, XGBulkDump bulk, XMLNode n)
+	{	this.module = mod;
+		this.bulk = bulk;
 		this.address = new XGAddress(bulk.getAddress(), n);
-		this.moduleTag = (XGModuleTag)this.bulk.getModule().getTag();
 		this.tag = n.getStringAttribute(ATTR_ID);
 		this.dType = getDataType(n.getStringAttribute(ATTR_DATATYPE));
-		this.vType = getValueDataClass(n.getStringAttribute(ATTR_VALUECLASS));
 		this.dependencyTag = n.getStringAttribute(ATTR_DEPENDING);
 		this.dependencyType = ValueDataType.valueOf(n.getStringAttribute(ATTR_DEP_TYPE, DEF_DATATYPE.name()));
 		this.parameters = XGParameter.init(this, n);
 		log.info("opcode initialized: " + this.getInfo());
 	}
 
-	public String getInfo()
-	{	return this.tag + " " + this.address;
+	public XGOpcode(XGDevice dev, XGAddress adr)
+	{	this.tag = DEF_OPCODENAME + adr;
+		this.module = dev.getModules().get(adr);
+		this.bulk = null;
+		this.address = adr;
+		this.dType = DEF_DATATYPE;
+		this.parameters = new HashMap<>();
+		this.parameters.put(0, new XGParameter(adr.toString()));
+		this.dependencyTag = null;
+		this.dependencyType = null;
 	}
 
-	public ValueDataClass getValueClass()
-	{	return this.vType;
+	public String getInfo()
+	{	return this.tag + " " + this.address;
 	}
 
 	@Override public String getTag()
@@ -119,12 +129,16 @@ public class XGOpcode implements ConfigurationConstants, XGOpcodeConstants, XGTa
 	{	return this.address;
 	}
 
+	public XGModule getModule()
+	{	return this.module;
+	}
+
 	public XGBulkDump getBulk()
 	{	return this.bulk;
 	}
 
 	public XGModuleTag getModuleTag()
-	{	return moduleTag;
+	{	return (XGModuleTag)this.module.getTag();
 	}
 
 	public XGParameter getParameter(int i)

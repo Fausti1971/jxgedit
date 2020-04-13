@@ -17,12 +17,13 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	}
 
 	public XGMessageBulkDump(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException //wird manuell angelegt und als response benötigt
-	{	super(src, dest, new byte[OVERHAED], true);
+	{	super(src, dest, new byte[OVERHAED + adr.getLo().getSize()], true);
 		this.setMessageID(MSG);
-		this.setBulkSize(0);
+		this.setBulkSize(adr.getLo().getSize());
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
-		this.setLo(adr.getLo().getValue());
+		this.setLo(adr.getLo().getMin());
+		this.setChecksum();
 		this.setEOX(10);
 	}
 
@@ -31,8 +32,8 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 		this.checkSum();
 	}
 /*
-	private XGMessageBulkDump(XGMessenger src, XGBulkDump blk) throws InvalidXGAddressException
-	{	super(src, new byte[OVERHAED + blk.getBulkSize()]);
+	private XGMessageBulkDump(XGMessenger src, XGMessenger dest, XGBulkDump blk) throws InvalidXGAddressException
+	{	super(src, dest, new byte[OVERHAED + blk.getAddress().getLo().getSize()], true);
 		this.setMessageID();
 		this.setHi(blk.getAdress().getHi());
 		this.setMid(blk.getAdress().getMid());
@@ -75,16 +76,15 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	{	encodeLSB(SIZE_OFFS, SIZE_SIZE, size);
 	}
 
-	@Override public void setMessageID()
-	{	encodeMSN(MSG_OFFS, MSG);
-	}
-
 	@Override public void checkSum() throws InvalidMidiDataException
 	{	if(((calcChecksum(SIZE_OFFS, DATA_OFFS + this.getBulkSize()) & LSB) != 0)) throw new InvalidMidiDataException("checksum error!");
 	}
 
 	@Override public int setChecksum()
-	{	return 0;	//TODO:
+	{	int size = this.getBulkSize();
+		int sum = 0 - this.calcChecksum(SIZE_OFFS, DATA_OFFS + size - 1);
+		this.encodeLSB(DATA_OFFS + size, sum);
+		return sum;
 	}
 
 	@Override public int getBaseOffset()

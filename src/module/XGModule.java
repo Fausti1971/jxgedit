@@ -1,7 +1,5 @@
 package module;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Set;
@@ -9,43 +7,20 @@ import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
-import adress.XGAddressableSet;
-import adress.XGBulkDump;
+import device.TimeoutException;
 import device.XGDevice;
 import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindowSource;
 import msg.XGMessenger;
+import msg.XGRequest;
+import msg.XGResponse;
 import tag.XGTagable;
 import xml.XMLNode;
 
-public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, XGMessenger, XGTreeNode, XGWindowSource
+public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, XGMessenger, XGTreeNode, XGWindowSource, XGSetFilter
 {
-	public static XGAddressableSet<XGModule> init(XGDevice dev)
-	{
-		XGAddressableSet<XGModule> set = new XGAddressableSet<XGModule>();
-		File file;
-		try
-		{	file = dev.getResourceFile(XML_PARAMETER);
-		}
-		catch(FileNotFoundException e)
-		{	log.info(e.getMessage());
-			return set;
-		}
-		XMLNode xml = XMLNode.parse(file);
-		if(xml == null) return set;
-		if(xml.getTag().equals(TAG_MODULES))
-		{	for(XMLNode n : xml.getChildNodes())
-			{	if(n.getTag().equals(TAG_MODULE))
-				{	set.add(XGModule.newInstances(dev, null, n));
-				}
-			}
-		}
-		log.info(set.size() + " modules initialized from: " + file);
-		return set;
-	};
-
-	private static XGModule newInstances(XGDevice dev, XGModule par, XMLNode n)//TODO: vielleicht nochmal mittels Reflection probieren (inkl. XGModuleTag)
+	public static XGModule newInstances(XGDevice dev, XMLNode n)//TODO: vielleicht nochmal mittels Reflection probieren (inkl. XGModuleTag)
 	{	XGModuleTag t = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
 		switch(t)
 		{	case adpart:		return new XGADPart(dev, n); 
@@ -100,24 +75,22 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 	String getName();
 	Set<XGModule> getChildModules();
 	XGModule getParentModule();
-	XGAddressableSet<XGBulkDump> getBulks();
 	XMLNode getGuiTemplate();
-//	XGAddressableSet<XGBulkDump> getBulks();
-//	XGTagableAddressableSet<XGOpcode>getOpcodes();
-//	XGTagableAddressableSet<XGValue> getValues();
+
+	@Override public default void submit(XGResponse msg) throws InvalidXGAddressException
+	{
+	}
+
+	@Override public default XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException
+	{	return null;
+	}
+
+	@Override default boolean isLeaf()
+	{	return this.getChildCount() < 2;
+	}
 
 	@Override public default XGTree getTreeComponent()
 	{	return this.getDevice().getTreeComponent();
-	}
-
-	public default XGModule getModule(XGAddress adr) throws XGModuleNotFoundException
-	{	for(XGModule m : this.getChildModules())
-		{	if(m.getAddress().contains(adr))
-			{	if(m.getChildCount() == 0) return m;
-				else return m.getModule(adr);
-			}
-		}
-		throw new XGModuleNotFoundException("module not found " + adr);
 	}
 
 	@Override public default TreeNode getParent()
@@ -126,10 +99,11 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 	}
 
 	@Override public default boolean getAllowsChildren()
-	{	return this.getAddress().isFixed();
+	{	return true;
 	}
 
 	@Override public default Enumeration<? extends TreeNode> children()
-	{	return Collections.enumeration(this.getChildModules());
+	{	if(this.getChildModules() == null) return Collections.emptyEnumeration();
+		else return Collections.enumeration(this.getChildModules());
 	}
 }

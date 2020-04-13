@@ -1,17 +1,15 @@
 <?xml version="1.1" encoding="ISO-8859-1"?>
-<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt
-	ein fehlendes addressfield wird durch das entsprechende parent-addressfield ersetzt
-	ein vorhandenes opcode-addressfield überschreibt des entsprechende parent-addressfield, aber nur falls es dort enthalten ist
-
-	validierung funktioniert mit StAX nicht, also auch nicht das setzen eventueller default-Attribute
--->
+<!-- validierung funktioniert mit StAX nicht, also auch nicht das setzen eventueller default-Attribute -->
 
 <modules xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
 
 	<module id="system" name="Master" hi="0" mid="0">
 		<bulk lo="0-6">
-			<opcode id="master_tune" lo="0-3" byteType="LSN" valueClass="Integer">
+			<opcode id="master_tune" lo="0-3" byteType="LSN">
 				<parameter longName="Master Tune" shortName="Tune" max="2047" translator="translateSub128Div10"/>
+			</opcode>
+			<opcode id="master_volume" lo="4">
+				<parameter longName="Master Volume" shortName="Vol"/>
 			</opcode>
 		</bulk>
 	</module>
@@ -101,25 +99,29 @@
 		</bulk>
 	</module>
 
-
 	<module id="multipart" name="Multipart" hi="8-10" mid="0-31">
 		<bulk hi="8" lo="0-40">
 			<opcode id="mp_elementReserve" lo="0">
 				<parameter longName="Element Reserve" shortName="ElRes" max="32"/>
 			</opcode>
 		</bulk>
+		<bulk hi="10" lo="16">
+			<opcode id="mp_output" lo="0">
+				<parameter longName="Output Select" shortName="out" max="103"/>
+			</opcode>
+		</bulk>
 	</module>
 
 	<module id="adpart" name="A/D-Part" hi="16-18" mid="0-1">
-		<bulk hi="16" mid="0-1" lo="0-30">
-			<opcode id="ad_inputGain" hi="16" mid="0-1" lo="0">
+		<bulk hi="16" lo="0-30">
+			<opcode id="ad_inputGain" lo="0">
 				<parameter longName="Input Gain" shortName="iGain" max="1"/>
 			</opcode>
 		</bulk>
 	</module>
 
 	<module id="drumset" name="Drumset" hi="48-51" mid="13-91">
-		<bulk hi="48-51" mid="13-91" lo="0-15">
+		<bulk lo="0-15">
 			<opcode id="dr_pitch_coarse" hi="48-51" mid="13-91" lo="0">
 				<parameter longName="Pitch Coarse" shortName="Tune" translator="translateSub64"/>
 			</opcode>

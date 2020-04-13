@@ -2,7 +2,7 @@
 	<template id="system">
 		<item control="frame">
 			<item id="master_tune" control="knob" zero="center"/>
-			<item id="master_volume" control="knob" zero="center"/>
+			<item id="master_volume" control="knob" zero="left"/>
 			<item id="master_attenuator" control="knob" zero="left"/>
 			<item id="master_transpose" control="spinner"/>
 		</item>

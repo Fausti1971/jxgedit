@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
 	<xs:element name="modules">
 		<xs:complexType>
 			<xs:sequence>
@@ -50,7 +51,6 @@
 			<xs:attribute name="mid" use="optional" type="addressRange"/>
 			<xs:attribute name="lo" use="required" type="addressRange"/>
 			<xs:attribute name="byteType" use="optional" type="byteTypes" default="LSB"/>
-			<xs:attribute name="valueClass" use="optional" type="valueClasses" default="Integer"/>
 			<xs:attribute name="dependingOn" use="optional" type="xs:IDREF"/>
 			<xs:attribute name="dependencyType" use="optional" type="byteTypes"/>
 		</xs:complexType>
@@ -109,14 +109,6 @@
 			<xs:enumeration value="LSB"/>
 			<xs:enumeration value="MSN"/>
 			<xs:enumeration value="LSN"/>
-		</xs:restriction>
-	</xs:simpleType>
-
-	<xs:simpleType name="valueClasses">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="Integer"/>
-			<xs:enumeration value="String"/>
-			<xs:enumeration value="Image"/>
 		</xs:restriction>
 	</xs:simpleType>
 

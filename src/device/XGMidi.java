@@ -268,10 +268,10 @@ public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotificatio
 				{	this.request = msg;
 					this.requestThread = Thread.currentThread();
 					Thread.sleep(this.timeoutValue);
-					throw new TimeoutException("timeout: no response after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
+					throw new TimeoutException("timeout: no response within " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
 				}
 				catch(InterruptedException e)
-				{	log.info("response after " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
+				{	log.info("response within " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
 				}
 			}
 			this.request = null;

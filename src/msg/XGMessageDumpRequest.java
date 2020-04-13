@@ -20,7 +20,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
 	{	super(src, dest, new byte[8], true);
-		this.setMessageID();
+		this.setMessageID(MSG);
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getValue());
@@ -74,9 +74,5 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	@Override public String toString()
 	{	return this.getAddress().toString();
-	}
-
-	@Override public void setMessageID()
-	{	encodeMSN(MSG_OFFS, MSG);
 	}
 }

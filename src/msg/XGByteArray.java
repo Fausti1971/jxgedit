@@ -136,7 +136,7 @@ public interface XGByteArray
 	{	if(getByteArray() == null) return "no data";
 		String s = new String();
 		for(byte c : getByteArray())
-		{	s = s.concat(Integer.toHexString(c) + ", ");
+		{	s = s.concat(Integer.toHexString(c) + ", ").toUpperCase();
 		}
 		return s;
 	}

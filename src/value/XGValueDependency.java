@@ -1,6 +1,5 @@
 package value;
 
-import adress.InvalidXGAddressException;
 import opcode.XGOpcodeConstants;
 
 public class XGValueDependency
@@ -19,21 +18,14 @@ public class XGValueDependency
 	}
 
 	public int getValue()
-	{	try
-		{	if(!(this.master.getContent() instanceof Integer)) return 0;
-			int v = (int)this.master.getContent();
-			switch(this.type)
-			{
-				case MSB:	v >>= 7;
-				case LSB:	return v & 0x7F;
-				case MSN:	v >>= 4;
-				case LSN:	return v & 0xF;
-				default:	return v;
-			}
-		}
-		catch(InvalidXGAddressException e)
-		{	e.printStackTrace();
-			return 0;
+	{	int v = this.master.getContent();
+		switch(this.type)
+		{
+			case MSB:	v >>= 7;
+			case LSB:	return v & 0x7F;
+			case MSN:	v >>= 4;
+			case LSN:	return v & 0xF;
+			default:	return v;
 		}
 	}
 }

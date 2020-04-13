@@ -8,11 +8,11 @@ public interface XMLNodeConstants
 
 	static final String
 		XML_CONFIG = "config.xml",
-		XML_OPCODE = "opcodes.xml",
-		XML_TYPE = "types.xml",
+//		XML_OPCODE = "opcodes.xml",
+//		XML_TYPE = "types.xml",
 		XML_PARAMETER = "parameter.xml",
-		XML_TRANSLATION = "translations.xml",
-		XML_TEMPLATE = "templates.xml";
+		XML_TRANSLATION = "translation.xml",
+		XML_TEMPLATE = "template.xml";
 
 	static final String
 		TAG_WIN = "window",
@@ -51,7 +51,7 @@ public interface XMLNodeConstants
 
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",
-		ATTR_VALUECLASS = "valueClass",
+//		ATTR_VALUECLASS = "valueClass",
 		ATTR_DEP_VALUES = "dependencyValues",
 		ATTR_DEP_TYPE = "dependencyType",
 		ATTR_DEPENDING = "dependingOf",
@@ -66,6 +66,9 @@ public interface XMLNodeConstants
 
 		TAG_TEMPLATES = "templates",
 		TAG_TEMPLATE = "template",
+		TAG_ITEM = "item",
+		ATTR_TYPE = "type",
+
 		TAG_MAPS = "maps",
 		TAG_MAP = "map",
 		TAG_ENTRY = "entry",
@@ -73,6 +76,5 @@ public interface XMLNodeConstants
 		TAG_VALUE = "value",
 
 		TAG_SETS = "sets",
-		TAG_SET = "set",
-		TAG_ITEM = "item";
+		TAG_SET = "set";
 }

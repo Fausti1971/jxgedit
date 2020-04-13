@@ -7,20 +7,22 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterable<T>, XGAddressConstants, XGAddressableSetListener
 {
+	private static Logger log = Logger.getAnonymousLogger();
 
 /***********************************************************************************************************/
 
-	private Class<?> type = null;
+	private String memberName = "XGAddressableMember";
 	private final SortedMap<XGAddress, T> map = new TreeMap<XGAddress,T>();
 	private final Set<XGAddressableSetListener> listeners = new HashSet<XGAddressableSetListener>();
 
 	@Override public synchronized boolean add(T obj)
 	{	synchronized(this.map)
 		{	if(obj == null) return false;
-			if(this.type == null) this.type = obj.getClass();
+			this.memberName = obj.getClass().getSimpleName();
 			XGAddress adr;
 			adr = obj.getAddress();
 			this.map.put(adr, obj);
@@ -93,10 +95,16 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 		return null;
 	}
 
+/**
+ * returniert ein Set aller Members, deren XGAddress eine gemeinsame Teilmenge von adr sind
+ * @param adr
+ * @return	Set
+ */
 	public synchronized XGAddressableSet<T> getAllValid(XGAddress adr)
 	{	XGAddressableSet<T> set = new XGAddressableSet<>();
-		for(T a : this.values()) if(a.getAddress().contains(adr)) set.add(a);
+		for(T i : this.values()) if(adr.contains(i.getAddress())) set.add(i);
 		this.addListener(set);
+		log.info(set.size() + " " + this.memberName + "(s) found for address: " + adr);
 		return set;
 	}
 
@@ -124,17 +132,17 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	{	listeners.remove(l);
 	}
 
-	private synchronized void notifyListeners(XGAddress adr)
+	private synchronized void notifyListeners(XGAddressable adr)
 	{	if(adr != null) for(XGAddressableSetListener l : listeners) l.setChanged(adr);
 	}
 
-	@Override public void setChanged(XGAddress adr)
+	@Override public void setChanged(XGAddressable adr)
 	{	this.notifyListeners(adr);
 	}
 
 	@Override public String toString()
 	{	if(this.map.isEmpty()) return "empty set";
-		return (this.type.getSimpleName()) + " (" + size() + ")";
+		return (this.memberName) + " (" + size() + ")";
 	}
 
 	@Override public boolean isEmpty()

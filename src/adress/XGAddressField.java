@@ -102,9 +102,9 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
 	}
 
 /**
- * versucht festzustellen, ob ein definiertes, festes f in einem definierten this enthalten ist
+ * testet, ob Field f eine Teilmenge von Field this ist
  * @param f	Addressfeld
- * @return	true, true, wenn eines oder beide Felder variabel sind und eine gemeinsame Teilmenge haben (bei fixen Werten, wenn gleich)
+ * @return	true, wenn Field f eine Teilmenge von this ist
  */
 	public boolean contains(XGAddressField f)
 	{	return this.getMin() <= f.getMin() && this.getMax() >= f.getMax();

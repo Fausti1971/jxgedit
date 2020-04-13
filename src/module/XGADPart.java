@@ -1,10 +1,10 @@
 package module;
 
-import javax.swing.JComponent;
 import adress.XGAddress;
 import adress.XGAddressField;
+import adress.XGAddressableSet;
 import device.XGDevice;
-import gui.XGWindow;
+import value.XGValue;
 import xml.XMLNode;
 
 public class XGADPart extends XGSuperModule
@@ -13,11 +13,12 @@ public class XGADPart extends XGSuperModule
 
 /********************************************************************************************************/
 
+//	private XGValue info;
+
 	protected XGADPart(XGDevice dev, XMLNode n)
 	{	super(dev, n);
-		if(this.getAddress().getMid().isRange())
-		{	for(int i : this.getAddress().getMid())
-				this.getChildModules().add(new XGADPart(this, new XGAddress(this.getAddress().getHi(), new XGAddressField(i), this.getAddress().getLo())));
+		for(int m : this.getAddress().getMid())
+		{	new XGADPart(this, new XGAddress(this.getAddress().getHi(), new XGAddressField(m), this.getAddress().getLo()));
 		}
 	}
 
@@ -27,5 +28,9 @@ public class XGADPart extends XGSuperModule
 
 	@Override public String toString()
 	{	return this.getName() + " (" + this.getAddress().getMid() + ")";
+	}
+
+	@Override public XGAddressableSet<XGValue> getFilteredSet()
+	{	return null;
 	}
 }

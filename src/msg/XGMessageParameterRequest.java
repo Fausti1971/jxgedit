@@ -34,26 +34,27 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	}
 
 	@Override public int getHi()
-	{	return decodeLSB(HI_OFFS);}
+	{	return decodeLSB(HI_OFFS);
+	}
 
 	@Override public int getMid()
-	{	return decodeLSB(MID_OFFS);}
+	{	return decodeLSB(MID_OFFS);
+	}
 
 	@Override public int getLo()
-	{	return decodeLSB(LO_OFFS);}
+	{	return decodeLSB(LO_OFFS);
+	}
 
 	@Override public void setHi(int hi)
-	{	encodeLSB(HI_OFFS, hi);}
+	{	encodeLSB(HI_OFFS, hi);
+	}
 
 	@Override public void setMid(int mid)
-	{	encodeLSB(MID_OFFS, mid);}
+	{	encodeLSB(MID_OFFS, mid);
+	}
 
 	@Override public void setLo(int lo)
-	{	encodeLSB(LO_OFFS, lo);}
-
-
-	@Override public void setMessageID()
-	{	encodeMSN(MSG_OFFS, MSG);
+	{	encodeLSB(LO_OFFS, lo);
 	}
 
 	@Override public boolean getResponsed()

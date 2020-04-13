@@ -9,7 +9,6 @@ import xml.XMLNode;
 public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGAddressable, Iterable<XGAddress>
 {	private static Logger log =Logger.getAnonymousLogger();
 
-	private XGAddress parent;
 	private final XGAddressField hi, mid, lo;
 
 	public XGAddress(String hi, String mid, String lo)
@@ -29,7 +28,11 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
 		this.mid = m;
 		this.lo = l;
 	}
-
+/**
+ * Erzeugt eine XGAddress aus den hi-, mid- und lo-Attributen der übergebenen XMLNode mit der Option, die in der XMLNode fehlenden Attribute durch die Felder der übergebenen XGAddress zu ersetzen.
+ * @param adr	optionale XGAddresse aus der fehlende Attribute ersetzt werden 
+ * @param n		XMLNode, aus deren Attributen hi, mid und lo eine neue XGAddress erzeugt wird
+ */
 	public XGAddress(XGAddress adr, XMLNode n)
 	{	XGAddressField h = DEF_ADDRESSFILED, m = DEF_ADDRESSFILED, l = DEF_ADDRESSFILED;
 		if(adr != null)

@@ -2,19 +2,15 @@ package module;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
 import java.util.Set;
 import javax.swing.JComponent;
-import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
-import adress.XGBulkDump;
-import device.TimeoutException;
 import device.XGDevice;
 import gui.XGComponent;
 import gui.XGTree;
 import gui.XGWindow;
-import msg.XGRequest;
-import msg.XGResponse;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
 
@@ -37,28 +33,24 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	private final XGDevice device;
 	private final XGModule parentModule;
 	private final XGAddressableSet<XGModule> childModule = new XGAddressableSet<XGModule>();
-	private final XGAddressableSet<XGBulkDump> bulks;
 	private final XMLNode guiTemplate;
-/*
-	protected XGSuperModule(XGDevice dev)
-	{	this.device = dev;
-		this.tag = XGModuleTag.unknown;
-		this.address = XGALLADDRESS;
-		this.name = "root";
-		this.parentModule = null;
-		this.bulks = null;
-		this.guiTemplate = dev.getTemplates().getChildNodeWithID(TAG_TEMPLATE, this.tag.name());
-	}
-*/
+
 	public XGSuperModule(XGDevice dev, XMLNode n)
 	{	this.parentModule = null;
 		this.name = n.getStringAttribute(ATTR_NAME);
 		this.device = dev;
 		this.tag = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
 		this.address = new XGAddress(null, n);
-		this.bulks = XGBulkDump.init(this, n);
-		if(dev.getTemplates() != null) this.guiTemplate = dev.getTemplates().getChildNodeWithID(TAG_TEMPLATE, this.tag.name());
-		else this.guiTemplate = null;
+		XMLNode x = null;
+		try
+		{	x = XMLNode.parse(dev.getResourceFile(XML_TEMPLATE)).getChildNodeWithID(TAG_TEMPLATE, this.tag.name());
+			if(x != null) log.info("template initialized: " + this.name);
+			else log.info("no template for: " + this.name);
+		}
+		catch(FileNotFoundException e)
+		{	log.info(e.getMessage());
+		}
+		this.guiTemplate = x;
 	}
 
 	public XGSuperModule(XGModule par, XGAddress adr)
@@ -67,7 +59,6 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 		this.name = par.getName();
 		this.device = par.getDevice();
 		this.tag = (XGModuleTag)par.getTag();
-		this.bulks = par.getBulks();
 		this.guiTemplate = par.getGuiTemplate();
 		par.getChildModules().add(this);
 	}
@@ -80,6 +71,10 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	{	return this.parentModule;
 	}
 
+	@Override public XGAddressableSet<XGModule> getChildModules()
+	{	return this.childModule;
+	}
+
 	@Override public XGDevice getDevice()
 	{	if(this.parentModule == null) return this.device;
 		else return this.parentModule.getDevice();
@@ -87,10 +82,6 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 
 	@Override public XMLNode getGuiTemplate()
 	{	return this.guiTemplate;
-	}
-
-	@Override public XGAddressableSet<XGBulkDump> getBulks()
-	{	return this.bulks;
 	}
 
 	@Override public void setTreeComponent(XGTree t)
@@ -139,27 +130,15 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	}
 
 	@Override public JComponent getChildWindowContent()
-	{	return XGComponent.init(this.guiTemplate);
+	{	return XGComponent.init(this);
 	}
 
 	@Override public String getMessengerName()
 	{	return this.getDevice() + " (" + this.name + ")";
 	}
 
-	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
-	{
-	}
-
-	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException
-	{	return null;
-	}
-
 	@Override public String getName()
 	{	return this.name;
-	}
-
-	@Override public Set<XGModule> getChildModules()
-	{	return this.childModule;
 	}
 
 	@Override public XGAddress getAddress()

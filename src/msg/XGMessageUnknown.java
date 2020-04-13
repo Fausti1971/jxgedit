@@ -37,10 +37,6 @@ public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 	{
 	}
 
-	@Override public void setMessageID()
-	{	encodeMSN(MSG_OFFS, 0);
-	}
-
 	public void storeMessage()
 	{	log.info("unknown message received: " + getMessageID());
 	}

@@ -1,6 +1,5 @@
 package parm;
 
-import adress.InvalidXGAddressException;
 import parm.XGTranslationConstants.XGTranslatorTag;
 import value.XGValue;
 
@@ -42,51 +41,27 @@ public interface XGValueTranslator
 
 	static XGValueTranslator translateToText = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	try
-			{	return v.getContent().toString();
-			}
-			catch(InvalidXGAddressException e)
-			{	e.printStackTrace();
-				return NOVALUE;
-			}
+		{	return String.valueOf(v.getContent());
 		}
 	};
 
 	static XGValueTranslator translateToTextPlus1 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	try
-			{	return String.valueOf(((Integer)v.getContent()) + 1);
-			}
-			catch(InvalidXGAddressException e)
-			{	e.printStackTrace();
-				return NOVALUE;
-			}
+		{	return String.valueOf(((Integer)v.getContent()) + 1);
 		}
 	};
 
 	static XGValueTranslator translateDiv10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	try
-			{	return String.valueOf(((float)v.getContent())/10);
-			}
-			catch(InvalidXGAddressException e)
-			{	e.printStackTrace();
-				return NOVALUE;
-			}
+		{	return String.valueOf(((float)v.getContent())/10);
 		}
 	};
 
 	static XGValueTranslator translateSub128Div10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	float f;
-			try
-			{	f = (int)v.getContent();
+			f = (int)v.getContent();
 				return Float.toString((f - 128) / 10);
-			}
-			catch(InvalidXGAddressException e)
-			{	e.printStackTrace();
-				return NOVALUE;
-			}
 		}
 	};
 
@@ -101,7 +76,7 @@ public interface XGValueTranslator
 		{	try
 			{	return v.getSource().getDevice().getTranslations().get(v.getOpcode().getParameter(0).getTranslationMapName()).getValue((int)v.getContent());//TODO:
 			}
-			catch(NullPointerException | InvalidXGAddressException e)
+			catch(NullPointerException e)
 			{	e.printStackTrace();
 				return "no value";
 			}

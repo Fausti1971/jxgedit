@@ -2,7 +2,9 @@ package module;
 
 import adress.XGAddress;
 import adress.XGAddressField;
+import adress.XGAddressableSet;
 import device.XGDevice;
+import value.XGValue;
 import xml.XMLNode;
 
 public class XGInsertionFX extends XGSuperModule
@@ -10,10 +12,8 @@ public class XGInsertionFX extends XGSuperModule
 
 	public XGInsertionFX(XGDevice dev, XMLNode n)
 	{	super(dev, n);
-		if(this.getAddress().getMid().isRange())
-		{	for(int i : this.getAddress().getMid())
-				new XGInsertionFX(this, new XGAddress(this.getAddress().getHi(), new XGAddressField(i), this.getAddress().getLo()));
-		}
+		for(int m : this.getAddress().getMid())
+			new XGInsertionFX(this, new XGAddress(this.getAddress().getHi(), new XGAddressField(m), this.getAddress().getLo()));
 	}
 
 	public XGInsertionFX(XGModule par, XGAddress adr)
@@ -22,5 +22,11 @@ public class XGInsertionFX extends XGSuperModule
 
 	@Override public String toString()
 	{	return this.getName() + " (" + this.getAddress().getMid() + ")";
+	}
+
+	@Override public XGAddressableSet<XGValue> getFilteredSet()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

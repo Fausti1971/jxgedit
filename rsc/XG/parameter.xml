@@ -10,7 +10,7 @@
 
 	<module id="system" name="Master" hi="0" mid="0">
 		<bulk lo="0-6">
-			<opcode id="master_tune" lo="0-3" byteType="LSN" valueClass="Integer">
+			<opcode id="master_tune" lo="0-3" byteType="LSN">
 				<parameter longName="Master Tune" shortName="Tune" max="2047" translator="translateSub128Div10"/>
 			</opcode>
 		</bulk>
@@ -106,6 +106,18 @@
 		<bulk hi="8" lo="0-40">
 			<opcode id="mp_elementReserve" lo="0">
 				<parameter longName="Element Reserve" shortName="ElRes" max="32"/>
+			</opcode>
+			<opcode lo="1" id="mp_bank_msb">
+				<parameter longName="Bank Select MSB" shortName="bankM"/>
+			</opcode>
+			<opcode id="mp_bank_lsb" lo="2">
+				<parameter longName="Bank Select LSB" shortName="bankL"/>
+			</opcode>
+			<opcode id="mp_program" lo="3">
+				<parameter longName="Voice Program Number" shortName="prgNr"/>
+			</opcode>
+			<opcode id="mp_midichannel" lo="4">
+				<parameter longName="Midi Channel" shortName="ch" translator="translateMap" translationMap="midi_channels"/>
 			</opcode>
 		</bulk>
 	</module>

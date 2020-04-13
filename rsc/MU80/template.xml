@@ -1,0 +1,24 @@
+<?xml version="1.1" encoding="ISO-8859-1"?>
+
+<templates xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/template.xsd">
+	<template id="system">
+		<item type="frame" name="Master">
+			<item opcode="master_tune" type="knob"/>
+			<item opcode="master_volume" type="knob"/>
+			<item opcode="master_attenuator" type="knob"/>
+			<item opcode="master_transpose" type="slider"/>
+		</item>
+	</template>
+	<template id="multipart">
+		<item type="frame">
+			<item type="knob">
+				<axis type="x" opcode="mp_eg_attack"/>
+			<item type="envelope" opcode="0,0,mp_eg_attack,mp_volume,mp_eg_decay,mp_volume,mp_eg_release,0">
+				<item type="env_point">
+					<axis type="x"
+				<item type="env_point" x="mp_eg_attack" y="mp_volume"/>
+				<item type="env_point" x="mp_eg_decay" y="mp_volume"/>
+				<item type="env_point" x="mp_eg_release" y="0"/>
+			</item>
+	</template>
+</templates>
