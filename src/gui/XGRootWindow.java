@@ -30,10 +30,10 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
 		this.setBounds(
-			this.config.getIntegerAttribute(ATTR_WINX, 20),
-			this.config.getIntegerAttribute(ATTR_WINY, 20),
-			this.config.getIntegerAttribute(ATTR_WINW, MIN_W),
-			this.config.getIntegerAttribute(ATTR_WINH, MIN_H));
+			this.config.getIntegerAttribute(ATTR_X, 20),
+			this.config.getIntegerAttribute(ATTR_Y, 20),
+			this.config.getIntegerAttribute(ATTR_W, MIN_W),
+			this.config.getIntegerAttribute(ATTR_H, MIN_H));
 		this.setModal(false);
 		this.setVisible(true);
 	}
@@ -71,13 +71,13 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 	}
 
 	@Override public void componentResized(ComponentEvent e)
-	{	this.config.setIntegerAttribute(ATTR_WINW, e.getComponent().getWidth());
-		this.config.setIntegerAttribute(ATTR_WINH, e.getComponent().getHeight());
+	{	this.config.setIntegerAttribute(ATTR_W, e.getComponent().getWidth());
+		this.config.setIntegerAttribute(ATTR_H, e.getComponent().getHeight());
 	}
 
 	@Override public void componentMoved(ComponentEvent e)
-	{	this.config.setIntegerAttribute(ATTR_WINX, e.getComponent().getX());
-		this.config.setIntegerAttribute(ATTR_WINY, e.getComponent().getY());
+	{	this.config.setIntegerAttribute(ATTR_X, e.getComponent().getX());
+		this.config.setIntegerAttribute(ATTR_Y, e.getComponent().getY());
 	}
 
 	@Override public void componentShown(ComponentEvent e)

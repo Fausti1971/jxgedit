@@ -30,7 +30,7 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getValue());
 		this.setEOX(7);
-		this.response = new XGMessageParameterChange(dest, src, new XGValue(src, adr));
+		this.response = new XGMessageParameterChange(dest, src, new XGValue(src, null, adr));
 	}
 
 	@Override public int getHi()

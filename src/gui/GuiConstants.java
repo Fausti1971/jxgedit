@@ -7,16 +7,17 @@ import application.ConfigurationConstants;
 
 public interface GuiConstants extends ConfigurationConstants
 {
-	static enum XGControl{frame, knob, slider, envelope};
+	static enum XGControl{auto, frame, knob, slider, envelope, env_point};
 
 	static final Color
+		COL_FOCUS = UIManager.getColor("Button.focusInputMap"),
 		COL_NODESELECTEDBACK = UIManager.getColor("Tree.selectionBackground"),
 		COL_NODEBACK = UIManager.getColor("Tree.textBackground"),
 		COL_NODEFOCUS = UIManager.getColor("Tree.selectionBorderColor"),
 		COL_NODETEXT = Color.darkGray,
 		COL_NODESELECTEDTEXT = Color.white,
 
-		COL_BORDER = Color.gray;
+		COL_BORDER = Color.lightGray;
 
 	static final int
 		COL_STEP = 16,

@@ -43,16 +43,16 @@
 
 	<xs:element name="opcode">
 		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="parameter" maxOccurs="unbounded"/>
-			</xs:sequence>
+			<xs:choice>
+				<xs:element ref="parameter"/>
+				<xs:element ref="mutableParameter"/>
+			</xs:choice>
 			<xs:attribute name="id" use="required" type="xs:ID"/>
 			<xs:attribute name="hi" use="optional" type="addressRange"/>
 			<xs:attribute name="mid" use="optional" type="addressRange"/>
 			<xs:attribute name="lo" use="required" type="addressRange"/>
 			<xs:attribute name="byteType" use="optional" type="byteTypes" default="LSB"/>
 			<xs:attribute name="dependingOn" use="optional" type="xs:IDREF"/>
-			<xs:attribute name="dependencyType" use="optional" type="byteTypes"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -65,6 +65,16 @@
 		<xs:attribute name="max" use="optional" type="xs:nonNegativeInteger" default="127"/>
 		<xs:attribute name="translator" use="optional" type="translators" default="translateToText"/>
 		<xs:attribute name="translationMap" use="optional" type="xs:string"/>
+		<xs:attribute name="translationMapFilter" use="optional" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="mutableParameter">
+		<xs:complexType>
+			<xs:attribute name="hi" use="required" type="addressRange"/>
+			<xs:attribute name="mid" use="required" type="addressRange"/>
+			<xs:attribute name="lo" use="required" type="xs:nonNegativeInteger"/>
+			<xs:attribute name="index" use="required" type="indexes"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -78,6 +88,13 @@
 	<xs:simpleType name="csv">
 		<xs:restriction base="xs:string">
 			<xs:pattern value="\d|[,\d]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="indexes">
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:minInclusive value="1"/>
+			<xs:maxInclusive value="16"/>
 		</xs:restriction>
 	</xs:simpleType>
 

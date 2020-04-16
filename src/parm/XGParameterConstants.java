@@ -1,13 +1,14 @@
 package parm;
 
+import parm.XGTranslationConstants.XGTranslatorTag;
 import xml.XMLNodeConstants;
 
 public interface XGParameterConstants extends XMLNodeConstants
 {
-	static final String DEF_OBJTYPE = "unknown object";
 	static final String DEF_PARAMETERNAME = "unknown parameter: ";
 	static final int  DEF_MIN = 0, DEF_MAX = 127;
 	static final XGValueTranslator DEF_TRANSLATOR = XGValueTranslator.translateToText;
+	static final XGParameter DEF_PARAMETER = new XGParameter(DEF_PARAMETERNAME, "dummy", DEF_MIN, DEF_MAX, XGTranslatorTag.translateNot, null);
 /*
 	static XGParameter[] fx1_parameters = 
 	{	new XGParameter(FX1_REV_TYPE, "translateMap", "fx_programs", "reverb", 0, 0, "Reverb Program", "RevPrg"),

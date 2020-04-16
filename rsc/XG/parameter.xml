@@ -19,36 +19,36 @@
 	<module id="sysfx" name="System Effect" hi="2" mid="1">
 		<bulk lo="0-13">
 			<opcode id="reverb_type" lo="0-1" byteType="LSB">
-				<parameter longName="Reverb Program" shortName="Prog" max="69" translator="translateMap" translationMap="fx_programs"/>
+				<parameter longName="Reverb Program" shortName="Prog" translator="translateMap" translationMap="fx_programs" translationMapFilter="reverb"/>
 			</opcode>
-			<opcode id="reverb_1" lo="2" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" max="69" translator="translateMap" translationMap="reverb_time"/>
+			<opcode id="reverb_1" lo="2" dependingOn="reverb_type">
+				<mutableParameter hi="2" mid="1" lo="0" index="1"/>
 			</opcode>
-			<opcode id="reverb_2" lo="3" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_2" lo="3" dependingOn="reverb_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Diffusion" shortName="Diff" max="10" translator="translatePercent"/>
 			</opcode>
-			<opcode id="reverb_3" lo="4" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_3" lo="4" dependingOn="reverb_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Initial Delay" shortName="Delay" max="63" translator="translateMap" translationMap="delay_time_400"/>
 			</opcode>
-			<opcode id="reverb_4" lo="5" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_4" lo="5" dependingOn="reverb_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="HPF Cutoff" shortName="HPF" max="52" translator="translateMap" translationMap="filter_freq"/>
 			</opcode>
-			<opcode id="reverb_5" lo="6" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_5" lo="6" dependingOn="reverb_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" min="34" max="60" translator="translateMap" translationMap="filter_freq"/>
 			</opcode>
-			<opcode id="reverb_6" lo="7" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_6" lo="7" dependingOn="reverb_type">
 				<parameter dependencyValues="16,17,18,19" longName="Width" shortName="Width" max="37" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
-			<opcode id="reverb_7" lo="8" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_7" lo="8" dependingOn="reverb_type">
 				<parameter dependencyValues="16,17,18,19" longName="Height" shortName="Hight" max="73" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
-			<opcode id="reverb_8" lo="9" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_8" lo="9" dependingOn="reverb_type">
 				<parameter dependencyValues="16,17,18,19" longName="Depth" shortName="Depth" max="104" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
-			<opcode id="reverb_9" lo="10" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_9" lo="10" dependingOn="reverb_type">
 				<parameter dependencyValues="16,17,18,19" longName="Wall Vary" shortName="Wall" max="30"/>
 			</opcode>
-			<opcode id="reverb_10" lo="11" dependingOn="reverb_type" dependencyType="MSB">
+			<opcode id="reverb_10" lo="11" dependingOn="reverb_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Dry/Wet" shortName="Wet" min="1" translator="translatePercent"/>
 			</opcode>
 			<opcode id="reverb_return" lo="12">
@@ -65,34 +65,34 @@
 			<opcode id="ins_type" lo="0-1" byteType="LSB">
 				<parameter longName="Insertion Program" shortName="Prog" max="69" translator="translateMap" translationMap="fx_programs"/>
 			</opcode>
-			<opcode id="ins_1" lo="2" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_1" lo="2" dependingOn="ins_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" max="69" translator="translateMap" translationMap="reverb_time"/>
 			</opcode>
-			<opcode id="ins_2" lo="3" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_2" lo="3" dependingOn="ins_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Diffusion" shortName="Diff" max="10" translator="translatePercent"/>
 			</opcode>
-			<opcode id="ins_3" lo="4" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_3" lo="4" dependingOn="ins_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Initial Delay" shortName="Delay" max="63" translator="translateMap" translationMap="delay_time_400"/>
 			</opcode>
-			<opcode id="ins_4" lo="5" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_4" lo="5" dependingOn="ins_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="HPF Cutoff" shortName="HPF" max="52" translator="translateMap" translationMap="filter_freq"/>
 			</opcode>
-			<opcode id="ins_5" lo="6" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_5" lo="6" dependingOn="ins_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" min="34" max="60" translator="translateMap" translationMap="filter_freq"/>
 			</opcode>
-			<opcode id="ins_6" lo="7" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_6" lo="7" dependingOn="ins_type">
 				<parameter dependencyValues="16,17,18,19" longName="Width" shortName="Width" max="37" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
-			<opcode id="ins_7" lo="8" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_7" lo="8" dependingOn="ins_type">
 				<parameter dependencyValues="16,17,18,19" longName="Height" shortName="Hight" max="73" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
-			<opcode id="ins_8" lo="9" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_8" lo="9" dependingOn="ins_type">
 				<parameter dependencyValues="16,17,18,19" longName="Depth" shortName="Depth" max="104" translator="translateMap" translationMap="reverb_dimension"/>
 			</opcode>
-			<opcode id="ins_9" lo="10" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_9" lo="10" dependingOn="ins_type">
 				<parameter dependencyValues="16,17,18,19" longName="Wall Vary" shortName="Wall" max="30"/>
 			</opcode>
-			<opcode id="ins_10" lo="11" dependingOn="ins_type" dependencyType="MSB">
+			<opcode id="ins_10" lo="11" dependingOn="ins_type">
 				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Dry/Wet" shortName="Wet" min="1" translator="translatePercent"/>
 			</opcode>
 			<opcode id="ins_part" lo="12">

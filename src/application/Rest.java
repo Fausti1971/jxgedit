@@ -5,7 +5,9 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 public interface Rest
-{
+{	static final String REGEX_ALPHA = "[a-zA-Z0-9_]+";
+	static final String REGEX_NUMBER = "\\d+";
+
 /**
  * zerlegt einen String an eventuell vorhandenen Kommas und returniert ein Set an (von führenden und folgenden Leerzeichen bereinigten) Strings;
  * @param s	Eingangsstring mit (oder ohne) Kommas
@@ -38,4 +40,13 @@ public interface Rest
 	{	if(s == null) return def;
 		return s;
 	}
+
+	static boolean isNumber(String name)
+	{	return name.matches(REGEX_NUMBER);
+	}
+
+	static boolean isAlpha(String name)
+	{	return name.matches(REGEX_ALPHA);
+	}
+
 }

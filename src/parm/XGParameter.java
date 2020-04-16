@@ -1,59 +1,60 @@
 package parm;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Logger;
+import adress.XGAddress;
 import application.ConfigurationConstants;
-import application.Rest;
-import opcode.XGOpcode;
 import parm.XGTranslationConstants.XGTranslatorTag;
 import xml.XMLNode;
 
 public class XGParameter implements ConfigurationConstants, XGParameterConstants
 {	private static final Logger log = Logger.getAnonymousLogger();
 
-	public static Map<Integer, XGParameter> init(XGOpcode op, XMLNode n)
-	{	Map<Integer, XGParameter> map = new HashMap<>();
-		for(XMLNode x : n.getChildNodes())
-			if(x.getTag().equals(TAG_PARAMETER))
-			{	XGParameter p = new XGParameter(x);
-				for(String o : Rest.splitCSV(x.getStringAttribute(ATTR_DEP_VALUES)))
-				{	map.put(Integer.parseInt(o), p);
-				}
-			}
-		return map;
-	}
+//	public static Map<Integer, XGParameter> init(XGOpcode op, XMLNode n)
+//	{	Map<Integer, XGParameter> map = new HashMap<>();
+//		for(XMLNode x : n.getChildNodes())
+//			if(x.getTag().equals(TAG_PARAMETER))
+//			{	XGParameter p = new XGParameter(x);
+//				for(String o : Rest.splitCSV(x.getStringAttribute(ATTR_DEP_VALUES, "0")))
+//				{	map.put(Integer.parseInt(o), p);
+//				}
+//			}
+//		return map;
+//	}
 
 /*****************************************************************************************************/
 
+	private final XGAddress master;
 	private final String longName, shortName;
 	private final int minValue, maxValue;
 	private final XGValueTranslator valueTranslator;
 	private final String translationMapName;
+	private final String unit;
 
 	public XGParameter(String tag)
 	{	this(DEF_PARAMETERNAME + tag, "unknw", DEF_MIN, DEF_MAX,XGTranslatorTag.translateNot, "");
 	}
 
 	public XGParameter(String longN, String shortN, int min, int max, XGTranslatorTag t, String translMap)
-	{
+	{	this.master = null;
 		this.longName = longN;
 		this.shortName = shortN;
 		this.minValue = min;
 		this.maxValue = max;
 		this.valueTranslator = XGValueTranslator.getTranslator(t);
 		this.translationMapName = translMap;
+		this.unit = "";
 	}
 
 	public XGParameter(XMLNode n)
-	{
+	{	this.master = new XGAddress(null, n);
 		this.minValue = n.getIntegerAttribute(ATTR_MIN, DEF_MIN);
 		this.maxValue = n.getIntegerAttribute(ATTR_MAX, DEF_MAX);
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
 		this.valueTranslator = XGValueTranslator.getTranslator(n.getStringAttribute(ATTR_TRANSLATOR));
 		this.translationMapName = n.getStringAttribute(ATTR_TRANSLATIONMAP);
-//		log.info("parameter initialized: " + this);
+		this.unit = n.getStringAttribute(ATTR_UNIT, "");
+		log.info("parameter initialized: " + this);
 	}
 
 	public int getMinValue()

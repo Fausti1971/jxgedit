@@ -23,13 +23,9 @@
 			<xs:sequence>
 				<xs:element ref="item" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
-		<xs:attribute name="hiX" use="optional" type="addressRange"/>
-		<xs:attribute name="midX" use="optional" type="addressRange"/>
-		<xs:attribute name="loX" use="optional" type="addressRange"/>
-		<xs:attribute name="hiY" use="optional" type="addressRange"/>
-		<xs:attribute name="midY" use="optional" type="addressRange"/>
-		<xs:attribute name="loY" use="optional" type="addressRange"/>
 		<xs:attribute name="name" use="optional" type="xs:string"/>
+		<xs:attribute name="x" use="optional" type="tag_or_value"/>
+		<xs:attribute name="y" use="optional" type="tag_or_value"/>
 		<xs:attribute name="type" use="optional" type="types" default="frame"/>
 		</xs:complexType>
 	</xs:element>
@@ -52,22 +48,18 @@
 
 	<xs:simpleType name="types">
 		<xs:restriction base="xs:NCName">
+			<xs:enumeration value="auto"/>
 			<xs:enumeration value="frame"/>
 			<xs:enumeration value="knob"/>
 			<xs:enumeration value="slider"/>
 			<xs:enumeration value="envelope"/>
+			<xs:enumeration value="env_point"/>
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="addressRange">
+	<xs:simpleType name="tag_or_value">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="[\d]+|[\d]+-[\d]+"/>
-		</xs:restriction>
-	</xs:simpleType>
-
-	<xs:simpleType name="csv">
-		<xs:restriction base="xs:string">
-			<xs:pattern value="[a-zA-Z0-9_,]+"/>
+			<xs:pattern value="[a-zA-Z0-9_]+|\d+"/>
 		</xs:restriction>
 	</xs:simpleType>
 

@@ -33,6 +33,11 @@ public class XGFrame extends JPanel implements XGBorderable
 	{	this(n.getStringAttribute(ATTR_NAME) + " " + set.size());
 	}
 
+	@Override public Component add(Component c)
+	{	this.addGB(c, GridBagConstraints.RELATIVE, GridBagConstraints.RELATIVE);
+		return c;
+	}
+
 /**Bequemlichkeitsmethoden für das Hinzufügen von Komponenten mit den benötigten GridBagConstraints:
  * 
  * @param component

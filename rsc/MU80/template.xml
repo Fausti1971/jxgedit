@@ -3,22 +3,21 @@
 <templates xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/template.xsd">
 	<template id="system">
 		<item type="frame" name="Master">
-			<item opcode="master_tune" type="knob"/>
-			<item opcode="master_volume" type="knob"/>
-			<item opcode="master_attenuator" type="knob"/>
-			<item opcode="master_transpose" type="slider"/>
+			<item type="knob" x="master_tune"/>
+			<item type="knob" x="master_volume"/>
+			<item type="knob" x="master_attenuator"/>
+			<item type="slider" x="master_transpose"/>
 		</item>
 	</template>
 	<template id="multipart">
-		<item type="frame">
-			<item type="knob">
-				<axis type="x" opcode="mp_eg_attack"/>
-			<item type="envelope" opcode="0,0,mp_eg_attack,mp_volume,mp_eg_decay,mp_volume,mp_eg_release,0">
-				<item type="env_point">
-					<axis type="x"
-				<item type="env_point" x="mp_eg_attack" y="mp_volume"/>
-				<item type="env_point" x="mp_eg_decay" y="mp_volume"/>
-				<item type="env_point" x="mp_eg_release" y="0"/>
+		<item type="frame" name="Amp Envelope">
+			<item type="knob" x="mp_ampenv_attack"/>
+			<item type="envelope" y="mp_volume">
+				<item type="env_point" x="0" y="127"/>
+				<item type="env_point" x="mp_ampenv_attack" y="mp_volume"/>
+				<item type="env_point" x="mp_ampenv_decay" y="mp_volume"/>
+				<item type="env_point" x="mp_ampenv_release" y="0"/>
 			</item>
+		</item>
 	</template>
 </templates>

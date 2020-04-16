@@ -35,6 +35,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 {
 	private static Logger log = Logger.getAnonymousLogger();
 
+
 /**
  * lokalisiert die zur xml gehörige xsd und validiert xml
  * @param xml
@@ -207,6 +208,10 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 		return null;
 	}
 
+	public boolean hasAttribute(String name)
+	{	return this.attributes.containsKey(name);
+	}
+
 	public String getStringAttribute(String a, String def)
 	{	String s = this.attributes.getProperty(a);
 		if(s == null) return def;
@@ -227,7 +232,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 		return Integer.parseInt((String)this.attributes.get(a));
 	}
 
-	public int getIntegerAttribute(String a)
+	public int getIntegerAttribute(String a) throws NumberFormatException
 	{	return Integer.parseInt((String)this.attributes.get(a));
 	}
 

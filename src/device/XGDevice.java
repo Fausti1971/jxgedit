@@ -123,24 +123,24 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private XGWindow childWindow;
 //	private final XMLNode templates;
 
-	private XGDevice()	//DefaultDevice (XG)
-	{	this.config = null;
-		this.midi = null;
-		this.name = new ChangeableContent<String>()
-		{	@Override public String get()
-			{	return "XG";
-			}
-			@Override public void set(String s)
-			{
-			}
-		};
-		this.info1 = 1;
-		this.info2 = 1;
-		XGOpcode.init(this);
-//		this.templates = null;
-		this.defaultSyx = null;
-		log.info("device initialized: " + this);
-	}
+//	private XGDevice()	//DefaultDevice (XG)
+//	{	this.config = null;
+//		this.midi = null;
+//		this.name = new ChangeableContent<String>()
+//		{	@Override public String get()
+//			{	return "XG";
+//			}
+//			@Override public void set(String s)
+//			{
+//			}
+//		};
+//		this.info1 = 1;
+//		this.info2 = 1;
+//		XGOpcode.init(this);
+////		this.templates = null;
+//		this.defaultSyx = null;
+//		log.info("device initialized: " + this);
+//	}
 
 	public XGDevice(XMLNode cfg)
 	{	this.config = cfg;
@@ -152,22 +152,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		this.sysex.set(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
 		this.midi = new XGMidi(this);
 		this.name.set(this.config.getStringAttribute(ATTR_NAME, DEF_DEVNAME));
-		XGOpcode.init(this);
-		XGValue.init(this);
 		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
-		XMLNode x = null;
-//		try
-//		{	x = XMLNode.parse(this.getResourceFile(XML_TEMPLATE));
-//			log.info(x + " for " + this + " parsed");
-//		}
-//		catch(FileNotFoundException e)
-//		{	log.info(e.getMessage());
-//		}
-//		this.templates = x;
+		this.defaultDumpFolder.set(Paths.get(this.config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER, JXG.HOMEPATH.toString())));
+		XGOpcode.init(this);
 
-		String s = this.config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER);
-		if(s == null) s = JXG.HOMEPATH.toString();
-		this.defaultDumpFolder.set(Paths.get(s));
 		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.get().resolve("default.syx").toString());
 		this.defaultSyx.load(this);
 		log.info("device initialized: " + this);
@@ -386,10 +374,11 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 		for(int i = msg.getBaseOffset(); i < end;)
 		{	XGAddress adr = new XGAddress(hi, mid, offset);
-			XGOpcode opc = this.getOpcodes().getOrDefault(adr, new XGOpcode(this, adr));
 			XGValue v = this.values.get(adr);
-			this.values.add(v);
-			size = opc.getAddress().getLo().getSize();
+			if(v != null)
+			{	v.setContent(v.decodeBytes(msg));
+				size = v.getOpcode().getAddress().getLo().getSize();
+			}
 			offset += size;
 			i += size;
 		}

@@ -16,10 +16,10 @@ public interface XMLNodeConstants
 
 	static final String
 		TAG_WIN = "window",
-		ATTR_WINX = "x",
-		ATTR_WINY = "y",
-		ATTR_WINW = "w",
-		ATTR_WINH = "h",
+		ATTR_X = "x",
+		ATTR_Y = "y",
+		ATTR_W = "w",
+		ATTR_H = "h",
 
 		TAG_CONFIG = "config",
 		TAG_VERSION = "version",
@@ -52,17 +52,19 @@ public interface XMLNodeConstants
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",
 //		ATTR_VALUECLASS = "valueClass",
-		ATTR_DEP_VALUES = "dependencyValues",
-		ATTR_DEP_TYPE = "dependencyType",
-		ATTR_DEPENDING = "dependingOf",
+//		ATTR_DEP_VALUES = "dependencyValues",
+//		ATTR_DEP_TYPE = "dependencyType",
+//		ATTR_DEPENDING = "dependingOf",
 
 		TAG_PARAMETER = "parameter",
 		ATTR_MIN = "min",
 		ATTR_MAX = "max",
 		ATTR_TRANSLATOR = "translator",
 		ATTR_TRANSLATIONMAP = "translationMap",
+		ATTR_TRANSLATIONMAPFILTER = "translationMapFilter",
 		ATTR_LONGNAME = "longName",
 		ATTR_SHORTNAME = "shortName",
+		ATTR_UNIT = "unit",
 
 		TAG_TEMPLATES = "templates",
 		TAG_TEMPLATE = "template",
