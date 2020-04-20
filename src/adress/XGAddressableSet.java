@@ -91,7 +91,8 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	}
 
 	public synchronized T getFirstValid(XGAddress adr)
-	{	for(T a : this.map.values()) if(a.getAddress().contains(adr)) return a;
+	{	for(T a : this.map.values()) if(adr.contains(a.getAddress())) return a;
+		log.info("no " + this.memberName + " found for address: " + adr);
 		return null;
 	}
 

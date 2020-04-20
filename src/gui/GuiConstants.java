@@ -7,8 +7,6 @@ import application.ConfigurationConstants;
 
 public interface GuiConstants extends ConfigurationConstants
 {
-	static enum XGControl{auto, frame, knob, slider, envelope, env_point};
-
 	static final Color
 		COL_FOCUS = UIManager.getColor("Button.focusInputMap"),
 		COL_NODESELECTEDBACK = UIManager.getColor("Tree.selectionBackground"),

@@ -21,7 +21,7 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 		return res;
 	}
 
-	public T get(Object tag)
+	public T get(String tag)
 	{	return this.tagSet.get(tag);
 	}
 
@@ -56,7 +56,7 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 	{	return this.adrSet.contains(adr);
 	}
 
-	public boolean containsKey(Object tag)
+	public boolean containsKey(String tag)
 	{	return this.tagSet.containsKey(tag);
 	}
 

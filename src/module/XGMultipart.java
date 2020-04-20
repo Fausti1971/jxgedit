@@ -4,16 +4,11 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.XGAddress;
 import adress.XGAddressField;
-import adress.XGAddressableSet;
 import device.XGDevice;
-import value.XGValue;
 import xml.XMLNode;
 
 public class XGMultipart extends XGSuperModule
-{	private static final XGModuleTag TAG = XGModuleTag.multipart;
-
-/**
- * @param dev *******************************************************************************/
+{
 
 	Set<String> infos = new LinkedHashSet<>();
 
@@ -30,11 +25,5 @@ public class XGMultipart extends XGSuperModule
 
 	@Override public String toString()
 	{	return this.getName() + " (" + this.getAddress().getMid() + ")";
-	}
-
-	@Override public XGAddressableSet<XGValue> getFilteredSet()
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

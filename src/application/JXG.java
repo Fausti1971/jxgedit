@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
@@ -30,7 +29,6 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 		ACTION_ADDNEWDEVICE = "add new device...",
 		ACTION_REFRESHDEVICELIST = "refresh devicelist";
 
-	private static final Logger log = Logger.getAnonymousLogger();
 	public static final XMLNode config = initConfig(); 
 	private final static JXG jxg = new JXG();
 

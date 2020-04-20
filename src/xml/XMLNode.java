@@ -17,45 +17,14 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.SchemaFactory;
-import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import application.ConfigurationConstants;
 import application.Rest;
 import tag.XGTagable;
 
-/**
- * XMLNode (from Set) tag = "item", content = "text";
- * XMLNode (from Map) tag = "entry", tag = "key", tag = "value"
- * @author thomas
- *
- */
 public class XMLNode implements XGTagable, ConfigurationConstants
 {
 	private static Logger log = Logger.getAnonymousLogger();
-
-
-/**
- * lokalisiert die zur xml gehörige xsd und validiert xml
- * @param xml
- * @return true, wenn xml valide oder xsd nicht vorhanden
- */
-	private static boolean validate(File xml)
-	{	File xsd = XSDPATH.resolve(xml.getName()).toFile();//TODO: Extension ersetzen...
-		if(xsd == null || !xsd.canRead()) return true;
-		Schema schema = null;
-		try
-		{	SchemaFactory factory = null;
-			factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
-			schema = factory.newSchema(xsd);
-			schema.newValidator().validate(new StreamSource(xml));
-			return true;
-		}
-		catch(SAXException | IOException e)
-		{	return false;
-		}
-	}
 
 	public static XMLNode parse(File xml)
 	{	if(xml == null || !xml.canRead()) return null;
@@ -206,6 +175,10 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 			if(x.getTag().equals(tag) && id.equals(x.getStringAttribute(ATTR_ID)))
 				return x;
 		return null;
+	}
+
+	public Properties getAttributes()
+	{	return this.attributes;
 	}
 
 	public boolean hasAttribute(String name)

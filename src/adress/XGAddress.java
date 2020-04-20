@@ -3,12 +3,9 @@ package adress;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.logging.Logger;
-import xml.XMLNode;
 
 public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGAddressable, Iterable<XGAddress>
-{	private static Logger log =Logger.getAnonymousLogger();
-
+{
 	private final XGAddressField hi, mid, lo;
 
 	public XGAddress(String hi, String mid, String lo)
@@ -29,20 +26,30 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
 		this.lo = l;
 	}
 /**
- * Erzeugt eine XGAddress aus den hi-, mid- und lo-Attributen der übergebenen XMLNode mit der Option, die in der XMLNode fehlenden Attribute durch die Felder der übergebenen XGAddress zu ersetzen.
+ * Erzeugt eine XGAddress aus den Slash-Tokens des übergebenen Strings mit der Option, die im String fehlenden Tokens durch die Felder der übergebenen XGAddress zu ersetzen.
  * @param adr	optionale XGAddresse aus der fehlende Attribute ersetzt werden 
  * @param n		XMLNode, aus deren Attributen hi, mid und lo eine neue XGAddress erzeugt wird
  */
-	public XGAddress(XGAddress adr, XMLNode n)
+	public XGAddress(String s, XGAddress adr)
 	{	XGAddressField h = DEF_ADDRESSFILED, m = DEF_ADDRESSFILED, l = DEF_ADDRESSFILED;
 		if(adr != null)
-		{	h = adr.getHi();
-			m = adr.getMid();
-			l = adr.getLo();
+		{	h = h.complement(adr.getHi());
+			m = m.complement(adr.getMid());
+			l = l.complement(adr.getLo());
 		}
-		this.hi = new XGAddressField(n.getStringAttribute(ATTR_HI), h);
-		this.mid = new XGAddressField(n.getStringAttribute(ATTR_MID), m);
-		this.lo = new XGAddressField(n.getStringAttribute(ATTR_LO), l);
+//		StringTokenizer t = new StringTokenizer(s, "/");//Beachte: leere Tokens sind keine Tokens!
+		if(s != null && s.matches(REGEX_ADDRESS))
+		{	int firstSlash = s.indexOf("/");
+			int lastSlash = s.lastIndexOf("/");
+			this.hi = new XGAddressField(s.substring(0, firstSlash), h);
+			this.mid = new XGAddressField(s.substring(firstSlash + 1, lastSlash), m);
+			this.lo = new XGAddressField(s.substring(lastSlash + 1, s.length()), l);
+		}
+		else
+		{	this.hi = h;
+			this.mid = m;
+			this.lo = l;
+		}
 	}
 
 /**
@@ -98,10 +105,8 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
  * @return true, wenn alle Felder ineinander enthalten sind
  */
 	public boolean contains(XGAddress adr)
-	{	if(!(this.hi.contains(adr.hi))) return false;
-		if(!(this.mid.contains(adr.mid))) return false;
-		if(!(this.lo.contains(adr.lo))) return false;
-		return true;
+	{	if(this.hi.contains(adr.hi) && this.mid.contains(adr.mid) && this.lo.contains(adr.lo)) return true;
+		return false;
 	}
 
 /**

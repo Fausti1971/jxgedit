@@ -11,18 +11,18 @@ import java.util.Set;
 public class XGTagableSet<T extends XGTagable> implements Iterable<T>, Set<T> 
 {
 
-	private final Map<Object, T> map = new LinkedHashMap<>();
+	private final Map<String, T> map = new LinkedHashMap<>();
 
 	@Override public boolean add(T t)
 	{	this.map.put(t.getTag(), t);
 		return true;
 	}
 
-	public T get(Object tag)
+	public T get(String tag)
 	{	return this.map.get(tag);
 	}
 
-	public T getOrDefault(Object tag, T def)
+	public T getOrDefault(String tag, T def)
 	{	if(!this.containsKey(tag)) return def;
 		else return this.get(tag);
 	}
@@ -31,7 +31,7 @@ public class XGTagableSet<T extends XGTagable> implements Iterable<T>, Set<T>
 	{	return map.size();
 	}
 
-	public boolean containsKey(Object tag)
+	public boolean containsKey(String tag)
 	{	return this.map.containsKey(tag);
 	}
 

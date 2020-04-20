@@ -9,11 +9,12 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -40,16 +41,16 @@ import msg.XGMessageDumpRequest;
 import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
-import opcode.XGOpcode;
-import parm.XGTranslationMap;
-import tag.XGTagableAddressableSet;
+import parm.XGOpcode;
+import parm.XGParameter;
+import parm.XGTable;
 import tag.XGTagableSet;
 import value.ChangeableContent;
 import value.XGValue;
 import xml.XMLNode;
 
 public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XGContext, XGWindowSource, XGMessenger
-{	private static Logger log = Logger.getAnonymousLogger();
+{
 	private static Set<XGDevice> DEVICES = new LinkedHashSet<>();
 //	private static XGDevice DEF = new XGDevice();
 	static
@@ -110,37 +111,20 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private boolean isSelected = false;
 	private XMLNode config;
 //	private final XGAddressableSet<XGMessageBulkDump> data = new XGAddressableSet<XGMessageBulkDump>();
-	private final XGAddressableSet<XGValue> values = new XGAddressableSet<>();
-	private final XGTagableSet<XGTranslationMap> translations = new XGTagableSet<XGTranslationMap>();
+	private final Map<String, XGTable> tables = new HashMap<>();
+	private final XGTagableSet<XGParameter> parameters = new XGTagableSet<>();
+	private final Map<Integer, Map<Integer, XGParameter>> parameterSets = new HashMap<>();//Map<programNr, parameterIndex<Parameter>> //progNr wird bei parameterMaster erfragt
 	private final XGAddressableSet<XGBulkDump> bulks = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
-	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<>();//initialisiert auch bulks und modules
+	private final XGAddressableSet<XGOpcode> opcodes = new XGAddressableSet<>();
+	private final XGAddressableSet<XGValue> values = new XGAddressableSet<>();
+
 	private int info1, info2;
 	private final Queue<XGSysexFile> files = new LinkedList<>();
 	private final XGSysexFile defaultSyx;
 	private XGMidi midi;
 	private int sysexID;
 	private XGWindow childWindow;
-//	private final XMLNode templates;
-
-//	private XGDevice()	//DefaultDevice (XG)
-//	{	this.config = null;
-//		this.midi = null;
-//		this.name = new ChangeableContent<String>()
-//		{	@Override public String get()
-//			{	return "XG";
-//			}
-//			@Override public void set(String s)
-//			{
-//			}
-//		};
-//		this.info1 = 1;
-//		this.info2 = 1;
-//		XGOpcode.init(this);
-////		this.templates = null;
-//		this.defaultSyx = null;
-//		log.info("device initialized: " + this);
-//	}
 
 	public XGDevice(XMLNode cfg)
 	{	this.config = cfg;
@@ -154,7 +138,11 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		this.name.set(this.config.getStringAttribute(ATTR_NAME, DEF_DEVNAME));
 		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
 		this.defaultDumpFolder.set(Paths.get(this.config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER, JXG.HOMEPATH.toString())));
+
+		XGTable.init(this);
+		XGParameter.init(this);
 		XGOpcode.init(this);
+		XGValue.init(this);
 
 		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.get().resolve("default.syx").toString());
 		this.defaultSyx.load(this);
@@ -186,8 +174,12 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.files.peek();
 	}
 
-	public XGTagableAddressableSet<XGOpcode> getOpcodes()
-	{	return this.opcodes;
+	public XGTagableSet<XGParameter> getParameters()
+	{	return this.parameters;
+	}
+
+	public Map<Integer, Map<Integer, XGParameter>> getParameterSets()
+	{	return parameterSets;
 	}
 
 	public XGAddressableSet<XGModule> getModules()
@@ -198,16 +190,17 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return bulks;
 	}
 
+	public XGAddressableSet<XGOpcode> getOpcodes()
+	{
+		return opcodes;
+	}
+
 	public XGAddressableSet<XGValue> getValues()
 	{	return this.values;
 	}
 
-//	public XMLNode getTemplates()
-//	{	return templates;
-//	}
-
-	public XGTagableSet<XGTranslationMap> getTranslations()
-	{	return this.translations;
+	public Map<String, XGTable> getTables()
+	{	return this.tables;
 	}
 
 	public int getSysexID()

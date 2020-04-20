@@ -4,6 +4,7 @@
 	"+"= XG Option, XGLite Option
 	"-"= XG Standard, XGLite Option
 -->
+
 <items xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/fx-program.xsd">
 	<item msb="0" lsb="0" name="No Effect" table="NO_EFFECT" reverb=" " chorus=" " variation="-" insertion="-"/>
 	<item msb="1" lsb="0" name="Hall 1" table="HALL_1" reverb=" " variation="-" insertion="-"/>
@@ -200,7 +201,7 @@
 
 	<item msb="113" lsb="0" name="Ringmodulator" table="RINGMODULATOR" variation="+" insertion="+"/>
 
-	<item msb="114" lsb="0" name="Slice" table="Slice" variation="+" insertion="+"/>
+	<item msb="114" lsb="0" name="Slice" table="SLICE" variation="+" insertion="+"/>
 
 	<item msb="115" lsb="0" name="Isolator" table="ISOLATOR" variation="+" insertion="+"/>
 

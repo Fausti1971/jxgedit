@@ -28,7 +28,7 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	private boolean selected;
 	private XGWindow window;
 	private final String name;
-	private final XGModuleTag tag;
+	private final String tag;
 	private final XGAddress address;
 	private final XGDevice device;
 	private final XGModule parentModule;
@@ -39,11 +39,11 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	{	this.parentModule = null;
 		this.name = n.getStringAttribute(ATTR_NAME);
 		this.device = dev;
-		this.tag = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
-		this.address = new XGAddress(null, n);
+		this.tag = n.getStringAttribute(ATTR_ID);
+		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), null);
 		XMLNode x = null;
 		try
-		{	x = XMLNode.parse(dev.getResourceFile(XML_TEMPLATE)).getChildNodeWithID(TAG_TEMPLATE, this.tag.name());
+		{	x = XMLNode.parse(dev.getResourceFile(XML_TEMPLATES)).getChildNodeWithID(TAG_FRAME, this.tag);
 			if(x != null) log.info("template initialized: " + this.name);
 			else log.info("no template for: " + this.name);
 		}
@@ -58,12 +58,12 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 		this.address = adr;
 		this.name = par.getName();
 		this.device = par.getDevice();
-		this.tag = (XGModuleTag)par.getTag();
+		this.tag = par.getTag();
 		this.guiTemplate = par.getGuiTemplate();
 		par.getChildModules().add(this);
 	}
 
-	@Override public XGModuleTag getTag()
+	@Override public String getTag()
 	{	return this.tag;
 	}
 

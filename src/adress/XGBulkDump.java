@@ -15,7 +15,7 @@ public class XGBulkDump implements XGAddressable, XMLNodeConstants
 
 	public XGBulkDump(XGModule mod, XMLNode n)
 	{	this.module = mod;
-		this.address = new XGAddress(mod.getAddress(), n);
+		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		log.info("bulk initialized: " + this);
 	}
 
@@ -28,6 +28,6 @@ public class XGBulkDump implements XGAddressable, XMLNodeConstants
 	}
 
 	@Override public String toString()
-	{	return this.getModule().toString();
+	{	return this.getAddress().toString();
 	}
 }

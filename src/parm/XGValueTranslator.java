@@ -1,80 +1,90 @@
 package parm;
 
-import parm.XGTranslationConstants.XGTranslatorTag;
 import value.XGValue;
 
 //TODO determiniere ValueType und differenziere Methoden
 
 public interface XGValueTranslator
-{	String translate(XGValue v);
+{
+	static enum XGTranslatorTag
+	{	empty,
+		normal,
+		add1,
+		div10,
+		sub128Div10,
+		map,
+		percent,
+		xml
+	}
 
 	static final String NOVALUE = "no value";
 
 	static XGValueTranslator getTranslator(XGTranslatorTag t)
 	{	switch(t)
-		{	case translateNot:			return translateNot;
-			case translateToText:		return translateToText;
-			case translateToTextAdd1:	return translateToTextPlus1;
-			case translateDiv10:		return translateDiv10;
-			case translateSub128Div10:	return translateSub128Div10;
-			case translateMap:			return translateMap;
-			case translateXML:			return translateXML;
-			default:					return translateToText;
+		{	case empty:			return empty;
+			case normal:		return normal;
+			case add1:			return add1;
+			case div10:			return div10;
+			case sub128Div10:	return sub128Div10;
+			case map:			return map;
+			case xml:			return xml;
+			default:			return normal;
 		}
 	}
 
 	static XGValueTranslator getTranslator(String name)
-	{	if(name == null) return translateToText;
+	{	if(name == null) return normal;
 		try
 		{	return getTranslator(XGTranslatorTag.valueOf(name));
 		}
 		catch(IllegalArgumentException e)
-		{	return translateToText;
+		{	return normal;
 		}
 	}
 	
-	static XGValueTranslator translateNot = new XGValueTranslator()
+	static XGValueTranslator empty = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	return "";
 		}
 	};
 
-	static XGValueTranslator translateToText = new XGValueTranslator()
+	static XGValueTranslator normal = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return String.valueOf(v.getContent());
+		{	return String.valueOf(v.getContent()) + v.getParameter().getUnit();
 		}
 	};
 
-	static XGValueTranslator translateToTextPlus1 = new XGValueTranslator()
+	static XGValueTranslator add1 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return String.valueOf(((Integer)v.getContent()) + 1);
+		{	return String.valueOf(((Integer)v.getContent()) + 1) + v.getParameter().getUnit();
 		}
 	};
 
-	static XGValueTranslator translateDiv10 = new XGValueTranslator()
+	static XGValueTranslator div10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return String.valueOf(((float)v.getContent())/10);
+		{	return String.valueOf(((float)v.getContent())/10) + v.getParameter().getUnit();
 		}
 	};
 
-	static XGValueTranslator translateSub128Div10 = new XGValueTranslator()
+	static XGValueTranslator sub128Div10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	float f;
 			f = (int)v.getContent();
-				return Float.toString((f - 128) / 10);
+				return Float.toString((f - 128) / 10) + v.getParameter().getUnit();
 		}
 	};
 
-	static XGValueTranslator translateXML = new XGValueTranslator()
+	static XGValueTranslator xml = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	return "no XML-value";
 		}
 	};
 
-	static XGValueTranslator translateMap = new XGValueTranslator()
+	static XGValueTranslator map = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	try
-			{	return v.getSource().getDevice().getTranslations().get(v.getOpcode().getParameter(0).getTranslationMapName()).getValue((int)v.getContent());//TODO:
+			{	XGParameter p = v.getParameter();
+				return v.getSource().getDevice().getTables().get(p.getTranslationMapName()).get(v.getContent()) + p.getUnit();
 			}
 			catch(NullPointerException e)
 			{	e.printStackTrace();
@@ -82,4 +92,9 @@ public interface XGValueTranslator
 			}
 		}
 	};
+
+/***************************************************************************************************************************/
+
+	String translate(XGValue v);
+
 }

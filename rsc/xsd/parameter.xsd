@@ -1,80 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
 
-	<xs:element name="modules">
+	<xs:element name="tables">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="module" maxOccurs="unbounded"/>
+				<xs:element ref="table" maxOccurs="unbounded"/>
 			</xs:sequence>
-		</xs:complexType>
-	<xs:key name="opcode">
-		<xs:selector xpath="./opcodes"/>
-		<xs:field xpath="id"/>
-	</xs:key>
-	<xs:keyref name="dependingOn" refer="opcode">
-		<xs:selector xpath="*"/>
-		<xs:field xpath="dependingOn"/>
-	</xs:keyref>
-	</xs:element>
-
-	<xs:element name="module">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="bulk" maxOccurs="unbounded"/>
-			</xs:sequence>
-		<xs:attribute name="id" use="required" type="modules"/>
-		<xs:attribute name="name" type="xs:string"/>
-		<xs:attribute name="hi" use="required" type="addressRange"/>
-		<xs:attribute name="mid" use="required" type="addressRange"/>
-		<xs:attribute name="lo" use="optional" type="addressRange"/>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="bulk">
-		<xs:complexType>
-			<xs:sequence>
-				<xs:element ref="opcode" maxOccurs="unbounded"/>
-			</xs:sequence>
-		<xs:attribute name="hi" use="optional" type="addressRange"/>
-		<xs:attribute name="mid" use="optional" type="addressRange"/>
-		<xs:attribute name="lo" use="required" type="addressRange"/>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="opcode">
+	<xs:element name="table">
 		<xs:complexType>
 			<xs:choice>
-				<xs:element ref="parameter"/>
-				<xs:element ref="mutableParameter"/>
+				<xs:element ref="item" maxOccurs="unbounded"/>
+				<xs:element ref="set" maxOccurs="unbounded"/>
 			</xs:choice>
+		<xs:attribute name="name" use="required"/>
+		<xs:attribute name="caption" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="set">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="entry" maxOccurs="16"/>
+			</xs:sequence>
+		<xs:attribute name="msb" use="optional"/>
+		<xs:attribute name="lsb" use="optional"/>
+		<xs:attribute name="value" use="optional"/>
+		<xs:attribute name="caption" type="xs:string" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="item">
+		<xs:complexType>
+			<xs:attribute name="longName" use="optional" type="xs:string"/>
+			<xs:attribute name="shortName" use="optional" type="shortString"/>
+			<xs:attribute name="min" use="optional" type="xs:nonNegativeInteger" default="0"/>
+			<xs:attribute name="max" use="optional" type="xs:nonNegativeInteger" default="127"/>
+			<xs:attribute name="translator" use="optional" type="translators" default="normal"/>
+			<xs:attribute name="translationMap" use="optional" type="xs:string"/>
+			<xs:attribute name="translationMapFilter" use="optional" type="xs:string"/>
+			<xs:attribute name="unit" type="shortString"/>
 			<xs:attribute name="id" use="required" type="xs:ID"/>
-			<xs:attribute name="hi" use="optional" type="addressRange"/>
-			<xs:attribute name="mid" use="optional" type="addressRange"/>
-			<xs:attribute name="lo" use="required" type="addressRange"/>
-			<xs:attribute name="byteType" use="optional" type="byteTypes" default="LSB"/>
-			<xs:attribute name="dependingOn" use="optional" type="xs:IDREF"/>
+			<xs:attribute name="master" use="optional" type="addresses"/>
+			<xs:attribute name="index" use="optional" type="indexes"/>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="parameter">
+	<xs:element name="entry">
 		<xs:complexType>
-		<xs:attribute name="dependencyValues" use="optional" type="csv"/>
-		<xs:attribute name="longName" use="optional" type="xs:string"/>
-		<xs:attribute name="shortName" use="optional" type="shortString"/>
-		<xs:attribute name="min" use="optional" type="xs:nonNegativeInteger" default="0"/>
-		<xs:attribute name="max" use="optional" type="xs:nonNegativeInteger" default="127"/>
-		<xs:attribute name="translator" use="optional" type="translators" default="translateToText"/>
-		<xs:attribute name="translationMap" use="optional" type="xs:string"/>
-		<xs:attribute name="translationMapFilter" use="optional" type="xs:string"/>
-		</xs:complexType>
-	</xs:element>
-
-	<xs:element name="mutableParameter">
-		<xs:complexType>
-			<xs:attribute name="hi" use="required" type="addressRange"/>
-			<xs:attribute name="mid" use="required" type="addressRange"/>
-			<xs:attribute name="lo" use="required" type="xs:nonNegativeInteger"/>
 			<xs:attribute name="index" use="required" type="indexes"/>
+			<xs:attribute name="parameter" type="xs:IDREF"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -85,12 +62,6 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="csv">
-		<xs:restriction base="xs:string">
-			<xs:pattern value="\d|[,\d]+"/>
-		</xs:restriction>
-	</xs:simpleType>
-
 	<xs:simpleType name="indexes">
 		<xs:restriction base="xs:nonNegativeInteger">
 			<xs:minInclusive value="1"/>
@@ -98,48 +69,25 @@
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="addressRange">
+	<xs:simpleType name="addresses">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="[\d]+|[\d]+-[\d]+"/>
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?"/>
 		</xs:restriction>
 	</xs:simpleType>
 
-	<xs:simpleType name="modules">
-		<xs:restriction base="xs:NCName">
-			<xs:enumeration value="system"/>
-			<xs:enumeration value="info"/>
-			<xs:enumeration value="sysfx"/>
-			<xs:enumeration value="syseq"/>
-			<xs:enumeration value="insfx"/>
-			<xs:enumeration value="display"/>
-			<xs:enumeration value="multipart"/>
-			<xs:enumeration value="adpart"/>
-			<xs:enumeration value="drumset"/>
-			<xs:enumeration value="plugin"/>
-			<xs:enumeration value="board"/>
-		</xs:restriction>
-	</xs:simpleType>
-
-	<xs:simpleType name="byteTypes">
-		<xs:restriction base="xs:string">
-			<xs:enumeration value="MSB"/>
-			<xs:enumeration value="LSB"/>
-			<xs:enumeration value="MSN"/>
-			<xs:enumeration value="LSN"/>
-		</xs:restriction>
-	</xs:simpleType>
 
 	<xs:simpleType name="translators">
 		<xs:restriction base="xs:string">
-			<xs:enumeration value="translateToText"/>
-			<xs:enumeration value="translateNot"/>
-			<xs:enumeration value="translateToTextAdd1"/>
-			<xs:enumeration value="translateDiv10"/>
-			<xs:enumeration value="translateSub64"/>
-			<xs:enumeration value="translateSub128Div10"/>
-			<xs:enumeration value="translateXML"/>
-			<xs:enumeration value="translatePercent"/>
-			<xs:enumeration value="translateMap"/>
+			<xs:enumeration value="normal"/>
+			<xs:enumeration value="empty"/>
+			<xs:enumeration value="add1"/>
+			<xs:enumeration value="div10"/>
+			<xs:enumeration value="sub64"/>
+			<xs:enumeration value="sub128Div10"/>
+			<xs:enumeration value="xml"/>
+			<xs:enumeration value="percent"/>
+			<xs:enumeration value="map"/>
 		</xs:restriction>
 	</xs:simpleType>
+
 </xs:schema>

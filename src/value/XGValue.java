@@ -1,5 +1,6 @@
 package value;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import adress.InvalidXGAddressException;
@@ -10,29 +11,29 @@ import device.XGDevice;
 import module.XGModule;
 import msg.XGMessenger;
 import msg.XGResponse;
-import opcode.XGOpcode;
-import opcode.XGOpcodeConstants;
+import parm.XGOpcode;
 import parm.XGParameter;
-import tag.XGTagable;
+import parm.XGParameterConstants;
 /**
  * 
  * @author thomas
  *
  */
-public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddressable, XGTagable, XGValueChangeListener, XGAddressableSetListener
+public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGAddressableSetListener
 {
 	private static Logger log = Logger.getAnonymousLogger();
 
-	public static void init(XGDevice dev, XGOpcode opc)
-	{
-		for(int h : opc.getAddress().getHi())
-		{	for(int m : opc.getAddress().getMid())
-			{	try
-				{	XGValue v = new XGValue(dev, opc, new XGAddress(h, m, opc.getAddress().getLo().getMin()));
-					dev.getValues().add(v);
-				}
-				catch(InvalidXGAddressException e)
-				{	e.printStackTrace();
+	public static void init(XGDevice dev)
+	{	for(XGOpcode opc : dev.getOpcodes())
+		{	for(int h : opc.getAddress().getHi())
+			{	for(int m : opc.getAddress().getMid())
+				{	try
+					{	XGValue v = new XGValue(dev, opc, new XGAddress(h, m, opc.getAddress().getLo().getMin()));
+						dev.getValues().add(v);
+					}
+					catch(InvalidXGAddressException e)
+					{	e.printStackTrace();
+					}
 				}
 			}
 		}
@@ -44,45 +45,42 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 	private final XGMessenger source;
 	private final XGAddress address;
 	private final XGOpcode opcode;
-//	private final XGValue dependency;
+	private final XGParameter parameter;
+	private final XGValue parameterMaster;
 	private final Set<XGValueChangeListener> listeners = new HashSet<>();
 
-	protected XGValue(String name, int v)
+	public XGValue(String name, int v)
 	{	this.source = null;
 		this.address = XGALLADDRESS;
-		this.opcode = new XGOpcode(name,  v);
-//		this.dependency = null;
+		this.parameter = new XGParameter(name,  v);
 		this.content = v;
-		log.info("dummy Value initialized: " + name);
+		this.parameterMaster = null;
+		this.opcode = null;
+		log.info("dummy value initialized: " + name);
 	}
 
-	public XGValue(XGMessenger src, XGOpcode opc, XGAddress adr) throws InvalidXGAddressException//init via XGOpcode
+	public XGValue(XGMessenger src, XGOpcode opc, XGAddress adr) throws InvalidXGAddressException
 	{	if(!adr.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + adr);
 		this.source = src;
 		this.address = adr;
 		this.opcode = opc;
-//		this.dependency = null;
+		this.parameter = src.getDevice().getParameters().getOrDefault(opc.getParameterID(), XGParameterConstants.DUMMY_PARAMETER);
+		if(this.parameter.isMutable())
+		{	this.parameterMaster = src.getDevice().getValues().get(this.parameter.getMasterAddress().complement(this.address));
+			this.parameterMaster.addListener(this);
+		}
+		else this.parameterMaster = null;
 		this.content = 0;
 		log.info("value initialized: " + this.getInfo());
 	}
 
-/*	public XGValue(XGMessenger src, XGOpcode opc)//für während der Initialisierung manuell erzeugte XGValues (0)
-	{	this.opcode = opc;
-		this.address = this.module.getAddress().complement(opc.getAddress());
-		if(!this.address.isFixed()) throw new InvalidXGAddressException("value needs an fixed address: " + this.address);
-		this.message = this.module.getDevice().getData().get(this.module.getAddress().complement(this.opcode.getBulk().getAddress()));
-		this.module.getDevice().getData().addListener(this);
-		this.dependency = null;//TODO:
+/*	public XGValue(XGFixedParameter prm, XGResponse msg) throws InvalidXGAddressException
+	{	this.source = msg.getSource();
+		this.address = new XGAddress(msg.getAddress().getHi().getValue(), msg.getAddress().getMid().getValue(), prm.getAddress().getLo().getMin());
+		this.parameter = prm;
+		this.content = this.decodeBytes(msg);
 	}
 */
-	public XGValue(XGOpcode opc, XGResponse msg) throws InvalidXGAddressException
-	{	this.source = msg.getSource();
-		this.address = new XGAddress(msg.getAddress().getHi().getValue(), msg.getAddress().getMid().getValue(), opc.getAddress().getLo().getMin());
-		this.opcode = opc;
-		this.content = this.decodeBytes(msg);
-//		this.dependency = new XGValueDependency(this, this, opc.getDataType());
-	}
-
 	public void addListener(XGValueChangeListener l)
 	{	this.listeners.add(l);
 	}
@@ -101,6 +99,17 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 
 	public XGOpcode getOpcode()
 	{	return this.opcode;
+	}
+
+	public XGParameter getParameter()
+	{	if(this.parameter.isMutable())
+		{	int progNr = this.parameterMaster.getContent(),
+				index = this.parameter.getIndex();
+			Map<Integer, XGParameter> map = this.source.getDevice().getParameterSets().get(progNr);
+			if(map != null && map.containsKey(index)) return map.get(index);
+			else return DUMMY_PARAMETER;
+		}
+		else return this.parameter;
 	}
 
 	@Override public XGAddress getAddress()
@@ -132,9 +141,8 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 	}
 
 	protected int validate(int i)
-	{	XGParameter p = this.opcode.getParameter(this.dependency.getValue());
-		i = Math.min(i, p.getMaxValue());
-		i = Math.max(i, p.getMinValue());
+	{	i = Math.min(i, this.getParameter().getMaxValue());
+		i = Math.max(i, this.getParameter().getMinValue());
 		return i;
 	}
 
@@ -159,11 +167,12 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 	}
 
 	public String getInfo()
-	{	return this.opcode.getTag() + this.address;
+	{	XGParameter p = this.getParameter();
+		return p.getLongName() + " = " + p.getValueTranslator().translate(this);
 	}
 
 	@Override public String toString()
-	{	return this.opcode.getParameter().getValueTranslator().translate(this);
+	{	return this.getParameter().getValueTranslator().translate(this);
 	}
 
 	@Override public int compareTo(XGValue o)
@@ -172,10 +181,6 @@ public class XGValue implements XGOpcodeConstants, Comparable<XGValue>, XGAddres
 
 	@Override public void contentChanged(XGValue v)
 	{	this.notifyListeners();
-	}
-
-	@Override public String getTag()
-	{	return this.opcode.getTag();
 	}
 
 	@Override public void setChanged(XGAddressable t)

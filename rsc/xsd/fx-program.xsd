@@ -7,8 +7,8 @@
 					<xs:complexType>
 						<xs:attribute name="msb" use="required" type="xs:nonNegativeInteger"/>
 						<xs:attribute name ="lsb" use="required" type="xs:nonNegativeInteger"/>
-						<xs:attribute name="name" use="required"/>
-						<xs:attribute name="table" use="required" type="xs:string"/>
+						<xs:attribute name="name" use="required" type="xs:string"/>
+						<xs:attribute name="table" use="required" type="tableTag"/>
 						<xs:attribute name="reverb" type="option"/>
 						<xs:attribute name="chorus" type="option"/>
 						<xs:attribute name="variation" type="option"/>
@@ -19,6 +19,12 @@
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
+
+	<xs:simpleType name="tableTag">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z0-9_]+"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:simpleType name="option">
 		<xs:restriction base="xs:string">

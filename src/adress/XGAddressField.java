@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 /**
  * eines der drei Felder einer XGAddress, kann fix, und variabel (Range) sein, was dem einstmaligen Status "invalid" entspricht
@@ -13,8 +12,6 @@ import java.util.logging.Logger;
  */
 public class XGAddressField implements XGAddressConstants, Comparable<XGAddressField>, Iterable<Integer>
 {
-	private static final Logger log = Logger.getAnonymousLogger();
-
 /******************************************************************************************************************/
 
 	private final int min, max, mask;
@@ -30,7 +27,7 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
 	}
 
 	public XGAddressField(String v, XGAddressField def)
-	{	if(v == null)
+	{	if(v == null || v.isBlank())
 		{	this.min = def.min;
 			this.max = def.max;
 			this.mask = def.mask;

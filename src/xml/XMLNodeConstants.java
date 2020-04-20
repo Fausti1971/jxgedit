@@ -8,11 +8,12 @@ public interface XMLNodeConstants
 
 	static final String
 		XML_CONFIG = "config.xml",
-//		XML_OPCODE = "opcodes.xml",
+		XML_OPCODE = "opcode.xml",
+		XML_TABLES = "tables.xml",
 //		XML_TYPE = "types.xml",
 		XML_PARAMETER = "parameter.xml",
-		XML_TRANSLATION = "translation.xml",
-		XML_TEMPLATE = "template.xml";
+//		XML_TRANSLATION = "translation.xml",
+		XML_TEMPLATES = "templates.xml";
 
 	static final String
 		TAG_WIN = "window",
@@ -40,6 +41,7 @@ public interface XMLNodeConstants
 		TAG_MODULES = "modules",
 
 		TAG_MODULE = "module",
+		ATTR_ADDRESS = "address",
 		ATTR_ID = "id",
 		ATTR_NAME = "name",
 
@@ -56,7 +58,10 @@ public interface XMLNodeConstants
 //		ATTR_DEP_TYPE = "dependencyType",
 //		ATTR_DEPENDING = "dependingOf",
 
-		TAG_PARAMETER = "parameter",
+		ATTR_PARAMETER_ID = "parameterID",
+//		TAG_MUT_PARAMETER = "mutable_parameter",
+		ATTR_MASTER ="master",
+		ATTR_INDEX = "index",
 		ATTR_MIN = "min",
 		ATTR_MAX = "max",
 		ATTR_TRANSLATOR = "translator",
@@ -68,15 +73,27 @@ public interface XMLNodeConstants
 
 		TAG_TEMPLATES = "templates",
 		TAG_TEMPLATE = "template",
+		TAG_TABLES = "tables",
+		TAG_TABLE = "table",
 		TAG_ITEM = "item",
-		ATTR_TYPE = "type",
+//		ATTR_TYPE = "type",
+		ATTR_VALUE = "value",
 
-		TAG_MAPS = "maps",
-		TAG_MAP = "map",
+		TAG_FRAME = "frame",
+		TAG_KNOB = "knob",
+		TAG_SLIDER = "slider",
+		TAG_COMBO = "combo",
+		TAG_RADIO = "radio",
+		TAG_ENVELOPE = "envelope",
+		TAG_ENVPOINT = "env_point",
+		TAG_AUTO = "auto",
+		ATTR_AXIS = "axis",
+		ATTR_ORIGIN = "origin",
+//		TAG_MAPS = "maps",
+//		TAG_MAP = "map",
 		TAG_ENTRY = "entry",
-		TAG_KEY = "key",
-		TAG_VALUE = "value",
+//		TAG_KEY = "key",
 
-		TAG_SETS = "sets",
+//		TAG_SETS = "sets",
 		TAG_SET = "set";
 }

@@ -2,14 +2,11 @@ package module;
 
 import adress.XGAddress;
 import adress.XGAddressField;
-import adress.XGAddressableSet;
 import device.XGDevice;
-import value.XGValue;
 import xml.XMLNode;
 
 public class XGADPart extends XGSuperModule
 {
-	private static final XGModuleTag TAG = XGModuleTag.adpart;
 
 /********************************************************************************************************/
 
@@ -28,9 +25,5 @@ public class XGADPart extends XGSuperModule
 
 	@Override public String toString()
 	{	return this.getName() + " (" + this.getAddress().getMid() + ")";
-	}
-
-	@Override public XGAddressableSet<XGValue> getFilteredSet()
-	{	return null;
 	}
 }

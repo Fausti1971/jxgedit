@@ -1,5 +1,6 @@
 package gui;
 
+import static application.XGLoggable.log;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -8,23 +9,23 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
+import adress.XGAddress;
 import adress.XGAddressableSet;
-import value.XGFixedValue;
+import application.XGLoggable;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGKnob2 extends JPanel implements XGBorderable, XGValueChangeListener
+public class XGKnob2 extends JPanel implements XGLoggable, XGBorderable, XGValueChangeListener
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private Logger log = Logger.getAnonymousLogger();
+	private static final XGValue DEF_VALUE = new XGValue("n/a", 0);
 	private final static RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	private final static float START = 225;
 	private final static float LENGTH = 270;
@@ -38,35 +39,20 @@ public class XGKnob2 extends JPanel implements XGBorderable, XGValueChangeListen
 /*****************************************************************************************************************************/
 
 	private final XGValue value;
+	private final XGAddress address;
 	private int axis = 0;
 
 	public XGKnob2(XMLNode n, XGAddressableSet<XGValue> set)
-	{
-		String s = null;
-		if(n.hasAttribute(ATTR_Y))
-		{	s = n.getStringAttribute(ATTR_Y);
-			this.axis = DIR_X;
-		}
-		if(n.hasAttribute(ATTR_X))
-		{	s = n.getStringAttribute(ATTR_X);
-			this.axis |= DIR_Y;
-		}
-		XGValue val = null;
-		if(axis == 0) this.setEnabled(false);
-		for(XGValue v : set)
-		{	if(v.getTag().equals(s))
-			{	val = v;
-				break;
-			}
-		}
-		if(val == null) val = new XGFixedValue(s, 0);
-		this.value = val;
-		this.setName(this.value.getOpcode().getParameter(0).getShortName());
-		this.setToolTipText(this.value.getOpcode().getParameter(0).getLongName());
+	{	this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), null);
+		this.value = set.getFirstValidOrDefault(this.address, DEF_VALUE);
+		this.axis = XGComponent.getAxis(n.getStringAttribute(ATTR_AXIS));
+		this.setName(this.value.getParameter().getShortName());
+		this.setToolTipText(this.value.getParameter().getLongName());
 		this.setMinimumSize(PREF_SIZE);
 		this.setPreferredSize(PREF_SIZE);
 		this.borderize();
-		log.info("control " + s + " initialized: " + this.getName());
+		this.value.addListener(this);
+		log.info("knob initialized: " + this.getName());
 		}
 
 	@Override public void paint(Graphics g)

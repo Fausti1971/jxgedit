@@ -18,26 +18,27 @@ import msg.XGResponse;
 import tag.XGTagable;
 import xml.XMLNode;
 
-public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, XGMessenger, XGTreeNode, XGWindowSource, XGSetFilter
+public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, XGMessenger, XGTreeNode, XGWindowSource
 {
-	public static XGModule newInstances(XGDevice dev, XMLNode n)//TODO: vielleicht nochmal mittels Reflection probieren (inkl. XGModuleTag)
-	{	XGModuleTag t = XGModuleTag.valueOf(n.getStringAttribute(ATTR_ID));
+	public static XGModule factory(XGDevice dev, XMLNode n)//TODO: vielleicht nochmal mittels Reflection probieren (ohne XGModuleTag sondern mittels XGAddress)
+	{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), null);
+		String t = n.getStringAttribute(ATTR_ID);
 		switch(t)
-		{	case adpart:		return new XGADPart(dev, n); 
-			case display:		return new XGDisplay(dev, n); 
-			case drumset:		return new XGDrumset(dev, n); 
-			case info:			return new XGInfo(dev, n); 
-			case insfx:			return new XGInsertionFX(dev, n); 
-			case multipart:		return new XGMultipart(dev, n); 
-			case plugin:		return new XGPlugin(dev, n); 
-			case syseq:			return new XGMultiEQ(dev, n); 
-			case sysfx:			return new XGSystemFX(dev, n); 
-			case system:		return new XGSystem(dev, n); 
+		{	case "adpart":		return new XGADPart(dev, n); 
+			case "display":		return new XGDisplay(dev, n); 
+			case "drumset":		return new XGDrumset(dev, n); 
+			case "info":			return new XGInfo(dev, n); 
+			case "insfx":			return new XGInsertionFX(dev, n); 
+			case "multipart":		return new XGMultipart(dev, n); 
+			case "plugin":		return new XGPlugin(dev, n); 
+			case "syseq":			return new XGMultiEQ(dev, n); 
+			case "sysfx":			return new XGSystemFX(dev, n); 
+			case "system":		return new XGSystem(dev, n); 
 			default:			return null;
 		}
 	}
-
-	public static XGModuleTag getModuleTag(XGAddress adr)
+/*
+	public static String getModuleTag(XGAddress adr)
 	{	try
 		{	switch(adr.getHi().getValue())
 			{	case 0:		return XGModuleTag.system;
@@ -69,7 +70,7 @@ public interface XGModule extends XGAddressable, XGTagable, XGModuleConstants, X
 		{	return null;
 		}
 	}
-
+*/
 /********************************************************************************************************************/
 
 	String getName();

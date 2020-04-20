@@ -15,7 +15,7 @@ import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import application.Rest;
-import parm.XGParameter;
+import parm.XGFixedParameter;
 import parm.XGParameterConstants;
 import value.WrongXGValueTypeException;
 import value.XGValue;
@@ -48,7 +48,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 	@Override protected void paintComponent(Graphics g)
 	{	Graphics2D g2 = (Graphics2D)g;
-		XGParameter p = this.value.getParameter();
+		XGFixedParameter p = this.value.getParameter();
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		int w = 0;
@@ -92,7 +92,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 	}
 
 	@Override public void mouseDragged(MouseEvent e)
-	{	XGParameter p = this.value.getParameter();
+	{	XGFixedParameter p = this.value.getParameter();
 		try
 		{	if(this.value.setContentAndTransmit(Rest.linearIO(e.getX(), 0, this.getWidth(), p.getMinValue(), p.getMaxValue())))repaint();
 		}
@@ -108,7 +108,7 @@ public class LeftZeroSlider extends JComponent implements GuiConstants, KeyListe
 
 	@Override public void mouseClicked(MouseEvent e)
 	{	this.grabFocus();
-		XGParameter p = this.value.getParameter();
+		XGFixedParameter p = this.value.getParameter();
 		if(e.getButton() == MouseEvent.BUTTON1)
 		{	if(Rest.linearIO((int)this.value.getContent(), p.getMinValue(), p.getMaxValue(), 0, this.getWidth()) < e.getX())
 			{	try

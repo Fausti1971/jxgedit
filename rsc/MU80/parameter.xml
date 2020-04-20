@@ -1,130 +1,52 @@
-<?xml version="1.1" encoding="ISO-8859-1"?>
-<!-- validierung funktioniert mit StAX nicht, also auch nicht das setzen eventueller default-Attribute -->
+<?xml version="1.0" encoding="UTF-8"?>
+<tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
 
-<modules xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
+	<table name="parameters">
+		<item id="volume" longName="Volume" shortName="Vol" min="0" max="127" translator="normal"/>
+		<item id="reverb_type" longName="Reverb Program" shortName="Prog" translator="map" translationMap="fx_programs" translationMapFilter="reverb"/>
+		<item id="insertion_type" longName="Insertion Program" shortName="Prog" translator="map" translationMap="fx_programs" translationMapFilter="insertion"/>
+		<item id="effect_return" longName="Effect Return" shortName="FXRet"/>
+		<item id="effect_pan" longName="Effect Panorama" shortName="FXPan" min="1" translator="map" translationMap="panorama"/>
 
-	<module id="system" name="Master" hi="0" mid="0">
-		<bulk lo="0-6">
-			<opcode id="master_tune" lo="0-3" byteType="LSN">
-				<parameter longName="Master Tune" shortName="Tune" max="2047" translator="translateSub128Div10"/>
-			</opcode>
-			<opcode id="master_volume" lo="4">
-				<parameter longName="Master Volume" shortName="Vol"/>
-			</opcode>
-		</bulk>
-	</module>
+		<item id="master_tune" longName="Master Tune" shortName="Tune" max="2047" translator="sub128Div10" unit="cent"/>
+		<item id="reverb_time" longName="Reverb Time" shortName="Time" max="69" translator="map" translationMap="reverb_time" unit="s"/>
+		<item id="insertion_part" longName="Insertion Part" shortName="Part"/>
+	
+		<item id="reverb_1" master="2/1/0" index="1"/>
+		<item id="reverb_2" master="2/1/0" index="2"/>
+		<item id="reverb_3" master="2/1/0" index="3"/>
+		<item id="reverb_4" master="2/1/0" index="4"/>
+		<item id="reverb_5" master="2/1/0" index="5"/>
+		<item id="reverb_6" master="2/1/0" index="6"/>
+		<item id="reverb_7" master="2/1/0" index="7"/>
+		<item id="reverb_8" master="2/1/0" index="8"/>
+		<item id="reverb_9" master="2/1/0" index="9"/>
+		<item id="reverb_10" master="2/1/0" index="10"/>
 
-	<module id="sysfx" name="System Effect" hi="2" mid="1">
-		<bulk lo="0-13">
-			<opcode id="reverb_type" lo="0-1" byteType="LSB">
-				<parameter longName="Reverb Program" shortName="Prog" max="69" translator="translateMap" translationMap="fx_programs"/>
-			</opcode>
-			<opcode id="reverb_1" lo="2" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" max="69" translator="translateMap" translationMap="reverb_time"/>
-			</opcode>
-			<opcode id="reverb_2" lo="3" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Diffusion" shortName="Diff" max="10" translator="translatePercent"/>
-			</opcode>
-			<opcode id="reverb_3" lo="4" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Initial Delay" shortName="Delay" max="63" translator="translateMap" translationMap="delay_time_400"/>
-			</opcode>
-			<opcode id="reverb_4" lo="5" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="HPF Cutoff" shortName="HPF" max="52" translator="translateMap" translationMap="filter_freq"/>
-			</opcode>
-			<opcode id="reverb_5" lo="6" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" min="34" max="60" translator="translateMap" translationMap="filter_freq"/>
-			</opcode>
-			<opcode id="reverb_6" lo="7" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="16,17,18,19" longName="Width" shortName="Width" max="37" translator="translateMap" translationMap="reverb_dimension"/>
-			</opcode>
-			<opcode id="reverb_7" lo="8" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="16,17,18,19" longName="Height" shortName="Hight" max="73" translator="translateMap" translationMap="reverb_dimension"/>
-			</opcode>
-			<opcode id="reverb_8" lo="9" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="16,17,18,19" longName="Depth" shortName="Depth" max="104" translator="translateMap" translationMap="reverb_dimension"/>
-			</opcode>
-			<opcode id="reverb_9" lo="10" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="16,17,18,19" longName="Wall Vary" shortName="Wall" max="30"/>
-			</opcode>
-			<opcode id="reverb_10" lo="11" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Dry/Wet" shortName="Wet" min="1" translator="translatePercent"/>
-			</opcode>
-			<opcode id="reverb_return" lo="12">
-				<parameter longName="Reverb Return" shortName="Retrn"/>
-			</opcode>
-			<opcode id="reverb_pan" lo="13">
-				<parameter longName="Reverb Panorama" shortName="Pan" min="1" translator="translateMap" translationMap="reverb_dimension"/>
-			</opcode>
-		</bulk>
-	</module>
+		<item id="insertion_1" master="3/0-15/0-0" index="1"/>
+		<item id="insertion_2" master="3/0-15/0-0" index="2"/>
+		<item id="insertion_3" master="3/0-15/0-0" index="3"/>
+		<item id="insertion_4" master="3/0-15/0-0" index="4"/>
+		<item id="insertion_5" master="3/0-15/0-0" index="5"/>
+		<item id="insertion_6" master="3/0-15/0-0" index="6"/>
+		<item id="insertion_7" master="3/0-15/0-0" index="7"/>
+		<item id="insertion_8" master="3/0-15/0-0" index="8"/>
+		<item id="insertion_9" master="3/0-15/0-0" index="9"/>
+		<item id="insertion_10" master="3/0-15/0-0" index="10"/>
 
-	<module id="insfx" name="Insertion Effect" hi="3" mid="0">
-		<bulk lo="0-13">
-			<opcode id="ins_type" lo="0-1" byteType="LSB">
-				<parameter longName="Insertion Program" shortName="Prog" max="69" translator="translateMap" translationMap="fx_programs"/>
-			</opcode>
-			<opcode id="ins_1" lo="2" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" max="69" translator="translateMap" translationMap="reverb_time"/>
-			</opcode>
-			<opcode id="ins_2" lo="3" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Diffusion" shortName="Diff" max="10" translator="translatePercent"/>
-			</opcode>
-			<opcode id="ins_3" lo="4" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Initial Delay" shortName="Delay" max="63" translator="translateMap" translationMap="delay_time_400"/>
-			</opcode>
-			<opcode id="ins_4" lo="5" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="HPF Cutoff" shortName="HPF" max="52" translator="translateMap" translationMap="filter_freq"/>
-			</opcode>
-			<opcode id="ins_5" lo="6" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Reverb Time" shortName="RevTm" min="34" max="60" translator="translateMap" translationMap="filter_freq"/>
-			</opcode>
-			<opcode id="ins_6" lo="7" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="16,17,18,19" longName="Width" shortName="Width" max="37" translator="translateMap" translationMap="reverb_dimension"/>
-			</opcode>
-			<opcode id="ins_7" lo="8" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="16,17,18,19" longName="Height" shortName="Hight" max="73" translator="translateMap" translationMap="reverb_dimension"/>
-			</opcode>
-			<opcode id="ins_8" lo="9" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="16,17,18,19" longName="Depth" shortName="Depth" max="104" translator="translateMap" translationMap="reverb_dimension"/>
-			</opcode>
-			<opcode id="ins_9" lo="10" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="16,17,18,19" longName="Wall Vary" shortName="Wall" max="30"/>
-			</opcode>
-			<opcode id="ins_10" lo="11" dependingOn="reverb_type" dependencyType="MSB">
-				<parameter dependencyValues="1,2,3,4,16,17,18,19" longName="Dry/Wet" shortName="Wet" min="1" translator="translatePercent"/>
-			</opcode>
-			<opcode id="ins_part" lo="12">
-				<parameter longName="Insertion Part" shortName="Part"/>
-			</opcode>
-		</bulk>
-	</module>
+		<item id="mp_elementReserve" longName="Element Reserve" shortName="ElRes" max="32"/>
+		<item id="mp_bank_msb" longName="Bank Select MSB" shortName="bankM"/>
+		<item id="mp_bank_lsb" longName="Bank Select LSB" shortName="bankL"/>
+		<item id="mp_program" longName="Voice Program Number" shortName="prgNr"/>
+		<item id="mp_midichannel" longName="Midi Channel" shortName="ch" translator="map" translationMap="midi_channels"/>
 
-	<module id="multipart" name="Multipart" hi="8-10" mid="0-31">
-		<bulk hi="8" lo="0-40">
-			<opcode id="mp_elementReserve" lo="0">
-				<parameter longName="Element Reserve" shortName="ElRes" max="32"/>
-			</opcode>
-		</bulk>
-		<bulk hi="10" lo="16">
-			<opcode id="mp_output" lo="0">
-				<parameter longName="Output Select" shortName="out" max="103"/>
-			</opcode>
-		</bulk>
-	</module>
+		<item id="ad_inputGain" longName="Input Gain" shortName="iGain" max="1"/>
 
-	<module id="adpart" name="A/D-Part" hi="16-18" mid="0-1">
-		<bulk hi="16" lo="0-30">
-			<opcode id="ad_inputGain" lo="0">
-				<parameter longName="Input Gain" shortName="iGain" max="1"/>
-			</opcode>
-		</bulk>
-	</module>
-
-	<module id="drumset" name="Drumset" hi="48-51" mid="13-91">
-		<bulk lo="0-15">
-			<opcode id="dr_pitch_coarse" hi="48-51" mid="13-91" lo="0">
-				<parameter longName="Pitch Coarse" shortName="Tune" translator="translateSub64"/>
-			</opcode>
-		</bulk>
-	</module>
-</modules>
+		<item id="dr_pitch_coarse" longName="Pitch Coarse" shortName="Tune" translator="sub64"/>
+	</table>
+	<table name="fx_parameter" caption="set of links for mutable fx-parameters">
+		<set msb="0" lsb="0" caption="no effect">
+			<entry index="1" parameter="insertion_1"/>
+		</set>
+	</table>
+</tables>

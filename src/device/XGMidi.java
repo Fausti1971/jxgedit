@@ -2,7 +2,6 @@ package device;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiDevice;
 import javax.sound.midi.MidiDevice.Info;
@@ -14,6 +13,7 @@ import javax.swing.JComponent;
 import javax.swing.JScrollPane;
 import adress.InvalidXGAddressException;
 import application.Configurable;
+import application.XGLoggable;
 import gui.XGFrame;
 import gui.XGList;
 import gui.XGSpinner;
@@ -28,9 +28,8 @@ import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
 import value.ChangeableContent;
 import xml.XMLNode;
 
-public class XGMidi implements XGMidiConstants, XGMessenger, CoreMidiNotification, Configurable, Receiver, AutoCloseable
-{	static Logger log = Logger.getAnonymousLogger();
-
+public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMidiNotification, Configurable, Receiver, AutoCloseable
+{
 	public static Set<Info> getInputs()
 	{	Set<Info> inputs = new LinkedHashSet<>();
 		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
