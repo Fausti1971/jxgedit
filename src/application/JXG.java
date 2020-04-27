@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -23,6 +24,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
 	}
 
+	public static MouseEvent dragEvent = null;
 	private final static Set<String> actions = new LinkedHashSet<>();
 	static final String
 		ACTION_CONFIGURE = "configure...",

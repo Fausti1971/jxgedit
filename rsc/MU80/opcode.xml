@@ -2,7 +2,7 @@
 <!--
 	ein fehlendes addressfield wird durch das entsprechende parent-addressfield ersetzt
 	ein vorhandenes parameter-addressfield überschreibt des entsprechende parent-addressfield;
-	füe eine fehlende parameterID wird die id des opcodes genutzt
+	für eine fehlende parameterID wird die id des opcodes genutzt
 	validierung funktioniert mit StAX nicht, also auch nicht das setzen eventueller default-Attribute
 -->
 
@@ -12,6 +12,8 @@
 		<bulk address="//0-6">
 			<opcode id="master_tune" address="//0-3" byteType="LSN"/>
 			<opcode id="master_volume" address="//4" parameterID="volume"/>
+			<opcode id="master_attenuator" address="//5" parameterID="attenuator"/>
+			<opcode id="master_transpose" address="//6" parameterID="transpose"/>
 		</bulk>
 	</module>
 

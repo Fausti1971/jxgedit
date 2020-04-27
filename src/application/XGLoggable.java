@@ -3,5 +3,5 @@ package application;
 import java.util.logging.Logger;
 
 public interface XGLoggable
-{	static Logger log = Logger.getAnonymousLogger();
+{	static final Logger log = Logger.getAnonymousLogger();
 }

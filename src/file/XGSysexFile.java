@@ -34,6 +34,10 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 		this.device = dev;
 	}
 
+/**
+ * lädt und parst ein SysexFile zum XGMessenger dest
+ * @param dest
+ */
 	public void load(XGMessenger dest)
 	{	log.info("start parsing: " + this.getAbsolutePath());
 		if(dest == null) dest = this.buffer;
@@ -52,8 +56,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 				if(start && end)
 				{	try
 					{	XGMessage m = XGMessage.newMessage(this, dest, Arrays.copyOfRange(tmp, first, i + 1), false);
-						m.setDestination(dest);
-						if(m instanceof XGResponse) dest.submit((XGResponse)m);
+						if(m instanceof XGResponse) ((XGResponse)m).transmit();
 						messageCount++;
 					}
 					catch (InvalidMidiDataException | InvalidXGAddressException e)

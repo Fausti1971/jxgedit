@@ -2,13 +2,15 @@
 <tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
 
 	<table name="parameters">
-		<item id="volume" longName="Volume" shortName="Vol" min="0" max="127" translator="normal"/>
+		<item id="volume" longName="Volume" shortName="Vol" translator="normal"/>
+		<item id="transpose" longName="Transpose" shortName="Xpose" min="40" max="88" translator="sub64"/>
+		<item id="attenuator" longName="Attenuator" shortName="Damp" translator="normal"/>
 		<item id="reverb_type" longName="Reverb Program" shortName="Prog" translator="map" translationMap="fx_programs" translationMapFilter="reverb"/>
 		<item id="insertion_type" longName="Insertion Program" shortName="Prog" translator="map" translationMap="fx_programs" translationMapFilter="insertion"/>
 		<item id="effect_return" longName="Effect Return" shortName="FXRet"/>
 		<item id="effect_pan" longName="Effect Panorama" shortName="FXPan" min="1" translator="map" translationMap="panorama"/>
 
-		<item id="master_tune" longName="Master Tune" shortName="Tune" max="2047" translator="sub128Div10" unit="cent"/>
+		<item id="master_tune" longName="Master Tune" shortName="Tune" max="2047" translator="sub1024Div10" unit="cnt"/>
 		<item id="reverb_time" longName="Reverb Time" shortName="Time" max="69" translator="map" translationMap="reverb_time" unit="s"/>
 		<item id="insertion_part" longName="Insertion Part" shortName="Part"/>
 	

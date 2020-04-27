@@ -1,0 +1,85 @@
+
+Tabelle 20.2  Konstanten der Systemfarben
+SystemColor	Welche Farbe darauf anspricht
+
+desktop
+Farbe des Desktop-Hintergrunds
+
+activeCaption
+Hintergrundfarben für Text im Fensterrahmen
+
+activeCaptionText
+Farbe für Text im Fensterrahmen
+
+activeCaptionBorder
+Rahmenfarbe für Text im Fensterrahmen
+
+inactiveCaption
+Hintergrundfarbe für inaktiven Text im Fensterrahmen
+
+inactiveCaptionText
+Farbe für inaktiven Text im Fensterrahmen
+
+inactiveCaptionBorder
+Rahmenfarbe für inaktiven Text im Fensterrahmen
+
+window
+Hintergrundfarbe der Fenster
+
+windowBorder
+Rahmenfarbe der Fenster
+
+windowText
+Textfarbe für Fenster
+
+menu
+Hintergrundfarbe für Menüs
+
+menuText
+Textfarbe für Menüs
+
+text
+Hintergrundfarbe für Textkomponenten
+
+textText
+Textfarbe für Textkomponenten
+
+textHighlight
+Hintergrundfarbe für hervorgehobenen Text
+
+textHighlightText
+Farbe des Texts, wenn dieser hervorgehoben ist
+
+textInactiveText
+Farbe für inaktiven Text
+
+control
+Hintergrundfarbe für Kontrollobjekte
+
+controlText
+Textfarbe für Kontrollobjekte
+
+controlHighlight
+normale Farbe, mit der Kontrollobjekte hervorgehoben werden
+
+controlLtHighlight
+hellere Farbe, mit der Kontrollobjekte hervorgehoben werden
+
+controlShadow
+normale Hintergrundfarbe für Kontrollobjekte
+
+controlDkShadow
+dunklerer Schatten für Kontrollobjekte
+
+scrollbar
+Hintergrundfarbe der Schieberegler
+
+info
+Hintergrundfarbe der Hilfe
+
+infoText
+Textfarbe der Hilfe
+
+
+Um die Systemfarbe in eine brauchbare Variable zu konvertieren, gibt es die getRGB()-Methoden. So erzeugt new Color(SystemColor.window.getRGB()) ein Color-Objekt in der Farbe des Fensters.
+

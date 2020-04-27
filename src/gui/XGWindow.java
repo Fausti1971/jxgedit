@@ -1,9 +1,9 @@
 package gui;
 
 import java.awt.Toolkit;
-import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JScrollPane;
 import application.ConfigurationConstants;
 import application.JXG;
 
@@ -11,7 +11,6 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 {	static
 	{	JDialog.setDefaultLookAndFeelDecorated(true);
 	}
-	private static final Logger log = Logger.getAnonymousLogger();
 	private static XGRootWindow root;
 	/**
 	 * 
@@ -42,7 +41,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 		this.rootComponent = src.getChildWindowContent();
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.addWindowListener(src);
-		this.getContentPane().add(this.rootComponent);
+		this.getContentPane().add(new JScrollPane(this.rootComponent));
 		int x = (int)own.getLocation().getX() + own.getWidth();
 		int y = (int)own.getLocation().getY();
 		this.setLocation(x, y);

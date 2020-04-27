@@ -9,11 +9,10 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
 import adress.InvalidXGAddressException;
 import application.Configurable;
 import application.XGLoggable;
+import gui.XGComponent;
 import gui.XGFrame;
 import gui.XGList;
 import gui.XGSpinner;
@@ -67,29 +66,33 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 /******************************************************************************************************************/
 
 	public final ChangeableContent<Info> input = new ChangeableContent<Info>()
-		{	@Override public Info get()
+		{	@Override public Info getContent()
 			{	if(getInput() != null) return getInput().getDeviceInfo();
 				else return null;
 			}
-			@Override public void set(Info s)
+			@Override public boolean setContent(Info s)
 			{	setInput(s);
+				return true;
 			}
 		};
 	public final ChangeableContent<Info> output = new ChangeableContent<Info>()
-		{	@Override public Info get()
+		{	@Override public Info getContent()
 			{	if(getOutput() != null) return getOutput().getDeviceInfo();
 				else return null;
 			}
-			@Override public void set(Info s)
+			@Override public boolean setContent(Info s)
 			{	setOutput(s);
+				return true;
 			}
 		};
 	public final ChangeableContent<Integer> timeout = new ChangeableContent<Integer>()
-		{	@Override public Integer get()
+		{	@Override public Integer getContent()
 			{	return timeoutValue;
 			}
-			@Override public void set(Integer s)
-			{	setTimeout(s);
+			@Override public boolean setContent(Integer s)
+			{	int old = getContent();
+				setTimeout(s);
+				return old != getContent();
 			}
 		};
 
@@ -108,7 +111,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		this.config = this.device.getConfig().getChildNodeOrNew(TAG_MIDI);
 		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT));
 		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT));
-		this.timeout.set(this.config.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
+		this.timeout.setContent(this.config.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
 		this.buffer = new XGMessageBuffer(this);
 
 		try
@@ -294,7 +297,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	}
 
 	public int getTimeout()
-	{	return this.timeout.get();
+	{	return this.timeout.getContent();
 	}
 
 	public void setTimeout(int t)
@@ -311,20 +314,17 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	{	return this.config;
 	}
 
-	public JComponent getConfigComponent()
+	public XGComponent getConfigComponent()
 	{	XGFrame root = new XGFrame("midi");
 
-		XGFrame frame = new XGFrame("input");
-		frame.addGB(new JScrollPane(new XGList<Info>(XGMidi.getInputs(), this.input)), 0, 0);
-		root.addGB(frame, 0, 0);
+		XGComponent c = new XGList<Info>("input", XGMidi.getInputs(), this.input);
+		root.addGB(c.getJComponent(), 0, 0);
 
-		frame = new XGFrame("output");
-		frame.addGB(new JScrollPane(new XGList<Info>(XGMidi.getOutputs(), this.output)), 0, 0);
-		root.addGB(frame, 1, 0);
+		c = new XGList<Info>("output", XGMidi.getOutputs(), this.output);
+		root.addGB(c.getJComponent(), 1, 0);
 
-		frame = new XGFrame("timeout");
-		frame.addGB(new XGSpinner(this.timeout, 30, 1000, 10), 0, 0);
-		root.addGB(frame, 0, 1, 2);
+		c = new XGSpinner("timeout", this.timeout, 30, 1000, 10);
+		root.addGB(c.getJComponent(), 0, 1);
 
 		return root;
 	}

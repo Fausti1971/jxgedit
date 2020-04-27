@@ -2,16 +2,17 @@ package parm;
 
 import value.XGValue;
 
-//TODO determiniere ValueType und differenziere Methoden
-
 public interface XGValueTranslator
-{
+{	static final String SPACE = " ";
+
 	static enum XGTranslatorTag
 	{	empty,
 		normal,
 		add1,
 		div10,
+		sub64,
 		sub128Div10,
+		sub1024Div10,
 		map,
 		percent,
 		xml
@@ -25,7 +26,9 @@ public interface XGValueTranslator
 			case normal:		return normal;
 			case add1:			return add1;
 			case div10:			return div10;
+			case sub64:			return sub64;
 			case sub128Div10:	return sub128Div10;
+			case sub1024Div10:	return sub1024Div10;
 			case map:			return map;
 			case xml:			return xml;
 			default:			return normal;
@@ -44,57 +47,124 @@ public interface XGValueTranslator
 	
 	static XGValueTranslator empty = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return "";
+		{	return "" + SPACE + v.getParameter().getUnit();
 		}
+
+	@Override public int reverseTranslate(XGValue v, String s)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	};
 
 	static XGValueTranslator normal = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return String.valueOf(v.getContent()) + v.getParameter().getUnit();
+		{	return String.valueOf(v.getContent()) + SPACE + v.getParameter().getUnit();
 		}
+
+	@Override public int reverseTranslate(XGValue v, String s)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	};
 
 	static XGValueTranslator add1 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return String.valueOf(((Integer)v.getContent()) + 1) + v.getParameter().getUnit();
+		{	return String.valueOf((v.getContent()) + 1) + SPACE + v.getParameter().getUnit();
 		}
+
+	@Override public int reverseTranslate(XGValue v, String s)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	};
 
 	static XGValueTranslator div10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return String.valueOf(((float)v.getContent())/10) + v.getParameter().getUnit();
+		{	return String.valueOf(((float)v.getContent())/10) + SPACE + v.getParameter().getUnit();
 		}
+
+	@Override public int reverseTranslate(XGValue v, String s)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	};
+
+	static XGValueTranslator sub64 = new XGValueTranslator()
+	{	@Override public String translate(XGValue v)
+		{	return (v.getContent() - 64) + SPACE + v.getParameter().getUnit();
+		}
+
+	@Override public int reverseTranslate(XGValue v, String s)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	};
+
+	static XGValueTranslator sub1024Div10 = new XGValueTranslator()
+	{	@Override public String translate(XGValue v)
+		{	float f = v.getContent() - 1024;
+			return Float.toString(f / 10) + SPACE + v.getParameter().getUnit();
+		}
+
+	@Override public int reverseTranslate(XGValue v, String s)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	};
 
 	static XGValueTranslator sub128Div10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	float f;
-			f = (int)v.getContent();
-				return Float.toString((f - 128) / 10) + v.getParameter().getUnit();
+		{	float f = v.getContent() - 128;
+			return Float.toString(f / 10) + SPACE + v.getParameter().getUnit();
 		}
+
+	@Override public int reverseTranslate(XGValue v, String s)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	};
 
 	static XGValueTranslator xml = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	return "no XML-value";
 		}
+
+	@Override public int reverseTranslate(XGValue v, String s)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	};
 
 	static XGValueTranslator map = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	try
 			{	XGParameter p = v.getParameter();
-				return v.getSource().getDevice().getTables().get(p.getTranslationMapName()).get(v.getContent()) + p.getUnit();
+				return v.getSource().getDevice().getTables().get(p.getTranslationMapName()).get(v.getContent()) + SPACE + p.getUnit();
 			}
 			catch(NullPointerException e)
 			{	e.printStackTrace();
 				return "no value";
 			}
 		}
+
+	@Override public int reverseTranslate(XGValue v, String s)
+	{
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	};
 
 /***************************************************************************************************************************/
 
 	String translate(XGValue v);
+	int reverseTranslate(XGValue v, String s);
 
 }

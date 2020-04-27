@@ -19,13 +19,14 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		{	log.info(e.getMessage());
 			return;
 		}
-//TODO: parameterSets nicht vergessen...
+
 		XMLNode xml = XMLNode.parse(file);
 		for(XMLNode t : xml.getChildNodes(TAG_TABLE))
 		{	for(XMLNode p : t.getChildNodes(TAG_ITEM))
 			{	XGParameter prm = new XGParameter(dev, p);
 				dev.getParameters().add(prm);
 			}
+			//TODO: parameterSets nicht vergessen...
 		}
 		log.info(dev.getParameters().size() + " parameters initialized");
 		return;

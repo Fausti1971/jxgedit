@@ -213,6 +213,12 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 	{	this.attributes.put(attr, String.valueOf(t));
 	}
 
+	public double getDoubleAttribute(String attr, double def)
+	{	if(this.attributes.contains(attr))
+			return Double.parseDouble((String)this.attributes.get(attr));
+		else return def;
+	}
+
 	public void save(File file) throws IOException, XMLStreamException
 	{	XMLOutputFactory factory = XMLOutputFactory.newInstance();
 		if(!file.exists()) file.createNewFile();

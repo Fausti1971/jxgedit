@@ -130,7 +130,7 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	}
 
 	@Override public JComponent getChildWindowContent()
-	{	return XGComponent.init(this);
+	{	return XGComponent.init(this).getJComponent();
 	}
 
 	@Override public String getMessengerName()

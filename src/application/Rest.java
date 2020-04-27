@@ -23,7 +23,12 @@ public interface Rest
 	}
 
 	static int linearIO(int i, int in_min, int in_max, int out_min, int out_max)
-	{	return((int)(((float)(i - in_min) / (float)(in_max - in_min) * (out_max - out_min)) + out_min));
+	{	float
+			in = i - in_min,
+			in_range = in_max - in_min,
+			out_range = out_max - out_min;
+		return(int)(in / in_range * out_range + out_min);
+//		return((int)(((float)(i - in_min) / (float)(in_max - in_min) * (out_max - out_min)) + out_min)); original
 	}
 
 	static int parseIntOrDefault(String s, int def)

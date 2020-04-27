@@ -54,35 +54,36 @@ public interface XGByteArray
 	}
 
 /**
- * dekodiert das LSN (4Bits) an Offset index
- * @param index Offset
- * @return	int
- */
-	default int decodeLSN(int index)
-	{	return getByteArray()[index] & 0xF;}
-
-/**
  * emkodiert value an das LSB (4Bits) an das Offset index ins Array
  * @param index	Offset
  * @param value	Wert
  */
 	default void encodeLSN(int index, int value)
-	{	encodeLSB(index, decodeMSN(index) | (value & 0xF));}
+	{	this.encodeLSB(index, decodeMSN(index) | (value & 0xF));}
 
 
 	default int decodeMSN(int index)
-	{	return getByteArray()[index] & 0xF0;
+	{	return this.getByteArray()[index] & 0xF0;
 	}
 
 	default void encodeMSN(int index, int value)
-	{	encodeLSB(index, decodeLSN(index) | (value & 0XF0));
+	{	this.encodeLSB(index, decodeLSN(index) | (value & 0XF0));
+	}
+
+/**
+ * dekodiert das LSN (4Bits) an Offset index
+ * @param index Offset
+ * @return	int
+ */
+	default int decodeLSN(int index)
+	{	return this.getByteArray()[index] & 0xF;
 	}
 
 	default int decodeLSN(int index, int size)
 	{	int res = 0;
 		for(int i = 0; i < size; i++)
 		{	res <<= 4;
-			res |= decodeLSN(index + i);
+			res |= this.decodeLSN(index + i);
 		}
 		return res;
 	}
@@ -90,7 +91,7 @@ public interface XGByteArray
 	default void encodeLSN(int index, int size, int value)
 	{	size--;
 		while(size >= 0)
-		{	encodeLSN(index + size, value & 0xF);
+		{	this.encodeLSN(index + size, value & 0xF);
 			size--;
 			value >>= 4;
 		}
@@ -102,9 +103,11 @@ public interface XGByteArray
 	}
 
 	default void encodeByteArray(int offset, byte[] array)
-	{	int max = Math.min(getByteArray().length, offset + array.length);
+	{	int
+			max = Math.min(getByteArray().length,
+			offset + array.length);
 		for(byte b : array)
-		{	getByteArray()[offset] = b;
+		{	this.getByteArray()[offset] = b;
 			if(offset++ > max) break;
 		}
 	}

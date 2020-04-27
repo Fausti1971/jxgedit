@@ -2,7 +2,7 @@ package value;
 
 public interface ChangeableContent<T>
 {
-	public T get();
+	public T getContent();
 
-	public void set(T s);
+	public boolean setContent(T s);
 }

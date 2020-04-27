@@ -20,7 +20,7 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
  * @param init initialisiert eine neu erzeugte XGMessage mit SOX, SysexID, VendorID, ModelID und TimeStamp
  * @throws InvalidMidiDataException
  */
-	protected XGSuperMessage(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException	// für manuell erzeugte
+	protected XGSuperMessage(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException // für manuell erzeugte
 	{	super(array);
 		this.source = src;
 		this.destination = dest;

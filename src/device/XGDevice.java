@@ -27,6 +27,7 @@ import adress.XGBulkDump;
 import application.Configurable;
 import application.JXG;
 import file.XGSysexFile;
+import gui.XGComponent;
 import gui.XGContext;
 import gui.XGDeviceDetector;
 import gui.XGFrame;
@@ -81,29 +82,33 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 /***************************************************************************************************************************/
 
 	private final ChangeableContent<Integer> sysex = new ChangeableContent<Integer>()
-	{	@Override public Integer get()
+	{	@Override public Integer getContent()
 		{	return getSysexID();
 		}
-		@Override public void set(Integer s)
-		{	setSysexID(s);
+		@Override public boolean setContent(Integer i)
+		{	int old = getSysexID();
+			setSysexID(i);
+			return old != i;
 		}
 	};
 
 	private final ChangeableContent<Path> defaultDumpFolder = new ChangeableContent<Path>()
-	{	@Override public Path get()
+	{	@Override public Path getContent()
 		{	return Paths.get(config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER.toString(), JXG.HOMEPATH.toString()));
 		}
-		@Override public void set(Path s)
+		@Override public boolean setContent(Path s)
 		{	config.setStringAttribute(ATTR_DEFAULTDUMPFOLDER, s.toString());
+			return true;
 		}
 	};
 
 	private ChangeableContent<String> name = new ChangeableContent<String>()
-	{	@Override public String get()
+	{	@Override public String getContent()
 		{	return config.getStringAttribute(ATTR_NAME, DEF_DEVNAME);
 		}
-		@Override public void set(String s)
+		@Override public boolean setContent(String s)
 		{	config.setStringAttribute(ATTR_NAME, s);
+			return true;
 		}
 	};
 	private XGTree tree;
@@ -133,18 +138,18 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			this.midi = new XGMidi(this);
 			this.configure();
 		}
-		this.sysex.set(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
+		this.sysex.setContent(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
 		this.midi = new XGMidi(this);
-		this.name.set(this.config.getStringAttribute(ATTR_NAME, DEF_DEVNAME));
+		this.name.setContent(this.config.getStringAttribute(ATTR_NAME, DEF_DEVNAME));
 		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
-		this.defaultDumpFolder.set(Paths.get(this.config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER, JXG.HOMEPATH.toString())));
+		this.defaultDumpFolder.setContent(Paths.get(this.config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER, JXG.HOMEPATH.toString())));
 
 		XGTable.init(this);
 		XGParameter.init(this);
 		XGOpcode.init(this);
 		XGValue.init(this);
 
-		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.get().resolve("default.syx").toString());
+		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.getContent().resolve("default.syx").toString());
 		this.defaultSyx.load(this);
 		log.info("device initialized: " + this);
 	}
@@ -152,14 +157,14 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public File getResourceFile(String fName) throws FileNotFoundException
 	{	Path extPath = this.getResourcePath();
 		File extFile = extPath.resolve(fName).toFile();
-		File intFile = RSCPATH.resolve(this.name.get()).resolve(fName).toFile();
+		File intFile = RSCPATH.resolve(this.name.getContent()).resolve(fName).toFile();
 		if(extFile.canRead()) return extFile;
 		if(intFile.canRead()) return intFile;
 		throw new FileNotFoundException("can't read files, neither: " + extFile + " nor: " + intFile);//TODO: interner Pfad wird außerhalb von eclipse nicht aufgelöst!
 	}
 
 	public Path getResourcePath()
-	{	return HOMEPATH.resolve(this.name.get());
+	{	return HOMEPATH.resolve(this.name.getContent());
 	}
 
 	public Color getColor()
@@ -219,7 +224,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			try
 			{	XGResponse r = this.midi.request(m);
 				String s = r.getString(r.getBaseOffset(), r.getBaseOffset() + r.getBulkSize());
-				this.name.set(s.trim());
+				this.name.setContent(s.trim());
 			}
 			catch(TimeoutException e)
 			{	JOptionPane.showMessageDialog(this.getChildWindow(), e.getMessage());
@@ -249,7 +254,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public String toString()
-	{	return this.name.get() + " (" + this.sysexID + ")";
+	{	return this.name.getContent() + " (" + this.sysexID + ")";
 	}
 
 	@Override public XMLNode getConfig()
@@ -320,19 +325,17 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public JComponent getConfigComponent()
 	{	XGFrame root = new XGFrame("device");
 
-		root.addGB(this.getMidi().getConfigComponent(), 0, 0);
+		XGComponent c = this.getMidi().getConfigComponent();
+		root.addGB(c.getJComponent(), 0, 0);
 
-		XGFrame frame = new XGFrame("sysexID");
-		frame.addGB(new XGSpinner(this.sysex, 0, 15, 1), 0, 0);
-		root.addGB(frame, 0, 1);
+		c = new XGSpinner("sysexID", this.sysex, 0, 15, 1);
+		root.addGB(c.getJComponent(), 0, 1, 1, 1);
 
-		frame = new XGFrame("device name");
-		frame.addGB(new XGDeviceDetector(this.name, this), 0, 0);
-		root.addGB(frame, 0, 2);
+		c = new XGDeviceDetector("device name", this.name, this);
+		root.addGB(c.getJComponent(), 0, 2);
 
-		frame = new XGFrame("default dump folder");
-		frame.addGB(new XGPathSelector(this.defaultDumpFolder), 0, 0);
-		root.addGB(frame, 0, 3);
+		c = new XGPathSelector("default dump folder", this.defaultDumpFolder);
+		root.addGB(c.getJComponent(), 0, 3);
 
 		return root;
 	}
@@ -354,7 +357,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public String getMessengerName()
-	{	return this.name.get();
+	{	return this.name.getContent();
 	}
 
 	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
@@ -371,6 +374,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			if(v != null)
 			{	v.setContent(v.decodeBytes(msg));
 				size = v.getOpcode().getAddress().getLo().getSize();
+			}
+			else
+			{	log.info("value not found: " + adr);
+				size = 1;
 			}
 			offset += size;
 			i += size;

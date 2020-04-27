@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/template.xsd">
 	<frame id="system" name="Master">
-		<knob value="0/0/0" origin="center"/>
-		<knob value="0/0/4" origin="left"/>
-		<knob value="0/0/5" origin="left"/>
-		<slider opcode="0/0/6"/>
+		<knob value="0/0/0" origin="1024" grid_w="2" grid_h="2"/>
+		<knob value="0/0/4"/>
+		<knob value="0/0/5"/>
+		<slider value="0/0/4" grid_w="4" grid_h="1" grid_x="1" grid_y="2" grid_fill="2"/>
+		<slider value="0/0/6" origin="64" grid_w="4" grid_h="1" grid_x="1" grid_fill="2"/>
+		<knob value="0/0/6" origin="64" grid_w="2" grid_h="2"/>
 	</frame>
 	<frame id="multipart" name="Multipart">
-		<envelope value="8/0-31/26">
-			<item value="0"/>
-			<item value="0"/>
-			<item id="mp_eg_attack"/>
-			<item id="mp_volume"/>
-			<item id="mp_eg_decay"/>
-			<item id="mp_volume"/>
-			<item id="mp_eg_release"/>
-			<item value="0"/>
+		<envelope name="Amp Envelope Generator">
+			<point value_x="0" value_y="0"/>
+			<point value_x="8/0-31/26" value_y="8/0-31/11"/>
+			<point value_x="8/0-31/27" value_y="8/0-31/11"/>
+			<point value_x="8/0-31/28" value_y="0"/>
 		</envelope>
 	</frame>
 </templates>

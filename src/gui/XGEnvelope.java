@@ -17,6 +17,16 @@ public class XGEnvelope extends JComponent implements XGComponent
 	}
 
 	@Override public JComponent getJComponent()
-	{	return null;
+	{	return this;
+	}
+
+	@Override public XMLNode getConfig()
+	{	return new XMLNode("env", null);
+	}
+
+	@Override public XGValue getValue()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -1,6 +1,6 @@
 package msg;
 
-import java.awt.BorderLayout;
+import static application.XGLoggable.log;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -11,21 +11,26 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
+import application.XGLoggable;
 import device.XGDevice;
+import gui.XGComponent;
+import gui.XGFrame;
 import gui.XGWindow;
 import gui.XGWindowSource;
+import value.XGValue;
+import xml.XMLNode;
 
-public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMessenger, XGWindowSource
+public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMessenger, XGWindowSource, XGComponent, XGLoggable
 {	private final XGMessenger source;
 	private XGWindow window;
 	private final JList<XGMessage> list = new JList<>(new DefaultListModel<XGMessage>());
 	private JLabel status = new JLabel();
+	private XMLNode config = new XMLNode("buffer", null);
 
 	public XGMessageBuffer(XGMessenger src)
 	{	this.source = src;
@@ -41,7 +46,7 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 
 	@Override public void submit(XGResponse m)
 	{	this.add(m);
-	System.out.println("msg buffered: " + m);
+		log.info("msg buffered: " + m);
 		((DefaultListModel<XGMessage>)this.list.getModel()).addElement(m);
 		if(this.window == null) this.setChildWindow(new XGWindow(this, XGWindow.getRootWindow(), false, this.getMessengerName()));
 		this.status.setText(this.size() + " messages buffered");
@@ -103,9 +108,9 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	}
 
 	@Override public JComponent getChildWindowContent()
-	{	JComponent root = new JPanel();
-		root.setLayout(new BorderLayout());
-		root.add(new JScrollPane(this.list), BorderLayout.CENTER);
+	{	JComponent root = new XGFrame(this.getMessengerName());
+//		root.setLayout(new BorderLayout());
+		root.add(new JScrollPane(this.list));
 
 		JToolBar tb = new JToolBar(JToolBar.HORIZONTAL);
 		tb.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 10));
@@ -150,12 +155,12 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 		tb.add(b);
 		tb.validate();
 
-		root.add(tb, BorderLayout.NORTH);
+		root.add(tb);
 
 		this.status.setText(this.size() + " messages buffered");
 		this.status.setHorizontalAlignment(SwingConstants.CENTER);
 		this.status.setVerticalAlignment(SwingConstants.CENTER);
-		root.add(this.status, BorderLayout.SOUTH);
+		root.add(this.status);
 
 		return root;
 	}
@@ -164,5 +169,17 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	{
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override public JComponent getJComponent()
+	{	return this.getChildWindowContent();
+	}
+
+	@Override public XMLNode getConfig()
+	{	return this.config;
+	}
+
+	@Override public XGValue getValue()
+	{	return null;
 	}
 }

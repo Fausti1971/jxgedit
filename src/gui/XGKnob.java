@@ -1,155 +1,169 @@
 package gui;
 
+import static application.XGLoggable.log;
+import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
-import javax.swing.UIManager;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.EventListenerList;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import adress.XGAddressableSet;
+import application.JXG;
+import application.Rest;
+import device.XGDevice;
+import msg.XGMessageParameterChange;
+import parm.XGParameter;
 import value.XGValue;
+import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGKnob extends JComponent 
-{	/**
+public class XGKnob extends JComponent implements XGComponent, XGValueChangeListener, MouseMotionListener
+{
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final static float START = 225;
-	private final static float LENGTH = 270;
+	private final static int DEF_ARCSTROKEWIDTH = 4;
+	private final static BasicStroke DEF_ARCSTROKE = new BasicStroke(DEF_ARCSTROKEWIDTH, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
+	private final static BasicStroke DEF_STROKE = new BasicStroke(2f);
+
+	private final static int START_ARC = 225;
+	private final static int END_ARC = 315;
+	private final static int LENGTH_ARC = -270;
 	private final static float PI = (float) 3.1415;
-	private final static float START_ANG = (START/360)*PI*2;
-	private final static float LENGTH_ANG = (LENGTH/360)*PI*2;
-	private final static float DRAG_RES = (float) 0.01;
-	private final static float MULTIP = 180 / PI; 
-	private final static Color DEFAULT_FOCUS_COLOR = UIManager.getColor("Focus.color");
-	private final static Color DEFAULT_BACKGROUND_COLOR = UIManager.getColor ("Panel.background");
-	private final static Dimension MIN_SIZE = new Dimension(40, 40);
-	private final static Dimension PREF_SIZE = new Dimension(80, 80);
+	private final static int PREF_W = 2, PREF_H = 2;
 
-	// Set the antialiasing to get the right look!
-	private final static RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	private static float toRadiant(int ang)
+	{	return PI * ang/180;
+	}
 
-	public final static int SIMPLE = 1;
-	public final static int ROUND= 2;
+/*****************************************************************************************************************************/
 
-/******************************************************************************************************************************/
+	private final XGValue value;
+	private final XGAddress address;
+	private final XMLNode config;
+	private final int origin;//225=left, 90=center, 315=right
+	private XGParameter parameter;
+	private int lengthArc;
+	private int originArc;
+	private final Rectangle knobArea = new Rectangle();
+	private final Rectangle valueArea = new Rectangle();
+	private final Point middle = new Point();
+	private final Point strokeStart = new Point();
+	private final Point strokeEnd = new Point();
 
-	private float DRAG_SPEED;
-	private float CLICK_SPEED;
-	private int size;
-	private int middle;
-	
-	private int dragType = SIMPLE;
-	
-	private ChangeEvent changeEvent = null;
-	private EventListenerList listenerList = new EventListenerList();
-
-//	private Arc2D hitArc = new Arc2D.Float(Arc2D.PIE);
-
-	private float ang = (float) START_ANG;
-	private float val;
-	private int dragpos = -1;
-	private float startVal;
-	private Color focusColor;
-	private double lastAng;
-	
 	public XGKnob(XMLNode n, XGAddressableSet<XGValue> set)
-	{	DRAG_SPEED = 0.01F;
-		CLICK_SPEED = 0.01F;
-	
-		setPreferredSize(PREF_SIZE);
-
-//		hitArc.setAngleStart(235); // Degrees ??? Radians???
-		addMouseListener(new MouseAdapter()
-		{	@Override public void mousePressed(MouseEvent me)
-			{	dragpos = me.getX() + me.getY();
-				startVal = val;
-
-				// Fix last angle
-				int xpos = middle - me.getX();
-				int ypos = middle - me.getY();
-				lastAng = Math.atan2(xpos, ypos);
-				requestFocus();
-			}
-
-			@Override public void mouseClicked(MouseEvent me)
-			{	//hitArc.setAngleExtent(-(LENGTH + 20));
-				//if(hitArc.contains(me.getX(), me.getY()))
-				//{	hitArc.setAngleExtent(MULTIP * (ang-START_ANG)-10);
-				//	if(hitArc.contains(me.getX(), me.getY())) decValue();
-				//	else incValue();
-				//}
-			}
+	{	this.config = n;
+		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), null);
+		XGValue v = set.getFirstValid(this.address);
+		this.setEnabled(true);
+		if(v == null)
+		{	v = DEF_VALUE;
+			this.setEnabled(false);
 		}
-	);
-
-// Let the user control the knob with the mouse
-	addMouseMotionListener(new MouseMotionAdapter()
-	{	@Override public void mouseDragged(MouseEvent me)
-		{	if (dragType == SIMPLE)
-			{	float f = DRAG_SPEED * (float)((me.getX() + me.getY()) - dragpos);
-				setValue(startVal + f);
-			}
-			else if ( dragType == ROUND)
-			{	// Measure relative the middle of the button! 
-				int xpos = middle - me.getX();
-				int ypos = middle - me.getY();
-				double ang = Math.atan2(xpos, ypos);
-				double diff = lastAng - ang;
-				setValue((float) (getValue() + (diff / LENGTH_ANG)));
-
-				lastAng = ang;
-			}
+		this.value = v;
+		this.parameter = this.value.getParameter();
+		this.origin = this.value.validate(n.getIntegerAttribute(ATTR_ORIGIN, 0));
+		this.value.addListener(this);
+		this.setName(this.value.getParameter().getShortName());
+		this.setToolTipText(this.value.getParameter().getLongName());
+		this.setSizes(PREF_W, PREF_H);
+		this.setFocusable(true);
+		this.borderize();
+		this.addMouseListener(this);
+		this.addMouseMotionListener(this);
+		this.addMouseWheelListener(this);
+		this.addFocusListener(this);
+		log.info("knob initialized: " + this.getName());
 		}
 
-		@Override public void mouseMoved(MouseEvent me)
-		{
-		}
-	});
+	@Override public void paintComponent(Graphics g)
+	{	//super.paintComponent(g);
+		if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
+		Graphics2D g2 = (Graphics2D)g.create();
+		g2.addRenderingHints(AALIAS);
+		Insets ins = this.getInsets();
+		int w_gap = ins.left + ins.right + DEF_ARCSTROKEWIDTH;
+		int h_gap = ins.top + ins.bottom + DEF_ARCSTROKEWIDTH;
+		knobArea.x = valueArea.x = ins.left;
+		knobArea.y = ins.top;
+		knobArea.width = knobArea.height = Math.min(this.getWidth() - w_gap, this.getHeight() - h_gap);
+		valueArea.y = ins.top + knobArea.height;
+		valueArea.height = g2.getFontMetrics(FONT).getHeight();
+		valueArea.width = this.getWidth() - (ins.left - ins.right);
+		int radius = knobArea.width / 2;
+		middle.x = this.getWidth() / 2;
+		middle.y = knobArea.y + radius;
 
-// Let the user control the knob with the keyboard
-	addKeyListener(new KeyListener()
-	{	@Override public void keyTyped(KeyEvent e) {}
-		@Override public void keyReleased(KeyEvent e) {}
-		@Override public void keyPressed(KeyEvent e)
-		{	int k = e.getKeyCode();
-			if (k == KeyEvent.VK_RIGHT) incValue();
-			else if (k == KeyEvent.VK_LEFT) decValue();
-		}
+// paint background arc
+		g2.setColor(Color.white);
+		g2.setStroke(DEF_ARCSTROKE);
+		g2.drawArc(middle.x - radius, middle.y - radius, knobArea.width, knobArea.height, START_ARC, LENGTH_ARC);
+// paint foreground arc
+		parameter = this.value.getParameter();
+		this.originArc = Rest.linearIO(this.origin, this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
+		this.lengthArc = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, LENGTH_ARC);
+		g2.setColor(COL_NODEFOCUS);
+//		g2.setStroke(DEF_ARCSTROKE);
+		g2.drawArc(middle.x - radius, middle.y - radius, knobArea.width, knobArea.height, originArc + START_ARC, this.lengthArc - originArc);
+// paint marker
+//		g2.setColor(COL_FOCUS);
+		g2.setStroke(DEF_STROKE);
+		float endRad = toRadiant(this.lengthArc + START_ARC);
+		strokeStart.x = (int)(middle.x + radius * Math.cos(endRad));
+		strokeStart.y = (int)(middle.y - radius * Math.sin(endRad));
+		strokeEnd.x = (int)(middle.x + radius/2 * Math.cos(endRad));
+		strokeEnd.y = (int)(middle.y - radius/2 * Math.sin(endRad));
+		g2.drawLine(strokeStart.x, strokeStart.y, strokeEnd.x, strokeEnd.y);
+// paint value
+		String s = this.value.toString();
+		g2.setColor(COL_NODETEXT);
+		g2.setFont(FONT);
+		g2.drawString(s, (int)(middle.x - g2.getFontMetrics().stringWidth(s) / 2), valueArea.y + valueArea.height / 2);
+		g2.dispose();
 	}
-);
-	
-// Handle focus so that the knob gets the correct focus highlighting.
-	addFocusListener(new FocusListener()
-		{	@Override public void focusGained(FocusEvent e)
-			{	repaint();
+
+	@Override public void mouseDragged(MouseEvent e)
+	{	int distance = e.getX() - JXG.dragEvent.getX();
+//		XGParameter p = this.value.getParameter();
+//		int range = p.getMaxValue() - p.getMinValue();
+		boolean changed = this.getValue().setContent(this.value.getContent() + distance);
+		if(changed)
+		{	XGDevice dev = this.getValue().getSource().getDevice();
+			try
+			{	new XGMessageParameterChange(dev, dev.getMidi(), this.getValue()).transmit();
 			}
-			@Override public void focusLost(FocusEvent e)
-			{	repaint();
+			catch(InvalidXGAddressException | InvalidMidiDataException e1)
+			{	e1.printStackTrace();
 			}
-		});
+		}
+		JXG.dragEvent = e;
+		e.consume();
 	}
 
-	public void setDragType(int type)
-	{	dragType = type;
+	@Override public void mouseMoved(MouseEvent e)
+	{
 	}
 
-	public int getDragType()
-	{	return dragType;
+	@Override public JComponent getJComponent()
+	{	return this;
 	}
-	
+
+	@Override public XMLNode getConfig()
+	{	return this.config;
+	}
+
+	@Override public void contentChanged(XGValue v)
+	{	this.repaint();
+	}
+
 	@Override public boolean isManagingFocus()
 	{	return true;
 	}
@@ -158,104 +172,7 @@ public class XGKnob extends JComponent
 	{	return true;
 	}
 
-	private void incValue()
-	{	setValue(val + CLICK_SPEED);
+	@Override public XGValue getValue()
+	{	return this.value;
 	}
-	
-	private void decValue()
-	{	setValue(val - CLICK_SPEED);
-	}
-	
-	public float getValue()
-	{	return val;
-	}
-
-	public void setValue(float val)
-	{	if (val < 0) val = 0;
-		if (val > 1) val = 1;
-		this.val = val;
-		ang = START_ANG - (float) LENGTH_ANG * val;
-		repaint();
-		fireChangeEvent();
-	}
-
-	public void addChangeListener(ChangeListener cl)
-	{	listenerList.add(ChangeListener.class, cl);
-	}
-	
-	public void removeChangeListener(ChangeListener cl)
-	{	listenerList.remove(ChangeListener.class, cl);
-	}
-	
-	@Override public Dimension getMinimumSize()
-	{	return MIN_SIZE;
-	}
-	
-	protected void fireChangeEvent()
-	{
-// Guaranteed to return a non-null array
-		Object[] listeners = listenerList.getListenerList();
-// Process the listeners last to first, notifying
-// those that are interested in this event
-		for (int i = listeners.length-2; i>=0; i-=2)
-		{	if (listeners[i] == ChangeListener.class)
-			{
-// Lazily create the event:
-				if (changeEvent == null)
-					changeEvent = new ChangeEvent(this);
-				((ChangeListener)listeners[i+1]).stateChanged(changeEvent);
-			}
-		}
-	}
-
-// Paint the DKnob
-	@Override public void paint(Graphics g)
-	{
-		int width = getWidth();
-		int height = getHeight();
-		size = Math.min(width, height);
-		middle = size/2;
-
-		if (g instanceof Graphics2D)
-		{	Graphics2D g2d = (Graphics2D) g;
-			g2d.setBackground(getParent().getBackground());
-			g2d.addRenderingHints(AALIAS);
-		
-// For the size of the "mouse click" area
-//			hitArc.setFrame(0, 0, size, size);
-		}
-	
-// Paint the "markers"
-		for (float a2 = START_ANG; a2 >= START_ANG - LENGTH_ANG; a2=a2 -(float)(LENGTH_ANG/10.01))
-		{	int x = 10 + size/2 + (int)((6+size/2) * Math.cos(a2));
-			int y = 10 + size/2 - (int)((6+size/2) * Math.sin(a2));
-			g.drawLine(10 + size/2, 10 + size/2, x, y);
-			
-		}
-	
-// Set the position of the Zero
-		g.drawString("0", 2, size + 10);
-	
-// Paint focus if in focus
-		if (hasFocus())
-		{	g.setColor(focusColor);
-		}
-		else
-		{	g.setColor(Color.white);
-		}
-
-		g.setColor(Color.gray);
-		g.drawArc(0, 0, size, size, 315, 270);
-		
-		int x = size/2 + (int)(size/2 * Math.cos(ang));
-		int y = size/2 - (int)(size/2 * Math.sin(ang));
-	
-		g.setColor(Color.blue);
-		g.drawArc(0, 0, size, size, 225, -270);
-		
-		g.setColor(Color.black);
-		int dx = (int)(2 * Math.sin(ang));
-		int dy = (int)(2 * Math.cos(ang));
-		g.drawLine(dx + size/2, dy + size/2, x, y);
-		}
 }

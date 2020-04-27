@@ -1,6 +1,7 @@
 package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
+import adress.InvalidXGAddressException;
 
 public interface XGResponse extends XGMessage
 {
@@ -32,4 +33,9 @@ public interface XGResponse extends XGMessage
 	 * errechnet, setzt und returniert die XG-Checksumme
 	 */
 	public int setChecksum();
+
+	public default void transmit() throws InvalidXGAddressException
+	{	this.getDestination().submit(this);
+	}
+
 }
