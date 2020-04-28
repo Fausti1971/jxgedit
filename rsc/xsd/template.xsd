@@ -30,7 +30,6 @@
 		<xs:complexType>
 			<xs:attributeGroup ref="layoutGroup"/>
 			<xs:attribute name="value" use="required" type="address"/>
-			<xs:attribute name="origin" use="optional" type="xs:nonNegativeInteger" default="0"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -38,7 +37,6 @@
 		<xs:complexType>
 			<xs:attributeGroup ref="layoutGroup"/>
 			<xs:attribute name="value" use="required" type="address"/>
-			<xs:attribute name="origin" use="optional" type="xs:nonNegativeInteger" default="0"/>
 		</xs:complexType>
 	</xs:element>
 

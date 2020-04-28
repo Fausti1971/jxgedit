@@ -1,8 +1,6 @@
 package gui;
 
 import static application.XGLoggable.log;
-import java.awt.Color;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -11,7 +9,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import java.awt.geom.Rectangle2D;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
@@ -40,7 +37,9 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 	private final XGAddress address;
 	private final XGValue value;
 	private final XMLNode config;
-	private final Rectangle area = new Rectangle(), bar = new Rectangle();
+	private final Rectangle barArea = new Rectangle(), valueArea = new Rectangle();
+	private XGParameter parameter;
+	private String valueString;
 
 	public XGSlider(XMLNode n, XGAddressableSet<XGValue> set)
 	{	this.config = n;
@@ -66,43 +65,37 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 		}
 
 	@Override protected void paintComponent(Graphics g)
-	{	//super.paintComponent(g);
-		if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
+	{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
 		Graphics2D g2 = (Graphics2D)g.create();
-		XGParameter p = this.value.getParameter();
+		this.parameter = this.value.getParameter();
 		g2.addRenderingHints(AALIAS);
+		g2.setFont(FONT);
 		Insets ins = this.getInsets();
+		this.valueString = this.value.toString();
 		int w_gap = ins.left + ins.right;
 		int h_gap = ins.top + ins.bottom;
-		area.x = ins.left;
-		area.y = ins.top;
-		area.width = this.getWidth() - w_gap;
-		area.height = this.getHeight() - h_gap;
+		this.valueArea.setBounds(g2.getFontMetrics().getStringBounds(this.valueString, g2).getBounds());
+		this.valueArea.x = this.getWidth() / 2 - this.valueArea.width / 2;
+		this.valueArea.y = this.getHeight() - ins.bottom - this.valueArea.height;
+
+		this.barArea.x = ins.left;
+		this.barArea.y = ins.top;
+		this.barArea.width = this.getWidth() - w_gap;
+		this.barArea.height = this.getHeight() - h_gap - this.valueArea.height;
 
 // draw background
-		g2.setColor(Color.white);
-		g2.fillRoundRect(area.x, area.y , area.width, area.height, ROUND_RADIUS, ROUND_RADIUS);
+		g2.setColor(COL_BAR_BACK);
+		g2.fillRoundRect(barArea.x, barArea.y, barArea.width, barArea.height, ROUND_RADIUS, ROUND_RADIUS);
 // draw foreground
-		bar.x = area.x;
-		bar.y = area.y;
-		bar.width = Rest.linearIO(this.value.getContent(), p.getMinValue(), p.getMaxValue(), area.x, area.width);
-		bar.height = area.height;
-		g2.setColor(COL_NODEFOCUS);
-		g2.fillRoundRect(bar.x, bar.y, bar.width, bar.height, ROUND_RADIUS, ROUND_RADIUS);
-//		g2.fillRect(area.x, area.y, w, area.height);
-
-//		int fontMiddle = (int)(area.height / 2 + FONTSIZE / 2);
-//		g2.setColor(Color.BLACK);
-//		g2.drawString(p.getShortName(), GAP, fontMiddle);
+		int o = Rest.linearIO(this.parameter.getOrigin(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.barArea.width);
+		int w = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.barArea.width) - o;
+		g2.setColor(COL_BAR_FORE);
+		g2.fillRoundRect(this.barArea.x + Math.min(o, o + w), this.barArea.y, Math.abs(w), this.barArea.height, ROUND_RADIUS, ROUND_RADIUS);
+// draw marker
+//		g2.fillRoundRect(w + DEF_STROKEWIDTH / 2, barArea.y, DEF_STROKEWIDTH, barArea.height, ROUND_RADIUS, ROUND_RADIUS);
 //draw value
-		String t;
-		g2.setXORMode(Color.white);
-//		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.XOR) );
-		t = this.value.toString();
-//		g2.setColor(Color.black);
-		FontMetrics fm = g2.getFontMetrics();
-		Rectangle2D tr = fm.getStringBounds(t, g2);
-		if(t != null) g2.drawString(t, (int)(area.width / 2 - tr.getWidth() / 2), (int)(area.y + area.height / 2 + tr.getHeight() / 2));
+		g2.setColor(COL_NODE_TEXT);
+		if(this.valueString != null) g2.drawString(this.valueString, this.valueArea.x, this.valueArea.y + this.valueArea.height);
 		g2.dispose();
 	}
 
@@ -144,7 +137,7 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 	{	XGDevice dev = this.value.getSource().getDevice();
 		boolean changed = false;
 		if(e.getButton() == MouseEvent.BUTTON1)
-		{	if(bar.x + bar.width < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
+		{	if(barArea.x + barArea.width < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
 			else changed = this.value.setContent( this.value.getContent() - 1);
 			if(changed)
 			{	try

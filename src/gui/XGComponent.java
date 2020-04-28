@@ -33,7 +33,7 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 	int AXIS_X = 1, AXIS_Y = 2, AXIS_XY = 3, AXIS_RAD = 4, DEF_AXIS = 1;
 
 	Border defaultLineBorder = BorderFactory.createLineBorder(COL_BORDER, 1, true);
-	Border focusLineBorder = BorderFactory.createLineBorder(COL_NODEFOCUS, 1, true);
+	Border focusLineBorder = BorderFactory.createLineBorder(COL_NODE_FOCUS, 1, true);
 
 	public static XGComponent init(XGModule mod)
 	{	XMLNode xml = mod.getGuiTemplate();
@@ -74,6 +74,11 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 	public JComponent getJComponent();
 	public ChangeableContent<Integer> getValue();
 
+/**
+ * erfragt die XML-Attribute ATTR_GB_W (grid_w) und ATTR_GB_H (grid_h) und setzt die minimum- und prefferedSize der Komponente; bei nicht vorhandenen Werten werden die übergebenen Default-Werte verwendet;
+ * @param pref_w Default-Komponent-Breite
+ * @param pref_h Default-Komponent-Höhe
+ */
 	public default void setSizes(int pref_w, int pref_h)
 	{	XMLNode n = this.getConfig();
 		XGDimension dim = new XGDimension(n.getIntegerAttribute(ATTR_GB_W, pref_w), n.getIntegerAttribute(ATTR_GB_H,  pref_h));
@@ -85,7 +90,7 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 	{	JComponent c = this.getJComponent();
 		String name = c.getName();
 		if(c.hasFocus())
-			c.setBorder(new TitledBorder(focusLineBorder, name, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODEFOCUS));
+			c.setBorder(new TitledBorder(focusLineBorder, name, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
 		else
 			c.setBorder(new TitledBorder(defaultLineBorder, name, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
 	}

@@ -3,14 +3,14 @@
 
 	<table name="parameters">
 		<item id="volume" longName="Volume" shortName="Vol" translator="normal"/>
-		<item id="transpose" longName="Transpose" shortName="Xpose" min="40" max="88" translator="sub64"/>
+		<item id="transpose" longName="Transpose" shortName="Xpose" min="40" max="88" origin="64" translator="sub64" unit="st"/>
 		<item id="attenuator" longName="Attenuator" shortName="Damp" translator="normal"/>
 		<item id="reverb_type" longName="Reverb Program" shortName="Prog" translator="map" translationMap="fx_programs" translationMapFilter="reverb"/>
 		<item id="insertion_type" longName="Insertion Program" shortName="Prog" translator="map" translationMap="fx_programs" translationMapFilter="insertion"/>
 		<item id="effect_return" longName="Effect Return" shortName="FXRet"/>
 		<item id="effect_pan" longName="Effect Panorama" shortName="FXPan" min="1" translator="map" translationMap="panorama"/>
 
-		<item id="master_tune" longName="Master Tune" shortName="Tune" max="2047" translator="sub1024Div10" unit="cnt"/>
+		<item id="master_tune" longName="Master Tune" shortName="Tune" max="2047" origin="1024" translator="sub1024Div10" unit="cnt"/>
 		<item id="reverb_time" longName="Reverb Time" shortName="Time" max="69" translator="map" translationMap="reverb_time" unit="s"/>
 		<item id="insertion_part" longName="Insertion Part" shortName="Part"/>
 	
@@ -44,7 +44,7 @@
 
 		<item id="ad_inputGain" longName="Input Gain" shortName="iGain" max="1"/>
 
-		<item id="dr_pitch_coarse" longName="Pitch Coarse" shortName="Tune" translator="sub64"/>
+		<item id="dr_pitch_coarse" longName="Pitch Coarse" shortName="Tune" origin="64" translator="sub64"/>
 	</table>
 	<table name="fx_parameter" caption="set of links for mutable fx-parameters">
 		<set msb="0" lsb="0" caption="no effect">

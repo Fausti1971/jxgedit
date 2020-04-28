@@ -318,10 +318,10 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	{	XGFrame root = new XGFrame("midi");
 
 		XGComponent c = new XGList<Info>("input", XGMidi.getInputs(), this.input);
-		root.addGB(c.getJComponent(), 0, 0);
+		root.addGB(c.getJComponent(), 0, 0, 4, 4);
 
 		c = new XGList<Info>("output", XGMidi.getOutputs(), this.output);
-		root.addGB(c.getJComponent(), 1, 0);
+		root.addGB(c.getJComponent(), 1, 0, 4, 4);
 
 		c = new XGSpinner("timeout", this.timeout, 30, 1000, 10);
 		root.addGB(c.getJComponent(), 0, 1);

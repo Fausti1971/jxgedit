@@ -2,7 +2,6 @@ package gui;
 
 import static application.XGLoggable.log;
 import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -30,29 +29,27 @@ public class XGKnob extends JComponent implements XGComponent, XGValueChangeList
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final static int DEF_ARCSTROKEWIDTH = 4;
-	private final static BasicStroke DEF_ARCSTROKE = new BasicStroke(DEF_ARCSTROKEWIDTH, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL);
+	private final static BasicStroke DEF_ARCSTROKE = new BasicStroke(DEF_STROKEWIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
 	private final static BasicStroke DEF_STROKE = new BasicStroke(2f);
 
 	private final static int START_ARC = 225;
 	private final static int END_ARC = 315;
 	private final static int LENGTH_ARC = -270;
-	private final static float PI = (float) 3.1415;
 	private final static int PREF_W = 2, PREF_H = 2;
 
-	private static float toRadiant(int ang)
-	{	return PI * ang/180;
-	}
+//	private static float toRadiant(int ang)
+//	{	return PI * ang/180;
+//	}
 
 /*****************************************************************************************************************************/
 
 	private final XGValue value;
 	private final XGAddress address;
 	private final XMLNode config;
-	private final int origin;//225=left, 90=center, 315=right
 	private XGParameter parameter;
 	private int lengthArc;
 	private int originArc;
+	private String valueString;
 	private final Rectangle knobArea = new Rectangle();
 	private final Rectangle valueArea = new Rectangle();
 	private final Point middle = new Point();
@@ -70,7 +67,6 @@ public class XGKnob extends JComponent implements XGComponent, XGValueChangeList
 		}
 		this.value = v;
 		this.parameter = this.value.getParameter();
-		this.origin = this.value.validate(n.getIntegerAttribute(ATTR_ORIGIN, 0));
 		this.value.addListener(this);
 		this.setName(this.value.getParameter().getShortName());
 		this.setToolTipText(this.value.getParameter().getLongName());
@@ -85,13 +81,12 @@ public class XGKnob extends JComponent implements XGComponent, XGValueChangeList
 		}
 
 	@Override public void paintComponent(Graphics g)
-	{	//super.paintComponent(g);
-		if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
+	{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
 		Graphics2D g2 = (Graphics2D)g.create();
 		g2.addRenderingHints(AALIAS);
 		Insets ins = this.getInsets();
-		int w_gap = ins.left + ins.right + DEF_ARCSTROKEWIDTH;
-		int h_gap = ins.top + ins.bottom + DEF_ARCSTROKEWIDTH;
+		int w_gap = ins.left + ins.right + DEF_STROKEWIDTH;
+		int h_gap = ins.top + ins.bottom + DEF_STROKEWIDTH;
 		knobArea.x = valueArea.x = ins.left;
 		knobArea.y = ins.top;
 		knobArea.width = knobArea.height = Math.min(this.getWidth() - w_gap, this.getHeight() - h_gap);
@@ -103,37 +98,33 @@ public class XGKnob extends JComponent implements XGComponent, XGValueChangeList
 		middle.y = knobArea.y + radius;
 
 // paint background arc
-		g2.setColor(Color.white);
+		g2.setColor(COL_BAR_BACK);
 		g2.setStroke(DEF_ARCSTROKE);
 		g2.drawArc(middle.x - radius, middle.y - radius, knobArea.width, knobArea.height, START_ARC, LENGTH_ARC);
 // paint foreground arc
-		parameter = this.value.getParameter();
-		this.originArc = Rest.linearIO(this.origin, this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
-		this.lengthArc = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, LENGTH_ARC);
-		g2.setColor(COL_NODEFOCUS);
-//		g2.setStroke(DEF_ARCSTROKE);
+		this.parameter = this.value.getParameter();
+		this.originArc = Rest.linearIO(parameter.getOrigin(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
+		this.lengthArc = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
+		g2.setColor(COL_BAR_FORE);
 		g2.drawArc(middle.x - radius, middle.y - radius, knobArea.width, knobArea.height, originArc + START_ARC, this.lengthArc - originArc);
 // paint marker
-//		g2.setColor(COL_FOCUS);
 		g2.setStroke(DEF_STROKE);
-		float endRad = toRadiant(this.lengthArc + START_ARC);
+		double endRad = Math.toRadians(this.lengthArc + START_ARC);
 		strokeStart.x = (int)(middle.x + radius * Math.cos(endRad));
 		strokeStart.y = (int)(middle.y - radius * Math.sin(endRad));
 		strokeEnd.x = (int)(middle.x + radius/2 * Math.cos(endRad));
 		strokeEnd.y = (int)(middle.y - radius/2 * Math.sin(endRad));
 		g2.drawLine(strokeStart.x, strokeStart.y, strokeEnd.x, strokeEnd.y);
 // paint value
-		String s = this.value.toString();
-		g2.setColor(COL_NODETEXT);
+		this.valueString = this.value.toString();
+		g2.setColor(COL_NODE_TEXT);
 		g2.setFont(FONT);
-		g2.drawString(s, (int)(middle.x - g2.getFontMetrics().stringWidth(s) / 2), valueArea.y + valueArea.height / 2);
+		g2.drawString(this.valueString, (int)(middle.x - g2.getFontMetrics().stringWidth(this.valueString) / 2), valueArea.y + valueArea.height / 2);
 		g2.dispose();
 	}
 
 	@Override public void mouseDragged(MouseEvent e)
 	{	int distance = e.getX() - JXG.dragEvent.getX();
-//		XGParameter p = this.value.getParameter();
-//		int range = p.getMaxValue() - p.getMinValue();
 		boolean changed = this.getValue().setContent(this.value.getContent() + distance);
 		if(changed)
 		{	XGDevice dev = this.getValue().getSource().getDevice();

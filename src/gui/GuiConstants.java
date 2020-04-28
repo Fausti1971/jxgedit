@@ -46,13 +46,14 @@ public interface GuiConstants extends ConfigurationConstants
 	Color
 		COL_FOCUS = UIManager.getColor("Focus.color"),
 		COL_TRANSPARENT = new Color(0, 0, 0, 0),
-		COL_NODESELECTEDBACK = UIManager.getColor("Tree.selectionBackground"),
-		COL_NODEBACK = UIManager.getColor("Tree.textBackground"),
-		COL_NODEFOCUS = UIManager.getColor("Tree.selectionBorderColor"),
-		COL_NODETEXT = Color.darkGray,
-		COL_NODESELECTEDTEXT = Color.white,
-
-		COL_BORDER = Color.lightGray;
+		COL_NODE_SELECTED_BACK = UIManager.getColor("Tree.selectionBackground"),
+		COL_NODE_BACK = UIManager.getColor("Tree.textBackground"),
+		COL_NODE_FOCUS = UIManager.getColor("Tree.selectionBorderColor"),
+		COL_NODE_TEXT = Color.darkGray,
+		COL_NODE_SELECTED_TEXT = Color.white,
+		COL_BORDER = Color.lightGray,
+		COL_BAR_BACK = COL_BORDER,
+		COL_BAR_FORE = COL_NODE_FOCUS;
 
 	float FONTSIZE = 10f;
 
@@ -62,5 +63,6 @@ public interface GuiConstants extends ConfigurationConstants
 		GRID_H = 40,
 		COL_STEP = 16,
 		GAP = 5,
+		DEF_STROKEWIDTH = 4,
 		ROUND_RADIUS = 6;
 }

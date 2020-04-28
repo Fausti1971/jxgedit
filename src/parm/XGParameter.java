@@ -36,7 +36,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	private final String tag;
 	private final String longName, shortName;
-	private final int minValue, maxValue;
+	private final int minValue, maxValue, origin;
 	private final XGValueTranslator valueTranslator;
 	private final String translationMapName;
 	private final String unit;
@@ -48,6 +48,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	{	this.tag = n.getStringAttribute(ATTR_ID);
 		this.minValue = n.getIntegerAttribute(ATTR_MIN, DEF_MIN);
 		this.maxValue = n.getIntegerAttribute(ATTR_MAX, DEF_MAX);
+		this.origin = this.validate(n.getIntegerAttribute(ATTR_ORIGIN, 0));
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
 		this.valueTranslator = XGValueTranslator.getTranslator(n.getStringAttribute(ATTR_TRANSLATOR));
@@ -71,7 +72,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	{	this.tag = name;
 		this.longName = DEF_PARAMETERNAME;
 		this.shortName = name;
-		this.minValue = this.maxValue = v;
+		this.minValue = this.maxValue = this.origin = v;
 		this.valueTranslator = XGValueTranslator.normal;
 		this.unit = "*";
 		this.translationMapName = null;
@@ -99,6 +100,16 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	public int getMaxValue()
 	{	return this.maxValue;
+	}
+
+	public int getOrigin()
+	{	return this.origin;
+	}
+
+	public int validate(int i)
+	{	i = Math.min(i, this.maxValue);
+		i = Math.max(i, this.minValue);
+		return i;
 	}
 
 	public String getShortName()

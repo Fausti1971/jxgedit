@@ -140,12 +140,6 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		}
 	}
 
-	public int validate(int i)
-	{	i = Math.min(i, this.getParameter().getMaxValue());
-		i = Math.max(i, this.getParameter().getMinValue());
-		return i;
-	}
-
 	@Override public Integer getContent()
 	{	return this.content;
 	}
@@ -157,7 +151,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
  */
 	@Override public boolean setContent(Integer i)
 	{	int old = this.getContent();
-		this.content = this.validate(i);
+		this.content = this.getParameter().validate(i);
 		boolean changed = this.content != old;
 		if(changed) this.notifyListeners();
 		return changed;
