@@ -7,7 +7,6 @@ import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import value.ChangeableContent;
-import value.XGValue;
 import xml.XMLNode;
 
 public class XGList<E extends Object> extends JList<E> implements ListSelectionListener, XGComponent
@@ -43,9 +42,5 @@ public class XGList<E extends Object> extends JList<E> implements ListSelectionL
 
 	@Override public JComponent getJComponent()
 	{	return this;
-	}
-
-	@Override public XGValue getValue()
-	{	return null;
 	}
 }

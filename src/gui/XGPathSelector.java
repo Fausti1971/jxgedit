@@ -10,7 +10,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import file.XGSysexFile;
 import value.ChangeableContent;
-import value.XGValue;
 import xml.XMLNode;
 
 public class XGPathSelector extends JTextField implements XGComponent, DocumentListener, ActionListener
@@ -62,9 +61,5 @@ public class XGPathSelector extends JTextField implements XGComponent, DocumentL
 
 	@Override public JComponent getJComponent()
 	{	return this;
-	}
-
-	@Override public XGValue getValue()
-	{	return null;
 	}
 }

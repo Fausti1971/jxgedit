@@ -42,8 +42,4 @@ public class XGFrame extends JPanel implements XGComponent
 	@Override public XMLNode getConfig()
 	{	return this.config;
 	}
-
-	@Override public XGValue getValue()
-	{	return null;
-	}
 }

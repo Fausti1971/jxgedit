@@ -9,9 +9,8 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JPopupMenu;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import msg.XGMessageException;
+import msg.XGMessageParameterChange;
 import parm.XGParameterConstants;
-import value.WrongXGValueTypeException;
 import value.XGValue;
 import value.XGValueChangeListener;
 
@@ -27,28 +26,11 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 	public MyCombo(XGAddress adr)
 	{	this.adress = adr;
 		setSize(SL_DIM);
-		this.valueChanged(this.value);
 	}
 
 	@Override public void contentChanged(XGValue v)
 	{	this.setText(this.value.toString());
 		if(this.isVisible()) this.repaint();
-	}
-
-	@Override public void valueChanged(XGValue v)
-	{	if(this.value != null)
-		{	this.value.removeListener(this);
-			this.removeActionListener(this);
-		}
-		if(v != null)
-		{	this.value = v;
-			this.value.addListener(this);
-			this.setToolTipText(v.getParameter().getLongName());
-			this.setText(this.value.toString());
-			this.addActionListener(this);
-		}
-		this.setVisible(this.isVisible());
-		this.repaint();
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
@@ -77,7 +59,7 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 		{	MyPopup instance = this;
 			this.setInvoker(c);
 			this.setLocation(c.getLocationOnScreen());
-			int v = (int)c.value.getContent();
+			int v = c.value.getContent();
 			for(Entry<Integer, String> e : c.value.getParameter().getTranslationMap().entrySet())
 			{	JCheckBoxMenuItem m = new JCheckBoxMenuItem(e.getValue());
 				if(e.getKey() == v) m.setSelected(true);
@@ -89,7 +71,7 @@ public class MyCombo extends JButton implements ActionListener, GuiConstants, XG
 							setEnabled(false);
 							setVisible(false);
 						}
-						catch(WrongXGValueTypeException|InvalidXGAddressException | XGMessageException | MidiUnavailableException e)
+						catch(InvalidXGAddressException | MidiUnavailableException e)
 						{	e.printStackTrace();
 							instance.setVisible(false);
 							instance.setEnabled(false);

@@ -9,6 +9,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
@@ -20,11 +22,12 @@ import device.XGDevice;
 import msg.XGMessageParameterChange;
 import parm.XGParameter;
 import parm.XGParameterConstants;
+import value.ChangeableContent;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGSlider extends JComponent implements XGComponent, KeyListener, XGParameterConstants, XGValueChangeListener, MouseMotionListener
+public class XGSlider extends JComponent implements XGComponent, KeyListener, XGParameterConstants, XGValueChangeListener, MouseMotionListener, MouseWheelListener
 {	/**
 	 * 
 	 */
@@ -40,6 +43,7 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 	private final Rectangle barArea = new Rectangle(), valueArea = new Rectangle();
 	private XGParameter parameter;
 	private String valueString;
+	private int barWidth, originWidth;
 
 	public XGSlider(XMLNode n, XGAddressableSet<XGValue> set)
 	{	this.config = n;
@@ -87,12 +91,10 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 		g2.setColor(COL_BAR_BACK);
 		g2.fillRoundRect(barArea.x, barArea.y, barArea.width, barArea.height, ROUND_RADIUS, ROUND_RADIUS);
 // draw foreground
-		int o = Rest.linearIO(this.parameter.getOrigin(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.barArea.width);
-		int w = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.barArea.width) - o;
+		this.originWidth = Rest.linearIO(this.parameter.getOrigin(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.barArea.width);
+		this.barWidth = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.barArea.width) - originWidth;
 		g2.setColor(COL_BAR_FORE);
-		g2.fillRoundRect(this.barArea.x + Math.min(o, o + w), this.barArea.y, Math.abs(w), this.barArea.height, ROUND_RADIUS, ROUND_RADIUS);
-// draw marker
-//		g2.fillRoundRect(w + DEF_STROKEWIDTH / 2, barArea.y, DEF_STROKEWIDTH, barArea.height, ROUND_RADIUS, ROUND_RADIUS);
+		g2.fillRoundRect(this.barArea.x + Math.min(originWidth, originWidth + barWidth), this.barArea.y, Math.abs(barWidth), this.barArea.height, ROUND_RADIUS, ROUND_RADIUS);
 //draw value
 		g2.setColor(COL_NODE_TEXT);
 		if(this.valueString != null) g2.drawString(this.valueString, this.valueArea.x, this.valueArea.y + this.valueArea.height);
@@ -103,23 +105,26 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 	{
 	}
 
+
 	@Override public void keyPressed(KeyEvent e)
 	{
 	}
+
 
 	@Override public void keyReleased(KeyEvent e)
 	{
 	}
 
+
 	@Override public void mouseDragged(MouseEvent e)
 	{	int distance = e.getX() - JXG.dragEvent.getX();
 //		XGParameter p = this.value.getParameter();
 //		int range = p.getMaxValue() - p.getMinValue();
-		boolean changed = this.getValue().setContent(this.getValue().getContent() + distance);
+		boolean changed = this.value.setContent(this.value.getContent() + distance);
 		if(changed)
-		{	XGDevice dev = this.getValue().getSource().getDevice();
+		{	XGDevice dev = this.value.getSource().getDevice();
 			try
-			{	new XGMessageParameterChange(dev, dev.getMidi(), this.getValue()).transmit();
+			{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
 			}
 			catch(InvalidXGAddressException | InvalidMidiDataException e1)
 			{	e1.printStackTrace();
@@ -137,7 +142,7 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 	{	XGDevice dev = this.value.getSource().getDevice();
 		boolean changed = false;
 		if(e.getButton() == MouseEvent.BUTTON1)
-		{	if(barArea.x + barArea.width < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
+		{	if(this.barArea.x + this.barWidth < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
 			else changed = this.value.setContent( this.value.getContent() - 1);
 			if(changed)
 			{	try
@@ -151,6 +156,22 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 		e.consume();
 	}
 
+	@Override public void mouseWheelMoved(MouseWheelEvent e)
+	{	ChangeableContent<Integer> v = this.value;
+		boolean changed = v.setContent(v.getContent() + e.getWheelRotation());
+		if(v instanceof XGValue && changed)
+		{	XGValue x = (XGValue)v;
+			XGDevice dev = x.getSource().getDevice();
+			try
+			{	new XGMessageParameterChange(dev, dev.getMidi(), x).transmit();
+			}
+			catch(InvalidXGAddressException | InvalidMidiDataException e1)
+			{	e1.printStackTrace();
+			}
+		}
+		e.consume();
+	}
+
 	@Override public void contentChanged(XGValue v)
 	{	this.repaint();
 	}
@@ -159,14 +180,9 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 	{	return this;
 	}
 
-	@Override public XGValue getValue()
-	{	return this.value;
-	}
-
 	@Override public XMLNode getConfig()
 	{	return this.config;
 	}
-
 
 	@Override public boolean isManagingFocus()
 	{	return true;

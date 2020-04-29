@@ -9,6 +9,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
@@ -19,11 +21,12 @@ import application.Rest;
 import device.XGDevice;
 import msg.XGMessageParameterChange;
 import parm.XGParameter;
+import value.ChangeableContent;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGKnob extends JComponent implements XGComponent, XGValueChangeListener, MouseMotionListener
+public class XGKnob extends JComponent implements XGComponent, XGValueChangeListener, MouseMotionListener, MouseWheelListener
 {
 	/**
 	 * 
@@ -125,11 +128,11 @@ public class XGKnob extends JComponent implements XGComponent, XGValueChangeList
 
 	@Override public void mouseDragged(MouseEvent e)
 	{	int distance = e.getX() - JXG.dragEvent.getX();
-		boolean changed = this.getValue().setContent(this.value.getContent() + distance);
+		boolean changed = this.value.setContent(this.value.getContent() + distance);
 		if(changed)
-		{	XGDevice dev = this.getValue().getSource().getDevice();
+		{	XGDevice dev = this.value.getSource().getDevice();
 			try
-			{	new XGMessageParameterChange(dev, dev.getMidi(), this.getValue()).transmit();
+			{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
 			}
 			catch(InvalidXGAddressException | InvalidMidiDataException e1)
 			{	e1.printStackTrace();
@@ -142,6 +145,23 @@ public class XGKnob extends JComponent implements XGComponent, XGValueChangeList
 	@Override public void mouseMoved(MouseEvent e)
 	{
 	}
+
+	@Override public void mouseWheelMoved(MouseWheelEvent e)
+	{	ChangeableContent<Integer> v = this.value;
+		boolean changed = v.setContent(v.getContent() + e.getWheelRotation());
+		if(v instanceof XGValue && changed)
+		{	XGValue x = (XGValue)v;
+			XGDevice dev = x.getSource().getDevice();
+			try
+			{	new XGMessageParameterChange(dev, dev.getMidi(), x).transmit();
+			}
+			catch(InvalidXGAddressException | InvalidMidiDataException e1)
+			{	e1.printStackTrace();
+			}
+		}
+		e.consume();
+	}
+
 
 	@Override public JComponent getJComponent()
 	{	return this;
@@ -161,9 +181,5 @@ public class XGKnob extends JComponent implements XGComponent, XGValueChangeList
 	
 	@Override public boolean isFocusTraversable()
 	{	return true;
-	}
-
-	@Override public XGValue getValue()
-	{	return this.value;
 	}
 }

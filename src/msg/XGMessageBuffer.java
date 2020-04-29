@@ -22,7 +22,6 @@ import gui.XGComponent;
 import gui.XGFrame;
 import gui.XGWindow;
 import gui.XGWindowSource;
-import value.XGValue;
 import xml.XMLNode;
 
 public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMessenger, XGWindowSource, XGComponent, XGLoggable
@@ -177,9 +176,5 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 
 	@Override public XMLNode getConfig()
 	{	return this.config;
-	}
-
-	@Override public XGValue getValue()
-	{	return null;
 	}
 }

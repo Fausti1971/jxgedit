@@ -8,25 +8,18 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.Configurable;
 import application.JXG;
-import device.XGDevice;
 import module.XGModule;
-import msg.XGMessageParameterChange;
-import value.ChangeableContent;
 import value.XGValue;
 import xml.XMLNode;
 
-public interface XGComponent extends GuiConstants, Configurable, MouseListener, FocusListener, MouseWheelListener
+public interface XGComponent extends GuiConstants, Configurable, MouseListener, FocusListener
 {
 	XGValue DEF_VALUE = new XGValue("n/a", 0);
 	RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -72,7 +65,6 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 /********************************************************************************************/
 
 	public JComponent getJComponent();
-	public ChangeableContent<Integer> getValue();
 
 /**
  * erfragt die XML-Attribute ATTR_GB_W (grid_w) und ATTR_GB_H (grid_h) und setzt die minimum- und prefferedSize der Komponente; bei nicht vorhandenen Werten werden die übergebenen Default-Werte verwendet;
@@ -121,23 +113,6 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 	@Override public default void mouseExited(MouseEvent e)
 	{
 	}
-
-	@Override public default void mouseWheelMoved(MouseWheelEvent e)
-	{	ChangeableContent<Integer> v = this.getValue();
-		boolean changed = v.setContent(v.getContent() + e.getWheelRotation());
-		if(v instanceof XGValue && changed)
-		{	XGValue x = (XGValue)v;
-			XGDevice dev = x.getSource().getDevice();
-			try
-			{	new XGMessageParameterChange(dev, dev.getMidi(), x).transmit();
-			}
-			catch(InvalidXGAddressException | InvalidMidiDataException e1)
-			{	e1.printStackTrace();
-			}
-		}
-		e.consume();
-	}
-
 
 	@Override public default void focusLost(FocusEvent e)
 	{	this.borderize();
