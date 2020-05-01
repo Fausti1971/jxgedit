@@ -59,8 +59,6 @@ public interface GuiConstants extends ConfigurationConstants
 
 	Font FONT = new JEditorPane().getFont().deriveFont(FONTSIZE);
 	int
-		GRID_W = 32,
-		GRID_H = 40,
 		COL_STEP = 16,
 		GAP = 5,
 		DEF_STROKEWIDTH = 4,

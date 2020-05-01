@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/template.xsd">
 	<frame id="system" name="Master">
-		<knob value="0/0/0" grid_w="2" grid_h="2"/>
+		<knob value="0/0/0"/>
 		<knob value="0/0/4"/>
 		<knob value="0/0/5"/>
-		<slider value="0/0/4" grid_w="4" grid_h="1" grid_x="1" grid_y="2" grid_fill="2"/>
-		<slider value="0/0/6" grid_w="4" grid_h="1" grid_x="1" grid_fill="2"/>
-		<knob value="0/0/6" grid_w="2" grid_h="2"/>
+		<knob value="0/0/6"/>
+		<slider value="0/0/4" grid_x="0" grid_y="2" grid_w="4"/>
+		<slider value="0/0/6" grid_x="0" grid_y="3" grid_w="4"/>
 	</frame>
 	<frame id="multipart" name="Multipart">
 		<envelope name="Amp Envelope Generator">

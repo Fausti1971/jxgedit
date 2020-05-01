@@ -38,7 +38,7 @@ public class XGKnob extends JComponent implements XGComponent, XGValueChangeList
 	private final static int START_ARC = 225;
 	private final static int END_ARC = 315;
 	private final static int LENGTH_ARC = -270;
-	private final static int PREF_W = 2, PREF_H = 2;
+	private final static int PREF_W = 64, PREF_H = 88;
 
 //	private static float toRadiant(int ang)
 //	{	return PI * ang/180;

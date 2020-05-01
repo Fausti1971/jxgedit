@@ -36,8 +36,7 @@ public interface Rest
 		{	return Integer.parseInt(s);
 		}
 		catch(NumberFormatException e)
-		{	e.printStackTrace();
-			return def;
+		{	return def;
 		}
 	}
 

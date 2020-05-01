@@ -1,13 +1,15 @@
 package gui;
 
 import static application.XGLoggable.log;
+import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
 import java.awt.Insets;
-import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
@@ -27,26 +29,23 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGSlider extends JComponent implements XGComponent, KeyListener, XGParameterConstants, XGValueChangeListener, MouseMotionListener, MouseWheelListener
+public class XGSlider extends XGFrame implements KeyListener, XGParameterConstants
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
 
-	private final static int PREF_W = 4, PREF_H = 1;
+	private final static int PREF_W = 128, PREF_H = 44;
 
 /*****************************************************************************************************************************/
 
 	private final XGAddress address;
 	private final XGValue value;
-	private final XMLNode config;
-	private final Rectangle barArea = new Rectangle(), valueArea = new Rectangle();
-	private XGParameter parameter;
-	private String valueString;
-	private int barWidth, originWidth;
+	private final XGSliderBar bar;
+	private final XGValueLabel label;
 
 	public XGSlider(XMLNode n, XGAddressableSet<XGValue> set)
-	{	this.config = n;
+	{	super(n, set);
 		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), null);
 		XGValue v = set.getFirstValid(this.address);
 		this.setEnabled(true);
@@ -55,133 +54,37 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 			this.setEnabled(false);
 		}
 		this.value = v;
-		this.value.addListener(this);
 		this.setName(this.value.getParameter().getShortName());
 		this.setToolTipText(this.value.getParameter().getLongName());
 		this.setSizes(PREF_W,  PREF_H);
-		this.setFocusable(true);
 		this.borderize();
+		this.setFocusable(true);
 		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
-		this.addMouseWheelListener(this);
 		this.addFocusListener(this);
+
+		this.bar = new XGSliderBar(this.value);
+		this.addGB(this.bar, 0, 0, 1, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTH, new Insets(0,0,2,0), 0, 0);
+
+		this.label = new XGValueLabel(this.value);
+		this.addGB(this.label, 0, 1, 1, 1, GridBagConstraints.HORIZONTAL, 0.5, 0, GridBagConstraints.SOUTH, new Insets(1,1,0,1), 0, 0);
+
 		log.info("slider initialized: " + this.getName());
 		}
-
-	@Override protected void paintComponent(Graphics g)
-	{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
-		Graphics2D g2 = (Graphics2D)g.create();
-		this.parameter = this.value.getParameter();
-		g2.addRenderingHints(AALIAS);
-		g2.setFont(FONT);
-		Insets ins = this.getInsets();
-		this.valueString = this.value.toString();
-		int w_gap = ins.left + ins.right;
-		int h_gap = ins.top + ins.bottom;
-		this.valueArea.setBounds(g2.getFontMetrics().getStringBounds(this.valueString, g2).getBounds());
-		this.valueArea.x = this.getWidth() / 2 - this.valueArea.width / 2;
-		this.valueArea.y = this.getHeight() - ins.bottom - this.valueArea.height;
-
-		this.barArea.x = ins.left;
-		this.barArea.y = ins.top;
-		this.barArea.width = this.getWidth() - w_gap;
-		this.barArea.height = this.getHeight() - h_gap - this.valueArea.height;
-
-// draw background
-		g2.setColor(COL_BAR_BACK);
-		g2.fillRoundRect(barArea.x, barArea.y, barArea.width, barArea.height, ROUND_RADIUS, ROUND_RADIUS);
-// draw foreground
-		this.originWidth = Rest.linearIO(this.parameter.getOrigin(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.barArea.width);
-		this.barWidth = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.barArea.width) - originWidth;
-		g2.setColor(COL_BAR_FORE);
-		g2.fillRoundRect(this.barArea.x + Math.min(originWidth, originWidth + barWidth), this.barArea.y, Math.abs(barWidth), this.barArea.height, ROUND_RADIUS, ROUND_RADIUS);
-//draw value
-		g2.setColor(COL_NODE_TEXT);
-		if(this.valueString != null) g2.drawString(this.valueString, this.valueArea.x, this.valueArea.y + this.valueArea.height);
-		g2.dispose();
-	}
 
 	@Override public void keyTyped(KeyEvent e)
 	{
 	}
 
-
 	@Override public void keyPressed(KeyEvent e)
 	{
 	}
-
 
 	@Override public void keyReleased(KeyEvent e)
 	{
 	}
 
-
-	@Override public void mouseDragged(MouseEvent e)
-	{	int distance = e.getX() - JXG.dragEvent.getX();
-//		XGParameter p = this.value.getParameter();
-//		int range = p.getMaxValue() - p.getMinValue();
-		boolean changed = this.value.setContent(this.value.getContent() + distance);
-		if(changed)
-		{	XGDevice dev = this.value.getSource().getDevice();
-			try
-			{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
-			}
-			catch(InvalidXGAddressException | InvalidMidiDataException e1)
-			{	e1.printStackTrace();
-			}
-		}
-		JXG.dragEvent = e;
-		e.consume();
-	}
-
-	@Override public void mouseMoved(MouseEvent e)
-	{
-	}
-
-	@Override public void mouseClicked(MouseEvent e)
-	{	XGDevice dev = this.value.getSource().getDevice();
-		boolean changed = false;
-		if(e.getButton() == MouseEvent.BUTTON1)
-		{	if(this.barArea.x + this.barWidth < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
-			else changed = this.value.setContent( this.value.getContent() - 1);
-			if(changed)
-			{	try
-				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
-				}
-				catch(InvalidXGAddressException | InvalidMidiDataException e1)
-				{	e1.printStackTrace();
-				}
-			}
-		}
-		e.consume();
-	}
-
-	@Override public void mouseWheelMoved(MouseWheelEvent e)
-	{	ChangeableContent<Integer> v = this.value;
-		boolean changed = v.setContent(v.getContent() + e.getWheelRotation());
-		if(v instanceof XGValue && changed)
-		{	XGValue x = (XGValue)v;
-			XGDevice dev = x.getSource().getDevice();
-			try
-			{	new XGMessageParameterChange(dev, dev.getMidi(), x).transmit();
-			}
-			catch(InvalidXGAddressException | InvalidMidiDataException e1)
-			{	e1.printStackTrace();
-			}
-		}
-		e.consume();
-	}
-
-	@Override public void contentChanged(XGValue v)
-	{	this.repaint();
-	}
-
 	@Override public JComponent getJComponent()
 	{	return this;
-	}
-
-	@Override public XMLNode getConfig()
-	{	return this.config;
 	}
 
 	@Override public boolean isManagingFocus()
@@ -192,4 +95,121 @@ public class XGSlider extends JComponent implements XGComponent, KeyListener, XG
 	{	return true;
 	}
 
+
+	private class XGSliderBar extends JComponent implements XGValueChangeListener, MouseMotionListener, MouseWheelListener, MouseListener
+	{	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+
+/**********************************************************************************************/
+
+		private final XGValue value;
+		private XGParameter parameter;
+		private int barWidth, originWidth;
+		private Graphics2D g2;
+//		private Cursor lastCursor;
+
+		private XGSliderBar(XGValue v)
+		{	//super();
+			//this.setBorder(null);	buggy: getX() liefert IMMER inset.left; getY() IMMER inset.top; (5, 15)! Bug?; deshalb beim malen diese koordinaten ignorieren...
+			this.value = v;
+			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			this.value.addListener(this);
+			this.addMouseListener(this);
+			this.addMouseMotionListener(this);
+			this.addMouseWheelListener(this);
+		}
+
+		@Override protected void paintComponent(Graphics g)
+		{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
+			this.g2 = (Graphics2D)g.create();
+			this.g2.addRenderingHints(AALIAS);
+			this.parameter = this.value.getParameter();
+	// draw background
+			this.g2.setColor(COL_BAR_BACK);
+			this.g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
+	// draw foreground
+			this.originWidth = Rest.linearIO(this.parameter.getOrigin(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.getWidth());
+			this.barWidth = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.getWidth()) - this.originWidth;
+			this.g2.setColor(COL_BAR_FORE);
+			this.g2.fillRoundRect(0 + Math.min(this.originWidth, this.originWidth + this.barWidth), 0, Math.abs(this.barWidth), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
+			this.g2.dispose();
+		}
+
+		@Override public void mouseClicked(MouseEvent e)
+		{	XGDevice dev = this.value.getSource().getDevice();
+			boolean changed = false;
+			if(e.getButton() != MouseEvent.BUTTON1) return;
+			if(this.getX() + this.barWidth < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
+			else changed = this.value.setContent( this.value.getContent() - 1);
+			if(changed)
+			{	try
+				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
+				}
+				catch(InvalidXGAddressException | InvalidMidiDataException e1)
+				{	e1.printStackTrace();
+				}
+			}
+			e.consume();
+		}
+	
+		@Override public void mouseWheelMoved(MouseWheelEvent e)
+		{	ChangeableContent<Integer> v = this.value;
+			boolean changed = v.setContent(v.getContent() + e.getWheelRotation());
+			if(v instanceof XGValue && changed)
+			{	XGValue x = (XGValue)v;
+				XGDevice dev = x.getSource().getDevice();
+				try
+				{	new XGMessageParameterChange(dev, dev.getMidi(), x).transmit();
+				}
+				catch(InvalidXGAddressException | InvalidMidiDataException e1)
+				{	e1.printStackTrace();
+				}
+			}
+			e.consume();
+		}
+	
+		@Override public void mouseDragged(MouseEvent e)
+		{	int distance = e.getX() - JXG.dragEvent.getX();
+			boolean changed = this.value.setContent(this.value.getContent() + distance);
+			if(changed)
+			{	XGDevice dev = this.value.getSource().getDevice();
+				try
+				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
+				}
+				catch(InvalidXGAddressException | InvalidMidiDataException e1)
+				{	e1.printStackTrace();
+				}
+			}
+			JXG.dragEvent = e;
+			e.consume();
+		}
+
+		@Override public void mouseMoved(MouseEvent e)
+		{
+		}
+
+		@Override public void contentChanged(XGValue v)
+		{	this.repaint();
+		}
+
+		@Override public void mousePressed(MouseEvent e)
+		{	JXG.dragEvent = e;
+			e.consume();
+		}
+	
+		@Override public void mouseReleased(MouseEvent e)
+		{	JXG.dragEvent = e;
+		}
+
+
+		@Override public void mouseEntered(MouseEvent e)
+		{
+		}
+
+		@Override public void mouseExited(MouseEvent e)
+		{	
+		}
+	}
 }

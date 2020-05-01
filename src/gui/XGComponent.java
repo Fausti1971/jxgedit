@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.RenderingHints;
@@ -73,7 +74,7 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
  */
 	public default void setSizes(int pref_w, int pref_h)
 	{	XMLNode n = this.getConfig();
-		XGDimension dim = new XGDimension(n.getIntegerAttribute(ATTR_GB_W, pref_w), n.getIntegerAttribute(ATTR_GB_H,  pref_h));
+		Dimension dim = new Dimension(n.getIntegerAttribute(ATTR_GB_W, pref_w), n.getIntegerAttribute(ATTR_GB_H,  pref_h));
 		this.getJComponent().setMinimumSize(dim);
 		this.getJComponent().setPreferredSize(dim);
 	}
@@ -149,27 +150,27 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
  * @param gridy
  */
 	public default void addGB(Component component, int gridx, int gridy)
-	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
+	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
 	public default void addGB(Component component, int gridx, int gridy, int gridwidth)
-	{	addGB(component, gridx, gridy, gridwidth, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
+	{	addGB(component, gridx, gridy, gridwidth, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
 	public default void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight)
-	{	addGB(component, gridx, gridy, gridwidth, gridheight, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
+	{	addGB(component, gridx, gridy, gridwidth, gridheight, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
 	public default void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill)
-	{	addGB(component, gridx, gridy, gridwidth, gridheight, fill, 0.5, 0.5, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
+	{	addGB(component, gridx, gridy, gridwidth, gridheight, fill, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
 	public default void addGB(Component component, int gridx, int gridy, double weightx, double weighty)
-	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), 0, 0);
+	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
 	public default void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int ipadx, int ipady)
-	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, GridBagConstraints.WEST, new Insets(0, 0, 0, 0), ipadx, ipady);
+	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), ipadx, ipady);
 	}
 
 	public default void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int anchor)

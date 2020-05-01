@@ -1,9 +1,9 @@
 package gui;
 
 import java.awt.GridBagLayout;
-import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import adress.XGAddressableSet;
 import value.XGValue;
 import xml.XMLNode;
 
@@ -25,10 +25,9 @@ public class XGFrame extends JPanel implements XGComponent
 		this.config = new XMLNode(text, null);
 		this.setName(text);
 		this.borderize();
-//		this.setSizes(4, 4);
 	}
 
-	public XGFrame(XMLNode n, Set<XGValue> set)
+	public XGFrame(XMLNode n, XGAddressableSet<XGValue> set)
 	{	super(new GridBagLayout());
 		this.config = n;
 		this.setName(n.getStringAttribute(ATTR_NAME) + " (" + set.size() + " values)");

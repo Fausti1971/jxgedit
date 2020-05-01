@@ -1,9 +1,12 @@
 package parm;
 
+import application.Rest;
 import value.XGValue;
 
 public interface XGValueTranslator
-{	static final String SPACE = " ";
+{
+	static final String SPACE = " ";
+	static final String NOVALUE = "no value";
 
 	static enum XGTranslatorTag
 	{	empty,
@@ -17,8 +20,6 @@ public interface XGValueTranslator
 		percent,
 		xml
 	}
-
-	static final String NOVALUE = "no value";
 
 	static XGValueTranslator getTranslator(XGTranslatorTag t)
 	{	switch(t)
@@ -49,60 +50,51 @@ public interface XGValueTranslator
 	{	@Override public String translate(XGValue v)
 		{	return "" + SPACE + v.getParameter().getUnit();
 		}
-
-	@Override public int reverseTranslate(XGValue v, String s)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		@Override public int translate(XGValue v, String s)
+		{	return 0;
+		}
 	};
 
 	static XGValueTranslator normal = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	return String.valueOf(v.getContent()) + SPACE + v.getParameter().getUnit();
 		}
-
-	@Override public int reverseTranslate(XGValue v, String s)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		@Override public int translate(XGValue v, String s)
+		{	return Rest.parseIntOrDefault(s.trim(), v.getContent());
+		}
 	};
 
 	static XGValueTranslator add1 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	return String.valueOf((v.getContent()) + 1) + SPACE + v.getParameter().getUnit();
 		}
-
-	@Override public int reverseTranslate(XGValue v, String s)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		@Override public int translate(XGValue v, String s)
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	};
 
 	static XGValueTranslator div10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	return String.valueOf(((float)v.getContent())/10) + SPACE + v.getParameter().getUnit();
 		}
-
-	@Override public int reverseTranslate(XGValue v, String s)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		@Override public int translate(XGValue v, String s)
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	};
 
 	static XGValueTranslator sub64 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	return (v.getContent() - 64) + SPACE + v.getParameter().getUnit();
 		}
-
-	@Override public int reverseTranslate(XGValue v, String s)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		@Override public int translate(XGValue v, String s)
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	};
 
 	static XGValueTranslator sub1024Div10 = new XGValueTranslator()
@@ -110,12 +102,11 @@ public interface XGValueTranslator
 		{	float f = v.getContent() - 1024;
 			return Float.toString(f / 10) + SPACE + v.getParameter().getUnit();
 		}
-
-	@Override public int reverseTranslate(XGValue v, String s)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		@Override public int translate(XGValue v, String s)
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	};
 
 	static XGValueTranslator sub128Div10 = new XGValueTranslator()
@@ -123,24 +114,22 @@ public interface XGValueTranslator
 		{	float f = v.getContent() - 128;
 			return Float.toString(f / 10) + SPACE + v.getParameter().getUnit();
 		}
-
-	@Override public int reverseTranslate(XGValue v, String s)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		@Override public int translate(XGValue v, String s)
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	};
 
 	static XGValueTranslator xml = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	return "no XML-value";
 		}
-
-	@Override public int reverseTranslate(XGValue v, String s)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		@Override public int translate(XGValue v, String s)
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	};
 
 	static XGValueTranslator map = new XGValueTranslator()
@@ -154,17 +143,16 @@ public interface XGValueTranslator
 				return "no value";
 			}
 		}
-
-	@Override public int reverseTranslate(XGValue v, String s)
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
+		@Override public int translate(XGValue v, String s)
+		{
+			// TODO Auto-generated method stub
+			return 0;
+		}
 	};
 
 /***************************************************************************************************************************/
 
 	String translate(XGValue v);
-	int reverseTranslate(XGValue v, String s);
+	int translate(XGValue v, String s);
 
 }
