@@ -5,14 +5,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.JComponent;
 import javax.swing.JTextField;
 import adress.InvalidXGAddressException;
 import device.XGDevice;
 import msg.XGMessageParameterChange;
 import value.XGValue;
 import value.XGValueChangeListener;
-import xml.XMLNode;
 
 public class XGValueLabel extends JTextField implements GuiConstants, ActionListener, XGValueChangeListener, MouseListener
 {	/**

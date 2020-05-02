@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -63,4 +64,13 @@ public interface GuiConstants extends ConfigurationConstants
 		GAP = 5,
 		DEF_STROKEWIDTH = 4,
 		ROUND_RADIUS = 6;
+
+	BasicStroke DEF_ARCSTROKE = new BasicStroke(DEF_STROKEWIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
+	BasicStroke DEF_STROKE = new BasicStroke(2f);
+
+	int START_ARC = 225;
+	int END_ARC = 315;
+	int LENGTH_ARC = -270;
+
+
 }

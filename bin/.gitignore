@@ -1,8 +1,14 @@
-/gui/
+/.DS_Store
+/adress/
 /application/
-/module/
+/coremidi4j-1.1-javadoc.jar
+/coremidi4j-1.1.jar
 /device/
+/file/
+/gui/
+/module/
 /msg/
 /parm/
-/xml/
+/tag/
 /value/
+/xml/
