@@ -2,6 +2,8 @@ package parm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import adress.XGAddress;
 import application.XGLoggable;
 import device.XGDevice;
@@ -10,6 +12,8 @@ import xml.XMLNode;
 
 public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 {
+	static final String SPACE = " ";
+
 	public static void init(XGDevice dev)
 	{	File file;
 		try
@@ -26,7 +30,18 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 			{	XGParameter prm = new XGParameter(dev, p);
 				dev.getParameters().add(prm);
 			}
-			//TODO: parameterSets nicht vergessen...
+			for(XMLNode s : t.getChildNodes(TAG_SET))
+			{	Map<Integer, XGParameter> map = new HashMap<>();
+				int msb = s.getIntegerAttribute(ATTR_MSB);
+				int lsb = s.getIntegerAttribute(ATTR_LSB);
+				int v = (msb << 7) | lsb;
+				for(XMLNode p : s.getChildNodes(TAG_ENTRY))
+				{	int i = p.getIntegerAttribute(ATTR_INDEX);
+					XGParameter parm = dev.getParameters().get(p.getStringAttribute(ATTR_PARAMETER_ID));
+					map.put(i, parm);
+				}
+				dev.getParameterSets().put(v, map);
+			}
 		}
 		log.info(dev.getParameters().size() + " parameters initialized");
 		return;
@@ -36,9 +51,16 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	private final String tag;
 	private final String longName, shortName;
-	private final int minValue, maxValue, origin;
+	/**
+	 * minValue und MaxValue sind im Falle von translationTables anstatt der reelen Values die minimalen bzw. maximalen Indizes der Table und müssen via addContent gesetzt werden
+	 */
+	private final int minValue, maxValue;
+	/**
+	 * der Ursprung eines Steuerelementes (bspw. 64 bei Panorama)
+	 */
+	private final int origin;
 	private final XGValueTranslator valueTranslator;
-	private final String translationMapName;
+	private final XGTable translationTable;
 	private final String unit;
 	private final XGAddress masterAddress;
 	private final int index;
@@ -46,13 +68,17 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	protected XGParameter(XGDevice dev, XMLNode n)
 	{	this.tag = n.getStringAttribute(ATTR_ID);
-		this.minValue = n.getIntegerAttribute(ATTR_MIN, DEF_MIN);
-		this.maxValue = n.getIntegerAttribute(ATTR_MAX, DEF_MAX);
+		this.valueTranslator = XGValueTranslator.getTranslator(n.getStringAttribute(ATTR_TRANSLATOR));// muss wegen validate() vor origin-Zuweisung ausgeführt werden
+
+		XGTable t = dev.getTables().get(n.getStringAttribute(ATTR_TRANSLATIONTABLE));
+		if(t != null && n.hasAttribute(ATTR_TABLEFILTER)) t = t.filter(n);
+		this.translationTable = t;
+
+		this.minValue = this.setMinValue(n);
+		this.maxValue = this.setMaxValue(n);
 		this.origin = this.validate(n.getIntegerAttribute(ATTR_ORIGIN, 0));
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
-		this.valueTranslator = XGValueTranslator.getTranslator(n.getStringAttribute(ATTR_TRANSLATOR));
-		this.translationMapName = n.getStringAttribute(ATTR_TRANSLATIONMAP);
 		this.unit = n.getStringAttribute(ATTR_UNIT, "");
 
 		if(n.hasAttribute(ATTR_MASTER))
@@ -75,11 +101,25 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		this.minValue = this.maxValue = this.origin = v;
 		this.valueTranslator = XGValueTranslator.normal;
 		this.unit = "*";
-		this.translationMapName = null;
+		this.translationTable = null;
 		this.masterAddress = null;
 		this.index = 0;
 		this.isMutable = false;
 		log.info("parameter initialized: " + this);
+	}
+
+	public int setMinValue(XMLNode n)
+	{	int i = n.getIntegerAttribute(ATTR_MIN, DEF_MIN);
+		if(this.translationTable != null && !this.translationTable.isEmpty())
+			i = Math.max(i, this.translationTable.firstKey());
+		return i;
+	}
+
+	public int setMaxValue(XMLNode n)
+	{	int i = n.getIntegerAttribute(ATTR_MAX, DEF_MAX);
+		if(this.translationTable != null && !this.translationTable.isEmpty())
+			i = Math.min(i, this.translationTable.lastKey());
+		return i;
 	}
 
 	public boolean isMutable()
@@ -107,9 +147,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	}
 
 	public int validate(int i)
-	{	i = Math.min(i, this.maxValue);
-		i = Math.max(i, this.minValue);
-		return i;
+	{	return Math.max(Math.min(i, this.maxValue), this.minValue);
 	}
 
 	public String getShortName()
@@ -124,12 +162,13 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	{	return this.valueTranslator;
 	}
 
-	public String getTranslationMapName()
-	{	return this.translationMapName;
+	public XGTable getTranslationTable()
+	{	return this.translationTable;
 	}
 
 	public String getUnit()
-	{	return this.unit;
+	{	if(this.unit.isEmpty()) return this.unit;
+		else return SPACE + this.unit;
 	}
 
 	@Override public String toString()

@@ -21,7 +21,7 @@
 				<xs:element ref="auto" maxOccurs="unbounded"/>
 			</xs:choice>
 			<xs:attributeGroup ref="layoutGroup"/>
-			<xs:attribute name="id" use="required" type="xs:NCName"/>
+			<xs:attribute name="address" use="required" type="address"/>
 			<xs:attribute name="name" use="optional"/>
 		</xs:complexType>
 	</xs:element>

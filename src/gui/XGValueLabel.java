@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -27,12 +28,20 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 		this.value = v;
 		this.setBackground(COL_TRANSPARENT);
 		this.setBorder(null);
-		this.setText(this.value.toString());
+		if(this.isEnabled()) this.setText(this.getText());
 		this.setFont(FONT);
 		this.setHorizontalAlignment(JTextField.CENTER);
 		this.value.addListener(this);
 		this.addMouseListener(this);
 		this.addActionListener(this);
+	}
+
+	@Override public String getText()
+	{	return this.value.toString();
+	}
+
+	@Override public boolean isEnabled()
+	{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
@@ -51,8 +60,12 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 		this.repaint();
 	}
 
+	@Override protected void paintComponent(Graphics g)
+	{	if(this.isEnabled()) super.paintComponent(g);
+	}
+
 	@Override public void contentChanged(XGValue v)
-	{	this.setText(this.value.toString());
+	{	if(this.isEnabled()) this.setText(this.value.toString());
 		this.repaint();
 	}
 

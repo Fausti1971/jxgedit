@@ -95,7 +95,7 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
  */
 	public XGAddress complement(XGAddress adr)
 	{	if(this.isFixed()) return this;
-		if(adr.isFixed()) return adr;
+//		if(adr.isFixed()) return adr;
 		return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
 	}
 

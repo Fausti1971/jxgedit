@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/template.xsd">
-	<frame id="system" name="Master">
+	<frame address="0/0/" name="Master">
 		<knob value="0/0/0"/>
 		<knob value="0/0/4"/>
 		<knob value="0/0/5"/>
@@ -8,7 +8,28 @@
 		<slider value="0/0/4" grid_x="0" grid_y="2" grid_w="4"/>
 		<slider value="0/0/6" grid_x="0" grid_y="3" grid_w="4"/>
 	</frame>
-	<frame id="multipart" name="Multipart">
+	<frame address="2/1/0-21">
+		<combo value="2/1/0" grid_x="0" grid_y="1" grid_w="4" grid_fill="1"/>
+		<knob value="2/1/12" grid_x="4" grid_y="1"/>
+		<knob value="2/1/13" grid_x="5" grid_y="1"/>
+		<knob value="2/1/2" grid_y="3"/>
+		<knob value="2/1/3" grid_y="3"/>
+		<knob value="2/1/4" grid_y="3"/>
+		<knob value="2/1/5" grid_y="3"/>
+		<knob value="2/1/6" grid_y="3"/>
+		<knob value="2/1/7" grid_y="3"/>
+		<knob value="2/1/8" grid_y="3"/>
+		<knob value="2/1/9" grid_y="3"/>
+		<knob value="2/1/10" grid_y="3"/>
+		<knob value="2/1/11" grid_y="3"/>
+		<knob value="2/1/16" grid_y="3"/>
+		<knob value="2/1/17" grid_y="3"/>
+		<knob value="2/1/18" grid_y="3"/>
+		<knob value="2/1/19" grid_y="3"/>
+		<knob value="2/1/20" grid_y="3"/>
+		<knob value="2/1/21" grid_y="3"/>
+	</frame>
+	<frame address="8-10//" name="Multipart">
 		<envelope name="Amp Envelope Generator">
 			<point value_x="0" value_y="0"/>
 			<point value_x="8/0-31/26" value_y="8/0-31/11"/>

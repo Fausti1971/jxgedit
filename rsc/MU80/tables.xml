@@ -38,144 +38,217 @@
 	</table>
 
 	<table name="fx_programs">
-		<item msb="0" lsb="0" name="No Effect" filter="reverb,chorus,variation,insertion"/>
-		<item msb="1" lsb="0" name="Hall 1" filter="reverb,variation,insertion"/>
-		<item msb="1" lsb="1" name="Hall 2" filter="reverb,variation,insertion"/>
-		<item msb="1" lsb="2" name="Large Hall" filter="reverb,variation,insertion"/>
-		<item msb="1" lsb="3" name="Medium Hall" filter="reverb,variation,insertion"/>
-		<item msb="1" lsb="6" name="Hall M" filter="reverb,variation,insertion"/>
-		<item msb="1" lsb="7" name="Hall L" filter="reverb,variation,insertion"/>
-		<item msb="2" lsb="0" name="Room 1" filter="reverb,variation,insertion"/>
-		<item msb="2" lsb="1" name="Room 2" filter="reverb,variation,insertion"/>
-		<item msb="2" lsb="2" name="Room 3" filter="reverb,variation,insertion"/>
-		<item msb="2" lsb="3" name="Warm Room" filter="reverb,variation,insertion"/>
-		<item msb="2" lsb="4" name="Woody Room" filter="reverb,variation,insertion"/>
-		<item msb="2" lsb="5" name="Room S" filter="reverb,variation,insertion"/>
-		<item msb="2" lsb="6" name="Room M" filter="reverb,variation,insertion"/>
-		<item msb="2" lsb="7" name="Room L" filter="reverb,variation,insertion"/>
-		<item msb="3" lsb="0" name="Stage 1" filter="reverb,variation,insertion"/>
-		<item msb="3" lsb="1" name="Stage 2" filter="reverb,variation,insertion"/>
-		<item msb="4" lsb="0" name="Plate" filter="reverb,variation,insertion"/>
-		<item msb="4" lsb="1" name="Rich Plate" filter="reverb,variation,insertion"/>
-		<item msb="4" lsb="7" name="GM Plate" filter="reverb,variation,insertion"/>
-		<item msb="5" lsb="0" name="Delay LCR" filter="variation,insertion" address="word"/>
-		<item msb="6" lsb="0" name="Delay LR" filter="variation,insertion" address="word"/>
-		<item msb="7" lsb="0" name="Echo" filter="variation,insertion" address="word"/>
-		<item msb="8" lsb="0" name="Cross Delay" filter="variation,insertion" address="word"/>
-		<item msb="9" lsb="0" name="Early Reflection 1" filter="variation,insertion"/>
-		<item msb="9" lsb="1" name="Early Reflection 2" filter="variation,insertion"/>
-		<item msb="10" lsb="0" name="Gate Reverb" filter="variation,insertion"/>
-		<item msb="11" lsb="0" name="Reverse Gate" filter="variation,insertion"/>
-		<item msb="16" lsb="0" name="White Room" filter="reverb,variation,insertion"/>
-		<item msb="17" lsb="0" name="Tunnel" filter="reverb,variation,insertion"/>
-		<item msb="18" lsb="0" name="Canyon" filter="reverb,variation,insertion"/>
-		<item msb="19" lsb="0" name="Basement" filter="reverb,variation,insertion"/>
-		<item msb="20" lsb="0" name="Karaoke 1" filter="variation,insertion"/>
-		<item msb="20" lsb="1" name="Karaoke 2" filter="variation,insertion"/>
-		<item msb="20" lsb="2" name="Karaoke 3" filter="variation,insertion"/>
-		<item msb="21" lsb="0" name="Tempo Delay" filter="variation,insertion"/>
-		<item msb="21" lsb="8" name="Tempo Echo" filter="variation,insertion"/>
-		<item msb="22" lsb="0" name="Tempo Cross" filter="variation,insertion"/>
-		<item msb="64" lsb="0" name="Thru" filter="variation,insertion"/>
-		<item msb="65" lsb="0" name="Chorus 1" filter="chorus,variation,insertion"/>
-		<item msb="65" lsb="1" name="Chorus 2" filter="chorus,variation,insertion"/>
-		<item msb="65" lsb="2" name="Chorus 3" filter="chorus,variation,insertion"/>
-		<item msb="65" lsb="3" name="GM Chorus 1" filter="chorus,variation,insertion"/>
-		<item msb="65" lsb="4" name="GM Chorus 2" filter="chorus,variation,insertion"/>
-		<item msb="65" lsb="5" name="GM Chorus 3" filter="chorus,variation,insertion"/>
-		<item msb="65" lsb="6" name="GM Chorus 4" filter="chorus,variation,insertion"/>
-		<item msb="65" lsb="7" name="FB Chorus" filter="chorus,variation,insertion"/>
-		<item msb="65" lsb="8" name="Chorus 4" filter="chorus,variation,insertion"/>
-		<item msb="66" lsb="0" name="Celeste 1" filter="chorus,variation,insertion"/>
-		<item msb="66" lsb="1" name="Celeste 2" filter="chorus,variation,insertion"/>
-		<item msb="66" lsb="2" name="Celeste 3" filter="chorus,variation,insertion"/>
-		<item msb="66" lsb="8" name="Celeste 4" filter="chorus,variation,insertion"/>
-		<item msb="67" lsb="0" name="Flanger 1" filter="chorus,variation,insertion"/>
-		<item msb="67" lsb="1" name="Flanger 2" filter="chorus,variation,insertion"/>
-		<item msb="67" lsb="7" name="GM Flanger" filter="chorus,variation,insertion"/>
-		<item msb="67" lsb="8" name="Flanger 3" filter="chorus,variation,insertion"/>
-		<item msb="68" lsb="0" name="Symphonic" filter="chorus,variation,insertion"/>
-		<item msb="69" lsb="0" name="Rotary Speaker" filter="variation,insertion"/>
-		<item msb="69" lsb="1" name="Distortion + Rotary Speaker" filter="variation,insertion"/>
-		<item msb="69" lsb="2" name="Overdrive + Rotary Speaker" filter="variation,insertion"/>
-		<item msb="69" lsb="3" name="Amp + Rotary Speaker" filter="variation,insertion"/>
-		<item msb="70" lsb="0" name="Tremolo" filter="variation,insertion"/>
-		<item msb="71" lsb="0" name="Auto Pan" filter="variation,insertion"/>
-		<item msb="72" lsb="0" name="Phaser 1" filter="chorus,variation,insertion"/>
-		<item msb="72" lsb="8" name="Phaser 2" filter="variation,insertion"/>
-		<item msb="73" lsb="0" name="Distortion" filter="variation,insertion"/>
-		<item msb="73" lsb="1" name="Compressor + Distortion" filter="variation,insertion"/>
-		<item msb="73" lsb="8" name="Stereo Distortion" filter="variation,insertion"/>
-		<item msb="74" lsb="0" name="Overdrive" filter="variation,insertion"/>
-		<item msb="74" lsb="8" name="Stereo Overdrive"  filter="variation,insertion"/>
-		<item msb="75" lsb="0" name="Amp Simulator" filter="variation,insertion"/>
-		<item msb="75" lsb="1" name="Amp Simulator 2" filter="variation,insertion"/>
-		<item msb="75" lsb="8" name="Stereo Amp Simulator" filter="variation,insertion"/>
-		<item msb="76" lsb="0" name="3-Band EQ" filter="variation,insertion"/>
-		<item msb="77" lsb="0" name="2-Band EQ" filter="variation,insertion"/>
-		<item msb="78" lsb="0" name="Auto Wah" filter="variation,insertion"/>
-		<item msb="78" lsb="1" name="Auto Wah + Distortion" filter="variation,insertion"/>
-		<item msb="78" lsb="2" name="Auto Wah + Overdrive" filter="variation,insertion"/>
-		<item msb="80" lsb="0" name="Pitch Change" filter="variation,insertion"/>
-		<item msb="80" lsb="1" name="Pitch Change 2" filter="variation,insertion"/>
-		<item msb="81" lsb="0" name="Harmonic Enhancer" filter="variation,insertion"/>
-		<item msb="82" lsb="0" name="Touch Wah 1" filter="variation,insertion"/>
-		<item msb="82" lsb="1" name="Touch Wah + Distortion" filter="variation,insertion"/>
-		<item msb="82" lsb="2" name="Touch Wah + Overdrive" filter="variation,insertion"/>
-		<item msb="82" lsb="8" name="Touch Wah 2" filter="variation,insertion"/>
-		<item msb="83" lsb="0" name="Compressor" filter="variation,insertion"/>
-		<item msb="84" lsb="0" name="Noise Gate" filter="variation,insertion"/>
-		<item msb="85" lsb="0" name="Voice Cancel" filter="variation,insertion"/>
-		<item msb="86" lsb="0" name="2-Way Rotary Speaker" filter="variation,insertion"/>
-		<item msb="86" lsb="1" name="Distortion + 2-Way Rotary Speaker" filter="variation,insertion"/>
-		<item msb="86" lsb="2" name="Overdrive + 2-Way Rotary Speaker" filter="variation,insertion"/>
-		<item msb="86" lsb="3" name="Amp Simulator+ 2-Way Rotary Speaker" filter="variation,insertion"/>
-		<item msb="87" lsb="0" name="Ensemble Detune" filter="chorus,variation,insertion"/>
-		<item msb="88" lsb="0" name="Ambience" filter="variation,insertion"/>
-		<item msb="89" lsb="0" name="Vocoder Harmony" filter="variation,insertion"/>
-		<item msb="90" lsb="0" name="Chordal Harmony" filter="variation,insertion"/>
-		<item msb="91" lsb="0" name="Detune Harmony" filter="variation,insertion"/>
-		<item msb="92" lsb="0" name="Chromatic Harmony" filter="variation,insertion"/>
-		<item msb="93" lsb="0" name="Talking Modulator" filter="variation,insertion"/>
-		<item msb="94" lsb="0" name="LoFi" filter="variation,insertion"/>
-		<item msb="95" lsb="0" name="Distortion + Delay" filter="variation,insertion" address="word"/>
-		<item msb="95" lsb="1" name="Overdrive + Delay" filter="variation,insertion" address="word"/>
-		<item msb="96" lsb="0" name="Compressor + Distortion + Delay" filter="variation,insertion" address="word"/>
-		<item msb="96" lsb="1" name="Compressor + Overdrive + Delay" filter="variation,insertion" address="word"/>
-		<item msb="97" lsb="0" name="Wah + Distortion + Delay" filter="variation,insertion" address="word"/>
-		<item msb="97" lsb="1" name="Wah + Overdrive + Delay" filter="variation,insertion" address="word"/>
-		<item msb="98" lsb="0" name="V Distortion Hard" filter="variation,insertion" address="word"/>
-		<item msb="98" lsb="1" name="V Distortion Hard + Delay" filter="variation,insertion" address="word"/>
-		<item msb="98" lsb="2" name="V Distortion Soft" filter="variation,insertion" address="word"/>
-		<item msb="98" lsb="3" name="V Distortion Soft + Delay" filter="variation,insertion" address="word"/>
-		<item msb="99" lsb="0" name="Dual Rotor Speaker 1" filter="variation,insertion"/>
-		<item msb="99" lsb="1" name="Dual Rotor Speaker 2" filter="variation,insertion"/>
-		<item msb="100" lsb="0" name="Distortion + Tempo Delay" filter="variation,insertion"/>
-		<item msb="100" lsb="1" name="Overdrive + Tempo Delay" filter="variation,insertion"/>
-		<item msb="101" lsb="0" name="Compressor + Distortion + Tempo Delay" filter="variation,insertion"/>
-		<item msb="101" lsb="1" name="Compressor + Overdrive + Tempo Delay" filter="variation,insertion"/>
-		<item msb="102" lsb="0" name="Wah + Distortion + Tempo Delay" filter="variation,insertion"/>
-		<item msb="102" lsb="0" name="Wah + Overdrive + Tempo Delay" filter="variation,insertion"/>
-		<item msb="103" lsb="0" name="V Distortion Hard + Tempo Delay" filter="variation,insertion"/>
-		<item msb="103" lsb="1" name="V Distortion Soft + Tempo Delay" filter="variation,insertion"/>
-		<item msb="104" lsb="0" name="V Flanger" filter="variation,insertion"/>
-		<item msb="105" lsb="0" name="Multiband Compressor Basic" filter="variation,insertion"/>
-		<item msb="107" lsb="0" name="Tempo Flanger" filter="variation,insertion"/>
-		<item msb="108" lsb="0" name="Tempo Phaser" filter="variation,insertion"/>
-		<item msb="109" lsb="0" name="Dynamic Filter" filter="variation,insertion"/>
-		<item msb="110" lsb="0" name="Dynamic Flanger" filter="variation,insertion"/>
-		<item msb="111" lsb="0" name="Dynamic Phaser" filter="variation,insertion"/>
-		<item msb="112" lsb="0" name="Dynamic Ringmodulator" filter="variation,insertion"/>
-		<item msb="113" lsb="0" name="Ringmodulator" filter="variation,insertion"/>
-		<item msb="114" lsb="0" name="Slice" filter="variation,insertion"/>
-		<item msb="115" lsb="0" name="Isolator" filter="variation,insertion"/>
-		<item msb="116" lsb="0" name="Low Resolution" filter="variation,insertion"/>
-		<item msb="117" lsb="0" name="Digital Turntable" filter="variation,insertion"/>
-		<item msb="118" lsb="0" name="Digital Scratch" filter="variation,insertion"/>
-		<item msb="119" lsb="0" name="Vibe Vibrate" filter="variation,insertion"/>
-		<item msb="127" lsb="0" name="Thru 3D" filter="variation,insertion"/>
-		<item msb="127" lsb="1" name="3D Manual" filter="variation,insertion"/>
-		<item msb="127" lsb="2" name="3D Auto" filter="variation,insertion"/>
-		<item msb="127" lsb="3" name="Wide Strereo" filter="variation,insertion"/>
+		<item msb="0" lsb="0" name="No Effect" tableFilter="reverb,chorus,variation,insertion"/>
+		<item msb="1" lsb="0" name="Hall 1" tableFilter="reverb,variation,insertion"/>
+		<item msb="1" lsb="1" name="Hall 2" tableFilter="reverb,variation,insertion"/>
+		<item msb="1" lsb="2" name="Large Hall" tableFilter="reverb,variation,insertion"/>
+		<item msb="1" lsb="3" name="Medium Hall" tableFilter="reverb,variation,insertion"/>
+		<item msb="1" lsb="6" name="Hall M" tableFilter="reverb,variation,insertion"/>
+		<item msb="1" lsb="7" name="Hall L" tableFilter="reverb,variation,insertion"/>
+		<item msb="2" lsb="0" name="Room 1" tableFilter="reverb,variation,insertion"/>
+		<item msb="2" lsb="1" name="Room 2" tableFilter="reverb,variation,insertion"/>
+		<item msb="2" lsb="2" name="Room 3" tableFilter="reverb,variation,insertion"/>
+		<item msb="2" lsb="3" name="Warm Room" tableFilter="reverb,variation,insertion"/>
+		<item msb="2" lsb="4" name="Woody Room" tableFilter="reverb,variation,insertion"/>
+		<item msb="2" lsb="5" name="Room S" tableFilter="reverb,variation,insertion"/>
+		<item msb="2" lsb="6" name="Room M" tableFilter="reverb,variation,insertion"/>
+		<item msb="2" lsb="7" name="Room L" tableFilter="reverb,variation,insertion"/>
+		<item msb="3" lsb="0" name="Stage 1" tableFilter="reverb,variation,insertion"/>
+		<item msb="3" lsb="1" name="Stage 2" tableFilter="reverb,variation,insertion"/>
+		<item msb="4" lsb="0" name="Plate" tableFilter="reverb,variation,insertion"/>
+		<item msb="4" lsb="1" name="Rich Plate" tableFilter="reverb,variation,insertion"/>
+		<item msb="4" lsb="7" name="GM Plate" tableFilter="reverb,variation,insertion"/>
+		<item msb="5" lsb="0" name="Delay LCR" tableFilter="variation,insertion" address="word"/>
+		<item msb="6" lsb="0" name="Delay LR" tableFilter="variation,insertion" address="word"/>
+		<item msb="7" lsb="0" name="Echo" tableFilter="variation,insertion" address="word"/>
+		<item msb="8" lsb="0" name="Cross Delay" tableFilter="variation,insertion" address="word"/>
+		<item msb="9" lsb="0" name="Early Reflection 1" tableFilter="variation,insertion"/>
+		<item msb="9" lsb="1" name="Early Reflection 2" tableFilter="variation,insertion"/>
+		<item msb="10" lsb="0" name="Gate Reverb" tableFilter="variation,insertion"/>
+		<item msb="11" lsb="0" name="Reverse Gate" tableFilter="variation,insertion"/>
+		<item msb="16" lsb="0" name="White Room" tableFilter="reverb,variation,insertion"/>
+		<item msb="17" lsb="0" name="Tunnel" tableFilter="reverb,variation,insertion"/>
+		<item msb="18" lsb="0" name="Canyon" tableFilter="reverb,variation,insertion"/>
+		<item msb="19" lsb="0" name="Basement" tableFilter="reverb,variation,insertion"/>
+		<item msb="20" lsb="0" name="Karaoke 1" tableFilter="variation,insertion"/>
+		<item msb="20" lsb="1" name="Karaoke 2" tableFilter="variation,insertion"/>
+		<item msb="20" lsb="2" name="Karaoke 3" tableFilter="variation,insertion"/>
+		<item msb="21" lsb="0" name="Tempo Delay" tableFilter="variation,insertion"/>
+		<item msb="21" lsb="8" name="Tempo Echo" tableFilter="variation,insertion"/>
+		<item msb="22" lsb="0" name="Tempo Cross" tableFilter="variation,insertion"/>
+		<item msb="64" lsb="0" name="Thru" tableFilter="variation,insertion"/>
+		<item msb="65" lsb="0" name="Chorus 1" tableFilter="chorus,variation,insertion"/>
+		<item msb="65" lsb="1" name="Chorus 2" tableFilter="chorus,variation,insertion"/>
+		<item msb="65" lsb="2" name="Chorus 3" tableFilter="chorus,variation,insertion"/>
+		<item msb="65" lsb="3" name="GM Chorus 1" tableFilter="chorus,variation,insertion"/>
+		<item msb="65" lsb="4" name="GM Chorus 2" tableFilter="chorus,variation,insertion"/>
+		<item msb="65" lsb="5" name="GM Chorus 3" tableFilter="chorus,variation,insertion"/>
+		<item msb="65" lsb="6" name="GM Chorus 4" tableFilter="chorus,variation,insertion"/>
+		<item msb="65" lsb="7" name="FB Chorus" tableFilter="chorus,variation,insertion"/>
+		<item msb="65" lsb="8" name="Chorus 4" tableFilter="chorus,variation,insertion"/>
+		<item msb="66" lsb="0" name="Celeste 1" tableFilter="chorus,variation,insertion"/>
+		<item msb="66" lsb="1" name="Celeste 2" tableFilter="chorus,variation,insertion"/>
+		<item msb="66" lsb="2" name="Celeste 3" tableFilter="chorus,variation,insertion"/>
+		<item msb="66" lsb="8" name="Celeste 4" tableFilter="chorus,variation,insertion"/>
+		<item msb="67" lsb="0" name="Flanger 1" tableFilter="chorus,variation,insertion"/>
+		<item msb="67" lsb="1" name="Flanger 2" tableFilter="chorus,variation,insertion"/>
+		<item msb="67" lsb="7" name="GM Flanger" tableFilter="chorus,variation,insertion"/>
+		<item msb="67" lsb="8" name="Flanger 3" tableFilter="chorus,variation,insertion"/>
+		<item msb="68" lsb="0" name="Symphonic" tableFilter="chorus,variation,insertion"/>
+		<item msb="69" lsb="0" name="Rotary Speaker" tableFilter="variation,insertion"/>
+		<item msb="69" lsb="1" name="Distortion + Rotary Speaker" tableFilter="variation,insertion"/>
+		<item msb="69" lsb="2" name="Overdrive + Rotary Speaker" tableFilter="variation,insertion"/>
+		<item msb="69" lsb="3" name="Amp + Rotary Speaker" tableFilter="variation,insertion"/>
+		<item msb="70" lsb="0" name="Tremolo" tableFilter="variation,insertion"/>
+		<item msb="71" lsb="0" name="Auto Pan" tableFilter="variation,insertion"/>
+		<item msb="72" lsb="0" name="Phaser 1" tableFilter="chorus,variation,insertion"/>
+		<item msb="72" lsb="8" name="Phaser 2" tableFilter="variation,insertion"/>
+		<item msb="73" lsb="0" name="Distortion" tableFilter="variation,insertion"/>
+		<item msb="73" lsb="1" name="Compressor + Distortion" tableFilter="variation,insertion"/>
+		<item msb="73" lsb="8" name="Stereo Distortion" tableFilter="variation,insertion"/>
+		<item msb="74" lsb="0" name="Overdrive" tableFilter="variation,insertion"/>
+		<item msb="74" lsb="8" name="Stereo Overdrive"  tableFilter="variation,insertion"/>
+		<item msb="75" lsb="0" name="Amp Simulator" tableFilter="variation,insertion"/>
+		<item msb="75" lsb="1" name="Amp Simulator 2" tableFilter="variation,insertion"/>
+		<item msb="75" lsb="8" name="Stereo Amp Simulator" tableFilter="variation,insertion"/>
+		<item msb="76" lsb="0" name="3-Band EQ" tableFilter="variation,insertion"/>
+		<item msb="77" lsb="0" name="2-Band EQ" tableFilter="variation,insertion"/>
+		<item msb="78" lsb="0" name="Auto Wah" tableFilter="variation,insertion"/>
+		<item msb="78" lsb="1" name="Auto Wah + Distortion" tableFilter="variation,insertion"/>
+		<item msb="78" lsb="2" name="Auto Wah + Overdrive" tableFilter="variation,insertion"/>
+		<item msb="80" lsb="0" name="Pitch Change" tableFilter="variation,insertion"/>
+		<item msb="80" lsb="1" name="Pitch Change 2" tableFilter="variation,insertion"/>
+		<item msb="81" lsb="0" name="Harmonic Enhancer" tableFilter="variation,insertion"/>
+		<item msb="82" lsb="0" name="Touch Wah 1" tableFilter="variation,insertion"/>
+		<item msb="82" lsb="1" name="Touch Wah + Distortion" tableFilter="variation,insertion"/>
+		<item msb="82" lsb="2" name="Touch Wah + Overdrive" tableFilter="variation,insertion"/>
+		<item msb="82" lsb="8" name="Touch Wah 2" tableFilter="variation,insertion"/>
+		<item msb="83" lsb="0" name="Compressor" tableFilter="variation,insertion"/>
+		<item msb="84" lsb="0" name="Noise Gate" tableFilter="variation,insertion"/>
+		<item msb="85" lsb="0" name="Voice Cancel" tableFilter="variation,insertion"/>
+		<item msb="86" lsb="0" name="2-Way Rotary Speaker" tableFilter="variation,insertion"/>
+		<item msb="86" lsb="1" name="Distortion + 2-Way Rotary Speaker" tableFilter="variation,insertion"/>
+		<item msb="86" lsb="2" name="Overdrive + 2-Way Rotary Speaker" tableFilter="variation,insertion"/>
+		<item msb="86" lsb="3" name="Amp Simulator+ 2-Way Rotary Speaker" tableFilter="variation,insertion"/>
+		<item msb="87" lsb="0" name="Ensemble Detune" tableFilter="chorus,variation,insertion"/>
+		<item msb="88" lsb="0" name="Ambience" tableFilter="variation,insertion"/>
+		<item msb="89" lsb="0" name="Vocoder Harmony" tableFilter="variation,insertion"/>
+		<item msb="90" lsb="0" name="Chordal Harmony" tableFilter="variation,insertion"/>
+		<item msb="91" lsb="0" name="Detune Harmony" tableFilter="variation,insertion"/>
+		<item msb="92" lsb="0" name="Chromatic Harmony" tableFilter="variation,insertion"/>
+		<item msb="93" lsb="0" name="Talking Modulator" tableFilter="variation,insertion"/>
+		<item msb="94" lsb="0" name="LoFi" tableFilter="variation,insertion"/>
+		<item msb="95" lsb="0" name="Distortion + Delay" tableFilter="variation,insertion" address="word"/>
+		<item msb="95" lsb="1" name="Overdrive + Delay" tableFilter="variation,insertion" address="word"/>
+		<item msb="96" lsb="0" name="Compressor + Distortion + Delay" tableFilter="variation,insertion" address="word"/>
+		<item msb="96" lsb="1" name="Compressor + Overdrive + Delay" tableFilter="variation,insertion" address="word"/>
+		<item msb="97" lsb="0" name="Wah + Distortion + Delay" tableFilter="variation,insertion" address="word"/>
+		<item msb="97" lsb="1" name="Wah + Overdrive + Delay" tableFilter="variation,insertion" address="word"/>
+		<item msb="98" lsb="0" name="V Distortion Hard" tableFilter="variation,insertion" address="word"/>
+		<item msb="98" lsb="1" name="V Distortion Hard + Delay" tableFilter="variation,insertion" address="word"/>
+		<item msb="98" lsb="2" name="V Distortion Soft" tableFilter="variation,insertion" address="word"/>
+		<item msb="98" lsb="3" name="V Distortion Soft + Delay" tableFilter="variation,insertion" address="word"/>
+		<item msb="99" lsb="0" name="Dual Rotor Speaker 1" tableFilter="variation,insertion"/>
+		<item msb="99" lsb="1" name="Dual Rotor Speaker 2" tableFilter="variation,insertion"/>
+		<item msb="100" lsb="0" name="Distortion + Tempo Delay" tableFilter="variation,insertion"/>
+		<item msb="100" lsb="1" name="Overdrive + Tempo Delay" tableFilter="variation,insertion"/>
+		<item msb="101" lsb="0" name="Compressor + Distortion + Tempo Delay" tableFilter="variation,insertion"/>
+		<item msb="101" lsb="1" name="Compressor + Overdrive + Tempo Delay" tableFilter="variation,insertion"/>
+		<item msb="102" lsb="0" name="Wah + Distortion + Tempo Delay" tableFilter="variation,insertion"/>
+		<item msb="102" lsb="0" name="Wah + Overdrive + Tempo Delay" tableFilter="variation,insertion"/>
+		<item msb="103" lsb="0" name="V Distortion Hard + Tempo Delay" tableFilter="variation,insertion"/>
+		<item msb="103" lsb="1" name="V Distortion Soft + Tempo Delay" tableFilter="variation,insertion"/>
+		<item msb="104" lsb="0" name="V Flanger" tableFilter="variation,insertion"/>
+		<item msb="105" lsb="0" name="Multiband Compressor Basic" tableFilter="variation,insertion"/>
+		<item msb="107" lsb="0" name="Tempo Flanger" tableFilter="variation,insertion"/>
+		<item msb="108" lsb="0" name="Tempo Phaser" tableFilter="variation,insertion"/>
+		<item msb="109" lsb="0" name="Dynamic Filter" tableFilter="variation,insertion"/>
+		<item msb="110" lsb="0" name="Dynamic Flanger" tableFilter="variation,insertion"/>
+		<item msb="111" lsb="0" name="Dynamic Phaser" tableFilter="variation,insertion"/>
+		<item msb="112" lsb="0" name="Dynamic Ringmodulator" tableFilter="variation,insertion"/>
+		<item msb="113" lsb="0" name="Ringmodulator" tableFilter="variation,insertion"/>
+		<item msb="114" lsb="0" name="Slice" tableFilter="variation,insertion"/>
+		<item msb="115" lsb="0" name="Isolator" tableFilter="variation,insertion"/>
+		<item msb="116" lsb="0" name="Low Resolution" tableFilter="variation,insertion"/>
+		<item msb="117" lsb="0" name="Digital Turntable" tableFilter="variation,insertion"/>
+		<item msb="118" lsb="0" name="Digital Scratch" tableFilter="variation,insertion"/>
+		<item msb="119" lsb="0" name="Vibe Vibrate" tableFilter="variation,insertion"/>
+		<item msb="127" lsb="0" name="Thru 3D" tableFilter="variation,insertion"/>
+		<item msb="127" lsb="1" name="3D Manual" tableFilter="variation,insertion"/>
+		<item msb="127" lsb="2" name="3D Auto" tableFilter="variation,insertion"/>
+		<item msb="127" lsb="3" name="Wide Strereo" tableFilter="variation,insertion"/>
+	</table>
+
+	<table name="table4">
+		<item value="0" name="0.3"/>
+		<item value="1" name="0.4"/>
+		<item value="2" name="0.5"/>
+		<item value="3" name="0.6"/>
+		<item value="4" name="0.7"/>
+		<item value="5" name="0.8"/>
+		<item value="6" name="0.9"/>
+		<item value="7" name="1.0"/>
+		<item value="8" name="1.1"/>
+		<item value="9" name="1.2"/>
+		<item value="10" name="1.3"/>
+		<item value="11" name="1.4"/>
+		<item value="12" name="1.5"/>
+		<item value="13" name="1.6"/>
+		<item value="14" name="1.7"/>
+		<item value="15" name="1.8"/>
+		<item value="16" name="1.9"/>
+		<item value="17" name="2.0"/>
+		<item value="18" name="2.1"/>
+		<item value="19" name="2.2"/>
+		<item value="20" name="2.3"/>
+		<item value="21" name="2.4"/>
+		<item value="22" name="2.5"/>
+		<item value="23" name="2.6"/>
+		<item value="24" name="2.7"/>
+		<item value="25" name="2.8"/>
+		<item value="26" name="2.9"/>
+		<item value="27" name="3.0"/>
+		<item value="28" name="3.1"/>
+		<item value="29" name="3.2"/>
+		<item value="30" name="3.3"/>
+		<item value="31" name="3.4"/>
+		<item value="32" name="3.5"/>
+		<item value="33" name="3.6"/>
+		<item value="34" name="3.7"/>
+		<item value="35" name="3.8"/>
+		<item value="36" name="3.9"/>
+		<item value="37" name="4.0"/>
+		<item value="38" name="4.1"/>
+		<item value="39" name="4.2"/>
+		<item value="40" name="4.3"/>
+		<item value="41" name="4.4"/>
+		<item value="42" name="4.5"/>
+		<item value="43" name="4.6"/>
+		<item value="44" name="4.7"/>
+		<item value="45" name="4.8"/>
+		<item value="46" name="4.9"/>
+		<item value="47" name="5.0"/>
+		<item value="48" name="5.5"/>
+		<item value="49" name="6.0"/>
+		<item value="50" name="6.5"/>
+		<item value="51" name="7.0"/>
+		<item value="52" name="7.5"/>
+		<item value="53" name="8.0"/>
+		<item value="54" name="8.5"/>
+		<item value="55" name="9.0"/>
+		<item value="56" name="9.5"/>
+		<item value="57" name="10.0"/>
+		<item value="58" name="11.0"/>
+		<item value="59" name="12.0"/>
+		<item value="60" name="13.0"/>
+		<item value="61" name="14.0"/>
+		<item value="62" name="15.0"/>
+		<item value="63" name="16.0"/>
+		<item value="64" name="17.0"/>
+		<item value="65" name="18.0"/>
+		<item value="66" name="19.0"/>
+		<item value="67" name="20.0"/>
+		<item value="68" name="25.0"/>
+		<item value="69" name="30.0"/>
 	</table>
 </tables>

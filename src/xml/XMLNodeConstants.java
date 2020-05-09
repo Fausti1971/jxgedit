@@ -10,9 +10,7 @@ public interface XMLNodeConstants
 		XML_CONFIG = "config.xml",
 		XML_OPCODE = "opcode.xml",
 		XML_TABLES = "tables.xml",
-//		XML_TYPE = "types.xml",
 		XML_PARAMETER = "parameter.xml",
-//		XML_TRANSLATION = "translation.xml",
 		XML_TEMPLATES = "templates.xml";
 
 	static final String
@@ -35,8 +33,6 @@ public interface XMLNodeConstants
 		ATTR_MIDIOUTPUT = "output",
 		ATTR_MIDITIMEOUT = "timeout",
 		ATTR_COLOR = "color",
-//		TAG_BASECOLOR = "base",
-//		TAG_FOCUSCOLOR = "focus",
 
 		TAG_MODULES = "modules",
 
@@ -49,24 +45,18 @@ public interface XMLNodeConstants
 		ATTR_HI = "hi",
 		ATTR_MID = "mid",
 		ATTR_LO = "lo",
-//		ATTR_SIZE = "size",
 
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",
-//		ATTR_VALUECLASS = "valueClass",
-//		ATTR_DEP_VALUES = "dependencyValues",
-//		ATTR_DEP_TYPE = "dependencyType",
-//		ATTR_DEPENDING = "dependingOf",
 
 		ATTR_PARAMETER_ID = "parameterID",
-//		TAG_MUT_PARAMETER = "mutable_parameter",
 		ATTR_MASTER ="master",
 		ATTR_INDEX = "index",
 		ATTR_MIN = "min",
 		ATTR_MAX = "max",
 		ATTR_TRANSLATOR = "translator",
-		ATTR_TRANSLATIONMAP = "translationMap",
-		ATTR_TRANSLATIONMAPFILTER = "translationMapFilter",
+		ATTR_TRANSLATIONTABLE = "translationTable",
+		ATTR_TABLEFILTER = "tableFilter",
 		ATTR_LONGNAME = "longName",
 		ATTR_SHORTNAME = "shortName",
 		ATTR_UNIT = "unit",
@@ -76,8 +66,9 @@ public interface XMLNodeConstants
 		TAG_TABLES = "tables",
 		TAG_TABLE = "table",
 		TAG_ITEM = "item",
-//		ATTR_TYPE = "type",
 		ATTR_VALUE = "value",
+		ATTR_MSB = "msb",
+		ATTR_LSB = "lsb",
 
 		TAG_FRAME = "frame",
 		TAG_KNOB = "knob",
@@ -100,11 +91,7 @@ public interface XMLNodeConstants
 		ATTR_GB_PAD_X = "grid_pad_x",
 		ATTR_GB_PAD_Y = "grid_pad_y",
 
-//		TAG_MAPS = "maps",
-//		TAG_MAP = "map",
 		TAG_ENTRY = "entry",
-//		TAG_KEY = "key",
 
-//		TAG_SETS = "sets",
 		TAG_SET = "set";
 }

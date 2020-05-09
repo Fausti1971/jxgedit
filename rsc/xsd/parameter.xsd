@@ -23,7 +23,7 @@
 	<xs:element name="set">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="entry" maxOccurs="16"/>
+				<xs:element ref="entry" minOccurs="0" maxOccurs="16"/>
 			</xs:sequence>
 		<xs:attribute name="msb" use="optional"/>
 		<xs:attribute name="lsb" use="optional"/>
@@ -40,8 +40,8 @@
 			<xs:attribute name="max" use="optional" type="xs:nonNegativeInteger" default="127"/>
 			<xs:attribute name="origin" use="optional" type="xs:nonNegativeInteger" default="0"/>
 			<xs:attribute name="translator" use="optional" type="translators" default="normal"/>
-			<xs:attribute name="translationMap" use="optional" type="xs:string"/>
-			<xs:attribute name="translationMapFilter" use="optional" type="xs:string"/>
+			<xs:attribute name="translationTable" use="optional" type="xs:string"/>
+			<xs:attribute name="tableFilter" use="optional" type="xs:string"/>
 			<xs:attribute name="unit" type="string3"/>
 			<xs:attribute name="id" use="required" type="xs:ID"/>
 			<xs:attribute name="master" use="optional" type="addresses"/>
@@ -52,7 +52,7 @@
 	<xs:element name="entry">
 		<xs:complexType>
 			<xs:attribute name="index" use="required" type="indexes"/>
-			<xs:attribute name="parameter" type="xs:IDREF"/>
+			<xs:attribute name="parameterID" use="required" type="xs:IDREF"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -95,7 +95,7 @@
 			<xs:enumeration value="sub1024Div10"/>
 			<xs:enumeration value="xml"/>
 			<xs:enumeration value="percent"/>
-			<xs:enumeration value="map"/>
+			<xs:enumeration value="table"/>
 		</xs:restriction>
 	</xs:simpleType>
 

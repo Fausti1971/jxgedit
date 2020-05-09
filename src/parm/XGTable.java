@@ -8,7 +8,7 @@ import application.ConfigurationConstants;
 import device.XGDevice;
 import xml.XMLNode;
 
-public class XGTable extends TreeMap<Integer, String> implements ConfigurationConstants
+public class XGTable extends TreeMap<Integer, XGTableEntry> implements ConfigurationConstants
 {	
 	/**
 	 * 
@@ -45,9 +45,42 @@ public class XGTable extends TreeMap<Integer, String> implements ConfigurationCo
 */
 /********************************************************************************************************/
 
+	private final String name;
+/**
+ * lediglich eine Map von Integerwerten und dazugehörigen XMLNodes
+ * @param n
+ */
 	private XGTable(XMLNode n)
-	{	for(XMLNode e : n.getChildNodes(TAG_ITEM))
-		{	this.put(e.getIntegerAttribute(ATTR_VALUE, 0), e.getStringAttribute(ATTR_NAME, "no value"));
+	{	this.name = n.getStringAttribute(ATTR_NAME);
+		XGTableEntry te;
+		for(XMLNode e : n.getChildNodes(TAG_ITEM))
+		{	te = new XGTableEntry(e);
+			this.put(te.getKey(), te);
 		}
+	}
+
+	private XGTable(String name)
+	{	this.name = name;
+	}
+
+	@Override public XGTableEntry get(Object key)
+	{	int i = (int)key;
+		if(this.containsKey(i)) return super.get(i);
+		if(this.containsKey(i & 0x3F80)) return super.get(i & 0x3F80);
+		else return this.firstEntry().getValue();
+	}
+
+	public XGTable filter(XMLNode n)
+	{	String f = n.getStringAttribute(ATTR_TABLEFILTER);
+		int min = n.getIntegerAttribute(ATTR_MIN, XGParameterConstants.DEF_MIN);
+		int max = n.getIntegerAttribute(ATTR_MAX, XGParameterConstants.DEF_MAX);
+		XGTable table = new XGTable(this.name);
+		for(XGTableEntry e : this.values())
+			if(e.hasFilter(f) && e.getKey() >= min && e.getKey() <= max) table.put(e.getKey(), e);
+		return table;
+	}
+
+	@Override public String toString()
+	{	return "table " + this.name + " (" + this.size() + " entrys";
 	}
 }

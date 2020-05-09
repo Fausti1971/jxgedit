@@ -16,13 +16,12 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import adress.XGAddressableSet;
 import application.JXG;
 import application.Rest;
 import device.XGDevice;
+import module.XGModule;
 import msg.XGMessageParameterChange;
 import parm.XGParameter;
-import value.ChangeableContent;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
@@ -43,18 +42,20 @@ public class XGKnob extends XGFrame
 	private final XGKnobBar bar;
 	private final XGValueLabel label;
 
-	public XGKnob(XMLNode n, XGAddressableSet<XGValue> set)
-	{	super(n, set);
+	public XGKnob(XMLNode n, XGModule mod)
+	{	super(n, mod);
 		this.config = n;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), null);
-		XGValue v = set.getFirstValid(this.address);
+		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+		XGValue v = mod.getDevice().getValues().getFirstValid(this.address);
 		this.setEnabled(v != null);
 		if(v == null) v = DEF_VALUE;
 		this.value = v;
-		this.setName(this.value.getParameter().getShortName());
-		this.setToolTipText(this.value.getParameter().getLongName());
+		if(this.isEnabled())
+		{	this.setName(this.value.getParameter().getShortName());
+			this.setToolTipText(this.value.getParameter().getLongName());
+			this.setFocusable(true);
+		}
 		this.setSizes(PREF_W, PREF_H);
-		this.setFocusable(true);
 		this.borderize();
 		this.addMouseListener(this);
 		this.addFocusListener(this);
@@ -70,6 +71,10 @@ public class XGKnob extends XGFrame
 		log.info("knob initialized: " + this.getName());
 		}
 
+	@Override protected void paintComponent(Graphics g)
+	{	if(this.isEnabled()) super.paintComponent(g);
+	}
+
 	@Override public JComponent getJComponent()
 	{	return this;
 	}
@@ -78,12 +83,16 @@ public class XGKnob extends XGFrame
 	{	return this.config;
 	}
 
+	@Override public boolean isEnabled()
+	{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
+	}
+
 	@Override public boolean isManagingFocus()
-	{	return true;
+	{	return this.isEnabled();
 	}
 	
 	@Override public boolean isFocusTraversable()
-	{	return true;
+	{	return this.isEnabled();
 	}
 
 
@@ -113,6 +122,10 @@ public class XGKnob extends XGFrame
 			this.addMouseWheelListener(this);
 		}
 
+		@Override public boolean isEnabled()
+		{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
+		}
+
 		@Override public void paintComponent(Graphics g)
 		{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
 			Graphics2D g2 = (Graphics2D)g.create();
@@ -120,7 +133,7 @@ public class XGKnob extends XGFrame
 			this.size = Math.min(this.getWidth() - DEF_STROKEWIDTH, this.getHeight());
 			this.radius = this.size / 2;
 			this.middle.x = this.getWidth() / 2;
-			this.middle.y = 4 + this.radius;// getY() liefert IMMER 15!, daher die "4"
+			this.middle.y = 4 + this.radius;// getY() liefert IMMER 15! (sowohl mit als auch ohen Border), daher die "4"
 	
 	// paint background arc
 			g2.setColor(COL_BAR_BACK);
@@ -165,13 +178,11 @@ public class XGKnob extends XGFrame
 		}
 
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	ChangeableContent<Integer> v = this.value;
-			boolean changed = v.setContent(v.getContent() + e.getWheelRotation());
-			if(v instanceof XGValue && changed)
-			{	XGValue x = (XGValue)v;
-				XGDevice dev = x.getSource().getDevice();
+		{	boolean changed = this.value.addContent(e.getWheelRotation());
+			if(changed)
+			{	XGDevice dev = this.value.getSource().getDevice();
 				try
-				{	new XGMessageParameterChange(dev, dev.getMidi(), x).transmit();
+				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
 				}
 				catch(InvalidXGAddressException | InvalidMidiDataException e1)
 				{	e1.printStackTrace();
@@ -182,7 +193,7 @@ public class XGKnob extends XGFrame
 
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - JXG.dragEvent.getX();
-			boolean changed = this.value.setContent(this.value.getContent() + distance);
+			boolean changed = this.value.addContent(distance);
 			if(changed)
 			{	XGDevice dev = this.value.getSource().getDevice();
 				try

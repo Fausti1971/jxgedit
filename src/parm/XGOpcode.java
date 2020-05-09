@@ -8,6 +8,7 @@ import adress.XGBulkDump;
 import application.XGLoggable;
 import device.XGDevice;
 import module.XGModule;
+import module.XGSuperModule;
 import xml.XMLNode;
 
 public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
@@ -25,7 +26,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 		XMLNode xml = XMLNode.parse(file);
 		for(XMLNode m : xml.getChildNodes(TAG_MODULE))
-		{	XGModule mod = XGModule.factory(dev, m);
+		{	XGModule mod = new XGSuperModule(dev, m);
 			dev.getModules().add(mod);
 			for(XMLNode b : m.getChildNodes(TAG_BULK))
 			{	XGBulkDump blk = new XGBulkDump(mod, b);
@@ -42,7 +43,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 /*******************************************************************************************************************************/
 
-	private final String tag;
+//	private final String tag;
 	private final XGDevice device;
 	private final XGModule module;
 	private final XGBulkDump bulk;
@@ -54,10 +55,10 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	{	this.device = dev;
 		this.module = mod;
 		this.bulk = bulk;
-		this.tag = n.getStringAttribute(ATTR_ID);
+//		this.tag = n.getStringAttribute(ATTR_ID);
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), bulk.getAddress());
 		this.dataType = ValueDataType.valueOf(n.getStringAttribute(ATTR_DATATYPE, DEF_DATATYPE.name()));
-		this.parameterID = n.getStringAttribute(ATTR_PARAMETER_ID, this.tag);
+		this.parameterID = n.getStringAttribute(ATTR_PARAMETER_ID, "no id");
 	}
 
 	public ValueDataType getDataType()

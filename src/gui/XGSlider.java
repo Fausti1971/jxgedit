@@ -17,19 +17,18 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import adress.XGAddressableSet;
 import application.JXG;
 import application.Rest;
 import device.XGDevice;
+import module.XGModule;
 import msg.XGMessageParameterChange;
 import parm.XGParameter;
 import parm.XGParameterConstants;
-import value.ChangeableContent;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGSlider extends XGFrame implements KeyListener, XGParameterConstants
+public class XGSlider extends XGFrame implements KeyListener, XGParameterConstants, XGValueChangeListener
 {	/**
 	 * 
 	 */
@@ -44,21 +43,19 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	private final XGSliderBar bar;
 	private final XGValueLabel label;
 
-	public XGSlider(XMLNode n, XGAddressableSet<XGValue> set)
-	{	super(n, set);
-		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), null);
-		XGValue v = set.getFirstValid(this.address);
-		this.setEnabled(true);
-		if(v == null)
-		{	v = DEF_VALUE;
-			this.setEnabled(false);
-		}
+	public XGSlider(XMLNode n, XGModule mod)
+	{	super(n, mod);
+		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+		XGValue v = mod.getDevice().getValues().getFirstValid(this.address);
 		this.value = v;
-		this.setName(this.value.getParameter().getShortName());
-		this.setToolTipText(this.value.getParameter().getLongName());
+		if(this.isEnabled())
+		{	this.setToolTipText(null);
+			this.setFocusable(true);
+		}
+//		this.setName(this.value.getParameter().getShortName());
 		this.setSizes(PREF_W,  PREF_H);
 		this.borderize();
-		this.setFocusable(true);
+		v.addListener(this);
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 
@@ -68,8 +65,28 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		this.label = new XGValueLabel(this.value);
 		this.addGB(this.label, 0, 1, 1, 1, GridBagConstraints.HORIZONTAL, 0.5, 0, GridBagConstraints.SOUTH, new Insets(1,1,0,1), 0, 0);
 
-		log.info("slider initialized: " + this.getName());
+		log.info("slider initialized: " + this.value.getParameter());
+	}
+
+	@Override public void paint(Graphics g)
+	{	if(this.isEnabled()) super.paint(g);
+	}
+
+	@Override public String getName()
+	{	return this.value.getParameter().getShortName();
+	}
+
+	@Override public String getToolTipText()
+		{	return this.value.getParameter().getLongName();
 		}
+
+	@Override public boolean isEnabled()
+	{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
+	}
+
+	@Override public void contentChanged(XGValue v)
+	{	super.repaint();
+	}
 
 	@Override public void keyTyped(KeyEvent e)
 	{
@@ -121,6 +138,10 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 			this.addMouseWheelListener(this);
 		}
 
+		@Override public boolean isEnabled()
+		{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
+		}
+
 		@Override protected void paintComponent(Graphics g)
 		{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
 			this.g2 = (Graphics2D)g.create();
@@ -141,8 +162,8 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		{	XGDevice dev = this.value.getSource().getDevice();
 			boolean changed = false;
 			if(e.getButton() != MouseEvent.BUTTON1) return;
-			if(this.getX() + this.barWidth < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
-			else changed = this.value.setContent( this.value.getContent() - 1);
+			if(this.getX() + this.barWidth < e.getX()) changed = this.value.addContent(1);
+			else changed = this.value.addContent(-1);
 			if(changed)
 			{	try
 				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
@@ -155,13 +176,11 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	ChangeableContent<Integer> v = this.value;
-			boolean changed = v.setContent(v.getContent() + e.getWheelRotation());
-			if(v instanceof XGValue && changed)
-			{	XGValue x = (XGValue)v;
-				XGDevice dev = x.getSource().getDevice();
+		{	boolean changed = this.value.addContent(e.getWheelRotation());
+			if(changed)
+			{	XGDevice dev = this.value.getSource().getDevice();
 				try
-				{	new XGMessageParameterChange(dev, dev.getMidi(), x).transmit();
+				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
 				}
 				catch(InvalidXGAddressException | InvalidMidiDataException e1)
 				{	e1.printStackTrace();
@@ -172,7 +191,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - JXG.dragEvent.getX();
-			boolean changed = this.value.setContent(this.value.getContent() + distance);
+			boolean changed = this.value.addContent(distance);
 			if(changed)
 			{	XGDevice dev = this.value.getSource().getDevice();
 				try

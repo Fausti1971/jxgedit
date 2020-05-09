@@ -1,11 +1,11 @@
 package parm;
 
 import application.Rest;
+import application.XGLoggable;
 import value.XGValue;
 
-public interface XGValueTranslator
+public interface XGValueTranslator extends XGLoggable
 {
-	static final String SPACE = " ";
 	static final String NOVALUE = "no value";
 
 	static enum XGTranslatorTag
@@ -16,7 +16,7 @@ public interface XGValueTranslator
 		sub64,
 		sub128Div10,
 		sub1024Div10,
-		map,
+		table,
 		percent,
 		xml
 	}
@@ -30,7 +30,7 @@ public interface XGValueTranslator
 			case sub64:			return sub64;
 			case sub128Div10:	return sub128Div10;
 			case sub1024Div10:	return sub1024Div10;
-			case map:			return map;
+			case table:			return table;
 			case xml:			return xml;
 			default:			return normal;
 		}
@@ -48,7 +48,7 @@ public interface XGValueTranslator
 	
 	static XGValueTranslator empty = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return "" + SPACE + v.getParameter().getUnit();
+		{	return v.getParameter().getUnit();
 		}
 		@Override public int translate(XGValue v, String s)
 		{	return 0;
@@ -57,7 +57,7 @@ public interface XGValueTranslator
 
 	static XGValueTranslator normal = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return String.valueOf(v.getContent()) + SPACE + v.getParameter().getUnit();
+		{	return String.valueOf(v.getContent()) + v.getParameter().getUnit();
 		}
 		@Override public int translate(XGValue v, String s)
 		{	return Rest.parseIntOrDefault(s.trim(), v.getContent());
@@ -66,7 +66,7 @@ public interface XGValueTranslator
 
 	static XGValueTranslator add1 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return String.valueOf((v.getContent()) + 1) + SPACE + v.getParameter().getUnit();
+		{	return String.valueOf((v.getContent()) + 1) + v.getParameter().getUnit();
 		}
 		@Override public int translate(XGValue v, String s)
 		{
@@ -77,7 +77,7 @@ public interface XGValueTranslator
 
 	static XGValueTranslator div10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return String.valueOf(((float)v.getContent())/10) + SPACE + v.getParameter().getUnit();
+		{	return String.valueOf(((float)v.getContent())/10) + v.getParameter().getUnit();
 		}
 		@Override public int translate(XGValue v, String s)
 		{
@@ -88,7 +88,7 @@ public interface XGValueTranslator
 
 	static XGValueTranslator sub64 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	return (v.getContent() - 64) + SPACE + v.getParameter().getUnit();
+		{	return (v.getContent() - 64) + v.getParameter().getUnit();
 		}
 		@Override public int translate(XGValue v, String s)
 		{
@@ -100,7 +100,7 @@ public interface XGValueTranslator
 	static XGValueTranslator sub1024Div10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	float f = v.getContent() - 1024;
-			return Float.toString(f / 10) + SPACE + v.getParameter().getUnit();
+			return Float.toString(f / 10) + v.getParameter().getUnit();
 		}
 		@Override public int translate(XGValue v, String s)
 		{
@@ -112,7 +112,7 @@ public interface XGValueTranslator
 	static XGValueTranslator sub128Div10 = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	float f = v.getContent() - 128;
-			return Float.toString(f / 10) + SPACE + v.getParameter().getUnit();
+			return Float.toString(f / 10) + v.getParameter().getUnit();
 		}
 		@Override public int translate(XGValue v, String s)
 		{
@@ -132,14 +132,15 @@ public interface XGValueTranslator
 		}
 	};
 
-	static XGValueTranslator map = new XGValueTranslator()
+	static XGValueTranslator table = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
-		{	try
-			{	XGParameter p = v.getParameter();
-				return v.getSource().getDevice().getTables().get(p.getTranslationMapName()).get(v.getContent()) + SPACE + p.getUnit();
+		{	XGParameter p = v.getParameter();
+			XGTable t = p.getTranslationTable();
+			try
+			{	return t.get(v.getContent()).getName() + p.getUnit();
 			}
 			catch(NullPointerException e)
-			{	e.printStackTrace();
+			{	log.info(e.getMessage() + " param=" + p + " table=" + t);
 				return "no value";
 			}
 		}

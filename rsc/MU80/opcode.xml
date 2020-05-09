@@ -8,70 +8,202 @@
 
 <modules xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/opcode.xsd">
 
-	<module id="system" name="Master" address="0/0/">
+	<module name="Master" address="0/0/">
 		<bulk address="//0-6">
-			<opcode id="master_tune" address="//0-3" byteType="LSN"/>
-			<opcode id="master_volume" address="//4" parameterID="volume"/>
-			<opcode id="master_attenuator" address="//5" parameterID="attenuator"/>
-			<opcode id="master_transpose" address="//6" parameterID="transpose"/>
+			<opcode parameterID="master_tune" address="//0-3" byteType="LSN"/>
+			<opcode parameterID="volume" address="//4"/>
+			<opcode parameterID="attenuator" address="//5"/>
+			<opcode parameterID="transpose" address="//6"/>
 		</bulk>
 	</module>
 
-	<module id="sysfx" name="System Effect" address="2/1/">
+	<module name="FX1 Reverb" address="2/1/0-21">
 		<bulk address="//0-13">
-			<opcode id="reverb_type" address="//0-1"/>
-			<opcode id="reverb_1" address="//2"/>
-			<opcode id="reverb_2" address="//3"/>
-			<opcode id="reverb_3" address="//4"/>
-			<opcode id="reverb_4" address="//5"/>
-			<opcode id="reverb_5" address="//6"/>
-			<opcode id="reverb_6" address="//7"/>
-			<opcode id="reverb_7" address="//8"/>
-			<opcode id="reverb_8" address="//9"/>
-			<opcode id="reverb_9" address="//10"/>
-			<opcode id="reverb_10" address="//11"/>
-			<opcode id="reverb_return" address="//12" parameterID="effect_return"/>
-			<opcode id="reverb_pan" address="//13" parameterID="effect_pan"/>
+			<opcode parameterID="reverb_type" address="//0-1"/>
+			<opcode parameterID="reverb_1" address="//2"/>
+			<opcode parameterID="reverb_2" address="//3"/>
+			<opcode parameterID="reverb_3" address="//4"/>
+			<opcode parameterID="reverb_4" address="//5"/>
+			<opcode parameterID="reverb_5" address="//6"/>
+			<opcode parameterID="reverb_6" address="//7"/>
+			<opcode parameterID="reverb_7" address="//8"/>
+			<opcode parameterID="reverb_8" address="//9"/>
+			<opcode parameterID="reverb_9" address="//10"/>
+			<opcode parameterID="reverb_10" address="//11"/>
+			<opcode address="//12" parameterID="effect_return"/>
+			<opcode address="//13" parameterID="effect_pan"/>
+		</bulk>
+		<bulk address="//16-21">
+			<opcode parameterID="reverb_11" address="//16"/>
+			<opcode parameterID="reverb_12" address="//17"/>
+			<opcode parameterID="reverb_13" address="//18"/>
+			<opcode parameterID="reverb_14" address="//19"/>
+			<opcode parameterID="reverb_15" address="//20"/>
+			<opcode parameterID="reverb_16" address="//21"/>
 		</bulk>
 	</module>
 
-	<module id="insfx" name="Insertion Effect" address="3/0-15/">
-		<bulk address="//0-13">
-			<opcode id="ins_type" address="//0-1"/>
-			<opcode id="ins_1" address="//2"/>
-			<opcode id="ins_2" address="//3"/>
-			<opcode id="ins_3" address="//4"/>
-			<opcode id="ins_4" address="//5"/>
-			<opcode id="ins_5" address="//6"/>
-			<opcode id="ins_6" address="//7"/>
-			<opcode id="ins_7" address="//8"/>
-			<opcode id="ins_8" address="//9"/>
-			<opcode id="ins_9" address="//10"/>
-			<opcode id="ins_10" address="//11"/>
-			<opcode id="ins_part" address="//12"/>
+	<module name="FX1 Chorus" address="2/1/32-53">
+		<bulk address="//32-46">
+			<opcode parameterID="chorus_type" address="//32-33"/>
+			<opcode parameterID="chorus_1" address="//34"/>
+			<opcode parameterID="chorus_2" address="//35"/>
+			<opcode parameterID="chorus_3" address="//36"/>
+			<opcode parameterID="chorus_4" address="//37"/>
+			<opcode parameterID="chorus_5" address="//38"/>
+			<opcode parameterID="chorus_6" address="//39"/>
+			<opcode parameterID="chorus_7" address="//40"/>
+			<opcode parameterID="chorus_8" address="//41"/>
+			<opcode parameterID="chorus_9" address="//42"/>
+			<opcode parameterID="chorus_10" address="//43"/>
+			<opcode address="//44" parameterID="effect_return"/>
+			<opcode address="//45" parameterID="effect_pan"/>
+			<opcode address="//46" parameterID="effect_to_reverb"/>
+		</bulk>
+		<bulk address="//48-53">
+			<opcode parameterID="chorus_11" address="//48"/>
+			<opcode parameterID="chorus_12" address="//49"/>
+			<opcode parameterID="chorus_13" address="//50"/>
+			<opcode parameterID="chorus_14" address="//51"/>
+			<opcode parameterID="chorus_15" address="//52"/>
+			<opcode parameterID="chorus_16" address="//53"/>
 		</bulk>
 	</module>
 
+	<module name="FX1 Variation" address="2/1/64-117">
+		<bulk address="//64-96">
+			<opcode parameterID="variation_type" address="//64-65"/>
+			<opcode parameterID="variation_1" address="//66-67"/>
+			<opcode parameterID="variation_2" address="//68-69"/>
+			<opcode parameterID="variation_3" address="//70-71"/>
+			<opcode parameterID="variation_4" address="//72-73"/>
+			<opcode parameterID="variation_5" address="//74-75"/>
+			<opcode parameterID="variation_6" address="//76-77"/>
+			<opcode parameterID="variation_7" address="//78-79"/>
+			<opcode parameterID="variation_8" address="//80-81"/>
+			<opcode parameterID="variation_9" address="//82-83"/>
+			<opcode parameterID="variation_10" address="//84-85"/>
+			<opcode address="//86" parameterID="effect_return"/>
+			<opcode address="//87" parameterID="effect_pan"/>
+			<opcode address="//88" parameterID="effect_to_reverb"/>
+			<opcode address="//89" parameterID="effect_to_chorus"/>
+			<opcode address="//90" parameterID="variation_connection"/>
+			<opcode address="//91" parameterID="effect_part"/>
+			<opcode address="//92" parameterID="mw_control_depth"/>
+			<opcode address="//93" parameterID="pb_control_depth"/>
+			<opcode address="//94" parameterID="cat_control_depth"/>
+			<opcode address="//95" parameterID="ac1_control_depth"/>
+			<opcode address="//96" parameterID="ac2_control_depth"/>
+		</bulk>
+		<bulk address="//97">
+			<opcode address="//97" parameterID="cbc1_control_depth"/>
+		</bulk>
+		<bulk address="//98">
+			<opcode address="//98" parameterID="cbc2_control_depth"/>
+		</bulk>
+		<bulk address="//112-117">
+			<opcode parameterID="variation_11" address="//112"/>
+			<opcode parameterID="variation_12" address="//113"/>
+			<opcode parameterID="variation_13" address="//114"/>
+			<opcode parameterID="variation_14" address="//115"/>
+			<opcode parameterID="variation_15" address="//116"/>
+			<opcode parameterID="variation_16" address="//117"/>
+		</bulk>
+	</module>
 
-	<module id="multipart" name="Multipart" address="8-10/0-31/">
+	<module name="FX1 EQ" address="2/64/0-20">
+		<bulk address="//0-20">
+			<opcode address="//0" parameterID="eq_type"/>
+			<opcode address="//1" parameterID="eq_gain"/>
+			<opcode address="//2" parameterID="eq_frequency1"/>
+			<opcode address="//3" parameterID="eq_q"/>
+			<opcode address="//4" parameterID="eq_shape"/>
+			<opcode address="//5" parameterID="eq_gain"/>
+			<opcode address="//6" parameterID="eq_frequency2"/>
+			<opcode address="//7" parameterID="eq_q"/>
+			<opcode address="//8" parameterID="eq_not_used"/>
+			<opcode address="//9" parameterID="eq_gain"/>
+			<opcode address="//10" parameterID="eq_frequency3"/>
+			<opcode address="//11" parameterID="eq_q"/>
+			<opcode address="//12" parameterID="eq_not_used"/>
+			<opcode address="//13" parameterID="eq_gain"/>
+			<opcode address="//14" parameterID="eq_frequency4"/>
+			<opcode address="//15" parameterID="eq_q"/>
+			<opcode address="//16" parameterID="eq_not_used"/>
+			<opcode address="//17" parameterID="eq_gain"/>
+			<opcode address="//18" parameterID="eq_frequency5"/>
+			<opcode address="//19" parameterID="eq_q"/>
+			<opcode address="//20" parameterID="eq_shape"/>
+		</bulk>
+	</module>
+
+	<module name="FX2 Insertion" address="3/0-1/">
+		<bulk address="//0-17">
+			<opcode parameterID="insertion_type" address="//0-1"/>
+			<opcode parameterID="insertion_1" address="//2"/>
+			<opcode parameterID="insertion_2" address="//3"/>
+			<opcode parameterID="insertion_3" address="//4"/>
+			<opcode parameterID="insertion_4" address="//5"/>
+			<opcode parameterID="insertion_5" address="//6"/>
+			<opcode parameterID="insertion_6" address="//7"/>
+			<opcode parameterID="insertion_7" address="//8"/>
+			<opcode parameterID="insertion_8" address="//9"/>
+			<opcode parameterID="insertion_9" address="//10"/>
+			<opcode parameterID="insertion_10" address="//11"/>
+			<opcode parameterID="insertion_part" address="//12"/>
+			<opcode address="//13" parameterID="mw_control_depth"/>
+			<opcode address="//14" parameterID="pb_control_depth"/>
+			<opcode address="//15" parameterID="cat_control_depth"/>
+			<opcode address="//16" parameterID="ac1_control_depth"/>
+			<opcode address="//17" parameterID="ac2_control_depth"/>
+		</bulk>
+		<bulk address="//18">
+			<opcode address="//18" parameterID="cbc1_control_depth"/>
+		</bulk>
+		<bulk address="//19">
+			<opcode address="//19" parameterID="cbc2_control_depth"/>
+		</bulk>
+		<bulk address="//32-37">
+			<opcode parameterID="insertion_11" address="//32"/>
+			<opcode parameterID="insertion_12" address="//33"/>
+			<opcode parameterID="insertion_13" address="//34"/>
+			<opcode parameterID="insertion_14" address="//35"/>
+			<opcode parameterID="insertion_15" address="//36"/>
+			<opcode parameterID="insertion_16" address="//37"/>
+		</bulk>
+		<bulk address="//48-67"><!-- TODO: alternative word-Adressen für Insertion -->
+			<opcode parameterID="insertion_1" address="//48-49"/>
+			<opcode parameterID="insertion_2" address="//50-51"/>
+			<opcode parameterID="insertion_3" address="//52-53"/>
+			<opcode parameterID="insertion_4" address="//54-55"/>
+			<opcode parameterID="insertion_5" address="//56-57"/>
+			<opcode parameterID="insertion_6" address="//58-59"/>
+			<opcode parameterID="insertion_7" address="//60-61"/>
+			<opcode parameterID="insertion_8" address="//62-63"/>
+			<opcode parameterID="insertion_9" address="//64-65"/>
+			<opcode parameterID="insertion_10" address="//66-67"/>
+		</bulk>
+	</module>
+
+	<module name="Multipart" address="8-10/0-31/">
 		<bulk address="8//0-40">
-			<opcode id="mp_elementReserve" address="//0"/>
-			<opcode id="mp_bank_msb" address="//1"/>
-			<opcode id="mp_bank_lsb" address="//2"/>
-			<opcode id="mp_program" address="//3"/>
-			<opcode id="mp_midichannel" address="//4"/>
+			<opcode parameterID="mp_elementReserve" address="//0"/>
+			<opcode parameterID="mp_bank_msb" address="//1"/>
+			<opcode parameterID="mp_bank_lsb" address="//2"/>
+			<opcode parameterID="mp_program" address="//3"/>
+			<opcode parameterID="mp_midichannel" address="//4"/>
 		</bulk>
 	</module>
 
-	<module id="adpart" name="A/D-Part" address="16-18/0-1/">
-		<bulk address="16/0-1/0-30">
-			<opcode id="ad_inputGain" address="16/0-1/0"/>
+	<module name="A/D-Part" address="16-18/0-1/">
+		<bulk address="16//0-30">
+			<opcode parameterID="ad_inputGain" address="//0"/>
 		</bulk>
 	</module>
 
-	<module id="drumset" name="Drumset" address="48-51/13-91/">
+	<module name="Drumset" address="48-51/13-91/">
 		<bulk address="//0-15">
-			<opcode id="dr_pitch_coarse" address="//0"/>
+			<opcode parameterID="dr_pitch_coarse" address="//0"/>
 		</bulk>
 	</module>
 </modules>

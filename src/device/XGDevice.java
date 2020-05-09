@@ -33,6 +33,7 @@ import gui.XGDeviceDetector;
 import gui.XGFrame;
 import gui.XGPathSelector;
 import gui.XGSpinner;
+import gui.XGTemplate;
 import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
@@ -123,6 +124,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
 	private final XGAddressableSet<XGOpcode> opcodes = new XGAddressableSet<>();
 	private final XGAddressableSet<XGValue> values = new XGAddressableSet<>();
+	private final XGAddressableSet<XGTemplate> templates = new XGAddressableSet<>();
 
 	private int info1, info2;
 	private final Queue<XGSysexFile> files = new LinkedList<>();
@@ -144,6 +146,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
 		this.defaultDumpFolder.setContent(Paths.get(this.config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER, JXG.HOMEPATH.toString())));
 
+		XGTemplate.init(this);
 		XGTable.init(this);
 		XGParameter.init(this);
 		XGOpcode.init(this);
@@ -192,16 +195,19 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public XGAddressableSet<XGBulkDump> getBulks()
-	{	return bulks;
+	{	return this.bulks;
 	}
 
 	public XGAddressableSet<XGOpcode> getOpcodes()
-	{
-		return opcodes;
+	{	return this.opcodes;
 	}
 
 	public XGAddressableSet<XGValue> getValues()
 	{	return this.values;
+	}
+
+	public XGAddressableSet<XGTemplate> getTemplates()
+	{	return this.templates;
 	}
 
 	public Map<String, XGTable> getTables()

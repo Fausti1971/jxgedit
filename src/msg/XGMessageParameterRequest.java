@@ -4,7 +4,6 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import module.XGModuleNotFoundException;
 import value.XGValue;
 
 public class XGMessageParameterRequest extends XGSuperMessage implements XGRequest
@@ -23,7 +22,7 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	{	super(src, dest, msg);
 	}
 
-	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException, XGModuleNotFoundException
+	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
 	{	super(src, dest, new byte[8], true);
 		this.setMessageID(MSG);
 		this.setHi(adr.getHi().getValue());

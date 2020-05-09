@@ -241,7 +241,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	}
 
 	@Override public void midiSystemUpdated() throws CoreMidiException
-	{	log.info("CoreMidiSystem updated!");
+	{	log.info("CoreMidiSystem updated, " + this.midiInput + "=" + this.midiInput.isOpen() + ", " + this.midiOutput + "=" + this.midiOutput.isOpen());
 		//	this.notifyConfigurationListeners();
 	}
 

@@ -2,19 +2,20 @@ package module;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.io.FileNotFoundException;
 import java.util.Set;
 import javax.swing.JComponent;
 import adress.XGAddress;
+import adress.XGAddressField;
 import adress.XGAddressableSet;
 import device.XGDevice;
 import gui.XGComponent;
+import gui.XGTemplate;
 import gui.XGTree;
 import gui.XGWindow;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
 
-public abstract class XGSuperModule implements XGModule, XMLNodeConstants
+public class XGSuperModule implements XGModule, XMLNodeConstants
 {	static
 	{	ACTIONS.add(ACTION_EDIT);
 		ACTIONS.add(ACTION_REQUEST);
@@ -28,43 +29,39 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 	private boolean selected;
 	private XGWindow window;
 	private final String name;
-	private final String tag;
 	private final XGAddress address;
 	private final XGDevice device;
 	private final XGModule parentModule;
 	private final XGAddressableSet<XGModule> childModule = new XGAddressableSet<XGModule>();
-	private final XMLNode guiTemplate;
+	private final XGTemplate guiTemplate;
 
 	public XGSuperModule(XGDevice dev, XMLNode n)
 	{	this.parentModule = null;
 		this.name = n.getStringAttribute(ATTR_NAME);
 		this.device = dev;
-		this.tag = n.getStringAttribute(ATTR_ID);
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), null);
-		XMLNode x = null;
-		try
-		{	x = XMLNode.parse(dev.getResourceFile(XML_TEMPLATES)).getChildNodeWithID(TAG_FRAME, this.tag);
-			if(x != null) log.info("template initialized: " + this.name);
-			else log.info("no template for: " + this.name);
-		}
-		catch(FileNotFoundException e)
-		{	log.info(e.getMessage());
-		}
-		this.guiTemplate = x;
+		this.guiTemplate = dev.getTemplates().get(this.address);
+		this.initChildren();
+		log.info("module initialized: " + this.name);
 	}
 
-	public XGSuperModule(XGModule par, XGAddress adr)
+	public XGSuperModule(XGModule par, XGAddress adr, String n)
 	{	this.parentModule = par;
 		this.address = adr;
-		this.name = par.getName();
+		if(n == null) this.name = par.getName();
+		else this.name = n;
 		this.device = par.getDevice();
-		this.tag = par.getTag();
 		this.guiTemplate = par.getGuiTemplate();
 		par.getChildModules().add(this);
 	}
 
-	@Override public String getTag()
-	{	return this.tag;
+	private void initChildren()
+	{	XGModule hiMod = this;
+		for(int h : this.getAddress().getHi())
+		{	if((h & 0x20) != 0) hiMod = new XGSuperModule(this, new XGAddress(new XGAddressField(h), this.getAddress().getMid(), this.getAddress().getLo()), this.name + " " + (h - 47));
+			for(int m : hiMod.getAddress().getMid())
+				new XGSuperModule(hiMod, new XGAddress(hiMod.getAddress().getHi(), new XGAddressField(m), hiMod.getAddress().getLo()), this.name + " " + (m + 1));
+		}
 	}
 
 	@Override public XGModule getParentModule()
@@ -80,7 +77,7 @@ public abstract class XGSuperModule implements XGModule, XMLNodeConstants
 		else return this.parentModule.getDevice();
 	}
 
-	@Override public XMLNode getGuiTemplate()
+	@Override public XGTemplate getGuiTemplate()
 	{	return this.guiTemplate;
 	}
 

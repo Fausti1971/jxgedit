@@ -5,13 +5,24 @@
 		<item id="volume" longName="Volume" shortName="Vol" translator="normal"/>
 		<item id="transpose" longName="Transpose" shortName="Xpose" min="40" max="88" origin="64" translator="sub64" unit="st"/>
 		<item id="attenuator" longName="Attenuator" shortName="Damp" translator="normal"/>
-		<item id="reverb_type" longName="Reverb Program" shortName="Prog" translator="map" translationMap="fx_programs" translationMapFilter="reverb"/>
-		<item id="insertion_type" longName="Insertion Program" shortName="Prog" translator="map" translationMap="fx_programs" translationMapFilter="insertion"/>
+		<item id="reverb_type" longName="Reverb Program" shortName="Prog" max="2432" translator="table" translationTable="fx_programs" tableFilter="reverb"/>
+		<item id="insertion_type" longName="Insertion Program" shortName="Prog" translator="table" translationTable="fx_programs" tableFilter="insertion"/>
 		<item id="effect_return" longName="Effect Return" shortName="FXRet"/>
-		<item id="effect_pan" longName="Effect Panorama" shortName="FXPan" min="1" translator="map" translationMap="panorama"/>
-
+		<item id="effect_pan" longName="Effect Panorama" shortName="FXPan" min="1" translator="table" translationTable="panorama" origin="64"/>
+		<item id="lpf_cutoff" longName="Lowpass Filter Cutoff Frequency" shortName="LPFCt" min="34" max="60" translator="table" translationTable="table3" unit="Hz"/>
+		<item id="hpf_cutoff" longName="Highpass Filter Cutoff Frequency" shortName="HPFCt" max="52" translator="table" translationTable="table3" unit="Hz"/>
+		<item id="dry_wet_balance" longName="Dry/Wet Balance" shortName="D/W" min="1" translator="table" translationTable="table15" origin="64"/>
+		<item id="initial_delay" longName="Initial Delay" shortName="InDly" max="63" translator="table" translationTable="table5" unit="ms"/>
 		<item id="master_tune" longName="Master Tune" shortName="Tune" max="2047" origin="1024" translator="sub1024Div10" unit="cnt"/>
-		<item id="reverb_time" longName="Reverb Time" shortName="Time" max="69" translator="map" translationMap="reverb_time" unit="s"/>
+		<item id="reverb_time" longName="Reverb Time" shortName="Time" max="69" translator="table" translationTable="table4" unit="s"/>
+		<item id="diffusion" longName="Diffusion" shortName="Diff" max="10"/>
+		<item id="reverb_delay" longName="Reverb Delay" shortName="RvDly" max="63" translator="table" translationTable="table5" unit="ms"/>
+		<item id="density" longName="Density" shortName="Dnsty" max="4"/>
+		<item id="er_rev_balance" longName="Early Reflection- /Reverb-Balance" shortName="ER/Rv" min="1" origin="64"/>
+		<item id="high_damp" longName="High Damp" shortName="HiDmp" min="1" max="10" translator="div10"/>
+		<item id="feedback_level" longName="Feedback Level" shortName="FBLvl" min="1" origin="64" translator="table" translationTable="table16"/>
+		<item id="feedback_high_damp" longName="Feedback High Damp" shortName="FBDmp" min="1" max="10" translator="div10"/>
+
 		<item id="insertion_part" longName="Insertion Part" shortName="Part"/>
 	
 		<item id="reverb_1" master="2/1/0" index="1"/>
@@ -24,6 +35,12 @@
 		<item id="reverb_8" master="2/1/0" index="8"/>
 		<item id="reverb_9" master="2/1/0" index="9"/>
 		<item id="reverb_10" master="2/1/0" index="10"/>
+		<item id="reverb_11" master="2/1/0" index="11"/>
+		<item id="reverb_12" master="2/1/0" index="12"/>
+		<item id="reverb_13" master="2/1/0" index="13"/>
+		<item id="reverb_14" master="2/1/0" index="14"/>
+		<item id="reverb_15" master="2/1/0" index="15"/>
+		<item id="reverb_16" master="2/1/0" index="16"/>
 
 		<item id="insertion_1" master="3/0-15/0-0" index="1"/>
 		<item id="insertion_2" master="3/0-15/0-0" index="2"/>
@@ -35,20 +52,257 @@
 		<item id="insertion_8" master="3/0-15/0-0" index="8"/>
 		<item id="insertion_9" master="3/0-15/0-0" index="9"/>
 		<item id="insertion_10" master="3/0-15/0-0" index="10"/>
+		<item id="insertion_11" master="3/0-15/0-0" index="11"/>
+		<item id="insertion_12" master="3/0-15/0-0" index="12"/>
+		<item id="insertion_13" master="3/0-15/0-0" index="13"/>
+		<item id="insertion_14" master="3/0-15/0-0" index="14"/>
+		<item id="insertion_15" master="3/0-15/0-0" index="15"/>
+		<item id="insertion_16" master="3/0-15/0-0" index="16"/>
 
 		<item id="mp_elementReserve" longName="Element Reserve" shortName="ElRes" max="32"/>
 		<item id="mp_bank_msb" longName="Bank Select MSB" shortName="bankM"/>
 		<item id="mp_bank_lsb" longName="Bank Select LSB" shortName="bankL"/>
 		<item id="mp_program" longName="Voice Program Number" shortName="prgNr"/>
-		<item id="mp_midichannel" longName="Midi Channel" shortName="ch" translator="map" translationMap="midi_channels"/>
+		<item id="mp_midichannel" longName="Midi Channel" shortName="ch" translator="table" translationTable="midi_channels"/>
 
 		<item id="ad_inputGain" longName="Input Gain" shortName="iGain" max="1"/>
 
 		<item id="dr_pitch_coarse" longName="Pitch Coarse" shortName="Tune" origin="64" translator="sub64"/>
 	</table>
+
 	<table name="fx_parameter" caption="set of links for mutable fx-parameters">
-		<set msb="0" lsb="0" caption="no effect">
-			<entry index="1" parameter="insertion_1"/>
+		<set msb="0" lsb="0" caption="no effect"/>
+		<set msb="1" lsb="0" caption="hall 1">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
 		</set>
+		<set msb="1" lsb="1" caption="hall 2">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="1" lsb="2" caption="large hall">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+		</set>
+		<set msb="1" lsb="3" caption="medium hall">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="1" lsb="6" caption="hall m">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="1" lsb="7" caption="hall l">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="2" lsb="0" caption="room 1">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="2" lsb="1" caption="room 2">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="2" lsb="2" caption="room 3">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="2" lsb="3" caption="warm room">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+		</set>
+		<set msb="2" lsb="4" caption="woody room">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+		</set>
+		<set msb="2" lsb="5" caption="room s">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="2" lsb="6" caption="room m">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="2" lsb="7" caption="room l">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="3" lsb="0" caption="stage 1">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="3" lsb="1" caption="stage 2">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="4" lsb="0" caption="plate">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+		<set msb="4" lsb="1" caption="rich plate">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+		</set>
+		<set msb="4" lsb="2" caption="gm plate">
+			<entry index="1" parameterID="reverb_time"/>
+			<entry index="2" parameterID="diffusion"/>
+			<entry index="3" parameterID="initial_delay"/>
+			<entry index="4" parameterID="hpf_cutoff"/>
+			<entry index="5" parameterID="lpf_cutoff"/>
+			<entry index="10" parameterID="dry_wet_balance"/>
+			<entry index="11" parameterID="reverb_delay"/>
+			<entry index="12" parameterID="density"/>
+			<entry index="13" parameterID="er_rev_balance"/>
+			<entry index="14" parameterID="feedback_high_damp"/>
+			<entry index="15" parameterID="feedback_level"/>
+		</set>
+
 	</table>
 </tables>

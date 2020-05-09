@@ -13,7 +13,6 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-import adress.XGAddressableSet;
 import application.Configurable;
 import application.JXG;
 import module.XGModule;
@@ -30,26 +29,29 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 	Border focusLineBorder = BorderFactory.createLineBorder(COL_NODE_FOCUS, 1, true);
 
 	public static XGComponent init(XGModule mod)
-	{	XMLNode xml = mod.getGuiTemplate();
-		XGAddressableSet<XGValue> set = mod.getDevice().getValues().getAllValid(mod.getAddress());
+	{	XGTemplate t = mod.getGuiTemplate();
+		XMLNode xml = null;
+		if(t != null) xml = t.getXMLNode();
+//		XGAddressableSet<XGValue> set = mod.getDevice().getValues().getAllValid(mod.getAddress());
 		if(xml == null) return new XGFrame("no template");
-		if(set == null || set.isEmpty()) return new XGFrame("no values");
-		return newItem(xml, set);
+//		if(set == null || set.isEmpty()) return new XGFrame("no values");
+		return newItem(xml, mod);
 	}
 
-	private static XGComponent newItem(XMLNode n, XGAddressableSet<XGValue> set)
+	private static XGComponent newItem(XMLNode n, XGModule mod)
 	{	String s = n.getTag();
-		XGComponent c = new XGFrame("unknown " + s);
+		XGComponent c = null;
 		switch(s)
 		{	case TAG_AUTO:		break;
-			case TAG_ENVELOPE:	c = new XGEnvelope(n, set); break;
+			case TAG_ENVELOPE:	c = new XGEnvelope(n, mod); break;
 			case TAG_ENVPOINT:	break;
-			case TAG_FRAME:		c = new XGFrame(n, set); break;
-			case TAG_KNOB:		c = new XGKnob(n, set); break;
-			case TAG_SLIDER:	c = new XGSlider(n, set); break;
-			default:			break;
+			case TAG_FRAME:		c = new XGFrame(n, mod); break;
+			case TAG_KNOB:		c = new XGKnob(n, mod); break;
+			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
+			case TAG_COMBO:		c = new XGCombo(n, mod); break;
+			default:			c = new XGFrame("unknown " + s); break;
 		}
-		for(XMLNode x : n.getChildNodes()) c.addGB(newItem(x, set));
+		if(c != null) for(XMLNode x : n.getChildNodes()) c.addGB(newItem(x, mod));
 		return c;
 	}
 
@@ -81,11 +83,14 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 
 	public default void borderize()
 	{	JComponent c = this.getJComponent();
-		String name = c.getName();
+		if(!c.isEnabled())
+		{	c.setBorder(new TitledBorder(defaultLineBorder, "n/a", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+			return;
+		}
 		if(c.hasFocus())
-			c.setBorder(new TitledBorder(focusLineBorder, name, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
+			c.setBorder(new TitledBorder(focusLineBorder, c.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
 		else
-			c.setBorder(new TitledBorder(defaultLineBorder, name, TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+			c.setBorder(new TitledBorder(defaultLineBorder, c.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
 	}
 
 	public default void deborderize()

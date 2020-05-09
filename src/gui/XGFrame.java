@@ -3,8 +3,7 @@ package gui;
 import java.awt.GridBagLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import adress.XGAddressableSet;
-import value.XGValue;
+import module.XGModule;
 import xml.XMLNode;
 
 public class XGFrame extends JPanel implements XGComponent
@@ -27,11 +26,11 @@ public class XGFrame extends JPanel implements XGComponent
 		this.borderize();
 	}
 
-	public XGFrame(XMLNode n, XGAddressableSet<XGValue> set)
+	public XGFrame(XMLNode n, XGModule mod)
 	{	super(new GridBagLayout());
 		this.config = n;
-		this.setName(n.getStringAttribute(ATTR_NAME) + " (" + set.size() + " values)");
-		this.borderize();
+		this.setName(n.getStringAttribute(ATTR_NAME, mod.getName()));
+//		this.borderize();
 	}
 
 	@Override public JComponent getJComponent()
