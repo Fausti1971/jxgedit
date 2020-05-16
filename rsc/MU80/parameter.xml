@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
+<tables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/parameter.xsd">
 
 	<table name="parameters">
 		<item id="volume" longName="Volume" shortName="Vol" translator="normal"/>
+		<item id="panorama" longName="Panorama" shortName="Pan" translator="panorama" origin="64"/>
 		<item id="transpose" longName="Transpose" shortName="Xpose" min="40" max="88" origin="64" translator="sub64" unit="st"/>
 		<item id="attenuator" longName="Attenuator" shortName="Damp" translator="normal"/>
-		<item id="reverb_type" longName="Reverb Program" shortName="Prog" max="2432" translator="table" translationTable="fx_programs" tableFilter="reverb"/>
+		<item id="reverb_type" longName="Reverb Program" shortName="Prog" max="16383" translator="table" translationTable="fx_programs" tableFilter="reverb"/>
+		<item id="chorus_type" longName="Chorus Program" shortName="Prog" max="16383" translator="table" translationTable="fx_programs" tableFilter="chorus"/>
 		<item id="insertion_type" longName="Insertion Program" shortName="Prog" translator="table" translationTable="fx_programs" tableFilter="insertion"/>
 		<item id="effect_return" longName="Effect Return" shortName="FXRet"/>
-		<item id="effect_pan" longName="Effect Panorama" shortName="FXPan" min="1" translator="table" translationTable="panorama" origin="64"/>
+		<item id="effect_pan" longName="Effect Panorama" shortName="FXPan" min="1" translator="panorama" origin="64"/>
+		<item id="reverb_send" longName="Send To Reverb" shortName="FXRev"/>
 		<item id="lpf_cutoff" longName="Lowpass Filter Cutoff Frequency" shortName="LPFCt" min="34" max="60" translator="table" translationTable="table3" unit="Hz"/>
 		<item id="hpf_cutoff" longName="Highpass Filter Cutoff Frequency" shortName="HPFCt" max="52" translator="table" translationTable="table3" unit="Hz"/>
 		<item id="dry_wet_balance" longName="Dry/Wet Balance" shortName="D/W" min="1" translator="table" translationTable="table15" origin="64"/>
@@ -41,6 +44,23 @@
 		<item id="reverb_14" master="2/1/0" index="14"/>
 		<item id="reverb_15" master="2/1/0" index="15"/>
 		<item id="reverb_16" master="2/1/0" index="16"/>
+
+		<item id="chorus_1" master="2/1/32" index="1"/>
+		<item id="chorus_2" master="2/1/32" index="2"/>
+		<item id="chorus_3" master="2/1/32" index="3"/>
+		<item id="chorus_4" master="2/1/32" index="4"/>
+		<item id="chorus_5" master="2/1/32" index="5"/>
+		<item id="chorus_6" master="2/1/32" index="6"/>
+		<item id="chorus_7" master="2/1/32" index="7"/>
+		<item id="chorus_8" master="2/1/32" index="8"/>
+		<item id="chorus_9" master="2/1/32" index="9"/>
+		<item id="chorus_10" master="2/1/32" index="10"/>
+		<item id="chorus_11" master="2/1/32" index="11"/>
+		<item id="chorus_12" master="2/1/32" index="12"/>
+		<item id="chorus_13" master="2/1/32" index="13"/>
+		<item id="chorus_14" master="2/1/32" index="14"/>
+		<item id="chorus_15" master="2/1/32" index="15"/>
+		<item id="chorus_16" master="2/1/32" index="16"/>
 
 		<item id="insertion_1" master="3/0-15/0-0" index="1"/>
 		<item id="insertion_2" master="3/0-15/0-0" index="2"/>

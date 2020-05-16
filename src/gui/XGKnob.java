@@ -55,6 +55,7 @@ public class XGKnob extends XGFrame
 			this.setToolTipText(this.value.getParameter().getLongName());
 			this.setFocusable(true);
 		}
+		else this.setName("n/a");
 		this.setSizes(PREF_W, PREF_H);
 		this.borderize();
 		this.addMouseListener(this);

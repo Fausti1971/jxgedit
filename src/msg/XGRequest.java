@@ -1,5 +1,8 @@
 package msg;
 
+import adress.InvalidXGAddressException;
+import device.TimeoutException;
+
 public interface XGRequest extends XGMessage
 {
 /**
@@ -9,15 +12,19 @@ public interface XGRequest extends XGMessage
  */
 	public default boolean setResponsed(XGResponse msg)
 	{	this.setResponsed(this.getResponse().isEqual(msg));
-		if(this.getResponsed()) this.setResponse(msg);
-		return this.getResponsed();
+		if(this.isResponsed()) this.setResponse(msg);
+		return this.isResponsed();
+	}
+
+	public default XGResponse request() throws InvalidXGAddressException, TimeoutException
+	{	return this.getDestination().request(this);
 	}
 
 /**
  * wurde dieser XGRequest schon beantwortet?
  * @return true, falls ja;
  */
-	boolean getResponsed();
+	boolean isResponsed();
 
 /**
  * setzt den Responsed-Status eines Requests auf s

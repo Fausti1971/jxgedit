@@ -22,6 +22,17 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	{	super(src, dest, msg);
 	}
 
+	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGValue val) throws InvalidXGAddressException, InvalidMidiDataException
+	{	super(src, dest, new byte[8], true);
+		XGAddress adr = val.getAddress();
+		this.setMessageID(MSG);
+		this.setHi(adr.getHi().getValue());
+		this.setMid(adr.getMid().getValue());
+		this.setLo(adr.getLo().getValue());
+		this.setEOX(7);
+		this.response = new XGMessageParameterChange(dest, src, val);
+	}
+/*
 	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
 	{	super(src, dest, new byte[8], true);
 		this.setMessageID(MSG);
@@ -31,7 +42,7 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 		this.setEOX(7);
 		this.response = new XGMessageParameterChange(dest, src, new XGValue(src, null, adr));
 	}
-
+*/
 	@Override public int getHi()
 	{	return decodeLSB(HI_OFFS);
 	}
@@ -56,7 +67,7 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	{	encodeLSB(LO_OFFS, lo);
 	}
 
-	@Override public boolean getResponsed()
+	@Override public boolean isResponsed()
 	{	return this.responsed;
 	}
 

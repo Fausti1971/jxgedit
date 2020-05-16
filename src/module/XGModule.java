@@ -4,34 +4,26 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Set;
 import javax.swing.tree.TreeNode;
-import adress.InvalidXGAddressException;
 import adress.XGAddressable;
-import device.TimeoutException;
+import adress.XGAddressableSet;
+import adress.XGBulkDump;
 import gui.XGTemplate;
 import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindowSource;
 import msg.XGMessenger;
-import msg.XGRequest;
-import msg.XGResponse;
 
 public interface XGModule extends XGAddressable, XGModuleConstants, XGMessenger, XGTreeNode, XGWindowSource
 {
 
 /********************************************************************************************************************/
 
+	void request();
 	String getName();
 	Set<XGModule> getChildModules();
+	XGAddressableSet<XGBulkDump> getBulks();
 	XGModule getParentModule();
 	XGTemplate getGuiTemplate();
-
-	@Override public default void submit(XGResponse msg) throws InvalidXGAddressException
-	{
-	}
-
-	@Override public default XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException
-	{	return null;
-	}
 
 	@Override default boolean isLeaf()
 	{	return this.getChildCount() < 2;

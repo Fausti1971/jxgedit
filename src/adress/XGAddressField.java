@@ -91,10 +91,11 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
  * ein fixes f wird unver
  * @param f	das Addressfeld, durch das this komplettiert werden soll
  * @return ein neues Addressfeld als Komplement
+ * @throws InvalidXGAddressException 
   */
-	public XGAddressField complement(final XGAddressField f)
+	public XGAddressField complement(final XGAddressField f) throws InvalidXGAddressException
 	{	if(this.isFix()) return this;
-		if(f.isFix()) return f;
+		if(f.isFix() && this.contains(f)) return f;
 		return this.intersection(f);
 	}
 
@@ -104,16 +105,20 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
  * @return	true, wenn Field f eine Teilmenge von this ist
  */
 	public boolean contains(XGAddressField f)
-	{	return this.getMin() <= f.getMin() && this.getMax() >= f.getMax();
+	{	boolean res = this.getMin() <= f.getMin() && this.getMax() >= f.getMax();
+//		System.out.println(this  + " contains " + f + " = " + res);
+		return res;
 	}
 
 /**
  * ermittelt und returniert eine eventuelle gemeinsame Teilmenge
  * @param f
  * @return die eventuell vorhandene Teilmenge von this und f
+ * @throws InvalidXGAddressException 
   */
-	public XGAddressField intersection(XGAddressField f)
-	{	return new XGAddressField(Math.max(this.min, f.min), Math.min(this.max, f.max), this.mask);
+	public XGAddressField intersection(XGAddressField f) throws InvalidXGAddressException
+	{	//if(this.min > f.max || this.max < f.min) throw new InvalidXGAddressException("no intersection: " + this + "/" + f);
+		return new XGAddressField(Math.max(this.min, f.min), Math.min(this.max, f.max), this.mask);
 	}
 
 	@Override public boolean equals(Object o)

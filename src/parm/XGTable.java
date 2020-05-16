@@ -15,6 +15,7 @@ public class XGTable extends TreeMap<Integer, XGTableEntry> implements Configura
 	 */
 	private static final long serialVersionUID = 1L;
 	private static final Logger log = Logger.getAnonymousLogger();
+	private static final String SPACE = " ";
 
 	public static void init(XGDevice dev)
 	{
@@ -46,12 +47,14 @@ public class XGTable extends TreeMap<Integer, XGTableEntry> implements Configura
 /********************************************************************************************************/
 
 	private final String name;
+	private final String unit;
 /**
  * lediglich eine Map von Integerwerten und dazugehörigen XMLNodes
  * @param n
  */
 	private XGTable(XMLNode n)
 	{	this.name = n.getStringAttribute(ATTR_NAME);
+		this.unit = n.getStringAttribute(ATTR_UNIT);
 		XGTableEntry te;
 		for(XMLNode e : n.getChildNodes(TAG_ITEM))
 		{	te = new XGTableEntry(e);
@@ -61,6 +64,7 @@ public class XGTable extends TreeMap<Integer, XGTableEntry> implements Configura
 
 	private XGTable(String name)
 	{	this.name = name;
+		this.unit = null;
 	}
 
 	@Override public XGTableEntry get(Object key)
@@ -78,6 +82,14 @@ public class XGTable extends TreeMap<Integer, XGTableEntry> implements Configura
 		for(XGTableEntry e : this.values())
 			if(e.hasFilter(f) && e.getKey() >= min && e.getKey() <= max) table.put(e.getKey(), e);
 		return table;
+	}
+
+	public String getName()
+	{	return this.name;
+	}
+
+	public String getUnit()
+	{	return SPACE + this.unit;
 	}
 
 	@Override public String toString()

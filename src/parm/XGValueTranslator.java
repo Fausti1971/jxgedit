@@ -18,7 +18,8 @@ public interface XGValueTranslator extends XGLoggable
 		sub1024Div10,
 		table,
 		percent,
-		xml
+		xml,
+		panorama
 	}
 
 	static XGValueTranslator getTranslator(XGTranslatorTag t)
@@ -32,7 +33,8 @@ public interface XGValueTranslator extends XGLoggable
 			case sub1024Div10:	return sub1024Div10;
 			case table:			return table;
 			case xml:			return xml;
-			default:			return normal;
+			case panorama:		return panorama;
+			default:			return normal;// vielleicht wahlweise auch percent?
 		}
 	}
 
@@ -132,17 +134,37 @@ public interface XGValueTranslator extends XGLoggable
 		}
 	};
 
+	static XGValueTranslator panorama = new XGValueTranslator()
+	{	@Override public int translate(XGValue v, String s)
+		{	return 0;
+		}
+		@Override public String translate(XGValue v)
+		{	Integer i = v.getContent();
+			if(i == 0) return "Rnd";
+			if(i < 64) return "L" + Math.abs(i - 64);
+			if(i > 64) return "R" + Math.abs(i - 64);
+			else return "C";
+		}
+	};
+
 	static XGValueTranslator table = new XGValueTranslator()
 	{	@Override public String translate(XGValue v)
 		{	XGParameter p = v.getParameter();
+			if(p == null) return "n/a";
+			String unit = p.getUnit();
+			XGTableEntry e;
 			XGTable t = p.getTranslationTable();
-			try
-			{	return t.get(v.getContent()).getName() + p.getUnit();
+			if(t == null)
+			{	log.info("table not found for parameter " + p);
+				return "no table";
 			}
-			catch(NullPointerException e)
-			{	log.info(e.getMessage() + " param=" + p + " table=" + t);
-				return "no value";
+			e = t.get(v.getContent());
+			if(e == null)
+			{	log.info("value " + v.getContent() + " not found in " + t);
+				return "(" + v.getContent() + ")";
 			}
+			if(unit.isEmpty()) unit = t.getUnit();
+			return e.getName() + unit;
 		}
 		@Override public int translate(XGValue v, String s)
 		{

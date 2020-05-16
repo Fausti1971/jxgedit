@@ -2,6 +2,7 @@ package module;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
+import javax.swing.ActionMap;
 import xml.XMLNodeConstants;
 
 public interface XGModuleConstants extends XMLNodeConstants
@@ -9,6 +10,8 @@ public interface XGModuleConstants extends XMLNodeConstants
 //	public static enum XGModuleTag
 //	{	system, info, sysfx, syseq, insfx, display, multipart, adpart, drumset, plugin
 //	};
+
+	ActionMap MOD_ACTIONS = new ActionMap();
 
 	static final String
 		ACTION_EDIT = "edit...",

@@ -14,6 +14,7 @@
 				<xs:element ref="item" maxOccurs="unbounded"/>
 			</xs:sequence>
 		<xs:attribute name="name" use="required" type="xs:ID"/>
+		<xs:attribute name="unit" use="optional"/>
 		</xs:complexType>
 	</xs:element>
 

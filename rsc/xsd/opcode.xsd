@@ -7,14 +7,6 @@
 				<xs:element ref="module" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
-	<xs:key name="opcode">
-		<xs:selector xpath="./opcodes"/>
-		<xs:field xpath="id"/>
-	</xs:key>
-	<xs:keyref name="dependingOn" refer="opcode">
-		<xs:selector xpath="*"/>
-		<xs:field xpath="dependingOn"/>
-	</xs:keyref>
 	</xs:element>
 
 	<xs:element name="module">
@@ -40,7 +32,7 @@
 		<xs:complexType>
 			<xs:attribute name="address" use="required" type="opcodeAddress"/>
 			<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
-			<xs:attribute name="parameterID" use="required" type="xs:NCName"/>
+			<xs:attribute name="parameterID" use="required" type="xs:IDREF"/>
 		</xs:complexType>
 	</xs:element>
 

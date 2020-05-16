@@ -11,7 +11,6 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 /********************************************************************************/
 
 	private boolean responsed = false;
-
 	XGResponse response = null;
 
 	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
@@ -23,7 +22,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 		this.setMessageID(MSG);
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
-		this.setLo(adr.getLo().getValue());
+		this.setLo(adr.getLo().getMin());
 		this.setEOX(7);
 		this.response = new XGMessageBulkDump(dest, src, adr);
 	}
@@ -32,7 +31,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	{	super(src, dest, msg);
 	}
 
-	@Override public boolean getResponsed()
+	@Override public boolean isResponsed()
 	{	return this.responsed;
 	}
 
@@ -46,6 +45,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	@Override public void setResponse(XGMessage m)
 	{	this.response = (XGResponse)m;
+		m.setDestination(this.getSource());
 	}
 
 	@Override public int getHi()

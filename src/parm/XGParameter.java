@@ -68,7 +68,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	protected XGParameter(XGDevice dev, XMLNode n)
 	{	this.tag = n.getStringAttribute(ATTR_ID);
-		this.valueTranslator = XGValueTranslator.getTranslator(n.getStringAttribute(ATTR_TRANSLATOR));// muss wegen validate() vor origin-Zuweisung ausgeführt werden
+		this.valueTranslator = XGValueTranslator.getTranslator(n.getStringAttribute(ATTR_TRANSLATOR));// muss wegen validate() vor origin-Zuweisung ausgeführt werden; ist origin evtl. besser im Component aufgehoben? (template.xml)
 
 		XGTable t = dev.getTables().get(n.getStringAttribute(ATTR_TRANSLATIONTABLE));
 		if(t != null && n.hasAttribute(ATTR_TABLEFILTER)) t = t.filter(n);

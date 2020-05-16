@@ -13,9 +13,14 @@ public class XGBulkDump implements XGAddressable, XMLNodeConstants
 	private final XGAddress address;
 	private final XGModule module;
 
-	public XGBulkDump(XGModule mod, XMLNode n)
+	public XGBulkDump(XGModule mod, XMLNode n) throws InvalidXGAddressException
+	{	this(mod, new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress()));
+	}
+
+	public XGBulkDump(XGModule mod, XGAddress adr) throws InvalidXGAddressException
 	{	this.module = mod;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
+		this.address = adr.complement(mod.getAddress());
+		mod.getBulks().add(this);
 		log.info("bulk initialized: " + this);
 	}
 

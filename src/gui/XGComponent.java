@@ -83,10 +83,6 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 
 	public default void borderize()
 	{	JComponent c = this.getJComponent();
-		if(!c.isEnabled())
-		{	c.setBorder(new TitledBorder(defaultLineBorder, "n/a", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
-			return;
-		}
 		if(c.hasFocus())
 			c.setBorder(new TitledBorder(focusLineBorder, c.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
 		else

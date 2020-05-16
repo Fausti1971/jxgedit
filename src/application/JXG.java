@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
+import adress.InvalidXGAddressException;
 import device.XGDevice;
 import gui.XGContext;
 import gui.XGTree;
@@ -84,6 +85,20 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 		log.info("JXG config initialized");
 	}
 
+	public void addDevice()
+	{	XGDevice dev;
+		try
+		{	dev = new XGDevice(null);
+			if(XGDevice.getDevices().add(dev))
+			{	config.addChildNode(dev.getConfig());
+				dev.reloadTree();
+			};
+		}
+		catch(InvalidXGAddressException e)
+		{	e.printStackTrace();
+		}
+	}
+
 	@Override public TreeNode getParent()
 	{	return null;
 	}
@@ -123,11 +138,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
 				break;
 			case ACTION_ADDNEWDEVICE:
-				XGDevice dev = new XGDevice(null);
-				if(XGDevice.getDevices().add(dev))
-				{	config.addChildNode(dev.getConfig());
-					dev.reloadTree();
-				};
+				this.addDevice();
 				break;
 			case ACTION_REFRESHDEVICELIST:
 				XGDevice.init();

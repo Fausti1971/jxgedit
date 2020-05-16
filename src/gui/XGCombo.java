@@ -23,21 +23,23 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGComponent, XGV
 	private static final long serialVersionUID = 1L;
 	private static final int PREF_W = 256, PREF_H = 64;
 
+/*****************************************************************************************************************/
 	private final XGValue value;
 	private final XGAddress address;
 	private final XMLNode config;
+	private final XGModule module;
 	
 	public XGCombo(XMLNode n, XGModule mod)
 	{	super();
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.config = n;
+		this.module = mod;
 		XGValue v = mod.getDevice().getValues().getFirstValid(this.address);
 		this.setEnabled(v != null);
 		if(v == null) v = DEF_VALUE;
 		this.value = v;
 		if(this.isEnabled())
 		{	XGTable t = this.value.getParameter().getTranslationTable();
-		System.out.println("adr: " + this.address + " val: " + this.value.getAddress() + " tab: " + t);
 			this.setName(this.value.getParameter().getShortName());
 			for(XGTableEntry e : t.values()) this.addItem(e);
 			this.setAutoscrolls(true);
@@ -45,10 +47,10 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGComponent, XGV
 			this.setSelectedItem(t.get(this.value.getContent()));
 			this.setToolTipText(this.value.getParameter().getLongName());
 			this.setFocusable(true);
+			this.value.addListener(this);
 		}
 		this.setSizes(PREF_W, PREF_H);
 		this.borderize();
-		this.value.addListener(this);
 		this.addActionListener(this);
 		this.addMouseListener(this);
 		this.addFocusListener(this);
@@ -57,7 +59,7 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGComponent, XGV
 	}
 
 	@Override public void actionPerformed(ActionEvent ae)
-	{	boolean changed = this.value.setContent(((XGTableEntry)this.getSelectedItem()).getKey());
+	{	boolean changed = this.value.setContent(((XGTableEntry)this.getSelectedItem()).getKey());//TODO: wird erst transmitted, nachdem die listener notified wurden (falsch für masterValues...)
 		if(changed)
 		{	try
 			{	new XGMessageParameterChange(this.value.getSource(), this.value.getSource().getDevice().getMidi(), this.value).transmit();
@@ -73,7 +75,7 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGComponent, XGV
 	}
 
 	@Override public void contentChanged(XGValue v)
-	{	this.setSelectedItem(this.value.toString());
+	{	this.setSelectedItem(this.value.getParameter().getTranslationTable().get(v.getContent()));
 	}
 
 	@Override public XMLNode getConfig()

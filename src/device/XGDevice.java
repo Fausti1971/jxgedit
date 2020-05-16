@@ -23,7 +23,6 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
-import adress.XGBulkDump;
 import application.Configurable;
 import application.JXG;
 import file.XGSysexFile;
@@ -73,8 +72,14 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public static void init()
 	{	for(XMLNode n : JXG.getJXG().getConfig().getChildNodes())
 		{	if(n.getTag().equals(TAG_DEVICE))
-			{	XGDevice d = new XGDevice(n);
-				if(DEVICES.add(d)) d.reloadTree();
+			{	XGDevice d = null;
+				try
+				{	d = new XGDevice(n);
+					if(DEVICES.add(d)) d.reloadTree();
+				}
+				catch(InvalidXGAddressException e)
+				{	e.printStackTrace();
+				}
 			}
 		}
 		log.info(DEVICES.size() + " devices initialized");
@@ -120,7 +125,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private final Map<String, XGTable> tables = new HashMap<>();
 	private final XGTagableSet<XGParameter> parameters = new XGTagableSet<>();
 	private final Map<Integer, Map<Integer, XGParameter>> parameterSets = new HashMap<>();//Map<programNr, parameterIndex<Parameter>> //progNr wird bei parameterMaster erfragt
-	private final XGAddressableSet<XGBulkDump> bulks = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
+//	private final XGAddressableSet<XGBulkDump> bulks = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
 	private final XGAddressableSet<XGOpcode> opcodes = new XGAddressableSet<>();
 	private final XGAddressableSet<XGValue> values = new XGAddressableSet<>();
@@ -133,7 +138,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private int sysexID;
 	private XGWindow childWindow;
 
-	public XGDevice(XMLNode cfg)
+	public XGDevice(XMLNode cfg) throws InvalidXGAddressException
 	{	this.config = cfg;
 		if(this.config == null)
 		{	this.config = new XMLNode(TAG_DEVICE, null);
@@ -194,9 +199,9 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.modules;
 	}
 
-	public XGAddressableSet<XGBulkDump> getBulks()
-	{	return this.bulks;
-	}
+//	public XGAddressableSet<XGBulkDump> getBulks()
+//	{	return this.bulks;
+//	}
 
 	public XGAddressableSet<XGOpcode> getOpcodes()
 	{	return this.opcodes;
@@ -391,7 +396,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException
-	{	//TODO:
+	{	//TODO: die im req angefragte Resource ausliefern
 		return null;
 	}
 }

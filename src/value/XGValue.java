@@ -32,7 +32,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 						dev.getValues().add(v);
 					}
 					catch(InvalidXGAddressException e)
-					{	e.printStackTrace();
+					{	log.info(e.getMessage());
 					}
 				}
 			}
@@ -112,7 +112,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		{	int progNr = this.parameterMaster.getContent(),
 				index = this.parameter.getIndex();
 			Map<Integer, XGParameter> map = this.source.getDevice().getParameterSets().get(progNr);
-			if(map != null) this.mutableParameter = map.get(index);
+			if(map != null)
+			{	this.mutableParameter = map.get(index);
+			}
 			else this.mutableParameter = null;
 		}
 	}
@@ -171,14 +173,6 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public boolean addContent(Integer i)
 	{	int old = this.content;
 		return this.setContent(old + i);
-//		XGParameter p = this.getParameter();
-//		XGTable t = p.getTranslationTable();
-//		if(t == null) return this.setContent(old + i);
-//		int index = t.getEntryByValue(old).getKey();
-//		this.content = t.getEntryByIndex(p.validate(index + i)).getKey();
-//		boolean changed = old != this.content;
-//		if(changed) this.notifyListeners();
-//		return changed;
 	}
 
 	public String getInfo()

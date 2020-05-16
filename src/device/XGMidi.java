@@ -218,12 +218,11 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	synchronized(this)
 		{	try
-			{	XGMessage m = XGMessage.newMessage(this, null, mmsg);
+			{	XGMessage m = XGMessage.newMessage(this, this.buffer, mmsg);
 				if(this.request != null && this.request.setResponsed((XGResponse)m))
-				{	this.requestThread.interrupt();//notify weckt zwar den Thread, interrupted ihn aber nicht und verhindert somit eine Unterscheidung zwischen Timeout und Response
-					return;
+				{	this.requestThread.interrupt();
+//					return;
 				}
-				if(m.getDestination() == null) m.setDestination(this.buffer);
 				m.getDestination().submit((XGResponse)m);
 			}
 			catch(InvalidMidiDataException|InvalidXGAddressException e)
@@ -241,7 +240,9 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	}
 
 	@Override public void midiSystemUpdated() throws CoreMidiException
-	{	log.info("CoreMidiSystem updated, " + this.midiInput + "=" + this.midiInput.isOpen() + ", " + this.midiOutput + "=" + this.midiOutput.isOpen());
+	{	this.setInput(this.midiInput);
+		this.setOutput(this.midiInput);
+		log.info("CoreMidiSystem updated, " + this.midiInput.getDeviceInfo() + "=" + this.midiInput.isOpen() + ", " + this.midiOutput.getDeviceInfo() + "=" + this.midiOutput.isOpen());
 		//	this.notifyConfigurationListeners();
 	}
 
@@ -272,7 +273,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 					Thread.sleep(this.timeoutValue);
 					throw new TimeoutException("timeout: no response within " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
 				}
-				catch(InterruptedException e)
+				catch(InterruptedException e)//wird bei validiertem empfang via send() interrupted, sofern ein request im Lauf ist...
 				{	log.info("response within " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
 				}
 			}

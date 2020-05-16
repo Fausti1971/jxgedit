@@ -3,8 +3,9 @@ package adress;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import application.XGLoggable;
 
-public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGAddressable, Iterable<XGAddress>
+public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGAddress>, XGAddressable, Iterable<XGAddress>
 {
 	private final XGAddressField hi, mid, lo;
 
@@ -33,9 +34,14 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
 	public XGAddress(String s, XGAddress adr)
 	{	XGAddressField h = DEF_ADDRESSFILED, m = DEF_ADDRESSFILED, l = DEF_ADDRESSFILED;
 		if(adr != null)
-		{	h = h.complement(adr.getHi());
-			m = m.complement(adr.getMid());
-			l = l.complement(adr.getLo());
+		{	try
+			{	h = h.complement(adr.getHi());
+				m = m.complement(adr.getMid());
+				l = l.complement(adr.getLo());
+			}
+			catch(InvalidXGAddressException e)
+			{	log.info(e.getMessage());
+			}
 		}
 //		StringTokenizer t = new StringTokenizer(s, "/");//Beachte: leere Tokens sind keine Tokens!
 		if(s != null && s.matches(REGEX_ADDRESS))
@@ -93,10 +99,15 @@ public class XGAddress implements XGAddressConstants, Comparable<XGAddress>, XGA
  * @return  die erfolgreich komplettierte Adresse
  * @throws InvalidXGAddressException 
  */
-	public XGAddress complement(XGAddress adr)
-	{	if(this.isFixed()) return this;
-//		if(adr.isFixed()) return adr;
-		return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
+	public XGAddress complement(XGAddress adr) throws InvalidXGAddressException
+	{	//		if(this.isFixed()) return this;
+		//		if(adr.isFixed()) return adr;
+		try
+		{	return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
+		}
+		catch(InvalidXGAddressException e)
+		{	throw new InvalidXGAddressException(e.getMessage() + " within address: " + this + " and " + adr);
+		}
 	}
 
 /**

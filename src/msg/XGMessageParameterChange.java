@@ -22,12 +22,13 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, XGValue v) throws InvalidXGAddressException, InvalidMidiDataException
 	{	super(src, dest, new byte[OVERHEAD + v.getOpcode().getAddress().getLo().getSize()], true);
-		setMessageID(MSG);
-		setHi(v.getAddress().getHi().getValue());
-		setMid(v.getAddress().getMid().getValue());
-		setLo(v.getAddress().getLo().getValue());
+		this.setMessageID(MSG);
+		XGAddress adr = v.getAddress();
+		this.setHi(adr.getHi().getValue());
+		this.setMid(adr.getMid().getValue());
+		this.setLo(adr.getLo().getValue());
 		v.encodeBytes(this, v.getContent());
-		setEOX(DATA_OFFS + v.getOpcode().getAddress().getLo().getSize());
+		this.setEOX(DATA_OFFS + v.getOpcode().getAddress().getLo().getSize());
 	}
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException

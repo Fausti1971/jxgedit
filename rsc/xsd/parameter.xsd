@@ -96,6 +96,7 @@
 			<xs:enumeration value="xml"/>
 			<xs:enumeration value="percent"/>
 			<xs:enumeration value="table"/>
+			<xs:enumeration value="panorama"/>
 		</xs:restriction>
 	</xs:simpleType>
 

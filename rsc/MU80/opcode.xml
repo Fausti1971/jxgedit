@@ -6,7 +6,7 @@
 	validierung funktioniert mit StAX nicht, also auch nicht das setzen eventueller default-Attribute
 -->
 
-<modules xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/opcode.xsd">
+<modules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/opcode.xsd">
 
 	<module name="Master" address="0/0/">
 		<bulk address="//0-6">
@@ -58,7 +58,7 @@
 			<opcode parameterID="chorus_10" address="//43"/>
 			<opcode address="//44" parameterID="effect_return"/>
 			<opcode address="//45" parameterID="effect_pan"/>
-			<opcode address="//46" parameterID="effect_to_reverb"/>
+			<opcode address="//46" parameterID="reverb_send"/>
 		</bulk>
 		<bulk address="//48-53">
 			<opcode parameterID="chorus_11" address="//48"/>
@@ -85,8 +85,8 @@
 			<opcode parameterID="variation_10" address="//84-85"/>
 			<opcode address="//86" parameterID="effect_return"/>
 			<opcode address="//87" parameterID="effect_pan"/>
-			<opcode address="//88" parameterID="effect_to_reverb"/>
-			<opcode address="//89" parameterID="effect_to_chorus"/>
+			<opcode address="//88" parameterID="reverb_send"/>
+			<opcode address="//89" parameterID="chorus_send"/>
 			<opcode address="//90" parameterID="variation_connection"/>
 			<opcode address="//91" parameterID="effect_part"/>
 			<opcode address="//92" parameterID="mw_control_depth"/>
@@ -204,6 +204,22 @@
 	<module name="Drumset" address="48-51/13-91/">
 		<bulk address="//0-15">
 			<opcode parameterID="dr_pitch_coarse" address="//0"/>
+			<opcode parameterID="dr_pitch_fine" address="//1"/>
+			<opcode parameterID="volume" address="//2"/>
+			<opcode parameterID="dr_alt_grp" address="//3"/>
+			<opcode parameterID="panorama" address="//4"/>
+			<opcode parameterID="reverb_send" address="//5"/>
+			<opcode parameterID="chorus_send" address="//6"/>
+			<opcode parameterID="variation_send" address="//7"/>
+			<opcode parameterID="key_assign" address="//8"/>
+			<opcode parameterID="rcv_note_on" address="//9"/>
+			<opcode parameterID="rcv_note_off" address="//10"/>
+			<opcode parameterID="hpf_cutoff" address="//11"/>
+			<opcode parameterID="hpf_resonance" address="//12"/>
+			<opcode parameterID="attack_time" address="//13"/>
+			<opcode parameterID="decay1_time" address="//14"/>
+			<opcode parameterID="decay2_time" address="//15"/>
+			
 		</bulk>
 	</module>
 </modules>
