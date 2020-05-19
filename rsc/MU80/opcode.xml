@@ -87,7 +87,7 @@
 			<opcode address="//87" parameterID="effect_pan"/>
 			<opcode address="//88" parameterID="reverb_send"/>
 			<opcode address="//89" parameterID="chorus_send"/>
-			<opcode address="//90" parameterID="variation_connection"/>
+			<opcode address="//90" parameterID="effect_connection"/>
 			<opcode address="//91" parameterID="effect_part"/>
 			<opcode address="//92" parameterID="mw_control_depth"/>
 			<opcode address="//93" parameterID="pb_control_depth"/>
@@ -137,7 +137,7 @@
 		</bulk>
 	</module>
 
-	<module name="FX2 Insertion" address="3/0-1/">
+	<module name="FX2 Insertion" address="3/0/">
 		<bulk address="//0-17">
 			<opcode parameterID="insertion_type" address="//0-1"/>
 			<opcode parameterID="insertion_1" address="//2"/>
@@ -150,7 +150,7 @@
 			<opcode parameterID="insertion_8" address="//9"/>
 			<opcode parameterID="insertion_9" address="//10"/>
 			<opcode parameterID="insertion_10" address="//11"/>
-			<opcode parameterID="insertion_part" address="//12"/>
+			<opcode parameterID="effect_part" address="//12"/>
 			<opcode address="//13" parameterID="mw_control_depth"/>
 			<opcode address="//14" parameterID="pb_control_depth"/>
 			<opcode address="//15" parameterID="cat_control_depth"/>

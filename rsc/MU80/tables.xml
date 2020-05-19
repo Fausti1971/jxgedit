@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- TODO: doppelte name-einträge per xsd verhindern -->
 <tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/tables.xsd">
+	<table name="var_connection">
+		<item value="0" name="Insert"/>
+		<item value="1" name="System"/>
+	</table>
+	
 	<table name="midi_channels">
 		<item value="0" name="A-01"/>
 		<item value="1" name="A-02"/>
@@ -35,6 +40,137 @@
 		<item value="30" name="B-15"/>
 		<item value="31" name="B-16"/>
 		<item value="127" name="Off"/>
+	</table>
+
+	<table name="tones">
+		<item value="0" name="C -2"/>
+		<item value="1" name="C#-2"/>
+		<item value="2" name="D -2"/>
+		<item value="3" name="D#-2"/>
+		<item value="4" name="E -2"/>
+		<item value="5" name="F -2"/>
+		<item value="6" name="F#-2"/>
+		<item value="7" name="G -2"/>
+		<item value="8" name="G#-2"/>
+		<item value="9" name="A -2"/>
+		<item value="0" name="A#-2"/>
+		<item value="11" name="B -2"/>
+		<item value="12" name="C -1"/>
+		<item value="13" name="C#-1"/>
+		<item value="14" name="D -1"/>
+		<item value="15" name="D#-1"/>
+		<item value="16" name="E -1"/>
+		<item value="17" name="F -1"/>
+		<item value="18" name="F#-1"/>
+		<item value="19" name="G -1"/>
+		<item value="20" name="G#-1"/>
+		<item value="21" name="A -1"/>
+		<item value="22" name="A#-1"/>
+		<item value="23" name="B -1"/>
+		<item value="24" name="C  0"/>
+		<item value="25" name="C# 0"/>
+		<item value="26" name="D  0"/>
+		<item value="27" name="D# 0"/>
+		<item value="28" name="E  0"/>
+		<item value="29" name="F  0"/>
+		<item value="30" name="F# 0"/>
+		<item value="31" name="G  0"/>
+		<item value="32" name="G# 0"/>
+		<item value="33" name="A  0"/>
+		<item value="34" name="A# 0"/>
+		<item value="35" name="B  0"/>
+		<item value="36" name="C  1"/>
+		<item value="37" name="C# 1"/>
+		<item value="38" name="D  1"/>
+		<item value="39" name="D# 1"/>
+		<item value="40" name="E  1"/>
+		<item value="41" name="F  1"/>
+		<item value="42" name="F# 1"/>
+		<item value="43" name="G  1"/>
+		<item value="44" name="G# 1"/>
+		<item value="45" name="A  1"/>
+		<item value="46" name="A# 1"/>
+		<item value="47" name="B  1"/>
+		<item value="48" name="C  2"/>
+		<item value="49" name="C# 2"/>
+		<item value="50" name="D  2"/>
+		<item value="51" name="D# 2"/>
+		<item value="52" name="E  2"/>
+		<item value="53" name="F  2"/>
+		<item value="54" name="F# 2"/>
+		<item value="55" name="G  2"/>
+		<item value="56" name="G# 2"/>
+		<item value="57" name="A  2"/>
+		<item value="58" name="A# 2"/>
+		<item value="59" name="B  2"/>
+		<item value="60" name="C  3"/>
+		<item value="61" name="C# 3"/>
+		<item value="62" name="D  3"/>
+		<item value="63" name="D# 3"/>
+		<item value="64" name="E  3"/>
+		<item value="65" name="F  3"/>
+		<item value="66" name="F# 3"/>
+		<item value="67" name="G  3"/>
+		<item value="68" name="G# 3"/>
+		<item value="69" name="A  3"/>
+		<item value="70" name="A# 3"/>
+		<item value="71" name="B  3"/>
+		<item value="72" name="C  4"/>
+		<item value="73" name="C# 4"/>
+		<item value="74" name="D  4"/>
+		<item value="75" name="D# 4"/>
+		<item value="76" name="E  4"/>
+		<item value="77" name="F  4"/>
+		<item value="78" name="F# 4"/>
+		<item value="79" name="G  4"/>
+		<item value="80" name="G# 4"/>
+		<item value="81" name="A  4"/>
+		<item value="82" name="A# 4"/>
+		<item value="83" name="B  4"/>
+		<item value="84" name="C  5"/>
+		<item value="85" name="C# 5"/>
+		<item value="86" name="D  5"/>
+		<item value="87" name="D# 5"/>
+		<item value="88" name="E  5"/>
+		<item value="89" name="F  5"/>
+		<item value="90" name="F# 5"/>
+		<item value="91" name="G  5"/>
+		<item value="92" name="G# 5"/>
+		<item value="93" name="A  5"/>
+		<item value="94" name="A# 5"/>
+		<item value="95" name="B  5"/>
+		<item value="96" name="C  6"/>
+		<item value="97" name="C# 6"/>
+		<item value="98" name="D  6"/>
+		<item value="99" name="D# 6"/>
+		<item value="100" name="E  6"/>
+		<item value="101" name="F  6"/>
+		<item value="102" name="F# 6"/>
+		<item value="103" name="G  6"/>
+		<item value="104" name="G# 6"/>
+		<item value="105" name="A  6"/>
+		<item value="106" name="A# 6"/>
+		<item value="107" name="B  6"/>
+		<item value="108" name="C  7"/>
+		<item value="109" name="C# 7"/>
+		<item value="110" name="D  7"/>
+		<item value="111" name="D# 7"/>
+		<item value="112" name="E  7"/>
+		<item value="113" name="F  7"/>
+		<item value="114" name="F# 7"/>
+		<item value="115" name="G  7"/>
+		<item value="116" name="G# 7"/>
+		<item value="117" name="A  7"/>
+		<item value="118" name="A# 7"/>
+		<item value="119" name="B  7"/>
+		<item value="120" name="C  8"/>
+		<item value="121" name="C# 8"/>
+		<item value="122" name="D  8"/>
+		<item value="123" name="D# 8"/>
+		<item value="124" name="E  8"/>
+		<item value="125" name="F  8"/>
+		<item value="126" name="F# 8"/>
+		<item value="127" name="G  8"/>
 	</table>
 
 	<table name="fx_programs">
@@ -2485,136 +2621,5 @@
 		<item value="14" name="135"/>
 		<item value="15" name="158"/>
 		<item value="16" name="180"/>
-	</table>
-
-	<table name="tones">
-		<item value="0" name="C -2"/>
-		<item value="1" name="C#-2"/>
-		<item value="2" name="D -2"/>
-		<item value="3" name="D#-2"/>
-		<item value="4" name="E -2"/>
-		<item value="5" name="F -2"/>
-		<item value="6" name="F#-2"/>
-		<item value="7" name="G -2"/>
-		<item value="8" name="G#-2"/>
-		<item value="9" name="A -2"/>
-		<item value="0" name="A#-2"/>
-		<item value="11" name="B -2"/>
-		<item value="12" name="C -1"/>
-		<item value="13" name="C#-1"/>
-		<item value="14" name="D -1"/>
-		<item value="15" name="D#-1"/>
-		<item value="16" name="E -1"/>
-		<item value="17" name="F -1"/>
-		<item value="18" name="F#-1"/>
-		<item value="19" name="G -1"/>
-		<item value="20" name="G#-1"/>
-		<item value="21" name="A -1"/>
-		<item value="22" name="A#-1"/>
-		<item value="23" name="B -1"/>
-		<item value="24" name="C  0"/>
-		<item value="25" name="C# 0"/>
-		<item value="26" name="D  0"/>
-		<item value="27" name="D# 0"/>
-		<item value="28" name="E  0"/>
-		<item value="29" name="F  0"/>
-		<item value="30" name="F# 0"/>
-		<item value="31" name="G  0"/>
-		<item value="32" name="G# 0"/>
-		<item value="33" name="A  0"/>
-		<item value="34" name="A# 0"/>
-		<item value="35" name="B  0"/>
-		<item value="36" name="C  1"/>
-		<item value="37" name="C# 1"/>
-		<item value="38" name="D  1"/>
-		<item value="39" name="D# 1"/>
-		<item value="40" name="E  1"/>
-		<item value="41" name="F  1"/>
-		<item value="42" name="F# 1"/>
-		<item value="43" name="G  1"/>
-		<item value="44" name="G# 1"/>
-		<item value="45" name="A  1"/>
-		<item value="46" name="A# 1"/>
-		<item value="47" name="B  1"/>
-		<item value="48" name="C  2"/>
-		<item value="49" name="C# 2"/>
-		<item value="50" name="D  2"/>
-		<item value="51" name="D# 2"/>
-		<item value="52" name="E  2"/>
-		<item value="53" name="F  2"/>
-		<item value="54" name="F# 2"/>
-		<item value="55" name="G  2"/>
-		<item value="56" name="G# 2"/>
-		<item value="57" name="A  2"/>
-		<item value="58" name="A# 2"/>
-		<item value="59" name="B  2"/>
-		<item value="60" name="C  3"/>
-		<item value="61" name="C# 3"/>
-		<item value="62" name="D  3"/>
-		<item value="63" name="D# 3"/>
-		<item value="64" name="E  3"/>
-		<item value="65" name="F  3"/>
-		<item value="66" name="F# 3"/>
-		<item value="67" name="G  3"/>
-		<item value="68" name="G# 3"/>
-		<item value="69" name="A  3"/>
-		<item value="70" name="A# 3"/>
-		<item value="71" name="B  3"/>
-		<item value="72" name="C  4"/>
-		<item value="73" name="C# 4"/>
-		<item value="74" name="D  4"/>
-		<item value="75" name="D# 4"/>
-		<item value="76" name="E  4"/>
-		<item value="77" name="F  4"/>
-		<item value="78" name="F# 4"/>
-		<item value="79" name="G  4"/>
-		<item value="80" name="G# 4"/>
-		<item value="81" name="A  4"/>
-		<item value="82" name="A# 4"/>
-		<item value="83" name="B  4"/>
-		<item value="84" name="C  5"/>
-		<item value="85" name="C# 5"/>
-		<item value="86" name="D  5"/>
-		<item value="87" name="D# 5"/>
-		<item value="88" name="E  5"/>
-		<item value="89" name="F  5"/>
-		<item value="90" name="F# 5"/>
-		<item value="91" name="G  5"/>
-		<item value="92" name="G# 5"/>
-		<item value="93" name="A  5"/>
-		<item value="94" name="A# 5"/>
-		<item value="95" name="B  5"/>
-		<item value="96" name="C  6"/>
-		<item value="97" name="C# 6"/>
-		<item value="98" name="D  6"/>
-		<item value="99" name="D# 6"/>
-		<item value="100" name="E  6"/>
-		<item value="101" name="F  6"/>
-		<item value="102" name="F# 6"/>
-		<item value="103" name="G  6"/>
-		<item value="104" name="G# 6"/>
-		<item value="105" name="A  6"/>
-		<item value="106" name="A# 6"/>
-		<item value="107" name="B  6"/>
-		<item value="108" name="C  7"/>
-		<item value="109" name="C# 7"/>
-		<item value="110" name="D  7"/>
-		<item value="111" name="D# 7"/>
-		<item value="112" name="E  7"/>
-		<item value="113" name="F  7"/>
-		<item value="114" name="F# 7"/>
-		<item value="115" name="G  7"/>
-		<item value="116" name="G# 7"/>
-		<item value="117" name="A  7"/>
-		<item value="118" name="A# 7"/>
-		<item value="119" name="B  7"/>
-		<item value="120" name="C  8"/>
-		<item value="121" name="C# 8"/>
-		<item value="122" name="D  8"/>
-		<item value="123" name="D# 8"/>
-		<item value="124" name="E  8"/>
-		<item value="125" name="F  8"/>
-		<item value="126" name="F# 8"/>
-		<item value="127" name="G  8"/>
 	</table>
 </tables>

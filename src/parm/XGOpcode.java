@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
+import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGBulkDump;
 import application.XGLoggable;
@@ -49,19 +50,26 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	private final XGBulkDump bulk;
 	private final XGAddress address;
 	private final ValueDataType dataType;
+	private final int dataSize;
 	private final String parameterID;
 
 	protected XGOpcode(XGDevice dev, XGModule mod, XGBulkDump bulk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
 	{	this.device = dev;
 		this.module = mod;
 		this.bulk = bulk;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), bulk.getAddress());
+		XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), bulk.getAddress());
+		this.dataSize = adr.getLo().getSize();
+		this.address = new XGAddress(adr.getHi(), adr.getMid(), new XGAddressField(adr.getLo().getMin()));
 		this.dataType = ValueDataType.valueOf(n.getStringAttribute(ATTR_DATATYPE, DEF_DATATYPE.name()));
 		this.parameterID = n.getStringAttribute(ATTR_PARAMETER_ID, "no id");
 	}
 
 	public ValueDataType getDataType()
 	{	return this.dataType;
+	}
+
+	public int getDataSize()
+	{	return this.dataSize;
 	}
 
 	@Override public XGAddress getAddress()

@@ -46,13 +46,12 @@ public class XGKnob extends XGFrame
 	{	super(n, mod);
 		this.config = n;
 		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
-		XGValue v = mod.getDevice().getValues().getFirstValid(this.address);
+		XGValue v = mod.getDevice().getValues().getFirstIncluding(this.address);
 		this.setEnabled(v != null);
 		if(v == null) v = DEF_VALUE;
 		this.value = v;
 		if(this.isEnabled())
-		{	this.setName(this.value.getParameter().getShortName());
-			this.setToolTipText(this.value.getParameter().getLongName());
+		{	this.setToolTipText(this.value.getParameter().getLongName());
 			this.setFocusable(true);
 		}
 		else this.setName("n/a");
@@ -76,16 +75,16 @@ public class XGKnob extends XGFrame
 	{	if(this.isEnabled()) super.paintComponent(g);
 	}
 
+	@Override public boolean isEnabled()
+	{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
+	}
+
 	@Override public JComponent getJComponent()
 	{	return this;
 	}
 
 	@Override public XMLNode getConfig()
 	{	return this.config;
-	}
-
-	@Override public boolean isEnabled()
-	{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
 	}
 
 	@Override public boolean isManagingFocus()
@@ -96,8 +95,7 @@ public class XGKnob extends XGFrame
 	{	return this.isEnabled();
 	}
 
-
-	private class XGKnobBar extends JComponent implements GuiConstants, MouseListener, MouseMotionListener, MouseWheelListener, XGValueChangeListener
+	private class XGKnobBar extends JComponent implements XGComponent, GuiConstants, MouseListener, MouseMotionListener, MouseWheelListener, XGValueChangeListener
 	{
 		/**
 		 * 
@@ -123,10 +121,10 @@ public class XGKnob extends XGFrame
 			this.addMouseWheelListener(this);
 		}
 
-		@Override public boolean isEnabled()
-		{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
-		}
-
+//		@Override public boolean isEnabled()
+//		{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
+//		}
+//
 		@Override public void paintComponent(Graphics g)
 		{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
 			Graphics2D g2 = (Graphics2D)g.create();
@@ -214,6 +212,18 @@ public class XGKnob extends XGFrame
 
 		@Override public void contentChanged(XGValue v)
 		{	this.repaint();
+		}
+
+		@Override public XMLNode getConfig()
+		{	return null;
+		}
+
+		@Override public JComponent getJComponent()
+		{	return this;
+		}
+
+		@Override public XGValue getValue()
+		{	return this.value;
 		}
 	}
 }

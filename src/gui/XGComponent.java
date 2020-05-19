@@ -68,6 +68,7 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 /********************************************************************************************/
 
 	public JComponent getJComponent();
+	public XGValue getValue();
 
 /**
  * erfragt die XML-Attribute ATTR_GB_W (grid_w) und ATTR_GB_H (grid_h) und setzt die minimum- und prefferedSize der Komponente; bei nicht vorhandenen Werten werden die übergebenen Default-Werte verwendet;
@@ -91,6 +92,15 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 
 	public default void deborderize()
 	{	this.getJComponent().setBorder(null);
+	}
+
+	public default boolean isEnabled()
+	{	return this.getJComponent().isEnabled() && this.getValue() != null && this.getValue().getParameter() != null;
+	}
+
+	public default String getName()
+	{	if(this.isEnabled()) return this.getValue().getParameter().getShortName();
+		else return "n/a";
 	}
 
 	@Override public default void mouseClicked(MouseEvent e)

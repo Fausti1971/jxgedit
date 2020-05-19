@@ -85,27 +85,55 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	}
 
 	public T getFirstValidOrDefault(XGAddress adr, T def)
-	{	T res = getFirstValid(adr);
+	{	T res = getFirstIncluding(adr);
 		if(res == null) return def;
 		return res;
 	}
-
-	public synchronized T getFirstValid(XGAddress adr)
+/**
+ * 	returniert den ersten auffindbaren Member, der in adr eingeschlossen ist
+ * @param adr	einschließende address (this ist eingeschlossene address)
+ * @return	erstes auffindbares match oder null
+ */
+	public synchronized T getFirstIncluded(XGAddress adr)
 	{	for(T a : this.map.values()) if(adr.contains(a.getAddress())) return a;
-		log.info("no " + this.memberName + " found for address: " + adr);
+		log.info("no " + this.memberName + " found included in address: " + adr);
 		return null;
 	}
 
 /**
- * returniert ein Set aller Members, deren XGAddress eine gemeinsame Teilmenge von adr sind
- * @param adr
- * @return	Set
+ * returniert den ersten auffindbaren Member, dessen address adr einschließt
+ * @param adr	die eingeschlossene address (this ist die einschließende address)
+ * @return	erstes auffindbares match oder null
  */
-	public synchronized XGAddressableSet<T> getAllValid(XGAddress adr)
+	public synchronized T getFirstIncluding(XGAddress adr)
+	{	for(T a : this.map.values()) if(a.getAddress().contains(adr)) return a;
+		log.info("no " + this.memberName + " found containing address: " + adr);
+		return null;
+	}
+
+/**
+ * returniert ein Set aller Members, deren address von adr eingeschlossen wird
+ * @param adr die einschließende address (this ist die eingeschlossene address)
+ * @return	Set aller auffindbaren matches
+ */
+	public synchronized XGAddressableSet<T> getAllIncluded(XGAddress adr)
 	{	XGAddressableSet<T> set = new XGAddressableSet<>();
 		for(T i : this.values()) if(adr.contains(i.getAddress())) set.add(i);
 		this.addListener(set);
-		log.info(set.size() + " " + this.memberName + "(s) found for address: " + adr);
+		log.info(set.size() + " " + this.memberName + "(s) found included in address: " + adr);
+		return set;
+	}
+
+/**
+ * returniert ein Set aller Members, deren address adr einschließt
+ * @param adr die eingeschlossene address (this ist die einschließende address)
+ * @return	Set aller auffindbaren matches
+ */
+	public synchronized XGAddressableSet<T> getAllIncluding(XGAddress adr)
+	{	XGAddressableSet<T> set = new XGAddressableSet<>();
+		for(T i : this.values()) if(i.getAddress().contains(adr)) set.add(i);
+		this.addListener(set);
+		log.info(set.size() + " " + this.memberName + "(s) found containing address: " + adr);
 		return set;
 	}
 

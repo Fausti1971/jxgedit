@@ -8,6 +8,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import device.XGDevice;
 import value.ChangeableContent;
+import value.XGValue;
 import xml.XMLNode;
 
 public class XGDeviceDetector extends JTextField implements XGComponent, DocumentListener, ActionListener
@@ -58,5 +59,9 @@ public class XGDeviceDetector extends JTextField implements XGComponent, Documen
 
 	@Override public JComponent getJComponent()
 	{	return this;
+	}
+
+	@Override public XGValue getValue()
+	{	return null;
 	}
 }

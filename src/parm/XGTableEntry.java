@@ -24,6 +24,12 @@ public class XGTableEntry implements ConfigurationConstants
 		this.filters = Rest.splitCSV(n.getStringAttribute(ATTR_TABLEFILTER));
 	}
 
+	public XGTableEntry(int i, String translate)
+	{	this.key = i;
+		this.name = translate;
+		this.filters = null;
+	}
+
 	public int getKey()
 	{	return this.key;
 	}

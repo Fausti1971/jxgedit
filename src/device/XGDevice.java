@@ -59,6 +59,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		ACTIONS.add(ACTION_REMOVE);
 		ACTIONS.add(ACTION_LOADFILE);
 		ACTIONS.add(ACTION_SAVEFILE);
+		ACTIONS.add(ACTION_REQUEST);
+		ACTIONS.add(ACTION_TRANSMIT);
 	}
 
 	public static Set<XGDevice> getDevices()
@@ -306,6 +308,11 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 				break;
 			case ACTION_SAVEFILE:
 				break;
+			case ACTION_TRANSMIT:
+				break;
+			case ACTION_REQUEST:
+				for(XGModule m : this.getModules()) m.request();
+				break;
 			default:
 				break;
 		}
@@ -383,8 +390,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		{	XGAddress adr = new XGAddress(hi, mid, offset);
 			XGValue v = this.values.get(adr);
 			if(v != null)
-			{	v.setContent(v.decodeBytes(msg));
-				size = v.getOpcode().getAddress().getLo().getSize();
+			{	v.setContent(v.decodeMessage(msg));
+				size = v.getOpcode().getDataSize();
 			}
 			else
 			{	log.info("value not found: " + adr);

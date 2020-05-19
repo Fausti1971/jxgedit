@@ -111,7 +111,7 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 	}
 
 /**
- * testet, ob fixe Felder gleich sind bzw. variable Felder eine gemeinsame Teilmenge haben
+ * testet, ob alle Felder von adr in allen Feldern von this enthalten sind
  * @param adr Adresse gegen deren Felder getestet wird
  * @return true, wenn alle Felder ineinander enthalten sind
  */

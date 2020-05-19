@@ -34,21 +34,21 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGComponent, XGV
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.config = n;
 		this.module = mod;
-		XGValue v = mod.getDevice().getValues().getFirstValid(this.address);
+		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
 		this.setEnabled(v != null);
 		if(v == null) v = DEF_VALUE;
 		this.value = v;
 		if(this.isEnabled())
-		{	XGTable t = this.value.getParameter().getTranslationTable();
-			this.setName(this.value.getParameter().getShortName());
+		{	this.setName(this.value.getParameter().getShortName());
+			XGTable t = this.value.getParameter().getValueTranslator().getTable(v);
 			for(XGTableEntry e : t.values()) this.addItem(e);
-			this.setAutoscrolls(true);
 			this.setMaximumRowCount(t.size());
 			this.setSelectedItem(t.get(this.value.getContent()));
 			this.setToolTipText(this.value.getParameter().getLongName());
 			this.setFocusable(true);
 			this.value.addListener(this);
 		}
+		this.setAutoscrolls(true);
 		this.setSizes(PREF_W, PREF_H);
 		this.borderize();
 		this.addActionListener(this);
@@ -75,7 +75,7 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGComponent, XGV
 	}
 
 	@Override public void contentChanged(XGValue v)
-	{	this.setSelectedItem(this.value.getParameter().getTranslationTable().get(v.getContent()));
+	{	this.setSelectedItem(this.value.getParameter().getValueTranslator().getTable(this.value).get(v.getContent()));
 	}
 
 	@Override public XMLNode getConfig()
@@ -84,5 +84,9 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGComponent, XGV
 
 	@Override public JComponent getJComponent()
 	{	return this;
+	}
+
+	@Override public XGValue getValue()
+	{	return this.value;
 	}
 }

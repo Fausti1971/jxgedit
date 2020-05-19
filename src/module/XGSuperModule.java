@@ -53,7 +53,7 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 		this.name = n.getStringAttribute(ATTR_NAME);
 		this.device = dev;
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), null);
-		this.guiTemplate = dev.getTemplates().get(this.address);
+		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
 		this.initChildren();
 		log.info("module initialized: " + this.name);
 	}

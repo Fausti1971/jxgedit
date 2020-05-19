@@ -62,7 +62,7 @@ public class XGTable extends TreeMap<Integer, XGTableEntry> implements Configura
 		}
 	}
 
-	private XGTable(String name)
+	XGTable(String name)
 	{	this.name = name;
 		this.unit = null;
 	}
@@ -78,7 +78,7 @@ public class XGTable extends TreeMap<Integer, XGTableEntry> implements Configura
 	{	String f = n.getStringAttribute(ATTR_TABLEFILTER);
 		int min = n.getIntegerAttribute(ATTR_MIN, XGParameterConstants.DEF_MIN);
 		int max = n.getIntegerAttribute(ATTR_MAX, XGParameterConstants.DEF_MAX);
-		XGTable table = new XGTable(this.name);
+		XGTable table = new XGTable(this.name + "-" + f);
 		for(XGTableEntry e : this.values())
 			if(e.hasFilter(f) && e.getKey() >= min && e.getKey() <= max) table.put(e.getKey(), e);
 		return table;

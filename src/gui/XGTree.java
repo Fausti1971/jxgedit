@@ -11,6 +11,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
+import value.XGValue;
 import xml.XMLNode;
 
 public class XGTree extends JTree implements MouseListener, KeyListener, GuiConstants, XGComponent
@@ -141,5 +142,9 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 
 	@Override public XMLNode getConfig()
 	{	return new XMLNode("tree", null);
+	}
+
+	@Override public XGValue getValue()
+	{	return null;
 	}
 }

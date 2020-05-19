@@ -46,7 +46,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	public XGSlider(XMLNode n, XGModule mod)
 	{	super(n, mod);
 		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
-		XGValue v = mod.getDevice().getValues().getFirstValid(this.address);
+		XGValue v = mod.getDevice().getValues().getFirstIncluding(this.address);
 		this.value = v;
 		if(this.isEnabled())
 		{	this.setToolTipText(null);

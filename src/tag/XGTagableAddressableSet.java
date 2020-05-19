@@ -36,11 +36,11 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 	}
 
 	public Set<T> getAllValid(XGAddress adr)
-	{	return this.adrSet.getAllValid(adr);
+	{	return this.adrSet.getAllIncluding(adr);
 	}
 
 	public T getOrDefault(XGAddress adr, T def)
-	{	T v = this.adrSet.getFirstValid(adr);
+	{	T v = this.adrSet.getFirstIncluding(adr);
 		if(v == null)
 		{	log.info(def.getClass().getSimpleName() + " " + adr + " not found, using " + def);
 			return def;

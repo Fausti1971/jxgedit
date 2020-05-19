@@ -4,6 +4,7 @@ import java.awt.GridBagLayout;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import module.XGModule;
+import value.XGValue;
 import xml.XMLNode;
 
 public class XGFrame extends JPanel implements XGComponent
@@ -39,5 +40,9 @@ public class XGFrame extends JPanel implements XGComponent
 
 	@Override public XMLNode getConfig()
 	{	return this.config;
+	}
+
+	@Override public XGValue getValue()
+	{	return null;
 	}
 }

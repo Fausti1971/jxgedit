@@ -57,7 +57,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.content = v;
 		this.parameterMaster = null;
 		this.opcode = null;
-		log.info("dummy value initialized: " + name);
+//		log.info("dummy value initialized: " + name);
 	}
 
 	public XGValue(XGMessenger src, XGOpcode opc, XGAddress adr) throws InvalidXGAddressException
@@ -77,7 +77,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		}
 		else this.parameterMaster = null;
 		this.content = 0;
-		log.info("value initialized: " + this.getInfo());
+//		log.info("value initialized: " + this.getInfo());
 	}
 
 /*	public XGValue(XGFixedParameter prm, XGResponse msg) throws InvalidXGAddressException
@@ -132,9 +132,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.opcode.getModule();
 	}
 
-	public int decodeBytes(XGResponse msg) throws InvalidXGAddressException
+	public int decodeMessage(XGResponse msg) throws InvalidXGAddressException
 	{	int offset = msg.getBaseOffset() + this.opcode.getAddress().getLo().getMin() - msg.getLo();
-		int size = this.opcode.getAddress().getLo().getSize();
+		int size = this.opcode.getDataSize();
 		switch(this.opcode.getDataType())
 		{	default:
 			case LSB:	return msg.decodeLSB(offset, size);
@@ -142,9 +142,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		}
 	}
 
-	public void encodeBytes(XGResponse msg, int o) throws InvalidXGAddressException
+	public void encodeMessage(XGResponse msg, int o) throws InvalidXGAddressException
 	{	int offset = msg.getBaseOffset() + this.address.getLo().getValue() - msg.getLo();
-		int size = this.opcode.getAddress().getLo().getSize();
+		int size = this.opcode.getDataSize();
 		switch(this.opcode.getDataType())
 		{	default:
 			case LSB:	msg.encodeLSB(offset, size, o); break;
