@@ -13,6 +13,7 @@ public class XGTableEntry implements ConfigurationConstants
 	private final int key;
 	private final String name;
 	private final Set<String> filters;
+	private final Set<String> categories;
 
 	public XGTableEntry(XMLNode n)
 	{	int i = 0;
@@ -22,12 +23,14 @@ public class XGTableEntry implements ConfigurationConstants
 		this.key = i;
 		this.name = n.getStringAttribute(ATTR_NAME, "no value");
 		this.filters = Rest.splitCSV(n.getStringAttribute(ATTR_TABLEFILTER));
+		this.categories = Rest.splitCSV(n.getStringAttribute(ATTR_TABLECATEGORIES));
 	}
 
 	public XGTableEntry(int i, String translate)
 	{	this.key = i;
 		this.name = translate;
 		this.filters = null;
+		this.categories = null;
 	}
 
 	public int getKey()
@@ -36,6 +39,10 @@ public class XGTableEntry implements ConfigurationConstants
 
 	public String getName()
 	{	return this.name;
+	}
+
+	public Set<String> getCategories()
+	{	return this.categories;
 	}
 
 	public boolean hasFilter(String s)

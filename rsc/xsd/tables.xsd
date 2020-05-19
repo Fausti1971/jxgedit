@@ -24,16 +24,11 @@
 			<xs:attribute name="lsb" type="xs:nonNegativeInteger" use="optional"/>
 			<xs:attribute name="value" type="xs:nonNegativeInteger" use="optional"/>
 			<xs:attribute name="name" type="xs:string"/>
-			<xs:attribute name="tableFilter" type="csv" use="optional"/>
+			<xs:attribute name="tableFilter" type="xs:string" use="optional"/>
+			<xs:attribute name="categories" type="xs:string" use="optional"/>
 			<xs:attribute name="address" type="addressType"/>
 		</xs:complexType>
 	</xs:element>
-
-	<xs:simpleType name="csv">
-		<xs:restriction base="xs:string">
-			<xs:pattern value="[\w]+((,[\w]+)+)?"/>
-		</xs:restriction>
-	</xs:simpleType>
 
 	<xs:simpleType name="addressType">
 		<xs:restriction base="xs:string">

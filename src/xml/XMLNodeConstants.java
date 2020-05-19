@@ -57,6 +57,7 @@ public interface XMLNodeConstants
 		ATTR_TRANSLATOR = "translator",
 		ATTR_TRANSLATIONTABLE = "translationTable",
 		ATTR_TABLEFILTER = "tableFilter",
+		ATTR_TABLECATEGORIES = "categories",
 		ATTR_LONGNAME = "longName",
 		ATTR_SHORTNAME = "shortName",
 		ATTR_UNIT = "unit",
