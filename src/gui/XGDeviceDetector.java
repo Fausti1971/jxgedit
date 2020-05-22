@@ -1,17 +1,16 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import device.XGDevice;
 import value.ChangeableContent;
-import value.XGValue;
-import xml.XMLNode;
 
-public class XGDeviceDetector extends JTextField implements XGComponent, DocumentListener, ActionListener
+public class XGDeviceDetector extends JTextField implements DocumentListener, ActionListener, GuiConstants
 {	/**
 	 * 
 	 */
@@ -21,7 +20,6 @@ public class XGDeviceDetector extends JTextField implements XGComponent, Documen
 
 	private ChangeableContent<String> value;
 	private XGDevice device;
-	private XMLNode config = new XMLNode("device-detector", null);
 
 	public XGDeviceDetector(String name, ChangeableContent<String> v, XGDevice dev)
 	{	super(v.getContent());
@@ -30,8 +28,10 @@ public class XGDeviceDetector extends JTextField implements XGComponent, Documen
 		this.device = dev;
 		this.setAlignmentX(0.5f);
 		this.setName(name);
-		this.borderize();
-		this.setSizes(5, 1);
+		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+		Dimension dim = new Dimension(5, 1);
+		this.setMinimumSize(dim);
+		this.setPreferredSize(dim);
 		this.getDocument().addDocumentListener(this);
 		this.addActionListener(this);
 	}
@@ -51,17 +51,5 @@ public class XGDeviceDetector extends JTextField implements XGComponent, Documen
 	@Override public void actionPerformed(ActionEvent e)
 	{	device.requestInfo();
 		setText(value.getContent());
-	}
-
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
-
-	@Override public JComponent getJComponent()
-	{	return this;
-	}
-
-	@Override public XGValue getValue()
-	{	return null;
 	}
 }

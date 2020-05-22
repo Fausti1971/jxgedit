@@ -11,9 +11,8 @@ import adress.InvalidXGAddressException;
 import device.XGDevice;
 import msg.XGMessageParameterChange;
 import value.XGValue;
-import value.XGValueChangeListener;
 
-public class XGValueLabel extends JTextField implements GuiConstants, ActionListener, XGValueChangeListener, MouseListener
+public class XGValueLabel extends JTextField implements GuiConstants, ActionListener, MouseListener
 {	/**
 	 * 
 	 */
@@ -31,17 +30,8 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 		if(this.isEnabled()) this.setText(this.getText());
 		this.setFont(FONT);
 		this.setHorizontalAlignment(JTextField.CENTER);
-		this.value.addListener(this);
 		this.addMouseListener(this);
 		this.addActionListener(this);
-	}
-
-	@Override public String getText()
-	{	return this.value.toString();
-	}
-
-	@Override public boolean isEnabled()
-	{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
@@ -62,11 +52,6 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 
 	@Override protected void paintComponent(Graphics g)
 	{	if(this.isEnabled()) super.paintComponent(g);
-	}
-
-	@Override public void contentChanged(XGValue v)
-	{	if(this.isEnabled()) this.setText(this.value.toString());
-		this.repaint();
 	}
 
 	@Override public void mouseClicked(MouseEvent e)

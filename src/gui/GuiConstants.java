@@ -4,14 +4,19 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
+import java.awt.RenderingHints;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
 import javax.swing.UIManager;
+import javax.swing.border.Border;
 import application.ConfigurationConstants;
 
 public interface GuiConstants extends ConfigurationConstants
 {
+	static final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
 	GridBagConstraints GBCONSTRAINTS = new GridBagConstraints();
 	Map<String, Integer> GBC = new HashMap<>()
 	{	/**
@@ -72,5 +77,7 @@ public interface GuiConstants extends ConfigurationConstants
 	int END_ARC = 315;
 	int LENGTH_ARC = -270;
 
+	Border defaultLineBorder = BorderFactory.createLineBorder(COL_BORDER, 1, true);
+	Border focusLineBorder = BorderFactory.createLineBorder(COL_NODE_FOCUS, 1, true);
 
 }

@@ -6,15 +6,12 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JComponent;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
-import value.XGValue;
-import xml.XMLNode;
 
-public class XGTree extends JTree implements MouseListener, KeyListener, GuiConstants, XGComponent
+public class XGTree extends JTree implements MouseListener, KeyListener, GuiConstants
 {	/**
 	 * 
 	 */
@@ -135,16 +132,4 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 		this.setFocussedNode((XGTreeNode)c);
 	}
 */
-
-	@Override public JComponent getJComponent()
-	{	return this;
-	}
-
-	@Override public XMLNode getConfig()
-	{	return new XMLNode("tree", null);
-	}
-
-	@Override public XGValue getValue()
-	{	return null;
-	}
 }

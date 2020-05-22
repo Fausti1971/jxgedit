@@ -1,6 +1,5 @@
 package gui;
 
-import javax.swing.JComponent;
 import module.XGModule;
 import xml.XMLNode;
 
@@ -13,10 +12,6 @@ public class XGEnvelope extends XGFrame
 
 	public XGEnvelope(XMLNode n, XGModule mod)
 	{	super(n, mod);
-	}
-
-	@Override public JComponent getJComponent()
-	{	return this;
 	}
 
 	@Override public XMLNode getConfig()

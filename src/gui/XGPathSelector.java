@@ -1,19 +1,18 @@
 package gui;
 
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.swing.JComponent;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import file.XGSysexFile;
 import value.ChangeableContent;
-import value.XGValue;
-import xml.XMLNode;
 
-public class XGPathSelector extends JTextField implements XGComponent, DocumentListener, ActionListener
+public class XGPathSelector extends JTextField implements DocumentListener, ActionListener, GuiConstants
 {
 	/**
 	 * 
@@ -23,13 +22,14 @@ public class XGPathSelector extends JTextField implements XGComponent, DocumentL
 /*****************************************************************************************************************************/
 
 	private ChangeableContent<Path> value;
-	private XMLNode config = new XMLNode("path-selector", null);
 
 	public XGPathSelector(String name, ChangeableContent<Path> v)
 	{	super(v.getContent().toString());
 		this.setName(name);//TODO: suboptimal, über String XGComponent.name nachdenken...
-		this.setSizes(5, 1);
-		this.borderize();
+		Dimension dim = new Dimension(5, 1);
+		this.setMinimumSize(dim);
+		this.setPreferredSize(dim);
+		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
 		this.setToolTipText("press enter for fileselector");
 		this.value = v;
 		this.setAlignmentX(0.5f);
@@ -54,17 +54,5 @@ public class XGPathSelector extends JTextField implements XGComponent, DocumentL
 
 	@Override public void changedUpdate(DocumentEvent e)
 	{	value.setContent(Paths.get(getText()));
-	}
-
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
-
-	@Override public JComponent getJComponent()
-	{	return this;
-	}
-
-	@Override public XGValue getValue()
-	{	return null;
 	}
 }

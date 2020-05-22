@@ -16,7 +16,6 @@ import java.awt.event.MouseWheelListener;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
 import application.JXG;
 import application.Rest;
 import device.XGDevice;
@@ -38,16 +37,13 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 
 /*****************************************************************************************************************************/
 
-	private final XGAddress address;
-	private final XGValue value;
+//	private final XGAddress address;
+//	private final XGValue value;
 	private final XGSliderBar bar;
 	private final XGValueLabel label;
 
 	public XGSlider(XMLNode n, XGModule mod)
 	{	super(n, mod);
-		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
-		XGValue v = mod.getDevice().getValues().getFirstIncluding(this.address);
-		this.value = v;
 		if(this.isEnabled())
 		{	this.setToolTipText(null);
 			this.setFocusable(true);
@@ -55,7 +51,6 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 //		this.setName(this.value.getParameter().getShortName());
 		this.setSizes(PREF_W,  PREF_H);
 		this.borderize();
-		v.addListener(this);
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 
@@ -100,10 +95,6 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	{
 	}
 
-	@Override public JComponent getJComponent()
-	{	return this;
-	}
-
 	@Override public boolean isManagingFocus()
 	{	return true;
 	}
@@ -132,7 +123,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 			//this.setBorder(null);	buggy: getX() liefert IMMER inset.left; getY() IMMER inset.top; (5, 15)! Bug?; deshalb beim malen diese koordinaten ignorieren...
 			this.value = v;
 			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.value.addListener(this);
+			this.value.addValueListener(this);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			this.addMouseWheelListener(this);

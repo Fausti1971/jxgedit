@@ -7,9 +7,9 @@
 		<knob value="0/0/6"/>
 	</frame>
 	<frame address="2/1/0-21">
-		<combo value="2/1/0" grid_x="0" grid_y="0" grid_w="4" grid_fill="1"/>
-		<knob value="2/1/12" grid_x="4" grid_y="0"/>
-		<knob value="2/1/13" grid_x="5" grid_y="0"/>
+		<combo value="2/1/0" grid_x="0" grid_y="0" grid_w="5" grid_fill="1"/>
+		<knob value="2/1/12"/>
+		<knob value="2/1/13"/>
 
 		<knob value="2/1/2" grid_x="0" grid_y="1"/>
 		<knob value="2/1/3" grid_x="1" grid_y="1"/>
@@ -30,10 +30,10 @@
 	</frame>
 
 	<frame address="2/1/32-53">
-		<combo value="2/1/32" grid_x="0" grid_y="0" grid_w="4" grid_fill="1"/>
-		<knob value="2/1/44" grid_x="4" grid_y="0"/>
-		<knob value="2/1/45" grid_x="5" grid_y="0"/>
-		<knob value="2/1/46" grid_x="6" grid_y="0"/>
+		<combo value="2/1/32" grid_x="0" grid_y="0" grid_w="5" grid_fill="1"/>
+		<knob value="2/1/44"/>
+		<knob value="2/1/45"/>
+		<knob value="2/1/46"/>
 
 		<knob value="2/1/34" grid_x="0" grid_y="3"/>
 		<knob value="2/1/35" grid_x="1" grid_y="3"/>
@@ -54,13 +54,13 @@
 	</frame>
 
 	<frame address="2/1/64-117">
-		<combo value="2/1/64" grid_x="0" grid_y="0" grid_w="4" grid_fill="1"/>
-		<knob value="2/1/86" grid_x="4" grid_y="0"/>
-		<knob value="2/1/87" grid_x="5" grid_y="0"/>
-		<knob value="2/1/88" grid_x="6" grid_y="0"/>
-		<knob value="2/1/89" grid_x="7" grid_y="0"/>
-		<knob value="2/1/90" grid_x="8" grid_y="0"/>
-		<knob value="2/1/91" grid_x="9" grid_y="0"/>
+		<combo value="2/1/64" grid_x="0" grid_y="0" grid_w="5" grid_fill="1"/>
+		<knob value="2/1/86" grid_x="5" grid_y="0"/>
+		<knob value="2/1/87"/>
+		<knob value="2/1/88"/>
+		<knob value="2/1/89"/>
+		<radio value="2/1/90" grid_w="2"/>
+		<knob value="2/1/91"/>
 
 		<knob value="2/1/92" grid_x="0" grid_y="1"/>
 		<knob value="2/1/93" grid_x="1" grid_y="1"/>
@@ -89,8 +89,8 @@
 		<knob value="2/1/117" grid_x="15" grid_y="2"/>
 	</frame>
 	<frame address="3//">
-		<combo value="3//0" grid_x="0" grid_y="0" grid_w="4" grid_fill="1"/>
-		<knob value="3//12" grid_x="4" grid_y="0"/>
+		<combo value="3//0" grid_x="0" grid_y="0" grid_w="5" grid_fill="1"/>
+		<knob value="3//12"/>
 
 		<knob value="3//13" grid_x="0" grid_y="1"/>
 		<knob value="3//14" grid_x="1" grid_y="1"/>

@@ -26,7 +26,6 @@ import adress.XGAddressableSet;
 import application.Configurable;
 import application.JXG;
 import file.XGSysexFile;
-import gui.XGComponent;
 import gui.XGContext;
 import gui.XGDeviceDetector;
 import gui.XGFrame;
@@ -343,17 +342,17 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public JComponent getConfigComponent()
 	{	XGFrame root = new XGFrame("device");
 
-		XGComponent c = this.getMidi().getConfigComponent();
-		root.addGB(c.getJComponent(), 0, 0);
+		JComponent c = this.getMidi().getConfigComponent();
+		root.addGB(c, 0, 0);
 
 		c = new XGSpinner("sysexID", this.sysex, 0, 15, 1);
-		root.addGB(c.getJComponent(), 0, 1, 1, 1);
+		root.addGB(c, 0, 1, 1, 1);
 
 		c = new XGDeviceDetector("device name", this.name, this);
-		root.addGB(c.getJComponent(), 0, 2);
+		root.addGB(c, 0, 2);
 
 		c = new XGPathSelector("default dump folder", this.defaultDumpFolder);
-		root.addGB(c.getJComponent(), 0, 3);
+		root.addGB(c, 0, 3);
 
 		return root;
 	}

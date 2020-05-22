@@ -13,6 +13,7 @@ import msg.XGMessenger;
 import msg.XGResponse;
 import parm.XGOpcode;
 import parm.XGParameter;
+import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
 /**
  * 
@@ -48,7 +49,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	private final XGParameter parameter;
 	private XGParameter mutableParameter;
 	private final XGValue parameterMaster;
-	private final Set<XGValueChangeListener> listeners = new HashSet<>();
+	private final Set<XGValueChangeListener> valueListeners = new HashSet<>();
+	private final Set<XGParameterChangeListener> parameterListeners = new HashSet<>();
 
 	public XGValue(String name, int v)
 	{	this.source = null;
@@ -70,7 +72,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		{	XGAddress a = this.parameter.getMasterAddress().complement(this.address);
 			this.parameterMaster = src.getDevice().getValues().get(a);
 			if(this.parameterMaster != null)
-			{	this.parameterMaster.addListener(this);
+			{	this.parameterMaster.addValueListener(this);
 				this.assignMutableParameter();
 			}
 			else log.info("master not found: " + a);
@@ -87,16 +89,24 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.content = this.decodeBytes(msg);
 	}
 */
-	public void addListener(XGValueChangeListener l)
-	{	this.listeners.add(l);
+	public void addValueListener(XGValueChangeListener l)
+	{	this.valueListeners.add(l);
 	}
 
-	public void removeListener(XGValueChangeListener l)
-	{	this.listeners.remove(l);
+	public void removeValueListener(XGValueChangeListener l)
+	{	this.valueListeners.remove(l);
+	}
+
+	public void addParameterListener(XGParameterChangeListener l)
+	{	this.parameterListeners.add(l);
+	}
+
+	public void removeParameterListener(XGParameterChangeListener l)
+	{	this.parameterListeners.remove(l);
 	}
 
 	public synchronized void notifyListeners()
-	{	for(XGValueChangeListener l : this.listeners) l.contentChanged(this);
+	{	for(XGValueChangeListener l : this.valueListeners) l.contentChanged(this);
 	}
 
 	public XGMessenger getSource()
@@ -116,6 +126,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 			{	this.mutableParameter = map.get(index);
 			}
 			else this.mutableParameter = null;
+			for(XGParameterChangeListener l : this.parameterListeners) l.parameterChanged(this.mutableParameter);
 		}
 	}
 
@@ -191,7 +202,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	@Override public void contentChanged(XGValue v)
 	{	if(v.equals(this.parameterMaster)) this.assignMutableParameter();
-		this.notifyListeners();
+		else this.notifyListeners();
 	}
 
 	@Override public void setChanged(XGAddressable t)

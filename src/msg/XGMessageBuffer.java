@@ -18,14 +18,12 @@ import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.XGLoggable;
 import device.XGDevice;
-import gui.XGComponent;
 import gui.XGFrame;
 import gui.XGWindow;
 import gui.XGWindowSource;
-import value.XGValue;
 import xml.XMLNode;
 
-public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMessenger, XGWindowSource, XGComponent, XGLoggable
+public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMessenger, XGWindowSource, XGLoggable
 {	private final XGMessenger source;
 	private XGWindow window;
 	private final JList<XGMessage> list = new JList<>(new DefaultListModel<XGMessage>());
@@ -169,17 +167,5 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	{
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override public JComponent getJComponent()
-	{	return this.getChildWindowContent();
-	}
-
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
-
-	@Override public XGValue getValue()
-	{	return null;
 	}
 }

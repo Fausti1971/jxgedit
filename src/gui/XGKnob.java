@@ -15,18 +15,18 @@ import java.awt.event.MouseWheelListener;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
 import application.JXG;
 import application.Rest;
 import device.XGDevice;
 import module.XGModule;
 import msg.XGMessageParameterChange;
 import parm.XGParameter;
+import parm.XGParameterChangeListener;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGKnob extends XGFrame
+public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
 {
 	/**
 	 * 
@@ -36,66 +36,55 @@ public class XGKnob extends XGFrame
 
 /*****************************************************************************************************************************/
 
-	private final XGValue value;
-	private final XGAddress address;
-	private final XMLNode config;
 	private final XGKnobBar bar;
 	private final XGValueLabel label;
 
 	public XGKnob(XMLNode n, XGModule mod)
 	{	super(n, mod);
-		this.config = n;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
-		XGValue v = mod.getDevice().getValues().getFirstIncluding(this.address);
-		this.setEnabled(v != null);
-		if(v == null) v = DEF_VALUE;
-		this.value = v;
-		if(this.isEnabled())
-		{	this.setToolTipText(this.value.getParameter().getLongName());
-			this.setFocusable(true);
-		}
-		else this.setName("n/a");
 		this.setSizes(PREF_W, PREF_H);
-		this.borderize();
 		this.addMouseListener(this);
 		this.addFocusListener(this);
+		this.value.addParameterListener(this);
+		this.value.addValueListener(this);
 
 		this.bar = new XGKnobBar(this.value);
-		this.bar.setEnabled(this.isEnabled());
 		this.addGB(this.bar, 0, 0, 1, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTH, new Insets(0,0,2,0), 0, 0);
 
 		this.label = new XGValueLabel(this.value);
-		this.label.setEnabled(this.isEnabled());
 		this.addGB(this.label, 0, 1, 1, 1, GridBagConstraints.HORIZONTAL, 0.5, 0, GridBagConstraints.SOUTH, new Insets(1,1,0,1), 0, 0);
 
+		this.parameterChanged(this.value.getParameter());
 		log.info("knob initialized: " + this.getName());
 		}
+
+	@Override public void contentChanged(XGValue v)
+	{	this.bar.repaint();
+		this.label.setText(v.toString());
+		this.label.repaint();
+	}
+
+	@Override public void parameterChanged(XGParameter p)
+	{	if(p != null)
+		{	this.setName(p.getShortName());
+			this.setToolTipText(p.getLongName());
+			this.bar.setEnabled(true);
+			this.label.setText(this.value.toString());
+			this.label.setEnabled(true);
+		}
+		else
+		{	this.setName("n/a");
+			this.setToolTipText("no parameter");
+			this.bar.setEnabled(false);
+			this.label.setEnabled(false);
+		}
+		this.borderize();
+	}
 
 	@Override protected void paintComponent(Graphics g)
 	{	if(this.isEnabled()) super.paintComponent(g);
 	}
 
-	@Override public boolean isEnabled()
-	{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
-	}
-
-	@Override public JComponent getJComponent()
-	{	return this;
-	}
-
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
-
-	@Override public boolean isManagingFocus()
-	{	return this.isEnabled();
-	}
-	
-	@Override public boolean isFocusTraversable()
-	{	return this.isEnabled();
-	}
-
-	private class XGKnobBar extends JComponent implements XGComponent, GuiConstants, MouseListener, MouseMotionListener, MouseWheelListener, XGValueChangeListener
+	private class XGKnobBar extends JComponent implements GuiConstants, MouseListener, MouseMotionListener, MouseWheelListener
 	{
 		/**
 		 * 
@@ -111,7 +100,6 @@ public class XGKnob extends XGFrame
 
 		private XGKnobBar(XGValue v)
 		{	this.value = v;
-			this.value.addListener(this);
 			this.setBorder(null);
 			this.size = Math.min(this.getWidth(), this.getHeight()) - 2 * DEF_STROKEWIDTH;
 			this.setSize(size, size);
@@ -121,14 +109,10 @@ public class XGKnob extends XGFrame
 			this.addMouseWheelListener(this);
 		}
 
-//		@Override public boolean isEnabled()
-//		{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
-//		}
-//
 		@Override public void paintComponent(Graphics g)
 		{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
 			Graphics2D g2 = (Graphics2D)g.create();
-			g2.addRenderingHints(AALIAS);
+			g2.addRenderingHints(XGComponent.AALIAS);
 			this.size = Math.min(this.getWidth() - DEF_STROKEWIDTH, this.getHeight());
 			this.radius = this.size / 2;
 			this.middle.x = this.getWidth() / 2;
@@ -208,22 +192,6 @@ public class XGKnob extends XGFrame
 
 		@Override public void mouseMoved(MouseEvent e)
 		{
-		}
-
-		@Override public void contentChanged(XGValue v)
-		{	this.repaint();
-		}
-
-		@Override public XMLNode getConfig()
-		{	return null;
-		}
-
-		@Override public JComponent getJComponent()
-		{	return this;
-		}
-
-		@Override public XGValue getValue()
-		{	return this.value;
 		}
 	}
 }

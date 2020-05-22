@@ -3,38 +3,36 @@ package gui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.RenderingHints;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
+import adress.XGAddress;
+import adress.XGAddressConstants;
 import application.Configurable;
 import application.JXG;
 import module.XGModule;
 import value.XGValue;
 import xml.XMLNode;
 
-public interface XGComponent extends GuiConstants, Configurable, MouseListener, FocusListener
-{
-	XGValue DEF_VALUE = new XGValue("n/a", 0);
-	RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	int AXIS_X = 1, AXIS_Y = 2, AXIS_XY = 3, AXIS_RAD = 4, DEF_AXIS = 1;
+public abstract class XGComponent extends JComponent implements XGAddressConstants, GuiConstants, Configurable, MouseListener, FocusListener
+{	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
-	Border defaultLineBorder = BorderFactory.createLineBorder(COL_BORDER, 1, true);
-	Border focusLineBorder = BorderFactory.createLineBorder(COL_NODE_FOCUS, 1, true);
+	private static final XGValue DEF_VALUE = new XGValue("n/a", 0);
+	private static final int AXIS_X = 1, AXIS_Y = 2, AXIS_XY = 3, AXIS_RAD = 4, DEF_AXIS = 1;
 
 	public static XGComponent init(XGModule mod)
 	{	XGTemplate t = mod.getGuiTemplate();
 		XMLNode xml = null;
 		if(t != null) xml = t.getXMLNode();
-//		XGAddressableSet<XGValue> set = mod.getDevice().getValues().getAllValid(mod.getAddress());
 		if(xml == null) return new XGFrame("no template");
-//		if(set == null || set.isEmpty()) return new XGFrame("no values");
 		return newItem(xml, mod);
 	}
 
@@ -49,6 +47,7 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 			case TAG_KNOB:		c = new XGKnob(n, mod); break;
 			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
 			case TAG_COMBO:		c = new XGCombo(n, mod); break;
+			case TAG_RADIO:		c = new XGRadio(n, mod); break;
 			default:			c = new XGFrame("unknown " + s); break;
 		}
 		if(c != null) for(XMLNode x : n.getChildNodes()) c.addGB(newItem(x, mod));
@@ -56,90 +55,109 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 	}
 
 	static int getAxis(String s)
-	{	if(s != null)
-		{	if(s.equals("x")) return AXIS_X;
-			if(s.equals("y")) return AXIS_Y;
-			if(s.equals("xy")) return AXIS_XY;
-			if(s.equals("rad")) return AXIS_RAD;
-		}
-		return DEF_AXIS;
+	{	if(s == null) return DEF_AXIS;
+		if(s.equals("x")) return AXIS_X;
+		if(s.equals("y")) return AXIS_Y;
+		if(s.equals("xy")) return AXIS_XY;
+		if(s.equals("rad")) return AXIS_RAD;
+		return 0;
 	}
 
 /********************************************************************************************/
 
-	public JComponent getJComponent();
-	public XGValue getValue();
+	protected final XMLNode config;
+	protected final XGValue value;
+	protected final XGAddress address;
+
+	public XGComponent(String text)
+	{	this.setLayout(new GridBagLayout());
+		this.config = new XMLNode(text, null);
+		this.value = null;
+		this.address = XGALLADDRESS;
+		this.setName(text);
+	}
+
+	public XGComponent(XMLNode n, XGModule mod)
+	{	this.setLayout(new GridBagLayout());
+		this.config = n;
+		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
+		if(v == null) v = DEF_VALUE;
+		this.value = v;
+		this.setName(n.getStringAttribute(ATTR_NAME, mod.getName()));
+	}
 
 /**
  * erfragt die XML-Attribute ATTR_GB_W (grid_w) und ATTR_GB_H (grid_h) und setzt die minimum- und prefferedSize der Komponente; bei nicht vorhandenen Werten werden die übergebenen Default-Werte verwendet;
  * @param pref_w Default-Komponent-Breite
  * @param pref_h Default-Komponent-Höhe
  */
-	public default void setSizes(int pref_w, int pref_h)
-	{	XMLNode n = this.getConfig();
-		Dimension dim = new Dimension(n.getIntegerAttribute(ATTR_GB_W, pref_w), n.getIntegerAttribute(ATTR_GB_H,  pref_h));
-		this.getJComponent().setMinimumSize(dim);
-		this.getJComponent().setPreferredSize(dim);
+	public void setSizes(int pref_w, int pref_h)
+	{	Dimension dim = new Dimension(this.config.getIntegerAttribute(ATTR_GB_W, pref_w), this.config.getIntegerAttribute(ATTR_GB_H,  pref_h));
+		this.setMinimumSize(dim);
+		this.setPreferredSize(dim);
 	}
 
-	public default void borderize()
-	{	JComponent c = this.getJComponent();
-		if(c.hasFocus())
-			c.setBorder(new TitledBorder(focusLineBorder, c.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
+	public void borderize()
+	{	if(this.hasFocus())
+			this.setBorder(new TitledBorder(focusLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
 		else
-			c.setBorder(new TitledBorder(defaultLineBorder, c.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+			this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
 	}
 
-	public default void deborderize()
-	{	this.getJComponent().setBorder(null);
+	public  void deborderize()
+	{	this.setBorder(null);
 	}
 
-	public default boolean isEnabled()
-	{	return this.getJComponent().isEnabled() && this.getValue() != null && this.getValue().getParameter() != null;
+	@Override public boolean isManagingFocus()
+	{	return this.isEnabled();
+	}
+	
+	@Override public boolean isFocusTraversable()
+	{	return this.isEnabled();
 	}
 
-	public default String getName()
-	{	if(this.isEnabled()) return this.getValue().getParameter().getShortName();
-		else return "n/a";
+	@Override public XMLNode getConfig()
+	{	return this.config;
 	}
 
-	@Override public default void mouseClicked(MouseEvent e)
+	@Override public void mouseClicked(MouseEvent e)
 	{	if(e.getClickCount() == 2)
 		{	System.out.println("doubleclick detected");
 		}
 	}
 
-	@Override public default void mousePressed(MouseEvent e)
+	@Override public void mousePressed(MouseEvent e)
 	{	JXG.dragEvent = e;
 		e.consume();
 	}
 
-	@Override public default void mouseReleased(MouseEvent e)
+	@Override public void mouseReleased(MouseEvent e)
 	{	JXG.dragEvent = e;
 	}
 
-	@Override public default void mouseEntered(MouseEvent e)
-	{	if(JXG.dragEvent == null || JXG.dragEvent.getID() == MouseEvent.MOUSE_RELEASED) this.getJComponent().requestFocusInWindow();
+	@Override public void mouseEntered(MouseEvent e)
+	{	if(JXG.dragEvent == null || JXG.dragEvent.getID() == MouseEvent.MOUSE_RELEASED) this.requestFocusInWindow();
 	}
 
-	@Override public default void mouseExited(MouseEvent e)
+	@Override public void mouseExited(MouseEvent e)
 	{
 	}
 
-	@Override public default void focusLost(FocusEvent e)
+	@Override public void focusLost(FocusEvent e)
 	{	this.borderize();
-		this.getJComponent().repaint();
+		this.repaint();
 	}
 
-	@Override public default void focusGained(FocusEvent e)
+	@Override public void focusGained(FocusEvent e)
 	{	this.borderize();
-		this.getJComponent().repaint();
+		this.repaint();
 	}
 
-	public default void addGB(XGComponent c)
+	public void addGB(XGComponent c)
 	{	XMLNode n = c.getConfig();
 		this.addGB
-		(	c.getJComponent(),
+		(	c,
 			n.getIntegerAttribute(ATTR_GB_X, GridBagConstraints.RELATIVE),
 			n.getIntegerAttribute(ATTR_GB_Y, GridBagConstraints.RELATIVE),
 			n.getIntegerAttribute(ATTR_GB_W, 1),
@@ -160,35 +178,35 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
  * @param gridx
  * @param gridy
  */
-	public default void addGB(Component component, int gridx, int gridy)
+	public void addGB(Component component, int gridx, int gridy)
 	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
-	public default void addGB(Component component, int gridx, int gridy, int gridwidth)
+	public void addGB(Component component, int gridx, int gridy, int gridwidth)
 	{	addGB(component, gridx, gridy, gridwidth, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
-	public default void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight)
+	public void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight)
 	{	addGB(component, gridx, gridy, gridwidth, gridheight, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
-	public default void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill)
+	public void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill)
 	{	addGB(component, gridx, gridy, gridwidth, gridheight, fill, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
-	public default void addGB(Component component, int gridx, int gridy, double weightx, double weighty)
+	public void addGB(Component component, int gridx, int gridy, double weightx, double weighty)
 	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
-	public default void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int ipadx, int ipady)
+	public void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int ipadx, int ipady)
 	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), ipadx, ipady);
 	}
 
-	public default void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int anchor)
+	public void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int anchor)
 	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, anchor, new Insets(0, 0, 0, 0), 0, 0);
 	}
 
-	public default void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int anchor, Insets insets)
+	public void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int anchor, Insets insets)
 	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, anchor, insets, 0, 0);
 	}
 /**
@@ -219,7 +237,7 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
  * @param ipady	Diese Felder geben die Innenpolsterung der Komponente an, das heißt den Raum, welcher der Komponente hinzugefügt wird, wodurch diese größer wird. Dabei wird die Breite der Komponente mit ipadx gepolstert und ihre Höhe mit ipady.
 	Der Standardwert für beide Felder ist 0, was bedeutet, dass die Komponente keine Innenpolsterung hat.
  */
-	public default void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill, double weightx, double weighty, int anchor, Insets insets, int ipadx, int ipady)
+	public void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill, double weightx, double weighty, int anchor, Insets insets, int ipadx, int ipady)
 	{	GBCONSTRAINTS.gridx = gridx;
 		GBCONSTRAINTS.gridy = gridy;
 		GBCONSTRAINTS.gridwidth = gridwidth;
@@ -231,7 +249,7 @@ public interface XGComponent extends GuiConstants, Configurable, MouseListener, 
 		GBCONSTRAINTS.insets = insets;
 		GBCONSTRAINTS.ipadx = ipadx;
 		GBCONSTRAINTS.ipady = ipady;
-		this.getJComponent().add(component, GBCONSTRAINTS);
+		this.add(component, GBCONSTRAINTS);
 	}
 
 }
