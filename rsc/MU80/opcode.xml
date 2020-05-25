@@ -192,6 +192,14 @@
 			<opcode parameterID="mp_bank_lsb" address="//2"/>
 			<opcode parameterID="mp_program" address="//3"/>
 			<opcode parameterID="mp_midichannel" address="//4"/>
+			<opcode parameterID="mp_monopoly" address="//5"/>
+			<opcode parameterID="mp_key_on_assign" address="//6"/>
+			<opcode parameterID="mp_partmode" address="//7"/>
+			<opcode parameterID="transpose" address="//8"/>
+			<opcode parameterID="mp_tune" address="//9-10" byteType="LSN"/>
+			<opcode parameterID="volume" address="//11"/>
+
+			
 		</bulk>
 	</module>
 

@@ -81,10 +81,7 @@ public interface XMLNodeConstants
 		TAG_AUTO = "auto",
 		ATTR_ORIGIN = "origin",
 
-		ATTR_GB_X = "grid_x",
-		ATTR_GB_Y = "grid_y",
-		ATTR_GB_W = "grid_w",
-		ATTR_GB_H = "grid_h",
+		ATTR_GB_GRID = "grid",
 		ATTR_GB_FILL = "grid_fill",
 		ATTR_GB_WEIGHT_X = "grid_weight_x",
 		ATTR_GB_WEIGHT_Y = "grid_weight_y",

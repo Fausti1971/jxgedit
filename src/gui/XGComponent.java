@@ -5,6 +5,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
@@ -27,6 +28,16 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 
 	private static final XGValue DEF_VALUE = new XGValue("n/a", 0);
 	private static final int AXIS_X = 1, AXIS_Y = 2, AXIS_XY = 3, AXIS_RAD = 4, DEF_AXIS = 1;
+	private static final Rectangle GRID = new Rectangle(0,0,1,1);
+
+	private static final void initGrid(XMLNode n)
+	{	String s = n.getStringAttribute(ATTR_GB_GRID, "0,0,1,1");
+		String[] grids = s.split(",");
+		GRID.x = Integer.parseInt(grids[0]);
+		GRID.y = Integer.parseInt(grids[1]);
+		GRID.width = Integer.parseInt(grids[2]);
+		GRID.height = Integer.parseInt(grids[3]);
+	}
 
 	public static XGComponent init(XGModule mod)
 	{	XGTemplate t = mod.getGuiTemplate();
@@ -68,9 +79,10 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	protected final XMLNode config;
 	protected final XGValue value;
 	protected final XGAddress address;
+	private final GridBagLayout layout = new GridBagLayout();
 
 	public XGComponent(String text)
-	{	this.setLayout(new GridBagLayout());
+	{	this.setLayout(this.layout);
 		this.config = new XMLNode(text, null);
 		this.value = null;
 		this.address = XGALLADDRESS;
@@ -78,7 +90,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	}
 
 	public XGComponent(XMLNode n, XGModule mod)
-	{	this.setLayout(new GridBagLayout());
+	{	this.setLayout(this.layout);
 		this.config = n;
 		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
 		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
@@ -93,7 +105,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
  * @param pref_h Default-Komponent-Höhe
  */
 	public void setSizes(int pref_w, int pref_h)
-	{	Dimension dim = new Dimension(this.config.getIntegerAttribute(ATTR_GB_W, pref_w), this.config.getIntegerAttribute(ATTR_GB_H,  pref_h));
+	{	Dimension dim = new Dimension(pref_w, pref_h);
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
 	}
@@ -103,6 +115,10 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 			this.setBorder(new TitledBorder(focusLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
 		else
 			this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+	}
+
+	@Override public boolean isFocusable()
+	{	return this.isEnabled();
 	}
 
 	public  void deborderize()
@@ -156,13 +172,14 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 
 	public void addGB(XGComponent c)
 	{	XMLNode n = c.getConfig();
+		initGrid(n);
 		this.addGB
 		(	c,
-			n.getIntegerAttribute(ATTR_GB_X, GridBagConstraints.RELATIVE),
-			n.getIntegerAttribute(ATTR_GB_Y, GridBagConstraints.RELATIVE),
-			n.getIntegerAttribute(ATTR_GB_W, 1),
-			n.getIntegerAttribute(ATTR_GB_H, 1),
-			n.getIntegerAttribute(ATTR_GB_FILL, GridBagConstraints.BOTH),
+			GRID.x,
+			GRID.y,
+			GRID.width,
+			GRID.height,
+			n.getIntegerAttribute(ATTR_GB_FILL, GridBagConstraints.NONE),
 			n.getDoubleAttribute(ATTR_GB_WEIGHT_X, 0.5),
 			n.getDoubleAttribute(ATTR_GB_WEIGHT_Y, 0.5),
 			n.getIntegerAttribute(ATTR_GB_ANCHOR, GridBagConstraints.WEST),
@@ -172,12 +189,6 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		);
 	}
 
-/**Bequemlichkeitsmethoden für das Hinzufügen von Komponenten mit den benötigten GridBagConstraints:
- * 
- * @param component
- * @param gridx
- * @param gridy
- */
 	public void addGB(Component component, int gridx, int gridy)
 	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
 	}
@@ -213,10 +224,14 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
  * 
  * @param component
  * @param gridx
- * @param gridy	Das sind int-Werte, welche die Koordinaten der oberen linken Zelle einer Komponente im Raster darstellen, wobei gridx die Spalte festlegt und gridy die Zeile. Der Defaultwert RELATIVE bedeutet, dass diese Komponente neben/unterhalb der zuvor hinzugefügten Komponente platziert wird (dies wird gewöhnlich nicht empfohlen)
+ * @param gridy	Das sind int-Werte, welche die Koordinaten der oberen linken Zelle einer Komponente im Raster darstellen, wobei gridx die Spalte festlegt und gridy die Zeile.
+ * Der Defaultwert RELATIVE bedeutet, dass diese Komponente neben/unterhalb der zuvor hinzugefügten Komponente platziert wird (dies wird gewöhnlich nicht empfohlen)
  * @param gridwidth
- * @param gridheight	Gibt die Anzahl der Zellen in einer Zeile / Spalte für die Komponente an. Der Standardwert ist 1. Wir verwenden REMAINDER um anzugeben, dass die Komponente von gridx / gridy bis zur letzten Zelle in der Zeile / Spalte reicht. Wenn wir mit relativen Koordinaten arbeiten, können wir die letzte Komponente jeder Zeile mit gridwidth = REMAINDER markieren
- * @param fill	Wenn der Anzeigebereich einer Komponente größer ist als die gewünschte Größe der Komponente (preferredSize / minimumSize), können wir die Komponente horizontal, vertikal oder in beide Richtungen skalieren. Die folgenden Werte sind gültig für die "fill" Eigenschaft:    * NONE: die Komponente nicht skalieren
+ * @param gridheight	Gibt die Anzahl der Zellen in einer Zeile / Spalte für die Komponente an. Der Standardwert ist 1. Wir verwenden REMAINDER um anzugeben, dass die Komponente von
+ * gridx / gridy bis zur letzten Zelle in der Zeile / Spalte reicht. Wenn wir mit relativen Koordinaten arbeiten, können wir die letzte Komponente jeder Zeile mit gridwidth = REMAINDER markieren
+ * @param fill	Wenn der Anzeigebereich einer Komponente größer ist als die gewünschte Größe der Komponente (preferredSize / minimumSize), können wir die Komponente horizontal, vertikal oder 
+ * in beide Richtungen skalieren. Die folgenden Werte sind gültig für die "fill" Eigenschaft:
+ * 	NONE: die Komponente nicht skalieren
 	HORIZONTAL: die Komponente breit genug machen, um ihren Anzeigebereich horizontal zu füllen
 	VERTICAL: die Komponente groß genug machen, um ihren Anzeigebereich vertikal zu füllen
 	BOTH: die Komponente soll den ganzen Anzeigebereich füllen

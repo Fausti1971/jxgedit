@@ -1,129 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/template.xsd">
-	<frame address="0/0/">
-		<knob value="0/0/0"/>
-		<knob value="0/0/4"/>
-		<knob value="0/0/5"/>
-		<knob value="0/0/6"/>
+	<frame address="0/0/" grid="0,0,0,0">
+		<knob value="0/0/0" grid="0,0,1,1"/>
+		<knob value="0/0/4" grid="1,0,1,1"/>
+		<knob value="0/0/5" grid="2,0,1,1"/>
+		<knob value="0/0/6" grid="3,0,1,1"/>
 	</frame>
-	<frame address="2/1/0-21">
-		<combo value="2/1/0" grid_x="0" grid_y="0" grid_w="5" grid_fill="1"/>
-		<knob value="2/1/12"/>
-		<knob value="2/1/13"/>
+	<frame address="2/1/0-21" grid="0,0,0,0">
+		<combo value="2/1/0" grid="0,0,5,1" grid_fill="1"/>
+		<knob value="2/1/12" grid="5,0,1,1"/>
+		<knob value="2/1/13" grid="6,0,1,1"/>
 
-		<knob value="2/1/2" grid_x="0" grid_y="1"/>
-		<knob value="2/1/3" grid_x="1" grid_y="1"/>
-		<knob value="2/1/4" grid_x="2" grid_y="1"/>
-		<knob value="2/1/5" grid_x="3" grid_y="1"/>
-		<knob value="2/1/6" grid_x="4" grid_y="1"/>
-		<knob value="2/1/7" grid_x="5" grid_y="1"/>
-		<knob value="2/1/8" grid_x="6" grid_y="1"/>
-		<knob value="2/1/9" grid_x="7" grid_y="1"/>
-		<knob value="2/1/10" grid_x="8" grid_y="1"/>
-		<knob value="2/1/11" grid_x="9" grid_y="1"/>
-		<knob value="2/1/16" grid_x="10" grid_y="1"/>
-		<knob value="2/1/17" grid_x="11" grid_y="1"/>
-		<knob value="2/1/18" grid_x="12" grid_y="1"/>
-		<knob value="2/1/19" grid_x="13" grid_y="1"/>
-		<knob value="2/1/20" grid_x="14" grid_y="1"/>
-		<knob value="2/1/21" grid_x="15" grid_y="1"/>
-	</frame>
-
-	<frame address="2/1/32-53">
-		<combo value="2/1/32" grid_x="0" grid_y="0" grid_w="5" grid_fill="1"/>
-		<knob value="2/1/44"/>
-		<knob value="2/1/45"/>
-		<knob value="2/1/46"/>
-
-		<knob value="2/1/34" grid_x="0" grid_y="3"/>
-		<knob value="2/1/35" grid_x="1" grid_y="3"/>
-		<knob value="2/1/36" grid_x="2" grid_y="3"/>
-		<knob value="2/1/37" grid_x="3" grid_y="3"/>
-		<knob value="2/1/38" grid_x="4" grid_y="3"/>
-		<knob value="2/1/39" grid_x="5" grid_y="3"/>
-		<knob value="2/1/40" grid_x="6" grid_y="3"/>
-		<knob value="2/1/41" grid_x="7" grid_y="3"/>
-		<knob value="2/1/42" grid_x="8" grid_y="3"/>
-		<knob value="2/1/43" grid_x="9" grid_y="3"/>
-		<knob value="2/1/48" grid_x="10" grid_y="3"/>
-		<knob value="2/1/49" grid_x="11" grid_y="3"/>
-		<knob value="2/1/50" grid_x="12" grid_y="3"/>
-		<knob value="2/1/51" grid_x="13" grid_y="3"/>
-		<knob value="2/1/52" grid_x="14" grid_y="3"/>
-		<knob value="2/1/53" grid_x="15" grid_y="3"/>
+		<knob value="2/1/2" grid="0,1,1,1"/>
+		<knob value="2/1/3" grid="1,1,1,1"/>
+		<knob value="2/1/4" grid="2,1,1,1"/>
+		<knob value="2/1/5" grid="3,1,1,1"/>
+		<knob value="2/1/6" grid="4,1,1,1"/>
+		<knob value="2/1/7" grid="5,1,1,1"/>
+		<knob value="2/1/8" grid="6,1,1,1"/>
+		<knob value="2/1/9" grid="7,1,1,1"/>
+		<knob value="2/1/10" grid="8,1,1,1"/>
+		<knob value="2/1/11" grid="9,1,1,1"/>
+		<knob value="2/1/16" grid="10,1,1,1"/>
+		<knob value="2/1/17" grid="11,1,1,1"/>
+		<knob value="2/1/18" grid="12,1,1,1"/>
+		<knob value="2/1/19" grid="13,1,1,1"/>
+		<knob value="2/1/20" grid="14,1,1,1"/>
+		<knob value="2/1/21" grid="15,1,1,1"/>
 	</frame>
 
-	<frame address="2/1/64-117">
-		<combo value="2/1/64" grid_x="0" grid_y="0" grid_w="5" grid_fill="1"/>
-		<knob value="2/1/86" grid_x="5" grid_y="0"/>
-		<knob value="2/1/87"/>
-		<knob value="2/1/88"/>
-		<knob value="2/1/89"/>
-		<radio value="2/1/90" grid_w="2"/>
-		<knob value="2/1/91"/>
+	<frame address="2/1/32-53"  grid="0,0,0,0">
+		<combo value="2/1/32" grid="0,0,5,1" grid_fill="1"/>
+		<knob value="2/1/44" grid="5,0,1,1"/>
+		<knob value="2/1/45" grid="6,0,1,1"/>
+		<knob value="2/1/46" grid="7,0,1,1"/>
 
-		<knob value="2/1/92" grid_x="0" grid_y="1"/>
-		<knob value="2/1/93" grid_x="1" grid_y="1"/>
-		<knob value="2/1/94" grid_x="2" grid_y="1"/>
-		<knob value="2/1/95" grid_x="3" grid_y="1"/>
-		<knob value="2/1/96" grid_x="4" grid_y="1"/>
-		<knob value="2/1/97" grid_x="5" grid_y="1"/>
-		<knob value="2/1/98" grid_x="6" grid_y="1"/>
-
-		<knob value="2/1/66" grid_x="0" grid_y="2"/>
-		<knob value="2/1/68" grid_x="1" grid_y="2"/>
-		<knob value="2/1/70" grid_x="2" grid_y="2"/>
-		<knob value="2/1/72" grid_x="3" grid_y="2"/>
-		<knob value="2/1/74" grid_x="4" grid_y="2"/>
-		<knob value="2/1/76" grid_x="5" grid_y="2"/>
-		<knob value="2/1/78" grid_x="6" grid_y="2"/>
-		<knob value="2/1/80" grid_x="7" grid_y="2"/>
-		<knob value="2/1/82" grid_x="8" grid_y="2"/>
-		<knob value="2/1/84" grid_x="9" grid_y="2"/>
-
-		<knob value="2/1/112" grid_x="10" grid_y="2"/>
-		<knob value="2/1/113" grid_x="11" grid_y="2"/>
-		<knob value="2/1/114" grid_x="12" grid_y="2"/>
-		<knob value="2/1/115" grid_x="13" grid_y="2"/>
-		<knob value="2/1/116" grid_x="14" grid_y="2"/>
-		<knob value="2/1/117" grid_x="15" grid_y="2"/>
-	</frame>
-	<frame address="3//">
-		<combo value="3//0" grid_x="0" grid_y="0" grid_w="5" grid_fill="1"/>
-		<knob value="3//12"/>
-
-		<knob value="3//13" grid_x="0" grid_y="1"/>
-		<knob value="3//14" grid_x="1" grid_y="1"/>
-		<knob value="3//15" grid_x="2" grid_y="1"/>
-		<knob value="3//16" grid_x="3" grid_y="1"/>
-		<knob value="3//17" grid_x="4" grid_y="1"/>
-		<knob value="3//18" grid_x="5" grid_y="1"/>
-		<knob value="3//19" grid_x="6" grid_y="1"/>
-
-		<knob value="3//2" grid_x="0" grid_y="2"/>
-		<knob value="3//3" grid_x="1" grid_y="2"/>
-		<knob value="3//4" grid_x="2" grid_y="2"/>
-		<knob value="3//5" grid_x="3" grid_y="2"/>
-		<knob value="3//6" grid_x="4" grid_y="2"/>
-		<knob value="3//7" grid_x="5" grid_y="2"/>
-		<knob value="3//8" grid_x="6" grid_y="2"/>
-		<knob value="3//9" grid_x="7" grid_y="2"/>
-		<knob value="3//10" grid_x="8" grid_y="2"/>
-		<knob value="3//11" grid_x="9" grid_y="2"/>
-		<knob value="3//32" grid_x="10" grid_y="2"/>
-		<knob value="3//33" grid_x="11" grid_y="2"/>
-		<knob value="3//34" grid_x="12" grid_y="2"/>
-		<knob value="3//35" grid_x="13" grid_y="2"/>
-		<knob value="3//36" grid_x="14" grid_y="2"/>
-		<knob value="3//37" grid_x="15" grid_y="2"/>
+		<knob value="2/1/34" grid="0,1,1,1"/>
+		<knob value="2/1/35" grid="1,1,1,1"/>
+		<knob value="2/1/36" grid="2,1,1,1"/>
+		<knob value="2/1/37" grid="3,1,1,1"/>
+		<knob value="2/1/38" grid="4,1,1,1"/>
+		<knob value="2/1/39" grid="5,1,1,1"/>
+		<knob value="2/1/40" grid="6,1,1,1"/>
+		<knob value="2/1/41" grid="7,1,1,1"/>
+		<knob value="2/1/42" grid="8,1,1,1"/>
+		<knob value="2/1/43" grid="9,1,1,1"/>
+		<knob value="2/1/48" grid="10,1,1,1"/>
+		<knob value="2/1/49" grid="11,1,1,1"/>
+		<knob value="2/1/50" grid="12,1,1,1"/>
+		<knob value="2/1/51" grid="13,1,1,1"/>
+		<knob value="2/1/52" grid="14,1,1,1"/>
+		<knob value="2/1/53" grid="15,1,1,1"/>
 	</frame>
 
-	<frame address="8-10//" name="Multipart">
-		<envelope name="Amp Envelope Generator">
-			<point value_x="0" value_y="0"/>
-			<point value_x="8/0-31/26" value_y="8/0-31/11"/>
-			<point value_x="8/0-31/27" value_y="8/0-31/11"/>
-			<point value_x="8/0-31/28" value_y="0"/>
-		</envelope>
+	<frame address="2/1/64-117"  grid="0,0,0,0">
+		<combo value="2/1/64" grid="0,0,5,1" grid_fill="1"/>
+		<knob value="2/1/86" grid="5,0,1,1"/>
+		<knob value="2/1/87" grid="6,0,1,1"/>
+		<knob value="2/1/88" grid="7,0,1,1"/>
+		<knob value="2/1/89" grid="8,0,1,1"/>
+		<radio value="2/1/90" grid="9,0,2,1" grid_fill="3"/>
+		<knob value="2/1/91" grid="11,0,1,1"/>
+
+		<knob value="2/1/92" grid="0,1,1,1"/>
+		<knob value="2/1/93" grid="1,1,1,1"/>
+		<knob value="2/1/94" grid="2,1,1,1"/>
+		<knob value="2/1/95" grid="3,1,1,1"/>
+		<knob value="2/1/96" grid="4,1,1,1"/>
+		<knob value="2/1/97" grid="5,1,1,1"/>
+		<knob value="2/1/98" grid="6,1,1,1"/>
+
+		<knob value="2/1/66" grid="0,2,1,1"/>
+		<knob value="2/1/68" grid="1,2,1,1"/>
+		<knob value="2/1/70" grid="2,2,1,1"/>
+		<knob value="2/1/72" grid="3,2,1,1"/>
+		<knob value="2/1/74" grid="4,2,1,1"/>
+		<knob value="2/1/76" grid="5,2,1,1"/>
+		<knob value="2/1/78" grid="6,2,1,1"/>
+		<knob value="2/1/80" grid="7,2,1,1"/>
+		<knob value="2/1/82" grid="8,2,1,1"/>
+		<knob value="2/1/84" grid="9,2,1,1"/>
+
+		<knob value="2/1/112" grid="10,2,1,1"/>
+		<knob value="2/1/113" grid="11,2,1,1"/>
+		<knob value="2/1/114" grid="12,2,1,1"/>
+		<knob value="2/1/115" grid="13,2,1,1"/>
+		<knob value="2/1/116" grid="14,2,1,1"/>
+		<knob value="2/1/117" grid="15,2,1,1"/>
+	</frame>
+	<frame address="3//" grid="0,0,0,0">
+		<combo value="3//0" grid="0,0,5,1" grid_fill="1"/>
+		<knob value="3//12" grid="5,0,1,1"/>
+
+		<knob value="3//13" grid="0,1,1,1"/>
+		<knob value="3//14" grid="1,1,1,1"/>
+		<knob value="3//15" grid="2,1,1,1"/>
+		<knob value="3//16" grid="3,1,1,1"/>
+		<knob value="3//17" grid="4,1,1,1"/>
+		<knob value="3//18" grid="5,1,1,1"/>
+		<knob value="3//19" grid="6,1,1,1"/>
+
+		<knob value="3//2" grid="0,2,1,1"/>
+		<knob value="3//3" grid="1,2,1,1"/>
+		<knob value="3//4" grid="2,2,1,1"/>
+		<knob value="3//5" grid="3,2,1,1"/>
+		<knob value="3//6" grid="4,2,1,1"/>
+		<knob value="3//7" grid="5,2,1,1"/>
+		<knob value="3//8" grid="6,2,1,1"/>
+		<knob value="3//9" grid="7,2,1,1"/>
+		<knob value="3//10" grid="8,2,1,1"/>
+		<knob value="3//11" grid="9,2,1,1"/>
+		<knob value="3//32" grid="10,2,1,1"/>
+		<knob value="3//33" grid="11,2,1,1"/>
+		<knob value="3//34" grid="12,2,1,1"/>
+		<knob value="3//35" grid="13,2,1,1"/>
+		<knob value="3//36" grid="14,2,1,1"/>
+		<knob value="3//37" grid="15,2,1,1"/>
+	</frame>
+
+	<frame address="8-10//" grid="0,0,0,0">
+		<frame address="8-10//" name="Midi" grid="0,0,0,0">
+			<combo value="8//4" grid="0,0,2,1" grid_fill="3"/>
+			<knob value="8//12" grid="2,0,1,1"/>
+		</frame>
+		<frame address="8-10//" name="Voice" grid="0,1,0,0" grid_fill="1">
+			<radio value="8//5" grid="0,0,2,1" grid_fill="3"/>
+			<radio value="8//6" grid="0,1,2,2" grid_fill="3"/>
+			<radio value="8//7" grid="0,3,2,3" grid-fill="3"/>
+			<knob value="8//0" grid="2,0,1,1"/>
+			<knob value="8//8" grid="3,0,1,1"/>
+			<knob value="8//9-10" grid="4,0,1,1"/>
+			<knob value="8//11" grid="5,0,1,1"/>
+			<envelope name="Amp Envelope Generator"  grid="4,0,8,4">
+				<point value_x="0/0/0" value_y="0/0/0"/>
+				<point value_x="8//26" value_y="8//11"/>
+				<point value_x="8//27" value_y="8//11"/>
+				<point value_x="8//28" value_y="0/0/0"/>
+			</envelope>
+		</frame>
 	</frame>
 </templates>

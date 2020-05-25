@@ -79,10 +79,7 @@
 	</xs:element>
 
 	<xs:attributeGroup name="layoutGroup">
-		<xs:attribute name="grid_x" use="optional" type="xs:integer"/>
-		<xs:attribute name="grid_y" use="optional" type="xs:integer"/>
-		<xs:attribute name="grid_w" use="optional" type="xs:integer"/>
-		<xs:attribute name="grid_h" use="optional" type="xs:integer"/>
+		<xs:attribute name="grid" use="required" type="grid"/>
 		<xs:attribute name="grid_fill" use="optional"/>
 		<xs:attribute name="grid_weight_x" use="optional"/>
 		<xs:attribute name="grid_weight_y" use="optional"/>
@@ -90,6 +87,12 @@
 		<xs:attribute name="grid_pad_x" use="optional"/>
 		<xs:attribute name="grid_pad_y" use="optional"/>
 	</xs:attributeGroup>
+
+	<xs:simpleType name="grid">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[\d]+,[\d]+,[\d]+,[\d]+"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:simpleType name="axis">
 		<xs:restriction base="xs:string">

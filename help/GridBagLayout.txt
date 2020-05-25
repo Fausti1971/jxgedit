@@ -1,0 +1,77 @@
+Das GridBagLayout basiert wie das GridLayout auf einem Gitter. Allerdings ist der GridBagLayout-Manager erheblich flexibler. Er bietet unter anderem folgende Möglichkeiten:
+Eine Komponente kann sich über einen Anzeigebereich von mehreren Gitterzellen erstrecken.
+Spalten und Zeilen können unterschiedlich breit bzw. hoch sein.
+Eine Komponente kann die ihr zugewiesenen Gitterzellen voll ausfüllen oder aber in ihrer normalen Größe dargestellt werden.
+Wenn sie in ihrer normalen Größe dargestellt wird, kann angegeben werden, wie sie innerhalb der zugewiesenen Gitterzellen angeordnet wird.
+Falls die Größe des Containers vom Benutzer verändert wird, kann angegeben werden, zu welchen Anteilen die Höhen-/Breitenänderung auf die einzelnen Gitterzeilen und -spalten verteilt wird. So kann beispielsweise spezifiziert werden, dass sich Änderungen der Höhe eines Fensters ausschließlich auf die Höhe einer bestimmten Gitterzeile auswirken und alle anderen Gitterzeilen eine feste Höhe haben.
+Die Einstellung dieser Eigenschaften erfolgt mit Exemplaren der Klasse GridBagConstraints, die im awt-Paket definiert ist. Hierzu müssen die Elemente eines GridBagConstraints-Objekts in der gewünschten Weise belegt werden. Um die Belegung zu vereinfachen, stellt GridBagConstraints einige Konstanten bereit.
+Erzeugt man ein GridBagConstraints-Objekt und beläßt man alle Elemente mit ihren Standardwerten, so sieht der betreffende Container genauso aus, als hätte man ein GridLayout verwendet. Zur Ausnutzung der besonderen Fähigkeiten vom GridBagLayout ist also die Modifikation der Elemente von GridBagConstraints zwingend erforderlich.
+Die Verknüpfung einer Komponente mit einem bestimmten Exemplar von GridBagConstraints kann auf zwei Arten erfolgen:
+GridBagLayout definiert die Methode setConstraints(). Ihr wird eine Komponente und das zugehörige Exemplar von GridBagConstraints übergeben.
+[1.1]Seit Version 1.1 ist GridBagLayout vom Interface LayoutManager2 abgeleitet, wodurch es möglich ist, die Komponente direkt beim Hinzufügen in einen Container mit einem GridBagConstraints-Objekt zu verknüpfen, indem die add()-Variante add(Component, Object) benutzt wird. Daher ist es in der Regel nicht mehr erforderlich, setConstraints() direkt aufzurufen.
+Der Dialog in Abbildung 8.62 wurde mit dem GridBagLayout erstellt.
+
+Breite des Anzeigebereichs
+Das Datenelement GridBagConstraints.gridwidth definiert die Anzahl an Gitterzellen, über die sich der Anzeigebereich horizontal erstreckt. Hierbei gibt es zwei wichtige vordefinierte Konstanten:
+GridBagConstraints.REMAINDER	Vergibt den Rest der aktuellen Zeile an die Komponente.
+GridBagConstraints.RELATIVE	Ordnet die Komponente direkt unter der vorhergehenden in der nächsten Zeile an.
+Alternativ können auch absolute Werte angegeben werden.
+
+Höhe des Anzeigebereichs
+Das Element GridBagConstraints.gridheight definiert die Anzahl an Gitterzellen, über die sich der Anzeigebereich vertikal erstreckt. Hierbei gibt es zwei wichtige vordefinierte Konstanten:
+GridBagConstraints.REMAINDER	Vergibt den Rest der aktuellen Spalte an die Komponente.
+GridBagConstraints.RELATIVE	Ordnet die Komponente direkt neben der vorhergehenden in der nächsten Spalte an.
+Alternativ können auch absolute Werte angegeben werden.
+
+Festlegung der Position
+Zur Positionierung gibt es die Elemente GridBagConstraints.gridx und GridBagConstraints.gridy. Sie legen die obere linke Gitterzelle des Anzeigebereichs fest.
+Der voreingestellte Wert GridBagConstraints.RELATIVE ordnet die Komponente neben bzw. unter der zuvor eingefügten Komponente an. Ansonsten werden absolute Werte angegeben.
+
+Anordnung im Anzeigebereich
+Das Element GridBagConstraints.anchor erlaubt die Festlegung der Position einer Komponente innerhalb ihres Anzeigebereichs, falls sie diesen nicht voll ausfüllt. Mögliche Werte sind GridBagConstraints.CENTER sowie acht Richtungskonstanten: GridBagConstraints.NORTH bis GridBagConstraints.NORTHWEST.
+
+Füllung der Gitterzellen
+Im Element GridBagConstraints.fill kann spezifiziert werden, ob und wie die Komponente ihren Anzeigebereich ausfüllt:
+GridBagConstraints.NONE	Die Komponente wird in ihrer bevorzugten Größe dargestellt.
+GridBagConstraints.HORIZONTAL	Die Komponente wird so verbreitert, dass sie die Breite des Anzeigebereichs voll ausfüllt.
+GridBagConstraints.VERTICAL	Die Höhe der Komponente wird so verändert, dass sie die Höhe des Anzeigebereichs voll ausfüllt.
+GridBagConstraints.BOTH	Die Höhe und die Breite der Komponente werden so verändert, dass sie den Anzeigebereich voll ausfüllt.
+
+Aufteilung des Platzes
+Zur Aufteilung des Platzes gibt es die Elemente GridBagConstraints.weightx und GridBagConstraints.weighty. Sie ermöglichen eine gewichtete Verteilung des vorhandenen Platzes auf die einzelnen Gitterzellen. Dies ist insbesondere bei der Änderung der Größe des Containers von Bedeutung. Das Gewicht ist üblicherweise eine Dezimalzahl zwischen dem Standardwert 0.0 und 1.0. Es sind aber auch größere Werte zulässig. Der Wert 0.0 für GridBagConstraints.weightx bedeutet, dass zusätzlicher Raum, der bei einer Verbreiterung des Containers entsteht, ausschließlich zur Verbreiterung des Gitters zwischen den Gitterzellen verwendet wird. Die Komponente erhält also keinen zusätzlichen Raum. Der andere Extremwert 1.0 dagegen bewirkt das Gegenteil. Hier erhält die Komponente den gesamten zusätzlichen Platz; das Gitter behält seine Breite.
+
+Zusätzliche Abstände
+Mit dem Element GridBagConstraints.insets kann an den Rändern des Anzeigebereichs der Komponente zusätzlicher Zwischenraum eingefügt werden. Mit GridBagConstraints.ipadx und GridBagConstraints.ipady kann der Mindestplatzbedarf einer Komponente beeinflußt werden.
+
+	RELATIVE = -1;
+	REMAINDER = 0;
+	NONE = 0;
+	BOTH = 1;
+	HORIZONTAL = 2;
+	VERTICAL = 3;
+	CENTER = 10;
+	NORTH = 11;
+	NORTHEAST = 12;
+	EAST = 13;
+	SOUTHEAST = 14;
+	SOUTH = 15;
+	SOUTHWEST = 16;
+	WEST = 17;
+	NORTHWEST = 18;
+	PAGE_START = 19;
+	PAGE_END = 20;
+	LINE_START = 21;
+	LINE_END = 22;
+	FIRST_LINE_START = 23;
+	FIRST_LINE_END = 24;
+	LAST_LINE_START = 25;
+	LAST_LINE_END = 26;
+	BASELINE = 0x100;
+	BASELINE_LEADING = 0x200;
+	BASELINE_TRAILING = 0x300;
+	ABOVE_BASELINE = 0x400;
+	ABOVE_BASELINE_LEADING = 0x500;
+	ABOVE_BASELINE_TRAILING = 0x600;
+	BELOW_BASELINE = 0x700;
+	BELOW_BASELINE_LEADING = 0x800;
+	BELOW_BASELINE_TRAILING = 0x900;

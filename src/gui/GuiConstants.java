@@ -17,7 +17,7 @@ public interface GuiConstants extends ConfigurationConstants
 {
 	static final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-	GridBagConstraints GBCONSTRAINTS = new GridBagConstraints();
+	static final GridBagConstraints GBCONSTRAINTS = new GridBagConstraints();
 	Map<String, Integer> GBC = new HashMap<>()
 	{	/**
 		 * 

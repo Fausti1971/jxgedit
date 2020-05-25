@@ -110,7 +110,11 @@
 		<item id="mp_bank_msb" longName="Bank Select MSB" shortName="bankM"/>
 		<item id="mp_bank_lsb" longName="Bank Select LSB" shortName="bankL"/>
 		<item id="mp_program" longName="Voice Program Number" shortName="prgNr"/>
-		<item id="mp_midichannel" longName="Midi Channel" shortName="ch" translator="table" translationTable="midi_channels"/>
+		<item id="mp_midichannel" longName="Midi Channel" shortName="Ch" translator="table" translationTable="midi_channels"/>
+		<item id="mp_monopoly" shortName="Mn/Pl" longName="Monophony/Ployphony" translator="table" translationTable="mp_monopoly"/>
+		<item id="mp_key_on_assign" shortName="KeyOn" longName="Same Note Number Key On Assign" translator="table" translationTable="mp_key_on_assign"/>
+		<item id="mp_partmode" shortName="Mode" longName="Part Mode" translator="table" translationTable="mp_partmode"/>
+		<item id="mp_tune" shortName="Tune" longName="Detune" max="255" translator="sub128Div10" unit="Hz"/>
 
 		<item id="mw_control_depth" longName="Modulation Wheel Control Depth" shortName="MW" translator="sub64" origin="64"/>
 		<item id="pb_control_depth" longName="Pitchbend Wheel Control Depth" shortName="PB" translator="sub64" origin="64"/>

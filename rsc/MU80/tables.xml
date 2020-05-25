@@ -5,7 +5,27 @@
 		<item value="0" name="Insert"/>
 		<item value="1" name="System"/>
 	</table>
-	
+
+	<table name="mp_monopoly">
+		<item value="0" name="Mono"/>
+		<item value="1" name="Poly"/>
+	</table>
+
+	<table name="mp_key_on_assign">
+		<item value="0" name="Single"/>
+		<item value="1" name="Multi"/>
+		<item value="2" name="Inst"/>
+	</table>
+
+	<table name="mp_partmode">
+		<item value="0" name="Normal"/>
+		<item value="1" name="Drum"/>
+		<item value="2" name="Drumset 1"/>
+		<item value="3" name="Drumset 2"/>
+		<item value="4" name="Drumset 3"/>
+		<item value="5" name="Drumset 4"/>
+	</table>
+
 	<table name="midi_channels">
 		<item value="0" name="A-01"/>
 		<item value="1" name="A-02"/>

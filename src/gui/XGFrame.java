@@ -19,7 +19,6 @@ public class XGFrame extends XGComponent
 
 	public XGFrame(XMLNode n, XGModule mod)
 	{	super(n, mod);
-		this.borderize();
-
+		if(n.hasAttribute(ATTR_NAME)) this.borderize();
 	}
 }

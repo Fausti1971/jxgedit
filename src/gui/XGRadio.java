@@ -5,9 +5,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JRadioButton;
 import adress.InvalidXGAddressException;
 import module.XGModule;
 import msg.XGMessageParameterChange;
@@ -39,7 +37,8 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 	@Override public void parameterChanged(XGParameter p)
 	{	if(p != null)
 		{	this.setEnabled(true);
-			this.setName(p.getLongName());
+			this.setName(p.getShortName());
+			this.setToolTipText(p.getLongName());
 			XGTable t = this.value.getParameter().getValueTranslator().getTable(this.value);
 			int i = 0;
 			for(XGTableEntry e : t.values())

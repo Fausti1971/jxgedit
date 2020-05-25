@@ -1,6 +1,7 @@
 package gui;
 
 import static application.XGLoggable.log;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.sound.midi.InvalidMidiDataException;
@@ -22,7 +23,7 @@ public class XGCombo extends XGFrame implements XGValueChangeListener, XGParamet
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int PREF_W = 256, PREF_H = 64;
+	private static final int PREF_W = 64, PREF_H = 64;
 
 /*****************************************************************************************************************/
 
@@ -31,7 +32,7 @@ public class XGCombo extends XGFrame implements XGValueChangeListener, XGParamet
 	public XGCombo(XMLNode n, XGModule mod)
 	{	super(n, mod);
 		this.combo = new XGComboBox<>(this.value);
-		this.add(this.combo);
+		this.addGB(this.combo, 0, 0, 0, 0, GridBagConstraints.HORIZONTAL);
 		this.value.addValueListener(this);
 		this.value.addParameterListener(this);
 		this.setSizes(PREF_W, PREF_H);

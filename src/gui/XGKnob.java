@@ -32,7 +32,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final static int PREF_W = 64, PREF_H = 88;
+	private final static int PREF_W = 66, PREF_H = 88;
 
 /*****************************************************************************************************************************/
 
@@ -70,12 +70,14 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			this.bar.setEnabled(true);
 			this.label.setText(this.value.toString());
 			this.label.setEnabled(true);
+			this.setEnabled(true);
 		}
 		else
 		{	this.setName("n/a");
 			this.setToolTipText("no parameter");
 			this.bar.setEnabled(false);
 			this.label.setEnabled(false);
+			this.setEnabled(false);
 		}
 		this.borderize();
 	}
