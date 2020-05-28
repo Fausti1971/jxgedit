@@ -24,7 +24,7 @@ public class XGList<E extends Object> extends JList<E> implements ListSelectionL
 	{	super(new Vector<E>(list));
 		this.setSelectedValue(s.getContent(), true);
 		this.setName(name);
-		Dimension dim = new Dimension(5, 5);
+		Dimension dim = new Dimension(GRID * 5, GRID * 5);
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
 		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));

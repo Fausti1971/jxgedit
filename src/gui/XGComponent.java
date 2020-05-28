@@ -2,10 +2,7 @@ package gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
@@ -28,16 +25,6 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 
 	private static final XGValue DEF_VALUE = new XGValue("n/a", 0);
 	private static final int AXIS_X = 1, AXIS_Y = 2, AXIS_XY = 3, AXIS_RAD = 4, DEF_AXIS = 1;
-	private static final Rectangle GRID = new Rectangle(0,0,1,1);
-
-	private static final void initGrid(XMLNode n)
-	{	String s = n.getStringAttribute(ATTR_GB_GRID, "0,0,1,1");
-		String[] grids = s.split(",");
-		GRID.x = Integer.parseInt(grids[0]);
-		GRID.y = Integer.parseInt(grids[1]);
-		GRID.width = Integer.parseInt(grids[2]);
-		GRID.height = Integer.parseInt(grids[3]);
-	}
 
 	public static XGComponent init(XGModule mod)
 	{	XGTemplate t = mod.getGuiTemplate();
@@ -61,7 +48,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 			case TAG_RADIO:		c = new XGRadio(n, mod); break;
 			default:			c = new XGFrame("unknown " + s); break;
 		}
-		if(c != null) for(XMLNode x : n.getChildNodes()) c.addGB(newItem(x, mod));
+		if(c != null) for(XMLNode x : n.getChildNodes()) c.add(newItem(x, mod));
 		return c;
 	}
 
@@ -79,19 +66,17 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	protected final XMLNode config;
 	protected final XGValue value;
 	protected final XGAddress address;
-	private final GridBagLayout layout = new GridBagLayout();
 
 	public XGComponent(String text)
-	{	this.setLayout(this.layout);
-		this.config = new XMLNode(text, null);
+	{	this.config = new XMLNode(text, null);
 		this.value = null;
 		this.address = XGALLADDRESS;
 		this.setName(text);
 	}
 
 	public XGComponent(XMLNode n, XGModule mod)
-	{	this.setLayout(this.layout);
-		this.config = n;
+	{	this.config = n;
+		this.setBounds();
 		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
 		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
 		if(v == null) v = DEF_VALUE;
@@ -99,13 +84,26 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		this.setName(n.getStringAttribute(ATTR_NAME, mod.getName()));
 	}
 
-/**
- * erfragt die XML-Attribute ATTR_GB_W (grid_w) und ATTR_GB_H (grid_h) und setzt die minimum- und prefferedSize der Komponente; bei nicht vorhandenen Werten werden die übergebenen Default-Werte verwendet;
- * @param pref_w Default-Komponent-Breite
- * @param pref_h Default-Komponent-Höhe
- */
-	public void setSizes(int pref_w, int pref_h)
-	{	Dimension dim = new Dimension(pref_w, pref_h);
+	@Override public Component add(Component comp)
+	{	Dimension dim = this.getSize();
+		Insets ins = this.getInsets();
+		comp.setLocation(comp.getX() + ins.left, comp.getY() + ins.top);
+		super.add(comp);
+		dim.width = Math.max(dim.width, comp.getX() + comp.getWidth() + ins.right);
+		dim.height = Math.max(dim.height, comp.getY() + comp.getHeight() + ins.bottom);
+		this.setMinimumSize(dim);
+		this.setPreferredSize(dim);
+		this.setSize(dim);
+//		System.out.println(this.getName() + " -> " + comp.getName() + ": " + comp.getSize() + "/" + this.getSize());
+		return comp;
+
+	}
+
+	public void setBounds()
+	{	String s = this.config.getStringAttribute(ATTR_GB_GRID);
+		String[] str = s.split(",");
+		super.setBounds(GRID * Integer.parseInt(str[0]), GRID * Integer.parseInt(str[1]), GRID * Integer.parseInt(str[2]), GRID * Integer.parseInt(str[3]));
+		Dimension dim = new Dimension(this.getBounds().getSize());
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
 	}
@@ -169,102 +167,4 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	{	this.borderize();
 		this.repaint();
 	}
-
-	public void addGB(XGComponent c)
-	{	XMLNode n = c.getConfig();
-		initGrid(n);
-		this.addGB
-		(	c,
-			GRID.x,
-			GRID.y,
-			GRID.width,
-			GRID.height,
-			n.getIntegerAttribute(ATTR_GB_FILL, GridBagConstraints.NONE),
-			n.getDoubleAttribute(ATTR_GB_WEIGHT_X, 0.5),
-			n.getDoubleAttribute(ATTR_GB_WEIGHT_Y, 0.5),
-			n.getIntegerAttribute(ATTR_GB_ANCHOR, GridBagConstraints.WEST),
-			new Insets(0, 0, 0, 0),
-			n.getIntegerAttribute(ATTR_GB_PAD_X, 0),
-			n.getIntegerAttribute(ATTR_GB_PAD_Y, 0)
-		);
-	}
-
-	public void addGB(Component component, int gridx, int gridy)
-	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
-	}
-
-	public void addGB(Component component, int gridx, int gridy, int gridwidth)
-	{	addGB(component, gridx, gridy, gridwidth, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
-	}
-
-	public void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight)
-	{	addGB(component, gridx, gridy, gridwidth, gridheight, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
-	}
-
-	public void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill)
-	{	addGB(component, gridx, gridy, gridwidth, gridheight, fill, 0.5, 0.5, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
-	}
-
-	public void addGB(Component component, int gridx, int gridy, double weightx, double weighty)
-	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), 0, 0);
-	}
-
-	public void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int ipadx, int ipady)
-	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, GridBagConstraints.NORTHWEST, new Insets(0, 0, 0, 0), ipadx, ipady);
-	}
-
-	public void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int anchor)
-	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, anchor, new Insets(0, 0, 0, 0), 0, 0);
-	}
-
-	public void addGB(Component component, int gridx, int gridy, double weightx, double weighty, int anchor, Insets insets)
-	{	addGB(component, gridx, gridy, 1, 1, GridBagConstraints.BOTH, weightx, weighty, anchor, insets, 0, 0);
-	}
-/**
- * 
- * @param component
- * @param gridx
- * @param gridy	Das sind int-Werte, welche die Koordinaten der oberen linken Zelle einer Komponente im Raster darstellen, wobei gridx die Spalte festlegt und gridy die Zeile.
- * Der Defaultwert RELATIVE bedeutet, dass diese Komponente neben/unterhalb der zuvor hinzugefügten Komponente platziert wird (dies wird gewöhnlich nicht empfohlen)
- * @param gridwidth
- * @param gridheight	Gibt die Anzahl der Zellen in einer Zeile / Spalte für die Komponente an. Der Standardwert ist 1. Wir verwenden REMAINDER um anzugeben, dass die Komponente von
- * gridx / gridy bis zur letzten Zelle in der Zeile / Spalte reicht. Wenn wir mit relativen Koordinaten arbeiten, können wir die letzte Komponente jeder Zeile mit gridwidth = REMAINDER markieren
- * @param fill	Wenn der Anzeigebereich einer Komponente größer ist als die gewünschte Größe der Komponente (preferredSize / minimumSize), können wir die Komponente horizontal, vertikal oder 
- * in beide Richtungen skalieren. Die folgenden Werte sind gültig für die "fill" Eigenschaft:
- * 	NONE: die Komponente nicht skalieren
-	HORIZONTAL: die Komponente breit genug machen, um ihren Anzeigebereich horizontal zu füllen
-	VERTICAL: die Komponente groß genug machen, um ihren Anzeigebereich vertikal zu füllen
-	BOTH: die Komponente soll den ganzen Anzeigebereich füllen
- * @param weightx
- * @param weighty	Damit die Komponenten nicht im Zentrum des Panels gebündelt bleiben, sondern sich über die zur Verfügung stehende Fläche verteilen können, müssen wir dem Layout sagen, wie der zusätzliche Platz verteilt werden soll. Das geschieht mit weightx zum Verteilen des horizontalen Raums und weighty zum Verteilen des vertikalen Raums. Der zusätzliche Raum wird auf jede Spalte / Zeile im Verhältnis zum Gewicht verteilt.
-	Der Standardwert für beide Felder ist 0, was bedeutet, dass die Spalte / Zeile nie zusätzlichen Raum erhält. Es genügt, wenn wir das Gewicht für eine einzige Komponente einer Spalte / Zeile angeben. Der Layout-Manager setzt das Gewicht der Spalte / Zeile gleich dem maximalen Gewicht aller Komponenten in dieser Spalte / Zeile.
-	Falls mehrzellige Komponenten benutzt werden, geht der extra Raum tendenziell in Richtung der Spalte ganz rechts und untere Zeile.
-	In der Regel werden die Gewichte mit 0.0 und 1.0 als die Extreme angegeben: die Zahlen dazwischen verwenden wir so wie es nötig ist. Höhere Werte zeigen an, dass die Zeile oder Spalte mehr Platz bekommen sollte. Was zählt, ist jedoch nicht der absolute Wert, sondern das Verhältnis der Werte zueinander.
- * @param anchor	Dieses Feld wird verwendet, wenn die Komponente kleiner ist als ihr Anzeigebereich. Damit bestimmen wir, wo die Komponente innerhalb ihrer Anzeigefläche platziert wird. Standardmäßig wird sie zentriert.
-	Es gibt drei Arten von möglichen Werten: orientierungsbezogene, grundlinienbezogene und absolute Werte. Orientierungsbezogene Werte beziehen sich auf die Komponentenorientierung des Containers (seit JDK 1.4), grundlinienbezogenen Werte beziehen sich auf die Grundlinie (Baseline, seit JDK 1.6).
-	Die absoluten Werte sind: CENTER, NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, und NORTHWEST.
-	Die orientierungsbezogenen Werte sind: PAGE_START, PAGE_END, LINE_START, LINE_END, FIRST_LINE_START, FIRST_LINE_END, LAST_LINE_START und LAST_LINE_END.
-	Die grundlinienbezogene Werte sind: BASELINE, BASELINE_LEADING, BASELINE_TRAILING, ABOVE_BASELINE, ABOVE_BASELINE_LEADING, ABOVE_BASELINE_TRAILING, BELOW_BASELINE, BELOW_BASELINE_LEADING und BELOW_BASELINE_TRAILING.
-	Der Standardwert ist CENTER. Die Verwendung der orientierungsbezogenen Werte, sowie CENTER, wird empfohlen:
-	FIRST_LINE_START, PAGE_START, FIRST_LINE_END, LINE_START, CENTER, LINE_END, LAST_LINE_START, PAGE_END, LAST_LINE_END
- * @param insets	Dieses Feld gibt die Außenpolsterung der Komponente an, das heißt den Mindestabstand zwischen der Komponente und den vier Kanten ihres Anzeigebereichs. Der Standardwert ist: new Insets (0, 0, 0, 0), was bedeutet, dass die Komponente keine Außenpolsterung hat.
- * @param ipadx
- * @param ipady	Diese Felder geben die Innenpolsterung der Komponente an, das heißt den Raum, welcher der Komponente hinzugefügt wird, wodurch diese größer wird. Dabei wird die Breite der Komponente mit ipadx gepolstert und ihre Höhe mit ipady.
-	Der Standardwert für beide Felder ist 0, was bedeutet, dass die Komponente keine Innenpolsterung hat.
- */
-	public void addGB(Component component, int gridx, int gridy, int gridwidth, int gridheight, int fill, double weightx, double weighty, int anchor, Insets insets, int ipadx, int ipady)
-	{	GBCONSTRAINTS.gridx = gridx;
-		GBCONSTRAINTS.gridy = gridy;
-		GBCONSTRAINTS.gridwidth = gridwidth;
-		GBCONSTRAINTS.gridheight = gridheight;
-		GBCONSTRAINTS.fill = fill;
-		GBCONSTRAINTS.weightx = weightx;
-		GBCONSTRAINTS.weighty = weighty;
-		GBCONSTRAINTS.anchor = anchor;
-		GBCONSTRAINTS.insets = insets;
-		GBCONSTRAINTS.ipadx = ipadx;
-		GBCONSTRAINTS.ipady = ipady;
-		this.add(component, GBCONSTRAINTS);
-	}
-
 }

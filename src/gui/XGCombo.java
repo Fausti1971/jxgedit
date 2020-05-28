@@ -2,6 +2,8 @@ package gui;
 
 import static application.XGLoggable.log;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.sound.midi.InvalidMidiDataException;
@@ -17,13 +19,12 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGCombo extends XGFrame implements XGValueChangeListener, XGParameterChangeListener
+public class XGCombo extends XGComponent implements XGValueChangeListener, XGParameterChangeListener
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int PREF_W = 64, PREF_H = 64;
 
 /*****************************************************************************************************************/
 
@@ -31,14 +32,15 @@ public class XGCombo extends XGFrame implements XGValueChangeListener, XGParamet
 	
 	public XGCombo(XMLNode n, XGModule mod)
 	{	super(n, mod);
+		this.setLayout(new GridBagLayout());
 		this.combo = new XGComboBox<>(this.value);
-		this.addGB(this.combo, 0, 0, 0, 0, GridBagConstraints.HORIZONTAL);
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
+		this.add(this.combo, gbc);
 		this.value.addValueListener(this);
 		this.value.addParameterListener(this);
-		this.setSizes(PREF_W, PREF_H);
 		this.parameterChanged(this.value.getParameter());
 
-		log.info("combo initialized: " + this.getName());
+		log.info("combo initialized: " + this.getName() + this.combo.getSize());
 	}
 
 
@@ -70,7 +72,8 @@ public class XGCombo extends XGFrame implements XGValueChangeListener, XGParamet
 		private final XGValue value;
 
 		public XGComboBox(XGValue v)
-		{	this.value = v;
+		{	super();
+			this.value = v;
 			XGTable t = this.value.getParameter().getValueTranslator().getTable(v);
 			for(XGTableEntry e : t.values()) this.addItem(e);
 //			this.setMaximumRowCount(Toolkit.getDefaultToolkit().getScreenSize().height/this.row, t.size());

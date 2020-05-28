@@ -2,6 +2,9 @@ package gui;
 
 import static application.XGLoggable.log;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.sound.midi.InvalidMidiDataException;
@@ -22,13 +25,13 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static final int PREF_W = 128, PREF_H = 64;
+
+/*********************************************************************************************************/
 
 	public XGRadio(XMLNode n, XGModule mod)
 	{	super(n, mod);
 		this.value.addValueListener(this);
 		this.value.addParameterListener(this);
-		this.setSizes(PREF_W, PREF_H);
 		this.parameterChanged(this.value.getParameter());
 		this.borderize();
 		log.info("radio initialized: " + this.getName());
@@ -36,13 +39,16 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 
 	@Override public void parameterChanged(XGParameter p)
 	{	if(p != null)
-		{	this.setEnabled(true);
+		{	this.setLayout(new GridBagLayout());
+			this.setEnabled(true);
 			this.setName(p.getShortName());
 			this.setToolTipText(p.getLongName());
 			XGTable t = this.value.getParameter().getValueTranslator().getTable(this.value);
 			int i = 0;
+			GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTHWEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
 			for(XGTableEntry e : t.values())
-			{	this.addGB(new XGRadioButton(this.value, e), 0, i++);
+			{	gbc.gridy = i++;
+				this.add(new XGRadioButton(this.value, e), gbc);
 			}
 		}
 		else

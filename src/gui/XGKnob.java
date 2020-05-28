@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -26,13 +27,12 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
+public class XGKnob extends XGComponent implements XGParameterChangeListener, XGValueChangeListener
 {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private final static int PREF_W = 66, PREF_H = 88;
 
 /*****************************************************************************************************************************/
 
@@ -41,17 +41,22 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 
 	public XGKnob(XMLNode n, XGModule mod)
 	{	super(n, mod);
-		this.setSizes(PREF_W, PREF_H);
+		this.setLayout(new GridBagLayout());
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 		this.value.addParameterListener(this);
 		this.value.addValueListener(this);
 
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,2,0), 0, 0);
 		this.bar = new XGKnobBar(this.value);
-		this.addGB(this.bar, 0, 0, 1, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTH, new Insets(0,0,2,0), 0, 0);
+		this.add(this.bar, gbc);
 
 		this.label = new XGValueLabel(this.value);
-		this.addGB(this.label, 0, 1, 1, 1, GridBagConstraints.HORIZONTAL, 0.5, 0, GridBagConstraints.SOUTH, new Insets(1,1,0,1), 0, 0);
+		gbc.gridy = 1;
+		gbc.weighty = 0;
+		gbc.anchor = GridBagConstraints.SOUTH;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		this.add(this.label, gbc);
 
 		this.parameterChanged(this.value.getParameter());
 		log.info("knob initialized: " + this.getName());

@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -33,8 +34,6 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	 */
 	private static final long serialVersionUID=1L;
 
-	private final static int PREF_W = 128, PREF_H = 44;
-
 /*****************************************************************************************************************************/
 
 //	private final XGAddress address;
@@ -44,21 +43,26 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 
 	public XGSlider(XMLNode n, XGModule mod)
 	{	super(n, mod);
+		this.setLayout(new GridBagLayout());
 		if(this.isEnabled())
 		{	this.setToolTipText(null);
 			this.setFocusable(true);
 		}
 //		this.setName(this.value.getParameter().getShortName());
-		this.setSizes(PREF_W,  PREF_H);
 		this.borderize();
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,2,0), 0, 0);
 		this.bar = new XGSliderBar(this.value);
-		this.addGB(this.bar, 0, 0, 1, 1, GridBagConstraints.BOTH, 0.5, 0.5, GridBagConstraints.NORTH, new Insets(0,0,2,0), 0, 0);
+		this.add(this.bar, gbc);
 
 		this.label = new XGValueLabel(this.value);
-		this.addGB(this.label, 0, 1, 1, 1, GridBagConstraints.HORIZONTAL, 0.5, 0, GridBagConstraints.SOUTH, new Insets(1,1,0,1), 0, 0);
+		gbc.gridy = 1;
+		gbc.weighty = 0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.SOUTH;
+		this.add(this.label, gbc);
 
 		log.info("slider initialized: " + this.value.getParameter());
 	}

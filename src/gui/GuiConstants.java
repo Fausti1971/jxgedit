@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.RenderingHints;
+import java.awt.SystemColor;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BorderFactory;
@@ -58,13 +59,14 @@ public interface GuiConstants extends ConfigurationConstants
 		COL_NODE_TEXT = Color.darkGray,
 		COL_NODE_SELECTED_TEXT = Color.white,
 		COL_BORDER = Color.lightGray,
-		COL_BAR_BACK = COL_BORDER,
-		COL_BAR_FORE = COL_NODE_FOCUS;
+		COL_BAR_BACK = SystemColor.scrollbar.brighter(),
+		COL_BAR_FORE = COL_NODE_SELECTED_BACK.brighter();
 
 	float FONTSIZE = 10f;
 
 	Font FONT = new JEditorPane().getFont().deriveFont(FONTSIZE);
 	int
+		GRID = 22,
 		COL_STEP = 16,
 		GAP = 5,
 		DEF_STROKEWIDTH = 4,

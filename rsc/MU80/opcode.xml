@@ -198,6 +198,7 @@
 			<opcode parameterID="transpose" address="//8"/>
 			<opcode parameterID="mp_tune" address="//9-10" byteType="LSN"/>
 			<opcode parameterID="volume" address="//11"/>
+			<opcode address="8//14" parameterID="panorama"/>
 
 			
 		</bulk>

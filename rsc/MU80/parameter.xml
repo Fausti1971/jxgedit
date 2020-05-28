@@ -115,7 +115,12 @@
 		<item id="mp_key_on_assign" shortName="KeyOn" longName="Same Note Number Key On Assign" translator="table" translationTable="mp_key_on_assign"/>
 		<item id="mp_partmode" shortName="Mode" longName="Part Mode" translator="table" translationTable="mp_partmode"/>
 		<item id="mp_tune" shortName="Tune" longName="Detune" max="255" translator="sub128Div10" unit="Hz"/>
-
+		<item id="mp_velocitysense_depth"/>
+		<item id="mp_velocitysense_offset"/>
+		<item id="mp_velocitylimit_low"/>
+		<item id="mp_velocitylimit_hi"/>
+		<item id="mp_notelimit_low"/>
+		<item id="mp_notelimit_hi"/>
 		<item id="mw_control_depth" longName="Modulation Wheel Control Depth" shortName="MW" translator="sub64" origin="64"/>
 		<item id="pb_control_depth" longName="Pitchbend Wheel Control Depth" shortName="PB" translator="sub64" origin="64"/>
 		<item id="cat_control_depth" longName="Channel Aftertouch Control Depth" shortName="CAT" translator="sub64" origin="64"/>

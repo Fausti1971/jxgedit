@@ -16,6 +16,7 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
@@ -341,18 +342,19 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	public JComponent getConfigComponent()
 	{	XGFrame root = new XGFrame("device");
+		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 
 		JComponent c = this.getMidi().getConfigComponent();
-		root.addGB(c, 0, 0);
+		root.add(c);
 
 		c = new XGSpinner("sysexID", this.sysex, 0, 15, 1);
-		root.addGB(c, 0, 1, 1, 1);
+		root.add(c);
 
 		c = new XGDeviceDetector("device name", this.name, this);
-		root.addGB(c, 0, 2);
+		root.add(c);
 
 		c = new XGPathSelector("default dump folder", this.defaultDumpFolder);
-		root.addGB(c, 0, 3);
+		root.add(c);
 
 		return root;
 	}

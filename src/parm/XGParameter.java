@@ -1,5 +1,5 @@
 package parm;
-
+//TODO: noteLimitLow und noteLimitHi beziehen min und max aufeinander; velLimitLow und velLimitHi ebenso (evtl. via parameterSet lösen?); continous-werte für knob/slider überdenken
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;

@@ -9,6 +9,7 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
+import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import application.Configurable;
@@ -318,15 +319,16 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 
 	public XGComponent getConfigComponent()
 	{	XGFrame root = new XGFrame("midi");
+		root.setLayout(new BoxLayout(root, BoxLayout.X_AXIS));
 
 		JComponent c = new XGList<Info>("input", XGMidi.getInputs(), this.input);
-		root.addGB(c, 0, 0, 4, 4);
+		root.add(c);
 
 		c = new XGList<Info>("output", XGMidi.getOutputs(), this.output);
-		root.addGB(c, 1, 0, 4, 4);
+		root.add(c);
 
 		c = new XGSpinner("timeout", this.timeout, 30, 1000, 10);
-		root.addGB(c, 0, 1);
+		root.add(c);
 
 		return root;
 	}
