@@ -119,9 +119,9 @@
 
 	<frame address="8-10//" grid="0,0,0,0">
 		<frame address="8-10//" name="Midi" grid="0,0,0,0">
-			<combo value="8//4" grid="0,0,6,2"/>
-				<envelope address="8//" name="Velocity" grid="6,0,12,4">
-				</envelope>
+			<knob value="8//4" grid="0,0,6,4"/>
+			<envelope address="8//" name="Velocity" grid="6,0,12,4">
+			</envelope>
 			<slider value="8//15" grid="0,4,6,2"/>
 			<slider value="8//16" grid="0,6,6,2"/>
 		</frame>

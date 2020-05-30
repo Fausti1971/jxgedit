@@ -12,8 +12,6 @@ import xml.XMLNode;
 
 public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 {
-	static final String SPACE = " ";
-
 	public static void init(XGDevice dev)
 	{	File file;
 		try
@@ -59,8 +57,8 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	 * der Ursprung eines Steuerelementes (bspw. 64 bei Panorama)
 	 */
 	private final int origin;
-	private final XGValueTranslator valueTranslator;
-//	private final XGTable translationTable;
+//	private final XGValueTranslator valueTranslator;
+	private final XGTable translationTable;
 	private final String unit;
 	private final XGAddress masterAddress;
 	private final int index;
@@ -68,13 +66,13 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	protected XGParameter(XGDevice dev, XMLNode n)
 	{	this.tag = n.getStringAttribute(ATTR_ID);
-		this.valueTranslator = XGValueTranslator.getTranslator(dev, n);// muss wegen validate() vor origin-Zuweisung ausgeführt werden; ist origin evtl. besser im Component aufgehoben? (template.xml)
+		this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), DEF_TABLE).filter(n);// muss wegen validate() vor origin-Zuweisung ausgeführt werden; ist origin evtl. besser im Component aufgehoben? (template.xml)
 		this.minValue = this.setMinValue(n);
 		this.maxValue = this.setMaxValue(n);
 		this.origin = this.validate(n.getIntegerAttribute(ATTR_ORIGIN, 0));
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
-		this.unit = n.getStringAttribute(ATTR_UNIT, "");
+		this.unit = n.getStringAttribute(ATTR_UNIT, this.translationTable.getUnit());
 
 		if(n.hasAttribute(ATTR_MASTER))
 		{	this.masterAddress = new XGAddress(n.getStringAttribute(ATTR_MASTER), null);
@@ -94,9 +92,8 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		this.longName = DEF_PARAMETERNAME;
 		this.shortName = name;
 		this.minValue = this.maxValue = this.origin = v;
-		this.valueTranslator = XGValueTranslator.normal;
+		this.translationTable = DEF_TABLE;
 		this.unit = "*";
-//		this.translationTable = null;
 		this.masterAddress = null;
 		this.index = 0;
 		this.isMutable = false;
@@ -104,21 +101,11 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	}
 
 	public int setMinValue(XMLNode n)
-	{	int i = n.getIntegerAttribute(ATTR_MIN, DEF_MIN);
-		if(this.valueTranslator instanceof XGTableTranslator)
-		{	XGTableTranslator vt = (XGTableTranslator)this.valueTranslator;
-			i = Math.max(i, vt.getTable(null).firstKey());
-		}
-		return i;
+	{	return  Math.max(n.getIntegerAttribute(ATTR_MIN, DEF_MIN), 0);
 	}
 
 	public int setMaxValue(XMLNode n)
-	{	int i = n.getIntegerAttribute(ATTR_MAX, DEF_MAX);
-		if(this.valueTranslator instanceof XGTableTranslator)
-		{	XGTableTranslator vt = (XGTableTranslator)this.valueTranslator;
-			i = Math.min(i, vt.getTable(null).lastKey());
-		}
-		return i;
+	{	return Math.min(n.getIntegerAttribute(ATTR_MAX, DEF_MAX), this.translationTable.size());
 	}
 
 	public boolean isMutable()
@@ -141,6 +128,10 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	{	return this.maxValue;
 	}
 
+	public XGTable getTranslationTable()
+	{	return this.translationTable;
+	}
+
 	public int getOrigin()
 	{	return this.origin;
 	}
@@ -157,13 +148,8 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	{	return this.longName;
 	}
 
-	public XGValueTranslator getValueTranslator()
-	{	return this.valueTranslator;
-	}
-
 	public String getUnit()
-	{	if(this.unit.isEmpty()) return this.unit;
-		else return SPACE + this.unit;
+	{	return this.unit;
 	}
 
 	@Override public String toString()

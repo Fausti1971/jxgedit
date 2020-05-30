@@ -55,7 +55,6 @@ public interface XMLNodeConstants
 		ATTR_MIN = "min",
 		ATTR_MAX = "max",
 		ATTR_TRANSLATOR = "translator",
-		ATTR_TRANSLATIONTABLE = "translationTable",
 		ATTR_TABLEFILTER = "tableFilter",
 		ATTR_TABLECATEGORIES = "categories",
 		ATTR_LONGNAME = "longName",

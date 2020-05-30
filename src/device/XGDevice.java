@@ -124,7 +124,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private boolean isSelected = false;
 	private XMLNode config;
 //	private final XGAddressableSet<XGMessageBulkDump> data = new XGAddressableSet<XGMessageBulkDump>();
-	private final Map<String, XGTable> tables = new HashMap<>();
+	private final XGTagableSet<XGTable> tables = new XGTagableSet<>();
 	private final XGTagableSet<XGParameter> parameters = new XGTagableSet<>();
 	private final Map<Integer, Map<Integer, XGParameter>> parameterSets = new HashMap<>();//Map<programNr, parameterIndex<Parameter>> //progNr wird bei parameterMaster erfragt
 //	private final XGAddressableSet<XGBulkDump> bulks = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
@@ -217,7 +217,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.templates;
 	}
 
-	public Map<String, XGTable> getTables()
+	public XGTagableSet<XGTable> getTables()
 	{	return this.tables;
 	}
 

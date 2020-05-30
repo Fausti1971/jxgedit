@@ -1,0 +1,18 @@
+Problem:
+		min- und max-Werte mancher Parameter sind von Contents anderer Values abhängig (variabel). Die aktuelle Struktur bietet keine elegante Möglichkeit, dies abzubilden.
+		Beispiel: velocitylimit_?; notelimit_?;
+		Andererseits würde aufgrund der Erzeugung und Bindung eines Parameters je Value Speicher verschwendet.
+	Lösung:
+		nicht die min- und max-Parameter sind veränderlich, sondern die Contents beider Values dürfen sich lediglich nicht überschneiden.
+		Dies könnte man auch ausschließlich im Steuerelement sicherstellen, z.B. doubleSlider.
+		Das hätte auch den Charme, dass die zusätzlich veränderten Contents des abhängigen Values zwar geändert, aber nicht gesendet werden müssen, da so lediglich das native Deviceverhalten nachgebildet wird.
+Problem:
+		nicht-kontinuierliche Wertebereiche können nur unzureichend durch kontinuierliche Steuerelemente, wie Knob oder Slider abgebildet werden.
+	Lösung:
+		Durch Einführung einer weiteren Abstraktionsstufe müssen nicht-kontinuierliche Werte auf kontinuierliche XGTables (Arrays?) abgebildet werden.
+		Das würde bedeuten, dass der Conent eines XGValues nicht den reelen Wert, sondern nur den XGTableindex eines XGTableEntrys abbildet.
+		Außerdem müssten dazu alle (auch kontinuierliche) Wertebereiche auf XGTables abgebildet werden, was weitere Speicherverschwendung ist.
+	Lösung:
+		Wenn alle Wertebereiche mittels XGTable abgebildet würden, könnte man eine Werteänderung auch über den Wertebereich der XGTable machen (lowerEntry(), higherEntry());
+		Eine XGTable für den Wertebereich 0...16383 (14Bit) wäre etwa 511kB groß...
+		Idee: XGVirtualTable, eine Klasse, die die benötigten Methoden einer TreeMap<Integer, XGTableEntry> nachbildet;

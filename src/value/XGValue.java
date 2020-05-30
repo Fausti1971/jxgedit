@@ -15,6 +15,7 @@ import parm.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
+import parm.XGTable;
 /**
  * 
  * @author thomas
@@ -183,17 +184,23 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	public boolean addContent(Integer i)
 	{	int old = this.content;
-		return this.setContent(old + i);
+		XGTable t = this.getParameter().getTranslationTable();
+		if(i == 1) return this.setContent(t.nextKey(old));
+		if(i == -1) return this.setContent(t.prevKey(old));
+		log.info("cannot add content " + i);
+		return false;
 	}
 
 	public String getInfo()
 	{	XGParameter p = this.getParameter();
-		if(p != null) return p.getLongName() + " = " + p.getValueTranslator().translate(this);
+		if(p != null) return p.getLongName() + " = " + p.getTranslationTable().get(this.getContent());
 		else return "no parameter info";
 	}
 
 	@Override public String toString()
-	{	return this.getParameter().getValueTranslator().translate(this);
+	{	XGParameter p = this.getParameter();
+		if(p.getUnit().isEmpty()) return p.getTranslationTable().get(this.getContent()).getName();
+		else return p.getTranslationTable().get(this.getContent()).getName() + " " + p.getUnit();
 	}
 
 	@Override public int compareTo(XGValue o)

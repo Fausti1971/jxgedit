@@ -58,7 +58,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 	}
 
 	@Override public void contentChanged(XGValue v)
-	{	this.combo.setSelectedItem(this.value.getParameter().getValueTranslator().getTable(this.value).get(v.getContent()));
+	{	this.combo.setSelectedItem(this.value.getParameter().getTranslationTable().get(this.value.getContent()));
 	}
 
 /*****************************************************************************************************/
@@ -74,8 +74,8 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 		public XGComboBox(XGValue v)
 		{	super();
 			this.value = v;
-			XGTable t = this.value.getParameter().getValueTranslator().getTable(v);
-			for(XGTableEntry e : t.values()) this.addItem(e);
+			XGTable t = this.value.getParameter().getTranslationTable();
+			for(XGTableEntry e : t) this.addItem(e);
 //			this.setMaximumRowCount(Toolkit.getDefaultToolkit().getScreenSize().height/this.row, t.size());
 			this.setSelectedItem(t.get(this.value.getContent()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
 			this.addActionListener(this);
