@@ -131,8 +131,8 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 			g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, START_ARC, LENGTH_ARC);
 	// paint foreground arc
 			this.parameter = this.value.getParameter();
-			this.originArc = Rest.linearIO(parameter.getOrigin(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
-			this.lengthArc = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
+			this.originArc = Rest.linearIO(parameter.getOrigin(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
+			this.lengthArc = Rest.linearIO(this.value.getContent(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
 			g2.setColor(COL_BAR_FORE);
 			g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, this.originArc + START_ARC, this.lengthArc - originArc);
 	// paint marker
@@ -168,7 +168,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		}
 
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	boolean changed = this.value.addContent(e.getWheelRotation());
+		{	boolean changed = this.value.setContent(this.value.getContent() + e.getWheelRotation());
 			if(changed)
 			{	XGDevice dev = this.value.getSource().getDevice();
 				try
@@ -183,7 +183,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - JXG.dragEvent.getX();
-			boolean changed = this.value.addContent(distance);
+			boolean changed = this.value.setContent(this.value.getContent() + distance);
 			if(changed)
 			{	XGDevice dev = this.value.getSource().getDevice();
 				try

@@ -37,7 +37,7 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 	@Override public void actionPerformed(ActionEvent e)
 	{
 		XGDevice dev = this.value.getSource().getDevice();
-		boolean changed = this.value.setContent(this.value.getParameter().getTranslationTable().get(this.getText().trim()).getKey());
+		boolean changed = this.value.setContent(this.value.getParameter().getTranslationTable().getIndex(this.getText().trim()));
 		if(changed)
 		{	try
 			{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();

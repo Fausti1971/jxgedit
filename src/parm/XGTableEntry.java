@@ -10,31 +10,31 @@ public class XGTableEntry implements ConfigurationConstants
 
 /**********************************************************************************************************/
 
-	private final int key;
+	private final int value;
 	private final String name;
 	private final Set<String> filters;
 	private final Set<String> categories;
 
 	public XGTableEntry(XMLNode n)
-	{	int i = 0;
-		if(n.hasAttribute(ATTR_VALUE)) i = n.getIntegerAttribute(ATTR_VALUE);
-		if(n.hasAttribute(ATTR_MSB)) i = n.getIntegerAttribute(ATTR_MSB) << 7;
-		if(n.hasAttribute(ATTR_LSB)) i |= n.getIntegerAttribute(ATTR_LSB);
-		this.key = i;
+	{	int v = 0;
+		if(n.hasAttribute(ATTR_VALUE)) v = n.getIntegerAttribute(ATTR_VALUE);
+		if(n.hasAttribute(ATTR_MSB)) v = n.getIntegerAttribute(ATTR_MSB) << 7;
+		if(n.hasAttribute(ATTR_LSB)) v |= n.getIntegerAttribute(ATTR_LSB);
+		this.value = v;
 		this.name = n.getStringAttribute(ATTR_NAME, "no value");
 		this.filters = Rest.splitCSV(n.getStringAttribute(ATTR_TABLEFILTER));
 		this.categories = Rest.splitCSV(n.getStringAttribute(ATTR_TABLECATEGORIES));
 	}
 
-	public XGTableEntry(int i, String translate)
-	{	this.key = i;
+	public XGTableEntry(int v, String translate)
+	{	this.value = v;
 		this.name = translate;
 		this.filters = null;
 		this.categories = null;
 	}
 
-	public int getKey()
-	{	return this.key;
+	public int getValue()
+	{	return this.value;
 	}
 
 	public String getName()
@@ -46,13 +46,14 @@ public class XGTableEntry implements ConfigurationConstants
 	}
 
 	public boolean hasFilter(String s)
-	{	for(String f : this.filters)
+	{	if(s == null) return true;
+		for(String f : this.filters)
 		{	if(f.equals(s)) return true;
 		}
 		return false;
 	}
 
 	@Override public String toString()
-	{	return this.getName();
+	{	return this.name;
 	}
 }

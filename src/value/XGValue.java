@@ -15,7 +15,7 @@ import parm.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
-import parm.XGTable;
+import parm.XGTableEntry;
 /**
  * 
  * @author thomas
@@ -43,7 +43,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 /***********************************************************************************************/
 
-	private Integer content;
+	private Integer index;
 	private final XGMessenger source;
 	private final XGAddress address;
 	private final XGOpcode opcode;
@@ -57,7 +57,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	this.source = null;
 		this.address = XGALLADDRESS;
 		this.parameter = DUMMY_PARAMETER;
-		this.content = v;
+		this.index = v;
 		this.parameterMaster = null;
 		this.opcode = null;
 //		log.info("dummy value initialized: " + name);
@@ -79,7 +79,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 			else log.info("master not found: " + a);
 		}
 		else this.parameterMaster = null;
-		this.content = 0;
+		this.index = 0;
 //		log.info("value initialized: " + this.getInfo());
 	}
 
@@ -120,7 +120,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	private void assignMutableParameter()
 	{	if(this.parameter.isMutable())
-		{	int progNr = this.parameterMaster.getContent(),
+		{	int progNr = this.parameterMaster.getValue(),
 				index = this.parameter.getIndex();
 			Map<Integer, XGParameter> map = this.source.getDevice().getParameterSets().get(progNr);
 			if(map != null)
@@ -165,7 +165,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	@Override public Integer getContent()
-	{	return this.content;
+	{	return this.index;
 	}
 
 /**
@@ -174,33 +174,44 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
  * @return	true, wenn sich der Inhalt änderte
  */
 	@Override public boolean setContent(Integer i)
-	{	int old = this.content;
+	{	int old = this.index;
 		XGParameter p = this.getParameter();
-		if(p != null) this.content = p.validate(i);
-		boolean changed = this.content != old;
+		if(p != null) this.index = p.validate(i);
+		boolean changed = this.index != old;
 		if(changed) this.notifyListeners();
 		return changed;
 	}
 
-	public boolean addContent(Integer i)
-	{	int old = this.content;
-		XGTable t = this.getParameter().getTranslationTable();
-		if(i == 1) return this.setContent(t.nextKey(old));
-		if(i == -1) return this.setContent(t.prevKey(old));
-		log.info("cannot add content " + i);
-		return false;
+	public XGTableEntry getEntry()
+	{	XGParameter p = this.getParameter();
+		if(p == null) return null;
+		return p.getTranslationTable().getByIndex(this.getContent());
+	}
+
+	public boolean setEntry(XGTableEntry e)
+	{	return this.setValue(e.getValue());
+	}
+
+	public int getValue()
+	{	return this.getEntry().getValue();
+	}
+
+	public boolean setValue(int v)
+	{	XGParameter p = this.getParameter();
+		if(p == null) return true;
+		return this.setContent(p.getTranslationTable().getIndex(v));
 	}
 
 	public String getInfo()
 	{	XGParameter p = this.getParameter();
-		if(p != null) return p.getLongName() + " = " + p.getTranslationTable().get(this.getContent());
+		if(p != null) return p.getLongName() + " = " + p.getTranslationTable().getByIndex(this.index).getName();
 		else return "no parameter info";
 	}
 
 	@Override public String toString()
 	{	XGParameter p = this.getParameter();
-		if(p.getUnit().isEmpty()) return p.getTranslationTable().get(this.getContent()).getName();
-		else return p.getTranslationTable().get(this.getContent()).getName() + " " + p.getUnit();
+		if(p.getUnit().isEmpty()) return p.getTranslationTable().getByIndex(this.index).getName();
+		else return p.getTranslationTable().getByIndex(this.index).getName() + " " + p.getUnit();
 	}
 
 	@Override public int compareTo(XGValue o)

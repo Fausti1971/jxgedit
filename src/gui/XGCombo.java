@@ -40,7 +40,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
 
-		log.info("combo initialized: " + this.getName() + this.combo.getSize());
+		log.info("combo initialized: " + this.getName());
 	}
 
 
@@ -58,7 +58,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 	}
 
 	@Override public void contentChanged(XGValue v)
-	{	this.combo.setSelectedItem(this.value.getParameter().getTranslationTable().get(this.value.getContent()));
+	{	this.combo.setSelectedItem(this.value.getEntry());
 	}
 
 /*****************************************************************************************************/
@@ -77,13 +77,13 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 			XGTable t = this.value.getParameter().getTranslationTable();
 			for(XGTableEntry e : t) this.addItem(e);
 //			this.setMaximumRowCount(Toolkit.getDefaultToolkit().getScreenSize().height/this.row, t.size());
-			this.setSelectedItem(t.get(this.value.getContent()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
+			this.setSelectedItem(t.getByIndex(this.value.getContent()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
 			this.addActionListener(this);
 			this.setAutoscrolls(true);
 		}
 
 		@Override public void actionPerformed(ActionEvent ae)
-		{	boolean changed = this.value.setContent(((XGTableEntry)this.getSelectedItem()).getKey());//TODO: wird erst transmitted, nachdem die listener notified wurden (falsch für masterValues...)
+		{	boolean changed = this.value.setEntry((XGTableEntry)this.getSelectedItem());//TODO: wird erst transmitted, nachdem die listener notified wurden (falsch für masterValues...)
 			if(changed)
 			{	try
 				{	new XGMessageParameterChange(this.value.getSource(), this.value.getSource().getDevice().getMidi(), this.value).transmit();

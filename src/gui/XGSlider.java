@@ -146,8 +146,8 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 			this.g2.setColor(COL_BAR_BACK);
 			this.g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 	// draw foreground
-			this.originWidth = Rest.linearIO(this.parameter.getOrigin(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.getWidth());
-			this.barWidth = Rest.linearIO(this.value.getContent(), this.parameter.getMinValue(), this.parameter.getMaxValue(), 0, this.getWidth()) - this.originWidth;
+			this.originWidth = Rest.linearIO(this.parameter.getOrigin(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth());
+			this.barWidth = Rest.linearIO(this.value.getContent(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth()) - this.originWidth;
 			this.g2.setColor(COL_BAR_FORE);
 			this.g2.fillRoundRect(0 + Math.min(this.originWidth, this.originWidth + this.barWidth), 0, Math.abs(this.barWidth), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			this.g2.dispose();
@@ -157,8 +157,8 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		{	XGDevice dev = this.value.getSource().getDevice();
 			boolean changed = false;
 			if(e.getButton() != MouseEvent.BUTTON1) return;
-			if(this.getX() + this.barWidth < e.getX()) changed = this.value.addContent(1);
-			else changed = this.value.addContent(-1);
+			if(this.getX() + this.barWidth < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
+			else changed = this.value.setContent(this.value.getContent() - 1);
 			if(changed)
 			{	try
 				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
@@ -171,7 +171,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	boolean changed = this.value.addContent(e.getWheelRotation());
+		{	boolean changed = this.value.setContent(this.value.getContent() + e.getWheelRotation());
 			if(changed)
 			{	XGDevice dev = this.value.getSource().getDevice();
 				try
@@ -186,7 +186,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - JXG.dragEvent.getX();
-			boolean changed = this.value.addContent(distance);
+			boolean changed = this.value.setContent(this.value.getContent() + distance);
 			if(changed)
 			{	XGDevice dev = this.value.getSource().getDevice();
 				try

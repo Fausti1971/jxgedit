@@ -87,11 +87,11 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 		}
 
 		@Override public boolean isSelected()
-		{	return this.entry.getKey() == this.value.getContent();
+		{	return this.entry.getValue() == this.value.getContent();
 		}
 
 		@Override public void actionPerformed(ActionEvent e)
-		{	boolean changed = this.value.setContent(entry.getKey());
+		{	boolean changed = this.value.setContent(entry.getValue());
 			if(changed)
 			{	try
 				{	new XGMessageParameterChange(this.value.getSource(), this.value.getSource().getDevice().getMidi(), this.value).transmit();

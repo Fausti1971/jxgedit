@@ -27,7 +27,7 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getValue());
-		v.encodeMessage(this, v.getContent());
+		v.encodeMessage(this, v.getValue());
 		this.setEOX(DATA_OFFS + v.getOpcode().getDataSize());
 	}
 

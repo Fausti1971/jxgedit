@@ -1,5 +1,4 @@
 package parm;
-//TODO: noteLimitLow und noteLimitHi beziehen min und max aufeinander; velLimitLow und velLimitHi ebenso (evtl. via parameterSet lösen?); continous-werte für knob/slider überdenken
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -49,15 +48,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	private final String tag;
 	private final String longName, shortName;
-	/**
-	 * minValue und MaxValue sind im Falle von translationTables anstatt der reelen Values die minimalen bzw. maximalen Indizes der Table und müssen via addContent gesetzt werden
-	 */
-	private final int minValue, maxValue;
-	/**
-	 * der Ursprung eines Steuerelementes (bspw. 64 bei Panorama)
-	 */
 	private final int origin;
-//	private final XGValueTranslator valueTranslator;
 	private final XGTable translationTable;
 	private final String unit;
 	private final XGAddress masterAddress;
@@ -67,9 +58,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	protected XGParameter(XGDevice dev, XMLNode n)
 	{	this.tag = n.getStringAttribute(ATTR_ID);
 		this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), DEF_TABLE).filter(n);// muss wegen validate() vor origin-Zuweisung ausgeführt werden; ist origin evtl. besser im Component aufgehoben? (template.xml)
-		this.minValue = this.setMinValue(n);
-		this.maxValue = this.setMaxValue(n);
-		this.origin = this.validate(n.getIntegerAttribute(ATTR_ORIGIN, 0));
+		this.origin = this.validate(this.translationTable.getIndex(n.getIntegerAttribute(ATTR_ORIGIN, 0)));
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
 		this.unit = n.getStringAttribute(ATTR_UNIT, this.translationTable.getUnit());
@@ -85,27 +74,21 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 			this.isMutable = false;
 		}
 		log.info("parameter initialized: " + this);
+		if(this.translationTable == null) throw new RuntimeException("no table: " + this.toString());
 	}
 
 	public XGParameter(String name, int v)//Dummy-Parameter für Festwerte
 	{	this.tag = name;
 		this.longName = DEF_PARAMETERNAME;
 		this.shortName = name;
-		this.minValue = this.maxValue = this.origin = v;
 		this.translationTable = DEF_TABLE;
+		this.origin = 0;
 		this.unit = "*";
 		this.masterAddress = null;
 		this.index = 0;
 		this.isMutable = false;
 		log.info("parameter initialized: " + this);
-	}
-
-	public int setMinValue(XMLNode n)
-	{	return  Math.max(n.getIntegerAttribute(ATTR_MIN, DEF_MIN), 0);
-	}
-
-	public int setMaxValue(XMLNode n)
-	{	return Math.min(n.getIntegerAttribute(ATTR_MAX, DEF_MAX), this.translationTable.size());
+		if(this.translationTable == null) throw new RuntimeException("no table: " + this.toString());
 	}
 
 	public boolean isMutable()
@@ -120,12 +103,12 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	{	return this.index;
 	}
 
-	public int getMinValue()
-	{	return this.minValue;
+	public int getMinIndex()
+	{	return this.translationTable.getMinIndex();
 	}
 
-	public int getMaxValue()
-	{	return this.maxValue;
+	public int getMaxIndex()
+	{	return this.translationTable.getMaxIndex();
 	}
 
 	public XGTable getTranslationTable()
@@ -137,7 +120,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	}
 
 	public int validate(int i)
-	{	return Math.max(Math.min(i, this.maxValue), this.minValue);
+	{	return Math.max(Math.min(i, this.getMaxIndex()), this.getMinIndex());
 	}
 
 	public String getShortName()

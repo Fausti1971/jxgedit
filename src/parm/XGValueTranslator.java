@@ -18,7 +18,7 @@ public interface XGValueTranslator extends XGLoggable, XGParameterConstants
 			// TODO Auto-generated method stub
 			return 0;
 		}
-		@Override public XGTable getTable(XGValue v)
+		@Override public XGXMLTable getTable(XGValue v)
 		{
 			// TODO Auto-generated method stub
 			return null;
@@ -36,7 +36,7 @@ public interface XGValueTranslator extends XGLoggable, XGParameterConstants
 			if(i > 64) return "R" + Math.abs(i - 64);
 			else return "C";
 		}
-		@Override public XGTable getTable(XGValue v)
+		@Override public XGXMLTable getTable(XGValue v)
 		{	return null;
 		}
 	};
@@ -51,7 +51,7 @@ public interface XGValueTranslator extends XGLoggable, XGParameterConstants
 			if(i < 64) return "MP" + Math.abs(i + 1);
 			else return "AD" + Math.abs(i - 63);
 		}
-		@Override public XGTable getTable(XGValue v)
+		@Override public XGXMLTable getTable(XGValue v)
 		{	return null;
 		}
 	};

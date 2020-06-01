@@ -5,7 +5,7 @@ import java.util.function.Function;
 import device.XGDevice;
 import xml.XMLNode;
 
-public class XGVirtualTable extends XGTable
+public class XGVirtualTable implements XGTable
 {
 	public static void init(XGDevice dev)
 	{	dev.getTables().add(DEF_TABLE);
@@ -102,62 +102,89 @@ public class XGVirtualTable extends XGTable
 
 /***********************************************************************************/
 
+	private final String name;
 	private final Function<Integer, String> translate;
 	private Function<String, Integer> retranslate;
+	private final int minValue, maxValue;
 	private int iteratorCount;
 
 	public XGVirtualTable(String name, Function<Integer, String> trans, Function<String, Integer> retrans)
-	{	super(name);
+	{	this.name = name;
+		this.minValue = 0;
+		this.maxValue = Integer.MAX_VALUE & 0x0000FFFF;
 		this.translate = trans;
 		this.retranslate = retrans;
-		this.iteratorCount = this.firstKey();
-		log.info("table initialized: " + this.name + " (" + this.size() + ")");
+		this.iteratorCount = 0;
+		log.info(this.getInfo());
 	}
 
-	@Override public XGTableEntry get(Integer key)
-	{	String s = this.translate.apply(key);
-		return new XGTableEntry(key, s);
+	public XGVirtualTable(int min, int max, String name, Function<Integer, String> translate, Function<String, Integer> retranslate)
+	{	this.name = name;
+		this.minValue = min;
+		this.maxValue = max;
+		this.translate = translate;
+		this.retranslate = retranslate;
+		this.iteratorCount = 0;
+		log.info(this.getInfo());
 	}
 
-	@Override public XGTableEntry get(String name)
-	{	int i = this.retranslate.apply(name);
-		return new XGTableEntry(i, name);
+	@Override public XGTableEntry getByIndex(int i)
+	{	i += this.minValue;
+		String s = this.translate.apply(i);
+		return new XGTableEntry(i, s);
+	}
+
+	@Override public XGTableEntry getByName(String name)
+	{	int v = this.retranslate.apply(name);
+		return new XGTableEntry(v, name);
+	}
+
+	@Override public XGTableEntry getByValue(int v)
+	{	v -= this.minValue;
+		return new XGTableEntry(v, this.translate.apply(v));
+	}
+
+	@Override public int getIndex(int v)
+	{	return v - this.minValue;
+	}
+
+	@Override public int getIndex(String name)
+	{	return this.retranslate.apply(name) - this.minValue;
 	}
 
 	@Override public Iterator<XGTableEntry> iterator()
 	{	return new Iterator<XGTableEntry>()
 		{
 			@Override public boolean hasNext()
-			{	return iteratorCount < lastKey();
+			{	return iteratorCount < maxValue;
 			}
 
 			@Override public XGTableEntry next()
-			{	return get(iteratorCount++);
+			{	return getByIndex(iteratorCount++);
 			}
 		};
 	}
 
 	@Override public XGTable filter(XMLNode n)
-	{	return this;
-	}
-
-	@Override public int firstKey()
-	{	return 0;
-	}
-
-	@Override public int lastKey()
-	{	return Integer.MAX_VALUE;
-	}
-
-	@Override public Integer nextKey(int i)
-	{	return Math.min(i + 1, this.lastKey());
-	}
-
-	@Override public Integer prevKey(int i)
-	{	return Math.max(i - 1, this.firstKey());
+	{	int min = n.getIntegerAttribute(ATTR_MIN, XGParameterConstants.DEF_MIN);
+		int max = n.getIntegerAttribute(ATTR_MAX, XGParameterConstants.DEF_MAX);
+		return new XGVirtualTable(min, max, this.name, this.translate, this.retranslate);
 	}
 
 	@Override public int size()
-	{	return this.lastKey() - this.firstKey();
+	{	return (this.maxValue - this.minValue) + 1;
 	}
+
+	@Override public String getName()
+	{	return this.name;
+	}
+
+	@Override public String getUnit()
+	{	return "";
+	}
+
+	@Override public String toString()
+	{	return this.getInfo();
+	}
+
 }
