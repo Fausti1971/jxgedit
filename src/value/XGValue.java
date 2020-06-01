@@ -118,6 +118,10 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.opcode;
 	}
 
+	public int getSize()
+	{	return this.opcode.getAddress().getLo().getSize();
+	}
+
 	private void assignMutableParameter()
 	{	if(this.parameter.isMutable())
 		{	int progNr = this.parameterMaster.getValue(),
@@ -146,7 +150,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	public int decodeMessage(XGResponse msg) throws InvalidXGAddressException
 	{	int offset = msg.getBaseOffset() + this.opcode.getAddress().getLo().getMin() - msg.getLo();
-		int size = this.opcode.getDataSize();
+		int size = this.getSize();
 		switch(this.opcode.getDataType())
 		{	default:
 			case LSB:	return msg.decodeLSB(offset, size);
@@ -156,7 +160,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	public void encodeMessage(XGResponse msg, int o) throws InvalidXGAddressException
 	{	int offset = msg.getBaseOffset() + this.address.getLo().getValue() - msg.getLo();
-		int size = this.opcode.getDataSize();
+		int size = this.getSize();
 		switch(this.opcode.getDataType())
 		{	default:
 			case LSB:	msg.encodeLSB(offset, size, o); break;

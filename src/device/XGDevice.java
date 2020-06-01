@@ -392,7 +392,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			XGValue v = this.values.get(adr);
 			if(v != null)
 			{	v.setValue(v.decodeMessage(msg));
-				size = v.getOpcode().getDataSize();
+				size = v.getOpcode().getAddress().getLo().getSize();
 			}
 			else
 			{	log.info("value not found: " + adr);

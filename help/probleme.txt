@@ -16,3 +16,4 @@ Problem:
 		Wenn alle Wertebereiche mittels XGTable abgebildet würden, könnte man eine Werteänderung auch über den Wertebereich der XGTable machen (lowerEntry(), higherEntry());
 		Eine XGTable für den Wertebereich 0...16383 (14Bit) wäre etwa 511kB groß...
 		Idee: XGVirtualTable, eine Klasse, die die benötigten Methoden einer TreeMap<Integer, XGTableEntry> nachbildet;
+	gelöset mittels XGVirtualTable;
