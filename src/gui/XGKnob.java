@@ -65,7 +65,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 	@Override public void contentChanged(XGValue v)
 	{	this.bar.repaint();
 		this.label.setText(v.toString());
-		this.label.repaint();
+//		this.label.repaint();
 	}
 
 	@Override public void parameterChanged(XGParameter p)

@@ -4,8 +4,31 @@
 	<xs:element name="modules">
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element ref="parameters"/>
 				<xs:element ref="module" maxOccurs="unbounded"/>
 			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="parameters">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="parameter" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="parameter">
+		<xs:complexType>
+			<xs:attribute name="longName" use="optional" type="xs:string"/>
+			<xs:attribute name="shortName" use="optional" type="string5"/>
+			<xs:attribute name="min" use="optional" type="xs:nonNegativeInteger" default="0"/>
+			<xs:attribute name="max" use="optional" type="xs:nonNegativeInteger" default="127"/>
+			<xs:attribute name="origin" use="optional" type="xs:nonNegativeInteger" default="0"/>
+			<xs:attribute name="translator" use="optional" type="xs:string" default="normal"/>
+			<xs:attribute name="tableFilter" use="optional" type="xs:string"/>
+			<xs:attribute name="unit" type="string3"/>
+			<xs:attribute name="id" use="required" type="xs:ID"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -22,19 +45,51 @@
 	<xs:element name="bulk">
 		<xs:complexType>
 			<xs:choice maxOccurs="unbounded">
-				<xs:element ref="opcode"/>
+				<xs:element name="opcode" type="opcode"/>
 			</xs:choice>
 			<xs:attribute name="address" use="required" type="bulkAddress"/>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="opcode">
+	<xs:complexType name="opcode" abstract="true"/>
+
+	<xs:complexType name="immutable">
+		<xs:complexContent mixed="true">
+			<xs:extension base="opcode">
+				<xs:attribute name="address" use="required" type="opcodeAddress"/>
+				<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
+				<xs:attribute name="parameterID" type="xs:IDREF"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="mutable">
+		<xs:complexContent mixed="true">
+			<xs:extension base="opcode">
+				<xs:sequence>
+					<xs:element ref="param" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="address" use="required" type="opcodeAddress"/>
+				<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
+				<xs:attribute name="parameterSelector" use="required" type="valueAddress"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="param">
 		<xs:complexType>
-			<xs:attribute name="address" use="required" type="opcodeAddress"/>
-			<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
-			<xs:attribute name="parameterID" use="required" type="xs:IDREF"/>
+			<xs:attribute name="msb" use="optional"/>
+			<xs:attribute name="lsb" use="optional"/>
+			<xs:attribute name="value" use="optional"/>
+			<xs:attribute name="parameterID" type="xs:IDREF"/>
 		</xs:complexType>
 	</xs:element>
+
+	<xs:simpleType name="valueAddress">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+)"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:simpleType name="opcodeAddress">
 		<xs:restriction base="xs:string">
@@ -50,7 +105,7 @@
 
 	<xs:simpleType name="moduleAddress">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?"/>
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)\/([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?"/>
 		</xs:restriction>
 	</xs:simpleType>
 
@@ -63,4 +118,17 @@
 		</xs:restriction>
 	</xs:simpleType>
 
+	<xs:simpleType name="string3">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="string5">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
 </xs:schema>

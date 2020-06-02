@@ -7,228 +7,505 @@
 -->
 
 <modules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/opcode.xsd">
+	<parameters>
+		<parameter id="volume" longName="Volume" shortName="Vol"/>
+		<parameter id="panorama" longName="Panorama" shortName="Pan" translator="panorama" origin="64"/>
+		<parameter id="transpose" longName="Transpose" shortName="Xpose" min="40" max="88" origin="64" translator="sub64" unit="st"/>
+		<parameter id="attenuator" longName="Attenuator" shortName="Damp"/>
+		<parameter id="reverb_type" longName="Reverb Program" shortName="Prog" max="16383" translator="fx_programs" tableFilter="reverb"/>
+		<parameter id="chorus_type" longName="Chorus Program" shortName="Prog" max="16383" translator="fx_programs" tableFilter="chorus"/>
+		<parameter id="variation_type" longName="Variation Program" shortName="Prog" max="16383" translator="fx_programs" tableFilter="variation"/>
+		<parameter id="insertion_type" longName="Insertion Program" shortName="Prog" max="16383" translator="fx_programs" tableFilter="insertion"/>
+		<parameter id="effect_return" longName="Effect Return" shortName="FXRet"/>
+		<parameter id="effect_pan" longName="Effect Panorama" shortName="FXPan" min="1" translator="panorama" origin="64"/>
+		<parameter id="effect_part" longName="Effect Part" shortName="Part" translator="effect_part"/>
+		<parameter id="reverb_send" longName="Send To Reverb" shortName="FXRev"/>
+		<parameter id="chorus_send" longName="Send To Chorus" shortName="FXCho"/>
+		<parameter id="effect_connection" longName="Variation Connection" shortName="Conn" translator="var_connection"/>
+		<parameter id="lpf_cutoff" longName="Lowpass Filter Cutoff Frequency" shortName="LPFCt" min="34" max="60" translator="table3" unit="Hz"/>
+		<parameter id="hpf_cutoff" longName="Highpass Filter Cutoff Frequency" shortName="HPFCt" max="52" translator="table3" unit="Hz"/>
+		<parameter id="dry_wet_balance" longName="Dry/Wet Balance" shortName="D/W" min="1" translator="table15" origin="64"/>
+		<parameter id="initial_delay" longName="Initial Delay" shortName="InDly" max="63" translator="table5" unit="ms"/>
+		<parameter id="master_tune" longName="Master Tune" shortName="Tune" max="2047" origin="1024" translator="sub1024div10" unit="cnt"/>
+		<parameter id="reverb_time" longName="Reverb Time" shortName="Time" max="69" translator="table4" unit="s"/>
+		<parameter id="diffusion" longName="Diffusion" shortName="Diff" max="10"/>
+		<parameter id="reverb_delay" longName="Reverb Delay" shortName="RvDly" max="63" translator="table5" unit="ms"/>
+		<parameter id="density" longName="Density" shortName="Dnsty" max="4"/>
+		<parameter id="er_rev_balance" longName="Early Reflection- /Reverb-Balance" shortName="ER/Rv" min="1" origin="64"/>
+		<parameter id="high_damp" longName="High Damp" shortName="HiDmp" min="1" max="10" translator="div10"/>
+		<parameter id="feedback_level" longName="Feedback Level" shortName="FBLvl" min="1" origin="64" translator="table16"/>
+		<parameter id="feedback_delay" longName="Feedback Delay" shortName="FBDly" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="feedback_high_damp" longName="Feedback High Damp" shortName="FBDmp" min="1" max="10" translator="div10"/>
+		<parameter id="eq_hi_freq" shortName="HiFrq" longName="EQ High Frequency" min="28" max="58" translator="table3"/>
+		<parameter id="eq_lo_freq" shortName="LoFrq" longName="EQ Low Frequecy" min="4" max="40" translator="table3"/>
+		<parameter id="delay_r" longName="Delay Right" shortName="RDly" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="delay_l" longName="Delay Left" shortName="LDly" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="delay_c" longName="Delay Center" shortName="CDly" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="eq_gain" longName="EQ Gain" shortName="Gain" min="52" max="76" translator="sub64" origin="64" unit="dB"/>
+		<parameter id="level_c" longName="Center Channel Level" shortName="CLvl" translator="table18"/>
+
+		<parameter id="mp_elementReserve" longName="Element Reserve" shortName="ElRes" max="32"/>
+		<parameter id="mp_bank_msb" longName="Bank Select MSB" shortName="bankM"/>
+		<parameter id="mp_bank_lsb" longName="Bank Select LSB" shortName="bankL"/>
+		<parameter id="mp_program" longName="Voice Program Number" shortName="prgNr"/>
+		<parameter id="mp_midichannel" longName="Midi Channel" shortName="Ch" translator="midi_channels"/>
+		<parameter id="mp_monopoly" shortName="Mn/Pl" longName="Monophony/Ployphony" translator="mp_monopoly"/>
+		<parameter id="mp_key_on_assign" shortName="KeyOn" longName="Same Note Number Key On Assign" translator="mp_key_on_assign"/>
+		<parameter id="mp_partmode" shortName="Mode" longName="Part Mode" translator="mp_partmode"/>
+		<parameter id="mp_tune" shortName="Tune" longName="Detune" max="255" translator="sub128div10" unit="Hz"/>
+		<parameter id="mp_velocitysense_depth"/>
+		<parameter id="mp_velocitysense_offset"/>
+		<parameter id="mp_velocitylimit_low"/>
+		<parameter id="mp_velocitylimit_hi"/>
+		<parameter id="mp_notelimit_low"/>
+		<parameter id="mp_notelimit_hi"/>
+		<parameter id="mw_control_depth" longName="Modulation Wheel Control Depth" shortName="MW" translator="sub64" origin="64"/>
+		<parameter id="pb_control_depth" longName="Pitchbend Wheel Control Depth" shortName="PB" translator="sub64" origin="64"/>
+		<parameter id="cat_control_depth" longName="Channel Aftertouch Control Depth" shortName="CAT" translator="sub64" origin="64"/>
+		<parameter id="pat_control_depth" longName="Polyphonic Aftertouch Control Depth" shortName="PAT" translator="sub64" origin="64"/>
+		<parameter id="ac1_control_depth" longName="Alternate Controller 1 Control Depth" shortName="AC1" translator="sub64" origin="64"/>
+		<parameter id="ac2_control_depth" longName="Alternate Controller 2 Control Depth" shortName="AC2" translator="sub64" origin="64"/>
+		<parameter id="cbc1_control_depth" longName="CBC1 Control Depth" shortName="CBC1" translator="sub64" origin="64"/>
+		<parameter id="cbc2_control_depth" longName="CBC2 Control Depth" shortName="CBC2" translator="sub64" origin="64"/>
+
+		<parameter id="ad_inputGain" longName="Input Gain" shortName="iGain" max="1"/>
+
+		<parameter id="dr_pitch_coarse" longName="Pitch Coarse" shortName="Tune" origin="64" translator="sub64"/>
+	</parameters>
 
 	<module name="Master" address="0/0/">
 		<bulk address="//0-6">
-			<opcode parameterID="master_tune" address="//0-3" byteType="LSN"/>
-			<opcode parameterID="volume" address="//4"/>
-			<opcode parameterID="attenuator" address="//5"/>
-			<opcode parameterID="transpose" address="//6"/>
+			<opcode xsi:type="immutable" address="//0-3" byteType="LSN" parameterID="master_tune"/>
+			<opcode xsi:type="immutable" address="//4" parameterID="volume"/>
+			<opcode xsi:type="immutable" address="//5" parameterID="attenuator"/>
+			<opcode xsi:type="immutable" address="//6" parameterID="transpose"/>
 		</bulk>
 	</module>
 
 	<module name="FX1 Reverb" address="2/1/0-21">
 		<bulk address="//0-13">
-			<opcode parameterID="reverb_type" address="//0-1"/>
-			<opcode parameterID="reverb_1" address="//2"/>
-			<opcode parameterID="reverb_2" address="//3"/>
-			<opcode parameterID="reverb_3" address="//4"/>
-			<opcode parameterID="reverb_4" address="//5"/>
-			<opcode parameterID="reverb_5" address="//6"/>
-			<opcode parameterID="reverb_6" address="//7"/>
+			<opcode xsi:type="immutable" address="//0-1" parameterID="reverb_type"/>
+			<opcode xsi:type="mutable" address="//2" parameterSelector="2/1/0"><!-- rev01 -->
+				<param msb="1" lsb="0" parameterID="reverb_time"/>
+				<param msb="1" lsb="1" parameterID="reverb_time"/>
+				<param msb="1" lsb="2" parameterID="reverb_time"/>
+				<param msb="1" lsb="3" parameterID="reverb_time"/>
+				<param msb="1" lsb="6" parameterID="reverb_time"/>
+				<param msb="1" lsb="7" parameterID="reverb_time"/>
+				<param msb="2" lsb="0" parameterID="reverb_time"/>
+				<param msb="2" lsb="1" parameterID="reverb_time"/>
+				<param msb="2" lsb="3" parameterID="reverb_time"/>
+				<param msb="2" lsb="4" parameterID="reverb_time"/>
+				<param msb="2" lsb="5" parameterID="reverb_time"/>
+				<param msb="2" lsb="6" parameterID="reverb_time"/>
+				<param msb="2" lsb="7" parameterID="reverb_time"/>
+				<param msb="3" lsb="0" parameterID="reverb_time"/>
+				<param msb="3" lsb="1" parameterID="reverb_time"/>
+				<param msb="4" lsb="0" parameterID="reverb_time"/>
+				<param msb="4" lsb="1" parameterID="reverb_time"/>
+				<param msb="4" lsb="2" parameterID="reverb_time"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//3" parameterSelector="2/1/0"><!-- rev02 -->
+				<param msb="1" lsb="0" parameterID="diffusion"/>
+				<param msb="1" lsb="1" parameterID="diffusion"/>
+				<param msb="1" lsb="2" parameterID="diffusion"/>
+				<param msb="1" lsb="3" parameterID="diffusion"/>
+				<param msb="1" lsb="6" parameterID="diffusion"/>
+				<param msb="1" lsb="7" parameterID="diffusion"/>
+				<param msb="2" lsb="0" parameterID="diffusion"/>
+				<param msb="2" lsb="1" parameterID="diffusion"/>
+				<param msb="2" lsb="3" parameterID="diffusion"/>
+				<param msb="2" lsb="4" parameterID="diffusion"/>
+				<param msb="2" lsb="5" parameterID="diffusion"/>
+				<param msb="2" lsb="6" parameterID="diffusion"/>
+				<param msb="2" lsb="7" parameterID="diffusion"/>
+				<param msb="3" lsb="0" parameterID="diffusion"/>
+				<param msb="3" lsb="1" parameterID="diffusion"/>
+				<param msb="4" lsb="0" parameterID="diffusion"/>
+				<param msb="4" lsb="1" parameterID="diffusion"/>
+				<param msb="4" lsb="2" parameterID="diffusion"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//4" parameterSelector="2/1/0"><!-- rev03 -->
+				<param msb="1" lsb="0" parameterID="initial_delay"/>
+				<param msb="1" lsb="1" parameterID="initial_delay"/>
+				<param msb="1" lsb="2" parameterID="initial_delay"/>
+				<param msb="1" lsb="3" parameterID="initial_delay"/>
+				<param msb="1" lsb="6" parameterID="initial_delay"/>
+				<param msb="1" lsb="7" parameterID="initial_delay"/>
+				<param msb="2" lsb="0" parameterID="initial_delay"/>
+				<param msb="2" lsb="1" parameterID="initial_delay"/>
+				<param msb="2" lsb="3" parameterID="initial_delay"/>
+				<param msb="2" lsb="4" parameterID="initial_delay"/>
+				<param msb="2" lsb="5" parameterID="initial_delay"/>
+				<param msb="2" lsb="6" parameterID="initial_delay"/>
+				<param msb="2" lsb="7" parameterID="initial_delay"/>
+				<param msb="3" lsb="0" parameterID="initial_delay"/>
+				<param msb="3" lsb="1" parameterID="initial_delay"/>
+				<param msb="4" lsb="0" parameterID="initial_delay"/>
+				<param msb="4" lsb="1" parameterID="initial_delay"/>
+				<param msb="4" lsb="2" parameterID="initial_delay"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//5" parameterSelector="2/1/0"><!-- rev04 -->
+				<param msb="1" lsb="0" parameterID="hpf_cutoff"/>
+				<param msb="1" lsb="1" parameterID="hpf_cutoff"/>
+				<param msb="1" lsb="2" parameterID="hpf_cutoff"/>
+				<param msb="1" lsb="3" parameterID="hpf_cutoff"/>
+				<param msb="1" lsb="6" parameterID="hpf_cutoff"/>
+				<param msb="1" lsb="7" parameterID="hpf_cutoff"/>
+				<param msb="2" lsb="0" parameterID="hpf_cutoff"/>
+				<param msb="2" lsb="1" parameterID="hpf_cutoff"/>
+				<param msb="2" lsb="3" parameterID="hpf_cutoff"/>
+				<param msb="2" lsb="4" parameterID="hpf_cutoff"/>
+				<param msb="2" lsb="5" parameterID="hpf_cutoff"/>
+				<param msb="2" lsb="6" parameterID="hpf_cutoff"/>
+				<param msb="2" lsb="7" parameterID="hpf_cutoff"/>
+				<param msb="3" lsb="0" parameterID="hpf_cutoff"/>
+				<param msb="3" lsb="1" parameterID="hpf_cutoff"/>
+				<param msb="4" lsb="0" parameterID="hpf_cutoff"/>
+				<param msb="4" lsb="1" parameterID="hpf_cutoff"/>
+				<param msb="4" lsb="2" parameterID="hpf_cutoff"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//6" parameterSelector="2/1/0"><!-- rev05 -->
+				<param msb="1" lsb="0" parameterID="lpf_cutoff"/>
+				<param msb="1" lsb="1" parameterID="lpf_cutoff"/>
+				<param msb="1" lsb="2" parameterID="lpf_cutoff"/>
+				<param msb="1" lsb="3" parameterID="lpf_cutoff"/>
+				<param msb="1" lsb="6" parameterID="lpf_cutoff"/>
+				<param msb="1" lsb="7" parameterID="lpf_cutoff"/>
+				<param msb="2" lsb="0" parameterID="lpf_cutoff"/>
+				<param msb="2" lsb="1" parameterID="lpf_cutoff"/>
+				<param msb="2" lsb="3" parameterID="lpf_cutoff"/>
+				<param msb="2" lsb="4" parameterID="lpf_cutoff"/>
+				<param msb="2" lsb="5" parameterID="lpf_cutoff"/>
+				<param msb="2" lsb="6" parameterID="lpf_cutoff"/>
+				<param msb="2" lsb="7" parameterID="lpf_cutoff"/>
+				<param msb="3" lsb="0" parameterID="lpf_cutoff"/>
+				<param msb="3" lsb="1" parameterID="lpf_cutoff"/>
+				<param msb="4" lsb="0" parameterID="lpf_cutoff"/>
+				<param msb="4" lsb="1" parameterID="lpf_cutoff"/>
+				<param msb="4" lsb="2" parameterID="lpf_cutoff"/>
+			</opcode>
+
+<!-- 		<opcode parameterID="reverb_6" address="//7"/> not used
 			<opcode parameterID="reverb_7" address="//8"/>
 			<opcode parameterID="reverb_8" address="//9"/>
 			<opcode parameterID="reverb_9" address="//10"/>
-			<opcode parameterID="reverb_10" address="//11"/>
-			<opcode address="//12" parameterID="effect_return"/>
-			<opcode address="//13" parameterID="effect_pan"/>
+ -->
+			<opcode xsi:type="mutable" address="//11" parameterSelector="2/1/0"><!-- rev10 -->
+				<param msb="1" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="1" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="1" lsb="2" parameterID="dry_wet_balance"/>
+				<param msb="1" lsb="3" parameterID="dry_wet_balance"/>
+				<param msb="1" lsb="6" parameterID="dry_wet_balance"/>
+				<param msb="1" lsb="7" parameterID="dry_wet_balance"/>
+				<param msb="2" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="2" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="2" lsb="3" parameterID="dry_wet_balance"/>
+				<param msb="2" lsb="4" parameterID="dry_wet_balance"/>
+				<param msb="2" lsb="5" parameterID="dry_wet_balance"/>
+				<param msb="2" lsb="6" parameterID="dry_wet_balance"/>
+				<param msb="2" lsb="7" parameterID="dry_wet_balance"/>
+				<param msb="3" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="3" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="4" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="4" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="4" lsb="2" parameterID="dry_wet_balance"/>
+			</opcode>
+			<opcode xsi:type="immutable" address="//12" parameterID="effect_return"/>
+			<opcode xsi:type="immutable" address="//13" parameterID="effect_pan"/>
 		</bulk>
 		<bulk address="//16-21">
-			<opcode parameterID="reverb_11" address="//16"/>
-			<opcode parameterID="reverb_12" address="//17"/>
-			<opcode parameterID="reverb_13" address="//18"/>
-			<opcode parameterID="reverb_14" address="//19"/>
-			<opcode parameterID="reverb_15" address="//20"/>
-			<opcode parameterID="reverb_16" address="//21"/>
+			<opcode xsi:type="mutable" address="//16" parameterSelector="2/1/0"><!-- rev11 -->
+				<param msb="1" lsb="0" parameterID="reverb_delay"/>
+				<param msb="1" lsb="1" parameterID="reverb_delay"/>
+				<param msb="1" lsb="3" parameterID="reverb_delay"/>
+				<param msb="1" lsb="6" parameterID="reverb_delay"/>
+				<param msb="1" lsb="7" parameterID="reverb_delay"/>
+				<param msb="2" lsb="0" parameterID="reverb_delay"/>
+				<param msb="2" lsb="1" parameterID="reverb_delay"/>
+				<param msb="2" lsb="2" parameterID="reverb_delay"/>
+				<param msb="2" lsb="5" parameterID="reverb_delay"/>
+				<param msb="2" lsb="6" parameterID="reverb_delay"/>
+				<param msb="2" lsb="7" parameterID="reverb_delay"/>
+				<param msb="3" lsb="0" parameterID="reverb_delay"/>
+				<param msb="3" lsb="1" parameterID="reverb_delay"/>
+				<param msb="4" lsb="0" parameterID="reverb_delay"/>
+				<param msb="4" lsb="2" parameterID="reverb_delay"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//17" parameterSelector="2/1/0"><!-- rev12 -->
+				<param msb="1" lsb="0" parameterID="density"/>
+				<param msb="1" lsb="1" parameterID="density"/>
+				<param msb="1" lsb="3" parameterID="density"/>
+				<param msb="1" lsb="6" parameterID="density"/>
+				<param msb="1" lsb="7" parameterID="density"/>
+				<param msb="2" lsb="0" parameterID="density"/>
+				<param msb="2" lsb="1" parameterID="density"/>
+				<param msb="2" lsb="2" parameterID="density"/>
+				<param msb="2" lsb="5" parameterID="density"/>
+				<param msb="2" lsb="6" parameterID="density"/>
+				<param msb="2" lsb="7" parameterID="density"/>
+				<param msb="3" lsb="0" parameterID="density"/>
+				<param msb="3" lsb="1" parameterID="density"/>
+				<param msb="4" lsb="0" parameterID="density"/>
+				<param msb="4" lsb="2" parameterID="density"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//18" parameterSelector="2/1/0"><!-- rev13 -->
+				<param msb="1" lsb="0" parameterID="er_rev_balance"/>
+				<param msb="1" lsb="1" parameterID="er_rev_balance"/>
+				<param msb="1" lsb="3" parameterID="er_rev_balance"/>
+				<param msb="1" lsb="6" parameterID="er_rev_balance"/>
+				<param msb="1" lsb="7" parameterID="er_rev_balance"/>
+				<param msb="2" lsb="0" parameterID="er_rev_balance"/>
+				<param msb="2" lsb="1" parameterID="er_rev_balance"/>
+				<param msb="2" lsb="2" parameterID="er_rev_balance"/>
+				<param msb="2" lsb="5" parameterID="er_rev_balance"/>
+				<param msb="2" lsb="6" parameterID="er_rev_balance"/>
+				<param msb="2" lsb="7" parameterID="er_rev_balance"/>
+				<param msb="3" lsb="0" parameterID="er_rev_balance"/>
+				<param msb="3" lsb="1" parameterID="er_rev_balance"/>
+				<param msb="4" lsb="0" parameterID="er_rev_balance"/>
+				<param msb="4" lsb="2" parameterID="er_rev_balance"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//19" parameterSelector="2/1/0"><!-- rev14 -->
+				<param msb="1" lsb="0" parameterID="high_damp"/>
+				<param msb="1" lsb="1" parameterID="high_damp"/>
+				<param msb="2" lsb="0" parameterID="high_damp"/>
+				<param msb="2" lsb="1" parameterID="high_damp"/>
+				<param msb="2" lsb="2" parameterID="high_damp"/>
+				<param msb="3" lsb="0" parameterID="high_damp"/>
+				<param msb="3" lsb="1" parameterID="high_damp"/>
+				<param msb="4" lsb="0" parameterID="high_damp"/>
+				<param msb="1" lsb="2" parameterID="feedback_high_damp"/>
+				<param msb="1" lsb="3" parameterID="feedback_high_damp"/>
+				<param msb="1" lsb="6" parameterID="feedback_high_damp"/>
+				<param msb="1" lsb="7" parameterID="feedback_high_damp"/>
+				<param msb="2" lsb="3" parameterID="feedback_high_damp"/>
+				<param msb="2" lsb="4" parameterID="feedback_high_damp"/>
+				<param msb="2" lsb="5" parameterID="feedback_high_damp"/>
+				<param msb="2" lsb="6" parameterID="feedback_high_damp"/>
+				<param msb="2" lsb="7" parameterID="feedback_high_damp"/>
+				<param msb="4" lsb="1" parameterID="feedback_high_damp"/>
+				<param msb="4" lsb="2" parameterID="feedback_high_damp"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//20" parameterSelector="2/1/0"><!-- rev15 -->
+				<param msb="1" lsb="0" parameterID="feedback_level"/>
+				<param msb="1" lsb="1" parameterID="feedback_level"/>
+				<param msb="1" lsb="3" parameterID="feedback_level"/>
+				<param msb="1" lsb="6" parameterID="feedback_level"/>
+				<param msb="1" lsb="7" parameterID="feedback_level"/>
+				<param msb="2" lsb="0" parameterID="feedback_level"/>
+				<param msb="2" lsb="1" parameterID="feedback_level"/>
+				<param msb="2" lsb="2" parameterID="feedback_level"/>
+				<param msb="2" lsb="5" parameterID="feedback_level"/>
+				<param msb="2" lsb="6" parameterID="feedback_level"/>
+				<param msb="2" lsb="7" parameterID="feedback_level"/>
+				<param msb="3" lsb="0" parameterID="feedback_level"/>
+				<param msb="3" lsb="1" parameterID="feedback_level"/>
+				<param msb="4" lsb="0" parameterID="feedback_level"/>
+				<param msb="4" lsb="2" parameterID="feedback_level"/>
+			</opcode>
+<!--		<opcode xsi:type="immutable" parameterID="not used" address="//21"/> rev16 not used -->
 		</bulk>
 	</module>
 
 	<module name="FX1 Chorus" address="2/1/32-53">
 		<bulk address="//32-46">
-			<opcode parameterID="chorus_type" address="//32-33"/>
-			<opcode parameterID="chorus_1" address="//34"/>
-			<opcode parameterID="chorus_2" address="//35"/>
-			<opcode parameterID="chorus_3" address="//36"/>
-			<opcode parameterID="chorus_4" address="//37"/>
-			<opcode parameterID="chorus_5" address="//38"/>
-			<opcode parameterID="chorus_6" address="//39"/>
-			<opcode parameterID="chorus_7" address="//40"/>
-			<opcode parameterID="chorus_8" address="//41"/>
-			<opcode parameterID="chorus_9" address="//42"/>
-			<opcode parameterID="chorus_10" address="//43"/>
-			<opcode address="//44" parameterID="effect_return"/>
-			<opcode address="//45" parameterID="effect_pan"/>
-			<opcode address="//46" parameterID="reverb_send"/>
+			<opcode xsi:type="immutable" parameterID="chorus_type" address="//32-33"/>
+			<opcode xsi:type="mutable" parameterID="chorus_1" address="//34"/><!-- cho01 -->
+			<opcode xsi:type="mutable" parameterID="chorus_2" address="//35"/><!-- cho02 -->
+			<opcode xsi:type="mutable" parameterID="chorus_3" address="//36"/><!-- cho03 -->
+			<opcode xsi:type="mutable" parameterID="chorus_4" address="//37"/><!-- cho04 -->
+			<opcode xsi:type="mutable" parameterID="chorus_5" address="//38"/><!-- cho05 -->
+			<opcode xsi:type="mutable" parameterID="chorus_6" address="//39"/><!-- cho06 -->
+			<opcode xsi:type="mutable" parameterID="chorus_7" address="//40"/><!-- cho07 -->
+			<opcode xsi:type="mutable" parameterID="chorus_8" address="//41"/><!-- cho08 -->
+			<opcode xsi:type="mutable" parameterID="chorus_9" address="//42"/><!-- cho09 -->
+			<opcode xsi:type="mutable" parameterID="chorus_10" address="//43"/><!-- cho10 -->
+			<opcode xsi:type="immutable" address="//44" parameterID="effect_return"/>
+			<opcode xsi:type="immutable" address="//45" parameterID="effect_pan"/>
+			<opcode xsi:type="immutable" address="//46" parameterID="reverb_send"/>
 		</bulk>
 		<bulk address="//48-53">
-			<opcode parameterID="chorus_11" address="//48"/>
-			<opcode parameterID="chorus_12" address="//49"/>
-			<opcode parameterID="chorus_13" address="//50"/>
-			<opcode parameterID="chorus_14" address="//51"/>
-			<opcode parameterID="chorus_15" address="//52"/>
-			<opcode parameterID="chorus_16" address="//53"/>
+			<opcode xsi:type="mutable" parameterID="chorus_11" address="//48"/><!-- cho11 -->
+			<opcode xsi:type="mutable" parameterID="chorus_12" address="//49"/><!-- cho12 -->
+			<opcode xsi:type="mutable" parameterID="chorus_13" address="//50"/><!-- cho13 -->
+			<opcode xsi:type="mutable" parameterID="chorus_14" address="//51"/><!-- cho14 -->
+			<opcode xsi:type="mutable" parameterID="chorus_15" address="//52"/><!-- cho15 -->
+			<opcode xsi:type="mutable" parameterID="chorus_16" address="//53"/><!-- cho16 -->
 		</bulk>
 	</module>
 
 	<module name="FX1 Variation" address="2/1/64-117">
 		<bulk address="//64-96">
-			<opcode parameterID="variation_type" address="//64-65"/>
-			<opcode parameterID="variation_1" address="//66-67"/>
-			<opcode parameterID="variation_2" address="//68-69"/>
-			<opcode parameterID="variation_3" address="//70-71"/>
-			<opcode parameterID="variation_4" address="//72-73"/>
-			<opcode parameterID="variation_5" address="//74-75"/>
-			<opcode parameterID="variation_6" address="//76-77"/>
-			<opcode parameterID="variation_7" address="//78-79"/>
-			<opcode parameterID="variation_8" address="//80-81"/>
-			<opcode parameterID="variation_9" address="//82-83"/>
-			<opcode parameterID="variation_10" address="//84-85"/>
-			<opcode address="//86" parameterID="effect_return"/>
-			<opcode address="//87" parameterID="effect_pan"/>
-			<opcode address="//88" parameterID="reverb_send"/>
-			<opcode address="//89" parameterID="chorus_send"/>
-			<opcode address="//90" parameterID="effect_connection"/>
-			<opcode address="//91" parameterID="effect_part"/>
-			<opcode address="//92" parameterID="mw_control_depth"/>
-			<opcode address="//93" parameterID="pb_control_depth"/>
-			<opcode address="//94" parameterID="cat_control_depth"/>
-			<opcode address="//95" parameterID="ac1_control_depth"/>
-			<opcode address="//96" parameterID="ac2_control_depth"/>
+			<opcode xsi:type="immutable" parameterID="variation_type" address="//64-65"/>
+			<opcode xsi:type="mutable" parameterID="variation_1" address="//66-67"><!-- var01 -->
+			</opcode>
+			<opcode xsi:type="mutable" parameterID="variation_2" address="//68-69"/><!-- var02 -->
+			<opcode xsi:type="mutable" parameterID="variation_3" address="//70-71"/><!-- var03 -->
+			<opcode xsi:type="mutable" parameterID="variation_4" address="//72-73"/><!-- var04 -->
+			<opcode xsi:type="mutable" parameterID="variation_5" address="//74-75"/><!-- var05 -->
+			<opcode xsi:type="mutable" address="//76-77" parameterSelector="2/1/64"><!-- var06 -->
+				<param msb="5" lsb="0" parameterID="level_c"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//78-79" parameterSelector="2/1/64"><!-- var07 -->
+				<param msb="5" lsb="0" parameterID="high_damp"/>
+			</opcode>
+			<opcode xsi:type="mutable" parameterID="variation_8" address="//80-81"/><!-- var08 -->
+			<opcode xsi:type="mutable" parameterID="variation_9" address="//82-83"/><!-- var09 -->
+			<opcode xsi:type="mutable" parameterID="variation_10" address="//84-85"><!-- var10 -->
+				<param msb="5" lsb="0" parameterID="dry_wet_balance"/>
+			</opcode>
+			<opcode xsi:type="immutable" address="//86" parameterID="effect_return"/>
+			<opcode xsi:type="immutable" address="//87" parameterID="effect_pan"/>
+			<opcode xsi:type="immutable" address="//88" parameterID="reverb_send"/>
+			<opcode xsi:type="immutable" address="//89" parameterID="chorus_send"/>
+			<opcode xsi:type="immutable" address="//90" parameterID="effect_connection"/>
+			<opcode xsi:type="immutable" address="//91" parameterID="effect_part"/>
+			<opcode xsi:type="immutable" address="//92" parameterID="mw_control_depth"/>
+			<opcode xsi:type="immutable" address="//93" parameterID="pb_control_depth"/>
+			<opcode xsi:type="immutable" address="//94" parameterID="cat_control_depth"/>
+			<opcode xsi:type="immutable" address="//95" parameterID="ac1_control_depth"/>
+			<opcode xsi:type="immutable" address="//96" parameterID="ac2_control_depth"/>
 		</bulk>
 		<bulk address="//97">
-			<opcode address="//97" parameterID="cbc1_control_depth"/>
+			<opcode xsi:type="immutable" address="//97" parameterID="cbc1_control_depth"/>
 		</bulk>
 		<bulk address="//98">
-			<opcode address="//98" parameterID="cbc2_control_depth"/>
+			<opcode xsi:type="immutable" address="//98" parameterID="cbc2_control_depth"/>
 		</bulk>
 		<bulk address="//112-117">
-			<opcode parameterID="variation_11" address="//112"/>
-			<opcode parameterID="variation_12" address="//113"/>
-			<opcode parameterID="variation_13" address="//114"/>
-			<opcode parameterID="variation_14" address="//115"/>
-			<opcode parameterID="variation_15" address="//116"/>
-			<opcode parameterID="variation_16" address="//117"/>
+			<opcode xsi:type="mutable" parameterID="variation_11" address="//112"/><!-- var11 -->
+			<opcode xsi:type="mutable" parameterID="variation_12" address="//113"/><!-- var12 -->
+			<opcode xsi:type="mutable" address="//114" parameterSelector="2/1/64"><!-- var13 -->
+				<param msb="5" lsb="0" parameterID="eq_lo_freq"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//115" parameterSelector="2/1/64"><!-- var14 -->
+				<param msb="5" lsb="0" parameterID="eq_gain"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//116" parameterSelector="2/1/64"><!-- var15 -->
+				<param msb="5" lsb="0" parameterID="eq_hi_freq"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//117" parameterSelector="2/1/64"><!-- var16 -->
+				<param msb="5" lsb="0" parameterID="eq_gain"/>
+			</opcode>
 		</bulk>
 	</module>
 
 	<module name="FX1 EQ" address="2/64/0-20">
 		<bulk address="//0-20">
-			<opcode address="//0" parameterID="eq_type"/>
-			<opcode address="//1" parameterID="eq_gain"/>
-			<opcode address="//2" parameterID="eq_frequency1"/>
-			<opcode address="//3" parameterID="eq_q"/>
-			<opcode address="//4" parameterID="eq_shape"/>
-			<opcode address="//5" parameterID="eq_gain"/>
-			<opcode address="//6" parameterID="eq_frequency2"/>
-			<opcode address="//7" parameterID="eq_q"/>
-			<opcode address="//8" parameterID="eq_not_used"/>
-			<opcode address="//9" parameterID="eq_gain"/>
-			<opcode address="//10" parameterID="eq_frequency3"/>
-			<opcode address="//11" parameterID="eq_q"/>
-			<opcode address="//12" parameterID="eq_not_used"/>
-			<opcode address="//13" parameterID="eq_gain"/>
-			<opcode address="//14" parameterID="eq_frequency4"/>
-			<opcode address="//15" parameterID="eq_q"/>
-			<opcode address="//16" parameterID="eq_not_used"/>
-			<opcode address="//17" parameterID="eq_gain"/>
-			<opcode address="//18" parameterID="eq_frequency5"/>
-			<opcode address="//19" parameterID="eq_q"/>
-			<opcode address="//20" parameterID="eq_shape"/>
+			<opcode xsi:type="immutable" address="//0" parameterID="eq_type"/>
+			<opcode xsi:type="immutable" address="//1" parameterID="eq_gain"/>
+			<opcode xsi:type="immutable" address="//2" parameterID="eq_frequency1"/>
+			<opcode xsi:type="immutable" address="//3" parameterID="eq_q"/>
+			<opcode xsi:type="immutable" address="//4" parameterID="eq_shape"/>
+			<opcode xsi:type="immutable" address="//5" parameterID="eq_gain"/>
+			<opcode xsi:type="immutable" address="//6" parameterID="eq_frequency2"/>
+			<opcode xsi:type="immutable" address="//7" parameterID="eq_q"/>
+			<opcode xsi:type="immutable" address="//8" parameterID="eq_not_used"/>
+			<opcode xsi:type="immutable" address="//9" parameterID="eq_gain"/>
+			<opcode xsi:type="immutable" address="//10" parameterID="eq_frequency3"/>
+			<opcode xsi:type="immutable" address="//11" parameterID="eq_q"/>
+			<opcode xsi:type="immutable" address="//12" parameterID="eq_not_used"/>
+			<opcode xsi:type="immutable" address="//13" parameterID="eq_gain"/>
+			<opcode xsi:type="immutable" address="//14" parameterID="eq_frequency4"/>
+			<opcode xsi:type="immutable" address="//15" parameterID="eq_q"/>
+			<opcode xsi:type="immutable" address="//16" parameterID="eq_not_used"/>
+			<opcode xsi:type="immutable" address="//17" parameterID="eq_gain"/>
+			<opcode xsi:type="immutable" address="//18" parameterID="eq_frequency5"/>
+			<opcode xsi:type="immutable" address="//19" parameterID="eq_q"/>
+			<opcode xsi:type="immutable" address="//20" parameterID="eq_shape"/>
 		</bulk>
 	</module>
 
 	<module name="FX2 Insertion" address="3/0/">
 		<bulk address="//0-17">
-			<opcode parameterID="insertion_type" address="//0-1"/>
-			<opcode parameterID="insertion_1" address="//2"/>
-			<opcode parameterID="insertion_2" address="//3"/>
-			<opcode parameterID="insertion_3" address="//4"/>
-			<opcode parameterID="insertion_4" address="//5"/>
-			<opcode parameterID="insertion_5" address="//6"/>
-			<opcode parameterID="insertion_6" address="//7"/>
-			<opcode parameterID="insertion_7" address="//8"/>
-			<opcode parameterID="insertion_8" address="//9"/>
-			<opcode parameterID="insertion_9" address="//10"/>
-			<opcode parameterID="insertion_10" address="//11"/>
-			<opcode parameterID="effect_part" address="//12"/>
-			<opcode address="//13" parameterID="mw_control_depth"/>
-			<opcode address="//14" parameterID="pb_control_depth"/>
-			<opcode address="//15" parameterID="cat_control_depth"/>
-			<opcode address="//16" parameterID="ac1_control_depth"/>
-			<opcode address="//17" parameterID="ac2_control_depth"/>
+			<opcode xsi:type="immutable" parameterID="insertion_type" address="//0-1"/>
+			<opcode xsi:type="mutable" parameterID="insertion_1" address="//2"/>
+			<opcode xsi:type="mutable" parameterID="insertion_2" address="//3"/>
+			<opcode xsi:type="mutable" parameterID="insertion_3" address="//4"/>
+			<opcode xsi:type="mutable" parameterID="insertion_4" address="//5"/>
+			<opcode xsi:type="mutable" parameterID="insertion_5" address="//6"/>
+			<opcode xsi:type="mutable" parameterID="insertion_6" address="//7"/>
+			<opcode xsi:type="mutable" parameterID="insertion_7" address="//8"/>
+			<opcode xsi:type="mutable" parameterID="insertion_8" address="//9"/>
+			<opcode xsi:type="mutable" parameterID="insertion_9" address="//10"/>
+			<opcode xsi:type="mutable" parameterID="insertion_10" address="//11"/>
+			<opcode xsi:type="immutable" parameterID="effect_part" address="//12"/>
+			<opcode xsi:type="immutable" address="//13" parameterID="mw_control_depth"/>
+			<opcode xsi:type="immutable" address="//14" parameterID="pb_control_depth"/>
+			<opcode xsi:type="immutable" address="//15" parameterID="cat_control_depth"/>
+			<opcode xsi:type="immutable" address="//16" parameterID="ac1_control_depth"/>
+			<opcode xsi:type="immutable" address="//17" parameterID="ac2_control_depth"/>
 		</bulk>
 		<bulk address="//18">
-			<opcode address="//18" parameterID="cbc1_control_depth"/>
+			<opcode xsi:type="immutable" address="//18" parameterID="cbc1_control_depth"/>
 		</bulk>
 		<bulk address="//19">
-			<opcode address="//19" parameterID="cbc2_control_depth"/>
+			<opcode xsi:type="immutable" address="//19" parameterID="cbc2_control_depth"/>
 		</bulk>
 		<bulk address="//32-37">
-			<opcode parameterID="insertion_11" address="//32"/>
-			<opcode parameterID="insertion_12" address="//33"/>
-			<opcode parameterID="insertion_13" address="//34"/>
-			<opcode parameterID="insertion_14" address="//35"/>
-			<opcode parameterID="insertion_15" address="//36"/>
-			<opcode parameterID="insertion_16" address="//37"/>
+			<opcode xsi:type="mutable" parameterID="insertion_11" address="//32"/>
+			<opcode xsi:type="mutable" parameterID="insertion_12" address="//33"/>
+			<opcode xsi:type="mutable" parameterID="insertion_13" address="//34"/>
+			<opcode xsi:type="mutable" parameterID="insertion_14" address="//35"/>
+			<opcode xsi:type="mutable" parameterID="insertion_15" address="//36"/>
+			<opcode xsi:type="mutable" parameterID="insertion_16" address="//37"/>
 		</bulk>
 		<bulk address="//48-67"><!-- TODO: alternative word-Adressen für Insertion -->
-			<opcode parameterID="insertion_1" address="//48-49"/>
-			<opcode parameterID="insertion_2" address="//50-51"/>
-			<opcode parameterID="insertion_3" address="//52-53"/>
-			<opcode parameterID="insertion_4" address="//54-55"/>
-			<opcode parameterID="insertion_5" address="//56-57"/>
-			<opcode parameterID="insertion_6" address="//58-59"/>
-			<opcode parameterID="insertion_7" address="//60-61"/>
-			<opcode parameterID="insertion_8" address="//62-63"/>
-			<opcode parameterID="insertion_9" address="//64-65"/>
-			<opcode parameterID="insertion_10" address="//66-67"/>
+			<opcode xsi:type="mutable" parameterID="insertion_1" address="//48-49"/>
+			<opcode xsi:type="mutable" parameterID="insertion_2" address="//50-51"/>
+			<opcode xsi:type="mutable" parameterID="insertion_3" address="//52-53"/>
+			<opcode xsi:type="mutable" parameterID="insertion_4" address="//54-55"/>
+			<opcode xsi:type="mutable" parameterID="insertion_5" address="//56-57"/>
+			<opcode xsi:type="mutable" parameterID="insertion_6" address="//58-59"/>
+			<opcode xsi:type="mutable" parameterID="insertion_7" address="//60-61"/>
+			<opcode xsi:type="mutable" parameterID="insertion_8" address="//62-63"/>
+			<opcode xsi:type="mutable" parameterID="insertion_9" address="//64-65"/>
+			<opcode xsi:type="mutable" parameterID="insertion_10" address="//66-67"/>
 		</bulk>
 	</module>
 
 	<module name="Multipart" address="8-10/0-31/">
 		<bulk address="8//0-40">
-			<opcode parameterID="mp_elementReserve" address="//0"/>
-			<opcode parameterID="mp_bank_msb" address="//1"/>
-			<opcode parameterID="mp_bank_lsb" address="//2"/>
-			<opcode parameterID="mp_program" address="//3"/>
-			<opcode parameterID="mp_midichannel" address="//4"/>
-			<opcode parameterID="mp_monopoly" address="//5"/>
-			<opcode parameterID="mp_key_on_assign" address="//6"/>
-			<opcode parameterID="mp_partmode" address="//7"/>
-			<opcode parameterID="transpose" address="//8"/>
-			<opcode parameterID="mp_tune" address="//9-10" byteType="LSN"/>
-			<opcode parameterID="volume" address="//11"/>
-			<opcode address="8//14" parameterID="panorama"/>
-
-			
+			<opcode xsi:type="immutable" parameterID="mp_elementReserve" address="//0"/>
+			<opcode xsi:type="immutable" parameterID="mp_bank_msb" address="//1"/>
+			<opcode xsi:type="immutable" parameterID="mp_bank_lsb" address="//2"/>
+			<opcode xsi:type="immutable" parameterID="mp_program" address="//3"/>
+			<opcode xsi:type="immutable" parameterID="mp_midichannel" address="//4"/>
+			<opcode xsi:type="immutable" parameterID="mp_monopoly" address="//5"/>
+			<opcode xsi:type="immutable" parameterID="mp_key_on_assign" address="//6"/>
+			<opcode xsi:type="immutable" parameterID="mp_partmode" address="//7"/>
+			<opcode xsi:type="immutable" parameterID="transpose" address="//8"/>
+			<opcode xsi:type="immutable" parameterID="mp_tune" address="//9-10" byteType="LSN"/>
+			<opcode xsi:type="immutable" parameterID="volume" address="//11"/>
+			<opcode xsi:type="immutable" address="8//14" parameterID="panorama"/>
 		</bulk>
 	</module>
 
 	<module name="A/D-Part" address="16-18/0-1/">
 		<bulk address="16//0-30">
-			<opcode parameterID="ad_inputGain" address="//0"/>
+			<opcode xsi:type="immutable" parameterID="ad_inputGain" address="//0"/>
 		</bulk>
 	</module>
 
 	<module name="Drumset" address="48-51/13-91/">
 		<bulk address="//0-15">
-			<opcode parameterID="dr_pitch_coarse" address="//0"/>
-			<opcode parameterID="dr_pitch_fine" address="//1"/>
-			<opcode parameterID="volume" address="//2"/>
-			<opcode parameterID="dr_alt_grp" address="//3"/>
-			<opcode parameterID="panorama" address="//4"/>
-			<opcode parameterID="reverb_send" address="//5"/>
-			<opcode parameterID="chorus_send" address="//6"/>
-			<opcode parameterID="variation_send" address="//7"/>
-			<opcode parameterID="key_assign" address="//8"/>
-			<opcode parameterID="rcv_note_on" address="//9"/>
-			<opcode parameterID="rcv_note_off" address="//10"/>
-			<opcode parameterID="hpf_cutoff" address="//11"/>
-			<opcode parameterID="hpf_resonance" address="//12"/>
-			<opcode parameterID="attack_time" address="//13"/>
-			<opcode parameterID="decay1_time" address="//14"/>
-			<opcode parameterID="decay2_time" address="//15"/>
-			
+			<opcode xsi:type="immutable" parameterID="dr_pitch_coarse" address="//0"/>
+			<opcode xsi:type="immutable" parameterID="dr_pitch_fine" address="//1"/>
+			<opcode xsi:type="immutable" parameterID="volume" address="//2"/>
+			<opcode xsi:type="immutable" parameterID="dr_alt_grp" address="//3"/>
+			<opcode xsi:type="immutable" parameterID="panorama" address="//4"/>
+			<opcode xsi:type="immutable" parameterID="reverb_send" address="//5"/>
+			<opcode xsi:type="immutable" parameterID="chorus_send" address="//6"/>
+			<opcode xsi:type="immutable" parameterID="variation_send" address="//7"/>
+			<opcode xsi:type="immutable" parameterID="key_assign" address="//8"/>
+			<opcode xsi:type="immutable" parameterID="rcv_note_on" address="//9"/>
+			<opcode xsi:type="immutable" parameterID="rcv_note_off" address="//10"/>
+			<opcode xsi:type="immutable" parameterID="hpf_cutoff" address="//11"/>
+			<opcode xsi:type="immutable" parameterID="hpf_resonance" address="//12"/>
+			<opcode xsi:type="immutable" parameterID="attack_time" address="//13"/>
+			<opcode xsi:type="immutable" parameterID="decay1_time" address="//14"/>
+			<opcode xsi:type="immutable" parameterID="decay2_time" address="//15"/>
 		</bulk>
 	</module>
 </modules>

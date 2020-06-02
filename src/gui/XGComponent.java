@@ -94,9 +94,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
 		this.setSize(dim);
-//		System.out.println(this.getName() + " -> " + comp.getName() + ": " + comp.getSize() + "/" + this.getSize());
 		return comp;
-
 	}
 
 	public void setBounds()
@@ -109,10 +107,13 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	}
 
 	public void borderize()
-	{	if(this.hasFocus())
-			this.setBorder(new TitledBorder(focusLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
-		else
-			this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+	{	if(this.isEnabled())
+		{	if(this.hasFocus())
+				this.setBorder(new TitledBorder(focusLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
+			else
+				this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+		}
+		else this.setBorder(new TitledBorder(defaultLineBorder, "n/a", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
 	}
 
 	@Override public boolean isFocusable()

@@ -1,9 +1,6 @@
 package parm;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.HashMap;
-import java.util.Map;
-import adress.XGAddress;
 import application.XGLoggable;
 import device.XGDevice;
 import tag.XGTagable;
@@ -14,7 +11,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	public static void init(XGDevice dev)
 	{	File file;
 		try
-		{	file = dev.getResourceFile(XML_PARAMETER);
+		{	file = dev.getResourceFile(XML_OPCODE);
 		}
 		catch(FileNotFoundException e)
 		{	log.info(e.getMessage());
@@ -22,24 +19,9 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		}
 
 		XMLNode xml = XMLNode.parse(file);
-		for(XMLNode t : xml.getChildNodes(TAG_TABLE))
-		{	for(XMLNode p : t.getChildNodes(TAG_ITEM))
-			{	XGParameter prm = new XGParameter(dev, p);
-				dev.getParameters().add(prm);
-			}
-			for(XMLNode s : t.getChildNodes(TAG_SET))
-			{	Map<Integer, XGParameter> map = new HashMap<>();
-				int msb = s.getIntegerAttribute(ATTR_MSB);
-				int lsb = s.getIntegerAttribute(ATTR_LSB);
-				int v = (msb << 7) | lsb;
-				for(XMLNode p : s.getChildNodes(TAG_ENTRY))
-				{	int i = p.getIntegerAttribute(ATTR_INDEX);
-					XGParameter parm = dev.getParameters().get(p.getStringAttribute(ATTR_PARAMETER_ID));
-					map.put(i, parm);
-				}
-				dev.getParameterSets().put(v, map);
-			}
-		}
+		XMLNode t = xml.getChildNode(TAG_PARAMETERS);
+		for(XMLNode p : t.getChildNodes(TAG_PARAMETER)) dev.getParameters().add(new XGParameter(dev, p));
+
 		log.info(dev.getParameters().size() + " parameters initialized");
 		return;
 	}
@@ -51,9 +33,6 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	private final int origin;
 	private final XGTable translationTable;
 	private final String unit;
-	private final XGAddress masterAddress;
-	private final int index;
-	private final boolean isMutable;
 
 	protected XGParameter(XGDevice dev, XMLNode n)
 	{	this.tag = n.getStringAttribute(ATTR_ID);
@@ -62,17 +41,6 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
 		this.unit = n.getStringAttribute(ATTR_UNIT, this.translationTable.getUnit());
-
-		if(n.hasAttribute(ATTR_MASTER))
-		{	this.masterAddress = new XGAddress(n.getStringAttribute(ATTR_MASTER), null);
-			this.index = n.getIntegerAttribute(ATTR_INDEX, 0);
-			this.isMutable = true;
-		}
-		else
-		{	this.masterAddress = null;
-			this.index = 0;
-			this.isMutable = false;
-		}
 		log.info("parameter initialized: " + this);
 		if(this.translationTable == null) throw new RuntimeException("no table: " + this.toString());
 	}
@@ -84,23 +52,8 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		this.translationTable = DEF_TABLE;
 		this.origin = 0;
 		this.unit = "*";
-		this.masterAddress = null;
-		this.index = 0;
-		this.isMutable = false;
 		log.info("parameter initialized: " + this);
 		if(this.translationTable == null) throw new RuntimeException("no table: " + this.toString());
-	}
-
-	public boolean isMutable()
-	{	return this.isMutable;
-	}
-
-	public XGAddress getMasterAddress()
-	{	return this.masterAddress;
-	}
-
-	public int getIndex()
-	{	return this.index;
 	}
 
 	public int getMinIndex()
@@ -136,7 +89,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	}
 
 	@Override public String toString()
-	{	return this.tag;
+	{	return this.longName;
 	}
 
 	@Override public String getTag()

@@ -43,7 +43,6 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 		log.info("combo initialized: " + this.getName());
 	}
 
-
 	@Override public void parameterChanged(XGParameter p)
 	{	if(p != null)
 		{	this.setName(p.getShortName());
@@ -74,11 +73,15 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 		public XGComboBox(XGValue v)
 		{	super();
 			this.value = v;
-			XGTable t = this.value.getParameter().getTranslationTable();
-			for(XGTableEntry e : t) this.addItem(e);
-//			this.setMaximumRowCount(Toolkit.getDefaultToolkit().getScreenSize().height/this.row, t.size());
-			this.setSelectedItem(t.getByIndex(this.value.getContent()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
-			this.addActionListener(this);
+			XGParameter p = this.value.getParameter();
+			if(p != null)
+			{	XGTable t = p.getTranslationTable();
+				for(XGTableEntry e : t) this.addItem(e);
+//				this.setMaximumRowCount(Toolkit.getDefaultToolkit().getScreenSize().height/this.row, t.size());
+				this.setSelectedItem(t.getByIndex(this.value.getContent()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
+				this.addActionListener(this);
+			}
+			else this.setEnabled(false);
 			this.setAutoscrolls(true);
 		}
 

@@ -26,7 +26,7 @@ public class XGPathSelector extends JTextField implements DocumentListener, Acti
 	public XGPathSelector(String name, ChangeableContent<Path> v)
 	{	super(v.getContent().toString());
 		this.setName(name);//TODO: suboptimal, über String XGComponent.name nachdenken...
-		Dimension dim = new Dimension(GRID * 5, GRID * 1);
+		Dimension dim = new Dimension(GRID * 5, GRID * 2);
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
 		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));

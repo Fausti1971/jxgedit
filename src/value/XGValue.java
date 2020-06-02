@@ -1,6 +1,5 @@
 package value;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 import adress.InvalidXGAddressException;
@@ -15,6 +14,7 @@ import parm.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
+import parm.XGTable;
 import parm.XGTableEntry;
 /**
  * 
@@ -47,20 +47,18 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	private final XGMessenger source;
 	private final XGAddress address;
 	private final XGOpcode opcode;
-	private final XGParameter parameter;
-	private XGParameter mutableParameter;
-	private final XGValue parameterMaster;
+	private XGParameter parameter;
+	private final XGValue parameterSelector;
 	private final Set<XGValueChangeListener> valueListeners = new HashSet<>();
 	private final Set<XGParameterChangeListener> parameterListeners = new HashSet<>();
 
 	public XGValue(String name, int v)
 	{	this.source = null;
 		this.address = XGALLADDRESS;
-		this.parameter = DUMMY_PARAMETER;
+		this.parameter = null;
 		this.index = v;
-		this.parameterMaster = null;
+		this.parameterSelector = null;
 		this.opcode = null;
-//		log.info("dummy value initialized: " + name);
 	}
 
 	public XGValue(XGMessenger src, XGOpcode opc, XGAddress adr) throws InvalidXGAddressException
@@ -68,28 +66,16 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.source = src;
 		this.address = adr;
 		this.opcode = opc;
-		this.parameter = src.getDevice().getParameters().getOrDefault(opc.getParameterID(), DUMMY_PARAMETER);
-		if(this.parameter.isMutable())
-		{	XGAddress a = this.parameter.getMasterAddress().complement(this.address);
-			this.parameterMaster = src.getDevice().getValues().get(a);
-			if(this.parameterMaster != null)
-			{	this.parameterMaster.addValueListener(this);
-				this.assignMutableParameter();
-			}
-			else log.info("master not found: " + a);
+		if(this.opcode.getParameterSelectorAddress() != null)
+		{	XGAddress a = this.opcode.getParameterSelectorAddress().complement(this.address);
+			this.parameterSelector = src.getDevice().getValues().get(a);
+			this.parameterSelector.addValueListener(this);
 		}
-		else this.parameterMaster = null;
+		else this.parameterSelector = null;
+		this.assignParameter();
 		this.index = 0;
-//		log.info("value initialized: " + this.getInfo());
 	}
 
-/*	public XGValue(XGFixedParameter prm, XGResponse msg) throws InvalidXGAddressException
-	{	this.source = msg.getSource();
-		this.address = new XGAddress(msg.getAddress().getHi().getValue(), msg.getAddress().getMid().getValue(), prm.getAddress().getLo().getMin());
-		this.parameter = prm;
-		this.content = this.decodeBytes(msg);
-	}
-*/
 	public void addValueListener(XGValueChangeListener l)
 	{	this.valueListeners.add(l);
 	}
@@ -122,22 +108,17 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.opcode.getAddress().getLo().getSize();
 	}
 
-	private void assignMutableParameter()
-	{	if(this.parameter.isMutable())
-		{	int progNr = this.parameterMaster.getValue(),
-				index = this.parameter.getIndex();
-			Map<Integer, XGParameter> map = this.source.getDevice().getParameterSets().get(progNr);
-			if(map != null)
-			{	this.mutableParameter = map.get(index);
-			}
-			else this.mutableParameter = null;
-			for(XGParameterChangeListener l : this.parameterListeners) l.parameterChanged(this.mutableParameter);
+	private void assignParameter()
+	{	if(this.parameterSelector != null)
+		{	int progNr = this.parameterSelector.getValue();
+			this.parameter = this.opcode.getParameters().get(progNr);
+			for(XGParameterChangeListener l : this.parameterListeners) l.parameterChanged(this.parameter);
 		}
+		else this.parameter = this.opcode.getParameters().get(DEF_SELECTORVALUE);
 	}
 
 	public XGParameter getParameter()
-	{	if(this.parameter.isMutable()) return this.mutableParameter;
-		else return this.parameter;
+	{	return this.parameter;
 	}
 
 	@Override public XGAddress getAddress()
@@ -214,8 +195,10 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	@Override public String toString()
 	{	XGParameter p = this.getParameter();
-		if(p.getUnit().isEmpty()) return p.getTranslationTable().getByIndex(this.index).getName();
-		else return p.getTranslationTable().getByIndex(this.index).getName() + " " + p.getUnit();
+		XGTable t = p.getTranslationTable();
+		String s = t.getByIndex(this.index).getName();
+		if(p.getUnit().isBlank()) return s + " " + t.getUnit();
+		else return s + " " + p.getUnit();
 	}
 
 	@Override public int compareTo(XGValue o)
@@ -223,7 +206,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	@Override public void contentChanged(XGValue v)
-	{	if(v.equals(this.parameterMaster)) this.assignMutableParameter();
+	{	if(v.equals(this.parameterSelector)) this.assignParameter();
 		else this.notifyListeners();
 	}
 

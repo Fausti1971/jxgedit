@@ -2,6 +2,8 @@ package parm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
@@ -47,9 +49,9 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	private final XGDevice device;
 	private final XGModule module;
 	private final XGBulkDump bulk;
-	private final XGAddress address;
+	private final XGAddress address, parameterSelectorAddress;
 	private final ValueDataType dataType;
-	private final String parameterID;
+	private final Map<Integer, XGParameter> parameters = new HashMap<>();
 
 	protected XGOpcode(XGDevice dev, XGModule mod, XGBulkDump bulk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
 	{	this.device = dev;
@@ -57,7 +59,22 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 		this.bulk = bulk;
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), bulk.getAddress());
 		this.dataType = ValueDataType.valueOf(n.getStringAttribute(ATTR_DATATYPE, DEF_DATATYPE.name()));
-		this.parameterID = n.getStringAttribute(ATTR_PARAMETER_ID, "no id");
+
+		if(n.hasAttribute(ATTR_PARAMETERSELECTOR))
+		{	this.parameterSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_PARAMETERSELECTOR), null);
+			for(XMLNode s : n.getChildNodes(TAG_PARAM))
+			{	int msb = s.getIntegerAttribute(ATTR_MSB, 0);
+				int lsb = s.getIntegerAttribute(ATTR_LSB, 0);
+				int v = (msb << 7) | lsb;
+				if(s.hasAttribute(ATTR_VALUE)) v = s.getIntegerAttribute(ATTR_VALUE);
+				XGParameter parm = dev.getParameters().get(s.getStringAttribute(ATTR_PARAMETER_ID));
+				this.parameters.put(v, parm);
+			}
+		}
+		else
+		{	this.parameterSelectorAddress = null;
+			this.parameters.put(DEF_SELECTORVALUE, dev.getParameters().get(n.getStringAttribute(ATTR_PARAMETER_ID)));
+		}
 	}
 
 	public ValueDataType getDataType()
@@ -68,8 +85,16 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	{	return this.address;
 	}
 
-	public String getParameterID()
-	{	return this.parameterID;
+	public Map<Integer, XGParameter> getParameters()
+	{	return this.parameters;
+	}
+
+//	public String getParameterID()
+//	{	return this.parameterID;
+//	}
+
+	public XGAddress getParameterSelectorAddress()
+	{	return this.parameterSelectorAddress;
 	}
 
 	public XGBulkDump getBulk()

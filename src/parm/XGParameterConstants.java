@@ -14,8 +14,8 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_SUB1024DIV10 = "sub1024div10",
 		DEF_TABLENAME = TABLE_NORMAL;
 
-	static final XGTable DEF_TABLE = new XGVirtualTable(
-			DEF_TABLENAME,
+	static final XGTable DEF_TABLE = new XGVirtualTable
+		(0, Integer.MAX_VALUE & 0x0000FFFF, DEF_TABLENAME,
 			new Function<Integer, String>()
 			{	@Override public String apply(Integer t)
 				{	return t.toString();
@@ -27,9 +27,10 @@ public interface XGParameterConstants extends XMLNodeConstants
 				}
 			});
 
-	public static final XGParameter DUMMY_PARAMETER = new XGParameter("n/a", 0);
+//	public static final XGParameter DUMMY_PARAMETER = new XGParameter("n/a", 0);
 	static final String DEF_PARAMETERNAME = "unknown parameter: ";
 	static final int  DEF_MIN = 0, DEF_MAX = 127;
+	static final int DEF_SELECTORVALUE = -1;
 
 	static enum ValueDataType
 	{	MSB, LSB, MSN, LSN

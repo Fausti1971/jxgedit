@@ -30,9 +30,9 @@ public class XGXMLTable implements XGTable
 		log.info(this.getInfo());
 	}
 
-	XGXMLTable(String name)
+	XGXMLTable(String name, String unit)
 	{	this.name = name;
-		this.unit = "";
+		this.unit = unit;
 		log.info(this.name);
 	}
 
@@ -68,7 +68,7 @@ public class XGXMLTable implements XGTable
 	{	String f = n.getStringAttribute(ATTR_TABLEFILTER);
 		int minValue = n.getIntegerAttribute(ATTR_MIN, this.getMinEntry().getValue());
 		int maxValue = n.getIntegerAttribute(ATTR_MAX, this.getMaxEntry().getValue());
-		XGXMLTable table = new XGXMLTable(this.name + "-" + f);
+		XGXMLTable table = new XGXMLTable(this.name + "-" + f, this.unit);
 		int i = 0;
 		for(XGTableEntry e : this.list.subList(this.getIndex(minValue), this.getIndex(maxValue) + 1))
 			if(e.hasFilter(f)) table.add(i++, e);

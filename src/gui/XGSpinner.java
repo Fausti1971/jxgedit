@@ -25,7 +25,7 @@ public class XGSpinner extends JSpinner implements ChangeListener, GuiConstants
 		this.value = v;
 		this.addChangeListener(this);
 		this.setName(name);
-		Dimension dim = new Dimension(GRID * 4, GRID * 1);
+		Dimension dim = new Dimension(GRID * 4, GRID * 2);
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
 		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));

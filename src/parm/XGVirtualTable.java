@@ -6,13 +6,14 @@ import device.XGDevice;
 import xml.XMLNode;
 
 public class XGVirtualTable implements XGTable
-{
+{	private static final int MIN = 0, MAX = Integer.MAX_VALUE & 0x0000FFFF;
+
 	public static void init(XGDevice dev)
 	{	dev.getTables().add(DEF_TABLE);
 
 		dev.getTables().add
 			(new XGVirtualTable
-				(TABLE_ADD1,
+				(MIN, MAX, TABLE_ADD1,
 					new Function<Integer,  String>()
 					{	@Override public String apply(Integer t)
 						{	return Integer.toString(t + 1);
@@ -28,7 +29,7 @@ public class XGVirtualTable implements XGTable
 
 		dev.getTables().add
 			(new XGVirtualTable
-				(TABLE_DIV10,
+				(MIN, MAX, TABLE_DIV10,
 					new Function<Integer,  String>()
 					{	@Override public String apply(Integer t)
 						{	return Float.toString(t / 10);
@@ -45,7 +46,7 @@ public class XGVirtualTable implements XGTable
 
 		dev.getTables().add
 			(new XGVirtualTable
-				(TABLE_SUB64,
+				(MIN, MAX, TABLE_SUB64,
 					new Function<Integer,  String>()
 					{	@Override public String apply(Integer t)
 						{	return Integer.toString(t - 64);
@@ -61,7 +62,7 @@ public class XGVirtualTable implements XGTable
 
 		dev.getTables().add
 			(new XGVirtualTable
-				(TABLE_SUB1024DIV10,
+				(MIN, MAX, TABLE_SUB1024DIV10,
 					new Function<Integer,  String>()
 					{	@Override public String apply(Integer t)
 						{	Float f = (t.floatValue() - 1024) / 10;
@@ -79,7 +80,7 @@ public class XGVirtualTable implements XGTable
 
 		dev.getTables().add
 			(new XGVirtualTable
-				(TABLE_SUB128DIV10,
+				(MIN, MAX, TABLE_SUB128DIV10,
 					new Function<Integer,  String>()
 					{	@Override public String apply(Integer t)
 						{	Float f = (t.floatValue() - 128) / 10;
@@ -107,16 +108,6 @@ public class XGVirtualTable implements XGTable
 	private Function<String, Integer> retranslate;
 	private final int minValue, maxValue;
 	private int iteratorCount;
-
-	public XGVirtualTable(String name, Function<Integer, String> trans, Function<String, Integer> retrans)
-	{	this.name = name;
-		this.minValue = 0;
-		this.maxValue = Integer.MAX_VALUE & 0x0000FFFF;
-		this.translate = trans;
-		this.retranslate = retrans;
-		this.iteratorCount = 0;
-		log.info(this.getInfo());
-	}
 
 	public XGVirtualTable(int min, int max, String name, Function<Integer, String> translate, Function<String, Integer> retranslate)
 	{	this.name = name;

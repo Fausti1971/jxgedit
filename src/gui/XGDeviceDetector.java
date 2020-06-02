@@ -29,7 +29,7 @@ public class XGDeviceDetector extends JTextField implements DocumentListener, Ac
 		this.setAlignmentX(0.5f);
 		this.setName(name);
 		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
-		Dimension dim = new Dimension(GRID * 5, GRID * 1);
+		Dimension dim = new Dimension(GRID * 5, GRID * 2);
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
 		this.getDocument().addDocumentListener(this);

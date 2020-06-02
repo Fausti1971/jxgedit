@@ -1,6 +1,8 @@
 package device;
 
 import java.awt.Color;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -9,14 +11,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
-import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
@@ -126,7 +125,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 //	private final XGAddressableSet<XGMessageBulkDump> data = new XGAddressableSet<XGMessageBulkDump>();
 	private final XGTagableSet<XGTable> tables = new XGTagableSet<>();
 	private final XGTagableSet<XGParameter> parameters = new XGTagableSet<>();
-	private final Map<Integer, Map<Integer, XGParameter>> parameterSets = new HashMap<>();//Map<programNr, parameterIndex<Parameter>> //progNr wird bei parameterMaster erfragt
+//	private final Map<Integer, Map<Integer, XGParameter>> parameterSets = new HashMap<>();//Map<programNr, parameterIndex<Parameter>> //progNr wird bei parameterMaster erfragt
 //	private final XGAddressableSet<XGBulkDump> bulks = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
 	private final XGAddressableSet<XGOpcode> opcodes = new XGAddressableSet<>();
@@ -193,17 +192,9 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.parameters;
 	}
 
-	public Map<Integer, Map<Integer, XGParameter>> getParameterSets()
-	{	return parameterSets;
-	}
-
 	public XGAddressableSet<XGModule> getModules()
 	{	return this.modules;
 	}
-
-//	public XGAddressableSet<XGBulkDump> getBulks()
-//	{	return this.bulks;
-//	}
 
 	public XGAddressableSet<XGOpcode> getOpcodes()
 	{	return this.opcodes;
@@ -341,20 +332,37 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public JComponent getConfigComponent()
-	{	XGFrame root = new XGFrame("device");
-		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
+	{	GridBagConstraints gbc = new GridBagConstraints();
+		XGFrame root = new XGFrame("device");
+		root.setLayout(new GridBagLayout());
 
 		JComponent c = this.getMidi().getConfigComponent();
-		root.add(c);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 0.5;
+		gbc.weighty = 0.5;
+		gbc.anchor = GridBagConstraints.WEST;
+		gbc.fill = GridBagConstraints.BOTH;
+		root.add(c, gbc);
 
 		c = new XGSpinner("sysexID", this.sysex, 0, 15, 1);
-		root.add(c);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.gridwidth = 1;
+		gbc.anchor = GridBagConstraints.EAST;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		root.add(c, gbc);
 
 		c = new XGDeviceDetector("device name", this.name, this);
-		root.add(c);
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		root.add(c, gbc);
 
 		c = new XGPathSelector("default dump folder", this.defaultDumpFolder);
-		root.add(c);
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.gridwidth = 2;
+		root.add(c, gbc);
 
 		return root;
 	}

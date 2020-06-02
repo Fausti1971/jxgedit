@@ -1,5 +1,7 @@
 package device;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
@@ -11,6 +13,7 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.swing.BoxLayout;
 import javax.swing.JComponent;
+import javax.swing.JScrollPane;
 import adress.InvalidXGAddressException;
 import application.Configurable;
 import application.XGLoggable;
@@ -318,17 +321,29 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	}
 
 	public XGComponent getConfigComponent()
-	{	XGFrame root = new XGFrame("midi");
-		root.setLayout(new BoxLayout(root, BoxLayout.X_AXIS));
+	{	GridBagConstraints gbc = new GridBagConstraints();
+		XGFrame root = new XGFrame("midi");
+		root.setLayout(new GridBagLayout());
 
 		JComponent c = new XGList<Info>("input", XGMidi.getInputs(), this.input);
-		root.add(c);
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.weightx = 0.5;
+		gbc.weighty = 0.5;
+		root.add(c, gbc);
 
 		c = new XGList<Info>("output", XGMidi.getOutputs(), this.output);
-		root.add(c);
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		root.add(c, gbc);
 
 		c = new XGSpinner("timeout", this.timeout, 30, 1000, 10);
-		root.add(c);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.gridwidth = 1;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		root.add(c, gbc);
 
 		return root;
 	}

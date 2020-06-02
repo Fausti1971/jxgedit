@@ -10,7 +10,6 @@ public interface XMLNodeConstants
 		XML_CONFIG = "config.xml",
 		XML_OPCODE = "opcode.xml",
 		XML_TABLES = "tables.xml",
-		XML_PARAMETER = "parameter.xml",
 		XML_TEMPLATES = "templates.xml";
 
 	static final String
@@ -48,10 +47,12 @@ public interface XMLNodeConstants
 
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",
+		TAG_PARAM = "param",
+		TAG_PARAMETERS = "parameters",
+		TAG_PARAMETER = "parameter",
 
 		ATTR_PARAMETER_ID = "parameterID",
-		ATTR_MASTER ="master",
-		ATTR_INDEX = "index",
+		ATTR_PARAMETERSELECTOR ="parameterSelector",
 		ATTR_MIN = "min",
 		ATTR_MAX = "max",
 		ATTR_TRANSLATOR = "translator",
@@ -80,15 +81,15 @@ public interface XMLNodeConstants
 		TAG_AUTO = "auto",
 		ATTR_ORIGIN = "origin",
 
-		ATTR_GB_GRID = "grid",
-		ATTR_GB_FILL = "grid_fill",
-		ATTR_GB_WEIGHT_X = "grid_weight_x",
-		ATTR_GB_WEIGHT_Y = "grid_weight_y",
-		ATTR_GB_ANCHOR = "grid_anchor",
-		ATTR_GB_PAD_X = "grid_pad_x",
-		ATTR_GB_PAD_Y = "grid_pad_y",
+		ATTR_GB_GRID = "grid";
+//		ATTR_GB_FILL = "grid_fill",
+//		ATTR_GB_WEIGHT_X = "grid_weight_x",
+//		ATTR_GB_WEIGHT_Y = "grid_weight_y",
+//		ATTR_GB_ANCHOR = "grid_anchor",
+//		ATTR_GB_PAD_X = "grid_pad_x",
+//		ATTR_GB_PAD_Y = "grid_pad_y",
 
-		TAG_ENTRY = "entry",
-
-		TAG_SET = "set";
+//		TAG_ENTRY = "entry",
+//
+//		TAG_SET = "set";
 }
