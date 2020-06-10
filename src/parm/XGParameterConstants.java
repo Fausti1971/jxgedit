@@ -1,6 +1,5 @@
 package parm;
 
-import java.util.function.Function;
 import xml.XMLNodeConstants;
 
 public interface XGParameterConstants extends XMLNodeConstants
@@ -12,20 +11,8 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_SUB64 = "sub64",
 		TABLE_SUB128DIV10 = "sub128div10",
 		TABLE_SUB1024DIV10 = "sub1024div10",
+		TABLE_PANORAMA = "panorama",
 		DEF_TABLENAME = TABLE_NORMAL;
-
-	static final XGTable DEF_TABLE = new XGVirtualTable
-		(0, Integer.MAX_VALUE & 0x0000FFFF, DEF_TABLENAME,
-			new Function<Integer, String>()
-			{	@Override public String apply(Integer t)
-				{	return t.toString();
-				};
-			},
-			new Function<String, Integer>()
-			{	@Override public Integer apply(String s)
-				{	return Integer.parseInt(s);
-				}
-			});
 
 //	public static final XGParameter DUMMY_PARAMETER = new XGParameter("n/a", 0);
 	static final String DEF_PARAMETERNAME = "unknown parameter: ";

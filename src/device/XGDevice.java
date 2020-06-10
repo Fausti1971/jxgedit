@@ -122,11 +122,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private Color color;
 	private boolean isSelected = false;
 	private XMLNode config;
-//	private final XGAddressableSet<XGMessageBulkDump> data = new XGAddressableSet<XGMessageBulkDump>();
 	private final XGTagableSet<XGTable> tables = new XGTagableSet<>();
 	private final XGTagableSet<XGParameter> parameters = new XGTagableSet<>();
-//	private final Map<Integer, Map<Integer, XGParameter>> parameterSets = new HashMap<>();//Map<programNr, parameterIndex<Parameter>> //progNr wird bei parameterMaster erfragt
-//	private final XGAddressableSet<XGBulkDump> bulks = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
 	private final XGAddressableSet<XGOpcode> opcodes = new XGAddressableSet<>();
 	private final XGAddressableSet<XGValue> values = new XGAddressableSet<>();
@@ -244,7 +241,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public void configure()
-	{	new XGWindow(this, XGWindow.getRootWindow(), true, this.toString());
+	{	new XGWindow(this, XGWindow.getRootWindow(), true, this.toString()).toFront();
 	}
 
 	@Override public int hashCode()

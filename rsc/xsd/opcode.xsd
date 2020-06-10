@@ -8,6 +8,14 @@
 				<xs:element ref="module" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
+		<xs:key name="parameterID">
+			<xs:selector xpath=".//parameters/parameter"/>
+			<xs:field xpath="@id"/>
+		</xs:key>
+		<xs:keyref name="IDREF" refer="parameterID">
+			<xs:selector xpath="*"/>
+			<xs:field xpath="@ref"/>
+		</xs:keyref>
 	</xs:element>
 
 	<xs:element name="parameters">
@@ -21,7 +29,7 @@
 	<xs:element name="parameter">
 		<xs:complexType>
 			<xs:attribute name="longName" use="optional" type="xs:string"/>
-			<xs:attribute name="shortName" use="optional" type="string5"/>
+			<xs:attribute name="shortName" use="required" type="string5"/>
 			<xs:attribute name="min" use="optional" type="xs:nonNegativeInteger" default="0"/>
 			<xs:attribute name="max" use="optional" type="xs:nonNegativeInteger" default="127"/>
 			<xs:attribute name="origin" use="optional" type="xs:nonNegativeInteger" default="0"/>
@@ -54,7 +62,7 @@
 	<xs:complexType name="opcode" abstract="true"/>
 
 	<xs:complexType name="immutable">
-		<xs:complexContent mixed="true">
+		<xs:complexContent mixed="false">
 			<xs:extension base="opcode">
 				<xs:attribute name="address" use="required" type="opcodeAddress"/>
 				<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
@@ -81,7 +89,7 @@
 			<xs:attribute name="msb" use="optional"/>
 			<xs:attribute name="lsb" use="optional"/>
 			<xs:attribute name="value" use="optional"/>
-			<xs:attribute name="parameterID" type="xs:IDREF"/>
+			<xs:attribute name="parameterID"/>
 		</xs:complexType>
 	</xs:element>
 

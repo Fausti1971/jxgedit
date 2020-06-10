@@ -144,7 +144,8 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 	@Override public void actionPerformed(ActionEvent e)
 	{	log.info(e.getActionCommand());
 		switch(e.getActionCommand())
-		{	case ACTION_EDIT:	new XGWindow(this, XGWindow.getRootWindow(), false, this.toString()); break;
+		{	case ACTION_EDIT:		if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.toString());
+									else this.window.toFront(); break;
 			case ACTION_REQUEST:	this.request(); break;
 		}
 	}

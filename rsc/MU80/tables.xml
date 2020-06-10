@@ -11,7 +11,7 @@
 		<item value="1" name="Poly"/>
 	</table>
 
-	<table name="mp_key_on_assign">
+	<table name="key_on_assign">
 		<item value="0" name="Single"/>
 		<item value="1" name="Multi"/>
 		<item value="2" name="Inst"/>

@@ -12,7 +12,7 @@ public class Example
 
 	public static void watchForMidiChanges() throws CoreMidiException
 	{	CoreMidiDeviceProvider.addNotificationListener(new CoreMidiNotification()
-		{	public void midiSystemUpdated()
+		{	@Override public void midiSystemUpdated()
 			{	System.out.println("The MIDI environment has changed.");
 			}
 		});

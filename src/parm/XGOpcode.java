@@ -63,9 +63,9 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 		if(n.hasAttribute(ATTR_PARAMETERSELECTOR))
 		{	this.parameterSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_PARAMETERSELECTOR), null);
 			for(XMLNode s : n.getChildNodes(TAG_PARAM))
-			{	int msb = s.getIntegerAttribute(ATTR_MSB, 0);
+			{	int msb = s.getIntegerAttribute(ATTR_MSB, 0)  << 7;
 				int lsb = s.getIntegerAttribute(ATTR_LSB, 0);
-				int v = (msb << 7) | lsb;
+				int v = msb | lsb;
 				if(s.hasAttribute(ATTR_VALUE)) v = s.getIntegerAttribute(ATTR_VALUE);
 				XGParameter parm = dev.getParameters().get(s.getStringAttribute(ATTR_PARAMETER_ID));
 				this.parameters.put(v, parm);

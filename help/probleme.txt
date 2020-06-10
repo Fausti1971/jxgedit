@@ -17,3 +17,9 @@ Problem:
 		Eine XGTable für den Wertebereich 0...16383 (14Bit) wäre etwa 511kB groß...
 		Idee: XGVirtualTable, eine Klasse, die die benötigten Methoden einer TreeMap<Integer, XGTableEntry> nachbildet;
 	gelöset mittels XGVirtualTable;
+Problem:
+		zu viel Text in opcode.xml (bspw. 18 gleiche param in fast allen rev_parm für lediglich 4 verschiedene msb)
+	Lösung:
+		vorstellbar wäre eine mask, die dem int-key (zur speicherung in der beinaltenden map der params am opcode) mitgegeben werden könnte.
+		Diese müsste beim abfragen (.get(key)) nur nach den relevanten werten maskieren. Bei einem nicht vorhandenen lsb-Eintrag müssten so nur msb und value matchen, um einen Treffer zu erzeugen.
+	verworfen;

@@ -8,6 +8,19 @@ import xml.XMLNode;
 public class XGVirtualTable implements XGTable
 {	private static final int MIN = 0, MAX = Integer.MAX_VALUE & 0x0000FFFF;
 
+	static final XGTable DEF_TABLE = new XGVirtualTable
+		(MIN, MAX & 0x0000FFFF, DEF_TABLENAME,
+			new Function<Integer, String>()
+			{	@Override public String apply(Integer t)
+				{	return t.toString();
+				};
+			},
+			new Function<String, Integer>()
+			{	@Override public Integer apply(String s)
+				{	return Integer.parseInt(s);
+				}
+			});
+
 	public static void init(XGDevice dev)
 	{	dev.getTables().add(DEF_TABLE);
 
@@ -96,6 +109,24 @@ public class XGVirtualTable implements XGTable
 				)
 			);
 
+		dev.getTables().add
+			(new XGVirtualTable
+				(0, 127, TABLE_PANORAMA,
+					new Function<Integer, String>()
+					{	@Override public String apply(Integer t)
+						{	if(t == 0) return "Rnd";
+							if(t < 64) return "L" + Math.abs(t - 64);
+							if(t > 64) return "R" + Math.abs(t - 64);
+							else return "C";
+						};
+					},
+					new Function<String, Integer>()
+					{	@Override public Integer apply(String t)
+						{	return Integer.parseInt(t);//TODO:
+						};
+					}
+				)
+			);
 
 //TODO: weiter so...
 
