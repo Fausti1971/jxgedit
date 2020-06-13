@@ -7,11 +7,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JCheckBox;
-import adress.InvalidXGAddressException;
 import module.XGModule;
-import msg.XGMessageParameterChange;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGTable;
@@ -92,14 +89,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 
 		@Override public void actionPerformed(ActionEvent e)
 		{	boolean changed = this.value.setContent(entry.getValue());
-			if(changed)
-			{	try
-				{	new XGMessageParameterChange(this.value.getSource(), this.value.getSource().getDevice().getMidi(), this.value).transmit();
-				}
-				catch(InvalidXGAddressException | InvalidMidiDataException ex)
-				{	ex.printStackTrace();
-				}
-			}
+			if(changed) this.value.transmit();
 		}
 
 		@Override public void paint(Graphics g)

@@ -32,23 +32,83 @@
 		<parameter id="reverb_time" longName="Reverb Time" shortName="Time" max="69" translator="table4" unit="s"/>
 		<parameter id="diffusion" longName="Diffusion" shortName="Diff" max="10"/>
 		<parameter id="reverb_delay" longName="Reverb Delay" shortName="RvDly" max="63" translator="table5" unit="ms"/>
-		<parameter id="density" longName="Density" shortName="Dnsty" max="4"/>
+		<parameter id="density" longName="Density" shortName="Dense" max="4"/>
 		<parameter id="er_rev_balance" longName="Early Reflection- /Reverb-Balance" shortName="ER/Rv" min="1" origin="64"/>
 		<parameter id="high_damp" longName="High Damp" shortName="HiDmp" min="1" max="10" translator="div10"/>
 		<parameter id="feedback_level" longName="Feedback Level" shortName="FBLvl" min="1" origin="64" translator="table16"/>
-		<parameter id="feedback_delay" longName="Feedback Delay" shortName="FBDly" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="feedback_delay_w" longName="Feedback Delay" shortName="FBDly" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="feedback_delay_b" longName="Feedback Delay" shortName="FBDly" min="1" max="7150" translator="div10" unit="ms"/>
+		<parameter id="feedback_delay2_w" longName="Feedback Delay 2" shortName="FBDl2" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="feedback_delay2_b" longName="Feedback Delay 2" shortName="FBDl2" min="1" max="7150" translator="div10" unit="ms"/>
+		<parameter id="left_channel_feedback_level" longName="Left Channel Feedback Level" shortName="LFBL" min="1" max="127" translator="sub64" origin="64"/>
+		<parameter id="right_channel_feedback_level" longName="Right Channel Feedback Level" shortName="RFBL" min="1" max="127" translator="sub64" origin="64"/>
+
 		<parameter id="feedback_high_damp" longName="Feedback High Damp" shortName="FBDmp" min="1" max="10" translator="div10"/>
-		<parameter id="eq_hi_freq" shortName="HiFrq" longName="EQ High Frequency" min="28" max="58" translator="table3"/>
-		<parameter id="eq_q" shortName="Q" longName="Q" min="1" max="120" translator="div10"/>
-		<parameter id="eq_lo_freq" shortName="LoFrq" longName="EQ Low Frequecy" min="4" max="40" translator="table3"/>
-		<parameter id="delay_r" longName="Delay Right" shortName="RDly" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="delay_l" longName="Delay Left" shortName="LDly" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="delay_c" longName="Delay Center" shortName="CDly" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="eq_gain" longName="EQ Gain" shortName="Gain" min="52" max="76" translator="sub64" origin="64" unit="dB"/>
-		<parameter id="level_c" longName="Center Channel Level" shortName="CLvl" translator="table18"/>
+
+		<parameter id="right_channel_delay_w" longName="Right Channel Delay" shortName="RDly" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="right_channel_delay_b" longName="Right Channel Delay" shortName="RDly" min="1" max="7150" translator="div10" unit="ms"/>
+		<parameter id="right_channel_delay2_w" longName="Right Channel Delay 2" shortName="RDly2" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="right_channel_delay2_b" longName="Right Channel Delay 2" shortName="RDly2" min="1" max="7150" translator="div10" unit="ms"/>
+		<parameter id="right_left_delay_w" shortName="RLDly" longName="Right->Left Delay" min="1" max="16383" translator="div10"/>
+		<parameter id="right_left_delay_b" shortName="RLDly" longName="Right->Left Delay" min="1" max="3550" translator="div10"/>
+
+		<parameter id="left_channel_delay_w" longName="Left Channel Delay" shortName="LDly" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="left_channel_delay_b" longName="Left Channel Delay" shortName="LDly" min="1" max="7150" translator="div10" unit="ms"/>
+		<parameter id="left_channel_delay2_w" longName="Left Channel Delay 2" shortName="LDly2" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="left_channel_delay2_b" longName="Left Channel Delay 2" shortName="LDly2" min="1" max="7150" translator="div10" unit="ms"/>
+		<parameter id="left_right_delay_w" shortName="LRDly" longName="Left->Right Delay" min="1" max="16383" translator="div10"/>
+		<parameter id="left_right_delay_b" shortName="LRDly" longName="Left->Right Delay" min="1" max="3550" translator="div10"/>
+
+		<parameter id="center_channel_delay_w" longName="Center Channel Delay" shortName="CDly" min="1" max="16383" translator="div10" unit="ms"/>
+		<parameter id="center_channel_delay_b" longName="Center Channel Delay" shortName="CDly" min="1" max="7150" translator="div10" unit="ms"/>
+		<parameter id="center_channel_level" longName="Center Channel Level" shortName="CLvl" translator="table18"/>
+
+		<parameter id="delay2_level" shortName="Dly2L" longName="Delay 2 Level" translator="table18"/>
+
+		<parameter id="input_select" shortName="Input" longName="Input Select" max="2" translator="input_select"/>
+		<parameter id="input_mode" shortName="Mode" longName="Input Mode" translator="mono_stereo"/>
+		<parameter id="mono_stereo_diffusion" shortName="Diff" longName="Diffusion" translator="mono_stereo"/>
+
+		<parameter id="early_reflection_type" shortName="Type" longName="Early Reflection Type" translator="er_type"/>
+
+		<parameter id="room_size" shortName="Size" longName="Room Size" max="44" translator="table6"/>
+
+		<parameter id="liveness" shortName="Live" longName="Liveness" max="10"/>
+		<parameter id="gate_type" shortName="Type" longName="Gate Type" translator="gate_type"/>
+
+		<parameter id="width" shortName="Width" longName="Width" max="37" translator="table11" unit="m"/>
+		<parameter id="height" shortName="Hight" longName="Height" max="73" translator="table11" unit="m"/>
+		<parameter id="depth" shortName="Depth" longName="Depth" max="104" translator="table11" unit="m"/>
+		<parameter id="wall_vary" shortName="Wall" longName="Wall Vary" max="30" translator="normal"/>
+
+		<parameter id="delay_time" shortName="DlyTm" longName="Delay Time" translator="table7" unit="ms"/>
+		<parameter id="tempo_delay_time" shortName="DlyTm" longName="Delay Time" max="19" translator="table14"/>
+		<parameter id="lr_diffusion" shortName="Diff" longName="L/R Diffusion" translator="sub64" origin="64" unit="ms"/>
+		<parameter id="delay_time_lr" shortName="LRDly" longName="Delay Time L->R" max="19" translator="table14"/>
+		<parameter id="delay_time_rl" shortName="RLDly" longName="Delay Time R->L" max="19" translator="table14"/>
+		<parameter id="lag" shortName="Lag" longName="Lag" min="1" translator="sub64" origin="64" unit="ms"/>
+
+		<parameter id="lfo_frequency" shortName="Speed" longName="LFO Frequency" translator="table1" unit="Hz"/>
+		<parameter id="lfo_depth" shortName="Depth" longName="LFO Depth" translator="table19"/>
+		<parameter id="lfo_phase_difference" shortName="Phase" longName="LFO Phase Difference" min="4" max="124" translator="degrees" unit="°"/>
+		<parameter id="phaseshift_offset" shortName="Shift" longName="Phase Shift Offset"/>
+		<parameter id="delay_offset" shortName="DlOfs" longName="Delay Offset" translator="table2" unit="ms"/>
+
+		<parameter id="drive" shortName="Drive" longName="Drive"/>
+		<parameter id="output_level" shortName="Level" longName="Output Level" translator="table18"/>
+		<parameter id="amp_type" shortName="Type" longName="Amp Type" translator="amp_type"/>
+		<parameter id="am_depth" shortName="AMDep" longName="AM Depth"/>
+		<parameter id="pm_depth" shortName="PMDep" longName="PM Depth"/>
+		<parameter id="lr_depth" shortName="L/R" longName="L/R Depth"/>
+		<parameter id="fr_depth" shortName="F/R" longName="F/R Depth"/>
+		<parameter id="pan_direction" shortName="Dir" longName="Pan Direction" translator="pan_direction"/>
+		<parameter id="stage" shortName="Stage" longName="Stage" min="4" max="22"/>
 
 		<parameter id="eq_type" shortName="Type" longName="EQ Type" max="4" translator="eq_type"/>
 		<parameter id="eq_shape" shortName="Shape" longName="EQ Shape" max="1" translator="eq_shape"/>
+		<parameter id="eq_gain" longName="EQ Gain" shortName="Gain" min="52" max="76" translator="sub64" origin="64" unit="dB"/>
+		<parameter id="eq_q" shortName="Q" longName="Q" min="1" max="120" translator="div10"/>
+		<parameter id="eq_width" shortName="Width" longName="EQ Band Width" min="10" max="120" translator="div10"/>
 		<parameter id="eq_frequency1" shortName="Freq1" longName="EQ Band 1 Frequency" min="4" max="40" translator="table3"/>
 		<parameter id="eq_frequency2" shortName="Freq2" longName="EQ Band 2 Frequency" min="14" max="54" translator="table3"/>
 		<parameter id="eq_frequency3" shortName="Freq3" longName="EQ Band 3 Frequency" min="14" max="54" translator="table3"/>
@@ -123,6 +183,11 @@
 				<param msb="4" lsb="0" parameterID="reverb_time"/>
 				<param msb="4" lsb="1" parameterID="reverb_time"/>
 				<param msb="4" lsb="2" parameterID="reverb_time"/>
+				<param msb="4" lsb="7" parameterID="reverb_time"/>
+				<param msb="16" parameterID="reverb_time"/>
+				<param msb="17" parameterID="reverb_time"/>
+				<param msb="18" parameterID="reverb_time"/>
+				<param msb="19" parameterID="reverb_time"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//3" parameterSelector="2/1/0"><!-- rev02 -->
 				<param msb="1" lsb="0" parameterID="diffusion"/>
@@ -143,6 +208,11 @@
 				<param msb="4" lsb="0" parameterID="diffusion"/>
 				<param msb="4" lsb="1" parameterID="diffusion"/>
 				<param msb="4" lsb="2" parameterID="diffusion"/>
+				<param msb="4" lsb="7" parameterID="diffusion"/>
+				<param msb="16" parameterID="diffusion"/>
+				<param msb="17" parameterID="diffusion"/>
+				<param msb="18" parameterID="diffusion"/>
+				<param msb="19" parameterID="diffusion"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//4" parameterSelector="2/1/0"><!-- rev03 -->
 				<param msb="1" lsb="0" parameterID="initial_delay"/>
@@ -163,6 +233,11 @@
 				<param msb="4" lsb="0" parameterID="initial_delay"/>
 				<param msb="4" lsb="1" parameterID="initial_delay"/>
 				<param msb="4" lsb="2" parameterID="initial_delay"/>
+				<param msb="4" lsb="7" parameterID="initial_delay"/>
+				<param msb="16" parameterID="initial_delay"/>
+				<param msb="17" parameterID="initial_delay"/>
+				<param msb="18" parameterID="initial_delay"/>
+				<param msb="19" parameterID="initial_delay"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//5" parameterSelector="2/1/0"><!-- rev04 -->
 				<param msb="1" lsb="0" parameterID="fx_hpf_cutoff"/>
@@ -183,6 +258,11 @@
 				<param msb="4" lsb="0" parameterID="fx_hpf_cutoff"/>
 				<param msb="4" lsb="1" parameterID="fx_hpf_cutoff"/>
 				<param msb="4" lsb="2" parameterID="fx_hpf_cutoff"/>
+				<param msb="4" lsb="7" parameterID="fx_hpf_cutoff"/>
+				<param msb="16" parameterID="fx_hpf_cutoff"/>
+				<param msb="17" parameterID="fx_hpf_cutoff"/>
+				<param msb="18" parameterID="fx_hpf_cutoff"/>
+				<param msb="19" parameterID="fx_hpf_cutoff"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//6" parameterSelector="2/1/0"><!-- rev05 -->
 				<param msb="1" lsb="0" parameterID="fx_lpf_cutoff"/>
@@ -203,13 +283,40 @@
 				<param msb="4" lsb="0" parameterID="fx_lpf_cutoff"/>
 				<param msb="4" lsb="1" parameterID="fx_lpf_cutoff"/>
 				<param msb="4" lsb="2" parameterID="fx_lpf_cutoff"/>
+				<param msb="4" lsb="7" parameterID="fx_lpf_cutoff"/>
+				<param msb="16" parameterID="fx_lpf_cutoff"/>
+				<param msb="17" parameterID="fx_lpf_cutoff"/>
+				<param msb="18" parameterID="fx_lpf_cutoff"/>
+				<param msb="19" parameterID="fx_lpf_cutoff"/>
 			</opcode>
 
-<!-- 		<opcode parameterID="reverb_6" address="//7"/> not used
-			<opcode parameterID="reverb_7" address="//8"/>
-			<opcode parameterID="reverb_8" address="//9"/>
-			<opcode parameterID="reverb_9" address="//10"/>
- -->
+			<opcode xsi:type="mutable" address="//7" parameterSelector="2/1/0"><!-- rev06 -->
+				<param msb="16" parameterID="width"/>
+				<param msb="17" parameterID="width"/>
+				<param msb="18" parameterID="width"/>
+				<param msb="19" parameterID="width"/>
+			</opcode>
+
+			<opcode xsi:type="mutable" address="//8" parameterSelector="2/1/0"><!-- rev07 -->
+				<param msb="16" parameterID="height"/>
+				<param msb="17" parameterID="height"/>
+				<param msb="18" parameterID="height"/>
+				<param msb="19" parameterID="height"/>
+			</opcode>
+
+			<opcode xsi:type="mutable" address="//9" parameterSelector="2/1/0"><!-- rev08 -->
+				<param msb="16" parameterID="depth"/>
+				<param msb="17" parameterID="depth"/>
+				<param msb="18" parameterID="depth"/>
+				<param msb="19" parameterID="depth"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//10" parameterSelector="2/1/0"><!-- rev09 -->
+				<param msb="16" parameterID="wall_vary"/>
+				<param msb="17" parameterID="wall_vary"/>
+				<param msb="18" parameterID="wall_vary"/>
+				<param msb="19" parameterID="wall_vary"/>
+			</opcode>
+
 			<opcode xsi:type="mutable" address="//11" parameterSelector="2/1/0"><!-- rev10 -->
 				<param msb="1" lsb="0" parameterID="dry_wet_balance"/>
 				<param msb="1" lsb="1" parameterID="dry_wet_balance"/>
@@ -229,6 +336,11 @@
 				<param msb="4" lsb="0" parameterID="dry_wet_balance"/>
 				<param msb="4" lsb="1" parameterID="dry_wet_balance"/>
 				<param msb="4" lsb="2" parameterID="dry_wet_balance"/>
+				<param msb="4" lsb="7" parameterID="dry_wet_balance"/>
+				<param msb="16" parameterID="dry_wet_balance"/>
+				<param msb="17" parameterID="dry_wet_balance"/>
+				<param msb="18" parameterID="dry_wet_balance"/>
+				<param msb="19" parameterID="dry_wet_balance"/>
 			</opcode>
 			<opcode xsi:type="immutable" address="//12" parameterID="effect_return"/>
 			<opcode xsi:type="immutable" address="//13" parameterID="effect_pan"/>
@@ -250,6 +362,11 @@
 				<param msb="3" lsb="1" parameterID="reverb_delay"/>
 				<param msb="4" lsb="0" parameterID="reverb_delay"/>
 				<param msb="4" lsb="2" parameterID="reverb_delay"/>
+				<param msb="4" lsb="7" parameterID="reverb_delay"/>
+				<param msb="16" parameterID="reverb_delay"/>
+				<param msb="17" parameterID="reverb_delay"/>
+				<param msb="18" parameterID="reverb_delay"/>
+				<param msb="19" parameterID="reverb_delay"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//17" parameterSelector="2/1/0"><!-- rev12 -->
 				<param msb="1" lsb="0" parameterID="density"/>
@@ -267,6 +384,11 @@
 				<param msb="3" lsb="1" parameterID="density"/>
 				<param msb="4" lsb="0" parameterID="density"/>
 				<param msb="4" lsb="2" parameterID="density"/>
+				<param msb="4" lsb="7" parameterID="density"/>
+				<param msb="16" parameterID="density"/>
+				<param msb="17" parameterID="density"/>
+				<param msb="18" parameterID="density"/>
+				<param msb="19" parameterID="density"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//18" parameterSelector="2/1/0"><!-- rev13 -->
 				<param msb="1" lsb="0" parameterID="er_rev_balance"/>
@@ -284,6 +406,11 @@
 				<param msb="3" lsb="1" parameterID="er_rev_balance"/>
 				<param msb="4" lsb="0" parameterID="er_rev_balance"/>
 				<param msb="4" lsb="2" parameterID="er_rev_balance"/>
+				<param msb="4" lsb="7" parameterID="er_rev_balance"/>
+				<param msb="16" parameterID="er_rev_balance"/>
+				<param msb="17" parameterID="er_rev_balance"/>
+				<param msb="18" parameterID="er_rev_balance"/>
+				<param msb="19" parameterID="er_rev_balance"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//19" parameterSelector="2/1/0"><!-- rev14 -->
 				<param msb="1" lsb="0" parameterID="high_damp"/>
@@ -305,6 +432,11 @@
 				<param msb="2" lsb="7" parameterID="feedback_high_damp"/>
 				<param msb="4" lsb="1" parameterID="feedback_high_damp"/>
 				<param msb="4" lsb="2" parameterID="feedback_high_damp"/>
+				<param msb="4" lsb="7" parameterID="feedback_high_damp"/>
+				<param msb="16" parameterID="high_damp"/>
+				<param msb="17" parameterID="high_damp"/>
+				<param msb="18" parameterID="high_damp"/>
+				<param msb="19" parameterID="high_damp"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//20" parameterSelector="2/1/0"><!-- rev15 -->
 				<param msb="1" lsb="0" parameterID="feedback_level"/>
@@ -322,6 +454,11 @@
 				<param msb="3" lsb="1" parameterID="feedback_level"/>
 				<param msb="4" lsb="0" parameterID="feedback_level"/>
 				<param msb="4" lsb="2" parameterID="feedback_level"/>
+				<param msb="4" lsb="7" parameterID="feedback_level"/>
+				<param msb="16" parameterID="feedback_level"/>
+				<param msb="17" parameterID="feedback_level"/>
+				<param msb="18" parameterID="feedback_level"/>
+				<param msb="19" parameterID="feedback_level"/>
 			</opcode>
 <!--		<opcode xsi:type="immutable" parameterID="not used" address="//21"/> rev16 not used -->
 		</bulk>
@@ -330,26 +467,272 @@
 	<module name="FX1 Chorus" address="2/1/32-53">
 		<bulk address="//32-46">
 			<opcode xsi:type="immutable" parameterID="chorus_type" address="//32-33"/>
-			<opcode xsi:type="mutable" parameterID="chorus_1" address="//34"/><!-- cho01 -->
-			<opcode xsi:type="mutable" parameterID="chorus_2" address="//35"/><!-- cho02 -->
-			<opcode xsi:type="mutable" parameterID="chorus_3" address="//36"/><!-- cho03 -->
-			<opcode xsi:type="mutable" parameterID="chorus_4" address="//37"/><!-- cho04 -->
+			<opcode xsi:type="mutable" address="//34" parameterSelector="2/1/32"><!-- cho01 -->
+				<param msb="65" lsb="0" parameterID="lfo_frequency"/>
+				<param msb="65" lsb="1" parameterID="lfo_frequency"/>
+				<param msb="65" lsb="2" parameterID="lfo_frequency"/>
+				<param msb="65" lsb="3" parameterID="lfo_frequency"/>
+				<param msb="65" lsb="4" parameterID="lfo_frequency"/>
+				<param msb="65" lsb="5" parameterID="lfo_frequency"/>
+				<param msb="65" lsb="6" parameterID="lfo_frequency"/>
+				<param msb="65" lsb="7" parameterID="lfo_frequency"/>
+				<param msb="65" lsb="8" parameterID="lfo_frequency"/>
+				<param msb="66" lsb="0" parameterID="lfo_frequency"/>
+				<param msb="66" lsb="1" parameterID="lfo_frequency"/>
+				<param msb="66" lsb="2" parameterID="lfo_frequency"/>
+				<param msb="66" lsb="8" parameterID="lfo_frequency"/>
+				<param msb="67" lsb="0" parameterID="lfo_frequency"/>
+				<param msb="67" lsb="1" parameterID="lfo_frequency"/>
+				<param msb="67" lsb="7" parameterID="lfo_frequency"/>
+				<param msb="67" lsb="8" parameterID="lfo_frequency"/>
+				<param msb="68" parameterID="lfo_frequency"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//35" parameterSelector="2/1/32"><!-- cho02 -->
+				<param msb="65" lsb="0" parameterID="lfo_depth"/>
+				<param msb="65" lsb="1" parameterID="lfo_depth"/>
+				<param msb="65" lsb="2" parameterID="lfo_depth"/>
+				<param msb="65" lsb="3" parameterID="lfo_depth"/>
+				<param msb="65" lsb="4" parameterID="lfo_depth"/>
+				<param msb="65" lsb="5" parameterID="lfo_depth"/>
+				<param msb="65" lsb="6" parameterID="lfo_depth"/>
+				<param msb="65" lsb="7" parameterID="lfo_depth"/>
+				<param msb="65" lsb="8" parameterID="lfo_depth"/>
+				<param msb="66" lsb="0" parameterID="lfo_depth"/>
+				<param msb="66" lsb="1" parameterID="lfo_depth"/>
+				<param msb="66" lsb="2" parameterID="lfo_depth"/>
+				<param msb="66" lsb="8" parameterID="lfo_depth"/>
+				<param msb="67" lsb="0" parameterID="lfo_depth"/>
+				<param msb="67" lsb="1" parameterID="lfo_depth"/>
+				<param msb="67" lsb="7" parameterID="lfo_depth"/>
+				<param msb="67" lsb="8" parameterID="lfo_depth"/>
+				<param msb="68" lsb="0" parameterID="lfo_depth"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//36" parameterSelector="2/1/32"><!-- cho03 -->
+				<param msb="65" lsb="0" parameterID="feedback_level"/>
+				<param msb="65" lsb="1" parameterID="feedback_level"/>
+				<param msb="65" lsb="2" parameterID="feedback_level"/>
+				<param msb="65" lsb="3" parameterID="feedback_level"/>
+				<param msb="65" lsb="4" parameterID="feedback_level"/>
+				<param msb="65" lsb="5" parameterID="feedback_level"/>
+				<param msb="65" lsb="6" parameterID="feedback_level"/>
+				<param msb="65" lsb="7" parameterID="feedback_level"/>
+				<param msb="65" lsb="8" parameterID="feedback_level"/>
+				<param msb="66" lsb="0" parameterID="feedback_level"/>
+				<param msb="66" lsb="1" parameterID="feedback_level"/>
+				<param msb="66" lsb="2" parameterID="feedback_level"/>
+				<param msb="66" lsb="8" parameterID="feedback_level"/>
+				<param msb="67" lsb="0" parameterID="feedback_level"/>
+				<param msb="67" lsb="1" parameterID="feedback_level"/>
+				<param msb="67" lsb="7" parameterID="feedback_level"/>
+				<param msb="67" lsb="8" parameterID="feedback_level"/>
+				<param msb="68" lsb="0" parameterID="delay_offset"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//37" parameterSelector="2/1/32"><!-- cho04 -->
+				<param msb="65" lsb="0" parameterID="delay_offset"/>
+				<param msb="65" lsb="1" parameterID="delay_offset"/>
+				<param msb="65" lsb="2" parameterID="delay_offset"/>
+				<param msb="65" lsb="3" parameterID="delay_offset"/>
+				<param msb="65" lsb="4" parameterID="delay_offset"/>
+				<param msb="65" lsb="5" parameterID="delay_offset"/>
+				<param msb="65" lsb="6" parameterID="delay_offset"/>
+				<param msb="65" lsb="7" parameterID="delay_offset"/>
+				<param msb="65" lsb="8" parameterID="delay_offset"/>
+				<param msb="66" lsb="0" parameterID="delay_offset"/>
+				<param msb="66" lsb="1" parameterID="delay_offset"/>
+				<param msb="66" lsb="2" parameterID="delay_offset"/>
+				<param msb="66" lsb="8" parameterID="delay_offset"/>
+				<param msb="67" lsb="0" parameterID="delay_offset"/>
+				<param msb="67" lsb="1" parameterID="delay_offset"/>
+				<param msb="67" lsb="7" parameterID="delay_offset"/>
+				<param msb="67" lsb="8" parameterID="delay_offset"/>
+			</opcode>
 			<opcode xsi:type="mutable" parameterID="chorus_5" address="//38"/><!-- cho05 -->
-			<opcode xsi:type="mutable" parameterID="chorus_6" address="//39"/><!-- cho06 -->
-			<opcode xsi:type="mutable" parameterID="chorus_7" address="//40"/><!-- cho07 -->
-			<opcode xsi:type="mutable" parameterID="chorus_8" address="//41"/><!-- cho08 -->
-			<opcode xsi:type="mutable" parameterID="chorus_9" address="//42"/><!-- cho09 -->
-			<opcode xsi:type="mutable" parameterID="chorus_10" address="//43"/><!-- cho10 -->
+			<opcode xsi:type="mutable" address="//39" parameterSelector="2/1/32"><!-- cho06 -->
+				<param msb="65" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="65" lsb="1" parameterID="eq_frequency1"/>
+				<param msb="65" lsb="2" parameterID="eq_frequency1"/>
+				<param msb="65" lsb="3" parameterID="eq_frequency1"/>
+				<param msb="65" lsb="4" parameterID="eq_frequency1"/>
+				<param msb="65" lsb="5" parameterID="eq_frequency1"/>
+				<param msb="65" lsb="6" parameterID="eq_frequency1"/>
+				<param msb="65" lsb="7" parameterID="eq_frequency1"/>
+				<param msb="65" lsb="8" parameterID="eq_frequency1"/>
+				<param msb="66" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="66" lsb="1" parameterID="eq_frequency1"/>
+				<param msb="66" lsb="2" parameterID="eq_frequency1"/>
+				<param msb="66" lsb="8" parameterID="eq_frequency1"/>
+				<param msb="67" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="67" lsb="1" parameterID="eq_frequency1"/>
+				<param msb="67" lsb="7" parameterID="eq_frequency1"/>
+				<param msb="67" lsb="8" parameterID="eq_frequency1"/>
+				<param msb="68" lsb="0" parameterID="eq_frequency1"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//40" parameterSelector="2/1/32"><!-- cho07 -->
+				<param msb="65" lsb="0" parameterID="eq_gain"/>
+				<param msb="65" lsb="1" parameterID="eq_gain"/>
+				<param msb="65" lsb="2" parameterID="eq_gain"/>
+				<param msb="65" lsb="3" parameterID="eq_gain"/>
+				<param msb="65" lsb="4" parameterID="eq_gain"/>
+				<param msb="65" lsb="5" parameterID="eq_gain"/>
+				<param msb="65" lsb="6" parameterID="eq_gain"/>
+				<param msb="65" lsb="7" parameterID="eq_gain"/>
+				<param msb="65" lsb="8" parameterID="eq_gain"/>
+				<param msb="66" lsb="0" parameterID="eq_gain"/>
+				<param msb="66" lsb="1" parameterID="eq_gain"/>
+				<param msb="66" lsb="2" parameterID="eq_gain"/>
+				<param msb="66" lsb="8" parameterID="eq_gain"/>
+				<param msb="67" lsb="0" parameterID="eq_gain"/>
+				<param msb="67" lsb="1" parameterID="eq_gain"/>
+				<param msb="67" lsb="7" parameterID="eq_gain"/>
+				<param msb="67" lsb="8" parameterID="eq_gain"/>
+				<param msb="68" lsb="0" parameterID="eq_gain"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//41" parameterSelector="2/1/32"><!-- cho08 -->
+				<param msb="65" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="65" lsb="1" parameterID="eq_frequency5"/>
+				<param msb="65" lsb="2" parameterID="eq_frequency5"/>
+				<param msb="65" lsb="3" parameterID="eq_frequency5"/>
+				<param msb="65" lsb="4" parameterID="eq_frequency5"/>
+				<param msb="65" lsb="5" parameterID="eq_frequency5"/>
+				<param msb="65" lsb="6" parameterID="eq_frequency5"/>
+				<param msb="65" lsb="7" parameterID="eq_frequency5"/>
+				<param msb="65" lsb="8" parameterID="eq_frequency5"/>
+				<param msb="66" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="66" lsb="1" parameterID="eq_frequency5"/>
+				<param msb="66" lsb="2" parameterID="eq_frequency5"/>
+				<param msb="66" lsb="8" parameterID="eq_frequency5"/>
+				<param msb="67" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="67" lsb="1" parameterID="eq_frequency5"/>
+				<param msb="67" lsb="7" parameterID="eq_frequency5"/>
+				<param msb="67" lsb="8" parameterID="eq_frequency5"/>
+				<param msb="68" lsb="0" parameterID="eq_frequency5"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//42" parameterSelector="2/1/32"><!-- cho09 -->
+				<param msb="65" lsb="0" parameterID="eq_gain"/>
+				<param msb="65" lsb="1" parameterID="eq_gain"/>
+				<param msb="65" lsb="2" parameterID="eq_gain"/>
+				<param msb="65" lsb="3" parameterID="eq_gain"/>
+				<param msb="65" lsb="4" parameterID="eq_gain"/>
+				<param msb="65" lsb="5" parameterID="eq_gain"/>
+				<param msb="65" lsb="6" parameterID="eq_gain"/>
+				<param msb="65" lsb="7" parameterID="eq_gain"/>
+				<param msb="65" lsb="8" parameterID="eq_gain"/>
+				<param msb="66" lsb="0" parameterID="eq_gain"/>
+				<param msb="66" lsb="1" parameterID="eq_gain"/>
+				<param msb="66" lsb="2" parameterID="eq_gain"/>
+				<param msb="66" lsb="8" parameterID="eq_gain"/>
+				<param msb="67" lsb="0" parameterID="eq_gain"/>
+				<param msb="67" lsb="1" parameterID="eq_gain"/>
+				<param msb="67" lsb="7" parameterID="eq_gain"/>
+				<param msb="67" lsb="8" parameterID="eq_gain"/>
+				<param msb="68" lsb="0" parameterID="eq_gain"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//43" parameterSelector="2/1/32"><!-- cho10 -->
+				<param msb="65" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="65" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="65" lsb="2" parameterID="dry_wet_balance"/>
+				<param msb="65" lsb="3" parameterID="dry_wet_balance"/>
+				<param msb="65" lsb="4" parameterID="dry_wet_balance"/>
+				<param msb="65" lsb="5" parameterID="dry_wet_balance"/>
+				<param msb="65" lsb="6" parameterID="dry_wet_balance"/>
+				<param msb="65" lsb="7" parameterID="dry_wet_balance"/>
+				<param msb="65" lsb="8" parameterID="dry_wet_balance"/>
+				<param msb="66" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="66" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="66" lsb="2" parameterID="dry_wet_balance"/>
+				<param msb="66" lsb="8" parameterID="dry_wet_balance"/>
+				<param msb="67" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="67" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="67" lsb="7" parameterID="dry_wet_balance"/>
+				<param msb="67" lsb="8" parameterID="dry_wet_balance"/>
+				<param msb="68" lsb="0" parameterID="dry_wet_balance"/>
+			</opcode>
 			<opcode xsi:type="immutable" address="//44" parameterID="effect_return"/>
 			<opcode xsi:type="immutable" address="//45" parameterID="effect_pan"/>
 			<opcode xsi:type="immutable" address="//46" parameterID="reverb_send"/>
 		</bulk>
 		<bulk address="//48-53">
-			<opcode xsi:type="mutable" parameterID="chorus_11" address="//48"/><!-- cho11 -->
-			<opcode xsi:type="mutable" parameterID="chorus_12" address="//49"/><!-- cho12 -->
-			<opcode xsi:type="mutable" parameterID="chorus_13" address="//50"/><!-- cho13 -->
-			<opcode xsi:type="mutable" parameterID="chorus_14" address="//51"/><!-- cho14 -->
-			<opcode xsi:type="mutable" parameterID="chorus_15" address="//52"/><!-- cho15 -->
+			<opcode xsi:type="mutable" address="//48" parameterSelector="2/1/32"><!-- cho11 -->
+				<param msb="65" lsb="0" parameterID="eq_frequency3"/>
+				<param msb="65" lsb="1" parameterID="eq_frequency3"/>
+				<param msb="65" lsb="2" parameterID="eq_frequency3"/>
+				<param msb="65" lsb="3" parameterID="eq_frequency3"/>
+				<param msb="65" lsb="4" parameterID="eq_frequency3"/>
+				<param msb="65" lsb="5" parameterID="eq_frequency3"/>
+				<param msb="65" lsb="6" parameterID="eq_frequency3"/>
+				<param msb="65" lsb="7" parameterID="eq_frequency3"/>
+				<param msb="65" lsb="8" parameterID="eq_frequency3"/>
+				<param msb="66" lsb="0" parameterID="eq_frequency3"/>
+				<param msb="66" lsb="1" parameterID="eq_frequency3"/>
+				<param msb="66" lsb="2" parameterID="eq_frequency3"/>
+				<param msb="66" lsb="8" parameterID="eq_frequency3"/>
+				<param msb="67" lsb="0" parameterID="eq_frequency3"/>
+				<param msb="67" lsb="1" parameterID="eq_frequency3"/>
+				<param msb="67" lsb="7" parameterID="eq_frequency3"/>
+				<param msb="67" lsb="8" parameterID="eq_frequency3"/>
+				<param msb="68" lsb="0" parameterID="eq_frequency3"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//49" parameterSelector="2/1/32"><!-- cho12 -->
+				<param msb="65" lsb="0" parameterID="eq_gain"/>
+				<param msb="65" lsb="1" parameterID="eq_gain"/>
+				<param msb="65" lsb="2" parameterID="eq_gain"/>
+				<param msb="65" lsb="3" parameterID="eq_gain"/>
+				<param msb="65" lsb="4" parameterID="eq_gain"/>
+				<param msb="65" lsb="5" parameterID="eq_gain"/>
+				<param msb="65" lsb="6" parameterID="eq_gain"/>
+				<param msb="65" lsb="7" parameterID="eq_gain"/>
+				<param msb="65" lsb="8" parameterID="eq_gain"/>
+				<param msb="66" lsb="0" parameterID="eq_gain"/>
+				<param msb="66" lsb="1" parameterID="eq_gain"/>
+				<param msb="66" lsb="2" parameterID="eq_gain"/>
+				<param msb="66" lsb="8" parameterID="eq_gain"/>
+				<param msb="67" lsb="0" parameterID="eq_gain"/>
+				<param msb="67" lsb="1" parameterID="eq_gain"/>
+				<param msb="67" lsb="7" parameterID="eq_gain"/>
+				<param msb="67" lsb="8" parameterID="eq_gain"/>
+				<param msb="68" lsb="0" parameterID="eq_gain"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//50" parameterSelector="2/1/32"><!-- cho13 -->
+				<param msb="65" lsb="0" parameterID="eq_width"/>
+				<param msb="65" lsb="1" parameterID="eq_width"/>
+				<param msb="65" lsb="2" parameterID="eq_width"/>
+				<param msb="65" lsb="3" parameterID="eq_width"/>
+				<param msb="65" lsb="4" parameterID="eq_width"/>
+				<param msb="65" lsb="5" parameterID="eq_width"/>
+				<param msb="65" lsb="6" parameterID="eq_width"/>
+				<param msb="65" lsb="7" parameterID="eq_width"/>
+				<param msb="65" lsb="8" parameterID="eq_width"/>
+				<param msb="66" lsb="0" parameterID="eq_width"/>
+				<param msb="66" lsb="1" parameterID="eq_width"/>
+				<param msb="66" lsb="2" parameterID="eq_width"/>
+				<param msb="66" lsb="8" parameterID="eq_width"/>
+				<param msb="67" lsb="0" parameterID="eq_width"/>
+				<param msb="67" lsb="1" parameterID="eq_width"/>
+				<param msb="67" lsb="7" parameterID="eq_width"/>
+				<param msb="67" lsb="8" parameterID="eq_width"/>
+				<param msb="68" lsb="0" parameterID="eq_width"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//51" parameterSelector="2/1/32"><!-- cho14 -->
+				<param msb="67" lsb="0" parameterID="lfo_phase_difference"/>
+				<param msb="67" lsb="1" parameterID="lfo_phase_difference"/>
+				<param msb="67" lsb="7" parameterID="lfo_phase_difference"/>
+				<param msb="67" lsb="8" parameterID="lfo_phase_difference"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//52" parameterSelector="2/1/32"><!-- cho15 -->
+				<param msb="65" lsb="0" parameterID="input_mode"/>
+				<param msb="65" lsb="1" parameterID="input_mode"/>
+				<param msb="65" lsb="2" parameterID="input_mode"/>
+				<param msb="65" lsb="3" parameterID="input_mode"/>
+				<param msb="65" lsb="4" parameterID="input_mode"/>
+				<param msb="65" lsb="5" parameterID="input_mode"/>
+				<param msb="65" lsb="6" parameterID="input_mode"/>
+				<param msb="65" lsb="7" parameterID="input_mode"/>
+				<param msb="65" lsb="8" parameterID="input_mode"/>
+				<param msb="66" lsb="0" parameterID="input_mode"/>
+				<param msb="66" lsb="1" parameterID="input_mode"/>
+				<param msb="66" lsb="2" parameterID="input_mode"/>
+				<param msb="66" lsb="8" parameterID="input_mode"/>
+			</opcode>
 			<opcode xsi:type="mutable" parameterID="chorus_16" address="//53"/><!-- cho16 -->
 		</bulk>
 	</module>
@@ -358,37 +741,189 @@
 		<bulk address="//64-96">
 			<opcode xsi:type="immutable" parameterID="variation_type" address="//64-65"/>
 			<opcode xsi:type="mutable" address="//66-67" parameterSelector="2/1/64"><!-- var01 -->
-				<param msb="5" lsb="0" parameterID="delay_l"/>
+				<param msb="5" lsb="0" parameterID="left_channel_delay_b"/>
+				<param msb="6" lsb="0" parameterID="left_channel_delay_b"/>
+				<param msb="7" lsb="0" parameterID="left_channel_delay_b"/>
+				<param msb="8" lsb="0" parameterID="left_right_delay_b"/>
+				<param msb="9" lsb="0" parameterID="early_reflection_type"/>
+				<param msb="9" lsb="1" parameterID="early_reflection_type"/>
+				<param msb="10" lsb="0" parameterID="gate_type"/>
+				<param msb="11" lsb="0" parameterID="gate_type"/>
+				<param msb="20" lsb="0" parameterID="delay_time"/>
+				<param msb="20" lsb="1" parameterID="delay_time"/>
+				<param msb="20" lsb="2" parameterID="delay_time"/>
+				<param msb="21" lsb="0" parameterID="tempo_delay_time"/>
+				<param msb="21" lsb="8" parameterID="tempo_delay_time"/>
+				<param msb="22" parameterID="delay_time_lr"/>
+				<param msb="69" parameterID="lfo_frequency"/>
+				<param msb="69" lsb="1" parameterID="lfo_frequency"/>
+				<param msb="69" lsb="2" parameterID="lfo_frequency"/>
+				<param msb="69" lsb="3" parameterID="lfo_frequency"/>
+				<param msb="70" lsb="0" parameterID="lfo_frequency"/>
+				<param msb="71" lsb="0" parameterID="lfo_frequency"/>
+				<param msb="72" lsb="0" parameterID="lfo_frequency"/>
+				<param msb="72" lsb="8" parameterID="lfo_frequency"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//68-69" parameterSelector="2/1/64"><!-- var02 -->
-				<param msb="5" lsb="0" parameterID="delay_r"/>
+				<param msb="5" lsb="0" parameterID="right_channel_delay_b"/>
+				<param msb="6" lsb="0" parameterID="right_channel_delay_b"/>
+				<param msb="7" lsb="0" parameterID="left_channel_feedback_level"/>
+				<param msb="8" lsb="0" parameterID="right_left_delay_b"/>
+				<param msb="9" lsb="0" parameterID="room_size"/>
+				<param msb="9" lsb="1" parameterID="room_size"/>
+				<param msb="10" lsb="0" parameterID="room_size"/>
+				<param msb="11" lsb="0" parameterID="room_size"/>
+				<param msb="20" lsb="0" parameterID="feedback_level"/>
+				<param msb="20" lsb="1" parameterID="feedback_level"/>
+				<param msb="20" lsb="2" parameterID="feedback_level"/>
+				<param msb="21" lsb="0" parameterID="feedback_level"/>
+				<param msb="21" lsb="8" parameterID="feedback_level"/>
+				<param msb="22" parameterID="delay_time_rl"/>
+				<param msb="69" parameterID="lfo_depth"/>
+				<param msb="69" lsb="1" parameterID="lfo_depth"/>
+				<param msb="69" lsb="2" parameterID="lfo_depth"/>
+				<param msb="69" lsb="3" parameterID="lfo_depth"/>
+				<param msb="70" lsb="0" parameterID="am_depth"/>
+				<param msb="71" lsb="0" parameterID="lr_depth"/>
+				<param msb="72" lsb="0" parameterID="lfo_depth"/>
+				<param msb="72" lsb="8" parameterID="lfo_depth"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//70-71" parameterSelector="2/1/64"><!-- var03 -->
-				<param msb="5" lsb="0" parameterID="delay_c"/>
+				<param msb="5" lsb="0" parameterID="center_channel_delay_b"/>
+				<param msb="6" lsb="0" parameterID="feedback_delay_b"/>
+				<param msb="7" lsb="0" parameterID="right_channel_delay_b"/>
+				<param msb="8" lsb="0" parameterID="feedback_level"/>
+				<param msb="9" lsb="0" parameterID="diffusion"/>
+				<param msb="9" lsb="1" parameterID="diffusion"/>
+				<param msb="10" lsb="0" parameterID="diffusion"/>
+				<param msb="11" lsb="0" parameterID="diffusion"/>
+				<param msb="20" lsb="0" parameterID="fx_hpf_cutoff"/>
+				<param msb="20" lsb="1" parameterID="fx_hpf_cutoff"/>
+				<param msb="20" lsb="2" parameterID="fx_hpf_cutoff"/>
+				<param msb="21" lsb="0" parameterID="feedback_high_damp"/>
+				<param msb="21" lsb="8" parameterID="feedback_high_damp"/>
+				<param msb="22" parameterID="feedback_level"/>
+				<param msb="69" lsb="3" parameterID="amp_type"/>
+				<param msb="70" lsb="0" parameterID="pm_depth"/>
+				<param msb="71" lsb="0" parameterID="fr_depth"/>
+				<param msb="72" lsb="0" parameterID="phaseshift_offset"/>
+				<param msb="72" lsb="8" parameterID="phaseshift_offset"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//72-73" parameterSelector="2/1/64"><!-- var04 -->
-				<param msb="5" lsb="0" parameterID="feedback_delay"/>
+				<param msb="5" lsb="0" parameterID="feedback_delay_b"/>
+				<param msb="6" lsb="0" parameterID="feedback_delay2_b"/>
+				<param msb="7" lsb="0" parameterID="right_channel_feedback_level"/>
+				<param msb="8" lsb="0" parameterID="input_select"/>
+				<param msb="9" lsb="0" parameterID="initial_delay"/>
+				<param msb="9" lsb="1" parameterID="initial_delay"/>
+				<param msb="10" lsb="0" parameterID="initial_delay"/>
+				<param msb="11" lsb="0" parameterID="initial_delay"/>
+				<param msb="20" lsb="0" parameterID="fx_lpf_cutoff"/>
+				<param msb="20" lsb="1" parameterID="fx_lpf_cutoff"/>
+				<param msb="20" lsb="2" parameterID="fx_lpf_cutoff"/>
+				<param msb="21" lsb="0" parameterID="lr_diffusion"/>
+				<param msb="21" lsb="8" parameterID="lr_diffusion"/>
+				<param msb="22" parameterID="input_select"/>
+				<param msb="71" lsb="0" parameterID="pan_direction"/>
+				<param msb="72" lsb="0" parameterID="feedback_level"/>
+				<param msb="72" lsb="8" parameterID="feedback_level"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//74-75" parameterSelector="2/1/64"><!-- var05 -->
 				<param msb="5" lsb="0" parameterID="feedback_level"/>
+				<param msb="6" lsb="0" parameterID="feedback_level"/>
+				<param msb="7" lsb="0" parameterID="high_damp"/>
+				<param msb="8" lsb="0" parameterID="high_damp"/>
+				<param msb="9" lsb="0" parameterID="feedback_level"/>
+				<param msb="9" lsb="1" parameterID="feedback_level"/>
+				<param msb="10" lsb="0" parameterID="feedback_level"/>
+				<param msb="11" lsb="0" parameterID="feedback_level"/>
+				<param msb="22" parameterID="feedback_high_damp"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//76-77" parameterSelector="2/1/64"><!-- var06 -->
-				<param msb="5" lsb="0" parameterID="level_c"/>
+				<param msb="5" lsb="0" parameterID="center_channel_level"/>
+				<param msb="6" lsb="0" parameterID="high_damp"/>
+				<param msb="7" lsb="0" parameterID="left_channel_delay2_b"/>
+				<param msb="9" lsb="0" parameterID="fx_hpf_cutoff"/>
+				<param msb="9" lsb="1" parameterID="fx_hpf_cutoff"/>
+				<param msb="10" lsb="0" parameterID="fx_hpf_cutoff"/>
+				<param msb="11" lsb="0" parameterID="fx_hpf_cutoff"/>
+				<param msb="22" parameterID="lag"/>
+				<param msb="69" parameterID="eq_frequency1"/>
+				<param msb="69" lsb="1" parameterID="eq_frequency1"/>
+				<param msb="69" lsb="2" parameterID="eq_frequency1"/>
+				<param msb="69" lsb="3" parameterID="eq_frequency1"/>
+				<param msb="70" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="71" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="72" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="72" lsb="8" parameterID="eq_frequency1"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//78-79" parameterSelector="2/1/64"><!-- var07 -->
 				<param msb="5" lsb="0" parameterID="high_damp"/>
+				<param msb="7" lsb="0" parameterID="right_channel_delay2_b"/>
+				<param msb="9" lsb="0" parameterID="fx_lpf_cutoff"/>
+				<param msb="9" lsb="1" parameterID="fx_lpf_cutoff"/>
+				<param msb="10" lsb="0" parameterID="fx_lpf_cutoff"/>
+				<param msb="11" lsb="0" parameterID="fx_lpf_cutoff"/>
+				<param msb="69" parameterID="eq_gain"/>
+				<param msb="69" lsb="1" parameterID="eq_gain"/>
+				<param msb="69" lsb="2" parameterID="eq_gain"/>
+				<param msb="69" lsb="3" parameterID="eq_gain"/>
+				<param msb="70" lsb="0" parameterID="eq_gain"/>
+				<param msb="71" lsb="0" parameterID="eq_gain"/>
+				<param msb="72" lsb="0" parameterID="eq_gain"/>
+				<param msb="72" lsb="8" parameterID="eq_gain"/>
 			</opcode>
-			<opcode xsi:type="mutable" parameterID="variation_8" address="//80-81"/><!-- var08 -->
-			<opcode xsi:type="mutable" parameterID="variation_9" address="//82-83"/><!-- var09 -->
-			<opcode xsi:type="mutable" address="//84-85"><!-- var10 -->
+			<opcode xsi:type="mutable" address="//80-81" parameterSelector="2/1/64"><!-- var08 -->
+				<param msb="7" lsb="0" parameterID="delay2_level"/>
+				<param msb="69" parameterID="eq_frequency5"/>
+				<param msb="69" lsb="1" parameterID="eq_frequency5"/>
+				<param msb="69" lsb="2" parameterID="eq_frequency5"/>
+				<param msb="69" lsb="3" parameterID="eq_frequency5"/>
+				<param msb="70" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="71" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="72" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="72" lsb="8" parameterID="eq_frequency5"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//82-83" parameterSelector="2/1/64"><!-- var09 -->
+				<param msb="69" parameterID="eq_gain"/>
+				<param msb="69" lsb="1" parameterID="eq_gain"/>
+				<param msb="69" lsb="2" parameterID="eq_gain"/>
+				<param msb="69" lsb="3" parameterID="eq_gain"/>
+				<param msb="70" lsb="0" parameterID="eq_gain"/>
+				<param msb="71" lsb="0" parameterID="eq_gain"/>
+				<param msb="72" lsb="0" parameterID="eq_gain"/>
+				<param msb="72" lsb="8" parameterID="eq_gain"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//84-85" parameterSelector="2/1/64"><!-- var10 -->
 				<param msb="5" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="6" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="7" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="8" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="9" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="9" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="10" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="11" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="20" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="20" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="20" lsb="2" parameterID="dry_wet_balance"/>
+				<param msb="21" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="21" lsb="8" parameterID="dry_wet_balance"/>
+				<param msb="22" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="69" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="69" lsb="1" parameterID="dry_wet_balance"/>
+				<param msb="69" lsb="2" parameterID="dry_wet_balance"/>
+				<param msb="69" lsb="3" parameterID="dry_wet_balance"/>
+				<param msb="72" lsb="0" parameterID="dry_wet_balance"/>
+				<param msb="72" lsb="8" parameterID="dry_wet_balance"/>
 			</opcode>
 			<opcode xsi:type="immutable" address="//86" parameterID="effect_return"/>
 			<opcode xsi:type="immutable" address="//87" parameterID="effect_pan"/>
 			<opcode xsi:type="immutable" address="//88" parameterID="reverb_send"/>
 			<opcode xsi:type="immutable" address="//89" parameterID="chorus_send"/>
 			<opcode xsi:type="immutable" address="//90" parameterID="effect_connection"/>
-			<opcode xsi:type="immutable" address="//91" parameterID="effect_part"/>
+			<opcode xsi:type="mutable" address="//91" parameterSelector="2/1/90">
+				<param value="0" parameterID="effect_part"/>
+			</opcode>
 			<opcode xsi:type="immutable" address="//92" parameterID="mw_control_depth"/>
 			<opcode xsi:type="immutable" address="//93" parameterID="pb_control_depth"/>
 			<opcode xsi:type="immutable" address="//94" parameterID="cat_control_depth"/>
@@ -402,19 +937,84 @@
 			<opcode xsi:type="immutable" address="//98" parameterID="cbc2_control_depth"/>
 		</bulk>
 		<bulk address="//112-117">
-			<opcode xsi:type="mutable" parameterID="variation_11" address="//112"/><!-- var11 -->
-			<opcode xsi:type="mutable" parameterID="variation_12" address="//113"/><!-- var12 -->
+			<opcode xsi:type="mutable" address="//112" parameterSelector="2/1/64"><!-- var11 -->
+				<param msb="9" lsb="0" parameterID="liveness"/>
+				<param msb="9" lsb="1" parameterID="liveness"/>
+				<param msb="10" lsb="0" parameterID="liveness"/>
+				<param msb="11" lsb="0" parameterID="liveness"/>
+				<param msb="20" lsb="0" parameterID="density"/>
+				<param msb="20" lsb="1" parameterID="density"/>
+				<param msb="20" lsb="2" parameterID="density"/>
+				<param msb="69" lsb="0" parameterID="eq_frequency3"/>
+				<param msb="70" lsb="0" parameterID="eq_frequency3"/>
+				<param msb="71" lsb="0" parameterID="eq_frequency3"/>
+				<param msb="72" lsb="0" parameterID="stage"/>
+				<param msb="72" lsb="8" parameterID="stage"/>
+			</opcode>
+			<opcode xsi:type="mutable" address="//113" parameterSelector="2/1/64"><!-- var12 -->
+				<param msb="9" lsb="0" parameterID="density"/>
+				<param msb="9" lsb="1" parameterID="density"/>
+				<param msb="10" lsb="0" parameterID="density"/>
+				<param msb="11" lsb="0" parameterID="density"/>
+				<param msb="69" lsb="0" parameterID="eq_gain"/>
+				<param msb="70" lsb="0" parameterID="eq_gain"/>
+				<param msb="71" lsb="0" parameterID="eq_gain"/>
+				<param msb="72" lsb="0" parameterID="mono_stereo_diffusion"/>
+			</opcode>
 			<opcode xsi:type="mutable" address="//114" parameterSelector="2/1/64"><!-- var13 -->
-				<param msb="5" lsb="0" parameterID="eq_lo_freq"/>
+				<param msb="5" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="6" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="7" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="8" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="9" lsb="0" parameterID="high_damp"/>
+				<param msb="9" lsb="1" parameterID="high_damp"/>
+				<param msb="10" lsb="0" parameterID="high_damp"/>
+				<param msb="11" lsb="0" parameterID="high_damp"/>
+				<param msb="21" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="21" lsb="8" parameterID="eq_frequency1"/>
+				<param msb="22" lsb="0" parameterID="eq_frequency1"/>
+				<param msb="69" lsb="0" parameterID="eq_width"/>
+				<param msb="70" lsb="0" parameterID="eq_width"/>
+				<param msb="71" lsb="0" parameterID="eq_width"/>
+				<param msb="72" lsb="8" parameterID="lfo_phase_difference"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//115" parameterSelector="2/1/64"><!-- var14 -->
 				<param msb="5" lsb="0" parameterID="eq_gain"/>
+				<param msb="6" lsb="0" parameterID="eq_gain"/>
+				<param msb="7" lsb="0" parameterID="eq_gain"/>
+				<param msb="8" lsb="0" parameterID="eq_gain"/>
+				<param msb="21" lsb="0" parameterID="eq_gain"/>
+				<param msb="21" lsb="8" parameterID="eq_gain"/>
+				<param msb="22" lsb="0" parameterID="eq_gain"/>
+				<param msb="69" lsb="1" parameterID="drive"/>
+				<param msb="69" lsb="2" parameterID="drive"/>
+				<param msb="69" lsb="3" parameterID="drive"/>
+				<param msb="70" lsb="0" parameterID="lfo_phase_difference"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//116" parameterSelector="2/1/64"><!-- var15 -->
-				<param msb="5" lsb="0" parameterID="eq_hi_freq"/>
+				<param msb="5" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="6" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="7" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="8" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="21" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="21" lsb="8" parameterID="eq_frequency5"/>
+				<param msb="22" lsb="0" parameterID="eq_frequency5"/>
+				<param msb="69" lsb="1" parameterID="fx_lpf_cutoff"/>
+				<param msb="69" lsb="2" parameterID="fx_lpf_cutoff"/>
+				<param msb="69" lsb="3" parameterID="fx_lpf_cutoff"/>
+				<param msb="70" lsb="0" parameterID="input_mode"/>
 			</opcode>
 			<opcode xsi:type="mutable" address="//117" parameterSelector="2/1/64"><!-- var16 -->
 				<param msb="5" lsb="0" parameterID="eq_gain"/>
+				<param msb="6" lsb="0" parameterID="eq_gain"/>
+				<param msb="7" lsb="0" parameterID="eq_gain"/>
+				<param msb="8" lsb="0" parameterID="eq_gain"/>
+				<param msb="21" lsb="0" parameterID="eq_gain"/>
+				<param msb="21" lsb="8" parameterID="eq_gain"/>
+				<param msb="22" lsb="0" parameterID="eq_gain"/>
+				<param msb="69" lsb="1" parameterID="output_level"/>
+				<param msb="69" lsb="2" parameterID="output_level"/>
+				<param msb="69" lsb="3" parameterID="output_level"/>
 			</opcode>
 		</bulk>
 	</module>
@@ -538,7 +1138,7 @@
 			<opcode xsi:type="immutable" parameterID="lpf_resonance" address="//12"/>
 			<opcode xsi:type="immutable" parameterID="attack_time" address="//13"/>
 			<opcode xsi:type="immutable" parameterID="decay_time" address="//14"/>
-			<opcode xsi:type="immutable" parameterID="decay_time" address="//15"/>
+			<opcode xsi:type="immutable" parameterID="decay_tim" address="//15"/>
 		</bulk>
 	</module>
 </modules>

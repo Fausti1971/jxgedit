@@ -43,7 +43,7 @@ public class XGXMLTable implements XGTable
 	}
 	
 	@Override public XGTableEntry getByIndex(int i)
-	{	return this.list.get(i);
+	{	return this.list.get(Math.min(this.list.size() - 1, Math.max(0, i)));
 	}
 
 	@Override public XGTableEntry getByValue(int v)

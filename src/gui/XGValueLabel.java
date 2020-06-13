@@ -5,11 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JTextField;
-import adress.InvalidXGAddressException;
-import device.XGDevice;
-import msg.XGMessageParameterChange;
 import value.XGValue;
 
 public class XGValueLabel extends JTextField implements GuiConstants, ActionListener, MouseListener
@@ -36,16 +32,8 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 
 	@Override public void actionPerformed(ActionEvent e)
 	{
-		XGDevice dev = this.value.getSource().getDevice();
 		boolean changed = this.value.setContent(this.value.getParameter().getTranslationTable().getIndex(this.getText().trim()));
-		if(changed)
-		{	try
-			{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
-			}
-			catch(InvalidXGAddressException | InvalidMidiDataException e1)
-			{	e1.printStackTrace();
-			}
-		}
+		if(changed) this.value.transmit();
 		this.setText(this.value.toString());
 		this.repaint();
 	}

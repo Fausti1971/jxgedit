@@ -14,14 +14,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
-import adress.InvalidXGAddressException;
 import application.JXG;
 import application.Rest;
-import device.XGDevice;
 import module.XGModule;
-import msg.XGMessageParameterChange;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
@@ -154,48 +150,24 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		}
 
 		@Override public void mouseClicked(MouseEvent e)
-		{	XGDevice dev = this.value.getSource().getDevice();
-			boolean changed = false;
+		{	boolean changed = false;
 			if(e.getButton() != MouseEvent.BUTTON1) return;
 			if(this.getX() + this.barWidth < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
 			else changed = this.value.setContent(this.value.getContent() - 1);
-			if(changed)
-			{	try
-				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
-				}
-				catch(InvalidXGAddressException | InvalidMidiDataException e1)
-				{	e1.printStackTrace();
-				}
-			}
+			if(changed) this.value.transmit();
 			e.consume();
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
 		{	boolean changed = this.value.setContent(this.value.getContent() + e.getWheelRotation());
-			if(changed)
-			{	XGDevice dev = this.value.getSource().getDevice();
-				try
-				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
-				}
-				catch(InvalidXGAddressException | InvalidMidiDataException e1)
-				{	e1.printStackTrace();
-				}
-			}
+			if(changed) this.value.transmit();
 			e.consume();
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - JXG.dragEvent.getX();
 			boolean changed = this.value.setContent(this.value.getContent() + distance);
-			if(changed)
-			{	XGDevice dev = this.value.getSource().getDevice();
-				try
-				{	new XGMessageParameterChange(dev, dev.getMidi(), this.value).transmit();
-				}
-				catch(InvalidXGAddressException | InvalidMidiDataException e1)
-				{	e1.printStackTrace();
-				}
-			}
+			if(changed) this.value.transmit();
 			JXG.dragEvent = e;
 			e.consume();
 		}

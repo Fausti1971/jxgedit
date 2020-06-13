@@ -2,12 +2,14 @@ package value;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
+import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGAddressableSetListener;
 import device.XGDevice;
 import module.XGModule;
+import msg.XGMessageParameterChange;
 import msg.XGMessenger;
 import msg.XGResponse;
 import parm.XGOpcode;
@@ -185,6 +187,16 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	XGParameter p = this.getParameter();
 		if(p == null) return true;
 		return this.setContent(p.getTranslationTable().getIndex(v));
+	}
+
+	public void transmit()
+	{	XGDevice dev = this.getSource().getDevice();
+		try
+		{	new XGMessageParameterChange(dev, dev.getMidi(), this).transmit();
+		}
+		catch(InvalidXGAddressException | InvalidMidiDataException e1)
+		{	e1.printStackTrace();
+		}
 	}
 
 	public String getInfo()

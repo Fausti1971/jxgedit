@@ -12,6 +12,7 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_SUB128DIV10 = "sub128div10",
 		TABLE_SUB1024DIV10 = "sub1024div10",
 		TABLE_PANORAMA = "panorama",
+		TABLE_DEGREES = "degrees",
 		DEF_TABLENAME = TABLE_NORMAL;
 
 //	public static final XGParameter DUMMY_PARAMETER = new XGParameter("n/a", 0);

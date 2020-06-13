@@ -8,13 +8,13 @@
 				<xs:element ref="module" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
-		<xs:key name="parameterID">
-			<xs:selector xpath=".//parameters/parameter"/>
+		<xs:key name="paramID">
+			<xs:selector xpath="parameters/parameter"/>
 			<xs:field xpath="@id"/>
 		</xs:key>
-		<xs:keyref name="IDREF" refer="parameterID">
-			<xs:selector xpath="*"/>
-			<xs:field xpath="@ref"/>
+		<xs:keyref name="parameterRef" refer="paramID">
+			<xs:selector xpath="module/bulk/opcode/*"/>
+			<xs:field xpath="@parameterID"/>
 		</xs:keyref>
 	</xs:element>
 
@@ -36,7 +36,7 @@
 			<xs:attribute name="translator" use="optional" type="xs:string" default="normal"/>
 			<xs:attribute name="tableFilter" use="optional" type="xs:string"/>
 			<xs:attribute name="unit" type="string3"/>
-			<xs:attribute name="id" use="required" type="xs:ID"/>
+			<xs:attribute name="id" use="required" type="xs:NCName"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -66,7 +66,7 @@
 			<xs:extension base="opcode">
 				<xs:attribute name="address" use="required" type="opcodeAddress"/>
 				<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
-				<xs:attribute name="parameterID" type="xs:IDREF"/>
+				<xs:attribute name="parameterID" type="xs:NCName"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -89,7 +89,7 @@
 			<xs:attribute name="msb" use="optional"/>
 			<xs:attribute name="lsb" use="optional"/>
 			<xs:attribute name="value" use="optional"/>
-			<xs:attribute name="parameterID"/>
+			<xs:attribute name="parameterID" type="xs:NCName"/>
 		</xs:complexType>
 	</xs:element>
 

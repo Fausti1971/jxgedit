@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- TODO: doppelte name-einträge per xsd verhindern -->
 <tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/tables.xsd">
+
+	<table name="pan_direction">
+		<item value="0" name="L--R"/>
+		<item value="1" name="L -R"/>
+		<item value="2" name="L- R"/>
+		<item value="3" name="Lturn"/>
+		<item value="4" name="Rturn"/>
+		<item value="5" name="L/R"/>
+	</table>
+
+	<table name="amp_type">
+		<item value="0" name="Off"/>
+		<item value="1" name="Stack"/>
+		<item value="2" name="Combo"/>
+		<item value="3" name="Tube"/>
+	</table>
+
+	<table name="mono_stereo">
+		<item value="0" name="Mono"/>
+		<item value="1" name="Stereo"/>
+	</table>
+
+	<table name="gate_type">
+		<item value="0" name="A"/>
+		<item value="1" name="B"/>
+	</table>
+
+	<table name="er_type">
+		<item value="0" name="S-H"/>
+		<item value="1" name="L-H"/>
+		<item value="2" name="Rdm"/>
+		<item value="3" name="Rvs"/>
+		<item value="4" name="Plt"/>
+		<item value="5" name="Spr"/>
+	</table>
+
+	<table name="input_select">
+		<item value="0" name="Left"/>
+		<item value="1" name="Right"/>
+		<item value="2" name="L + R"/>
+	</table>
+
 	<table name="var_connection">
 		<item value="0" name="Insert"/>
 		<item value="1" name="System"/>
@@ -220,8 +262,8 @@
 		<item msb="8" lsb="0" name="Cross Delay" tableFilter="variation,insertion" address="word" categories="Delay"/>
 		<item msb="9" lsb="0" name="Early Reflection 1" tableFilter="variation,insertion" categories="Delay"/>
 		<item msb="9" lsb="1" name="Early Reflection 2" tableFilter="variation,insertion" categories="Delay"/>
-		<item msb="10" lsb="0" name="Gate Reverb" tableFilter="variation,insertion" categories="Delay"/>
-		<item msb="11" lsb="0" name="Reverse Gate" tableFilter="variation,insertion" categories="Delay"/>
+		<item msb="10" lsb="0" name="Gate Reverb" tableFilter="variation,insertion" categories="Reverb"/>
+		<item msb="11" lsb="0" name="Reverse Gate" tableFilter="variation,insertion" categories="Reverb"/>
 		<item msb="16" lsb="0" name="White Room" tableFilter="reverb,variation,insertion" categories="Reverb"/>
 		<item msb="17" lsb="0" name="Tunnel" tableFilter="reverb,variation,insertion" categories="Reverb"/>
 		<item msb="18" lsb="0" name="Canyon" tableFilter="reverb,variation,insertion" categories="Reverb"/>
@@ -257,6 +299,7 @@
 		<item msb="69" lsb="3" name="Amp + Rotary Speaker" tableFilter="variation,insertion" categories="Distortion,Rotary Speaker"/>
 		<item msb="70" lsb="0" name="Tremolo" tableFilter="variation,insertion" categories="Chorus"/>
 		<item msb="71" lsb="0" name="Auto Pan" tableFilter="variation,insertion" categories="Panorama"/>
+<!-- 	<item msb="71" lsb="0" name="Auto Pan2" tableFilter="variation,insertion" categories="Panorama"/>	 -->
 		<item msb="72" lsb="0" name="Phaser 1" tableFilter="chorus,variation,insertion" categories="Chorus"/>
 		<item msb="72" lsb="8" name="Phaser 2" tableFilter="variation,insertion" categories="Chorus"/>
 		<item msb="73" lsb="0" name="Distortion" tableFilter="variation,insertion" categories="Distortion"/>

@@ -2,6 +2,7 @@ package parm;
 
 import java.util.Iterator;
 import java.util.function.Function;
+import application.Rest;
 import device.XGDevice;
 import xml.XMLNode;
 
@@ -45,7 +46,7 @@ public class XGVirtualTable implements XGTable
 				(MIN, MAX, TABLE_DIV10,
 					new Function<Integer,  String>()
 					{	@Override public String apply(Integer t)
-						{	return Float.toString(t / 10);
+						{	return Float.toString((float)t / 10);
 						};
 					},
 					new Function<String, Integer>()
@@ -118,6 +119,22 @@ public class XGVirtualTable implements XGTable
 							if(t < 64) return "L" + Math.abs(t - 64);
 							if(t > 64) return "R" + Math.abs(t - 64);
 							else return "C";
+						};
+					},
+					new Function<String, Integer>()
+					{	@Override public Integer apply(String t)
+						{	return Integer.parseInt(t);//TODO:
+						};
+					}
+				)
+			);
+
+		dev.getTables().add
+			(new XGVirtualTable
+				(4, 124, TABLE_DEGREES,
+					new Function<Integer, String>()
+					{	@Override public String apply(Integer t)
+						{	return Integer.toString(Rest.linearIO(t, 4, 124, -180, 180));
 						};
 					},
 					new Function<String, Integer>()

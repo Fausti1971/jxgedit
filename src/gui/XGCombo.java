@@ -6,11 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComboBox;
-import adress.InvalidXGAddressException;
 import module.XGModule;
-import msg.XGMessageParameterChange;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGTable;
@@ -87,14 +84,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 
 		@Override public void actionPerformed(ActionEvent ae)
 		{	boolean changed = this.value.setEntry((XGTableEntry)this.getSelectedItem());//TODO: wird erst transmitted, nachdem die listener notified wurden (falsch für masterValues...)
-			if(changed)
-			{	try
-				{	new XGMessageParameterChange(this.value.getSource(), this.value.getSource().getDevice().getMidi(), this.value).transmit();
-				}
-				catch(InvalidXGAddressException | InvalidMidiDataException e)
-				{	e.printStackTrace();
-				}
-			}
+			if(changed) this.value.transmit();
 		}
 	}
 }
