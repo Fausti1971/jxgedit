@@ -11,7 +11,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	public static void init(XGDevice dev)
 	{	File file;
 		try
-		{	file = dev.getResourceFile(XML_OPCODE);
+		{	file = dev.getResourceFile(XML_MODULE);
 		}
 		catch(FileNotFoundException e)
 		{	log.info(e.getMessage());

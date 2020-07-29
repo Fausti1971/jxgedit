@@ -46,8 +46,11 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 		int y = (int)own.getLocation().getY();
 		this.setLocation(x, y);
 		this.pack();
-		this.setResizable(true);
+		this.setResizable(false);
+		this.setAlwaysOnTop(mod);
 		this.setVisible(true);
+		this.toFront();
+//		System.out.println(this.getModalityType());
 	}
 
 	public XGWindowSource getSource()

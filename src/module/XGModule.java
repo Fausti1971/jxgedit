@@ -1,29 +1,81 @@
 package module;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.Set;
 import javax.swing.tree.TreeNode;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
+import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import adress.XGBulkDump;
+import device.XGDevice;
 import gui.XGTemplate;
 import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindowSource;
-import msg.XGMessenger;
+import xml.XMLNode;
 
-public interface XGModule extends XGAddressable, XGModuleConstants, XGMessenger, XGTreeNode, XGWindowSource
+public interface XGModule extends XGAddressable, XGModuleConstants, XGTreeNode, XGWindowSource
 {
+	public static void init(XGDevice dev) throws InvalidXGAddressException
+	{
+		File file;
+		try
+		{	file = dev.getResourceFile(XML_MODULE);
+		}
+		catch(FileNotFoundException e)
+		{	log.info(e.getMessage());
+			return;
+		}
+		XMLNode xml = XMLNode.parse(file);
+		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
+		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), null);
+			XGModule hi =
+			null;
+			String cat = n.getStringAttribute(ATTR_NAME);
+			if(adr.getHi().getMin() > 47)//	falls DrumModule
+			{	for(int h : adr.getHi())
+				{	String name = cat + " " + (h - 47);
+					hi = new XGSuperModule(dev, dev, name, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo()), n);
+					for(int m : adr.getMid()) hi.getChildModule().add(new XGSuperModule(dev, hi, name, new XGAddress(new XGAddressField(h), new XGAddressField(m), adr.getLo()), n));
+					dev.getModules().add(hi);
+				}
+			}
+			else
+			{	hi = new XGSuperModule(dev, dev, cat, adr, n);
+				for(int m : adr.getAddress().getMid()) hi.getChildModule().add(new XGSuperModule(dev, hi, cat, new XGAddress(adr.getHi(), new XGAddressField(m), adr.getLo()), n));
+				dev.getModules().add(hi);
+			}
+		}
+	}
 
 /********************************************************************************************************************/
 
 	void request();
-	String getName();
-	Set<XGModule> getChildModules();
+	XGDevice getDevice();
+	XGTreeNode getParentNode();
+	XGAddressableSet<XGModule> getChildModule();
 	XGAddressableSet<XGBulkDump> getBulks();
-	XGModule getParentModule();
 	XGTemplate getGuiTemplate();
+	String getCategory();
+
+	default boolean isInstance()
+	{	return this.getAddress().getMid().isFix();
+	}
+
+	public default int getID()
+	{	XGAddress adr = this.getAddress();
+		try
+		{	return adr.getMid().getValue();
+		}
+		catch(InvalidXGAddressException e)
+		{	e.printStackTrace();
+			return adr.getMid().getMin();
+		}
+	}
 
 	@Override default boolean isLeaf()
 	{	return this.getChildCount() < 2;
@@ -34,8 +86,7 @@ public interface XGModule extends XGAddressable, XGModuleConstants, XGMessenger,
 	}
 
 	@Override public default TreeNode getParent()
-	{	if(this.getParentModule() == null) return this.getDevice();
-		else return this.getParentModule();
+	{	return this.getParentNode();
 	}
 
 	@Override public default boolean getAllowsChildren()
@@ -43,7 +94,6 @@ public interface XGModule extends XGAddressable, XGModuleConstants, XGMessenger,
 	}
 
 	@Override public default Enumeration<? extends TreeNode> children()
-	{	if(this.getChildModules() == null) return Collections.emptyEnumeration();
-		else return Collections.enumeration(this.getChildModules());
+	{	return Collections.enumeration(this.getChildModule());
 	}
 }

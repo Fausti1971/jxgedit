@@ -81,7 +81,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
 		if(v == null) v = DEF_VALUE;
 		this.value = v;
-		this.setName(n.getStringAttribute(ATTR_NAME, mod.getName()));
+		this.setName(n.getStringAttribute(ATTR_NAME, mod.toString()));
 	}
 
 	@Override public Component add(Component comp)

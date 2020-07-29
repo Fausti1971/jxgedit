@@ -7,7 +7,6 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import adress.XGAddressField;
 import adress.XGAddressableSet;
 import adress.XGBulkDump;
 import device.TimeoutException;
@@ -15,10 +14,9 @@ import device.XGDevice;
 import gui.XGComponent;
 import gui.XGTemplate;
 import gui.XGTree;
+import gui.XGTreeNode;
 import gui.XGWindow;
 import msg.XGMessageDumpRequest;
-import msg.XGRequest;
-import msg.XGResponse;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
 
@@ -40,71 +38,51 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
  * Referenz auf ein mögliches Kindfenster
  */
 	private XGWindow window;
-	private final String name;
+	private final XGTreeNode parent;
+	private final XGAddressableSet<XGModule> childModules = new XGAddressableSet<>();
+	private final String category;
 	private final XGAddress address;
 	private final XGDevice device;
-	private final XGModule parentModule;
-	private final XGAddressableSet<XGModule> childModule = new XGAddressableSet<XGModule>();
-	private final XGAddressableSet<XGBulkDump> bulks = new XGAddressableSet<>();
+	private final XGAddressableSet<XGBulkDump> bulks;
 	private final XGTemplate guiTemplate;
 
-	public XGSuperModule(XGDevice dev, XMLNode n)//für root module
-	{	this.parentModule = null;
-		this.name = n.getStringAttribute(ATTR_NAME);
-		this.device = dev;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), null);
-		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
-		this.initChildren();
-		log.info("module initialized: " + this.name);
-	}
-
-	private XGSuperModule(XGModule par, XGAddress adr, String n)//für child module
-	{	this.parentModule = par;
+	public XGSuperModule(XGDevice dev, XGTreeNode par, String cat, XGAddress adr, XMLNode cfg)
+	{	this.parent = par;
+		this.category = cat;
 		this.address = adr;
-		if(n == null) this.name = par.getName();
-		else this.name = n;
-		this.device = par.getDevice();
-		this.guiTemplate = par.getGuiTemplate();
-		par.getChildModules().add(this);
-	}
-
-	private void initChildren()
-	{	XGModule hiMod = this;
-		for(int h : this.getAddress().getHi())
-		{	if((h & 0x20) != 0) hiMod = new XGSuperModule(this, new XGAddress(new XGAddressField(h), this.getAddress().getMid(), this.getAddress().getLo()), this.name + " " + (h - 47));
-			for(int m : hiMod.getAddress().getMid())
-				new XGSuperModule(hiMod, new XGAddress(hiMod.getAddress().getHi(), new XGAddressField(m), hiMod.getAddress().getLo()), this.name + " " + (m + 1));
-		}
+		this.device = dev;
+		if(this.isInstance()) this.bulks = XGBulkDump.init(this, cfg);
+		else this.bulks = null;
+		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
 	}
 
 /**
  * sendet für jeden XGBulkDump und jedes childModule je einen request
  */
 	@Override public void request()
-	{	if(this.childModule.isEmpty())
+	{	if(this.isInstance())
 		{	for(XGBulkDump b : this.getBulks())
 			{	try
-				{	new XGMessageDumpRequest(this, this.getDevice().getMidi(), b.getAddress().complement(this.address)).request();
+				{	new XGMessageDumpRequest(this.getDevice(), this.getDevice().getMidi(), b.getAddress()).request();
 				}
-				catch(InvalidXGAddressException|InvalidMidiDataException | TimeoutException e)
+				catch(InvalidXGAddressException | InvalidMidiDataException | TimeoutException e)
 				{	log.info(e.getMessage());
 				}
 			}
 		}
-		for(XGModule m : this.childModule) m.request();
-	}
-
-	@Override public XGModule getParentModule()
-	{	return this.parentModule;
-	}
-
-	@Override public XGAddressableSet<XGModule> getChildModules()
-	{	return this.childModule;
+		else for(XGModule m : this.childModules) m.request();
 	}
 
 	@Override public XGDevice getDevice()
-	{	if(this.parentModule == null) return this.device;
-		else return this.parentModule.getDevice();
+	{	return this.device;
+	}
+
+	@Override public XGTreeNode getParentNode()
+	{	return this.parent;
+	}
+
+	@Override public XGAddressableSet<XGModule> getChildModule()
+	{	return this.childModules;
 	}
 
 	@Override public XGTemplate getGuiTemplate()
@@ -134,6 +112,7 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 
 	@Override public void windowClosed(WindowEvent e)
 	{	this.setSelected(false);
+		this.setChildWindow(null);
 		this.repaintNode();
 	}
 
@@ -145,7 +124,8 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 	{	log.info(e.getActionCommand());
 		switch(e.getActionCommand())
 		{	case ACTION_EDIT:		if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.toString());
-									else this.window.toFront(); break;
+									else this.window.toFront();
+									break;
 			case ACTION_REQUEST:	this.request(); break;
 		}
 	}
@@ -162,32 +142,20 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 	{	return XGComponent.init(this);
 	}
 
-	@Override public String getMessengerName()
-	{	return this.getDevice() + " (" + this.name + ")";
-	}
-
-	@Override public String getName()
-	{	return this.name;
-	}
-
 	@Override public XGAddress getAddress()
 	{	return this.address;
 	}
 
+	@Override public String getCategory()
+	{	return this.category;
+	}
+
 	@Override public String toString()
-	{	return this.name;
-	}
-
-	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
-	{	this.device.submit(msg);
-	}
-
-	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException
-	{	return null;
+	{	if(this.isInstance()) return this.category + " " + this.getAddress().getMid().toString();
+		else return this.category + " (" + this.getChildCount() + ")";
 	}
 
 	@Override public XGAddressableSet<XGBulkDump> getBulks()
-	{	if(this.parentModule != null) return this.parentModule.getBulks();
-		return this.bulks;
+	{	return this.bulks;
 	}
 }

@@ -57,7 +57,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 //			}
 //		);
 		XGWindow.getRootWindow().setVisible(true);
-		XGDevice.init();
+		XGDevice.init(config);
 //		quit();
 	}
 
@@ -141,7 +141,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 				this.addDevice();
 				break;
 			case ACTION_REFRESHDEVICELIST:
-				XGDevice.init();
+				XGDevice.init(config);
 				break;
 			default:
 				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());

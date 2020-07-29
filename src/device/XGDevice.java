@@ -41,7 +41,6 @@ import msg.XGMessageDumpRequest;
 import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
-import parm.XGOpcode;
 import parm.XGParameter;
 import parm.XGTable;
 import tag.XGTagableSet;
@@ -70,17 +69,15 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 //	{	return DEF;
 //	}
 
-	public static void init()
-	{	for(XMLNode n : JXG.getJXG().getConfig().getChildNodes())
-		{	if(n.getTag().equals(TAG_DEVICE))
-			{	XGDevice d = null;
-				try
-				{	d = new XGDevice(n);
-					if(DEVICES.add(d)) d.reloadTree();
-				}
-				catch(InvalidXGAddressException e)
-				{	e.printStackTrace();
-				}
+	public static void init(XMLNode x)
+	{	for(XMLNode n : x.getChildNodes(TAG_DEVICE))
+		{	XGDevice d = null;
+			try
+			{	d = new XGDevice(n);
+				if(DEVICES.add(d)) d.reloadTree();
+			}
+			catch(InvalidXGAddressException e)
+			{	e.printStackTrace();
 			}
 		}
 		log.info(DEVICES.size() + " devices initialized");
@@ -124,10 +121,9 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private XMLNode config;
 	private final XGTagableSet<XGTable> tables = new XGTagableSet<>();
 	private final XGTagableSet<XGParameter> parameters = new XGTagableSet<>();
-	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();//wird von XGOpcode.init() mit initialisiert
-	private final XGAddressableSet<XGOpcode> opcodes = new XGAddressableSet<>();
 	private final XGAddressableSet<XGValue> values = new XGAddressableSet<>();
 	private final XGAddressableSet<XGTemplate> templates = new XGAddressableSet<>();
+	private final Set<XGModule> modules = new LinkedHashSet<>();
 
 	private int info1, info2;
 	private final Queue<XGSysexFile> files = new LinkedList<>();
@@ -152,8 +148,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		XGTemplate.init(this);
 		XGTable.init(this);
 		XGParameter.init(this);
-		XGOpcode.init(this);
-		XGValue.init(this);
+		XGModule.init(this);//initialisiert und instanziert auch XGBulkDump, XGOpcode und XGValue
 
 		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.getContent().resolve("default.syx").toString());
 		this.defaultSyx.load(this);
@@ -189,14 +184,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.parameters;
 	}
 
-	public XGAddressableSet<XGModule> getModules()
-	{	return this.modules;
-	}
-
-	public XGAddressableSet<XGOpcode> getOpcodes()
-	{	return this.opcodes;
-	}
-
 	public XGAddressableSet<XGValue> getValues()
 	{	return this.values;
 	}
@@ -207,6 +194,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	public XGTagableSet<XGTable> getTables()
 	{	return this.tables;
+	}
+
+	public Set<XGModule> getModules()
+	{	return this.modules;
 	}
 
 	public int getSysexID()
@@ -241,7 +232,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public void configure()
-	{	new XGWindow(this, XGWindow.getRootWindow(), true, this.toString()).toFront();
+	{	new XGWindow(this, XGWindow.getRootWindow(), true, this.toString());
 	}
 
 	@Override public int hashCode()
@@ -271,7 +262,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public Enumeration<? extends TreeNode> children()
-	{	return Collections.enumeration(this.getModules());
+	{	return Collections.enumeration(this.modules);
 	}
 
 	@Override public boolean isSelected()
@@ -299,7 +290,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			case ACTION_TRANSMIT:
 				break;
 			case ACTION_REQUEST:
-				for(XGModule m : this.getModules()) m.request();
+				for(XGModule m : this.modules) m.request();
 				break;
 			default:
 				break;

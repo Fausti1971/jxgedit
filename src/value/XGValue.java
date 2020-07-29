@@ -5,10 +5,10 @@ import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
+import adress.XGAddressField;
 import adress.XGAddressable;
-import adress.XGAddressableSetListener;
+import adress.XGBulkDump;
 import device.XGDevice;
-import module.XGModule;
 import msg.XGMessageParameterChange;
 import msg.XGMessenger;
 import msg.XGResponse;
@@ -23,25 +23,9 @@ import parm.XGTableEntry;
  * @author thomas
  *
  */
-public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGAddressableSetListener, ChangeableContent<Integer>
+public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, ChangeableContent<Integer>
 {
 	private static Logger log = Logger.getAnonymousLogger();
-
-	public static void init(XGDevice dev)
-	{	for(XGOpcode opc : dev.getOpcodes())
-		{	for(int h : opc.getAddress().getHi())
-			{	for(int m : opc.getAddress().getMid())
-				{	try
-					{	XGValue v = new XGValue(dev, opc, new XGAddress(h, m, opc.getAddress().getLo().getMin()));
-						dev.getValues().add(v);
-					}
-					catch(InvalidXGAddressException e)
-					{	log.info(e.getMessage());
-					}
-				}
-			}
-		}
-	}
 
 /***********************************************************************************************/
 
@@ -49,6 +33,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	private final XGMessenger source;
 	private final XGAddress address;
 	private final XGOpcode opcode;
+	private final XGBulkDump bulk;
 	private XGParameter parameter;
 	private final XGValue parameterSelector;
 	private final Set<XGValueChangeListener> valueListeners = new HashSet<>();
@@ -61,13 +46,15 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.index = v;
 		this.parameterSelector = null;
 		this.opcode = null;
+		this.bulk = null;
 	}
 
-	public XGValue(XGMessenger src, XGOpcode opc, XGAddress adr) throws InvalidXGAddressException
-	{	if(!adr.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + adr);
-		this.source = src;
-		this.address = adr;
+	public XGValue(XGMessenger src, XGOpcode opc, XGBulkDump blk) throws InvalidXGAddressException
+	{	this.source = src;
+		this.bulk = blk;
 		this.opcode = opc;
+		this.address = new XGAddress(blk.getAddress().getHi(), blk.getAddress().getMid(), new XGAddressField(opc.getAddress().getLo().getMin()));
+		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
 		if(this.opcode.getParameterSelectorAddress() != null)
 		{	XGAddress a = this.opcode.getParameterSelectorAddress().complement(this.address);
 			this.parameterSelector = src.getDevice().getValues().get(a);
@@ -106,6 +93,10 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.opcode;
 	}
 
+	public XGBulkDump getBulk()
+	{	return bulk;
+	}
+
 	public int getSize()
 	{	return this.opcode.getAddress().getLo().getSize();
 	}
@@ -125,10 +116,6 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	@Override public XGAddress getAddress()
 	{	return this.address;
-	}
-
-	public XGModule getModule()
-	{	return this.opcode.getModule();
 	}
 
 	public int decodeMessage(XGResponse msg) throws InvalidXGAddressException
@@ -201,7 +188,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	public String getInfo()
 	{	XGParameter p = this.getParameter();
-		if(p != null) return p.getLongName() + " = " + p.getTranslationTable().getByIndex(this.index).getName();
+		if(p != null) return p.getShortName() + ": " + this;
 		else return "no parameter info";
 	}
 
@@ -220,9 +207,5 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	@Override public void contentChanged(XGValue v)
 	{	if(v.equals(this.parameterSelector)) this.assignParameter();
 		else this.notifyListeners();
-	}
-
-	@Override public void setChanged(XGAddressable t)
-	{	this.notifyListeners();
 	}
 }

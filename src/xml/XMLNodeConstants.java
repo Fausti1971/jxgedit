@@ -8,7 +8,7 @@ public interface XMLNodeConstants
 
 	static final String
 		XML_CONFIG = "config.xml",
-		XML_OPCODE = "opcode.xml",
+		XML_MODULE = "module.xml",
 		XML_TABLES = "tables.xml",
 		XML_TEMPLATES = "templates.xml";
 

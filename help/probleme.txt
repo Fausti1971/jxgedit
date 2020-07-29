@@ -5,7 +5,8 @@ Problem:
 	Lösung:
 		nicht die min- und max-Parameter sind veränderlich, sondern die Contents beider Values dürfen sich lediglich nicht überschneiden.
 		Dies könnte man auch ausschließlich im Steuerelement sicherstellen, z.B. doubleSlider.
-		Das hätte auch den Charme, dass die zusätzlich veränderten Contents des abhängigen Values zwar geändert, aber nicht gesendet werden müssen, da so lediglich das native Deviceverhalten nachgebildet wird.
+		Das hätte auch den Charme, dass die zusätzlich veränderten Contents des abhängigen Values zwar geändert, aber nicht gesendet werden müssen,
+		da so lediglich das native Deviceverhalten nachgebildet wird.
 Problem:
 		nicht-kontinuierliche Wertebereiche können nur unzureichend durch kontinuierliche Steuerelemente, wie Knob oder Slider abgebildet werden.
 	Lösung:
@@ -16,10 +17,41 @@ Problem:
 		Wenn alle Wertebereiche mittels XGTable abgebildet würden, könnte man eine Werteänderung auch über den Wertebereich der XGTable machen (lowerEntry(), higherEntry());
 		Eine XGTable für den Wertebereich 0...16383 (14Bit) wäre etwa 511kB groß...
 		Idee: XGVirtualTable, eine Klasse, die die benötigten Methoden einer TreeMap<Integer, XGTableEntry> nachbildet;
-	gelöset mittels XGVirtualTable;
+	gelöst: mittels XGVirtualTable;
 Problem:
 		zu viel Text in opcode.xml (bspw. 18 gleiche param in fast allen rev_parm für lediglich 4 verschiedene msb)
 	Lösung:
 		vorstellbar wäre eine mask, die dem int-key (zur speicherung in der beinaltenden map der params am opcode) mitgegeben werden könnte.
-		Diese müsste beim abfragen (.get(key)) nur nach den relevanten werten maskieren. Bei einem nicht vorhandenen lsb-Eintrag müssten so nur msb und value matchen, um einen Treffer zu erzeugen.
+		Diese müsste beim abfragen (.get(key)) nur nach den relevanten werten maskieren. Bei einem nicht vorhandenen lsb-Eintrag müssten so nur msb und value matchen,
+		um einen Treffer zu erzeugen.
 	verworfen;
+Problem:
+		Die Vermischung von pseudostatischen Objekten (XGModule, XGBulk, XGOpcode, XGParameter) und Instanzobjekten (XGModule, XGValue) spart Speicher, verhindert aber auch klare Linie.
+		Sowie auch die Vermischung von hierarchischen (XGModule, XGBulk) und flachen (XGOpcode, XGValue) Strukturen.
+	Lösung:
+		hierarchische Initialisierung und flache Instanzierung von XGModule, XGBulk und XGValue (anhand XGOpcode und XGParameter),
+		bedeutet: Erzeugung der XGValueInstanzen während der XGopcodeinitialisierung;
+		Speicherung der Referenz der XGModuleinstanz im XGBulk;
+		Speicherung von Referenz der XGBulkinstanz im XGValue;
+		möglicherweise keine Speicherung der XGModule im XGDevice mehr erforderlich, lediglich ModuleNameCache;
+		grafische Aufbereitung im Baum dynamisch anhand XGDevice.getValues();
+		Tipp: XGOpcode includiert sowohl XGAddress von XGModuleinstanz als auch XGAddress von XGBulkInstanz, somit sollte es möglich sein,
+		auch im Nachgang anhand der XAddress des XGOpcode zur Initialisierung und Instanzierung der XGValuen die XGModuleInstanz bzw. XGBulkInstanz zu ermitteln
+	Lösung:
+		berechne Overhead bei Verzicht auf XGOpcode und Speicherung in XGValue
+		oder vertraue auf die Speicheroptimierung von Java...
+	gelöst: ungeachtet der Speicherverschwendung wird im Zuge der XGModule- und XGBulkDump-Initialisierung und -Instanzierung für jede XGValueInstanz eine XGOpcodeInstanz
+		erzeugt und im XGValue gesichert mit offenbar überschaubarem Qverhead. Vielleicht kann man mittels hashcode() und equals() noch etwas optimieren...
+Problem:
+		Aufgrund der Reduktion des XGSuperModule auf reine Module-Instanzen und dem vollständigen Verzicht auf MVC ergibt sich das Problem, dass XGModule nicht mehr geschachtelt werden können.
+	Lösung: Umsetzung MVC
+	Lösung: Wiedereinführung der hierarchischen Struktur von XGModule, was den Charme hat,
+		dass auch "Folder" vom Type XGModule sind und somit mit Bedeutung (vielleicht sogar mit eigenem XGTemplate) versehen werden können.
+		Ursprung des Einführung der rein instanzbasierten XGModule war die Anforderung, dem XGValue seine XGModuleinstanz bekannt zu machen um Actions,
+		wie z.b. "request_module" zu automatisieren. siehe oben (grafische Aufbereitung im Baum...)
+Problem:
+		kein Problem, eher ein Streben nach Klarheit...
+	Lösung: Einführung von globalen, konfigurierbaren XGVariablen (z.B. multipart, adpart, drumset, drum...). Könnte eine um einen Namen und eine Translation erweitertes XGAddressField sein.
+		<variable tag="mp" name="Multipart" min="0" max="31" table="multipart">
+		<variable tag="ds" name="Drumset" min="48" max="51" table="notes">
+		...

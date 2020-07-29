@@ -1138,7 +1138,7 @@
 			<opcode xsi:type="immutable" parameterID="lpf_resonance" address="//12"/>
 			<opcode xsi:type="immutable" parameterID="attack_time" address="//13"/>
 			<opcode xsi:type="immutable" parameterID="decay_time" address="//14"/>
-			<opcode xsi:type="immutable" parameterID="decay_tim" address="//15"/>
+			<opcode xsi:type="immutable" parameterID="decay_time" address="//15"/>
 		</bulk>
 	</module>
 </modules>

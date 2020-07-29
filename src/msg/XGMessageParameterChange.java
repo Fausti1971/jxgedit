@@ -62,7 +62,8 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	@Override public int getBulkSize()
 	{	XGAddress adr = this.getAddress();
-		return this.getSource().getDevice().getOpcodes().get(adr).getAddress().getLo().getSize();
+//		return this.getSource().getDevice().getOpcodes().get(adr).getAddress().getLo().getSize();
+		return this.data.length - OVERHEAD;
 	}
 
 	@Override public void setBulkSize(int size)

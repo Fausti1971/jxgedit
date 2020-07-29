@@ -1,62 +1,53 @@
 package parm;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
-import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGBulkDump;
 import application.XGLoggable;
 import device.XGDevice;
-import module.XGModule;
-import module.XGSuperModule;
 import xml.XMLNode;
 
 public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 {
-	public static void init(XGDevice dev) throws InvalidXGAddressException
-	{	
-		File file;
-		try
-		{	file = dev.getResourceFile(XML_OPCODE);
-		}
-		catch(FileNotFoundException e)
-		{	log.info(e.getMessage());
-			return;
-		}
-
-		XMLNode xml = XMLNode.parse(file);
-		for(XMLNode m : xml.getChildNodes(TAG_MODULE))
-		{	XGModule mod = new XGSuperModule(dev, m);
-			dev.getModules().add(mod);
-			for(XMLNode b : m.getChildNodes(TAG_BULK))
-			{	XGBulkDump blk = new XGBulkDump(mod, b);
-//				dev.getBulks().add(blk);
-				for(XMLNode o : b.getChildNodes(TAG_OPCODE))
-				{	XGOpcode opc = new XGOpcode(dev, mod, blk, o);
-					dev.getOpcodes().add(opc);
-				}
-			}
-		}
-		log.info(dev.getOpcodes().size() + " opcodes initialized");
-		return;
-	}
+//	public static void init(XGDevice dev) throws InvalidXGAddressException
+//	{	
+//		File file;
+//		try
+//		{	file = dev.getResourceFile(XML_OPCODE);
+//		}
+//		catch(FileNotFoundException e)
+//		{	log.info(e.getMessage());
+//			return;
+//		}
+//
+//		XMLNode xml = XMLNode.parse(file);
+//		for(XMLNode m : xml.getChildNodes(TAG_MODULE))
+//		{	XGModule mod = new XGSuperModule(dev, m);
+//			dev.getModules().add(mod);
+//			for(XMLNode b : m.getChildNodes(TAG_BULK))
+//			{	XGBulkDump blk = new XGBulkDump(mod, b);
+////				dev.getBulks().add(blk);
+//				for(XMLNode o : b.getChildNodes(TAG_OPCODE))
+//				{	XGOpcode opc = new XGOpcode(dev, mod, blk, o);
+//					dev.getOpcodes().add(opc);
+//				}
+//			}
+//		}
+//		log.info(dev.getOpcodes().size() + " opcodes initialized");
+//		return;
+//	}
 
 /*******************************************************************************************************************************/
 
 	private final XGDevice device;
-	private final XGModule module;
-	private final XGBulkDump bulk;
 	private final XGAddress address, parameterSelectorAddress;
 	private final ValueDataType dataType;
 	private final Map<Integer, XGParameter> parameters = new HashMap<>();
 
-	protected XGOpcode(XGDevice dev, XGModule mod, XGBulkDump bulk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
+	public XGOpcode(XGDevice dev, XGBulkDump bulk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
 	{	this.device = dev;
-		this.module = mod;
-		this.bulk = bulk;
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), bulk.getAddress());
 		this.dataType = ValueDataType.valueOf(n.getStringAttribute(ATTR_DATATYPE, DEF_DATATYPE.name()));
 
@@ -97,13 +88,13 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	{	return this.parameterSelectorAddress;
 	}
 
-	public XGBulkDump getBulk()
-	{	return this.bulk;
-	}
-
-	public XGModule getModule()
-	{	return this.module;
-	}
+//	public XGBulkDump getBulk()
+//	{	return this.bulk;
+//	}
+//
+//	public XGModule getModule()
+//	{	return this.module;
+//	}
 
 	public XGDevice getDevice()
 	{	return this.device;
