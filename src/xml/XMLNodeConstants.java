@@ -37,6 +37,9 @@ public interface XMLNodeConstants
 
 		TAG_MODULE = "module",
 		ATTR_ADDRESS = "address",
+		ATTR_INFO1 = "info1",
+		ATTR_INFO2 = "info2",
+		ATTR_INFO3 = "info3",
 		ATTR_ID = "id",
 		ATTR_NAME = "name",
 

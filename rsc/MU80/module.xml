@@ -1093,7 +1093,7 @@
 		</bulk>
 	</module>
 
-	<module name="Multipart" address="8-10/0-31/">
+	<module name="Multipart" address="8-10/0-31/" table="add1" info1="8//4" info2="8//7" info3="8//3">
 		<bulk address="8//0-40">
 			<opcode xsi:type="immutable" parameterID="mp_elementReserve" address="//0"/>
 			<opcode xsi:type="immutable" parameterID="mp_bank_msb" address="//1"/>

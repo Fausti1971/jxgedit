@@ -23,8 +23,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	{	synchronized(this.map)
 		{	if(obj == null) return false;
 			this.memberName = obj.getClass().getSimpleName();
-			XGAddress adr;
-			adr = obj.getAddress();
+			XGAddress adr = obj.getAddress();
 			this.map.put(adr, obj);
 			this.notifyListeners(adr);
 		}

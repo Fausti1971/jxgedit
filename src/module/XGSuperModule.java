@@ -2,6 +2,7 @@ package module;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
@@ -17,10 +18,12 @@ import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
 import msg.XGMessageDumpRequest;
+import value.XGValue;
+import value.XGValueChangeListener;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
 
-public class XGSuperModule implements XGModule, XMLNodeConstants
+public class XGSuperModule implements XGModule, XMLNodeConstants, XGValueChangeListener
 {	static
 	{	ACTIONS.add(ACTION_EDIT);
 		ACTIONS.add(ACTION_REQUEST);
@@ -45,15 +48,37 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 	private final XGDevice device;
 	private final XGAddressableSet<XGBulkDump> bulks;
 	private final XGTemplate guiTemplate;
+	private final Set<XGValue> info = new LinkedHashSet<>();
 
 	public XGSuperModule(XGDevice dev, XGTreeNode par, String cat, XGAddress adr, XMLNode cfg)
 	{	this.parent = par;
 		this.category = cat;
 		this.address = adr;
 		this.device = dev;
-		if(this.isInstance()) this.bulks = XGBulkDump.init(this, cfg);
+		if(this.isInstance())
+		{	this.bulks = XGBulkDump.init(this, cfg);
+			this.registerValueListener(cfg);
+		}
 		else this.bulks = null;
 		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
+	}
+
+	void registerValueListener(XMLNode n)
+	{	XGValue v = this.device.getValues().get(new XGAddress(n.getStringAttribute(ATTR_INFO1), this.address));
+		if(v != null)
+		{	this.info.add(v);
+			v.addValueListener(this);
+		}
+		v = this.device.getValues().get(new XGAddress(n.getStringAttribute(ATTR_INFO2), this.address));
+		if(v != null)
+		{	this.info.add(v);
+			v.addValueListener(this);
+		}
+		v = this.device.getValues().get(new XGAddress(n.getStringAttribute(ATTR_INFO3), this.address));
+		if(v != null)
+		{	this.info.add(v);
+			v.addValueListener(this);
+		}
 	}
 
 /**
@@ -123,7 +148,8 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 	@Override public void actionPerformed(ActionEvent e)
 	{	log.info(e.getActionCommand());
 		switch(e.getActionCommand())
-		{	case ACTION_EDIT:		if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.toString());
+		{	case ACTION_EDIT:		if(!this.isInstance()) break;
+									if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.toString());
 									else this.window.toFront();
 									break;
 			case ACTION_REQUEST:	this.request(); break;
@@ -151,11 +177,19 @@ public class XGSuperModule implements XGModule, XMLNodeConstants
 	}
 
 	@Override public String toString()
-	{	if(this.isInstance()) return this.category + " " + this.getAddress().getMid().toString();
+	{	if(this.isInstance())
+		{	String s = this.address.getMid().toString() + ": ";
+			for(XGValue v : this.info) s += v.getInfo() + " ";
+			return s;
+		}
 		else return this.category + " (" + this.getChildCount() + ")";
 	}
 
 	@Override public XGAddressableSet<XGBulkDump> getBulks()
 	{	return this.bulks;
+	}
+
+	@Override public void contentChanged(XGValue v)
+	{	this.repaintNode();
 	}
 }

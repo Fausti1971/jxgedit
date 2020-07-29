@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -58,9 +57,7 @@ public interface XGTreeNode extends TreeNode, XGContext
 
 	default void repaintNode()
 	{	XGTree t = this.getRootNode().getTreeComponent();
-		TreePath p = this.getTreePath();
-		Rectangle r = t.getPathBounds(p);
-		if(r != null) t.repaint(r);	//falls sichtbar
+		((DefaultTreeModel)t.getModel()).nodeChanged(this);
 	}
 
 	default void reloadTree()

@@ -35,7 +35,6 @@ public class XGBulkDump implements XGAddressable, XMLNodeConstants
 			XGValue val = new XGValue(mod.getDevice(), opc, this);
 			mod.getDevice().getValues().add(val);
 		}
-
 	}
 
 	public XGModule getModule()
