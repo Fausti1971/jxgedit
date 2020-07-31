@@ -33,8 +33,7 @@ public interface XGModule extends XGAddressable, XGModuleConstants, XGTreeNode, 
 		XMLNode xml = XMLNode.parse(file);
 		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
 		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), null);
-			XGModule hi =
-			null;
+			XGModule hi = null;
 			String cat = n.getStringAttribute(ATTR_NAME);
 			if(adr.getHi().getMin() > 47)//	falls DrumModule
 			{	for(int h : adr.getHi())
@@ -46,7 +45,8 @@ public interface XGModule extends XGAddressable, XGModuleConstants, XGTreeNode, 
 			}
 			else
 			{	hi = new XGSuperModule(dev, dev, cat, adr, n);
-				for(int m : adr.getAddress().getMid()) hi.getChildModule().add(new XGSuperModule(dev, hi, cat, new XGAddress(adr.getHi(), new XGAddressField(m), adr.getLo()), n));
+				if(adr.getMid().isRange())
+					for(int m : adr.getAddress().getMid()) hi.getChildModule().add(new XGSuperModule(dev, hi, cat, new XGAddress(adr.getHi(), new XGAddressField(m), adr.getLo()), n));
 				dev.getModules().add(hi);
 			}
 		}

@@ -161,7 +161,7 @@
 		</bulk>
 	</module>
 
-	<module name="FX1 Reverb" address="2/1/0-21">
+	<module name="Reverb" address="2/1/0-21" info1="2/1/0" info2="2/1/13" info3="2/1/12">
 		<bulk address="//0-13">
 			<opcode xsi:type="immutable" address="//0-1" parameterID="reverb_type"/>
 			<opcode xsi:type="mutable" address="//2" parameterSelector="2/1/0"><!-- rev01 -->
@@ -464,7 +464,7 @@
 		</bulk>
 	</module>
 
-	<module name="FX1 Chorus" address="2/1/32-53">
+	<module name="Chorus" address="2/1/32-53" info1="2/1/32" info2="2/1/45" info3="2/1/44">
 		<bulk address="//32-46">
 			<opcode xsi:type="immutable" parameterID="chorus_type" address="//32-33"/>
 			<opcode xsi:type="mutable" address="//34" parameterSelector="2/1/32"><!-- cho01 -->
@@ -737,9 +737,9 @@
 		</bulk>
 	</module>
 
-	<module name="FX1 Variation" address="2/1/64-117">
+	<module name="Variation" info1="2/1/64" info2="2/1/90" info3="2/1/86" address="2/1/64-117">
 		<bulk address="//64-96">
-			<opcode xsi:type="immutable" parameterID="variation_type" address="//64-65"/>
+			<opcode xsi:type="immutable" parameterID="variation_type" address="2/1/64-65"/>
 			<opcode xsi:type="mutable" address="//66-67" parameterSelector="2/1/64"><!-- var01 -->
 				<param msb="5" lsb="0" parameterID="left_channel_delay_b"/>
 				<param msb="6" lsb="0" parameterID="left_channel_delay_b"/>
@@ -1019,7 +1019,7 @@
 		</bulk>
 	</module>
 
-	<module name="FX1 EQ" address="2/64/0-20">
+	<module name="Equalizer" address="2/64/0-20">
 		<bulk address="//0-20">
 			<opcode xsi:type="immutable" address="//0" parameterID="eq_type"/>
 			<opcode xsi:type="immutable" address="//1" parameterID="eq_gain"/>
@@ -1045,7 +1045,7 @@
 		</bulk>
 	</module>
 
-	<module name="FX2 Insertion" address="3/0/">
+	<module name="Insertion" address="3/0/" info1="3//0">
 		<bulk address="//0-17">
 			<opcode xsi:type="immutable" parameterID="insertion_type" address="//0-1"/>
 			<opcode xsi:type="mutable" parameterID="insertion_1" address="//2"/>
@@ -1093,7 +1093,7 @@
 		</bulk>
 	</module>
 
-	<module name="Multipart" address="8-10/0-31/" table="add1" info1="8//4" info2="8//7" info3="8//3">
+	<module name="Multipart" address="8-10/0-31/" translator="add1" info1="8//4" info2="8//7" info3="8//3">
 		<bulk address="8//0-40">
 			<opcode xsi:type="immutable" parameterID="mp_elementReserve" address="//0"/>
 			<opcode xsi:type="immutable" parameterID="mp_bank_msb" address="//1"/>
@@ -1111,17 +1111,16 @@
 			<opcode xsi:type="immutable" parameterID="panorama" address="8//14"/>
 			<opcode xsi:type="immutable" parameterID="notelimit_lo" address="8//15"/>
 			<opcode xsi:type="immutable" parameterID="notelimit_hi" address="8//16"/>
-
 		</bulk>
 	</module>
 
-	<module name="A/D-Part" address="16-18/0-1/">
+	<module name="A/D-Part" translator="add1" address="16-18/0-1/">
 		<bulk address="16//0-30">
 			<opcode xsi:type="immutable" parameterID="ad_inputGain" address="//0"/>
 		</bulk>
 	</module>
 
-	<module name="Drumset" address="48-51/13-91/">
+	<module name="Drumset" translator="tones" address="48-51/13-91/">
 		<bulk address="//0-15">
 			<opcode xsi:type="immutable" parameterID="pitch_coarse" address="//0"/>
 			<opcode xsi:type="immutable" parameterID="pitch_fine" address="//1"/>

@@ -188,7 +188,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	public String getInfo()
 	{	XGParameter p = this.getParameter();
-		if(p != null) return p.getShortName() + ": " + this;
+		if(p != null) return p.getShortName() + "=" + this;
 		else return "no parameter info";
 	}
 

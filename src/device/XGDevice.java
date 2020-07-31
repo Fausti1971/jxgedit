@@ -37,7 +37,9 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import module.XGModule;
+import msg.XGMessage;
 import msg.XGMessageDumpRequest;
+import msg.XGMessageParameterChange;
 import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
@@ -59,6 +61,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		ACTIONS.add(ACTION_SAVEFILE);
 		ACTIONS.add(ACTION_REQUEST);
 		ACTIONS.add(ACTION_TRANSMIT);
+		ACTIONS.add(ACTION_RESET);
+		ACTIONS.add(ACTION_XGON);
 	}
 
 	public static Set<XGDevice> getDevices()
@@ -227,6 +231,24 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	}
 
+	private void resetXG()
+	{	try
+		{	new XGMessageParameterChange(this, this.midi, new byte[]{0,0,0,0,0,0,0x7E,0,(byte)XGMessage.EOX}, true).transmit();
+		}
+		catch(InvalidXGAddressException|InvalidMidiDataException e1)
+		{	e1.printStackTrace();
+		}
+	}
+
+	private void resetAll()
+	{	try
+		{	new XGMessageParameterChange(this, this.midi, new byte[]{0,0,0,0,0,0,0x7F,0,(byte)XGMessage.EOX}, true).transmit();
+		}
+		catch(InvalidXGAddressException|InvalidMidiDataException e1)
+		{	e1.printStackTrace();
+		}
+	}
+
 	public XGMidi getMidi()
 	{	return this.midi;
 	}
@@ -292,6 +314,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			case ACTION_REQUEST:
 				for(XGModule m : this.modules) m.request();
 				break;
+			case ACTION_RESET:
+				this.resetAll(); break;
+			case ACTION_XGON:
+				this.resetXG(); break;
 			default:
 				break;
 		}

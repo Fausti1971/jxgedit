@@ -18,6 +18,7 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
 	{	super(src, dest, array, init);
+		this.setMessageID(MSG);
 	}
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, XGValue v) throws InvalidXGAddressException, InvalidMidiDataException

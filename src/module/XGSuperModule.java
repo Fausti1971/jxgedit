@@ -18,6 +18,7 @@ import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
 import msg.XGMessageDumpRequest;
+import parm.XGTable;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
@@ -48,6 +49,7 @@ public class XGSuperModule implements XGModule, XMLNodeConstants, XGValueChangeL
 	private final XGDevice device;
 	private final XGAddressableSet<XGBulkDump> bulks;
 	private final XGTemplate guiTemplate;
+	private final XGTable idTranslator;
 	private final Set<XGValue> info = new LinkedHashSet<>();
 
 	public XGSuperModule(XGDevice dev, XGTreeNode par, String cat, XGAddress adr, XMLNode cfg)
@@ -59,25 +61,26 @@ public class XGSuperModule implements XGModule, XMLNodeConstants, XGValueChangeL
 		{	this.bulks = XGBulkDump.init(this, cfg);
 			this.registerValueListener(cfg);
 		}
-		else this.bulks = null;
+		else
+		{	this.bulks = null;
+		}
+		this.idTranslator = dev.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
 		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
 	}
 
 	void registerValueListener(XMLNode n)
-	{	XGValue v = this.device.getValues().get(new XGAddress(n.getStringAttribute(ATTR_INFO1), this.address));
-		if(v != null)
-		{	this.info.add(v);
-			v.addValueListener(this);
-		}
-		v = this.device.getValues().get(new XGAddress(n.getStringAttribute(ATTR_INFO2), this.address));
-		if(v != null)
-		{	this.info.add(v);
-			v.addValueListener(this);
-		}
-		v = this.device.getValues().get(new XGAddress(n.getStringAttribute(ATTR_INFO3), this.address));
-		if(v != null)
-		{	this.info.add(v);
-			v.addValueListener(this);
+	{	Set<String> set = new LinkedHashSet<>();
+		set.add(n.getStringAttribute(ATTR_INFO1));
+		set.add(n.getStringAttribute(ATTR_INFO2));
+		set.add(n.getStringAttribute(ATTR_INFO3));
+
+		for(String s : set)
+		{	XGAddress a = new XGAddress(s, this.address);
+			XGValue v = this.device.getValues().get(a);
+			if(v != null)
+			{	this.info.add(v);
+				v.addValueListener(this);
+			}
 		}
 	}
 
@@ -149,7 +152,7 @@ public class XGSuperModule implements XGModule, XMLNodeConstants, XGValueChangeL
 	{	log.info(e.getActionCommand());
 		switch(e.getActionCommand())
 		{	case ACTION_EDIT:		if(!this.isInstance()) break;
-									if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.toString());
+									if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.getTreePath().toString());
 									else this.window.toFront();
 									break;
 			case ACTION_REQUEST:	this.request(); break;
@@ -178,8 +181,10 @@ public class XGSuperModule implements XGModule, XMLNodeConstants, XGValueChangeL
 
 	@Override public String toString()
 	{	if(this.isInstance())
-		{	String s = this.address.getMid().toString() + ": ";
-			for(XGValue v : this.info) s += v.getInfo() + " ";
+		{	String s;
+			if(this.idTranslator == null) s = this.category + ":\t";
+			else s = this.idTranslator.getByIndex(this.getID()) + ":\t";
+			for(XGValue v : this.info) s += "\t" + v.getInfo();
 			return s;
 		}
 		else return this.category + " (" + this.getChildCount() + ")";
@@ -191,5 +196,6 @@ public class XGSuperModule implements XGModule, XMLNodeConstants, XGValueChangeL
 
 	@Override public void contentChanged(XGValue v)
 	{	this.repaintNode();
+		if(this.window != null) this.window.setTitle(this.getTreePath().toString());
 	}
 }

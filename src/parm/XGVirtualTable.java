@@ -145,6 +145,22 @@ public class XGVirtualTable implements XGTable
 				)
 			);
 
+		dev.getTables().add
+			(new XGVirtualTable
+				(0, 0, TABLE_NONE,
+					new Function<Integer, String>()
+					{	@Override public String apply(Integer t)
+						{	return "";
+						};
+					},
+					new Function<String, Integer>()
+					{	@Override public Integer apply(String t)
+						{	return 0;
+						};
+					}
+				)
+			);
+
 //TODO: weiter so...
 
 	}
@@ -153,7 +169,7 @@ public class XGVirtualTable implements XGTable
 
 	private final String name;
 	private final Function<Integer, String> translate;
-	private Function<String, Integer> retranslate;
+	private final Function<String, Integer> retranslate;
 	private final int minValue, maxValue;
 	private int iteratorCount;
 

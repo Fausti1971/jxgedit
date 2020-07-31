@@ -81,6 +81,7 @@ public interface XMLNodeConstants
 		TAG_RADIO = "radio",
 		TAG_ENVELOPE = "envelope",
 		TAG_ENVPOINT = "env_point",
+		TAG_BUTTON = "button",
 		TAG_AUTO = "auto",
 		ATTR_ORIGIN = "origin",
 

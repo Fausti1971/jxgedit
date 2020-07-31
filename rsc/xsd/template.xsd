@@ -19,6 +19,7 @@
 				<xs:element ref="radio" maxOccurs="unbounded"/>
 				<xs:element ref="envelope" maxOccurs="unbounded"/>
 				<xs:element ref="auto" maxOccurs="unbounded"/>
+				<xs:element ref="button" maxOccurs="unbounded"/>
 			</xs:choice>
 			<xs:attributeGroup ref="layoutGroup"/>
 			<xs:attribute name="address" use="required" type="address"/>
@@ -68,6 +69,13 @@
 		<xs:complexType>
 			<xs:attribute name="value_x" use="required" type="address"/>
 			<xs:attribute name="value_y" use="required" type="address"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="button">
+		<xs:complexType>
+			<xs:attributeGroup ref="layoutGroup"/>
+			<xs:attribute name="value" use="required" type="address"/>
 		</xs:complexType>
 	</xs:element>
 
