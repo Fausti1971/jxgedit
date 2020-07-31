@@ -308,6 +308,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			case ACTION_LOADFILE:
 				break;
 			case ACTION_SAVEFILE:
+//				this.save();
 				break;
 			case ACTION_TRANSMIT:
 				break;
