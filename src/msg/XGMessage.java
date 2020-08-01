@@ -100,6 +100,9 @@ public interface XGMessage extends XGMessageConstants, XGAddressable
 	public XGMessenger getDestination();
 	public void setDestination(XGMessenger dest);
 	public XGMessenger getSource();
+	public void setEOX();
+	public void setMessageID();
+	public void setSysexID();
 	public long getTimeStamp();
 	public void setTimeStamp(long time);
 	public int getHi();

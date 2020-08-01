@@ -83,7 +83,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 		}
 
 		@Override public void actionPerformed(ActionEvent ae)
-		{	boolean changed = this.value.setEntry((XGTableEntry)this.getSelectedItem());//TODO: wird erst transmitted, nachdem die listener notified wurden (falsch für masterValues...)
+		{	boolean changed = this.value.setEntry((XGTableEntry)this.getSelectedItem());
 			if(changed) this.value.transmit();
 		}
 	}

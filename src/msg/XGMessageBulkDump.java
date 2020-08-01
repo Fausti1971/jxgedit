@@ -24,7 +24,7 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getMin());
 		this.setChecksum();
-		this.setEOX(10);
+//		this.setEOX(10);
 	}
 
 	public XGMessageBulkDump(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException	//für MIDI und FILE
@@ -90,18 +90,8 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	@Override public int getBaseOffset()
 	{	return DATA_OFFS;
 	}
-/*
-	@Override public XGAddressableSet<XGValue> getValues() throws InvalidXGAddressException
-	{	XGAddressableSet<XGValue> set = new XGAddressableSet<XGValue>();
-		int end = getBulkSize() + DATA_OFFS, offset = getLo();
-		for(int i = DATA_OFFS; i < end;)
-		{	XGValue v = XGValue.factory(this.getSource(), new XGAddress(getHi(), getMid(), offset));
-			set.add(v);
-			decodeXGValue(i, v);
-			offset += v.getOpcode().getByteCount();
-			i += v.getOpcode().getByteCount();
-		}
-		return set;
+
+	@Override public void setMessageID()
+	{	this.setMessageID(MSG);
 	}
-*/
 }

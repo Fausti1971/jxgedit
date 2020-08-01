@@ -1,19 +1,25 @@
 package value;
 
 import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import adress.XGAddressableSet;
+import application.XGLoggable;
 import device.TimeoutException;
 import device.XGDevice;
 import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
 
-public class XGValueStore extends XGAddressableSet<XGValue> implements XGMessenger
-{
+public class XGValueStore extends XGAddressableSet<XGValue> implements XGMessenger, XGLoggable
+{	
+	private final XGDevice device;
+
+	public XGValueStore(XGDevice dev)
+	{	this.device = dev;
+	}
+
 	@Override public XGDevice getDevice()
-	{
-		// TODO Auto-generated method stub
-		return null;
+	{	return this.device;
 	}
 
 	@Override public String getMessengerName()
@@ -24,7 +30,26 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 
 	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
 	{
-		// TODO Auto-generated method stub
+		int end = msg.getBulkSize() + msg.getBaseOffset(),
+			offset = msg.getAddress().getLo().getValue(),
+			hi = msg.getAddress().getHi().getValue(),
+			mid = msg.getAddress().getMid().getValue(),
+			size = 1;
+
+		for(int i = msg.getBaseOffset(); i < end;)
+		{	XGAddress adr = new XGAddress(hi, mid, offset);
+			XGValue v = this.get(adr);
+			if(v != null)
+			{	v.setValue(v.decodeMessage(msg));
+				size = v.getOpcode().getAddress().getLo().getSize();
+			}
+			else
+			{	log.info("value not found: " + adr);
+				size = 1;
+			}
+			offset += size;
+			i += size;
+		}
 	}
 
 	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException

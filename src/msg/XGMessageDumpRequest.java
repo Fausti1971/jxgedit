@@ -23,7 +23,7 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getMin());
-		this.setEOX(7);
+		this.setEOX();
 		this.response = new XGMessageBulkDump(dest, src, adr);
 	}
 
@@ -74,5 +74,9 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	@Override public String toString()
 	{	return this.getAddress().toString();
+	}
+
+	@Override public void setMessageID()
+	{	this.setMessageID(MSG);
 	}
 }

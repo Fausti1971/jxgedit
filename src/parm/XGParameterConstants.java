@@ -16,7 +16,15 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_NONE = "none",
 		DEF_TABLENAME = TABLE_NORMAL;
 
-//	public static final XGParameter DUMMY_PARAMETER = new XGParameter("n/a", 0);
+	static final String
+		XACTION_BEFORE_EDIT = "before_edit",
+		XACTION_AFTER_EDIT = "after_edit",
+		XACTION_BEFORE_SEND = "before_send",
+		XACTION_AFTER_SEND = "after_send";
+
+	static final String XACTION[]={XACTION_BEFORE_EDIT, XACTION_AFTER_EDIT, XACTION_BEFORE_SEND, XACTION_AFTER_SEND};
+
+
 	static final String DEF_PARAMETERNAME = "unknown parameter: ";
 	static final int  DEF_MIN = 0, DEF_MAX = 127;
 	static final int DEF_SELECTORVALUE = -1;

@@ -148,11 +148,15 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
  * @return	true, wenn sich der Inhalt änderte
  */
 	@Override public boolean setContent(Integer i)
-	{	int old = this.index;
+	{	this.actions(XACTION_BEFORE_EDIT);
+		int old = this.index;
 		XGParameter p = this.getParameter();
 		if(p != null) this.index = p.validate(i);
 		boolean changed = this.index != old;
-		if(changed) this.notifyListeners();
+		if(changed)
+		{	this.notifyListeners();
+			this.actions(XACTION_AFTER_EDIT);
+		}
 		return changed;
 	}
 
@@ -177,19 +181,31 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	public void transmit()
-	{	XGDevice dev = this.getSource().getDevice();
+	{	this.actions(XACTION_BEFORE_SEND);
+		XGDevice dev = this.getSource().getDevice();
 		try
-		{	new XGMessageParameterChange(dev, dev.getMidi(), this).transmit();
+		{	new XGMessageParameterChange(this.source, dev.getMidi(), this).transmit();
 		}
 		catch(InvalidXGAddressException | InvalidMidiDataException e1)
 		{	e1.printStackTrace();
 		}
+		this.actions(XACTION_AFTER_SEND);
 	}
 
 	public String getInfo()
 	{	XGParameter p = this.getParameter();
 		if(p != null) return p.getShortName() + "=" + this;
 		else return "no parameter info";
+	}
+
+	private void actions(String type)
+	{	Set<String> set = this.opcode.getActions().get(type);
+		if(set != null)
+			for(String s : set)
+			{	switch(s)
+				{	case("module_request"): this.getBulk().getModule().requestAll();
+				}
+			}
 	}
 
 	@Override public String toString()

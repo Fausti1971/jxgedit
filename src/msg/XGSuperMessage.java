@@ -45,10 +45,20 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
  */
 	@Override public void init()
 	{	this.setSOX();
-		this.setSysexID(this.source.getDevice().getSysexID());
+		this.setSysexID();
+		this.setMessageID();
 		this.setVendorID();
 		this.setModelID();
+		this.setEOX();
 		this.setTimeStamp(System.currentTimeMillis());
+	}
+
+	@Override public void setEOX()
+	{	this.setEOX(this.length - 1);
+	}
+
+	@Override public void setSysexID()
+	{	this.setSysexID(this.source.getDevice().getSysexID());
 	}
 
 	@Override public byte[] getByteArray()

@@ -18,7 +18,6 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
 	{	super(src, dest, array, init);
-		this.setMessageID(MSG);
 	}
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, XGValue v) throws InvalidXGAddressException, InvalidMidiDataException
@@ -29,7 +28,7 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getValue());
 		v.encodeMessage(this, v.getValue());
-		this.setEOX(DATA_OFFS + v.getSize());
+		this.setEOX();
 	}
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
@@ -62,7 +61,7 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	}
 
 	@Override public int getBulkSize()
-	{	XGAddress adr = this.getAddress();
+	{	//XGAddress adr = this.getAddress();
 //		return this.getSource().getDevice().getOpcodes().get(adr).getAddress().getLo().getSize();
 		return this.data.length - OVERHEAD;
 	}
@@ -82,5 +81,9 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	@Override public int setChecksum()
 	{	//überflüssig für ParameterChange
 		return 0;
+	}
+
+	@Override public void setMessageID()
+	{	this.setMessageID(MSG);
 	}
 }

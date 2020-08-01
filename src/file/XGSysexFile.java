@@ -96,10 +96,6 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 		else return Paths.get(s);
 	}
 
-	public int getSysexID()
-	{	return this.getDevice().getSysexID();
-	}
-
 	@Override public XGDevice getDevice()
 	{	return this.device;
 	}
@@ -113,9 +109,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 	}
 
 	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException
-	{
-		// TODO Auto-generated method stub
-		return null;
+	{	return null;
 	}
 }
 

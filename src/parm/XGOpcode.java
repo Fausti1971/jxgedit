@@ -2,42 +2,17 @@ package parm;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGBulkDump;
+import application.Rest;
 import application.XGLoggable;
 import device.XGDevice;
 import xml.XMLNode;
 
 public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 {
-//	public static void init(XGDevice dev) throws InvalidXGAddressException
-//	{	
-//		File file;
-//		try
-//		{	file = dev.getResourceFile(XML_OPCODE);
-//		}
-//		catch(FileNotFoundException e)
-//		{	log.info(e.getMessage());
-//			return;
-//		}
-//
-//		XMLNode xml = XMLNode.parse(file);
-//		for(XMLNode m : xml.getChildNodes(TAG_MODULE))
-//		{	XGModule mod = new XGSuperModule(dev, m);
-//			dev.getModules().add(mod);
-//			for(XMLNode b : m.getChildNodes(TAG_BULK))
-//			{	XGBulkDump blk = new XGBulkDump(mod, b);
-////				dev.getBulks().add(blk);
-//				for(XMLNode o : b.getChildNodes(TAG_OPCODE))
-//				{	XGOpcode opc = new XGOpcode(dev, mod, blk, o);
-//					dev.getOpcodes().add(opc);
-//				}
-//			}
-//		}
-//		log.info(dev.getOpcodes().size() + " opcodes initialized");
-//		return;
-//	}
 
 /*******************************************************************************************************************************/
 
@@ -45,6 +20,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	private final XGAddress address, parameterSelectorAddress;
 	private final ValueDataType dataType;
 	private final Map<Integer, XGParameter> parameters = new HashMap<>();
+	private final Map<String, Set<String>> actions = new HashMap<>();
 
 	public XGOpcode(XGDevice dev, XGBulkDump bulk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
 	{	this.device = dev;
@@ -65,6 +41,10 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 		else
 		{	this.parameterSelectorAddress = null;
 			this.parameters.put(DEF_SELECTORVALUE, dev.getParameters().get(n.getStringAttribute(ATTR_PARAMETER_ID)));
+		}
+		for(String s: XACTION)
+		{	if(n.hasAttribute(s))
+				this.actions.put(s, Rest.splitCSV(n.getStringAttribute(s)));
 		}
 	}
 
@@ -98,5 +78,9 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 	public XGDevice getDevice()
 	{	return this.device;
+	}
+
+	public Map<String, Set<String>> getActions()
+	{	return this.actions;
 	}
 }

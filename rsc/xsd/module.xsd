@@ -47,6 +47,10 @@
 			</xs:sequence>
 		<xs:attribute name="name" use="required" type="xs:string"/>
 		<xs:attribute name="address" use="required" type="moduleAddress"/>
+		<xs:attribute name="translator" use="optional" type="xs:string"/>
+		<xs:attribute name="info1" use="optional" type="opcodeAddress"/>
+		<xs:attribute name="info2" use="optional" type="opcodeAddress"/>
+		<xs:attribute name="info3" use="optional" type="opcodeAddress"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -67,6 +71,7 @@
 				<xs:attribute name="address" use="required" type="opcodeAddress"/>
 				<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
 				<xs:attribute name="parameterID" type="xs:NCName"/>
+				<xs:attributeGroup ref="actionGroup"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -80,6 +85,7 @@
 				<xs:attribute name="address" use="required" type="opcodeAddress"/>
 				<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
 				<xs:attribute name="parameterSelector" use="required" type="valueAddress"/>
+				<xs:attributeGroup ref="actionGroup"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -139,4 +145,11 @@
 			<xs:maxLength value="5"/>
 		</xs:restriction>
 	</xs:simpleType>
+
+	<xs:attributeGroup name="actionGroup">
+		<xs:attribute name="before_edit" use="optional" type="xs:string"/>
+		<xs:attribute name="after_edit" use="optional" type="xs:string"/>
+		<xs:attribute name="before_send" use="optional" type="xs:string"/>
+		<xs:attribute name="after_send" use="optional" type="xs:string"/>
+	</xs:attributeGroup>
 </xs:schema>

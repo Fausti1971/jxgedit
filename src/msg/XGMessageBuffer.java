@@ -128,7 +128,7 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 		});
 		tb.add(b);
 
-		b = new JButton("selected to " + this.source.getDevice().getMessengerName());
+		b = new JButton("selected to " + this.source.getMessengerName());
 		b.addActionListener(new AbstractAction()
 		{
 			/**
@@ -138,10 +138,10 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 
 			@Override public void actionPerformed(ActionEvent e)
 			{	for(XGMessage m : list.getSelectedValuesList())
-				{	m.setDestination(source.getDevice());
+				{	m.setDestination(source);
 					if(m instanceof XGResponse)
 					try
-					{	source.getDevice().submit((XGResponse)m);
+					{	source.submit((XGResponse)m);
 					}
 					catch(InvalidXGAddressException e1)
 					{	e1.printStackTrace();

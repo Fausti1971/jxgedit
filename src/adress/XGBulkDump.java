@@ -1,6 +1,9 @@
 package adress;
 import java.util.logging.Logger;
+import javax.sound.midi.InvalidMidiDataException;
 import module.XGModule;
+import msg.XGMessageDumpRequest;
+import msg.XGRequest;
 import parm.XGOpcode;
 import value.XGValue;
 import xml.XMLNode;
@@ -32,8 +35,18 @@ public class XGBulkDump implements XGAddressable, XMLNodeConstants
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress()).complement(mod.getAddress());
 		for(XMLNode o : n.getChildNodes(TAG_OPCODE))
 		{	XGOpcode opc = new XGOpcode(mod.getDevice(), this, o);
-			XGValue val = new XGValue(mod.getDevice(), opc, this);
+			XGValue val = new XGValue(mod.getDevice().getValues(), opc, this);
 			mod.getDevice().getValues().add(val);
+		}
+	}
+
+	public XGRequest getRequest()
+	{	try
+		{	return new XGMessageDumpRequest(this.module.getDevice().getValues(), this.module.getDevice().getMidi(), this.address);
+		}
+		catch(InvalidXGAddressException|InvalidMidiDataException e)
+		{	e.printStackTrace();
+			return null;
 		}
 	}
 

@@ -6,7 +6,7 @@
 	validierung funktioniert mit StAX nicht, also auch nicht das setzen eventueller default-Attribute
 -->
 
-<modules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/opcode.xsd">
+<modules xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../xsd/module.xsd">
 	<parameters>
 		<parameter id="volume" longName="Volume" shortName="Vol"/>
 		<parameter id="panorama" longName="Panorama" shortName="Pan" translator="panorama" origin="64"/>
@@ -163,7 +163,7 @@
 
 	<module name="Reverb" address="2/1/0-21" info1="2/1/0" info2="2/1/13" info3="2/1/12">
 		<bulk address="//0-13">
-			<opcode xsi:type="immutable" address="//0-1" parameterID="reverb_type"/>
+			<opcode xsi:type="immutable" address="//0-1" parameterID="reverb_type" after_send="module_request"/>
 			<opcode xsi:type="mutable" address="//2" parameterSelector="2/1/0"><!-- rev01 -->
 				<param msb="1" lsb="0" parameterID="reverb_time"/>
 				<param msb="1" lsb="1" parameterID="reverb_time"/>
@@ -466,7 +466,7 @@
 
 	<module name="Chorus" address="2/1/32-53" info1="2/1/32" info2="2/1/45" info3="2/1/44">
 		<bulk address="//32-46">
-			<opcode xsi:type="immutable" parameterID="chorus_type" address="//32-33"/>
+			<opcode xsi:type="immutable" parameterID="chorus_type" address="//32-33" after_send="module_request"/>
 			<opcode xsi:type="mutable" address="//34" parameterSelector="2/1/32"><!-- cho01 -->
 				<param msb="65" lsb="0" parameterID="lfo_frequency"/>
 				<param msb="65" lsb="1" parameterID="lfo_frequency"/>
@@ -739,7 +739,7 @@
 
 	<module name="Variation" info1="2/1/64" info2="2/1/90" info3="2/1/86" address="2/1/64-117">
 		<bulk address="//64-96">
-			<opcode xsi:type="immutable" parameterID="variation_type" address="2/1/64-65"/>
+			<opcode xsi:type="immutable" parameterID="variation_type" address="2/1/64-65" after_send="module_request"/>
 			<opcode xsi:type="mutable" address="//66-67" parameterSelector="2/1/64"><!-- var01 -->
 				<param msb="5" lsb="0" parameterID="left_channel_delay_b"/>
 				<param msb="6" lsb="0" parameterID="left_channel_delay_b"/>
@@ -1021,7 +1021,7 @@
 
 	<module name="Equalizer" address="2/64/0-20">
 		<bulk address="//0-20">
-			<opcode xsi:type="immutable" address="//0" parameterID="eq_type"/>
+			<opcode xsi:type="immutable" address="//0" parameterID="eq_type" after_send="module_request"/>
 			<opcode xsi:type="immutable" address="//1" parameterID="eq_gain"/>
 			<opcode xsi:type="immutable" address="//2" parameterID="eq_frequency1"/>
 			<opcode xsi:type="immutable" address="//3" parameterID="eq_q"/>
@@ -1047,7 +1047,7 @@
 
 	<module name="Insertion" address="3/0/" info1="3//0">
 		<bulk address="//0-17">
-			<opcode xsi:type="immutable" parameterID="insertion_type" address="//0-1"/>
+			<opcode xsi:type="immutable" parameterID="insertion_type" address="//0-1" after_send="module_request"/>
 			<opcode xsi:type="mutable" parameterID="insertion_1" address="//2"/>
 			<opcode xsi:type="mutable" parameterID="insertion_2" address="//3"/>
 			<opcode xsi:type="mutable" parameterID="insertion_3" address="//4"/>
@@ -1102,7 +1102,7 @@
 			<opcode xsi:type="immutable" parameterID="mp_midichannel" address="//4"/>
 			<opcode xsi:type="immutable" parameterID="mp_monopoly" address="//5"/>
 			<opcode xsi:type="immutable" parameterID="mp_key_on_assign" address="//6"/>
-			<opcode xsi:type="immutable" parameterID="mp_partmode" address="//7"/>
+			<opcode xsi:type="immutable" parameterID="mp_partmode" address="//7" after_send="module_request"/>
 			<opcode xsi:type="immutable" parameterID="transpose" address="//8"/>
 			<opcode xsi:type="immutable" parameterID="mp_tune" address="//9-10" byteType="LSN"/>
 			<opcode xsi:type="immutable" parameterID="volume" address="//11"/>

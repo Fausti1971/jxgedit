@@ -20,9 +20,9 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
+import adress.XGBulkDump;
 import application.Configurable;
 import application.JXG;
 import file.XGSysexFile;
@@ -37,20 +37,18 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import module.XGModule;
-import msg.XGMessage;
 import msg.XGMessageDumpRequest;
 import msg.XGMessageParameterChange;
-import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
 import parm.XGParameter;
 import parm.XGTable;
 import tag.XGTagableSet;
 import value.ChangeableContent;
-import value.XGValue;
+import value.XGValueStore;
 import xml.XMLNode;
 
-public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XGContext, XGWindowSource, XGMessenger
+public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XGContext, XGWindowSource
 {
 	private static Set<XGDevice> DEVICES = new LinkedHashSet<>();
 //	private static XGDevice DEF = new XGDevice();
@@ -125,13 +123,13 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private XMLNode config;
 	private final XGTagableSet<XGTable> tables = new XGTagableSet<>();
 	private final XGTagableSet<XGParameter> parameters = new XGTagableSet<>();
-	private final XGAddressableSet<XGValue> values = new XGAddressableSet<>();
 	private final XGAddressableSet<XGTemplate> templates = new XGAddressableSet<>();
 	private final Set<XGModule> modules = new LinkedHashSet<>();
 
 	private int info1, info2;
 	private final Queue<XGSysexFile> files = new LinkedList<>();
 	private final XGSysexFile defaultSyx;
+	private final XGValueStore values;
 	private XGMidi midi;
 	private int sysexID;
 	private XGWindow childWindow;
@@ -145,6 +143,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 		this.sysex.setContent(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
 		this.midi = new XGMidi(this);
+		this.values = new XGValueStore(this);
 		this.name.setContent(this.config.getStringAttribute(ATTR_NAME, DEF_DEVNAME));
 		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
 		this.defaultDumpFolder.setContent(Paths.get(this.config.getStringAttribute(ATTR_DEFAULTDUMPFOLDER, JXG.HOMEPATH.toString())));
@@ -155,7 +154,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		XGModule.init(this);//initialisiert und instanziert auch XGBulkDump, XGOpcode und XGValue
 
 		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.getContent().resolve("default.syx").toString());
-		this.defaultSyx.load(this);
+		this.defaultSyx.load(this.values);
 		log.info("device initialized: " + this);
 	}
 
@@ -188,7 +187,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.parameters;
 	}
 
-	public XGAddressableSet<XGValue> getValues()
+	public XGValueStore getValues()
 	{	return this.values;
 	}
 
@@ -216,7 +215,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m;
 		try
-		{	m = new XGMessageDumpRequest(this, this.midi, XGAddressConstants.XGMODELNAMEADRESS);
+		{	m = new XGMessageDumpRequest(null, this.midi, XGAddressConstants.XGMODELNAMEADRESS);
 			try
 			{	XGResponse r = this.midi.request(m);
 				String s = r.getString(r.getBaseOffset(), r.getBaseOffset() + r.getBulkSize());
@@ -233,7 +232,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	private void resetXG()
 	{	try
-		{	new XGMessageParameterChange(this, this.midi, new byte[]{0,0,0,0,0,0,0x7E,0,(byte)XGMessage.EOX}, true).transmit();
+		{	new XGMessageParameterChange(this.values, this.midi, new byte[]{0,0,0,0,0,0,0x7E,0,0}, true).transmit();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException e1)
 		{	e1.printStackTrace();
@@ -242,11 +241,27 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	private void resetAll()
 	{	try
-		{	new XGMessageParameterChange(this, this.midi, new byte[]{0,0,0,0,0,0,0x7F,0,(byte)XGMessage.EOX}, true).transmit();
+		{	new XGMessageParameterChange(this.values, this.midi, new byte[]{0,0,0,0,0,0,0x7F,0,0}, true).transmit();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException e1)
 		{	e1.printStackTrace();
 		}
+	}
+
+	private void requestAll()
+	{	XGAddressableSet<XGBulkDump> set = new XGAddressableSet<>();
+		for(XGModule m : this.modules) set.addAll(m.getBulks());
+		for(XGBulkDump b : set)
+		try
+		{	this.getMidi().request(b.getRequest());
+		}
+		catch(TimeoutException e)
+		{	e.printStackTrace();
+		}
+	}
+
+	private void save()
+	{	
 	}
 
 	public XGMidi getMidi()
@@ -268,7 +283,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public String toString()
-	{	return this.name.getContent() + " (" + this.sysexID + ")";
+	{	return this.name.getContent() + " (ID=" + this.sysexID + ")";
 	}
 
 	@Override public XMLNode getConfig()
@@ -301,26 +316,15 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	@Override public void actionPerformed(ActionEvent e)
 	{	switch(e.getActionCommand())
-		{	case ACTION_CONFIGURE:
-				this.configure(); break;
-			case ACTION_REMOVE:
-				break;
-			case ACTION_LOADFILE:
-				break;
-			case ACTION_SAVEFILE:
-//				this.save();
-				break;
-			case ACTION_TRANSMIT:
-				break;
-			case ACTION_REQUEST:
-				for(XGModule m : this.modules) m.request();
-				break;
-			case ACTION_RESET:
-				this.resetAll(); break;
-			case ACTION_XGON:
-				this.resetXG(); break;
-			default:
-				break;
+		{	case ACTION_CONFIGURE:	this.configure(); break;
+			case ACTION_REMOVE:		break;
+			case ACTION_LOADFILE:	break;
+			case ACTION_SAVEFILE:	this.save(); break;
+			case ACTION_TRANSMIT:	break;
+			case ACTION_REQUEST:	this.requestAll(); break;
+			case ACTION_RESET:		this.resetAll(); break;
+			case ACTION_XGON:		this.resetXG(); break;
+			default:				break;
 		}
 	}
 
@@ -392,42 +396,5 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	@Override public void nodeFocussed(boolean b)
 	{
-	}
-
-	@Override public XGDevice getDevice()
-	{	return this;
-	}
-
-	@Override public String getMessengerName()
-	{	return this.name.getContent();
-	}
-
-	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
-	{
-		int end = msg.getBulkSize() + msg.getBaseOffset(),
-			offset = msg.getAddress().getLo().getValue(),
-			hi = msg.getAddress().getHi().getValue(),
-			mid = msg.getAddress().getMid().getValue(),
-			size = 1;
-
-		for(int i = msg.getBaseOffset(); i < end;)
-		{	XGAddress adr = new XGAddress(hi, mid, offset);
-			XGValue v = this.values.get(adr);
-			if(v != null)
-			{	v.setValue(v.decodeMessage(msg));
-				size = v.getOpcode().getAddress().getLo().getSize();
-			}
-			else
-			{	log.info("value not found: " + adr);
-				size = 1;
-			}
-			offset += size;
-			i += size;
-		}
-	}
-
-	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException
-	{	//TODO: die im req angefragte Resource ausliefern
-		return null;
 	}
 }

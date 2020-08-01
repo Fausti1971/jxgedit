@@ -1,7 +1,5 @@
 package module;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
 import javax.swing.ActionMap;
 import xml.XMLNodeConstants;
 
@@ -19,6 +17,4 @@ public interface XGModuleConstants extends XMLNodeConstants
 		ACTION_SAVEFILE = "save file...",
 		ACTION_REQUEST = "request",
 		ACTION_TRANSMIT = "transmit";
-
-	static final Set<String> ACTIONS = new LinkedHashSet<>();
 }

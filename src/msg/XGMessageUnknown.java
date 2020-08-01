@@ -60,4 +60,8 @@ public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 	@Override public int setChecksum()
 	{	return 0;
 	}
+
+	@Override public void setMessageID()
+	{
+	}
 }
