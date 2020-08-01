@@ -33,7 +33,7 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
 	{	super(src, dest, msg);
-		log.info(this.getClass().toString());
+		LOG.info(this.getClass().toString());
 	}
 
 	@Override public void setHi(int value)

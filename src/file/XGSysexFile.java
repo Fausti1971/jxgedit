@@ -5,12 +5,12 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JFileChooser;
 import adress.InvalidXGAddressException;
 import application.ConfigurationConstants;
 import application.JXG;
+import application.XGLoggable;
 //const mit file für default, const mit path mit filechooser
 import device.XGDevice;
 import gui.XGWindow;
@@ -20,9 +20,8 @@ import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
 
-public class XGSysexFile extends File implements XGSysexFileConstants, ConfigurationConstants, XGMessenger
+public class XGSysexFile extends File implements XGSysexFileConstants, ConfigurationConstants, XGMessenger, XGLoggable
 {	private static final long serialVersionUID=870648549558099401L;
-	private static final Logger log = Logger.getAnonymousLogger();
 
 /******************************************************************************************************************************************/
 
@@ -39,7 +38,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
  * @param dest
  */
 	public void load(XGMessenger dest)
-	{	log.info("start parsing: " + this.getAbsolutePath());
+	{	LOG.info("start parsing: " + this.getAbsolutePath());
 		if(dest == null) dest = this.buffer;
 
 		try(FileInputStream fis = new FileInputStream(this))
@@ -60,17 +59,17 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 						messageCount++;
 					}
 					catch (InvalidMidiDataException | InvalidXGAddressException e)
-					{	log.info(e.getMessage());
+					{	LOG.info(e.getMessage());
 					}
 					start = false;
 					end = false;
 				}
 				i++;
 			}
-			log.info("parsing finished: " + messageCount + " messages parsed from " + this + " to " + dest.getMessengerName());
+			LOG.info("parsing finished: " + messageCount + " messages parsed from " + this + " to " + dest.getMessengerName());
 		}
 		catch (IOException e)
-		{	log.warning(e.getMessage());
+		{	LOG.warning(e.getMessage());
 		}
 	}
 

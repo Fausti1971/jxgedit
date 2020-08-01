@@ -40,7 +40,7 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 				l = l.complement(adr.getLo());
 			}
 			catch(InvalidXGAddressException e)
-			{	log.info(e.getMessage());
+			{	LOG.severe(e.getMessage());
 			}
 		}
 //		StringTokenizer t = new StringTokenizer(s, "/");//Beachte: leere Tokens sind keine Tokens!

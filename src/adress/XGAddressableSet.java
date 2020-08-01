@@ -7,11 +7,10 @@ import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Vector;
-import java.util.logging.Logger;
+import application.XGLoggable;
 
-public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterable<T>, XGAddressConstants, XGAddressableSetListener
+public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterable<T>, XGAddressConstants, XGAddressableSetListener, XGLoggable
 {
-	private static Logger log = Logger.getAnonymousLogger();
 
 /***********************************************************************************************************/
 
@@ -95,7 +94,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
  */
 	public synchronized T getFirstIncluded(XGAddress adr)
 	{	for(T a : this.map.values()) if(adr.contains(a.getAddress())) return a;
-		log.info("no " + this.memberName + " found included in address: " + adr);
+		LOG.info("no " + this.memberName + " found included in address: " + adr);
 		return null;
 	}
 
@@ -106,7 +105,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
  */
 	public synchronized T getFirstIncluding(XGAddress adr)
 	{	for(T a : this.map.values()) if(a.getAddress().contains(adr)) return a;
-		log.info("no " + this.memberName + " found containing address: " + adr);
+		LOG.info("no " + this.memberName + " found containing address: " + adr);
 		return null;
 	}
 
@@ -119,7 +118,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	{	XGAddressableSet<T> set = new XGAddressableSet<>();
 		for(T i : this.values()) if(adr.contains(i.getAddress())) set.add(i);
 		this.addListener(set);
-		log.info(set.size() + " " + this.memberName + "(s) found included in address: " + adr);
+		LOG.info(set.size() + " " + this.memberName + "(s) found included in address: " + adr);
 		return set;
 	}
 
@@ -132,7 +131,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	{	XGAddressableSet<T> set = new XGAddressableSet<>();
 		for(T i : this.values()) if(i.getAddress().contains(adr)) set.add(i);
 		this.addListener(set);
-		log.info(set.size() + " " + this.memberName + "(s) found containing address: " + adr);
+		LOG.info(set.size() + " " + this.memberName + "(s) found containing address: " + adr);
 		return set;
 	}
 

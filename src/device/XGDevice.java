@@ -82,7 +82,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			{	e.printStackTrace();
 			}
 		}
-		log.info(DEVICES.size() + " devices initialized");
+		LOG.info(DEVICES.size() + " devices initialized");
 	}
 
 /***************************************************************************************************************************/
@@ -155,7 +155,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.getContent().resolve("default.syx").toString());
 		this.defaultSyx.load(this.values);
-		log.info("device initialized: " + this);
+		LOG.info("device initialized: " + this);
 	}
 
 	public File getResourceFile(String fName) throws FileNotFoundException
@@ -249,15 +249,20 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	private void requestAll()
-	{	XGAddressableSet<XGBulkDump> set = new XGAddressableSet<>();
+	{	int missed = 0;
+		long time = System.currentTimeMillis();
+		XGAddressableSet<XGBulkDump> set = new XGAddressableSet<>();
 		for(XGModule m : this.modules) set.addAll(m.getBulks());
 		for(XGBulkDump b : set)
 		try
 		{	this.getMidi().request(b.getRequest());
 		}
 		catch(TimeoutException e)
-		{	e.printStackTrace();
+		{	missed++;
+			LOG.severe(e.getMessage());
 		}
+		if(missed == 0) LOG.info(set.size() + " dumps requested within " + (System.currentTimeMillis() - time) + " ms");
+		else LOG.severe(set.size() + " dumps requested within " + (System.currentTimeMillis() - time) + " ms (" + missed + " failed)");
 	}
 
 	private void save()
@@ -291,7 +296,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public TreeNode getParent()
-	{	return JXG.getJXG();
+	{	return JXG.getApp();
 	}
 
 	@Override public boolean getAllowsChildren()

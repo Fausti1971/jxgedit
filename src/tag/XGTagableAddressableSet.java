@@ -3,13 +3,13 @@ package tag;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Logger;
 import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
+import application.XGLoggable;
 
-public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implements Iterable<T>, Set<T>
-{	private static Logger log = Logger.getAnonymousLogger();
+public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implements Iterable<T>, Set<T>, XGLoggable
+{
 	private XGAddressableSet<T> adrSet = new XGAddressableSet<>();
 	private XGTagableSet<T> tagSet = new XGTagableSet<T>();
 
@@ -42,7 +42,7 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 	public T getOrDefault(XGAddress adr, T def)
 	{	T v = this.adrSet.getFirstIncluding(adr);
 		if(v == null)
-		{	log.info(def.getClass().getSimpleName() + " " + adr + " not found, using " + def);
+		{	LOG.info(def.getClass().getSimpleName() + " " + adr + " not found, using " + def);
 			return def;
 		}
 		return v;

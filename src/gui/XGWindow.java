@@ -11,15 +11,15 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 {	static
 	{	JDialog.setDefaultLookAndFeelDecorated(true);
 	}
-	private static XGRootWindow root;
+	private static XGRootWindow ROOT;
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
 
 	public static XGRootWindow getRootWindow()
-	{	if(root == null) root = new XGRootWindow();
-		return root;
+	{	if(ROOT == null) ROOT = new XGRootWindow();
+		return ROOT;
 	}
 
 /*************************************************************************************************************/
@@ -29,7 +29,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 
 	protected XGWindow()	//nur für Root-Window
 	{	this.source = null;
-		this.rootComponent = new XGTree(JXG.getJXG(), true);
+		this.rootComponent = new XGTree(JXG.getApp(), true);
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 	}
 

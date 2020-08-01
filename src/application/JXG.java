@@ -19,36 +19,36 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import xml.XMLNode;
 
-public class JXG implements Configurable, XGTreeNode, XGContext
-{	static
+public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
+{
+	static
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
 	}
 
 	public static MouseEvent dragEvent = null;
-	private final static Set<String> actions = new LinkedHashSet<>();
+	private final static Set<String> ACTIONS = new LinkedHashSet<>();
+
 	static final String
 		ACTION_CONFIGURE = "configure...",
 		ACTION_ADDNEWDEVICE = "add new device...",
 		ACTION_REFRESHDEVICELIST = "refresh devicelist";
 
-	public static final XMLNode config = initConfig(); 
-	private final static JXG jxg = new JXG();
-
-	private static XMLNode  initConfig()
-	{	XMLNode x = new XMLNode(APPNAME, null);
-		HOMEPATH.toFile().mkdirs();
-		File f = CONFIGFILEPATH.toFile();
-		if(f.exists()) x = XMLNode.parse(f);
-		return x;
+	static
+	{	JXG.ACTIONS.add(ACTION_CONFIGURE);
+		JXG.ACTIONS.add(ACTION_ADDNEWDEVICE);
+		JXG.ACTIONS.add(ACTION_REFRESHDEVICELIST);
 	}
 
-	public static JXG getJXG()
-	{	return jxg;
+	private static JXG APP;
+
+	public static JXG getApp()
+	{	if(APP == null) APP = new JXG();
+		return APP;
 	}
 
 	public static void main(String[] args)
-	{	
+	{	APP = new JXG();
 //		Runtime.getRuntime().addShutdownHook
 //		(	new Thread()
 //			{	@Override public void run()
@@ -57,14 +57,30 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 //			}
 //		);
 		XGWindow.getRootWindow().setVisible(true);
-		XGDevice.init(config);
+		XGDevice.init(APP.getConfig());
 //		quit();
 	}
 
-	public static void quit()
-	{	log.info("exiting application");
+/***************************************************************************************************************/
+
+	private XGTree tree;
+	private boolean isSelected = false;
+	private final XMLNode config;
+
+	public JXG()
+	{
+		XMLNode x = new XMLNode(APPNAME, null);
+		HOMEPATH.toFile().mkdirs();
+		File f = CONFIGFILEPATH.toFile();
+		if(f.exists()) x = XMLNode.parse(f);
+		this.config = x;
+		LOG.info("JXG config initialized");
+	}
+
+	public void quit()
+	{	LOG.info("exiting application");
 		try
-		{	jxg.getConfig().save(CONFIGFILEPATH.toFile());
+		{	APP.getConfig().save(CONFIGFILEPATH.toFile());
 		}
 		catch(IOException|XMLStreamException e)
 		{	e.printStackTrace();
@@ -72,25 +88,12 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 		System.exit(0);
 	}
 
-/***************************************************************************************************************/
-
-	private XGTree tree;
-	private boolean isSelected = false;
-
-	private JXG()
-	{	//System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
-		JXG.actions.add(ACTION_CONFIGURE);
-		JXG.actions.add(ACTION_ADDNEWDEVICE);
-		JXG.actions.add(ACTION_REFRESHDEVICELIST);
-		log.info("JXG config initialized");
-	}
-
 	public void addDevice()
 	{	XGDevice dev;
 		try
 		{	dev = new XGDevice(null);
 			if(XGDevice.getDevices().add(dev))
-			{	config.addChildNode(dev.getConfig());
+			{	this.config.addChildNode(dev.getConfig());
 				dev.reloadTree();
 			};
 		}
@@ -116,7 +119,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 	}
 
 	@Override public XMLNode getConfig()
-	{	return JXG.config;
+	{	return this.config;
 	}
 
 	@Override public boolean isSelected()
@@ -128,7 +131,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 	}
 
 	@Override public Set<String> getContexts()
-	{	return JXG.actions;
+	{	return JXG.ACTIONS;
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
@@ -141,7 +144,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext
 				this.addDevice();
 				break;
 			case ACTION_REFRESHDEVICELIST:
-				XGDevice.init(config);
+				XGDevice.init(this.config);
 				break;
 			default:
 				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());

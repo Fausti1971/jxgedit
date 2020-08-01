@@ -14,7 +14,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		{	file = dev.getResourceFile(XML_MODULE);
 		}
 		catch(FileNotFoundException e)
-		{	log.info(e.getMessage());
+		{	LOG.info(e.getMessage());
 			return;
 		}
 
@@ -22,7 +22,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		XMLNode t = xml.getChildNode(TAG_PARAMETERS);
 		for(XMLNode p : t.getChildNodes(TAG_PARAMETER)) dev.getParameters().add(new XGParameter(dev, p));
 
-		log.info(dev.getParameters().size() + " parameters initialized");
+		LOG.info(dev.getParameters().size() + " parameters initialized");
 		return;
 	}
 
@@ -41,7 +41,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
 		this.unit = n.getStringAttribute(ATTR_UNIT, this.translationTable.getUnit());
-		log.info("parameter initialized: " + this);
+		LOG.info("parameter initialized: " + this);
 		if(this.translationTable == null) throw new RuntimeException("no table: " + this.toString());
 	}
 
@@ -52,7 +52,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		this.translationTable = XGVirtualTable.DEF_TABLE;
 		this.origin = 0;
 		this.unit = "*";
-		log.info("parameter initialized: " + this);
+		LOG.info("parameter initialized: " + this);
 		if(this.translationTable == null) throw new RuntimeException("no table: " + this.toString());
 	}
 

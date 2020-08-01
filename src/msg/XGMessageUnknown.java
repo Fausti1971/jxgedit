@@ -7,10 +7,12 @@ public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 {
 	protected XGMessageUnknown(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
 	{	super(src, dest, msg);
+		LOG.warning("unknown message received: " + this.toHexString());
 	}
 
 	protected XGMessageUnknown(XGMessenger src, XGMessenger dest, byte[] msg, boolean init) throws InvalidMidiDataException
 	{	super(src, dest, msg, init);
+		LOG.warning("unknown message received: " + this.toHexString());
 	}
 
 	@Override public int getHi()
@@ -35,10 +37,6 @@ public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 
 	@Override public void setLo(int lo)
 	{
-	}
-
-	public void storeMessage()
-	{	log.info("unknown message received: " + getMessageID());
 	}
 
 	@Override public int getBulkSize()

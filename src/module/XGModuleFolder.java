@@ -35,8 +35,7 @@ public class XGModuleFolder extends XGModule
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{	log.info(e.getActionCommand());
-		switch(e.getActionCommand())
+	{	switch(e.getActionCommand())
 		{	case ACTION_REQUEST:	this.requestAll(); break;
 		}
 	}

@@ -1,12 +1,11 @@
 package msg;
 
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.XGAddressable;
 
 abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddressable
-{	protected static final Logger log = Logger.getAnonymousLogger();
+{
 
 /****************************************************************************************************************************************/
 

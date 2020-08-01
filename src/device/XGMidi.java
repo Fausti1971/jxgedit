@@ -11,9 +11,7 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.swing.BoxLayout;
 import javax.swing.JComponent;
-import javax.swing.JScrollPane;
 import adress.InvalidXGAddressException;
 import application.Configurable;
 import application.XGLoggable;
@@ -45,7 +43,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 				inputs.add(i);
 			}
 			catch (MidiUnavailableException e)
-			{	log.info(e.getMessage());
+			{	LOG.info(e.getMessage());
 			}
 		}
 		return inputs;
@@ -62,7 +60,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 				outputs.add(i);
 			}
 			catch (MidiUnavailableException e)
-			{	log.info(e.getMessage());
+			{	LOG.info(e.getMessage());
 			}
 		}
 		return outputs;
@@ -159,7 +157,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 				}
 			}
 		}
-		log.info(this.getOutputName());
+		LOG.info(this.getOutputName());
 		this.config.setStringAttribute(ATTR_MIDIOUTPUT, this.getOutputName());
 //		this.notifyConfigurationListeners();
 		return;
@@ -196,7 +194,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 				}
 			}
 		}
-		log.info(this.getInputName());
+		LOG.info(this.getInputName());
 		this.config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
 //		this.notifyConfigurationListeners();
 		return;
@@ -231,7 +229,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 				m.getDestination().submit((XGResponse)m);
 			}
 			catch(InvalidMidiDataException|InvalidXGAddressException e)
-			{	log.info(e.getMessage());
+			{	LOG.info(e.getMessage());
 			}
 		}
 	}
@@ -239,25 +237,25 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	@Override public void close()
 	{//	if(this.queue.isAlive())this.queue.interrupt();
 		if(this.midiInput != null && this.midiInput.isOpen()) this.midiInput.close();
-		log.info("MidiInput closed: " + this.getInputName());
+		LOG.info("MidiInput closed: " + this.getInputName());
 		if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
-		log.info("MidiOutput closed: " + this.getOutputName());
+		LOG.info("MidiOutput closed: " + this.getOutputName());
 	}
 
 	@Override public void midiSystemUpdated() throws CoreMidiException
 	{	this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT));
 		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT));
-		log.info("CoreMidiSystem updated, " + this.midiInput.getDeviceInfo() + "=" + this.midiInput.isOpen() + ", " + this.midiOutput.getDeviceInfo() + "=" + this.midiOutput.isOpen());
+		LOG.info("CoreMidiSystem updated, " + this.midiInput.getDeviceInfo() + "=" + this.midiInput.isOpen() + ", " + this.midiOutput.getDeviceInfo() + "=" + this.midiOutput.isOpen());
 		//	this.notifyConfigurationListeners();
 	}
 
 	private boolean transmit(XGMessage m)
 	{	if(this.transmitter == null)
-		{	log.info("no transmitter initialized!");
+		{	LOG.info("no transmitter initialized!");
 			return false;
 		}
 		if(m == null)
-		{	log.info("message was null");
+		{	LOG.info("message was null");
 			return false;
 		}
 		m.setTimeStamp();
@@ -279,7 +277,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 					throw new TimeoutException("timeout: no response within " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
 				}
 				catch(InterruptedException e)//wird bei validiertem empfang via send() interrupted, sofern ein request im Lauf ist...
-				{	log.info("response within " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
+				{	LOG.info("response within " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
 				}
 			}
 			this.request = null;
@@ -309,7 +307,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	public void setTimeout(int t)
 	{	this.timeoutValue = t;
 		this.config.setIntegerAttribute(ATTR_MIDITIMEOUT, t);
-		log.info("timeout set to " + t);
+		LOG.info("timeout set to " + t);
 	}
 
 	@Override public String getMessengerName()

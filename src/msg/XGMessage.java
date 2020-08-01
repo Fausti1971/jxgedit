@@ -6,8 +6,9 @@ import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
+import application.XGLoggable;
 
-public interface XGMessage extends XGMessageConstants, XGAddressable
+public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 {
 	public static XGMessage newMessage(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
 	{	XGMessage x = new XGMessageUnknown(src, dest, array, init);

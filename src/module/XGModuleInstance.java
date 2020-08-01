@@ -59,8 +59,7 @@ public class XGModuleInstance extends XGModule
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{	log.info(e.getActionCommand());
-		switch(e.getActionCommand())
+	{	switch(e.getActionCommand())
 		{	case ACTION_EDIT:		if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.getDevice() + "/" + this.category + " " + this.getTranslatedID());
 									else this.window.toFront();
 									break;
@@ -82,6 +81,5 @@ public class XGModuleInstance extends XGModule
 
 	@Override public void contentChanged(XGValue v)
 	{	this.repaintNode();
-//		if(this.window != null) this.window.setTitle(this.getTreePath().toString());
 	}
 }

@@ -1,6 +1,6 @@
 package gui;
 
-import static application.XGLoggable.log;
+import static application.XGLoggable.LOG;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -55,7 +55,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		this.add(this.label, gbc);
 
 		this.parameterChanged(this.value.getParameter());
-		log.info("knob initialized: " + this.getName());
+		LOG.info("knob initialized: " + this.getName());
 		}
 
 	@Override public void contentChanged(XGValue v)

@@ -3,10 +3,10 @@ package gui;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import application.XGLoggable;
 
 /**
  * qualifiziert das implementierende Objekt als in einem XGTree darstellbar.
@@ -14,9 +14,8 @@ import javax.swing.tree.TreePath;
  *
  */
 
-public interface XGTreeNode extends TreeNode, XGContext
+public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
 {
-	static final Logger log = Logger.getAnonymousLogger();
 
 /*****************************************************************************************************************/
 

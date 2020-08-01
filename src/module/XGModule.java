@@ -35,7 +35,7 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 		{	file = dev.getResourceFile(XML_MODULE);
 		}
 		catch(FileNotFoundException e)
-		{	log.info(e.getMessage());
+		{	LOG.warning(e.getMessage());
 			return;
 		}
 		XMLNode xml = XMLNode.parse(file);
@@ -94,9 +94,11 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 		{	this.getDevice().getMidi().request(b.getRequest());
 		}
 		catch(TimeoutException e)
-		{	missed++;
+		{	LOG.severe(e.getMessage());
+			missed++;
 		}
-		log.info("finished after " + (System.currentTimeMillis() - time) + " ms (" + missed + " dumps missed)");
+		if(missed == 0) LOG.info(this.getBulks().size() + " dumps requested within " + (System.currentTimeMillis() - time) + " ms");
+		else LOG.severe(this.getBulks().size() + " dumps requested within " + (System.currentTimeMillis() - time) + " ms (" + missed + " failed)");
 	}
 
 	public abstract XGAddressableSet<XGBulkDump> getBulks();

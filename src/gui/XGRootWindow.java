@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -18,15 +19,18 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 
 /**********************************************************************************************************************/
 
-	private final XMLNode config = JXG.config.getChildNodeOrNew(TAG_WIN);
+	private final XMLNode config = JXG.getApp().getConfig().getChildNodeOrNew(TAG_WIN);
+	private XGStatusBar status = new XGStatusBar();
 
 	public XGRootWindow()
-	{	this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+	{	this.setLayout(new BorderLayout());
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.addWindowListener(this);
 		this.addComponentListener(this);
 	
 		this.setTitle(APPNAME);
-		this.getContentPane().add(new JScrollPane(this.getRootComponent()));
+		this.getContentPane().add(new JScrollPane(this.getRootComponent()), BorderLayout.CENTER);
+		this.getContentPane().add(this.status, BorderLayout.SOUTH);
 
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
 		this.setBounds(
@@ -36,6 +40,10 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 			this.config.getIntegerAttribute(ATTR_H, MIN_H));
 		this.setModal(false);
 		this.setVisible(true);
+	}
+
+	public XGStatusBar getStatusBar()
+	{	return this.status;
 	}
 
 	@Override public XMLNode getConfig()
@@ -51,7 +59,7 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 	}
 
 	@Override public void windowClosed(WindowEvent e)
-	{	JXG.quit();
+	{	JXG.getApp().quit();
 	}
 
 	@Override public void windowIconified(WindowEvent e)

@@ -27,13 +27,13 @@ public class XGXMLTable implements XGTable
 		for(XMLNode e : n.getChildNodes(TAG_ITEM))
 		{	this.add(i++, new XGTableEntry(e));
 		}
-		log.info(this.getInfo());
+		LOG.info(this.getInfo());
 	}
 
 	XGXMLTable(String name, String unit)
 	{	this.name = name;
 		this.unit = unit;
-		log.info(this.name);
+		LOG.info(this.name);
 	}
 
 	private void add(int i, XGTableEntry e)

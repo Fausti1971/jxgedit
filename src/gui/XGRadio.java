@@ -1,6 +1,6 @@
 package gui;
 
-import static application.XGLoggable.log;
+import static application.XGLoggable.LOG;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -31,7 +31,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
 		this.borderize();
-		log.info("radio initialized: " + this.getName());
+		LOG.info("radio initialized: " + this.getName());
 	}
 
 	@Override public void parameterChanged(XGParameter p)

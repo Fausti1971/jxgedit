@@ -1,7 +1,6 @@
 package value;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -25,7 +24,6 @@ import parm.XGTableEntry;
  */
 public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, ChangeableContent<Integer>
 {
-	private static Logger log = Logger.getAnonymousLogger();
 
 /***********************************************************************************************/
 

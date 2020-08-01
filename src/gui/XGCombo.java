@@ -1,6 +1,6 @@
 package gui;
 
-import static application.XGLoggable.log;
+import static application.XGLoggable.LOG;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -37,7 +37,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
 
-		log.info("combo initialized: " + this.getName());
+		LOG.info("combo initialized: " + this.getName());
 	}
 
 	@Override public void parameterChanged(XGParameter p)

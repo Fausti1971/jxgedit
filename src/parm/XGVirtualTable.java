@@ -180,7 +180,7 @@ public class XGVirtualTable implements XGTable
 		this.translate = translate;
 		this.retranslate = retranslate;
 		this.iteratorCount = 0;
-		log.info(this.getInfo());
+		LOG.info(this.getInfo());
 	}
 
 	@Override public XGTableEntry getByIndex(int i)

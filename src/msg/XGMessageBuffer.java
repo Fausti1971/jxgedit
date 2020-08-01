@@ -1,6 +1,5 @@
 package msg;
 
-import static application.XGLoggable.log;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -44,7 +43,7 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 
 	@Override public void submit(XGResponse m)
 	{	this.add(m);
-		log.info("msg buffered: " + m);
+		LOG.info("msg buffered: " + m);
 		((DefaultListModel<XGMessage>)this.list.getModel()).addElement(m);
 		if(this.window == null) this.setChildWindow(new XGWindow(this, XGWindow.getRootWindow(), false, this.getMessengerName()));
 		this.status.setText(this.size() + " messages buffered");

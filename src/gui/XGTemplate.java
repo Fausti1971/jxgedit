@@ -15,10 +15,10 @@ public class XGTemplate implements XGAddressable, XGLoggable, XMLNodeConstants
 		{	XMLNode x = XMLNode.parse(dev.getResourceFile(XML_TEMPLATES));
 			for(XMLNode t : x.getChildNodes(TAG_FRAME))
 				dev.getTemplates().add(new XGTemplate(t));
-			log.info(dev + " has " + dev.getTemplates().size() + " templates");
+			LOG.info(dev + " has " + dev.getTemplates().size() + " templates");
 		}
 		catch(FileNotFoundException e)
-		{	log.info(dev + " has no templates: " + e.getMessage());
+		{	LOG.info(dev + " has no templates: " + e.getMessage());
 		}
 	}
 

@@ -8,7 +8,6 @@ import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-import java.util.logging.Logger;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -20,12 +19,11 @@ import javax.xml.transform.stream.StreamSource;
 import org.xml.sax.helpers.DefaultHandler;
 import application.ConfigurationConstants;
 import application.Rest;
+import application.XGLoggable;
 import tag.XGTagable;
 
-public class XMLNode implements XGTagable, ConfigurationConstants
+public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 {
-	private static Logger log = Logger.getAnonymousLogger();
-
 	public static XMLNode parse(File xml)
 	{	if(xml == null || !xml.canRead()) return null;
 		XMLNode current_node = null, parent_node = null, root_node = null;
@@ -37,7 +35,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 		{	XMLEventReader rd = inputFactory.createXMLEventReader(new StreamSource(xml));
 			while(rd.hasNext())
 			{	XMLEvent ev = rd.nextEvent();
-				if(ev.isStartDocument()) log.info("parsing started: " + xml);
+				if(ev.isStartDocument()) LOG.info("parsing started: " + xml);
 				if(ev.isStartElement())
 				{	parent_node = current_node;
 					current_node = new XMLNode(ev.asStartElement().getName().getLocalPart(), XMLNode.createProperties(ev.asStartElement().getAttributes()));
@@ -46,12 +44,12 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 				}
 				if(ev.isCharacters()) if(current_node != null) current_node.setTextContent(ev.asCharacters().getData().trim());
 				if(ev.isEndElement()) if(current_node != null) current_node = current_node.getParentNode();
-				if(ev.isEndDocument()) log.info("parsing finished: " + xml);
+				if(ev.isEndDocument()) LOG.info("parsing finished: " + xml);
 			}
 			rd.close();
 		}
 		catch(XMLStreamException e)
-		{	log.info(e.getMessage() + xml);
+		{	LOG.severe(e.getMessage() + xml);
 		}
 		return root_node;
 	}
@@ -226,7 +224,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants
 
 		this.writeNode(writer, this);
 		writer.close();
-		log.info(this + " saved to: " + file);
+		LOG.info(this + " saved to: " + file);
 	}
 
 	private void writeNode(XMLStreamWriter w, XMLNode n)

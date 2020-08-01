@@ -1,6 +1,6 @@
 package gui;
 
-import static application.XGLoggable.log;
+import static application.XGLoggable.LOG;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -60,7 +60,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		gbc.anchor = GridBagConstraints.SOUTH;
 		this.add(this.label, gbc);
 
-		log.info("slider initialized: " + this.value.getParameter());
+		LOG.info("slider initialized: " + this.value.getParameter());
 	}
 
 	@Override public void paint(Graphics g)
