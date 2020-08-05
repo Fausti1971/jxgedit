@@ -20,5 +20,115 @@
 			<type>2</type>
 			<location>/Users/thomas/coding/java/CM4J</location>
 		</link>
+		<link>
+			<name>working dir/MU500</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>working dir/MU80</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>working dir/config.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/config.xml</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>working dir/MU500/.DS_Store</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU500/.DS_Store</locationURI>
+		</link>
+		<link>
+			<name>working dir/MU500/module.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU500/module.xml</locationURI>
+		</link>
+		<link>
+			<name>working dir/MU500/tables.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU500/tables.xml</locationURI>
+		</link>
+		<link>
+			<name>working dir/MU500/templates.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU500/templates.xml</locationURI>
+		</link>
+		<link>
+			<name>working dir/MU80/.DS_Store</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU80/.DS_Store</locationURI>
+		</link>
+		<link>
+			<name>working dir/MU80/module.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU80/module.xml</locationURI>
+		</link>
+		<link>
+			<name>working dir/MU80/tables.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU80/tables.xml</locationURI>
+		</link>
+		<link>
+			<name>working dir/MU80/templates.xml</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU80/templates.xml</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/module.xsd</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/xsd/module.xsd</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/old</name>
+			<type>2</type>
+			<locationURI>virtual:/virtual</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/tables.xsd</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/xsd/tables.xsd</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/template.xsd</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/xsd/template.xsd</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/old/fx-program.xsd</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/xsd/old/fx-program.xsd</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/old/module.xsd</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/xsd/old/module.xsd</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/old/opcode_old.xsd</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/xsd/old/opcode_old.xsd</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/old/parameter_old.xsd</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/xsd/old/parameter_old.xsd</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/old/template_old.xsd</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/xsd/old/template_old.xsd</locationURI>
+		</link>
+		<link>
+			<name>working dir/xsd/old/type.xsd</name>
+			<type>1</type>
+			<locationURI>PARENT-3-PROJECT_LOC/JXG/xsd/old/type.xsd</locationURI>
+		</link>
 	</linkedResources>
 </projectDescription>

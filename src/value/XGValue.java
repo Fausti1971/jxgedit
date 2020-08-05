@@ -28,7 +28,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 /***********************************************************************************************/
 
 	private Integer index;
-	private final XGMessenger source;
+	private XGMessenger source;
 	private final XGAddress address;
 	private final XGOpcode opcode;
 	private final XGBulkDump bulk;
@@ -85,6 +85,10 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	public XGMessenger getSource()
 	{	return this.source;
+	}
+
+	public void setSource(XGMessenger src)
+	{	this.source = src;
 	}
 
 	public XGOpcode getOpcode()

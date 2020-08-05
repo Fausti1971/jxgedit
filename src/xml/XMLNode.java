@@ -16,7 +16,6 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.stream.StreamSource;
-import org.xml.sax.helpers.DefaultHandler;
 import application.ConfigurationConstants;
 import application.Rest;
 import application.XGLoggable;
@@ -24,6 +23,8 @@ import tag.XGTagable;
 
 public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 {
+	private static final String ERRORSTRING = " contains invalid character";
+
 	public static XMLNode parse(File xml)
 	{	if(xml == null || !xml.canRead()) return null;
 		XMLNode current_node = null, parent_node = null, root_node = null;
@@ -56,15 +57,14 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 
 	private static Properties createProperties(Iterator<Attribute> i)
 	{	Properties prop = new Properties();
+		String name;
 		while(i.hasNext())
 		{	Attribute a = i.next();
-			prop.put(a.getName().getLocalPart(), a.getValue());
+			name = a.getName().getLocalPart();
+			if(!Rest.isAlNum(name)) throw new RuntimeException(name + ERRORSTRING);
+			prop.put(name, a.getValue());
 		}
 		return prop;
-	}
-	public class SAXLocalNameCount extends DefaultHandler
-	{
-		
 	}
 
 /*************************************************************************************************************/
@@ -77,7 +77,8 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 
 
 	public XMLNode(String tag, Properties attr)
-	{	this.tag = tag;
+	{	if(!Rest.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
+		this.tag = tag;
 		if(attr != null) this.attributes = attr;
 		else this.attributes = new Properties();
 	}
@@ -193,8 +194,9 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 	{	return this.attributes.getProperty(a);
 	}
 
-	public void setStringAttribute(String attrMidioutput, String outputName)
-	{	this.attributes.put(attrMidioutput, outputName);
+	public void setStringAttribute(String attr, String outputName)
+	{	if(!Rest.isAlNum(attr)) throw new RuntimeException(attr + ERRORSTRING);
+		this.attributes.put(attr, outputName);
 	}
 
 	public int getIntegerAttribute(String a, int def)
@@ -208,7 +210,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 	}
 
 	public void setIntegerAttribute(String attr, int t)
-	{	this.attributes.put(attr, String.valueOf(t));
+	{	this.setStringAttribute(attr, String.valueOf(t));
 	}
 
 	public double getDoubleAttribute(String attr, double def)
@@ -222,6 +224,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 		if(!file.exists()) file.createNewFile();
 		XMLStreamWriter writer = factory.createXMLStreamWriter(new FileOutputStream(file));
 
+		writer.writeStartDocument();
 		this.writeNode(writer, this);
 		writer.close();
 		LOG.info(this + " saved to: " + file);

@@ -8,6 +8,7 @@ import java.util.Arrays;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JFileChooser;
 import adress.InvalidXGAddressException;
+import adress.XGAddressableSet;
 import application.ConfigurationConstants;
 import application.JXG;
 import application.XGLoggable;
@@ -15,7 +16,6 @@ import application.XGLoggable;
 import device.XGDevice;
 import gui.XGWindow;
 import msg.XGMessage;
-import msg.XGMessageBuffer;
 import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
@@ -26,25 +26,26 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 /******************************************************************************************************************************************/
 
 	private final XGDevice device;
-	private XGMessageBuffer buffer = new XGMessageBuffer(this);
+//	private XGMessageBuffer buffer = new XGMessageBuffer(this);
+	private XGAddressableSet<XGMessage> buffer = new XGAddressableSet<>();
 
 	public XGSysexFile(XGDevice dev, String path)
 	{	super(path);
 		this.device = dev;
+		this.parse();
 	}
 
 /**
- * lädt und parst ein SysexFile zum XGMessenger dest
+ * lädt und parst ein SysexFile
  * @param dest
  */
-	public void load(XGMessenger dest)
+	private void parse()
 	{	LOG.info("start parsing: " + this.getAbsolutePath());
-		if(dest == null) dest = this.buffer;
 
 		try(FileInputStream fis = new FileInputStream(this))
 		{	byte[] tmp = new byte[fis.available()];
 			boolean start = false, end = false;
-			int first = 0, i = 0, messageCount = 0;
+			int first = 0, i = 0;
 			while(fis.available() != 0)
 			{	tmp[i] = (byte) fis.read();
 				if(tmp[i] == (byte)XGMessage.SOX)
@@ -54,9 +55,8 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 				if(tmp[i] == (byte)XGMessage.EOX) end = true;
 				if(start && end)
 				{	try
-					{	XGMessage m = XGMessage.newMessage(this, dest, Arrays.copyOfRange(tmp, first, i + 1), false);
-						if(m instanceof XGResponse) ((XGResponse)m).transmit();
-						messageCount++;
+					{	XGMessage m = XGMessage.newMessage(this, null, Arrays.copyOfRange(tmp, first, i + 1), false);
+						this.buffer.add(m);
 					}
 					catch (InvalidMidiDataException | InvalidXGAddressException e)
 					{	LOG.info(e.getMessage());
@@ -66,7 +66,8 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 				}
 				i++;
 			}
-			LOG.info("parsing finished: " + messageCount + " messages parsed from " + this + " to " + dest.getMessengerName());
+			LOG.info("parsing finished: " + this.buffer.size() + " messages parsed from " + this);
+			fis.close();
 		}
 		catch (IOException e)
 		{	LOG.warning(e.getMessage());
@@ -104,11 +105,12 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 	}
 
 	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
-	{	//TODO:
+	{	this.buffer.add(msg);
 	}
 
-	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException
-	{	return null;
+	@Override public void request(XGRequest req) throws InvalidXGAddressException
+	{	XGMessage response = this.buffer.get(req.getAddress());
+		if(req.setResponsed((XGResponse)response)) response.getDestination().submit((XGResponse)response);
 	}
 }
 

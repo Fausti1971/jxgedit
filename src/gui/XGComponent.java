@@ -13,6 +13,7 @@ import adress.XGAddress;
 import adress.XGAddressConstants;
 import application.Configurable;
 import application.JXG;
+import application.Rest;
 import module.XGModule;
 import value.XGValue;
 import xml.XMLNode;
@@ -47,7 +48,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 			case TAG_COMBO:		c = new XGCombo(n, mod); break;
 			case TAG_RADIO:		c = new XGRadio(n, mod); break;
 			case TAG_BUTTON:	c = new XGButton(n, mod); break;
-			default:			c = new XGFrame("unknown " + s); break;
+			default:			c = new XGFrame("unknown_" + s); break;
 		}
 		if(c != null) for(XMLNode x : n.getChildNodes()) c.add(newItem(x, mod));
 		return c;
@@ -69,7 +70,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	protected final XGAddress address;
 
 	public XGComponent(String text)
-	{	this.config = new XMLNode(text, null);
+	{	this.config = new XMLNode(text.replaceAll(Rest.REGEX_NON_ALNUM, Rest.TEXT_REPLACEMENT), null);
 		this.value = null;
 		this.address = XGALLADDRESS;
 		this.setName(text);

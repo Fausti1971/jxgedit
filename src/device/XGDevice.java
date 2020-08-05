@@ -39,6 +39,7 @@ import gui.XGWindowSource;
 import module.XGModule;
 import msg.XGMessageDumpRequest;
 import msg.XGMessageParameterChange;
+import msg.XGMessenger;
 import msg.XGRequest;
 import msg.XGResponse;
 import parm.XGParameter;
@@ -83,6 +84,15 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			}
 		}
 		LOG.info(DEVICES.size() + " devices initialized");
+	}
+
+	private static void removeDevice(XGDevice dev)
+	{	if(DEVICES.remove(dev))
+		{	dev.getConfig().removeNode();
+			dev.reloadTree();
+			LOG.info(dev + " removed");
+		}
+		else LOG.info(dev + " not found");
 	}
 
 /***************************************************************************************************************************/
@@ -154,7 +164,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		XGModule.init(this);//initialisiert und instanziert auch XGBulkDump, XGOpcode und XGValue
 
 		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.getContent().resolve("default.syx").toString());
-		this.defaultSyx.load(this.values);
+		this.requestAll(this.defaultSyx);
 		LOG.info("device initialized: " + this);
 	}
 
@@ -215,9 +225,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m;
 		try
-		{	m = new XGMessageDumpRequest(null, this.midi, XGAddressConstants.XGMODELNAMEADRESS);
+		{	m = new XGMessageDumpRequest(this.values, this.midi, XGAddressConstants.XGMODELNAMEADRESS);
 			try
-			{	XGResponse r = this.midi.request(m);
+			{	m.request();
+				XGResponse r = m.getResponse();
 				String s = r.getString(r.getBaseOffset(), r.getBaseOffset() + r.getBulkSize());
 				this.name.setContent(s.trim());
 			}
@@ -248,16 +259,16 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	}
 
-	private void requestAll()
+	private void requestAll(XGMessenger dest)
 	{	int missed = 0;
 		long time = System.currentTimeMillis();
 		XGAddressableSet<XGBulkDump> set = new XGAddressableSet<>();
 		for(XGModule m : this.modules) set.addAll(m.getBulks());
 		for(XGBulkDump b : set)
 		try
-		{	this.getMidi().request(b.getRequest());
+		{	dest.request(b.getRequest());
 		}
-		catch(TimeoutException e)
+		catch(TimeoutException | InvalidXGAddressException e)
 		{	missed++;
 			LOG.severe(e.getMessage());
 		}
@@ -288,7 +299,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public String toString()
-	{	return this.name.getContent() + " (ID=" + this.sysexID + ")";
+	{	return this.name.getContent() + "." + this.sysexID;
 	}
 
 	@Override public XMLNode getConfig()
@@ -322,11 +333,11 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	@Override public void actionPerformed(ActionEvent e)
 	{	switch(e.getActionCommand())
 		{	case ACTION_CONFIGURE:	this.configure(); break;
-			case ACTION_REMOVE:		break;
+			case ACTION_REMOVE:		removeDevice(this); break;
 			case ACTION_LOADFILE:	break;
 			case ACTION_SAVEFILE:	this.save(); break;
 			case ACTION_TRANSMIT:	break;
-			case ACTION_REQUEST:	this.requestAll(); break;
+			case ACTION_REQUEST:	this.requestAll(this.midi); break;
 			case ACTION_RESET:		this.resetAll(); break;
 			case ACTION_XGON:		this.resetXG(); break;
 			default:				break;

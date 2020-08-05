@@ -3,7 +3,7 @@ package msg;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 
-public class XGMessageUnknown extends XGSuperMessage implements XGResponse
+public class XGMessageUnknown extends XGSuperMessage
 {
 	protected XGMessageUnknown(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
 	{	super(src, dest, msg);
@@ -37,26 +37,6 @@ public class XGMessageUnknown extends XGSuperMessage implements XGResponse
 
 	@Override public void setLo(int lo)
 	{
-	}
-
-	@Override public int getBulkSize()
-	{	return 1;
-	}
-
-	@Override public void setBulkSize(int size)
-	{
-	}
-
-	@Override public int getBaseOffset()
-	{	return 0;
-	}
-
-	@Override public void checkSum() throws InvalidMidiDataException
-	{
-	}
-
-	@Override public int setChecksum()
-	{	return 0;
 	}
 
 	@Override public void setMessageID()

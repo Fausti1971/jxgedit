@@ -23,6 +23,8 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
 	{	super(array);
 		this.source = src;
 		this.destination = dest;
+//		System.out.println(this.getClass().getSimpleName() + " von: " + src + " für: " + dest);
+		this.setTimeStamp(System.currentTimeMillis());
 		if(init) this.init();
 		this.validate();
 	}
@@ -85,7 +87,7 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
 	}
 
 	@Override public String toString()
-	{	return this.getClass().getSimpleName() + "/" + this.getAddress();
+	{	return this.getClass().getSimpleName() + this.getAddress();
 	}
 
 }

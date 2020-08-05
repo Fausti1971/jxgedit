@@ -14,23 +14,25 @@ public interface XGMessenger
 /**
  * @return returniert den Namen des XGMessengers
  */
-	public String getMessengerName();
+	public default String getMessengerName()
+	{	return this.getDevice() + " " + this.getClass().getSimpleName();
+	}
 
 /**
  * übergibt dem XGMessenger (file, mem, midi) eine XGMessage zur weiteren Be- oder Verarbeitung
- * im Falle eines XGRequest muss die XGResponse an den XGRequest zurückgesandt werden,
- * es muss also die Source des Requests die Destination der Response werden;
  * @param m XGResponse
  * @throws InvalidXGAddressException
  */
 	void submit(XGResponse msg) throws InvalidXGAddressException;
 
 /**
- * übermittelt den übergebenen XGRequest an req.getDestination(), lässt den aufrufenden XGMessenger req.getSource() für max. #timeout warten bzw. weckt ihn im Falle einer empfangenen und validierten XGResponse;
+ * übermittelt den übergebenen XGRequest an req.getDestination(), lässt den aufrufenden XGMessenger für max. #timeout warten bzw. weckt ihn im Falle einer
+ * empfangenen und validierten XGResponse, die dann mittels getResponse() abgefragt werden kann;
  * @param req
- * @return empfangene Antwort
  * @throws InvalidXGAddressException
  * @throws TimeoutException 
  */
-	XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException;
+	void request(XGRequest req) throws InvalidXGAddressException, TimeoutException;
+
+	@Override String toString();
 }

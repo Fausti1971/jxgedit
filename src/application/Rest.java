@@ -5,8 +5,10 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 public interface Rest
-{	static final String REGEX_ALPHA = "[a-zA-Z0-9_]+";
-	static final String REGEX_NUMBER = "\\d+";
+{	static final String REGEX_ALNUM = "\\w+"; // alternativ: [a-zA-Z0-9_]+
+	static final String REGEX_NON_ALNUM = "\\W+"; //alternativ: [^a-zA-Z0-9_]
+	static final String REGEX_NUM = "\\d+";
+	static final String TEXT_REPLACEMENT = "_";
 
 /**
  * zerlegt einen String an eventuell vorhandenen Kommas und returniert ein Set an (von führenden und folgenden Leerzeichen bereinigten) Strings;
@@ -63,11 +65,11 @@ public interface Rest
 	}
 
 	static boolean isNumber(String name)
-	{	return name.matches(REGEX_NUMBER);
+	{	return name.matches(REGEX_NUM);
 	}
 
-	static boolean isAlpha(String name)
-	{	return name.matches(REGEX_ALPHA);
+	static boolean isAlNum(String name)
+	{	return name.matches(REGEX_ALNUM);
 	}
 
 }

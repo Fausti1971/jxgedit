@@ -162,9 +162,7 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 		return root;
 	}
 
-	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException
+	@Override public void request(XGRequest req) throws InvalidXGAddressException
 	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

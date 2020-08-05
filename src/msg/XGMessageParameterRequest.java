@@ -4,6 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
+import device.TimeoutException;
 import value.XGValue;
 
 public class XGMessageParameterRequest extends XGSuperMessage implements XGRequest
@@ -14,12 +15,14 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	private XGResponse response;
 	private boolean responsed;
 
-	protected XGMessageParameterRequest(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
+	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
 	{	super(src, dest, array, init);
+		if(init) this.response = new XGMessageParameterChange(dest, src, array.clone(), init);
 	}
 
-	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
+	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException, TimeoutException
 	{	super(src, dest, msg);
+//		this.getSource().submit(this.getDestination().request(this));
 	}
 
 	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGValue val) throws InvalidXGAddressException, InvalidMidiDataException
@@ -79,8 +82,8 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 	{	this.responsed = s;
 	}
 
-	@Override public void setResponse(XGMessage m)
-	{	this.response = (XGResponse)m;
+	@Override public void setResponse(XGResponse m)
+	{	this.response = m;
 	}
 
 	@Override public void setMessageID()

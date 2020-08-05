@@ -55,3 +55,12 @@ Problem:
 		<variable tag="mp" name="Multipart" min="0" max="31" table="multipart">
 		<variable tag="ds" name="Drumset" min="48" max="51" table="notes">
 		...
+Problem:
+		kein Problem, eher anderes Konzept:
+		Eine Programmistanz pro Device wäre möglich durch Übergabe (arg]0]) des Devicekonfigurationspfades beim Start (/home/user/JXG/MU80/0) in dem die Devicekonfiguration (config.xml)
+		gespeichert würde, wobei der optionale Ordner (0) die SysexID bestimmt, damit mehrere Devices selben Typs editiert werden können. Beim Fehlen des Pfades könnte man als default XG benutzen.
+		Die Devicekonfiguration könnte auch komplett auf XG basieren und sich lediglich auf die Aufzählung der unterstützen Opcodes, Bulks, Drumsets, ADParts usw. bzw. deren Anzahl beschränken.
+		Außerdem könnte man diese unterstützten Elemente auch automatisch erfragen lassen...
+		Eventuell auch möglich für Tables: Generiere devicespezifische Table durch senden, erfragen, vergleichen und speichern von PrgChangemeldungen
+		(zum aussondern von doppelten Einträgen könnte man über eine DBMS nachdenken)
+		Denke nochmals über DBMS und FX nach...

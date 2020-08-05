@@ -5,20 +5,25 @@ import device.TimeoutException;
 
 public interface XGRequest extends XGMessage
 {
+	default void request() throws InvalidXGAddressException, TimeoutException
+	{	this.getDestination().request(this);
+	}
 /**
  * überprüft, ob die übergebene Message eine Antwort auf diesen XGRequest ist, setzt und returniert das Ergebnis;
  * @param msg
  * @return true, wenn dieser XGRequest mit der übergebenen XGResponse beantwortet ist;
  */
-	public default boolean setResponsed(XGResponse msg)
-	{	this.setResponsed(this.getResponse().isEqual(msg));
-		if(this.isResponsed()) this.setResponse(msg);
-		return this.isResponsed();
+	default boolean setResponsed(XGResponse msg)
+	{	boolean is = msg instanceof XGResponse && this.getResponse().isEqual(msg);
+		this.setResponsed(is);
+		if(is)
+		{	msg.setDestination(this.getResponse().getDestination());
+			this.setResponse(msg);
+		}
+		return is;
 	}
 
-	public default XGResponse request() throws InvalidXGAddressException, TimeoutException
-	{	return this.getDestination().request(this);
-	}
+	void setResponsed(boolean r);
 
 /**
  * wurde dieser XGRequest schon beantwortet?
@@ -27,16 +32,9 @@ public interface XGRequest extends XGMessage
 	boolean isResponsed();
 
 /**
- * setzt den Responsed-Status eines Requests auf s
- * @param s neuer Status
- */
-	void setResponsed(boolean s);
-
-/**
  * returniert den Prototyp einer erwarteten Antwort (MessageID, SysexID und XGAddress) auf diesen XGRequest;
  * @return s.o.
  */
 	XGResponse getResponse();
-
-	void setResponse(XGMessage m);
+	void setResponse(XGResponse m);
 }

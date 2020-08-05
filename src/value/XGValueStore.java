@@ -41,10 +41,10 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 			XGValue v = this.get(adr);
 			if(v != null)
 			{	v.setValue(v.decodeMessage(msg));
-				size = v.getOpcode().getAddress().getLo().getSize();
+				size = v.getSize();
 			}
 			else
-			{	LOG.info("value not found: " + adr);
+			{	LOG.warning("value not found: " + adr);
 				size = 1;
 			}
 			offset += size;
@@ -52,9 +52,11 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 		}
 	}
 
-	@Override public XGResponse request(XGRequest req) throws InvalidXGAddressException, TimeoutException
+	@Override public String toString()
+	{	return this.device + " ValueStore";
+	}
+
+	@Override public void request(XGRequest req) throws InvalidXGAddressException, TimeoutException
 	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

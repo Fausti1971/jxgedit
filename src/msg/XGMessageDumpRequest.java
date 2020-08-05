@@ -43,8 +43,8 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 	{	return this.response;
 	}
 
-	@Override public void setResponse(XGMessage m)
-	{	this.response = (XGResponse)m;
+	@Override public void setResponse(XGResponse m)
+	{	this.response = m;
 		m.setDestination(this.getSource());
 	}
 
@@ -70,10 +70,6 @@ public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
 
 	@Override public void setLo(int lo)
 	{	encodeLSB(LO_OFFS, lo);
-	}
-
-	@Override public String toString()
-	{	return this.getAddress().toString();
 	}
 
 	@Override public void setMessageID()

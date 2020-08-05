@@ -1019,7 +1019,7 @@
 		</bulk>
 	</module>
 
-	<module name="Equalizer" address="2/64/0-20">
+	<module name="Multi EQ" address="2/64/0-20">
 		<bulk address="//0-20">
 			<opcode xsi:type="immutable" address="//0" parameterID="eq_type" after_send="module_request"/>
 			<opcode xsi:type="immutable" address="//1" parameterID="eq_gain"/>

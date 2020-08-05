@@ -32,12 +32,14 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	static final String
 		ACTION_CONFIGURE = "configure...",
 		ACTION_ADDNEWDEVICE = "add new device...",
-		ACTION_REFRESHDEVICELIST = "refresh devicelist";
+		ACTION_REFRESHDEVICELIST = "reinit devices",
+		ACTION_INFO = "info...";
 
 	static
 	{	JXG.ACTIONS.add(ACTION_CONFIGURE);
 		JXG.ACTIONS.add(ACTION_ADDNEWDEVICE);
 		JXG.ACTIONS.add(ACTION_REFRESHDEVICELIST);
+		JXG.ACTIONS.add(ACTION_INFO);
 	}
 
 	private static JXG APP;
@@ -115,7 +117,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	}
 
 	@Override public String toString()
-	{	return APPNAME;
+	{	return APPNAME + " (" + XGDevice.getDevices().size() + ")";
 	}
 
 	@Override public XMLNode getConfig()
@@ -146,6 +148,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 			case ACTION_REFRESHDEVICELIST:
 				XGDevice.init(this.config);
 				break;
+			case ACTION_INFO:
 			default:
 				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
 		}

@@ -54,20 +54,22 @@ public interface XGByteArray
 	}
 
 /**
- * emkodiert value an das LSB (4Bits) an das Offset index ins Array
+ * emkodiert value an das least significant nibble an das Offset index ins Array
  * @param index	Offset
  * @param value	Wert
  */
 	default void encodeLSN(int index, int value)
-	{	this.encodeLSB(index, decodeMSN(index) | (value & 0xF));}
-
+	{	byte v = (byte)(decodeMSN(index) | (value & 0xF));
+		this.encodeLSB(index, v);
+	}
 
 	default int decodeMSN(int index)
 	{	return this.getByteArray()[index] & 0xF0;
 	}
 
 	default void encodeMSN(int index, int value)
-	{	this.encodeLSB(index, decodeLSN(index) | (value & 0XF0));
+	{	byte v = (byte)(decodeLSN(index) & 0x0F);
+		this.encodeLSB(index, v | (value & 0XF0));
 	}
 
 /**
@@ -139,7 +141,7 @@ public interface XGByteArray
 	{	if(getByteArray() == null) return "no data";
 		String s = new String();
 		for(byte c : getByteArray())
-		{	s = s.concat(Integer.toHexString(c) + ", ").toUpperCase();
+		{	s = s.concat(Integer.toHexString(c & 0xFF).toUpperCase() + ", ");
 		}
 		return s;
 	}

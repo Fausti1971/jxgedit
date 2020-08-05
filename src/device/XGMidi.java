@@ -196,7 +196,6 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		}
 		LOG.info(this.getInputName());
 		this.config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
-//		this.notifyConfigurationListeners();
 		return;
 	}
 
@@ -216,22 +215,6 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	private String getOutputName()
 	{	if(getOutput() == null) return "no output device";
 		else return this.midiOutput.getDeviceInfo().getName();
-	}
-
-	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
-	{	synchronized(this)
-		{	try
-			{	XGMessage m = XGMessage.newMessage(this, this.buffer, mmsg);
-				if(this.request != null && this.request.setResponsed((XGResponse)m))
-				{	this.requestThread.interrupt();
-//					return;
-				}
-				m.getDestination().submit((XGResponse)m);
-			}
-			catch(InvalidMidiDataException|InvalidXGAddressException e)
-			{	LOG.info(e.getMessage());
-			}
-		}
 	}
 
 	@Override public void close()
@@ -267,21 +250,36 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	{	this.transmit(msg);
 	}
 
-	@Override public XGResponse request(XGRequest msg) throws TimeoutException
+	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
+	{	synchronized(this)
+		{	try
+			{	XGMessage m = XGMessage.newMessage(this, this.buffer, mmsg);
+				if(this.request != null && this.request.setResponsed((XGResponse)m))
+				{	this.requestThread.interrupt();
+//					return;
+				}
+				m.getDestination().submit((XGResponse)m);
+			}
+			catch(InvalidMidiDataException|InvalidXGAddressException e)
+			{	LOG.info(e.getMessage());
+			}
+		}
+	}
+
+	@Override public void request(XGRequest msg) throws TimeoutException
 	{	synchronized(this.buffer)
 		{	if(this.transmit(msg))
 			{	try
 				{	this.request = msg;
 					this.requestThread = Thread.currentThread();
 					Thread.sleep(this.timeoutValue);
-					throw new TimeoutException("timeout: no response within " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
+					throw new TimeoutException("timeout: no response to " + this.request + " within " + (System.currentTimeMillis() - this.request.getTimeStamp()) + " ms");
 				}
 				catch(InterruptedException e)//wird bei validiertem empfang via send() interrupted, sofern ein request im Lauf ist...
-				{	LOG.info("response within " + (System.currentTimeMillis() - msg.getTimeStamp()) + " ms");
+				{	LOG.info(this.request + " responsed by " + this.request.getResponse() + " within " + (this.request.getResponse().getTimeStamp() - this.request.getTimeStamp()) + " ms");
 				}
 			}
 			this.request = null;
-			return msg.getResponse();
 		}
 	}
 
@@ -308,6 +306,10 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	{	this.timeoutValue = t;
 		this.config.setIntegerAttribute(ATTR_MIDITIMEOUT, t);
 		LOG.info("timeout set to " + t);
+	}
+
+	@Override public String toString()
+	{	return this.getMessengerName();
 	}
 
 	@Override public String getMessengerName()

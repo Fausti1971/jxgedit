@@ -11,14 +11,14 @@ import application.XGLoggable;
 public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 {
 	public static XGMessage newMessage(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
-	{	XGMessage x = new XGMessageUnknown(src, dest, array, init);
+	{	XGMessage x = new XGMessageNew(src, dest, array, init);
 		switch(x.getMessageID())
 		{	case MSG_BD:	return new XGMessageBulkDump(src, dest, array, init);
 			case MSG_PC:	return new XGMessageParameterChange(src, dest, array, init);
 			case MSG_DR:	return new XGMessageDumpRequest(src, dest, array, init);
 			case MSG_PR:	return new XGMessageParameterRequest(src, dest, array, init);
+			default:		return new XGMessageUnknown(src, dest, array, init);
 		}
-		return x;
 	}
 
 	public static XGMessage newMessage(XGMessenger src, XGMessenger dest, MidiMessage msg) throws InvalidMidiDataException, InvalidXGAddressException
@@ -84,9 +84,9 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 	}
 
 /**
- * Testet das übergebene Object o auf null, MessageID, sysexID, XGAddress und Destination;
+ * Testet das übergebene Object o auf null, MessageID, sysexID, XGAddress (Destinationvergleich ist sinnfrei, da die empfangene Message defaultmäßig den Puffer als solche hat);
  * @param o
- * @return true, wenn o nicht null, MessageID, SysexID, XGAddress und Destination übereinstimmt;
+ * @return true, wenn o nicht null, MessageID, SysexID, XGAddress übereinstimmt;
  */
 	public default boolean isEqual(XGMessage o)
 	{	if(o != null)
