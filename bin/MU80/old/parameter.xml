@@ -1,0 +1,74 @@
+<?xml version="1.1" encoding="ISO-8859-1"?>
+<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt
+	ein fehlendes addressfield wird durch das entsprechende parent-addressfield ersetzt
+	ein vorhandenes parameter-addressfield überschreibt des entsprechende parent-addressfield, aber nur falls es dort enthalten ist
+
+	validierung funktioniert mit StAX nicht, also auch nicht das setzen eventueller default-Attribute
+-->
+
+<modules xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
+
+	<module id="system" name="Master" address="0/0/">
+		<bulk address="//0-6">
+			<parameter id="master_tune" address="//0-3" byteType="LSN" longName="Master Tune" shortName="Tune" max="2047" translator="translateSub128Div10"/>
+		</bulk>
+	</module>
+
+	<module id="sysfx" name="System Effect" address="2/1/">
+		<bulk address="//0-13">
+			<parameter id="reverb_type" address="//0-1" byteType="LSB" longName="Reverb Program" shortName="Prog" translator="translateMap" translationMap="fx_programs" translationMapFilter="reverb"/>
+			<mutable_parameter id="reverb_1" address="//2" master="2/1/0" index="1"/>
+			<mutable_parameter id="reverb_2" address="//3-3" master="2-2/1-1/0-0" index="2"/>
+			<mutable_parameter id="reverb_3" address="//4-4" master="2-2/1-1/0-0" index="3"/>
+			<mutable_parameter id="reverb_4" address="//5-5" master="2-2/1-1/0-0" index="4"/>
+			<mutable_parameter id="reverb_5" address="//6-6" master="2-2/1-1/0-0" index="5"/>
+			<mutable_parameter id="reverb_6" address="//7-7" master="2-2/1-1/0-0" index="6"/>
+			<mutable_parameter id="reverb_7" address="//8-8" master="2-2/1-1/0-0" index="7"/>
+			<mutable_parameter id="reverb_8" address="//9-9" master="2-2/1-1/0-0" index="8"/>
+			<mutable_parameter id="reverb_9" address="//10-10" master="2-2/1-1/0-0" index="9"/>
+			<mutable_parameter id="reverb_10" address="//11-11" master="2-2/1-1/0-0" index="10"/>
+			<parameter id="reverb_return" address="//12-12" longName="Reverb Return" shortName="Retrn"/>
+			<parameter id="reverb_pan" address="//13-13" longName="Reverb Panorama" shortName="Pan" min="1" translator="translateMap" translationMap="reverb_dimension"/>
+		</bulk>
+	</module>
+
+	<module id="insfx" name="Insertion Effect" address="3-3/0-15/">
+		<bulk address="//0-13">
+			<parameter id="ins_type" address="//0-1" byteType="LSB" longName="Insertion Program" shortName="Prog" max="69" translator="translateMap" translationMap="fx_programs"/>
+			<mutable_parameter id="ins_1" address="//2-2" master="3-3/0-15/0-0" index="1"/>
+			<mutable_parameter id="ins_2" address="//3-3" master="3-3/0-15/0-0" index="2"/>
+			<mutable_parameter id="ins_3" address="//4-4" master="3-3/0-15/0-0" index="3"/>
+			<mutable_parameter id="ins_4" address="//5-5" master="3-3/0-15/0-0" index="4"/>
+			<mutable_parameter id="ins_5" address="//6-6" master="3-3/0-15/0-0" index="5"/>
+			<mutable_parameter id="ins_6" address="//7-7" master="3-3/0-15/0-0" index="6"/>
+			<mutable_parameter id="ins_7" address="//8-8" master="3-3/0-15/0-0" index="7"/>
+			<mutable_parameter id="ins_8" address="//9-9" master="3-3/0-15/0-0" index="8"/>
+			<mutable_parameter id="ins_9" address="//10-10" master="3-3/0-15/0-0" index="9"/>
+			<mutable_parameter id="ins_10" address="//11-11" master="3-3/0-15/0-0" index="10"/>
+			<parameter id="ins_part" address="//12-12" longName="Insertion Part" shortName="Part"/>
+		</bulk>
+	</module>
+
+
+	<module id="multipart" name="Multipart" address="8-10/0-31/">
+		<bulk address="8-8//0-40">
+			<parameter id="mp_elementReserve" address="//0-0" longName="Element Reserve" shortName="ElRes" max="32"/>
+			<parameter address="//1-1" id="mp_bank_msb" longName="Bank Select MSB" shortName="bankM"/>
+			<parameter id="mp_bank_lsb" address="//2-2" longName="Bank Select LSB" shortName="bankL"/>
+			<parameter id="mp_program" address="//3-3" longName="Voice Program Number" shortName="prgNr"/>
+			<parameter id="mp_midichannel" address="//4-4" longName="Midi Channel" shortName="ch" translator="translateMap" translationMap="midi_channels"/>
+		</bulk>
+	</module>
+
+	<module id="adpart" name="A/D-Part" address="16-18/0-1/">
+		<bulk address="16-16/0-1/0-30">
+			<parameter id="ad_inputGain" address="16-16/0-1/0-0" longName="Input Gain" shortName="iGain" max="1"/>
+		</bulk>
+	</module>
+
+	<module id="drumset" name="Drumset" address="48-51/13-91/">
+		<bulk address="//0-15">
+			<parameter id="dr_pitch_coarse" address="//0-0" longName="Pitch Coarse" shortName="Tune" translator="translateSub64"/>
+		</bulk>
+	</module>
+</modules>

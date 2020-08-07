@@ -18,7 +18,7 @@
 		<link>
 			<name>CM4J</name>
 			<type>2</type>
-			<location>/Users/thomas/coding/java/CM4J</location>
+			<locationURI>PARENT-1-PROJECT_LOC/CM4J</locationURI>
 		</link>
 		<link>
 			<name>working dir/MU500</name>
@@ -41,11 +41,6 @@
 			<locationURI>virtual:/virtual</locationURI>
 		</link>
 		<link>
-			<name>working dir/MU500/.DS_Store</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU500/.DS_Store</locationURI>
-		</link>
-		<link>
 			<name>working dir/MU500/module.xml</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU500/module.xml</locationURI>
@@ -59,11 +54,6 @@
 			<name>working dir/MU500/templates.xml</name>
 			<type>1</type>
 			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU500/templates.xml</locationURI>
-		</link>
-		<link>
-			<name>working dir/MU80/.DS_Store</name>
-			<type>1</type>
-			<locationURI>PARENT-3-PROJECT_LOC/JXG/MU80/.DS_Store</locationURI>
 		</link>
 		<link>
 			<name>working dir/MU80/module.xml</name>

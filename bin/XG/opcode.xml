@@ -1,0 +1,75 @@
+<?xml version="1.1" encoding="ISO-8859-1"?>
+<!--
+	ein fehlendes addressfield wird durch das entsprechende parent-addressfield ersetzt
+	ein vorhandenes parameter-addressfield überschreibt des entsprechende parent-addressfield;
+	füe eine fehlende parameterID wird die id des opcodes genutzt
+	validierung funktioniert mit StAX nicht, also auch nicht das setzen eventueller default-Attribute
+-->
+
+<modules xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/opcode.xsd">
+
+	<module id="system" name="Master" address="0/0/">
+		<bulk address="//0-6">
+			<opcode id="master_tune" address="//0-3" byteType="LSN"/>
+			<opcode id="master_volume" address="//4" parameterID="volume"/>
+		</bulk>
+	</module>
+
+	<module id="sysfx" name="System Effect" address="2/1/">
+		<bulk address="//0-13">
+			<opcode id="reverb_type" address="//0-1"/>
+			<opcode id="reverb_1" address="//2"/>
+			<opcode id="reverb_2" address="//3"/>
+			<opcode id="reverb_3" address="//4"/>
+			<opcode id="reverb_4" address="//5"/>
+			<opcode id="reverb_5" address="//6"/>
+			<opcode id="reverb_6" address="//7"/>
+			<opcode id="reverb_7" address="//8"/>
+			<opcode id="reverb_8" address="//9"/>
+			<opcode id="reverb_9" address="//10"/>
+			<opcode id="reverb_10" address="//11"/>
+			<opcode id="reverb_return" address="//12" parameterID="effect_return"/>
+			<opcode id="reverb_pan" address="//13" parameterID="effect_pan"/>
+		</bulk>
+	</module>
+
+	<module id="insfx" name="Insertion Effect" address="3/0-15/">
+		<bulk address="//0-13">
+			<opcode id="ins_type" address="//0-1"/>
+			<opcode id="ins_1" address="//2"/>
+			<opcode id="ins_2" address="//3"/>
+			<opcode id="ins_3" address="//4"/>
+			<opcode id="ins_4" address="//5"/>
+			<opcode id="ins_5" address="//6"/>
+			<opcode id="ins_6" address="//7"/>
+			<opcode id="ins_7" address="//8"/>
+			<opcode id="ins_8" address="//9"/>
+			<opcode id="ins_9" address="//10"/>
+			<opcode id="ins_10" address="//11"/>
+			<opcode id="ins_part" address="//12"/>
+		</bulk>
+	</module>
+
+
+	<module id="multipart" name="Multipart" address="8-10/0-31/">
+		<bulk address="8//0-40">
+			<opcode id="mp_elementReserve" address="//0"/>
+			<opcode id="mp_bank_msb" address="//1"/>
+			<opcode id="mp_bank_lsb" address="//2"/>
+			<opcode id="mp_program" address="//3"/>
+			<opcode id="mp_midichannel" address="//4"/>
+		</bulk>
+	</module>
+
+	<module id="adpart" name="A/D-Part" address="16-18/0-1/">
+		<bulk address="16/0-1/0-30">
+			<opcode id="ad_inputGain" address="16/0-1/0"/>
+		</bulk>
+	</module>
+
+	<module id="drumset" name="Drumset" address="48-51/13-91/">
+		<bulk address="//0-15">
+			<opcode id="dr_pitch_coarse" address="//0"/>
+		</bulk>
+	</module>
+</modules>

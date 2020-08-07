@@ -31,6 +31,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 	{	this.source = null;
 		this.rootComponent = new XGTree(JXG.getApp(), true);
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
+//		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
 	}
 
 	public XGWindow(XGWindowSource src, XGWindow own, boolean mod, String name)
@@ -45,6 +46,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 		int x = (int)own.getLocation().getX() + own.getWidth();
 		int y = (int)own.getLocation().getY();
 		this.setLocation(x, y);
+//		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
 		this.pack();
 		this.setResizable(false);
 		this.setAlwaysOnTop(mod);

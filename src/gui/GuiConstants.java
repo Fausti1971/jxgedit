@@ -3,11 +3,8 @@ package gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
 import java.awt.RenderingHints;
 import java.awt.SystemColor;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
 import javax.swing.UIManager;
@@ -18,37 +15,7 @@ public interface GuiConstants extends ConfigurationConstants
 {
 	static final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-	static final GridBagConstraints GBCONSTRAINTS = new GridBagConstraints();
-	Map<String, Integer> GBC = new HashMap<>()
-	{	/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		{	put("RELATIVE", GridBagConstraints.RELATIVE);
-			put("REMAINDER", GridBagConstraints.REMAINDER);
-			put("RESIZE_NONE", GridBagConstraints.NONE);
-			put("RESIZE_BOTH", GridBagConstraints.BOTH);
-			put("RESIZE_HORIZONTAL", GridBagConstraints.HORIZONTAL);
-			put("RESIZE_VERTICAL", GridBagConstraints.VERTICAL);
-			put("CENTER", GridBagConstraints.CENTER);
-			put("NORTH", GridBagConstraints.NORTH);
-			put("NORTHEAST", GridBagConstraints.NORTHEAST);
-			put("EAST", GridBagConstraints.EAST);
-			put("SOUTHEAST", GridBagConstraints.SOUTHEAST);
-			put("SOUTH", GridBagConstraints.SOUTH);
-			put("SOUTHWEST", GridBagConstraints.SOUTHWEST);
-			put("WEST", GridBagConstraints.WEST);
-			put("NORTHWEST", GridBagConstraints.NORTHWEST);
-			put("PAGE_START", GridBagConstraints.PAGE_START);
-			put("PAGE_END", GridBagConstraints.PAGE_END);
-			put("LINE_START", GridBagConstraints.LINE_START);
-			put("LINE_END", GridBagConstraints.LINE_END);
-			put("FIRST_LINE_START", GridBagConstraints.FIRST_LINE_START);
-			put("FIRST_LINE_END", GridBagConstraints.FIRST_LINE_END);
-			put("LAST_LINE_START", GridBagConstraints.LAST_LINE_START);
-			put("LAST_LINE_END", GridBagConstraints.LAST_LINE_END);
-		}
-	};
+	String ICON_LEAF = "XGLogo32.gif";
 
 	Color
 		COL_FOCUS = UIManager.getColor("Focus.color"),
@@ -65,6 +32,7 @@ public interface GuiConstants extends ConfigurationConstants
 	float FONTSIZE = 10f;
 
 	Font FONT = new JEditorPane().getFont().deriveFont(FONTSIZE);
+
 	int
 		GRID = 22,
 		COL_STEP = 16,

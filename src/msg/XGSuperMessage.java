@@ -4,7 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import adress.XGAddressable;
 
-abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddressable
+public abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddressable
 {
 
 /****************************************************************************************************************************************/
@@ -34,13 +34,13 @@ abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddre
  * @param msg
  * @throws InvalidMidiDataException
  */
-	protected XGSuperMessage(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException	//für Midi
-	{	super(msg.getMessage());
-		this.source = src;
-		this.destination = dest;
-		this.setTimeStamp(System.currentTimeMillis());
-		this.validate();
-	}
+//	protected XGSuperMessage(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException	//für Midi
+//	{	super(msg.getMessage());
+//		this.source = src;
+//		this.destination = dest;
+//		this.setTimeStamp(System.currentTimeMillis());
+//		this.validate();
+//	}
 /**
  * initialisiert eine neu erzeugte XGMessage mit SOX, SysexID, VendorID, ModelID und TimeStamp
  */

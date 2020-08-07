@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.ImageIcon;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
@@ -47,6 +48,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 		this.setScrollsOnExpand(true);
 		this.setRootVisible(showRoot);
 		this.setShowsRootHandles(true);
+		DTCR.setLeafIcon(new ImageIcon(this.getClass().getResource(ICON_LEAF)));
 	}
 
 	private void setFocussedNode(XGTreeNode n)

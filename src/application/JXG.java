@@ -68,9 +68,11 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	private XGTree tree;
 	private boolean isSelected = false;
 	private final XMLNode config;
+//	private final Path rscPath = Paths.get("rsc"), xsdPath;
 
 	public JXG()
-	{
+	{	
+//		this.xsdPath = rscPath.resolve("xsd");
 		XMLNode x = new XMLNode(APPNAME, null);
 		HOMEPATH.toFile().mkdirs();
 		File f = CONFIGFILEPATH.toFile();
@@ -79,10 +81,19 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 		LOG.info("JXG config initialized");
 	}
 
+//	public Path getRscPath()
+//	{	return this.rscPath;
+//	}
+
+//	public Path getXsdPath()
+//	{	return this.xsdPath;
+//	}
+
 	public void quit()
 	{	LOG.info("exiting application");
 		try
 		{	APP.getConfig().save(CONFIGFILEPATH.toFile());
+			for(XGDevice d : XGDevice.getDevices()) d.exit();
 		}
 		catch(IOException|XMLStreamException e)
 		{	e.printStackTrace();

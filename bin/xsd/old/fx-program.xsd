@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="items">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="item" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="msb" use="required" type="xs:nonNegativeInteger"/>
+						<xs:attribute name ="lsb" use="required" type="xs:nonNegativeInteger"/>
+						<xs:attribute name="name" use="required" type="xs:string"/>
+						<xs:attribute name="table" use="required" type="tableTag"/>
+						<xs:attribute name="reverb" type="option"/>
+						<xs:attribute name="chorus" type="option"/>
+						<xs:attribute name="variation" type="option"/>
+						<xs:attribute name="insertion" type="option"/>
+						<xs:attribute name="address" use="optional" type="addressType" default="byte"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="tableTag">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[A-Z0-9_]+"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="option">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value=" "/>
+			<xs:enumeration value="+"/>
+			<xs:enumeration value="-"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="addressType">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="byte"/>
+			<xs:enumeration value="word"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

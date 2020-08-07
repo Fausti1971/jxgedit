@@ -1,34 +1,40 @@
 package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
+import adress.XGBulkDump;
 
-public class XGMessageDumpRequest extends XGSuperMessage implements XGRequest
-{	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20;
+public class XGMessageBulkRequest extends XGSuperMessage implements XGRequest
+{	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20, OVERHAED = 8;
 
 /********************************************************************************/
 
 	private boolean responsed = false;
 	XGResponse response = null;
 
-	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
+	public XGMessageBulkRequest(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
 	{	super(src, dest, array, init);
+		XGAddress adr = new XGAddress(array[HI_OFFS], array[MID_OFFS], array[LO_OFFS]);
+		this.setAddress(adr);
+		this.setResponse(new XGMessageBulkDump(dest, src, adr));
 	}
 
-	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
-	{	super(src, dest, new byte[8], true);
-		this.setMessageID(MSG);
+	public XGMessageBulkRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
+	{	super(src, dest, new byte[OVERHAED], true);
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getMin());
-		this.setEOX();
-		this.response = new XGMessageBulkDump(dest, src, adr);
+		this.setResponse(new XGMessageBulkDump(dest, src, adr));
 	}
 
-	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
-	{	super(src, dest, msg);
+//	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
+//	{	super(src, dest, msg);
+//	}
+
+	public XGMessageBulkRequest(XGMessenger src, XGMessenger dest, XGBulkDump dump) throws InvalidMidiDataException, InvalidXGAddressException
+	{	this(src, dest, dump.getAddress());
+		this.setResponse(new XGMessageBulkDump(src, dest, dump.getAddress()));
 	}
 
 	@Override public boolean isResponsed()

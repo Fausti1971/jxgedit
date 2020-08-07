@@ -1,14 +1,13 @@
 package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.SysexMessage;
 
 public class XGMessageUnknown extends XGSuperMessage
 {
-	protected XGMessageUnknown(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
-	{	super(src, dest, msg);
-		LOG.warning("unknown message received: " + this.toHexString());
-	}
+//	protected XGMessageUnknown(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
+//	{	super(src, dest, msg);
+//		LOG.warning("unknown message received: " + this.toHexString());
+//	}
 
 	protected XGMessageUnknown(XGMessenger src, XGMessenger dest, byte[] msg, boolean init) throws InvalidMidiDataException
 	{	super(src, dest, msg, init);

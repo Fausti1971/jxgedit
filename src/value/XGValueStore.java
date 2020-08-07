@@ -1,5 +1,7 @@
 package value;
 
+import javax.sound.midi.InvalidMidiDataException;
+import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
@@ -23,9 +25,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	}
 
 	@Override public String getMessengerName()
-	{
-		// TODO Auto-generated method stub
-		return null;
+	{	return super.toString();
 	}
 
 	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
@@ -40,11 +40,11 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 		{	XGAddress adr = new XGAddress(hi, mid, offset);
 			XGValue v = this.get(adr);
 			if(v != null)
-			{	v.setValue(v.decodeMessage(msg));
+			{	v.decodeMessage(msg);
 				size = v.getSize();
 			}
 			else
-			{	LOG.warning("value not found: " + adr);
+			{	LOG.severe("value not found: " + adr);
 				size = 1;
 			}
 			offset += size;
@@ -57,6 +57,43 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	}
 
 	@Override public void request(XGRequest req) throws InvalidXGAddressException, TimeoutException
+	{	XGResponse res = req.getResponse();
+		int
+			hi = res.getAddress().getHi().getValue(),
+			mid = res.getAddress().getMid().getValue(),
+			lo = res.getAddress().getLo().getValue(),
+			end = res.getBulkSize() + res.getBaseOffset(),
+			size = 1;
+
+		for(int i = res.getBaseOffset(); i < end;)
+		{	XGAddress adr = new XGAddress(hi, mid, lo);
+			XGValue v = this.get(adr);
+			if(v != null)
+			{	v.encodeMessage(res);
+				size = v.getSize();
+			}
+			else
+			{	LOG.warning("value not found:"  + adr);
+				size = 1;
+			}
+			lo += size;
+			i += size;
+		}
+		res.setChecksum();
+		try
+		{	res.checkSum();
+		}
+		catch(InvalidMidiDataException e)
+		{	e.printStackTrace();
+		}
+		res.getDestination().submit(res);
+	}
+
+	@Override public JComponent getConfigComponent()
+	{	return null;
+	}
+
+	@Override public void close()
 	{
 	}
 }

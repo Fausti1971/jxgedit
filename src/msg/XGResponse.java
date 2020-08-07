@@ -32,7 +32,7 @@ public interface XGResponse extends XGMessage
 	/**
 	 * errechnet, setzt und returniert die XG-Checksumme
 	 */
-	public int setChecksum();
+	public void setChecksum();
 
 	public default void transmit() throws InvalidXGAddressException
 	{	this.getDestination().submit(this);

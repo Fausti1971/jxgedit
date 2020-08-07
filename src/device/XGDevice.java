@@ -15,6 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -37,7 +38,7 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import module.XGModule;
-import msg.XGMessageDumpRequest;
+import msg.XGMessageBulkRequest;
 import msg.XGMessageParameterChange;
 import msg.XGMessenger;
 import msg.XGRequest;
@@ -137,10 +138,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private final Set<XGModule> modules = new LinkedHashSet<>();
 
 	private int info1, info2;
-	private final Queue<XGSysexFile> files = new LinkedList<>();
-	private final XGSysexFile defaultSyx;
+	private final Queue<XGMessenger> files = new LinkedList<>();
+	private final XGMessenger defaultSyx;
 	private final XGValueStore values;
-	private XGMidi midi;
+	private XGMessenger midi;
 	private int sysexID;
 	private XGWindow childWindow;
 
@@ -164,17 +165,23 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		XGModule.init(this);//initialisiert und instanziert auch XGBulkDump, XGOpcode und XGValue
 
 		this.defaultSyx = new XGSysexFile(this, this.defaultDumpFolder.getContent().resolve("default.syx").toString());
-		this.requestAll(this.defaultSyx);
+		this.files.add(this.defaultSyx);
+		this.transmitAll(this.defaultSyx, this.values);
 		LOG.info("device initialized: " + this);
+	}
+
+	public void exit()
+	{	this.midi.close();
+		this.getCurrentDumpFile().close();
 	}
 
 	public File getResourceFile(String fName) throws FileNotFoundException
 	{	Path extPath = this.getResourcePath();
 		File extFile = extPath.resolve(fName).toFile();
-		File intFile = RSCPATH.resolve(this.name.getContent()).resolve(fName).toFile();
+//		File intFile = JXG.getApp().getRscPath().resolve(this.name.getContent()).resolve(fName).toFile();
 		if(extFile.canRead()) return extFile;
-		if(intFile.canRead()) return intFile;
-		throw new FileNotFoundException("can't read files, neither: " + extFile + " nor: " + intFile);//TODO: interner Pfad wird außerhalb von eclipse nicht aufgelöst!
+//		if(intFile.canRead()) return intFile;
+		throw new FileNotFoundException("can't read file " + extFile);//TODO: interner Pfad wird außerhalb von eclipse nicht aufgelöst!
 	}
 
 	public Path getResourcePath()
@@ -189,7 +196,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	this.color = color;
 	}
 
-	public XGSysexFile getLastDumpFile()
+	public XGMessenger getLastDumpFile()
 	{	return this.files.peek();
 	}
 
@@ -225,7 +232,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m;
 		try
-		{	m = new XGMessageDumpRequest(this.values, this.midi, XGAddressConstants.XGMODELNAMEADRESS);
+		{	m = new XGMessageBulkRequest(this.values, this.midi, XGAddressConstants.XGMODELNAMEADRESS);
 			try
 			{	m.request();
 				XGResponse r = m.getResponse();
@@ -259,28 +266,31 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	}
 
-	private void requestAll(XGMessenger dest)
+	private void transmitAll(XGMessenger src, XGMessenger dest)
 	{	int missed = 0;
 		long time = System.currentTimeMillis();
 		XGAddressableSet<XGBulkDump> set = new XGAddressableSet<>();
 		for(XGModule m : this.modules) set.addAll(m.getBulks());
 		for(XGBulkDump b : set)
 		try
-		{	dest.request(b.getRequest());
+		{	XGRequest r = new XGMessageBulkRequest(dest, src, b);
+			r.request();
 		}
-		catch(TimeoutException | InvalidXGAddressException e)
+		catch(TimeoutException | InvalidXGAddressException | InvalidMidiDataException e)
 		{	missed++;
 			LOG.severe(e.getMessage());
 		}
-		if(missed == 0) LOG.info(set.size() + " dumps requested within " + (System.currentTimeMillis() - time) + " ms");
-		else LOG.severe(set.size() + " dumps requested within " + (System.currentTimeMillis() - time) + " ms (" + missed + " failed)");
+		Level level;
+		if(missed == 0) level = Level.INFO;
+		else level = Level.SEVERE;
+		LOG.log(level, set.size() - missed + "/" + set.size() + " dumps transmitted from " + src + " to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
-	private void save()
-	{	
+	private XGMessenger getCurrentDumpFile()
+	{	return this.files.peek();
 	}
 
-	public XGMidi getMidi()
+	public XGMessenger getMidi()
 	{	return this.midi;
 	}
 
@@ -335,9 +345,9 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		{	case ACTION_CONFIGURE:	this.configure(); break;
 			case ACTION_REMOVE:		removeDevice(this); break;
 			case ACTION_LOADFILE:	break;
-			case ACTION_SAVEFILE:	this.save(); break;
-			case ACTION_TRANSMIT:	break;
-			case ACTION_REQUEST:	this.requestAll(this.midi); break;
+			case ACTION_SAVEFILE:	this.transmitAll(this.values, this.getCurrentDumpFile()); break;
+			case ACTION_TRANSMIT:	this.transmitAll(this.values, this.midi); break;
+			case ACTION_REQUEST:	this.transmitAll(this.midi, this.values); break;
 			case ACTION_RESET:		this.resetAll(); break;
 			case ACTION_XGON:		this.resetXG(); break;
 			default:				break;

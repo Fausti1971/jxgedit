@@ -234,15 +234,16 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 
 	private boolean transmit(XGMessage m)
 	{	if(this.transmitter == null)
-		{	LOG.info("no transmitter initialized!");
+		{	LOG.severe(this + ": no transmitter initialized!");
 			return false;
 		}
 		if(m == null)
-		{	LOG.info("message was null");
+		{	LOG.severe(this + ": message was null");
 			return false;
 		}
 		m.setTimeStamp();
-		this.transmitter.send((MidiMessage)m, -1L);
+		MidiMessage mm = (MidiMessage)m;
+		this.transmitter.send(mm, -1L);
 		return true;
 	}
 

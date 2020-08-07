@@ -70,7 +70,7 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 	/**
 	 * extrahiert und returniert das Mid-Field der XGAdress this
 	 * @return Wert des Fields als int
-	 * @throws InvalidXGAddressException falls das Field invalid ist
+	 * @throws InvalidXGAddressException falls das Field eine Range ist
 	 */
 	public XGAddressField getMid()
 	{	return this.mid;
@@ -79,7 +79,7 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 	/**
 	 * extrahiert und returniert das Lo-Field der XGAdress this
 	 * @return Wert des Fields als int
-	 * @throws InvalidXGAddressException falls das Field invalid ist
+	 * @throws InvalidXGAddressException falls das Field eine Range ist
 	 */
 	public XGAddressField getLo()
 	{	return this.lo;
@@ -87,7 +87,7 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 
 /**
  * testet, ob die Adresse vollständig ist, und somit einen XGValue adressieren kann
- * @return true, wenn alle Fields valide sind
+ * @return true, wenn alle Fields fix sind
  */
 	public boolean isFixed()
 	{	return this.hi.isFix() && this.mid.isFix() && this.lo.isFix();

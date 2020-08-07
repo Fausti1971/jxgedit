@@ -27,6 +27,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 /***********************************************************************************************/
 
+/**
+ * Index in der im Parameter angehängten XGTable
+ */
 	private Integer index;
 	private XGMessenger source;
 	private final XGAddress address;
@@ -120,33 +123,39 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.address;
 	}
 
-	public int decodeMessage(XGResponse msg) throws InvalidXGAddressException
-	{	int offset = msg.getBaseOffset() + this.opcode.getAddress().getLo().getMin() - msg.getLo();
-		int size = this.getSize();
-		switch(this.opcode.getDataType())
-		{	default:
-			case LSB:	return msg.decodeLSB(offset, size);
-			case LSN:	return msg.decodeLSN(offset, size);
-		}
-	}
-
-	public void encodeMessage(XGResponse msg, int o) throws InvalidXGAddressException
+/**
+ * decodiert und setzt aus dem Bytearray der übergebenen Message den Wert am zum XGValue gehörenden offset und size
+ * @param msg
+ * @throws InvalidXGAddressException
+ */
+	public void decodeMessage(XGResponse msg) throws InvalidXGAddressException
 	{	int offset = msg.getBaseOffset() + this.address.getLo().getValue() - msg.getLo();
-		int size = this.getSize();
 		switch(this.opcode.getDataType())
 		{	default:
-			case LSB:	msg.encodeLSB(offset, size, o); break;
-			case LSN:	msg.encodeLSN(offset, size, o); break;
+			case LSB:	this.setValue(msg.decodeLSB(offset, this.getSize())); break;
+			case LSN:	this.setValue(msg.decodeLSN(offset, this.getSize())); break;
 		}
 	}
 
+	public void encodeMessage(XGResponse msg) throws InvalidXGAddressException
+	{	int offset = msg.getBaseOffset() + this.address.getLo().getValue() - msg.getLo();
+		switch(this.opcode.getDataType())
+		{	default:
+			case LSB:	msg.encodeLSB(offset, this.getSize(), this.getValue()); break;
+			case LSN:	msg.encodeLSN(offset, this.getSize(), this.getValue()); break;
+		}
+	}
+
+/**
+ * returniert des Inhalts Index in der aktuellen XGTable des momentan zuständigen XGParameter
+ */
 	@Override public Integer getContent()
 	{	return this.index;
 	}
 
 /**
- * setzt nach Validierung den Content des XGValue auf den Wert i
- * @param i	Wert
+ * setzt nach Validierung den XGTable-Index des XGValue auf den Wert i
+ * @param i	Index
  * @return	true, wenn sich der Inhalt änderte
  */
 	@Override public boolean setContent(Integer i)
@@ -162,20 +171,37 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		return changed;
 	}
 
+/**
+ * @return returniert den momentan ausgewählten XGTable-Eintrag
+ */
 	public XGTableEntry getEntry()
 	{	XGParameter p = this.getParameter();
 		if(p == null) return null;
 		return p.getTranslationTable().getByIndex(this.getContent());
 	}
 
+/**
+ * 
+ * @param setzt den Inhalt des XGValue auf den Index des übergebenen XGTable-Eintrags
+ * @return true, wenn sich der Inhalt änderte
+ */
 	public boolean setEntry(XGTableEntry e)
 	{	return this.setValue(e.getValue());
 	}
 
+/**
+ * @return Value des aktuell gewählten XGTable-Eintrags
+ */
 	public int getValue()
-	{	return this.getEntry().getValue();
+	{	if(this.getEntry() == null) return 0;
+		return this.getEntry().getValue();
 	}
 
+/**
+ * setzt den Inhalt des XGValue auf den Index des zum übergebenen value passenden XGTable-Eintrags
+ * @param v Value
+ * @return true, wenn sich der Inhalt änderte
+ */
 	public boolean setValue(int v)
 	{	XGParameter p = this.getParameter();
 		if(p == null) return true;
@@ -205,7 +231,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		if(set != null)
 			for(String s : set)
 			{	switch(s)
-				{	case("module_request"): this.getBulk().getModule().requestAll();
+				{	case("module_request"): this.getBulk().getModule().transmitAll(this.source.getDevice().getMidi(), this.source.getDevice().getValues());
 				}
 			}
 	}

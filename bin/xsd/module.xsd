@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+
+	<xs:element name="modules">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="parameters"/>
+				<xs:element ref="module" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+		<xs:key name="paramID">
+			<xs:selector xpath="parameters/parameter"/>
+			<xs:field xpath="@id"/>
+		</xs:key>
+		<xs:keyref name="parameterRef" refer="paramID">
+			<xs:selector xpath="module/bulk/opcode/*"/>
+			<xs:field xpath="@parameterID"/>
+		</xs:keyref>
+	</xs:element>
+
+	<xs:element name="parameters">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="parameter" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="parameter">
+		<xs:complexType>
+			<xs:attribute name="longName" use="optional" type="xs:string"/>
+			<xs:attribute name="shortName" use="required" type="string5"/>
+			<xs:attribute name="min" use="optional" type="xs:nonNegativeInteger" default="0"/>
+			<xs:attribute name="max" use="optional" type="xs:nonNegativeInteger" default="127"/>
+			<xs:attribute name="origin" use="optional" type="xs:nonNegativeInteger" default="0"/>
+			<xs:attribute name="translator" use="optional" type="xs:string" default="normal"/>
+			<xs:attribute name="tableFilter" use="optional" type="xs:string"/>
+			<xs:attribute name="unit" type="string3"/>
+			<xs:attribute name="id" use="required" type="xs:NCName"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="module">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="bulk" maxOccurs="unbounded"/>
+			</xs:sequence>
+		<xs:attribute name="name" use="required" type="xs:string"/>
+		<xs:attribute name="address" use="required" type="moduleAddress"/>
+		<xs:attribute name="translator" use="optional" type="xs:string"/>
+		<xs:attribute name="info1" use="optional" type="opcodeAddress"/>
+		<xs:attribute name="info2" use="optional" type="opcodeAddress"/>
+		<xs:attribute name="info3" use="optional" type="opcodeAddress"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="bulk">
+		<xs:complexType>
+			<xs:choice maxOccurs="unbounded">
+				<xs:element name="opcode" type="opcode"/>
+			</xs:choice>
+			<xs:attribute name="address" use="required" type="bulkAddress"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="opcode" abstract="true"/>
+
+	<xs:complexType name="immutable">
+		<xs:complexContent mixed="false">
+			<xs:extension base="opcode">
+				<xs:attribute name="address" use="required" type="opcodeAddress"/>
+				<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
+				<xs:attribute name="parameterID" type="xs:NCName"/>
+				<xs:attributeGroup ref="actionGroup"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="mutable">
+		<xs:complexContent mixed="true">
+			<xs:extension base="opcode">
+				<xs:sequence>
+					<xs:element ref="param" maxOccurs="unbounded"/>
+				</xs:sequence>
+				<xs:attribute name="address" use="required" type="opcodeAddress"/>
+				<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
+				<xs:attribute name="parameterSelector" use="required" type="valueAddress"/>
+				<xs:attributeGroup ref="actionGroup"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:element name="param">
+		<xs:complexType>
+			<xs:attribute name="msb" use="optional"/>
+			<xs:attribute name="lsb" use="optional"/>
+			<xs:attribute name="value" use="optional"/>
+			<xs:attribute name="parameterID" type="xs:NCName"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="valueAddress">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+)"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="opcodeAddress">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="bulkAddress">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="moduleAddress">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)\/([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="byteTypes">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="MSB"/>
+			<xs:enumeration value="LSB"/>
+			<xs:enumeration value="MSN"/>
+			<xs:enumeration value="LSN"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="string3">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="3"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="string5">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"/>
+			<xs:maxLength value="5"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:attributeGroup name="actionGroup">
+		<xs:attribute name="before_edit" use="optional" type="xs:string"/>
+		<xs:attribute name="after_edit" use="optional" type="xs:string"/>
+		<xs:attribute name="before_send" use="optional" type="xs:string"/>
+		<xs:attribute name="after_send" use="optional" type="xs:string"/>
+	</xs:attributeGroup>
+</xs:schema>

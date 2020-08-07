@@ -1,7 +1,6 @@
 package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import value.XGValue;
@@ -27,14 +26,14 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getValue());
-		v.encodeMessage(this, v.getValue());
+		v.encodeMessage(this);
 		this.setEOX();
 	}
 
-	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
-	{	super(src, dest, msg);
-		LOG.info(this.getClass().toString());
-	}
+//	public XGMessageParameterChange(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
+//	{	super(src, dest, msg);
+//		LOG.info(this.getClass().toString());
+//	}
 
 	@Override public void setHi(int value)
 	{	encodeLSB(HI_OFFS, value);
@@ -78,9 +77,8 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 	{	//überflüssig für ParameterChange
 	}
 
-	@Override public int setChecksum()
+	@Override public void setChecksum()
 	{	//überflüssig für ParameterChange
-		return 0;
 	}
 
 	@Override public void setMessageID()

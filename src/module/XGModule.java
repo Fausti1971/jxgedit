@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.logging.Level;
+import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
@@ -21,6 +23,9 @@ import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
+import msg.XGMessageBulkRequest;
+import msg.XGMessenger;
+import msg.XGRequest;
 import parm.XGTable;
 import value.XGValue;
 import value.XGValueChangeListener;
@@ -86,19 +91,28 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
 	}
 
-	public void requestAll()
-	{	int missed = 0;
+/**
+ * erfragt vom Messenger src alle Requests und leitet die Responses an den Messenger dest
+ * @param dest
+ */
+	public void transmitAll(XGMessenger src, XGMessenger dest)
+	{	int missed = 0, count = 0;
 		long time = System.currentTimeMillis();
 		for(XGBulkDump b : this.getBulks())
-		try
-		{	this.getDevice().getMidi().request(b.getRequest());
+		{	try
+			{	XGRequest r = new XGMessageBulkRequest(dest, src, b);
+				r.request();
+			}
+			catch(InvalidXGAddressException | InvalidMidiDataException | TimeoutException e)
+			{	LOG.severe(e.getMessage());
+				missed++;
+			}
+			count++;
 		}
-		catch(TimeoutException e)
-		{	LOG.severe(e.getMessage());
-			missed++;
-		}
-		if(missed == 0) LOG.info(this.getBulks().size() + " dumps requested within " + (System.currentTimeMillis() - time) + " ms");
-		else LOG.severe(this.getBulks().size() + " dumps requested within " + (System.currentTimeMillis() - time) + " ms (" + missed + " failed)");
+		Level level;
+		if(missed == 0) level = Level.INFO;
+		else level = Level.SEVERE;
+		LOG.log(level, count - missed + "/" + count + " dumps transmitted from " + src + " to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
 	public abstract XGAddressableSet<XGBulkDump> getBulks();

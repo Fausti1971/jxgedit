@@ -165,4 +165,16 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	@Override public void request(XGRequest req) throws InvalidXGAddressException
 	{
 	}
+
+	@Override public JComponent getConfigComponent()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override public void close()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

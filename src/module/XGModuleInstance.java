@@ -63,7 +63,8 @@ public class XGModuleInstance extends XGModule
 		{	case ACTION_EDIT:		if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.getDevice() + "/" + this.category + " " + this.getTranslatedID());
 									else this.window.toFront();
 									break;
-			case ACTION_REQUEST:	this.requestAll(); break;
+			case ACTION_REQUEST:	this.transmitAll(this.device.getMidi(), this.device.getValues()); break;
+			case ACTION_TRANSMIT:	this.transmitAll(this.device.getValues(), this.device.getMidi()); break;
 		}
 	}
 

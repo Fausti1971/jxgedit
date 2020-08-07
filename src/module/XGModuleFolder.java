@@ -36,7 +36,8 @@ public class XGModuleFolder extends XGModule
 
 	@Override public void actionPerformed(ActionEvent e)
 	{	switch(e.getActionCommand())
-		{	case ACTION_REQUEST:	this.requestAll(); break;
+		{	case ACTION_REQUEST:	this.transmitAll(this.device.getMidi(), this.device.getValues()); break;
+			case ACTION_TRANSMIT:	this.transmitAll(this.device.getValues(), this.device.getMidi()); break;
 		}
 	}
 

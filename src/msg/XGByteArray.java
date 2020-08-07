@@ -115,9 +115,8 @@ public interface XGByteArray
 	}
 
 	default int calcChecksum(int from, int to)
-	{	byte[] array = getByteArray();
+	{	byte[] array = this.getByteArray();
 		byte sum = 0;
-		to = Math.min(array.length, to);
 		for(int i = from; i <= to; sum += array[i++]);
 		return sum;
 	}

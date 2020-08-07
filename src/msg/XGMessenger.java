@@ -1,5 +1,6 @@
 package msg;
 
+import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import device.TimeoutException;
 import device.XGDevice;
@@ -35,4 +36,15 @@ public interface XGMessenger
 	void request(XGRequest req) throws InvalidXGAddressException, TimeoutException;
 
 	@Override String toString();
+
+/**
+ * erfragt eine JComponent, die zur Konfiguration des Messengers dient
+ * @return Root-Komponente
+ */
+	public JComponent getConfigComponent();
+
+/**
+ * schließt den mit dem Konstruktor automatisch geöffneten Messenger und gibt Resourcen wieder frei
+ */
+	public void close();
 }

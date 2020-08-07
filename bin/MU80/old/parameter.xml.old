@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:
+	offset = 0 (dezimal, dei descriptions (variable Parameter) ist dies der Parameterindex bspw. "REVERB PARAMETER 1")
+	byteCount = 1 (dezimal)
+	byteType = MIDIBYTE, NIBBLE
+	valueClass = Integer, String, BITMAP
+	translator = translateToText, translateNot, translateToTextPlus1, translateDiv10, translateSub128Div10, translateMap
+	translationMap = ""
+	translationMapFilter = ""
+	descriptionMapIndex = 0... (der Index des Descriptions in der MutableParameterMap)
+	descriptionDependsOf = 0 (dezimal, Offset des die Description definierenden Parameters bspw. ReverbType...)
+-->
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
+
+	<parameter>
+		<name>info_name</name>
+		<longName>Model Name</longName>
+		<shortName>Model</shortName>
+	</parameter>
+
+	<parameter>
+		<name>display_letter</name>
+		<longName>DisplayText</longName>
+		<shortName>Text</shortName>
+	</parameter>
+
+	<parameter>
+		<name>rev_type</name>
+		<longName>Reverb Program</longName>
+		<shortName>RevPrg</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>69</valueMax>
+		<translator>translateMap</translator>
+		<translationMap filter="reverb">fx_programs</translationMap>
+	</parameter>
+
+	<parameter>
+		<name>rev_1</name>
+		<dependsOf>rev_type</dependsOf>
+	</parameter>
+
+	<parameter>
+		<name>mp_elRes</name>
+		<longName>Element Reserve</longName>
+		<shortName>ElmRsv</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>32</valueMax>
+		<translator>translateToText</translator>
+	</parameter>
+	<parameter>
+		<name>mp_bankMsb</name>
+		<longName>Bank Select MSB</longName>
+		<shortName>BnkMSB</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+		<translator>translateToText</translator>
+	</parameter>
+
+	<parameter>
+		<name>mp_ch</name>
+		<longName>MIDI Channel</longName>
+		<shortName>Ch</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+		<translator>translateMap</translator>
+		<translationMap>midi_channels</translationMap>
+	</parameter>
+
+	<parameter>
+		<name>mp_detune</name>
+		<longName>Detune</longName>
+		<shortName>Tune</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>255</valueMax>
+		<translator>translateSub128Div10</translator>
+	</parameter>
+
+	<parameter>
+		<name>mp_envAtk</name>
+		<longName>Attack Time</longName>
+		<shortName>Atck</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+	</parameter>
+
+	<parameter>
+		<name>ds1_sourcekit</name>
+		<longName>SourceDrumkit</longName>
+		<shortName>src-dk</shortName>
+		<valueMin>264241152</valueMin>
+		<valueMax>4294967295</valueMax>
+	</parameter>
+
+	<parameter>
+		<name>rev_time</name>
+		<longName>Reverb Time</longName>
+		<shortName>RevTime</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>69</valueMax>
+		<translator>translateMap</translator>
+		<translationMap>reverb_time</translationMap>
+	</parameter>
+
+</map>

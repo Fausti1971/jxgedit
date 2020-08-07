@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:
+	translator = translateToText, translateNot, translateToTextPlus1, translateDiv10, translateSub128Div10, translateMap
+	translationMap = ""
+	translationMapFilter = ""
+	descriptionMapIndex = 0... (der Index des Descriptions in der MutableParameterMap)
+	descriptionDependsOf = 0 (dezimal, Offset des die Description definierenden Parameters bspw. ReverbType...)
+-->
+<map xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
+
+	<parameter>
+		<name>info_name</name>
+		<longName>Model Name</longName>
+		<shortName>Model</shortName>
+	</parameter>
+
+	<parameter>
+		<name>display_letter</name>
+		<longName>DisplayText</longName>
+		<shortName>Text</shortName>
+	</parameter>
+
+	<parameter>
+		<name>rev_type</name>
+		<longName>Reverb Program</longName>
+		<shortName>RevPrg</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>69</valueMax>
+		<translator>translateMap</translator>
+		<translationMap>fx_programs</translationMap>
+	</parameter>
+
+	<parameter>
+		<name>rev_1</name>	<!-- number behind underscore determines the mutableMapKey -->
+		<dependsOf>rev_type</dependsOf>
+	</parameter>
+
+	<parameter>
+		<name>mp_elRes</name>
+		<longName>Element Reserve</longName>
+		<shortName>ElmRsv</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>32</valueMax>
+		<translator>translateToText</translator>
+	</parameter>
+	<parameter>
+		<name>mp_bankMsb</name>
+		<longName>Bank Select MSB</longName>
+		<shortName>BnkMSB</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+		<translator>translateToText</translator>
+	</parameter>
+
+	<parameter>
+		<name>mp_ch</name>
+		<longName>MIDI Channel</longName>
+		<shortName>Ch</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+		<translator>translateMap</translator>
+		<translationMap>midi_channels</translationMap>
+	</parameter>
+
+	<parameter>
+		<name>mp_detune</name>
+		<longName>Detune</longName>
+		<shortName>Tune</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>255</valueMax>
+		<translator>translateSub128Div10</translator>
+	</parameter>
+
+	<parameter>
+		<name>mp_envAtk</name>
+		<longName>Attack Time</longName>
+		<shortName>Atck</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+	</parameter>
+
+<!-- mutable parameters TODO: doppelte Inhalte (names) per xsd verhindern -->
+
+	<parameter>
+		<name>rev_time</name>
+		<longName>Reverb Time</longName>
+		<shortName>RevTime</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>69</valueMax>
+		<translator>translateMap</translator>
+		<translationMap>reverb_time</translationMap>
+	</parameter>
+
+</map>

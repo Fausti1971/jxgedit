@@ -1,7 +1,6 @@
 package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 
@@ -18,32 +17,13 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 
 	public XGMessageBulkDump(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException //wird manuell angelegt und als response benötigt
 	{	super(src, dest, new byte[OVERHAED + adr.getLo().getSize()], true);
-		this.setMessageID(MSG);
 		this.setBulkSize(adr.getLo().getSize());
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getMin());
 		this.setChecksum();
-//		this.setEOX(10);
 	}
 
-	public XGMessageBulkDump(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException	//für MIDI und FILE
-	{	super(src, dest, msg);
-		this.checkSum();
-	}
-/*
-	private XGMessageBulkDump(XGMessenger src, XGMessenger dest, XGBulkDump blk) throws InvalidXGAddressException
-	{	super(src, dest, new byte[OVERHAED + blk.getAddress().getLo().getSize()], true);
-		this.setMessageID();
-		this.setHi(blk.getAdress().getHi());
-		this.setMid(blk.getAdress().getMid());
-		this.setLo(blk.getAdress().getLo());
-		this.setBulkSize(blk.getBulkSize());
-		this.encodeByteArray(DATA_OFFS, blk.getBulkData());
-		this.encodeMidiByteFromInteger(DATA_OFFS + blk.getBulkSize(), 0 - this.calcChecksum(SIZE_OFFS, DATA_OFFS + blk.getBulkSize() - 1));
-		this.setEOX(this.getByteArray().length - 1);
-	}
-*/
 	@Override public int getHi()
 	{	return decodeLSB(HI_OFFS);
 	}
@@ -76,15 +56,21 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	{	encodeLSB(SIZE_OFFS, SIZE_SIZE, size);
 	}
 
+/*
+ * The checksum shall be set such that the low-order 7 bits of the sum of the Byte Count, the Address, the Data, and the Checksum itself are 0.
+ * For details about support for reception of block-unit bulk dumps, see Attached Chart 5.
+ */
+
 	@Override public void checkSum() throws InvalidMidiDataException
-	{	if(((calcChecksum(SIZE_OFFS, DATA_OFFS + this.getBulkSize()) & LSB) != 0)) throw new InvalidMidiDataException("checksum error!");
+	{	int sum = this.calcChecksum(SIZE_OFFS, DATA_OFFS + this.getBulkSize());
+		if((sum & LSB) != 0) throw new InvalidMidiDataException("checksum error!");
 	}
 
-	@Override public int setChecksum()
+	@Override public void setChecksum()//TODO: meist falsch, liegt aber offenbar eher an der Länge als an der Berechnung...
 	{	int size = this.getBulkSize();
-		int sum = 0 - this.calcChecksum(SIZE_OFFS, DATA_OFFS + size - 1);
-		this.encodeLSB(DATA_OFFS + size, sum);
-		return sum;
+		int pos = DATA_OFFS + size;//checksum-offset
+		int sum = this.calcChecksum(SIZE_OFFS, pos - 1);//Berechnung erstmal ohne checksum-offset, da diese erst errechnet und gesetzt werden muss
+		this.encodeLSB(pos, (0 - sum) & LSB);
 	}
 
 	@Override public int getBaseOffset()

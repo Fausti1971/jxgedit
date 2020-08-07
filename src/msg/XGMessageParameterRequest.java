@@ -1,10 +1,8 @@
 package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import device.TimeoutException;
 import value.XGValue;
 
 public class XGMessageParameterRequest extends XGSuperMessage implements XGRequest
@@ -20,10 +18,10 @@ public class XGMessageParameterRequest extends XGSuperMessage implements XGReque
 		if(init) this.response = new XGMessageParameterChange(dest, src, array.clone(), init);
 	}
 
-	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException, TimeoutException
-	{	super(src, dest, msg);
+//	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException, TimeoutException
+//	{	super(src, dest, msg);
 //		this.getSource().submit(this.getDestination().request(this));
-	}
+//	}
 
 	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGValue val) throws InvalidXGAddressException, InvalidMidiDataException
 	{	super(src, dest, new byte[8], true);

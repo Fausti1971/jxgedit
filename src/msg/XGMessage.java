@@ -15,7 +15,7 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 		switch(x.getMessageID())
 		{	case MSG_BD:	return new XGMessageBulkDump(src, dest, array, init);
 			case MSG_PC:	return new XGMessageParameterChange(src, dest, array, init);
-			case MSG_DR:	return new XGMessageDumpRequest(src, dest, array, init);
+			case MSG_DR:	return new XGMessageBulkRequest(src, dest, array, init);
 			case MSG_PR:	return new XGMessageParameterRequest(src, dest, array, init);
 			default:		return new XGMessageUnknown(src, dest, array, init);
 		}
@@ -72,8 +72,14 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 	{	this.setTimeStamp(System.currentTimeMillis());
 	}
 
+	default void setAddress(XGAddress adr) throws InvalidXGAddressException
+	{	this.setHi(adr.getHi().getValue());
+		this.setMid(adr.getMid().getValue());
+		this.setLo(adr.getLo().getValue());
+	}
+
 	@Override public default XGAddress getAddress()
-	{	return new XGAddress(getHi(), getMid(), getLo());
+	{	return new XGAddress(this.getHi(), this.getMid(), this.getLo());
 	}
 
 /**

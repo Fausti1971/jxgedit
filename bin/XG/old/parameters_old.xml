@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!--bei fehlendem Inhalt (aber vorhandenem Tag) wird Defaultwert benutzt:
+	translator = translateToText, translateNot, translateToTextPlus1, translateDiv10, translateSub128Div10, translateMap
+	translationMap = ""
+	translationMapFilter = ""
+	descriptionMapIndex = 0... (der Index des Descriptions in der MutableParameterMap)
+	descriptionDependsOf = 0 (dezimal, Offset des die Description definierenden Parameters bspw. ReverbType...)
+-->
+<parameters xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/parameter.xsd">
+
+	<item ID = "info_name">
+		<longName>Model Name</longName>
+		<shortName>Model</shortName>
+	</item>
+
+	<item ID = "display_letter">
+		<longName>DisplayText</longName>
+		<shortName>Text</shortName>
+	</item>
+
+	<item ID = "reverb_type">
+		<longName>Reverb Program</longName>
+		<shortName>RevPrg</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>69</valueMax>
+		<translator>translateMap</translator>
+		<translationMap>fx_programs</translationMap>
+	</item>
+
+	<item ID = "reverb_1">
+		<dependsOf REF = "reverb_type"/>
+		<mutableMapKey>1</mutableMapKey>
+	</item>
+
+	<item ID = "mp_elRes">
+		<longName>Element Reserve</longName>
+		<shortName>ElmRsv</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>32</valueMax>
+		<translator>translateToText</translator>
+	</item>
+	<item ID = "mp_bankMsb">
+		<longName>Bank Select MSB</longName>
+		<shortName>BnkMSB</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+		<translator>translateToText</translator>
+	</item>
+
+	<item ID = "mp_ch">
+		<longName>MIDI Channel</longName>
+		<shortName>Ch</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+		<translator>translateMap</translator>
+		<translationMap>midi_channels</translationMap>
+	</item>
+
+	<item ID = "mp_detune">
+		<longName>Detune</longName>
+		<shortName>Tune</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>255</valueMax>
+		<translator>translateSub128Div10</translator>
+	</item>
+
+	<item ID = "mp_envAtk">
+		<longName>Attack Time</longName>
+		<shortName>Atck</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>127</valueMax>
+	</item>
+
+	<item ID = "ds_sourcekit">
+		<longName>SourceDrumkit</longName>
+		<shortName>src-dk</shortName>
+		<valueMin>264241152</valueMin>
+		<valueMax>2147483647</valueMax>
+	</item>
+
+	<item ID = "reverb_time">
+		<longName>Reverb Time</longName>
+		<shortName>RevTime</shortName>
+		<valueMin>0</valueMin>
+		<valueMax>69</valueMax>
+		<translator>translateMap</translator>
+		<translationMap>reverb_time</translationMap>
+	</item>
+
+</parameters>
