@@ -5,7 +5,7 @@ import device.TimeoutException;
 
 public interface XGRequest extends XGMessage
 {
-	default void request() throws InvalidXGAddressException, TimeoutException
+	default void request() throws InvalidXGAddressException, TimeoutException, InterruptedException
 	{	this.getDestination().request(this);
 	}
 /**

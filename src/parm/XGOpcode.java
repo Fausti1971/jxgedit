@@ -6,8 +6,8 @@ import java.util.Set;
 import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGBulkDump;
-import application.Rest;
 import application.XGLoggable;
+import application.XGStrings;
 import device.XGDevice;
 import xml.XMLNode;
 
@@ -24,27 +24,27 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 	public XGOpcode(XGDevice dev, XGBulkDump bulk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
 	{	this.device = dev;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), bulk.getAddress());
-		this.dataType = ValueDataType.valueOf(n.getStringAttribute(ATTR_DATATYPE, DEF_DATATYPE.name()));
+		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), bulk.getAddress());
+		this.dataType = ValueDataType.valueOf(n.getStringAttribute(ATTR_DATATYPE, DEF_DATATYPE.name()).toString());
 
 		if(n.hasAttribute(ATTR_PARAMETERSELECTOR))
-		{	this.parameterSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_PARAMETERSELECTOR), null);
+		{	this.parameterSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_PARAMETERSELECTOR).toString(), null);
 			for(XMLNode s : n.getChildNodes(TAG_PARAM))
 			{	int msb = s.getIntegerAttribute(ATTR_MSB, 0)  << 7;
 				int lsb = s.getIntegerAttribute(ATTR_LSB, 0);
 				int v = msb | lsb;
 				if(s.hasAttribute(ATTR_VALUE)) v = s.getIntegerAttribute(ATTR_VALUE);
-				XGParameter parm = dev.getParameters().get(s.getStringAttribute(ATTR_PARAMETER_ID));
+				XGParameter parm = dev.getParameters().get(s.getStringAttribute(ATTR_PARAMETER_ID).toString());
 				this.parameters.put(v, parm);
 			}
 		}
 		else
 		{	this.parameterSelectorAddress = null;
-			this.parameters.put(DEF_SELECTORVALUE, dev.getParameters().get(n.getStringAttribute(ATTR_PARAMETER_ID)));
+			this.parameters.put(DEF_SELECTORVALUE, dev.getParameters().get(n.getStringAttribute(ATTR_PARAMETER_ID).toString()));
 		}
 		for(String s: XACTION)
 		{	if(n.hasAttribute(s))
-				this.actions.put(s, Rest.splitCSV(n.getStringAttribute(s)));
+				this.actions.put(s, XGStrings.splitCSV(n.getStringAttribute(s).toString()));
 		}
 	}
 

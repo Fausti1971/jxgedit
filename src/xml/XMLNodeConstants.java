@@ -22,10 +22,12 @@ public interface XMLNodeConstants
 		TAG_CONFIG = "config",
 		TAG_VERSION = "version",
 
+		TAG_FILES = "files",
+
 		TAG_DEVICE = "device",
 		ATTR_SYSEXID = "sysexID",
-		ATTR_LASTDUMPFILE = "lastDumpFile",
-		ATTR_DEFAULTDUMPFOLDER = "defaultDumpFolder",
+		ATTR_DEFAULTDUMPFILE = "defaultDumpFile",
+		ATTR_FILE = "file",
 
 		TAG_MIDI = "midi",
 		ATTR_MIDIINPUT = "input",

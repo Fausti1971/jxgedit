@@ -16,7 +16,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
 import application.JXG;
-import application.Rest;
+import application.XGMath;
 import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterConstants;
@@ -142,8 +142,8 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 			this.g2.setColor(COL_BAR_BACK);
 			this.g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 	// draw foreground
-			this.originWidth = Rest.linearIO(this.parameter.getOrigin(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth());
-			this.barWidth = Rest.linearIO(this.value.getContent(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth()) - this.originWidth;
+			this.originWidth = XGMath.linearIO(this.parameter.getOrigin(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth());
+			this.barWidth = XGMath.linearIO(this.value.getContent(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth()) - this.originWidth;
 			this.g2.setColor(COL_BAR_FORE);
 			this.g2.fillRoundRect(0 + Math.min(this.originWidth, this.originWidth + this.barWidth), 0, Math.abs(this.barWidth), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			this.g2.dispose();

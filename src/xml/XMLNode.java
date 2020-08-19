@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
-import java.util.Properties;
 import java.util.Set;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
@@ -17,11 +16,11 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.stream.StreamSource;
 import application.ConfigurationConstants;
-import application.Rest;
 import application.XGLoggable;
+import application.XGStrings;
 import tag.XGTagable;
 
-public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
+public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, XGStrings
 {
 	private static final String ERRORSTRING = " contains invalid character";
 
@@ -55,13 +54,13 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 		return root_node;
 	}
 
-	private static Properties createProperties(Iterator<Attribute> i)
-	{	Properties prop = new Properties();
+	private static XGProperties createProperties(Iterator<Attribute> i)
+	{	XGProperties prop = new XGProperties();
 		String name;
 		while(i.hasNext())
 		{	Attribute a = i.next();
 			name = a.getName().getLocalPart();
-			if(!Rest.isAlNum(name)) throw new RuntimeException(name + ERRORSTRING);
+			if(!XGStrings.isAlNum(name.toString())) throw new RuntimeException(name + ERRORSTRING);
 			prop.put(name, a.getValue());
 		}
 		return prop;
@@ -72,32 +71,32 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 	private XMLNode parent;
 	private final Set<XMLNode> childNodes = new LinkedHashSet<>();
 	private final String tag;
-	private String content = null;
-	private final Properties attributes;
+	private final StringBuffer content = new StringBuffer("");
+	private final XGProperties attributes;
 
 
-	public XMLNode(String tag, Properties attr)
-	{	if(!Rest.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
+	public XMLNode(String tag, XGProperties attr)
+	{	if(!XGStrings.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
 		this.tag = tag;
 		if(attr != null) this.attributes = attr;
-		else this.attributes = new Properties();
+		else this.attributes = new XGProperties();
 	}
 
-	public XMLNode(String tag, Properties attr, String txt)
+	public XMLNode(String tag, XGProperties attr, String txt)
 	{	this(tag, attr);
-		this.content = txt;
+		this.content.replace(0, this.content.length(), txt);
 	}
 
 	public XMLNode getParentNode()
 	{	return this.parent;
 	}
 
-	public void setTextContent(String s)
-	{	this.content = s;
+	public void setTextContent(final String s)
+	{	this.content.replace(0, this.content.length(), s);
 	}
 
 	public void setTextContent(int v)
-	{	this.content = String.valueOf(v);
+	{	this.content.replace(0, this.content.length(), String.valueOf(v));
 	}
 
 	public void addChildNode(XMLNode child)
@@ -117,7 +116,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 	{	return this.childNodes;
 	}
 
-	public XMLNode getChildNode(String tag)
+	public final XMLNode getChildNode(String tag)
 	{	for(XMLNode n : this.childNodes) if(n.getTag().equals(tag)) return n;
 		return null;
 	}
@@ -130,7 +129,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 		return set;
 	}
 
-	public XMLNode getChildNodeOrNew(String tag)
+	public final XMLNode getChildNodeOrNew(String tag)
 	{	XMLNode n = this.getChildNode(tag);
 		if(n == null)
 		{	n = new XMLNode(tag, null);
@@ -139,24 +138,32 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 		return n;
 	}
 
+	public final XMLNode getLastChildOrNew(String tag)
+	{	Set<XMLNode> set = this.getChildNodes(tag);
+		XMLNode res = new XMLNode(tag, null, "");
+		if(!set.isEmpty()) return (XMLNode)set.toArray()[set.size() - 1];
+		this.addChildNode(res);
+		return res;
+	}
+
 	@Override public String getTag()
 	{	return this.tag;
 	}
 
-	public String getTextContent()
+	public final StringBuffer getTextContent()
 	{	return this.content;
 	}
 
-	public String getChildNodeTextContent(String tag, String def)
+	public final StringBuffer getChildNodeTextContent(String tag, String def)
 	{	XMLNode n = this.getChildNode(tag);
-		if(n == null) return def;
+		if(n == null) return new StringBuffer(def);
 		return n.getTextContent();
 	}
 
 	public int parseChildNodeIntegerContent(String tag, int def)
 	{	XMLNode n = this.getChildNode(tag);
 		if(n == null) return def;
-		return Rest.parseIntOrDefault(n.getTextContent(), def);
+		return XGStrings.parseIntOrDefault(n.getTextContent().toString(), def);
 	}
 
 	public int parseChildNodeIntegerContentOrNew(String tag, int def)
@@ -166,17 +173,17 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 			n.setTextContent(def);
 			this.addChildNode(n);
 		}
-		return Rest.parseIntOrDefault(n.getTextContent(), def);
+		return XGStrings.parseIntOrDefault(n.getTextContent().toString(), def);
 	}
 
 	public XMLNode getChildNodeWithID(String tag, String id)
-	{	for(XMLNode x : this.childNodes)
-			if(x.getTag().equals(tag) && id.equals(x.getStringAttribute(ATTR_ID)))
+	{	for(XMLNode x : this.getChildNodes(tag))
+			if(id.equals(x.getStringAttribute(ATTR_ID)))
 				return x;
 		return null;
 	}
 
-	public Properties getAttributes()
+	public final XGProperties getAttributes()
 	{	return this.attributes;
 	}
 
@@ -184,38 +191,43 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 	{	return this.attributes.containsKey(name);
 	}
 
-	public String getStringAttribute(String a, String def)
-	{	String s = this.attributes.getProperty(a);
+	public final StringBuffer getStringAttributeOrNew(String attr)
+	{	if(!this.hasAttribute(attr)) this.setStringAttribute(attr, "");
+		return this.attributes.get(attr);
+	}
+
+	public final StringBuffer getStringAttribute(String a, String def)
+	{	if(!this.hasAttribute(a)) this.attributes.put(a, def);
+		return this.attributes.get(a);
+	}
+
+	public final StringBuffer getStringAttribute(String a)
+	{	if(this.attributes.containsKey(a)) return this.attributes.get(a);
+		else return new StringBuffer("");
+	}
+
+	public void setStringAttribute(final String attr, final String content)
+	{	if(!XGStrings.isAlNum(attr)) throw new RuntimeException(attr + ERRORSTRING);
+		this.attributes.put(attr, content);
+	}
+
+	public final int getIntegerAttribute(String a, int def)
+	{	StringBuffer s = this.attributes.get(a);
 		if(s == null) return def;
-		return s;
+		return Integer.parseInt(this.attributes.get(a).toString());
 	}
 
-	public String getStringAttribute(String a)
-	{	return this.attributes.getProperty(a);
+	public final int getIntegerAttribute(String a) throws NumberFormatException
+	{	return Integer.parseInt(this.attributes.get(a).toString());
 	}
 
-	public void setStringAttribute(String attr, String outputName)
-	{	if(!Rest.isAlNum(attr)) throw new RuntimeException(attr + ERRORSTRING);
-		this.attributes.put(attr, outputName);
-	}
-
-	public int getIntegerAttribute(String a, int def)
-	{	String s = (String)this.attributes.get(a);
-		if(s == null) return def;
-		return Integer.parseInt((String)this.attributes.get(a));
-	}
-
-	public int getIntegerAttribute(String a) throws NumberFormatException
-	{	return Integer.parseInt((String)this.attributes.get(a));
-	}
-
-	public void setIntegerAttribute(String attr, int t)
+	public void setIntegerAttribute(String attr, final int t)
 	{	this.setStringAttribute(attr, String.valueOf(t));
 	}
 
-	public double getDoubleAttribute(String attr, double def)
-	{	if(this.attributes.contains(attr))
-			return Double.parseDouble((String)this.attributes.get(attr));
+	public final double getDoubleAttribute(String attr, double def)
+	{	if(this.attributes.containsKey(attr))
+			return Double.parseDouble(this.attributes.get(attr).toString());
 		else return def;
 	}
 
@@ -234,10 +246,10 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable
 	{	try
 		{	w.writeStartElement(n.tag);
 			if(n.attributes != null)//Attribute müssen VOR dem text geschrieben werden, sonst javax.xml.stream.XMLStreamException: Attribute not associated with any element
-			{	for(Entry<Object,Object> e : n.attributes.entrySet())
+			{	for(Entry<String, StringBuffer> e : n.attributes.entrySet())
 					w.writeAttribute(e.getKey().toString(), e.getValue().toString());
 			}
-			if(n.content != null) w.writeCharacters(n.content);
+			if(n.content != null) w.writeCharacters(n.content.toString());
 			for(XMLNode n2 : n.childNodes) n2.writeNode(w, n2);
 			w.writeEndElement();
 		}

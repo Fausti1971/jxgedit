@@ -73,11 +73,12 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	public JXG()
 	{	
 //		this.xsdPath = rscPath.resolve("xsd");
-		XMLNode x = new XMLNode(APPNAME, null);
 		HOMEPATH.toFile().mkdirs();
+
 		File f = CONFIGFILEPATH.toFile();
-		if(f.exists()) x = XMLNode.parse(f);
-		this.config = x;
+		if(f.exists()) this.config = XMLNode.parse(f);
+		else this.config = new XMLNode(APPNAME, null);
+
 		LOG.info("JXG config initialized");
 	}
 
@@ -111,7 +112,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 			};
 		}
 		catch(InvalidXGAddressException e)
-		{	e.printStackTrace();
+		{	LOG.warning(e.getMessage());
 		}
 	}
 

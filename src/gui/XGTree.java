@@ -19,6 +19,9 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	private static final long serialVersionUID=4038224172565298441L;
 
 	private static final DefaultTreeCellRenderer DTCR = new DefaultTreeCellRenderer();
+	static
+	{	DTCR.setBackgroundSelectionColor(COL_NODE_SELECTED_BACK);
+	}
 	private static final TreeCellRenderer XGTreeCellRenderer = new TreeCellRenderer()
 	{	@Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
 		{	XGTree t = (XGTree)tree;

@@ -61,6 +61,13 @@ Problem:
 		gespeichert würde, wobei der optionale Ordner (0) die SysexID bestimmt, damit mehrere Devices selben Typs editiert werden können. Beim Fehlen des Pfades könnte man als default XG benutzen.
 		Die Devicekonfiguration könnte auch komplett auf XG basieren und sich lediglich auf die Aufzählung der unterstützen Opcodes, Bulks, Drumsets, ADParts usw. bzw. deren Anzahl beschränken.
 		Außerdem könnte man diese unterstützten Elemente auch automatisch erfragen lassen...
-		Eventuell auch möglich für Tables: Generiere devicespezifische Table durch senden, erfragen, vergleichen und speichern von PrgChangemeldungen
+		Eventuell auch möglich für Tables: Generiere devicespezifische Table durch senden, erfragen, vergleichen und speichern von PrgChangemeldungen (erfolglos getestet; verworfen)
 		(zum aussondern von doppelten Einträgen könnte man über eine DBMS nachdenken)
 		Denke nochmals über DBMS und FX nach...
+Problem:
+		der komplette (bislang sequentielle) Request dauert beim MU80 über eine Minute. Insbesondere durch den Verzicht auf die Mitführung der defaults dauert das z.B. beim Wechsel eines
+		Drumsets zu lange. Denke also wieder über eine RequestQueue nach (mit all ihren durch Threading entstehenden Komplexitäten).
+		Erreichbar über die Erweiterung der XGMessenger-Schnittstelle (request(Set<XGRequest>)/submit(Set<XGResponse>)), im Messenger konkret über eine In- und OutQueue.
+		Geht vielleicht auch ohne Threading, indem man des Programm warten lässt bis alle Reuests versendet oder gar beantwortet wurden.
+		Die Möglichkeit des sequentiellen Requests muss aber erhalten bleiben für bspw. requestInfo().
+		Alternativ könnte man über die Pflege von Defaultwerten sinnieren.

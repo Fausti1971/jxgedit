@@ -23,7 +23,8 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 	private XGStatusBar status = new XGStatusBar();
 
 	public XGRootWindow()
-	{	this.setLayout(new BorderLayout());
+	{	super();
+		this.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.addWindowListener(this);
 		this.addComponentListener(this);

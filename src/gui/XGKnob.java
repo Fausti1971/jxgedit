@@ -15,7 +15,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
 import application.JXG;
-import application.Rest;
+import application.XGMath;
 import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
@@ -127,8 +127,8 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 			g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, START_ARC, LENGTH_ARC);
 	// paint foreground arc
 			this.parameter = this.value.getParameter();
-			this.originArc = Rest.linearIO(parameter.getOrigin(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
-			this.lengthArc = Rest.linearIO(this.value.getContent(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
+			this.originArc = XGMath.linearIO(parameter.getOrigin(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
+			this.lengthArc = XGMath.linearIO(this.value.getContent(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
 			g2.setColor(COL_BAR_FORE);
 			g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, this.originArc + START_ARC, this.lengthArc - originArc);
 	// paint marker

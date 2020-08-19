@@ -20,14 +20,14 @@ public interface GuiConstants extends ConfigurationConstants
 	Color
 		COL_FOCUS = UIManager.getColor("Focus.color"),
 		COL_TRANSPARENT = new Color(0, 0, 0, 0),
-		COL_NODE_SELECTED_BACK = UIManager.getColor("Tree.selectionBackground"),
+		COL_NODE_SELECTED_BACK = Color.lightGray,
 		COL_NODE_BACK = UIManager.getColor("Tree.textBackground"),
 		COL_NODE_FOCUS = UIManager.getColor("Tree.selectionBorderColor"),
 		COL_NODE_TEXT = Color.darkGray,
 		COL_NODE_SELECTED_TEXT = Color.white,
 		COL_BORDER = Color.lightGray,
 		COL_BAR_BACK = SystemColor.scrollbar.brighter(),
-		COL_BAR_FORE = COL_NODE_SELECTED_BACK.brighter();
+		COL_BAR_FORE = UIManager.getColor("Tree.selectionBackground").brighter();
 
 	float FONTSIZE = 10f;
 

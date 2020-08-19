@@ -45,9 +45,9 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 		}
 		XMLNode xml = XMLNode.parse(file);
 		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
-		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), null);
+		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), null);
 			XGModule hi = null;
-			String cat = n.getStringAttribute(ATTR_NAME);
+			String cat = n.getStringAttribute(ATTR_NAME).toString();
 			if(adr.getHi().getMin() > 47)//	falls DrumModule
 			{	for(int h : adr.getHi())
 				{	String name = cat + " " + (h - 47);
@@ -87,7 +87,7 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 		this.category = cat;
 		this.address = adr;
 		this.device = dev;
-		this.idTranslator = dev.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
+		this.idTranslator = dev.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR).toString());
 		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
 	}
 
@@ -106,6 +106,9 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 			catch(InvalidXGAddressException | InvalidMidiDataException | TimeoutException e)
 			{	LOG.severe(e.getMessage());
 				missed++;
+			}
+		catch(InterruptedException e)
+			{	LOG.info(e.getMessage());
 			}
 			count++;
 		}

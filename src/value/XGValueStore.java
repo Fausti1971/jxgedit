@@ -1,7 +1,6 @@
 package value;
 
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
@@ -87,10 +86,6 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 		{	e.printStackTrace();
 		}
 		res.getDestination().submit(res);
-	}
-
-	@Override public JComponent getConfigComponent()
-	{	return null;
 	}
 
 	@Override public void close()

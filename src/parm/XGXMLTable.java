@@ -21,8 +21,8 @@ public class XGXMLTable implements XGTable
  * @param n
  */
 	XGXMLTable(XMLNode n)
-	{	this.name = n.getStringAttribute(ATTR_NAME);
-		this.unit = n.getStringAttribute(ATTR_UNIT, "");
+	{	this.name = n.getStringAttribute(ATTR_NAME).toString();
+		this.unit = n.getStringAttribute(ATTR_UNIT, "").toString();
 		int i = 0;
 		for(XMLNode e : n.getChildNodes(TAG_ITEM))
 		{	this.add(i++, new XGTableEntry(e));
@@ -43,7 +43,8 @@ public class XGXMLTable implements XGTable
 	}
 	
 	@Override public XGTableEntry getByIndex(int i)
-	{	return this.list.get(Math.min(this.list.size() - 1, Math.max(0, i)));
+	{	if(this.list.isEmpty()) throw new IndexOutOfBoundsException("index " + i + " out of bounds in " + this.getName());
+		return this.list.get(Math.min(this.getMaxIndex(), Math.max(0, i)));
 	}
 
 	@Override public XGTableEntry getByValue(int v)
@@ -65,7 +66,8 @@ public class XGXMLTable implements XGTable
 	}
 
 	@Override public XGXMLTable filter(XMLNode n)
-	{	String f = n.getStringAttribute(ATTR_TABLEFILTER);
+	{	
+		String f = n.getStringAttribute(ATTR_TABLEFILTER).toString();
 		int minValue = n.getIntegerAttribute(ATTR_MIN, this.getMinEntry().getValue());
 		int maxValue = n.getIntegerAttribute(ATTR_MAX, this.getMaxEntry().getValue());
 		XGXMLTable table = new XGXMLTable(this.name + "-" + f, this.unit);

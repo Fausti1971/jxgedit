@@ -2,7 +2,7 @@ package parm;
 
 import java.util.Iterator;
 import java.util.function.Function;
-import application.Rest;
+import application.XGMath;
 import device.XGDevice;
 import xml.XMLNode;
 
@@ -134,7 +134,7 @@ public class XGVirtualTable implements XGTable
 				(4, 124, TABLE_DEGREES,
 					new Function<Integer, String>()
 					{	@Override public String apply(Integer t)
-						{	return Integer.toString(Rest.linearIO(t, 4, 124, -180, 180));
+						{	return Integer.toString(XGMath.linearIO(t, 4, 124, -180, 180));
 						};
 					},
 					new Function<String, Integer>()

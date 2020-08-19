@@ -29,7 +29,7 @@ public class XGBulkDump implements XGAddressable, XMLNodeConstants
 
 	public XGBulkDump(XGModule mod, XMLNode n) throws InvalidXGAddressException
 	{	this.module = mod;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress()).complement(mod.getAddress());
+		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), mod.getAddress()).complement(mod.getAddress());
 		for(XMLNode o : n.getChildNodes(TAG_OPCODE))
 		{	XGOpcode opc = new XGOpcode(mod.getDevice(), this, o);
 			XGValue val = new XGValue(mod.getDevice().getValues(), opc, this);

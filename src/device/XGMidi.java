@@ -112,8 +112,8 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	public XGMidi(XGDevice dev)
 	{	this.device = dev;
 		this.config = this.device.getConfig().getChildNodeOrNew(TAG_MIDI);
-		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT));
-		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT));
+		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT).toString());
+		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT).toString());
 		this.timeout.setContent(this.config.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
 		this.buffer = new XGMessageBuffer(this);
 
@@ -226,8 +226,8 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	}
 
 	@Override public void midiSystemUpdated() throws CoreMidiException
-	{	this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT));
-		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT));
+	{	this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT).toString());
+		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT).toString());
 		LOG.info("CoreMidiSystem updated, " + this.midiInput.getDeviceInfo() + "=" + this.midiInput.isOpen() + ", " + this.midiOutput.getDeviceInfo() + "=" + this.midiOutput.isOpen());
 		//	this.notifyConfigurationListeners();
 	}
@@ -267,7 +267,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		}
 	}
 
-	@Override public void request(XGRequest msg) throws TimeoutException
+	@Override public void request(XGRequest msg) throws TimeoutException, InterruptedException
 	{	synchronized(this.buffer)
 		{	if(this.transmit(msg))
 			{	try
@@ -277,7 +277,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 					throw new TimeoutException("timeout: no response to " + this.request + " within " + (System.currentTimeMillis() - this.request.getTimeStamp()) + " ms");
 				}
 				catch(InterruptedException e)//wird bei validiertem empfang via send() interrupted, sofern ein request im Lauf ist...
-				{	LOG.info(this.request + " responsed by " + this.request.getResponse() + " within " + (this.request.getResponse().getTimeStamp() - this.request.getTimeStamp()) + " ms");
+				{	throw new InterruptedException(this.request + " responsed by " + this.request.getResponse() + " within " + (this.request.getResponse().getTimeStamp() - this.request.getTimeStamp()) + " ms");
 				}
 			}
 			this.request = null;

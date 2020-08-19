@@ -13,7 +13,7 @@ import adress.XGAddress;
 import adress.XGAddressConstants;
 import application.Configurable;
 import application.JXG;
-import application.Rest;
+import application.XGStrings;
 import module.XGModule;
 import value.XGValue;
 import xml.XMLNode;
@@ -70,7 +70,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	protected final XGAddress address;
 
 	public XGComponent(String text)
-	{	this.config = new XMLNode(text.replaceAll(Rest.REGEX_NON_ALNUM, Rest.TEXT_REPLACEMENT), null);
+	{	this.config = new XMLNode(text.replaceAll(XGStrings.REGEX_NON_ALNUM, XGStrings.TEXT_REPLACEMENT), null);
 		this.value = null;
 		this.address = XGALLADDRESS;
 		this.setName(text);
@@ -79,11 +79,11 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	public XGComponent(XMLNode n, XGModule mod)
 	{	this.config = n;
 		this.setBounds();
-		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE).toString(), mod.getAddress());
 		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
 		if(v == null) v = DEF_VALUE;
 		this.value = v;
-		this.setName(n.getStringAttribute(ATTR_NAME, mod.toString()));
+		this.setName(n.getStringAttribute(ATTR_NAME, mod.toString()).toString());
 	}
 
 	@Override public Component add(Component comp)
@@ -100,7 +100,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	}
 
 	public void setBounds()
-	{	String s = this.config.getStringAttribute(ATTR_GB_GRID);
+	{	String s = this.config.getStringAttribute(ATTR_GB_GRID).toString();
 		String[] str = s.split(",");
 		super.setBounds(GRID * Integer.parseInt(str[0]), GRID * Integer.parseInt(str[1]), GRID * Integer.parseInt(str[2]), GRID * Integer.parseInt(str[3]));
 		Dimension dim = new Dimension(this.getBounds().getSize());

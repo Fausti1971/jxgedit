@@ -20,14 +20,13 @@ import device.XGDevice;
 import gui.XGFrame;
 import gui.XGWindow;
 import gui.XGWindowSource;
-import xml.XMLNode;
 
 public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMessenger, XGWindowSource, XGLoggable
 {	private final XGMessenger source;
 	private XGWindow window;
 	private final JList<XGMessage> list = new JList<>(new DefaultListModel<XGMessage>());
 	private JLabel status = new JLabel();
-	private XMLNode config = new XMLNode("buffer", null);
+//	private XMLNode config = new XMLNode("buffer", null);
 
 	public XGMessageBuffer(XGMessenger src)
 	{	this.source = src;
@@ -164,12 +163,6 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 
 	@Override public void request(XGRequest req) throws InvalidXGAddressException
 	{
-	}
-
-	@Override public JComponent getConfigComponent()
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override public void close()
