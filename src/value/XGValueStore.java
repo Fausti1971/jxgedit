@@ -5,7 +5,6 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
 import application.XGLoggable;
-import device.TimeoutException;
 import device.XGDevice;
 import msg.XGMessenger;
 import msg.XGRequest;
@@ -55,7 +54,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	{	return this.device + " ValueStore";
 	}
 
-	@Override public void request(XGRequest req) throws InvalidXGAddressException, TimeoutException
+	@Override public void request(XGRequest req) throws InvalidXGAddressException
 	{	XGResponse res = req.getResponse();
 		int
 			hi = res.getAddress().getHi().getValue(),
@@ -83,9 +82,9 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 		{	res.checkSum();
 		}
 		catch(InvalidMidiDataException e)
-		{	e.printStackTrace();
+		{	LOG.severe(e.getMessage());
 		}
-		res.getDestination().submit(res);
+//		res.getDestination().submit(res);
 	}
 
 	@Override public void close()

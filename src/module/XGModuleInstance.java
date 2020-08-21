@@ -66,8 +66,8 @@ public class XGModuleInstance extends XGModule
 	@Override public void actionPerformed(ActionEvent e)
 	{	switch(e.getActionCommand())
 		{	case ACTION_EDIT:		this.edit(); break;
-			case ACTION_REQUEST:	this.transmitAll(this.device.getMidi(), this.device.getValues()); break;
-			case ACTION_TRANSMIT:	this.transmitAll(this.device.getValues(), this.device.getMidi()); break;
+			case ACTION_REQUEST:	new Thread(() -> {	this.transmitAll(this.device.getMidi(), this.device.getValues());}).start(); break;
+			case ACTION_TRANSMIT:	new Thread(() -> {	this.transmitAll(this.device.getValues(), this.device.getMidi());}).start(); break;
 		}
 	}
 

@@ -33,7 +33,7 @@ public interface XGMessenger
  * @throws TimeoutException 
  * @throws InterruptedException 
  */
-	void request(XGRequest req) throws InvalidXGAddressException, TimeoutException, InterruptedException;
+	void request(XGRequest req) throws InvalidXGAddressException;
 
 	@Override String toString();
 

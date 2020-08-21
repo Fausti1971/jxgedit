@@ -15,7 +15,6 @@ import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import adress.XGBulkDump;
-import device.TimeoutException;
 import device.XGDevice;
 import gui.XGComponent;
 import gui.XGTemplate;
@@ -102,15 +101,16 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 		{	try
 			{	XGRequest r = new XGMessageBulkRequest(dest, src, b);
 				r.request();
+				if(r.isResponsed())
+				{	dest.submit(r.getResponse());
+					count++;
+				}
+				else missed++;
 			}
-			catch(InvalidXGAddressException | InvalidMidiDataException | TimeoutException e)
+			catch(InvalidXGAddressException | InvalidMidiDataException e)
 			{	LOG.severe(e.getMessage());
 				missed++;
 			}
-		catch(InterruptedException e)
-			{	LOG.info(e.getMessage());
-			}
-			count++;
 		}
 		Level level;
 		if(missed == 0) level = Level.INFO;

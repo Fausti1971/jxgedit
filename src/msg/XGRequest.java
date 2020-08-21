@@ -1,11 +1,10 @@
 package msg;
 
 import adress.InvalidXGAddressException;
-import device.TimeoutException;
 
 public interface XGRequest extends XGMessage
 {
-	default void request() throws InvalidXGAddressException, TimeoutException, InterruptedException
+	default void request() throws InvalidXGAddressException
 	{	this.getDestination().request(this);
 	}
 /**

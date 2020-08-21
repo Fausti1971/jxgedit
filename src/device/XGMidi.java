@@ -106,7 +106,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	private MidiDevice midiInput = null;
 	private XGRequest request = null;
 	private int timeoutValue;
-	private Thread requestThread;
+//	private Thread requestThread;
 	private final XGMessageBuffer buffer;
 
 	public XGMidi(XGDevice dev)
@@ -255,7 +255,9 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	{	try
 		{	XGMessage m = XGMessage.newMessage(this, this.buffer, mmsg);
 			if(this.request != null && this.request.setResponsed((XGResponse)m))
-			{	this.requestThread.interrupt();
+			{	synchronized(this.request)
+				{	this.request.notify();
+				}
 				return;
 			}
 //			m.getDestination().submit((XGResponse)m);
@@ -265,16 +267,16 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		}
 	}
 
-	@Override public void request(XGRequest msg) throws TimeoutException, InterruptedException
+	@Override public void request(XGRequest msg)
 	{	if(this.transmit(msg))
 		{	try
 			{	this.request = msg;
-				this.requestThread = Thread.currentThread();
-				Thread.sleep(this.timeoutValue);
-				throw new TimeoutException("timeout: no response to " + this.request + " within " + (System.currentTimeMillis() - this.request.getTimeStamp()) + " ms");
+				synchronized(this.request)
+				{	this.request.wait(this.timeout.getContent());
+				}
 			}
-			catch(InterruptedException e)//wird bei validiertem empfang via send() interrupted, sofern ein request im Lauf ist...
-			{	throw new InterruptedException(this.request + " responsed by " + this.request.getResponse() + " within " + (this.request.getResponse().getTimeStamp() - this.request.getTimeStamp()) + " ms");
+			catch (InterruptedException e)
+			{	LOG.info(e.getMessage());
 			}
 		}
 		this.request = null;

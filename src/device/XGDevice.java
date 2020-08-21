@@ -236,15 +236,15 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		{	m = new XGMessageBulkRequest(this.values, this.midi, XGAddressConstants.XGMODELNAMEADRESS);
 			try
 			{	m.request();
+				if(m.isResponsed())
+				{	XGResponse r = m.getResponse();
+					String s = r.getString(r.getBaseOffset(), r.getBaseOffset() + r.getBulkSize());
+					this.name.replace(0, this.name.length(), s.trim());
+				}
+				else JOptionPane.showMessageDialog(this.getChildWindow(), "no response for " + m);
 			}
-			catch(TimeoutException e)
-			{	JOptionPane.showMessageDialog(this.getChildWindow(), e.getMessage());
-				return;
-			}
-			catch(InterruptedException e)
-			{	XGResponse r = m.getResponse();
-				String s = r.getString(r.getBaseOffset(), r.getBaseOffset() + r.getBulkSize());
-				this.name.replace(0, this.name.length(), s.trim());
+			catch(InvalidXGAddressException e)
+			{	LOG.severe(e.getMessage());
 			}
 		}
 		catch(InvalidXGAddressException | InvalidMidiDataException e)
@@ -311,19 +311,14 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		{	try
 			{	r = new XGMessageBulkRequest(dest, src, b);
 				r.request();
-			}
-			catch(TimeoutException | InvalidXGAddressException | InvalidMidiDataException e)
-			{	LOG.log(Level.SEVERE, e.getMessage());
-			}
-			catch(InterruptedException e)
-			{	try
+				if(r.isResponsed())
 				{	dest.submit(r.getResponse());
 					BARDIM[VALUE] = ++count;
-					LOG.log(Level.FINE, e.getMessage());
+					LOG.log(Level.FINE, r + " responsed by " + r.getResponse() + " within " + (r.getResponse().getTimeStamp() - r.getTimeStamp()) + " ms");
 				}
-				catch(InvalidXGAddressException e1)
-				{	LOG.severe(e.getMessage());
-				}
+			}
+			catch(InvalidXGAddressException | InvalidMidiDataException e)
+			{	LOG.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		Level level;
@@ -388,12 +383,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			case ACTION_REMOVE:		removeDevice(this); break;
 			case ACTION_LOADFILE:	this.load(); break;
 			case ACTION_SAVEFILE:	this.save(); break;
-			case ACTION_TRANSMIT:	this.transmitAll(this.values, this.midi); break;
-			case ACTION_REQUEST:	new Thread(new Runnable()
-									{	@Override public void run()
-										{	transmitAll(midi, values);
-										}
-									}).start(); break;
+			case ACTION_TRANSMIT:	new Thread(() -> {	this.transmitAll(this.values, this.midi);}).start(); break;
+			case ACTION_REQUEST:	new Thread(() -> {	this.transmitAll(this.midi, this.values);}).start(); break;
 			case ACTION_RESET:		this.resetAll(); break;
 			case ACTION_XGON:		this.resetXG(); break;
 			default:				break;
