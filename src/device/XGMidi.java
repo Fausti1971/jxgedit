@@ -252,36 +252,32 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	}
 
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
-	{	synchronized(this)
-		{	try
-			{	XGMessage m = XGMessage.newMessage(this, this.buffer, mmsg);
-				if(this.request != null && this.request.setResponsed((XGResponse)m))
-				{	this.requestThread.interrupt();
-//					return;
-				}
-				m.getDestination().submit((XGResponse)m);
+	{	try
+		{	XGMessage m = XGMessage.newMessage(this, this.buffer, mmsg);
+			if(this.request != null && this.request.setResponsed((XGResponse)m))
+			{	this.requestThread.interrupt();
+				return;
 			}
-			catch(InvalidMidiDataException|InvalidXGAddressException e)
-			{	LOG.info(e.getMessage());
-			}
+//			m.getDestination().submit((XGResponse)m);
+		}
+		catch(InvalidMidiDataException|InvalidXGAddressException e)
+		{	LOG.info(e.getMessage());
 		}
 	}
 
 	@Override public void request(XGRequest msg) throws TimeoutException, InterruptedException
-	{	synchronized(this.buffer)
-		{	if(this.transmit(msg))
-			{	try
-				{	this.request = msg;
-					this.requestThread = Thread.currentThread();
-					Thread.sleep(this.timeoutValue);
-					throw new TimeoutException("timeout: no response to " + this.request + " within " + (System.currentTimeMillis() - this.request.getTimeStamp()) + " ms");
-				}
-				catch(InterruptedException e)//wird bei validiertem empfang via send() interrupted, sofern ein request im Lauf ist...
-				{	throw new InterruptedException(this.request + " responsed by " + this.request.getResponse() + " within " + (this.request.getResponse().getTimeStamp() - this.request.getTimeStamp()) + " ms");
-				}
+	{	if(this.transmit(msg))
+		{	try
+			{	this.request = msg;
+				this.requestThread = Thread.currentThread();
+				Thread.sleep(this.timeoutValue);
+				throw new TimeoutException("timeout: no response to " + this.request + " within " + (System.currentTimeMillis() - this.request.getTimeStamp()) + " ms");
 			}
-			this.request = null;
+			catch(InterruptedException e)//wird bei validiertem empfang via send() interrupted, sofern ein request im Lauf ist...
+			{	throw new InterruptedException(this.request + " responsed by " + this.request.getResponse() + " within " + (this.request.getResponse().getTimeStamp() - this.request.getTimeStamp()) + " ms");
+			}
 		}
+		this.request = null;
 	}
 
 	@Override public int hashCode()

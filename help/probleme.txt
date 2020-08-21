@@ -70,4 +70,8 @@ Problem:
 		Erreichbar über die Erweiterung der XGMessenger-Schnittstelle (request(Set<XGRequest>)/submit(Set<XGResponse>)), im Messenger konkret über eine In- und OutQueue.
 		Geht vielleicht auch ohne Threading, indem man des Programm warten lässt bis alle Reuests versendet oder gar beantwortet wurden.
 		Die Möglichkeit des sequentiellen Requests muss aber erhalten bleiben für bspw. requestInfo().
+		Das unermittelte "Raushauen" aller Requests quittiert (nur) der MU80 mit "Illegal Data!" und massiven Verlusten - also unpraktikabel, weiter sequentiell...
+		nach Umstellung des DumpIntervall am MU80 auf 50 ms dauert der komplette Request ca. 30 s, ein Drumset-Request ca 6 s;
 		Alternativ könnte man über die Pflege von Defaultwerten sinnieren.
+Problem:
+		nachdem die Statusbar indirekt vom EDT aktualisiert wird, rückt nun auch hier das leidige Threading näher. Konzept überdenken bezüglich XGMidi.requestThread.interrupt();

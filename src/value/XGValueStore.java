@@ -72,7 +72,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 				size = v.getSize();
 			}
 			else
-			{	LOG.warning("value not found:"  + adr);
+			{	LOG.severe("value not found:"  + adr);
 				size = 1;
 			}
 			lo += size;

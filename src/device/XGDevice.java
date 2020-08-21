@@ -97,7 +97,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 /***************************************************************************************************************************/
 
-	private final StringBuffer defaultFileName;
+	private final StringBuffer defaultFileName, name;
 //	private final ChangeableContent<String> defaultFileName = new ChangeableContent<String>()
 //	{	@Override public String getContent()
 //		{	return files.getStringAttributeOrNew(ATTR_DEFAULTDUMPFILE);
@@ -119,15 +119,15 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	};
 
-	private ChangeableContent<String> name = new ChangeableContent<String>()
-	{	@Override public String getContent()
-		{	return config.getStringAttribute(ATTR_NAME, DEF_DEVNAME).toString();
-		}
-		@Override public boolean setContent(String s)
-		{	config.setStringAttribute(ATTR_NAME, s);
-			return true;
-		}
-	};
+//	private ChangeableContent<String> name = new ChangeableContent<String>()
+//	{	@Override public String getContent()
+//		{	return config.getStringAttribute(ATTR_NAME, DEF_DEVNAME).toString();
+//		}
+//		@Override public boolean setContent(String s)
+//		{	config.setStringAttribute(ATTR_NAME, s);
+//			return true;
+//		}
+//	};
 	private XGTree tree;
 	private Color color;
 	private boolean isSelected = false;
@@ -153,7 +153,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			this.configure();
 		}
 		this.sysex.setContent(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
-		this.name.setContent(this.config.getStringAttribute(ATTR_NAME, DEF_DEVNAME).toString());
+		this.name = this.config.getStringAttribute(ATTR_NAME, DEF_DEVNAME);
 		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
 		this.midi = new XGMidi(this);
 		this.values = new XGValueStore(this);
@@ -167,6 +167,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		this.defaultFileName = this.files.getStringAttribute(ATTR_DEFAULTDUMPFILE, HOMEPATH.resolve("default.syx").toString());
 		try
 		{	this.defaultFile = new XGSysexFile(this, this.defaultFileName.toString());
+			this.defaultFile.parse();
 			this.transmitAll(this.defaultFile, this.values);
 		}
 		catch(IOException e)
@@ -189,7 +190,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public Path getResourcePath()
-	{	return HOMEPATH.resolve(this.name.getContent());
+	{	return HOMEPATH.resolve(this.name.toString());
 	}
 
 	public Color getColor()
@@ -243,7 +244,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			catch(InterruptedException e)
 			{	XGResponse r = m.getResponse();
 				String s = r.getString(r.getBaseOffset(), r.getBaseOffset() + r.getBulkSize());
-				this.name.setContent(s.trim());
+				this.name.replace(0, this.name.length(), s.trim());
 			}
 		}
 		catch(InvalidXGAddressException | InvalidMidiDataException e)
@@ -269,28 +270,66 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	}
 
+	private void load()
+	{	try
+		{	StringBuffer last = this.files.getLastChildOrNew(TAG_ITEM).getTextContent();
+			XGSysexFile f = new XGSysexFile(this, new XGFileSelector(last, "open sysex file...", "open", XGSysexFileConstants.SYX_FILEFILTER).select(this.childWindow));
+			f.parse();
+			this.transmitAll(f, this.values);
+			this.files.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
+			f.close();
+		}
+		catch(IOException e1)
+		{	LOG.severe(e1.getMessage());
+		}
+	}
+
+	private void save()
+	{	try
+		{	StringBuffer last = this.files.getLastChildOrNew(TAG_ITEM).getTextContent();
+			XGSysexFile f = new XGSysexFile(this, new XGFileSelector(last, "save sysex file...", "save", XGSysexFileConstants.SYX_FILEFILTER).select(this.childWindow));
+			this.transmitAll(this.values, f);
+			f.save();
+			this.files.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
+			f.close();
+		}
+		catch(IOException e1)
+		{	LOG.severe(e1.getMessage());
+		}
+	}
+
 	private void transmitAll(XGMessenger src, XGMessenger dest)
 	{	if(src == null || dest == null) return;
-		int missed = 0;
+		int count = 0;
 		long time = System.currentTimeMillis();
+		XGRequest r = null;
 		XGAddressableSet<XGBulkDump> set = new XGAddressableSet<>();
 		for(XGModule m : this.modules) set.addAll(m.getBulks());
+		BARDIM[MIN] = 0;
+		BARDIM[MAX] = set.size();
 		for(XGBulkDump b : set)
-		try
-		{	XGRequest r = new XGMessageBulkRequest(dest, src, b);
-			r.request();
-		}
-		catch(TimeoutException | InvalidXGAddressException | InvalidMidiDataException e)
-		{	missed++;
-			LOG.severe(e.getMessage());
-		}
-		catch(InterruptedException e)
-		{	LOG.info(e.getMessage());
+		{	try
+			{	r = new XGMessageBulkRequest(dest, src, b);
+				r.request();
+			}
+			catch(TimeoutException | InvalidXGAddressException | InvalidMidiDataException e)
+			{	LOG.log(Level.SEVERE, e.getMessage());
+			}
+			catch(InterruptedException e)
+			{	try
+				{	dest.submit(r.getResponse());
+					BARDIM[VALUE] = ++count;
+					LOG.log(Level.FINE, e.getMessage());
+				}
+				catch(InvalidXGAddressException e1)
+				{	LOG.severe(e.getMessage());
+				}
+			}
 		}
 		Level level;
-		if(missed == 0) level = Level.INFO;
+		if(set.size() - count == 0) level = Level.INFO;
 		else level = Level.SEVERE;
-		LOG.log(level, set.size() - missed + "/" + set.size() + " dumps transmitted from " + src + " to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
+		LOG.log(level, count + "/" + set.size() + " dumps transmitted from " + src + " to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
 	public XGMessenger getMidi()
@@ -312,7 +351,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public String toString()
-	{	return this.name.getContent() + "." + this.sysexID;
+	{	return this.name.toString() + "." + this.sysexID;
 	}
 
 	@Override public XMLNode getConfig()
@@ -347,32 +386,14 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	switch(e.getActionCommand())
 		{	case ACTION_CONFIGURE:	this.configure(); break;
 			case ACTION_REMOVE:		removeDevice(this); break;
-			case ACTION_LOADFILE:
-				try
-				{	StringBuffer last = this.files.getLastChildOrNew(TAG_ITEM).getTextContent();
-					XGSysexFile f = new XGSysexFile(this, new XGFileSelector(last, "open sysex file...", "open", XGSysexFileConstants.SYX_FILEFILTER).select(this.childWindow));
-					this.transmitAll(f, this.values);
-					this.files.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
-					f.close();
-				}
-				catch(IOException e1)
-				{	LOG.severe(e1.getMessage());
-				}
-				break;
-			case ACTION_SAVEFILE:
-				try
-				{	StringBuffer last = this.files.getLastChildOrNew(TAG_ITEM).getTextContent();
-					XGSysexFile f = new XGSysexFile(this, new XGFileSelector(last, "save sysex file...", "save", XGSysexFileConstants.SYX_FILEFILTER).select(this.childWindow));
-					this.transmitAll(this.values, f);
-					this.files.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
-					f.close();
-				}
-				catch(IOException e1)
-				{	LOG.severe(e1.getMessage());
-				}
-				break;
+			case ACTION_LOADFILE:	this.load(); break;
+			case ACTION_SAVEFILE:	this.save(); break;
 			case ACTION_TRANSMIT:	this.transmitAll(this.values, this.midi); break;
-			case ACTION_REQUEST:	this.transmitAll(this.midi, this.values); break;
+			case ACTION_REQUEST:	new Thread(new Runnable()
+									{	@Override public void run()
+										{	transmitAll(midi, values);
+										}
+									}).start(); break;
 			case ACTION_RESET:		this.resetAll(); break;
 			case ACTION_XGON:		this.resetXG(); break;
 			default:				break;

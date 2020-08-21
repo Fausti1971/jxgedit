@@ -1,7 +1,5 @@
 package application;
 
-import java.net.URL;
-
 //JXG: Version, Date, Time, WindowX, WindowY, WindowW, WindowH
 
 import java.nio.file.Path;

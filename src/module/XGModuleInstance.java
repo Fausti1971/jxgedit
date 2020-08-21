@@ -50,6 +50,11 @@ public class XGModuleInstance extends XGModule
 		}
 	}
 
+	private void edit()
+	{	if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.getDevice() + "/" + this.category + " " + this.getTranslatedID());
+		else this.window.toFront();
+	}
+
 	@Override public boolean isLeaf()
 	{	return true;
 	}
@@ -60,9 +65,7 @@ public class XGModuleInstance extends XGModule
 
 	@Override public void actionPerformed(ActionEvent e)
 	{	switch(e.getActionCommand())
-		{	case ACTION_EDIT:		if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.getDevice() + "/" + this.category + " " + this.getTranslatedID());
-									else this.window.toFront();
-									break;
+		{	case ACTION_EDIT:		this.edit(); break;
 			case ACTION_REQUEST:	this.transmitAll(this.device.getMidi(), this.device.getValues()); break;
 			case ACTION_TRANSMIT:	this.transmitAll(this.device.getValues(), this.device.getMidi()); break;
 		}

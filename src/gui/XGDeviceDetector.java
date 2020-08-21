@@ -8,7 +8,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import device.XGDevice;
-import value.ChangeableContent;
 
 public class XGDeviceDetector extends JTextField implements DocumentListener, ActionListener, GuiConstants
 {	/**
@@ -18,13 +17,13 @@ public class XGDeviceDetector extends JTextField implements DocumentListener, Ac
 
 /***********************************************************************************************************************************/
 
-	private ChangeableContent<String> value;
+	private StringBuffer value;
 	private XGDevice device;
 
-	public XGDeviceDetector(String name, ChangeableContent<String> v, XGDevice dev)
-	{	super(v.getContent());
+	public XGDeviceDetector(String name, StringBuffer name2, XGDevice dev)
+	{	super(name2.toString());
 		this.setToolTipText("press enter to autodetect device");
-		this.value = v;
+		this.value = name2;
 		this.device = dev;
 		this.setAlignmentX(0.5f);
 		this.setName(name);
@@ -37,19 +36,19 @@ public class XGDeviceDetector extends JTextField implements DocumentListener, Ac
 	}
 
 	@Override public void insertUpdate(DocumentEvent e)
-	{	value.setContent(getText());
+	{	value.replace(0, value.length(), getText());
 	}
 
 	@Override public void removeUpdate(DocumentEvent e)
-	{	value.setContent(getText());
+	{	value.replace(0, value.length(), getText());
 	}
 
 	@Override public void changedUpdate(DocumentEvent e)
-	{	value.setContent(getText());
+	{	value.replace(0, value.length(), getText());
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
 	{	device.requestInfo();
-		setText(value.getContent());
+		setText(value.toString());
 	}
 }

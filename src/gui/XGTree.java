@@ -22,7 +22,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	static
 	{	DTCR.setBackgroundSelectionColor(COL_NODE_SELECTED_BACK);
 	}
-	private static final TreeCellRenderer XGTreeCellRenderer = new TreeCellRenderer()
+	private static final TreeCellRenderer TCR = new TreeCellRenderer()
 	{	@Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)
 		{	XGTree t = (XGTree)tree;
 			XGTreeNode n = (XGTreeNode)value;
@@ -46,7 +46,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 		this.addMouseListener(this);
 		this.addKeyListener(this);
 		this.setToggleClickCount(10);
-		this.setCellRenderer(XGTreeCellRenderer);
+		this.setCellRenderer(TCR);
 		this.setExpandsSelectedPaths(true);
 		this.setScrollsOnExpand(true);
 		this.setRootVisible(showRoot);
