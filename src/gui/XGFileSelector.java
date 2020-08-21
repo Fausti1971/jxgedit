@@ -1,10 +1,11 @@
-package file;
+package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.FileNotFoundException;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -15,8 +16,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import application.JXG;
 import application.XGStrings;
-import gui.GuiConstants;
-import gui.XGFrame;
+import file.XGSysexFileConstants;
 
 public class XGFileSelector extends JFileChooser implements XGSysexFileConstants, GuiConstants, DocumentListener, ActionListener, XGStrings
 {	/**
@@ -43,14 +43,14 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 	}
 
 	public final String select(Component par) throws FileNotFoundException
-	{	int res = this.showDialog(par, this.getApproveButtonText());
+	{	this.setSelectedFile(new File(this.path.toString()));
+		int res = this.showDialog(par, this.getApproveButtonText());
 		if(res == JFileChooser.APPROVE_OPTION) return this.getSelectedFile().getAbsolutePath();
 		throw new FileNotFoundException("fileselection aborted");
 	}
 
 	public JComponent small()
 	{	XGFrame root = new XGFrame(this.getDialogTitle());
-
 		root.setLayout(new BorderLayout());
 		root.setToolTipText(this.path.toString());
 		root.setAlignmentX(0.5f);
@@ -82,7 +82,7 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 			this.text.setText(this.path.toString());
 		}
 		catch(FileNotFoundException e1)
-		{	e1.printStackTrace();
+		{
 		}
 	}
 }

@@ -1,5 +1,9 @@
-package adress;
+package msg;
 import java.util.logging.Logger;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
+import adress.XGAddressable;
+import adress.XGAddressableSet;
 import module.XGModule;
 import parm.XGOpcode;
 import value.XGValue;

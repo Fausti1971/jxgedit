@@ -5,10 +5,10 @@ import java.util.Map;
 import java.util.Set;
 import adress.XGAddress;
 import adress.XGAddressable;
-import adress.XGBulkDump;
 import application.XGLoggable;
 import application.XGStrings;
 import device.XGDevice;
+import msg.XGBulkDump;
 import xml.XMLNode;
 
 public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants

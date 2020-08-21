@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.logging.Level;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
@@ -21,14 +20,13 @@ import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
-import adress.XGBulkDump;
 import application.Configurable;
 import application.JXG;
-import file.XGFileSelector;
 import file.XGSysexFile;
 import file.XGSysexFileConstants;
 import gui.XGContext;
 import gui.XGDeviceDetector;
+import gui.XGFileSelector;
 import gui.XGFrame;
 import gui.XGSpinner;
 import gui.XGTemplate;
@@ -37,6 +35,8 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import module.XGModule;
+import msg.XGBulkDump;
+import msg.XGBulkDumper;
 import msg.XGMessageBulkRequest;
 import msg.XGMessageParameterChange;
 import msg.XGMessenger;
@@ -49,7 +49,7 @@ import value.ChangeableContent;
 import value.XGValueStore;
 import xml.XMLNode;
 
-public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XGContext, XGWindowSource
+public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XGContext, XGWindowSource, XGBulkDumper
 {
 	private static Set<XGDevice> DEVICES = new LinkedHashSet<>();
 //	private static XGDevice DEF = new XGDevice();
@@ -97,17 +97,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 /***************************************************************************************************************************/
 
-	private final StringBuffer defaultFileName, name;
-//	private final ChangeableContent<String> defaultFileName = new ChangeableContent<String>()
-//	{	@Override public String getContent()
-//		{	return files.getStringAttributeOrNew(ATTR_DEFAULTDUMPFILE);
-//		}
-//		@Override public boolean setContent(String s)
-//		{	files.setStringAttribute(ATTR_DEFAULTDUMPFILE, s);
-//			return true;
-//		}
-//	};
-
 	private final ChangeableContent<Integer> sysex = new ChangeableContent<Integer>()
 	{	@Override public Integer getContent()
 		{	return getSysexID();
@@ -118,16 +107,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			return old != i;
 		}
 	};
-
-//	private ChangeableContent<String> name = new ChangeableContent<String>()
-//	{	@Override public String getContent()
-//		{	return config.getStringAttribute(ATTR_NAME, DEF_DEVNAME).toString();
-//		}
-//		@Override public boolean setContent(String s)
-//		{	config.setStringAttribute(ATTR_NAME, s);
-//			return true;
-//		}
-//	};
+	private final StringBuffer defaultFileName, name;
 	private XGTree tree;
 	private Color color;
 	private boolean isSelected = false;
@@ -272,7 +252,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	private void load()
 	{	try
-		{	StringBuffer last = this.files.getLastChildOrNew(TAG_ITEM).getTextContent();
+		{	StringBuffer last = this.files.getLastChild(TAG_ITEM).getTextContent();
 			XGSysexFile f = new XGSysexFile(this, new XGFileSelector(last, "open sysex file...", "open", XGSysexFileConstants.SYX_FILEFILTER).select(this.childWindow));
 			f.parse();
 			this.transmitAll(f, this.values);
@@ -286,7 +266,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	private void save()
 	{	try
-		{	StringBuffer last = this.files.getLastChildOrNew(TAG_ITEM).getTextContent();
+		{	StringBuffer last = this.files.getLastChild(TAG_ITEM).getTextContent();
 			XGSysexFile f = new XGSysexFile(this, new XGFileSelector(last, "save sysex file...", "save", XGSysexFileConstants.SYX_FILEFILTER).select(this.childWindow));
 			this.transmitAll(this.values, f);
 			f.save();
@@ -298,33 +278,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	}
 
-	private void transmitAll(XGMessenger src, XGMessenger dest)
-	{	if(src == null || dest == null) return;
-		int count = 0;
-		long time = System.currentTimeMillis();
-		XGRequest r = null;
-		XGAddressableSet<XGBulkDump> set = new XGAddressableSet<>();
+	@Override public XGAddressableSet<XGBulkDump> getBulks()
+	{	XGAddressableSet<XGBulkDump> set = new XGAddressableSet<>();
 		for(XGModule m : this.modules) set.addAll(m.getBulks());
-		BARDIM[MIN] = 0;
-		BARDIM[MAX] = set.size();
-		for(XGBulkDump b : set)
-		{	try
-			{	r = new XGMessageBulkRequest(dest, src, b);
-				r.request();
-				if(r.isResponsed())
-				{	dest.submit(r.getResponse());
-					BARDIM[VALUE] = ++count;
-					LOG.log(Level.FINE, r + " responsed by " + r.getResponse() + " within " + (r.getResponse().getTimeStamp() - r.getTimeStamp()) + " ms");
-				}
-			}
-			catch(InvalidXGAddressException | InvalidMidiDataException e)
-			{	LOG.log(Level.SEVERE, e.getMessage());
-			}
-		}
-		Level level;
-		if(set.size() - count == 0) level = Level.INFO;
-		else level = Level.SEVERE;
-		LOG.log(level, count + "/" + set.size() + " dumps transmitted from " + src + " to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
+		return set;
 	}
 
 	public XGMessenger getMidi()

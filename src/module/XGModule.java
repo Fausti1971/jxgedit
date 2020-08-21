@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.logging.Level;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
@@ -14,7 +12,6 @@ import adress.XGAddress;
 import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
-import adress.XGBulkDump;
 import device.XGDevice;
 import gui.XGComponent;
 import gui.XGTemplate;
@@ -22,15 +19,13 @@ import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
-import msg.XGMessageBulkRequest;
-import msg.XGMessenger;
-import msg.XGRequest;
+import msg.XGBulkDumper;
 import parm.XGTable;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTreeNode, XGWindowSource, XGValueChangeListener
+public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTreeNode, XGWindowSource, XGValueChangeListener, XGBulkDumper
 {
 	public static void init(XGDevice dev) throws InvalidXGAddressException
 	{
@@ -89,36 +84,6 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 		this.idTranslator = dev.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR).toString());
 		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
 	}
-
-/**
- * erfragt vom Messenger src alle Requests und leitet die Responses an den Messenger dest
- * @param dest
- */
-	public void transmitAll(XGMessenger src, XGMessenger dest)
-	{	int missed = 0, count = 0;
-		long time = System.currentTimeMillis();
-		for(XGBulkDump b : this.getBulks())
-		{	try
-			{	XGRequest r = new XGMessageBulkRequest(dest, src, b);
-				r.request();
-				if(r.isResponsed())
-				{	dest.submit(r.getResponse());
-					count++;
-				}
-				else missed++;
-			}
-			catch(InvalidXGAddressException | InvalidMidiDataException e)
-			{	LOG.severe(e.getMessage());
-				missed++;
-			}
-		}
-		Level level;
-		if(missed == 0) level = Level.INFO;
-		else level = Level.SEVERE;
-		LOG.log(level, count - missed + "/" + count + " dumps transmitted from " + src + " to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
-	}
-
-	public abstract XGAddressableSet<XGBulkDump> getBulks();
 
 	@Override public void setTreeComponent(XGTree t)
 	{

@@ -5,9 +5,9 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.XGAddress;
 import adress.XGAddressableSet;
-import adress.XGBulkDump;
 import device.XGDevice;
 import gui.XGTreeNode;
+import msg.XGBulkDump;
 import xml.XMLNode;
 
 public class XGModuleFolder extends XGModule
@@ -36,17 +36,8 @@ public class XGModuleFolder extends XGModule
 
 	@Override public void actionPerformed(ActionEvent e)
 	{	switch(e.getActionCommand())
-		{	case ACTION_REQUEST:	new Thread(new Runnable()
-									{	@Override public void run()
-										{	transmitAll(device.getMidi(), device.getValues());
-										}
-									}).start(); break;
-			case ACTION_TRANSMIT:	new Thread(new Runnable()
-									{
-										@Override public void run()
-										{	transmitAll(device.getValues(), device.getMidi());
-										}
-									}).start(); break;
+		{	case ACTION_REQUEST:	new Thread(() ->	{	this.transmitAll(this.device.getMidi(), this.device.getValues());}).start(); break;
+			case ACTION_TRANSMIT:	new Thread(() ->	{	this.transmitAll(this.device.getValues(), this.device.getMidi());}).start(); break;
 		}
 	}
 

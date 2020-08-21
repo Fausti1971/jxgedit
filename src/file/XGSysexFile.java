@@ -62,7 +62,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 	}
 
 /**
- * lädt und parst ein SysexFile
+ * lädt und parst ein SysexFile in den internen Puffer
  * @param dest
  * @throws IOException 
  */

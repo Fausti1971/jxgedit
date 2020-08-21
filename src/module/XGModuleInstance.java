@@ -5,10 +5,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.XGAddress;
 import adress.XGAddressableSet;
-import adress.XGBulkDump;
 import device.XGDevice;
 import gui.XGTreeNode;
 import gui.XGWindow;
+import msg.XGBulkDump;
 import value.XGValue;
 import xml.XMLNode;
 

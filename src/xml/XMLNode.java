@@ -138,12 +138,11 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 		return n;
 	}
 
-	public final XMLNode getLastChildOrNew(String tag)
-	{	Set<XMLNode> set = this.getChildNodes(tag);
-		XMLNode res = new XMLNode(tag, null, "");
-		if(!set.isEmpty()) return (XMLNode)set.toArray()[set.size() - 1];
-		this.addChildNode(res);
-		return res;
+	public final XMLNode getLastChild(String tag)
+	{	XMLNode x = null;
+		Iterator<XMLNode> i = this.getChildNodes(tag).iterator();
+		while(i.hasNext()) x = i.next();
+		return x;
 	}
 
 	@Override public String getTag()

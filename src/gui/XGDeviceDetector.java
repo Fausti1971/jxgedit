@@ -1,15 +1,16 @@
 package gui;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.JButton;
 import javax.swing.JTextField;
-import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import device.XGDevice;
 
-public class XGDeviceDetector extends JTextField implements DocumentListener, ActionListener, GuiConstants
+public class XGDeviceDetector extends XGFrame implements DocumentListener, ActionListener, GuiConstants
 {	/**
 	 * 
 	 */
@@ -19,36 +20,40 @@ public class XGDeviceDetector extends JTextField implements DocumentListener, Ac
 
 	private StringBuffer value;
 	private XGDevice device;
+	private JTextField text = new JTextField();
+	private JButton button = new JButton("detect");
 
-	public XGDeviceDetector(String name, StringBuffer name2, XGDevice dev)
-	{	super(name2.toString());
-		this.setToolTipText("press enter to autodetect device");
-		this.value = name2;
+	public XGDeviceDetector(String title, StringBuffer name, XGDevice dev)
+	{	super(name.toString());
+		this.setLayout(new BorderLayout());
+		this.value = name;
 		this.device = dev;
 		this.setAlignmentX(0.5f);
-		this.setName(name);
-		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+		this.setName(title);
 		Dimension dim = new Dimension(GRID * 5, GRID * 2);
-		this.setMinimumSize(dim);
-		this.setPreferredSize(dim);
-		this.getDocument().addDocumentListener(this);
-		this.addActionListener(this);
+		this.text.setMinimumSize(dim);
+		this.text.setPreferredSize(dim);
+		this.text.setText(name.toString());
+		this.text.getDocument().addDocumentListener(this);
+		this.add(text, BorderLayout.CENTER);
+		this.add(button, BorderLayout.EAST);
+		this.button.addActionListener(this);
 	}
 
 	@Override public void insertUpdate(DocumentEvent e)
-	{	value.replace(0, value.length(), getText());
+	{	this.value.replace(0, this.value.length(), this.text.getText());
 	}
 
 	@Override public void removeUpdate(DocumentEvent e)
-	{	value.replace(0, value.length(), getText());
+	{	this.value.replace(0, this.value.length(), this.text.getText());
 	}
 
 	@Override public void changedUpdate(DocumentEvent e)
-	{	value.replace(0, value.length(), getText());
+	{	this.value.replace(0, this.value.length(), this.text.getText());
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{	device.requestInfo();
-		setText(value.toString());
+	{	this.device.requestInfo();
+		this.text.setText(value.toString());
 	}
 }
