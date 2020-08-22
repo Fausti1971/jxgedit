@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
@@ -31,7 +32,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 	{	this.source = null;
 		this.rootComponent = new XGTree(JXG.getApp(), true);
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
-//		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
+		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
 	}
 
 	public XGWindow(XGWindowSource src, XGWindow own, boolean mod, String name)

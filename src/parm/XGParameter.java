@@ -36,11 +36,11 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	protected XGParameter(XGDevice dev, XMLNode n)
 	{	this.tag = n.getStringAttribute(ATTR_ID).toString();
-		this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR).toString(), XGVirtualTable.DEF_TABLE).filter(n);// muss wegen validate() vor origin-Zuweisung ausgeführt werden; ist origin evtl. besser im Component aufgehoben? (template.xml)
+		this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);// muss wegen validate() vor origin-Zuweisung ausgeführt werden; ist origin evtl. besser im Component aufgehoben? (template.xml)
 		this.origin = this.validate(this.translationTable.getIndex(n.getIntegerAttribute(ATTR_ORIGIN, 0)));
-		this.longName = n.getStringAttribute(ATTR_LONGNAME).toString();
-		this.shortName = n.getStringAttribute(ATTR_SHORTNAME).toString();
-		this.unit = n.getStringAttribute(ATTR_UNIT, this.translationTable.getUnit()).toString();
+		this.longName = n.getStringAttribute(ATTR_LONGNAME);
+		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
+		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, this.translationTable.getUnit());
 		LOG.info("parameter initialized: " + this);
 		if(this.translationTable == null) throw new RuntimeException("no table: " + this.toString());
 	}

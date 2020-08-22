@@ -112,8 +112,8 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	public XGMidi(XGDevice dev)
 	{	this.device = dev;
 		this.config = this.device.getConfig().getChildNodeOrNew(TAG_MIDI);
-		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT).toString());
-		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT).toString());
+		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT));
+		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT));
 		this.timeout.setContent(this.config.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
 		this.buffer = new XGMessageBuffer(this);
 

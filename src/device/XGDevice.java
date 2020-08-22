@@ -15,6 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
@@ -87,7 +88,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	private static void removeDevice(XGDevice dev)
-	{	if(DEVICES.remove(dev))
+	{	if(JOptionPane.showConfirmDialog(XGWindow.getRootWindow(), "Do you really want to remove " + dev, "remove device...", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) return;
+		if(DEVICES.remove(dev))
 		{	dev.getConfig().removeNode();
 			dev.reloadTree();
 			LOG.info(dev + " removed");
@@ -128,14 +130,21 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public XGDevice(XMLNode cfg) throws InvalidXGAddressException
 	{	this.config = cfg;
 		if(this.config == null)
-		{	this.config = new XMLNode(TAG_DEVICE, null);
+		{	this.config = new XMLNode(TAG_DEVICE);
+			this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
 			this.midi = new XGMidi(this);
+			this.files = this.config.getChildNodeOrNew(TAG_FILES);
+			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, HOMEPATH.resolve("default.syx").toString());
 			this.configure();
 		}
+		else
+		{	this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
+			this.midi = new XGMidi(this);
+			this.files = this.config.getChildNodeOrNew(TAG_FILES);
+			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, HOMEPATH.resolve("default.syx").toString());
+		}
 		this.sysex.setContent(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
-		this.name = this.config.getStringAttribute(ATTR_NAME, DEF_DEVNAME);
 		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
-		this.midi = new XGMidi(this);
 		this.values = new XGValueStore(this);
 
 		XGTemplate.init(this);
@@ -143,8 +152,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		XGParameter.init(this);
 		XGModule.init(this);//initialisiert und instanziert auch XGBulkDump, XGOpcode und XGValue
 
-		this.files = this.config.getChildNodeOrNew(TAG_FILES);
-		this.defaultFileName = this.files.getStringAttribute(ATTR_DEFAULTDUMPFILE, HOMEPATH.resolve("default.syx").toString());
 		try
 		{	this.defaultFile = new XGSysexFile(this, this.defaultFileName.toString());
 			this.defaultFile.parse();
@@ -213,7 +220,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m;
 		try
-		{	m = new XGMessageBulkRequest(this.values, this.midi, XGAddressConstants.XGMODELNAMEADRESS);
+		{	m = new XGMessageBulkRequest(this.midi, this.midi, XGAddressConstants.XGMODELNAMEADRESS);// TODO: Krücke, für dest existiert hier noch kein XGMessenger, der allerdings für getDevice() erforderlich ist
 			try
 			{	m.request();
 				if(m.isResponsed())
@@ -228,7 +235,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			}
 		}
 		catch(InvalidXGAddressException | InvalidMidiDataException e)
-		{	e.printStackTrace();
+		{	LOG.severe(e.getMessage());
 		}
 	}
 
@@ -237,7 +244,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		{	new XGMessageParameterChange(this.values, this.midi, new byte[]{0,0,0,0,0,0,0x7E,0,0}, true).transmit();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException e1)
-		{	e1.printStackTrace();
+		{	LOG.severe(e1.getMessage());
 		}
 	}
 
@@ -246,35 +253,57 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		{	new XGMessageParameterChange(this.values, this.midi, new byte[]{0,0,0,0,0,0,0x7F,0,0}, true).transmit();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException e1)
-		{	e1.printStackTrace();
+		{	LOG.severe(e1.getMessage());
 		}
 	}
 
 	private void load()
-	{	try
-		{	StringBuffer last = this.files.getLastChild(TAG_ITEM).getTextContent();
-			XGSysexFile f = new XGSysexFile(this, new XGFileSelector(last, "open sysex file...", "open", XGSysexFileConstants.SYX_FILEFILTER).select(this.childWindow));
-			f.parse();
-			this.transmitAll(f, this.values);
-			this.files.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
-			f.close();
-		}
-		catch(IOException e1)
-		{	LOG.severe(e1.getMessage());
+	{	XMLNode last = this.files.getLastChildOrNew(TAG_ITEM);
+		XGFileSelector fs = new XGFileSelector(last.getTextContent(), "open sysex file...", "open", XGSysexFileConstants.SYX_FILEFILTER);
+		switch(fs.select(this.childWindow))
+		{	case JFileChooser.APPROVE_OPTION:
+			{	XGSysexFile f;
+				try
+				{	f = new XGSysexFile(this, last.getTextContent().toString());
+					f.parse();
+					this.transmitAll(f, this.values);
+					f.close();
+				}
+				catch(IOException e)
+				{	LOG.severe(e.getMessage());
+				}
+				break;
+			}
+			case JFileChooser.CANCEL_OPTION:
+			{	last.removeNode();
+				LOG.severe("fileselection aborted");
+				break;
+			}
 		}
 	}
 
 	private void save()
-	{	try
-		{	StringBuffer last = this.files.getLastChild(TAG_ITEM).getTextContent();
-			XGSysexFile f = new XGSysexFile(this, new XGFileSelector(last, "save sysex file...", "save", XGSysexFileConstants.SYX_FILEFILTER).select(this.childWindow));
-			this.transmitAll(this.values, f);
-			f.save();
-			this.files.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
-			f.close();
-		}
-		catch(IOException e1)
-		{	LOG.severe(e1.getMessage());
+	{	XMLNode last = this.files.getLastChildOrNew(TAG_ITEM);
+		XGFileSelector fs = new XGFileSelector(last.getTextContent(), "save sysex file...", "save", XGSysexFileConstants.SYX_FILEFILTER);
+		switch(fs.select(this.childWindow))
+		{	case JFileChooser.APPROVE_OPTION:
+			{	XGSysexFile f;
+				try
+				{	f = new XGSysexFile(this, last.getTextContent().toString());
+					this.transmitAll(this.values, f);
+					f.save();
+					f.close();
+				}
+				catch(IOException e)
+				{	LOG.severe(e.getMessage());
+				}
+				break;
+			}
+			case JFileChooser.CANCEL_OPTION:
+			{	last.removeNode();
+				LOG.severe("fileselection aborted");
+				break;
+			}
 		}
 	}
 

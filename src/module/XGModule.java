@@ -81,7 +81,7 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 		this.category = cat;
 		this.address = adr;
 		this.device = dev;
-		this.idTranslator = dev.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR).toString());
+		this.idTranslator = dev.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
 		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
 	}
 

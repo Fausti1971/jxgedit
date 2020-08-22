@@ -2,52 +2,24 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.swing.JLabel;
 import application.XGLoggable;
-import application.XGMath;
 
 public class XGStatusBar extends JLabel implements XGLoggable
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private static int count = 0;
 
 /***********************************************************************************************************/
 
-	private int min, max, value;
-	private Color color;
-	private int w, h;
-	private Graphics2D g2;
-
 	public XGStatusBar()
 	{	this.setPreferredSize(new Dimension(0, XGComponent.GRID));
-//		this.setOpaque(true);
+		this.setOpaque(true);
 		LOG.addHandler(new BarLogger(this));
-	}
-
-	void setProgress(Color col, String msg, int min, int max, int value)
-	{	this.min = min;
-		this.max = max;
-		this.value = value;
-		this.setText(++count + " " + msg);
-		this.setToolTipText(msg);
-		this.color = col;
-	}
-
-	@Override public void paint(Graphics g)
-	{	this.h = this.getHeight();
-		this.w = XGMath.linearIO(this.value, this.min, this.max, 0, this.getWidth());
-		this.g2 = (Graphics2D)g.create();
-		this.g2.setColor(this.color);
-		this.g2.fillRect(0, 0, this.w, this.h);
-		this.g2.dispose();
-		super.paint(g);
 	}
 
 /***********************************************************************************************************/
@@ -72,10 +44,11 @@ public class XGStatusBar extends JLabel implements XGLoggable
 			if(level == Level.SEVERE.intValue()) color = Color.red;
 			if(level == Level.WARNING.intValue()) color = Color.yellow;
 			if(level == Level.INFO.intValue()) color = Color.green;
-			if(level == PROGRESS.intValue()) color = Color.green;
 
-			this.bar.setProgress(color, msg, BARDIM[MIN], BARDIM[MAX], BARDIM[VALUE]);
-		}
+			this.bar.setText(msg);
+			this.bar.setToolTipText(msg);
+			this.bar.setBackground(color);
+			}
 
 		@Override public void flush()
 		{

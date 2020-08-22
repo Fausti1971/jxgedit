@@ -36,9 +36,9 @@ public class XGModuleInstance extends XGModule
 
 	void registerValueListener(XMLNode n)
 	{	Set<String> set = new LinkedHashSet<>();
-		set.add(n.getStringAttribute(ATTR_INFO1).toString());
-		set.add(n.getStringAttribute(ATTR_INFO2).toString());
-		set.add(n.getStringAttribute(ATTR_INFO3).toString());
+		set.add(n.getStringAttribute(ATTR_INFO1));
+		set.add(n.getStringAttribute(ATTR_INFO2));
+		set.add(n.getStringAttribute(ATTR_INFO3));
 
 		for(String s : set)
 		{	XGAddress a = new XGAddress(s, this.address);

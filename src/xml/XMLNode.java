@@ -75,11 +75,14 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	private final XGProperties attributes;
 
 
-	public XMLNode(String tag, XGProperties attr)
+	public XMLNode(String tag)
+	{	this(tag, new XGProperties());
+	}
+
+	private XMLNode(String tag, XGProperties attr)
 	{	if(!XGStrings.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
 		this.tag = tag;
-		if(attr != null) this.attributes = attr;
-		else this.attributes = new XGProperties();
+		this.attributes = attr;
 	}
 
 	public XMLNode(String tag, XGProperties attr, String txt)
@@ -145,6 +148,15 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 		return x;
 	}
 
+	public final XMLNode getLastChildOrNew(String tag)
+	{	XMLNode last = this.getLastChild(tag);
+		if(last == null)
+		{	last = new XMLNode(tag);
+			this.addChildNode(last);
+		}
+		return last;
+	}
+
 	@Override public String getTag()
 	{	return this.tag;
 	}
@@ -190,19 +202,36 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	{	return this.attributes.containsKey(name);
 	}
 
-	public final StringBuffer getStringAttributeOrNew(String attr)
-	{	if(!this.hasAttribute(attr)) this.setStringAttribute(attr, "");
+/**
+ * returniert den StringBuffer des Attributes attr, legt dieses bei Abstinenz an
+ * @param attr Attributname
+ * @param text Inhalt für eine eventuell neu anzulegendes Attribut
+ * @return StringBuffer des vorhandenen oder neu angelegten Attributes
+ */
+	public final StringBuffer getStringBufferAttributeOrNew(String attr, String text)
+	{	if(!this.hasAttribute(attr)) this.setStringAttribute(attr, text);
 		return this.attributes.get(attr);
 	}
 
-	public final StringBuffer getStringAttribute(String a, String def)
-	{	if(!this.hasAttribute(a)) this.attributes.put(a, def);
-		return this.attributes.get(a);
+/**
+ * returniert den Inhalt des StringBuffers des Attributes attr als String, bei Abstinenz null
+ * @param attr Attributname
+ * @return StringBuffer des vorhandenen Attributes oder null
+ */
+	public final String getStringAttribute(String attr)
+	{	if(this.hasAttribute(attr)) return this.attributes.get(attr).toString();
+		else return null;
 	}
 
-	public final StringBuffer getStringAttribute(String a)
-	{	if(this.attributes.containsKey(a)) return this.attributes.get(a);
-		else return new StringBuffer("");
+/**
+ * returnierte den Inhalt des Attributes attr, legt bei Abstinenz diese Attribut jedoch nicht an sondern liefert den String def zurück
+ * @param attr Attributname
+ * @param def Defaultwert, falls Attribut nicht vorhanden ist
+ * @return Inhalt des angegebenen Attributes als String oder String def
+ */
+	public final String getStringAttributeOrDefault(String attr, String def)
+	{	if(this.hasAttribute(attr)) return this.attributes.get(attr).toString();
+		else return def;
 	}
 
 	public void setStringAttribute(final String attr, final String content)

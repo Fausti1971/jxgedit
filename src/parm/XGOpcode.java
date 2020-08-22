@@ -25,7 +25,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	public XGOpcode(XGDevice dev, XGBulkDump bulk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
 	{	this.device = dev;
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), bulk.getAddress());
-		this.dataType = ValueDataType.valueOf(n.getStringAttribute(ATTR_DATATYPE, DEF_DATATYPE.name()).toString());
+		this.dataType = ValueDataType.valueOf(n.getStringAttributeOrDefault(ATTR_DATATYPE, DEF_DATATYPE.name()).toString());
 
 		if(n.hasAttribute(ATTR_PARAMETERSELECTOR))
 		{	this.parameterSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_PARAMETERSELECTOR).toString(), null);

@@ -41,7 +41,6 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
  */
 	public XGTree(XGTreeNode root, boolean showRoot)
 	{	super(root);
-		System.out.println(root);
 		root.setTreeComponent(this);
 		this.addMouseListener(this);
 		this.addKeyListener(this);

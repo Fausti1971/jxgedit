@@ -3,7 +3,6 @@ package parm;
 import java.util.Set;
 import application.ConfigurationConstants;
 import application.XGStrings;
-import jdk.internal.joptsimple.internal.Strings;
 import xml.XMLNode;
 
 public class XGTableEntry implements ConfigurationConstants
@@ -22,9 +21,9 @@ public class XGTableEntry implements ConfigurationConstants
 		if(n.hasAttribute(ATTR_MSB)) v = n.getIntegerAttribute(ATTR_MSB) << 7;
 		if(n.hasAttribute(ATTR_LSB)) v |= n.getIntegerAttribute(ATTR_LSB);
 		this.value = v;
-		this.name = n.getStringAttribute(ATTR_NAME, "no value").toString();
-		this.filters = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLEFILTER).toString());
-		this.categories = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLECATEGORIES).toString());
+		this.name = n.getStringAttributeOrDefault(ATTR_NAME, "no value");
+		this.filters = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLEFILTER));
+		this.categories = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLECATEGORIES));
 	}
 
 	public XGTableEntry(int v, String translate)

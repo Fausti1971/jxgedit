@@ -70,7 +70,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	protected final XGAddress address;
 
 	public XGComponent(String text)
-	{	this.config = new XMLNode(text.replaceAll(XGStrings.REGEX_NON_ALNUM, XGStrings.TEXT_REPLACEMENT), null);
+	{	this.config = new XMLNode(text.replaceAll(XGStrings.REGEX_NON_ALNUM, XGStrings.TEXT_REPLACEMENT));
 		this.value = null;
 		this.address = XGALLADDRESS;
 		this.setName(text);
@@ -83,7 +83,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
 		if(v == null) v = DEF_VALUE;
 		this.value = v;
-		this.setName(n.getStringAttribute(ATTR_NAME, mod.toString()).toString());
+		this.setName(n.getStringAttributeOrDefault(ATTR_NAME, mod.toString()).toString());
 	}
 
 	@Override public Component add(Component comp)

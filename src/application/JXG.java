@@ -58,8 +58,8 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 //				}
 //			}
 //		);
-		XGWindow.getRootWindow().setVisible(true);
-		XGDevice.init(APP.getConfig());
+		XGWindow.getRootWindow();
+		new Thread(() -> {	XGDevice.init(APP.getConfig());}).start();
 //		quit();
 	}
 
@@ -77,7 +77,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 
 		File f = CONFIGFILEPATH.toFile();
 		if(f.exists()) this.config = XMLNode.parse(f);
-		else this.config = new XMLNode(APPNAME, null);
+		else this.config = new XMLNode(APPNAME);
 
 		LOG.info("JXG config initialized");
 	}

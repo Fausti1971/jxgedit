@@ -15,6 +15,6 @@ public class XGEnvelope extends XGFrame
 	}
 
 	@Override public XMLNode getConfig()
-	{	return new XMLNode("env", null);
+	{	return new XMLNode("env");
 	}
 }

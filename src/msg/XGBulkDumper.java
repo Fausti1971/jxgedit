@@ -2,9 +2,11 @@ package msg;
 
 import java.util.logging.Level;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.swing.ProgressMonitor;
 import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.XGLoggable;
+import gui.XGWindow;
 
 /**
  * qualifiziert die implementierende Klasse als Sammler aller enthaltenen BuklDumps (getBulks()) und Transmitter derselben (transmitAll())
@@ -16,20 +18,22 @@ public interface XGBulkDumper extends XGLoggable
 
 	default void transmitAll(XGMessenger src, XGMessenger dest)
 	{	if(src == null || dest == null) return;
+
 		int count = 0;
 		long time = System.currentTimeMillis();
 		XGRequest r = null;
 		XGAddressableSet<XGBulkDump> set = this.getBulks();
-		BARDIM[MIN] = 0;
-		BARDIM[MAX] = set.size();
+		ProgressMonitor pm = new ProgressMonitor(XGWindow.getRootWindow(), src + " -> " + dest, "", 0, set.size());
+		pm.setMillisToDecideToPopup(0);
+		pm.setMillisToPopup(0);
 		for(XGBulkDump b : set)
 		{	try
 			{	r = new XGMessageBulkRequest(dest, src, b);
 				r.request();
 				if(r.isResponsed())
 				{	dest.submit(r.getResponse());
-					BARDIM[VALUE] = ++count;
-					LOG.log(PROGRESS, r + " responsed by " + r.getResponse() + " within " + (r.getResponse().getTimeStamp() - r.getTimeStamp()) + " ms");
+					pm.setNote(r.toString());
+					pm.setProgress(++count);
 				}
 			}
 			catch(InvalidXGAddressException | InvalidMidiDataException e)

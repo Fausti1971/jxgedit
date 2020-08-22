@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
@@ -42,11 +41,11 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 		this.setFileFilter(filter);
 	}
 
-	public final String select(Component par) throws FileNotFoundException
+	public final int select(Component par)
 	{	this.setSelectedFile(new File(this.path.toString()));
 		int res = this.showDialog(par, this.getApproveButtonText());
-		if(res == JFileChooser.APPROVE_OPTION) return this.getSelectedFile().getAbsolutePath();
-		throw new FileNotFoundException("fileselection aborted");
+		this.path.replace(0, this.path.length(), this.getSelectedFile().getAbsolutePath());
+		return res;
 	}
 
 	public JComponent small()
@@ -76,13 +75,7 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{	try
-		{	String s = select(this.button);
-			this.path.replace(0, this.path.length(), s);
-			this.text.setText(this.path.toString());
-		}
-		catch(FileNotFoundException e1)
-		{
-		}
+	{	this.select(this.button);
+		this.text.setText(this.path.toString());
 	}
 }
