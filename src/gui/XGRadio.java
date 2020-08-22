@@ -8,6 +8,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JCheckBox;
+import adress.XGAddress;
 import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
@@ -25,8 +26,13 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 
 /*********************************************************************************************************/
 
+	private final XGValue value;
+	private final XGAddress address;
+
 	public XGRadio(XMLNode n, XGModule mod)
 	{	super(n, mod);
+		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
 		this.value.addValueListener(this);
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());

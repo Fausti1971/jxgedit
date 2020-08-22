@@ -113,6 +113,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private XGTree tree;
 	private Color color;
 	private boolean isSelected = false;
+
 	private XMLNode config;
 	private final XGTagableSet<XGTable> tables = new XGTagableSet<>();
 	private final XGTagableSet<XGParameter> parameters = new XGTagableSet<>();

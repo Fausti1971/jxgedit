@@ -14,7 +14,7 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
-import application.JXG;
+import adress.XGAddress;
 import application.XGMath;
 import module.XGModule;
 import parm.XGParameter;
@@ -34,10 +34,14 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 
 	private final XGKnobBar bar;
 	private final XGValueLabel label;
+	private final XGValue value;
+	private final XGAddress address;
 
 	public XGKnob(XMLNode n, XGModule mod)
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
+		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 		this.value.addParameterListener(this);
@@ -61,7 +65,6 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 	@Override public void contentChanged(XGValue v)
 	{	this.bar.repaint();
 		this.label.setText(v.toString());
-//		this.label.repaint();
 	}
 
 	@Override public void parameterChanged(XGParameter p)
@@ -146,12 +149,12 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	JXG.dragEvent = e;
+		{	XGComponent.dragEvent = e;
 			e.consume();
 		}
 
 		@Override public void mouseReleased(MouseEvent e)
-		{	JXG.dragEvent = e;
+		{	XGComponent.dragEvent = e;
 			e.consume();
 		}
 
@@ -170,10 +173,10 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		}
 
 		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - JXG.dragEvent.getX();
+		{	int distance = e.getX() - XGComponent.dragEvent.getX();
 			boolean changed = this.value.setContent(this.value.getContent() + distance);
 			if(changed) this.value.transmit();
-			JXG.dragEvent = e;
+			XGComponent.dragEvent = e;
 			e.consume();
 		}
 

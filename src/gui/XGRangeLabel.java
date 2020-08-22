@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JTextField;
 import value.XGValue;
 
-public class XGValueLabel extends JTextField implements GuiConstants, ActionListener, MouseListener
+public class XGRangeLabel extends JTextField implements GuiConstants, ActionListener, MouseListener
 {	/**
 	 * 
 	 */
@@ -16,14 +16,16 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 
 /*****************************************************************************************************/
 
-	private final XGValue value;
+	private final XGValue loValue, hiValue;
 
-	public XGValueLabel(XGValue v)
+	public XGRangeLabel(XGValue lo, XGValue hi)
 	{	super();
-		this.value = v;
+		this.loValue = lo;
+		this.hiValue = hi;
 		this.setBackground(COL_TRANSPARENT);
 		this.setBorder(null);
 //		if(this.isEnabled()) this.setText(this.getText());
+		this.setText(this.loValue + "..." + this.hiValue);
 		this.setFont(FONT);
 		this.setHorizontalAlignment(JTextField.CENTER);
 		this.addMouseListener(this);
@@ -31,10 +33,10 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{	boolean changed = this.value.setContent(this.value.getParameter().getTranslationTable().getIndex(this.getText().trim()));
-		if(changed) this.value.transmit();
-		this.setText(this.value.toString());
-		this.repaint();
+	{	boolean changed = this.loValue.setContent(this.loValue.getParameter().getTranslationTable().getIndex(this.getText().trim()));
+		if(changed) this.loValue.transmit();
+		this.setText(this.loValue + "..." + this.hiValue);
+//		this.repaint();
 	}
 
 	@Override protected void paintComponent(Graphics g)
@@ -61,3 +63,4 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 	{
 	}
 }
+

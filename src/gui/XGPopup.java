@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.Point;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -20,16 +19,13 @@ public class XGPopup extends JPopupMenu
 		this.add(i);
 		this.addSeparator();
 		this.setInvoker(inv);
+		this.setLocation(p);
+
 		for(String s : context.getContexts())
 		{	i = new JMenuItem(s);
-			i.addActionListener(new ActionListener()
-			{	@Override public void actionPerformed(ActionEvent e)
-				{	context.actionPerformed(new ActionEvent(context, 0, s));
-				}
-			});
+			i.addActionListener((ActionEvent e) ->	{context.actionPerformed(new ActionEvent(context, 0, s));});
 			this.add(i);
 		}
-		this.setLocation(p);
 		this.setVisible(true);
 	}
 }

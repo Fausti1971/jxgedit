@@ -9,10 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 import javax.swing.border.TitledBorder;
-import adress.XGAddress;
 import adress.XGAddressConstants;
 import application.Configurable;
-import application.JXG;
 import application.XGStrings;
 import module.XGModule;
 import value.XGValue;
@@ -23,8 +21,9 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	public static MouseEvent dragEvent = null;
 
-	private static final XGValue DEF_VALUE = new XGValue("n/a", 0);
+	static final XGValue DEF_VALUE = new XGValue("n/a", 0);
 	private static final int AXIS_X = 1, AXIS_Y = 2, AXIS_XY = 3, AXIS_RAD = 4, DEF_AXIS = 1;
 
 	public static XGComponent init(XGModule mod)
@@ -45,6 +44,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 			case TAG_FRAME:		c = new XGFrame(n, mod); break;
 			case TAG_KNOB:		c = new XGKnob(n, mod); break;
 			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
+			case TAG_RANGE:		c = new XGRange(n, mod); break;
 			case TAG_COMBO:		c = new XGCombo(n, mod); break;
 			case TAG_RADIO:		c = new XGRadio(n, mod); break;
 			case TAG_BUTTON:	c = new XGButton(n, mod); break;
@@ -66,24 +66,24 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 /********************************************************************************************/
 
 	protected final XMLNode config;
-	protected final XGValue value;
-	protected final XGAddress address;
+//	protected final XGValue value;
+//	protected final XGAddress address;
 
 	public XGComponent(String text)
 	{	this.config = new XMLNode(text.replaceAll(XGStrings.REGEX_NON_ALNUM, XGStrings.TEXT_REPLACEMENT));
-		this.value = null;
-		this.address = XGALLADDRESS;
+//		this.value = null;
+//		this.address = XGALLADDRESS;
 		this.setName(text);
 	}
 
 	public XGComponent(XMLNode n, XGModule mod)
 	{	this.config = n;
 		this.setBounds();
-		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE).toString(), mod.getAddress());
-		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
-		if(v == null) v = DEF_VALUE;
-		this.value = v;
-		this.setName(n.getStringAttributeOrDefault(ATTR_NAME, mod.toString()).toString());
+//		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+//		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
+//		if(v == null) v = DEF_VALUE;
+//		this.value = v;
+		this.setName(n.getStringAttributeOrDefault(ATTR_NAME, mod.toString()));
 	}
 
 	@Override public Component add(Component comp)
@@ -100,7 +100,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	}
 
 	public void setBounds()
-	{	String s = this.config.getStringAttribute(ATTR_GB_GRID).toString();
+	{	String s = this.config.getStringAttribute(ATTR_GB_GRID);
 		String[] str = s.split(",");
 		super.setBounds(GRID * Integer.parseInt(str[0]), GRID * Integer.parseInt(str[1]), GRID * Integer.parseInt(str[2]), GRID * Integer.parseInt(str[3]));
 		Dimension dim = new Dimension(this.getBounds().getSize());
@@ -145,16 +145,16 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	}
 
 	@Override public void mousePressed(MouseEvent e)
-	{	JXG.dragEvent = e;
+	{	XGComponent.dragEvent = e;
 		e.consume();
 	}
 
 	@Override public void mouseReleased(MouseEvent e)
-	{	JXG.dragEvent = e;
+	{	XGComponent.dragEvent = e;
 	}
 
 	@Override public void mouseEntered(MouseEvent e)
-	{	if(JXG.dragEvent == null || JXG.dragEvent.getID() == MouseEvent.MOUSE_RELEASED) this.requestFocusInWindow();
+	{	if(XGComponent.dragEvent == null || XGComponent.dragEvent.getID() == MouseEvent.MOUSE_RELEASED) this.requestFocusInWindow();
 	}
 
 	@Override public void mouseExited(MouseEvent e)

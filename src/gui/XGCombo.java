@@ -7,6 +7,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
+import adress.XGAddress;
 import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
@@ -26,10 +27,14 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 /*****************************************************************************************************************/
 
 	private final JComboBox<XGTableEntry> combo;
-	
+	private final XGValue value;
+	private final XGAddress address;
+
 	public XGCombo(XMLNode n, XGModule mod)
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
+		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
 		this.combo = new XGComboBox<>(this.value);
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
 		this.add(this.combo, gbc);

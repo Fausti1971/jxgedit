@@ -16,6 +16,11 @@ import gui.XGWindow;
 public interface XGBulkDumper extends XGLoggable
 {	XGAddressableSet<XGBulkDump> getBulks();
 
+/**
+ * erfragt alle im BulkDumper konfigurierten (in module.xml deklarierten) Bulks von bei der src und übermittelt die jeweilige Response zum dest
+ * @param src
+ * @param dest
+ */
 	default void transmitAll(XGMessenger src, XGMessenger dest)
 	{	if(src == null || dest == null) return;
 
