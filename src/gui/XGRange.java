@@ -1,6 +1,5 @@
 package gui;
 
-import static application.XGLoggable.LOG;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,6 +15,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
 import adress.XGAddress;
+import adress.XGMemberNotFoundException;
 import application.XGMath;
 import module.XGModule;
 import parm.XGParameter;
@@ -37,11 +37,11 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 	private final XGValue loValue, hiValue;
 	private final XGAddress loAddress, hiAddress;
 
-	public XGRange(XMLNode n, XGModule mod)
+	public XGRange(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
-		this.loAddress = new XGAddress(n.getStringAttribute(ATTR_LOVALUE), mod.getAddress());
-		this.hiAddress = new XGAddress(n.getStringAttribute(ATTR_HIVALUE), mod.getAddress());
+		this.loAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_LO), mod.getAddress());
+		this.hiAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_HI), mod.getAddress());
 		this.loValue = mod.getDevice().getValues().getFirstIncluded(this.loAddress);
 		this.hiValue = mod.getDevice().getValues().getFirstIncluded(this.hiAddress);
 		this.loValue.addValueListener(this);
@@ -71,7 +71,7 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		this.bar.setEnabled(ena);
 		this.label.setEnabled(ena);
 
-		LOG.info(this.getClass().getSimpleName() + " initialized: " + this.getName());
+		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
 	}
 
 	@Override public void paint(Graphics g)

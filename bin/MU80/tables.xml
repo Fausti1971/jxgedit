@@ -2,6 +2,14 @@
 <!-- TODO: doppelte name-einträge per xsd verhindern -->
 <tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../xsd/tables.xsd">
 
+	<table name="eq_programs">
+		<item value="0" name="Flat"/>
+		<item value="1" name="Jazz"/>
+		<item value="2" name="Pops"/>
+		<item value="3" name="Rock"/>
+		<item value="4" name="Concert"/>
+	</table>
+
 	<table name="pan_direction">
 		<item value="0" name="L--R"/>
 		<item value="1" name="L -R"/>

@@ -1,6 +1,5 @@
 package gui;
 
-import static application.XGLoggable.LOG;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,6 +15,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
 import adress.XGAddress;
+import adress.XGMemberNotFoundException;
 import application.XGMath;
 import module.XGModule;
 import parm.XGParameter;
@@ -37,10 +37,10 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	private final XGSliderBar bar;
 	private final XGValueLabel label;
 
-	public XGSlider(XMLNode n, XGModule mod)
+	public XGSlider(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
-		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
 
 		if(this.isEnabled())
@@ -63,7 +63,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		gbc.anchor = GridBagConstraints.SOUTH;
 		this.add(this.label, gbc);
 
-		LOG.info("slider initialized: " + this.value.getParameter());
+		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
 	}
 
 	@Override public void paint(Graphics g)

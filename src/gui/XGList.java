@@ -1,15 +1,15 @@
 package gui;
 
-import java.awt.Dimension;
 import java.util.Set;
 import java.util.Vector;
 import javax.swing.JList;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import application.XGLoggable;
 import value.ChangeableContent;
 
-public class XGList<E extends Object> extends JList<E> implements ListSelectionListener, GuiConstants
+public class XGList<E extends Object> extends JList<E> implements ListSelectionListener, GuiConstants, XGLoggable
 {
 	/**
 	 * 
@@ -24,12 +24,11 @@ public class XGList<E extends Object> extends JList<E> implements ListSelectionL
 	{	super(new Vector<E>(list));
 		this.setSelectedValue(s.getContent(), true);
 		this.setName(name);
-//		Dimension dim = new Dimension(GRID * 12, GRID * 12);
-//		this.setMinimumSize(dim);
-//		this.setPreferredSize(dim);
 		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
 		this.value = s;
 		this.addListSelectionListener(this);
+
+		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
 	}
 
 	@Override public void valueChanged(ListSelectionEvent e)

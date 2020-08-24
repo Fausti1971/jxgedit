@@ -83,7 +83,9 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 		}
 		catch(InvalidMidiDataException e)
 		{	LOG.severe(e.getMessage());
+			req.setResponsed(false);
 		}
+		req.setResponsed(true);
 //		res.getDestination().submit(res);
 	}
 

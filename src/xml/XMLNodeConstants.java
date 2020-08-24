@@ -38,7 +38,13 @@ public interface XMLNodeConstants
 		TAG_MODULES = "modules",
 
 		TAG_MODULE = "module",
+
 		ATTR_ADDRESS = "address",
+		ATTR_ADDRESS_LO = "address_lo",
+		ATTR_ADDRESS_HI = "address_hi",
+		ATTR_ADDRESS_X = "address_x",
+		ATTR_ADDRESS_Y = "address_y",
+
 		ATTR_INFO1 = "info1",
 		ATTR_INFO2 = "info2",
 		ATTR_INFO3 = "info3",
@@ -46,9 +52,9 @@ public interface XMLNodeConstants
 		ATTR_NAME = "name",
 
 		TAG_BULK = "bulk",
-		ATTR_HI = "hi",
-		ATTR_MID = "mid",
-		ATTR_LO = "lo",
+//		ATTR_HI = "hi",
+//		ATTR_MID = "mid",
+//		ATTR_LO = "lo",
 
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",
@@ -73,8 +79,6 @@ public interface XMLNodeConstants
 		TAG_TABLE = "table",
 		TAG_ITEM = "item",
 		ATTR_VALUE = "value",
-		ATTR_LOVALUE = "value_lo",
-		ATTR_HIVALUE = "value_hi",
 		ATTR_MSB = "msb",
 		ATTR_LSB = "lsb",
 
@@ -85,12 +89,13 @@ public interface XMLNodeConstants
 		TAG_COMBO = "combo",
 		TAG_RADIO = "radio",
 		TAG_ENVELOPE = "envelope",
-		TAG_ENVPOINT = "env_point",
+		TAG_POINT = "point",
 		TAG_BUTTON = "button",
 		TAG_AUTO = "auto",
 		ATTR_ORIGIN = "origin",
 
-		ATTR_GB_GRID = "grid";
+		ATTR_GRID = "grid",
+		ATTR_ORIENTATION = "orientation";
 //		ATTR_GB_FILL = "grid_fill",
 //		ATTR_GB_WEIGHT_X = "grid_weight_x",
 //		ATTR_GB_WEIGHT_Y = "grid_weight_y",

@@ -28,6 +28,7 @@ public interface XGBulkDumper extends XGLoggable
 		long time = System.currentTimeMillis();
 		XGRequest r = null;
 		XGAddressableSet<XGBulkDump> set = this.getBulks();
+		XGAddressableSet<XGRequest> missed = new XGAddressableSet<>();
 		ProgressMonitor pm = new ProgressMonitor(XGWindow.getRootWindow(), src + " -> " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
@@ -40,13 +41,14 @@ public interface XGBulkDumper extends XGLoggable
 					pm.setNote(r.toString());
 					pm.setProgress(++count);
 				}
+				missed.add(r);
 			}
 			catch(InvalidXGAddressException | InvalidMidiDataException e)
 			{	LOG.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		Level level;
-		if(set.size() - count == 0) level = Level.INFO;
+		if(missed.isEmpty()) level = Level.INFO;
 		else level = Level.SEVERE;
 		LOG.log(level, count + "/" + set.size() + " dumps transmitted from " + src + " to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
 	}

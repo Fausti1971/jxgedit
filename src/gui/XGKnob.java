@@ -1,6 +1,5 @@
 package gui;
 
-import static application.XGLoggable.LOG;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,6 +14,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
 import adress.XGAddress;
+import adress.XGMemberNotFoundException;
 import application.XGMath;
 import module.XGModule;
 import parm.XGParameter;
@@ -37,10 +37,10 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 	private final XGValue value;
 	private final XGAddress address;
 
-	public XGKnob(XMLNode n, XGModule mod)
+	public XGKnob(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
-		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
+		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
 		this.addMouseListener(this);
 		this.addFocusListener(this);
@@ -59,7 +59,8 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		this.add(this.label, gbc);
 
 		this.parameterChanged(this.value.getParameter());
-		LOG.info("knob initialized: " + this.getName());
+
+		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
 		}
 
 	@Override public void contentChanged(XGValue v)

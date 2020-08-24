@@ -33,7 +33,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 			{	int msb = s.getIntegerAttribute(ATTR_MSB, 0)  << 7;
 				int lsb = s.getIntegerAttribute(ATTR_LSB, 0);
 				int v = msb | lsb;
-				if(s.hasAttribute(ATTR_VALUE)) v = s.getIntegerAttribute(ATTR_VALUE);
+				if(s.hasAttribute(ATTR_ADDRESS)) v = s.getIntegerAttribute(ATTR_ADDRESS);
 				XGParameter parm = dev.getParameters().get(s.getStringAttribute(ATTR_PARAMETER_ID).toString());
 				this.parameters.put(v, parm);
 			}

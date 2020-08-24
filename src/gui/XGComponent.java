@@ -3,6 +3,7 @@ package gui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
@@ -10,13 +11,15 @@ import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 import javax.swing.border.TitledBorder;
 import adress.XGAddressConstants;
+import adress.XGMemberNotFoundException;
 import application.Configurable;
+import application.XGLoggable;
 import application.XGStrings;
 import module.XGModule;
 import value.XGValue;
 import xml.XMLNode;
 
-public abstract class XGComponent extends JComponent implements XGAddressConstants, GuiConstants, Configurable, MouseListener, FocusListener
+public abstract class XGComponent extends JComponent implements XGAddressConstants, GuiConstants, Configurable, MouseListener, FocusListener, XGLoggable
 {	/**
 	 * 
 	 */
@@ -24,23 +27,20 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	public static MouseEvent dragEvent = null;
 
 	static final XGValue DEF_VALUE = new XGValue("n/a", 0);
-	private static final int AXIS_X = 1, AXIS_Y = 2, AXIS_XY = 3, AXIS_RAD = 4, DEF_AXIS = 1;
 
 	public static XGComponent init(XGModule mod)
 	{	XGTemplate t = mod.getGuiTemplate();
 		XMLNode xml = null;
 		if(t != null) xml = t.getXMLNode();
 		if(xml == null) return new XGFrame("no template");
-		return newItem(xml, mod);
+		return new XGFrame(xml, mod);
 	}
 
-	private static XGComponent newItem(XMLNode n, XGModule mod)
+	protected static XGComponent newItem(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	String s = n.getTag();
 		XGComponent c = null;
 		switch(s)
-		{	case TAG_AUTO:		break;
-			case TAG_ENVELOPE:	c = new XGEnvelope(n, mod); break;
-			case TAG_ENVPOINT:	break;
+		{	case TAG_ENVELOPE:	c = new XGEnvelope(n, mod); break;
 			case TAG_FRAME:		c = new XGFrame(n, mod); break;
 			case TAG_KNOB:		c = new XGKnob(n, mod); break;
 			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
@@ -50,39 +50,21 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 			case TAG_BUTTON:	c = new XGButton(n, mod); break;
 			default:			c = new XGFrame("unknown_" + s); break;
 		}
-		if(c != null) for(XMLNode x : n.getChildNodes()) c.add(newItem(x, mod));
 		return c;
-	}
-
-	static int getAxis(String s)
-	{	if(s == null) return DEF_AXIS;
-		if(s.equals("x")) return AXIS_X;
-		if(s.equals("y")) return AXIS_Y;
-		if(s.equals("xy")) return AXIS_XY;
-		if(s.equals("rad")) return AXIS_RAD;
-		return 0;
 	}
 
 /********************************************************************************************/
 
 	protected final XMLNode config;
-//	protected final XGValue value;
-//	protected final XGAddress address;
 
 	public XGComponent(String text)
 	{	this.config = new XMLNode(text.replaceAll(XGStrings.REGEX_NON_ALNUM, XGStrings.TEXT_REPLACEMENT));
-//		this.value = null;
-//		this.address = XGALLADDRESS;
 		this.setName(text);
 	}
 
 	public XGComponent(XMLNode n, XGModule mod)
 	{	this.config = n;
 		this.setBounds();
-//		this.address = new XGAddress(n.getStringAttribute(ATTR_VALUE), mod.getAddress());
-//		XGValue v = mod.getDevice().getValues().getFirstIncluded(this.address);
-//		if(v == null) v = DEF_VALUE;
-//		this.value = v;
 		this.setName(n.getStringAttributeOrDefault(ATTR_NAME, mod.toString()));
 	}
 
@@ -100,9 +82,8 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	}
 
 	public void setBounds()
-	{	String s = this.config.getStringAttribute(ATTR_GB_GRID);
-		String[] str = s.split(",");
-		super.setBounds(GRID * Integer.parseInt(str[0]), GRID * Integer.parseInt(str[1]), GRID * Integer.parseInt(str[2]), GRID * Integer.parseInt(str[3]));
+	{	Rectangle r = new XGGrid(this.config.getStringAttribute(ATTR_GRID));
+		super.setBounds(GRID * r.x, GRID * r.y, GRID * r.width, GRID * r.height);
 		Dimension dim = new Dimension(this.getBounds().getSize());
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
@@ -118,12 +99,12 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		else this.setBorder(new TitledBorder(defaultLineBorder, "n/a", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
 	}
 
-	@Override public boolean isFocusable()
-	{	return this.isEnabled();
-	}
-
 	public  void deborderize()
 	{	this.setBorder(null);
+	}
+
+	@Override public boolean isFocusable()
+	{	return this.isEnabled();
 	}
 
 	@Override public boolean isManagingFocus()
@@ -140,7 +121,8 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 
 	@Override public void mouseClicked(MouseEvent e)
 	{	if(e.getClickCount() == 2)
-		{	System.out.println("doubleclick detected");
+		{
+System.out.println("doubleclick detected");
 		}
 	}
 
@@ -169,5 +151,29 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	@Override public void focusGained(FocusEvent e)
 	{	this.borderize();
 		this.repaint();
+	}
+
+/************************************************************************************************************/
+
+	private class XGGrid extends Rectangle
+	{
+		private static final long serialVersionUID = 1L;
+
+		public XGGrid(String s)
+		{	super(0,0,0,0);
+			if(s == null)
+			{	LOG.warning("no grid found");
+				return;
+			}
+			String[] str = s.split(",");
+			if(str.length < 4)
+			{	LOG.warning("grid incomplete");;
+				return;
+			}
+			this.x = Integer.parseInt(str[0]);
+			this.y = Integer.parseInt(str[1]);
+			this.width = Integer.parseInt(str[2]);
+			this.height = Integer.parseInt(str[3]);
+		}
 	}
 }

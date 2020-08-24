@@ -4,17 +4,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Arrays;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.JFileChooser;
 import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.ConfigurationConstants;
-import application.JXG;
 import application.XGLoggable;
 import device.XGDevice;
-import gui.XGWindow;
 import msg.XGMessage;
 import msg.XGMessenger;
 import msg.XGRequest;
@@ -23,16 +19,16 @@ import msg.XGResponse;
 public class XGSysexFile extends File implements XGSysexFileConstants, ConfigurationConstants, XGMessenger, XGLoggable
 {	private static final long serialVersionUID=870648549558099401L;
 
-	public static Path selectFile(String s, String title, String button, boolean ask) throws FileNotFoundException
-	{	if(s == null) s = JXG.HOMEPATH.toString();
-		JFileChooser fc = new JFileChooser(s);
-		fc.setDialogTitle(title);
-		fc.setAcceptAllFileFilterUsed(false);
-		fc.setFileFilter(SYX_FILEFILTER);
-		int res = fc.showDialog(XGWindow.getRootWindow(), button);
-		if(res == JFileChooser.APPROVE_OPTION) return fc.getSelectedFile().toPath();
-		throw new FileNotFoundException("fileselection aborted");
-	}
+//	public static Path selectFile(String s, String title, String button, boolean ask) throws FileNotFoundException
+//	{	if(s == null) s = JXG.HOMEPATH.toString();
+//		JFileChooser fc = new JFileChooser(s);
+//		fc.setDialogTitle(title);
+//		fc.setAcceptAllFileFilterUsed(false);
+//		fc.setFileFilter(SYX_FILEFILTER);
+//		int res = fc.showDialog(XGWindow.getRootWindow(), button);
+//		if(res == JFileChooser.APPROVE_OPTION) return fc.getSelectedFile().toPath();
+//		throw new FileNotFoundException("fileselection aborted");
+//	}
 
 //	public static Path selectPath(String s, String title, String button, boolean ask)
 //	{	if(s == null) s = JXG.HOMEPATH.toString();
@@ -131,7 +127,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 
 	@Override public void request(XGRequest req) throws InvalidXGAddressException
 	{	XGResponse response = this.buffer.get(req.getAddress());
-		if(req.setResponsed(response)) response.getDestination().submit(response);
+		req.setResponsed(response);
 	}
 
 	@Override public void close()

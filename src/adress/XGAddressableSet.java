@@ -90,12 +90,12 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 /**
  * 	returniert den ersten auffindbaren Member, der in adr eingeschlossen ist
  * @param adr	einschließende address (this ist eingeschlossene address)
- * @return	erstes auffindbares match oder null
+ * @return	erstes auffindbares match
+ * @throws XGMemberNotFoundException falls unter der angegebenen Address kein Member in diesem Set zu vorhanden ist
  */
-	public synchronized T getFirstIncluded(XGAddress adr)
+	public synchronized T getFirstIncluded(XGAddress adr) throws XGMemberNotFoundException
 	{	for(T a : this.map.values()) if(adr.contains(a.getAddress())) return a;
-		LOG.info("no " + this.memberName + " found included in address: " + adr);
-		return null;
+		throw new XGMemberNotFoundException("no " + this.memberName + " found included in address: " + adr);
 	}
 
 /**
