@@ -31,7 +31,7 @@ public class XGValueLabel extends JTextField implements GuiConstants, ActionList
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{	boolean changed = this.value.setContent(this.value.getParameter().getTranslationTable().getIndex(this.getText().trim()));
+	{	boolean changed = this.value.setIndex(this.value.getParameter().getTranslationTable().getIndex(this.getText().trim()));
 		if(changed) this.value.transmit();
 		this.setText(this.value.toString());
 		this.repaint();

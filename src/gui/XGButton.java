@@ -30,6 +30,6 @@ public class XGButton extends XGComponent
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
 		this.add(this.button, gbc);
 
-		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
+		this.logInitSuccess();
 	}
 }

@@ -71,7 +71,7 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		this.bar.setEnabled(ena);
 		this.label.setEnabled(ena);
 
-		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
+		this.logInitSuccess();
 	}
 
 	@Override public void paint(Graphics g)
@@ -142,10 +142,10 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		}
 
 		private void limitize()
-		{	int min = this.loValue.getContent();
-			int max = this.hiValue.getContent();
-			this.loValue.setContent(Math.min(min, max));
-			this.hiValue.setContent(Math.max(min, max));
+		{	int min = this.loValue.getIndex();
+			int max = this.hiValue.getIndex();
+			this.loValue.setIndex(Math.min(min, max));
+			this.hiValue.setIndex(Math.max(min, max));
 		}
 
 		private void setCurrent(int x)
@@ -173,8 +173,8 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 			this.g2.setColor(COL_BAR_BACK);
 			this.g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 	// draw foreground
-			this.loX = XGMath.linearIO(this.loValue.getContent(), this.loParameter.getMinIndex(), this.loParameter.getMaxIndex(), 0, this.getWidth());
-			this.hiX = XGMath.linearIO(this.hiValue.getContent(), this.hiParameter.getMinIndex(), this.hiParameter.getMaxIndex(), 0, this.getWidth());
+			this.loX = XGMath.linearIO(this.loValue.getIndex(), this.loParameter.getMinIndex(), this.loParameter.getMaxIndex(), 0, this.getWidth());
+			this.hiX = XGMath.linearIO(this.hiValue.getIndex(), this.hiParameter.getMinIndex(), this.hiParameter.getMaxIndex(), 0, this.getWidth());
 //			this.originWidth = XGMath.linearIO(this.loParameter.getOrigin(), this.loParameter.getMinIndex(), this.loParameter.getMaxIndex(), 0, this.getWidth());
 			this.g2.setColor(COL_BAR_FORE);
 			this.g2.fillRoundRect(this.loX, 0, this.hiX - this.loX, this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
@@ -185,8 +185,8 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		{	boolean changed = false;
 			if(e.getButton() != MouseEvent.BUTTON1) return;
 			this.setCurrent(e.getX());
-			if(e.getX() > this.curX) changed = this.curValue.setContent(this.curValue.getContent() + 1);
-			else changed = this.curValue.setContent(this.curValue.getContent() - 1);
+			if(e.getX() > this.curX) changed = this.curValue.setIndex(this.curValue.getIndex() + 1);
+			else changed = this.curValue.setIndex(this.curValue.getIndex() - 1);
 			if(changed)
 			{	this.limitize();
 				this.curValue.transmit();
@@ -195,8 +195,8 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	boolean loChanged = this.loValue.setContent(this.loValue.getContent() + e.getWheelRotation());
-			boolean hiChanged = this.hiValue.setContent(this.hiValue.getContent() + e.getWheelRotation());
+		{	boolean loChanged = this.loValue.setIndex(this.loValue.getIndex() + e.getWheelRotation());
+			boolean hiChanged = this.hiValue.setIndex(this.hiValue.getIndex() + e.getWheelRotation());
 			if(hiChanged)
 			{	this.limitize();
 				this.hiValue.transmit();
@@ -210,7 +210,7 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 	
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGComponent.dragEvent.getX();
-			boolean changed = this.curValue.setContent(this.curValue.getContent() + distance);
+			boolean changed = this.curValue.setIndex(this.curValue.getIndex() + distance);
 			if(changed)
 			{	this.limitize();
 				this.curValue.transmit();

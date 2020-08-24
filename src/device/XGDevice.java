@@ -75,14 +75,20 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	public static void init(XMLNode x)
 	{	for(XMLNode n : x.getChildNodes(TAG_DEVICE))
-		{	XGDevice d = null;
-			try
-			{	d = new XGDevice(n);
-				if(DEVICES.add(d)) d.reloadTree();
-			}
-			catch(InvalidXGAddressException e)
-			{	LOG.severe(e.getMessage());
-			}
+		{
+			new Thread(()->
+			{
+				XGDevice d = null;
+				try
+				{	d = new XGDevice(n);
+					synchronized(DEVICES)
+					{	if(DEVICES.add(d)) d.reloadTree();
+					}
+				}
+				catch(InvalidXGAddressException e)
+				{	LOG.severe(e.getMessage());
+				}
+			}).start();
 		}
 		LOG.info(DEVICES.size() + " devices initialized");
 	}
@@ -90,7 +96,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private static void removeDevice(XGDevice dev)
 	{	if(JOptionPane.showConfirmDialog(XGWindow.getRootWindow(), "Do you really want to remove " + dev, "remove device...", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) return;
 		if(DEVICES.remove(dev))
-		{	dev.getConfig().removeNode();
+		{	dev.exit();
+			dev.getConfig().removeNode();
 			dev.reloadTree();
 			LOG.info(dev + " removed");
 		}

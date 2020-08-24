@@ -63,7 +63,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		gbc.anchor = GridBagConstraints.SOUTH;
 		this.add(this.label, gbc);
 
-		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
+		this.logInitSuccess();
 	}
 
 	@Override public void paint(Graphics g)
@@ -147,7 +147,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 			this.g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 	// draw foreground
 			this.originWidth = XGMath.linearIO(this.parameter.getOrigin(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth());
-			this.barWidth = XGMath.linearIO(this.value.getContent(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth()) - this.originWidth;
+			this.barWidth = XGMath.linearIO(this.value.getIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth()) - this.originWidth;
 			this.g2.setColor(COL_BAR_FORE);
 			this.g2.fillRoundRect(0 + Math.min(this.originWidth, this.originWidth + this.barWidth), 0, Math.abs(this.barWidth), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			this.g2.dispose();
@@ -156,21 +156,21 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		@Override public void mouseClicked(MouseEvent e)
 		{	boolean changed = false;
 			if(e.getButton() != MouseEvent.BUTTON1) return;
-			if(this.getX() + this.barWidth < e.getX()) changed = this.value.setContent(this.value.getContent() + 1);
-			else changed = this.value.setContent(this.value.getContent() - 1);
+			if(this.getX() + this.barWidth < e.getX()) changed = this.value.setIndex(this.value.getIndex() + 1);
+			else changed = this.value.setIndex(this.value.getIndex() - 1);
 			if(changed) this.value.transmit();
 			e.consume();
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	boolean changed = this.value.setContent(this.value.getContent() + e.getWheelRotation());
+		{	boolean changed = this.value.setIndex(this.value.getIndex() + e.getWheelRotation());
 			if(changed) this.value.transmit();
 			e.consume();
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGComponent.dragEvent.getX();
-			boolean changed = this.value.setContent(this.value.getContent() + distance);
+			boolean changed = this.value.setIndex(this.value.getIndex() + distance);
 			if(changed) this.value.transmit();
 			XGComponent.dragEvent = e;
 			e.consume();

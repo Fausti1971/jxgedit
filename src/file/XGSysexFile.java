@@ -120,7 +120,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 	{	return this.getAbsolutePath();
 	}
 
-	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
+	@Override public void submit(XGResponse msg)
 	{	this.buffer.add(msg);
 		this.changed = true;
 	}

@@ -22,7 +22,7 @@ import parm.XGTableEntry;
  * @author thomas
  *
  */
-public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, ChangeableContent<Integer>
+public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener
 {
 
 /***********************************************************************************************/
@@ -149,7 +149,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 /**
  * returniert des Inhalts Index in der aktuellen XGTable des momentan zuständigen XGParameter
  */
-	@Override public Integer getContent()
+	public Integer getIndex()
 	{	return this.index;
 	}
 
@@ -158,7 +158,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
  * @param i	Index
  * @return	true, wenn sich der Inhalt änderte
  */
-	@Override public boolean setContent(Integer i)
+	public boolean setIndex(Integer i)
 	{	this.actions(XACTION_BEFORE_EDIT);
 		int old = this.index;
 		XGParameter p = this.getParameter();
@@ -177,7 +177,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public XGTableEntry getEntry()
 	{	XGParameter p = this.getParameter();
 		if(p == null) return null;
-		return p.getTranslationTable().getByIndex(this.getContent());
+		return p.getTranslationTable().getByIndex(this.getIndex());
 	}
 
 /**
@@ -205,7 +205,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public boolean setValue(int v)
 	{	XGParameter p = this.getParameter();
 		if(p == null) return true;
-		return this.setContent(p.getTranslationTable().getIndex(v));
+		return this.setIndex(p.getTranslationTable().getIndex(v));
 	}
 
 	public void transmit()

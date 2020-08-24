@@ -137,12 +137,14 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 			@Override public void actionPerformed(ActionEvent e)
 			{	for(XGMessage m : list.getSelectedValuesList())
 				{	m.setDestination(source);
-					if(m instanceof XGResponse)
-					try
-					{	source.submit((XGResponse)m);
+					if(m instanceof XGResponse) try
+					{
+						source.submit((XGResponse)m);
 					}
 					catch(InvalidXGAddressException e1)
-					{	e1.printStackTrace();
+					{
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 					rm(m);
 				}

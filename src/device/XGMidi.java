@@ -31,39 +31,48 @@ import value.ChangeableContent;
 import xml.XMLNode;
 
 public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMidiNotification, Configurable, Receiver, AutoCloseable
-{
-	public static Set<Info> getInputs()
-	{	Set<Info> inputs = new LinkedHashSet<>();
+{	private static Set<Info> INPUTS = new LinkedHashSet<>();
+	private static Set<Info> OUTPUTS = new LinkedHashSet<>();
+
+	static
+	{	synchronized(INPUTS)
+		{	initInputs();
+		}
+		synchronized(OUTPUTS)
+		{	initOutputs();
+		}
+	}
+
+	private static void initInputs()
+	{	INPUTS.clear();
 		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
 		MidiDevice tmpDev = null;
 		for (MidiDevice.Info i : infos)	// i == i.getName() == dev.getDeviceInfo()
 		{	try
 			{	tmpDev = MidiSystem.getMidiDevice(i);
 				if(tmpDev.getMaxTransmitters() == 0) continue;
-				inputs.add(i);
+				INPUTS.add(i);
 			}
 			catch (MidiUnavailableException e)
 			{	LOG.info(e.getMessage());
 			}
 		}
-		return inputs;
 	}
 	
-	public static Set<Info> getOutputs()
-	{	Set<Info> outputs = new LinkedHashSet<>();
+	private static void initOutputs()
+	{	OUTPUTS.clear();
 		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
 		MidiDevice tmpDev = null;
 		for (MidiDevice.Info i : infos)
 		{	try
 			{	tmpDev = MidiSystem.getMidiDevice(i);
 				if(tmpDev.getMaxReceivers() == 0) continue;
-				outputs.add(i);
+				OUTPUTS.add(i);
 			}
 			catch (MidiUnavailableException e)
 			{	LOG.info(e.getMessage());
 			}
 		}
-		return outputs;
 	}
 
 /******************************************************************************************************************/
@@ -106,7 +115,6 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	private MidiDevice midiInput = null;
 	private XGRequest request = null;
 	private int timeoutValue;
-//	private Thread requestThread;
 	private final XGMessageBuffer buffer;
 
 	public XGMidi(XGDevice dev)
@@ -121,12 +129,12 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		{	CoreMidiDeviceProvider.addNotificationListener(this);
 		}
 		catch(CoreMidiException e)
-		{	e.printStackTrace();
+		{	LOG.warning(e.getMessage());
 		}
 	}
 
 	private void setOutput(String s)
-	{	for(Info i : getOutputs()) if(i.getName().equals(s)) this.setOutput(i);
+	{	for(Info i : OUTPUTS) if(i.getName().equals(s)) this.setOutput(i);
 	}
 
 	private void setOutput(Info i)
@@ -134,7 +142,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		{	this.setOutput(MidiSystem.getMidiDevice(i));
 		}
 		catch(MidiUnavailableException e)
-		{	e.printStackTrace();
+		{	LOG.warning(e.getMessage());
 		}
 	}
 
@@ -153,18 +161,17 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 				{	this.transmitter = MidiSystem.getReceiver();
 				}
 				catch(MidiUnavailableException e1)
-				{	e1.printStackTrace();
+				{	LOG.warning(e1.getMessage());
 				}
 			}
 		}
 		LOG.info(this.getOutputName());
 		this.config.setStringAttribute(ATTR_MIDIOUTPUT, this.getOutputName());
-//		this.notifyConfigurationListeners();
 		return;
 	}
 
 	private void setInput(String s)
-	{	for(Info i : getInputs()) if(i.getName().equals(s)) this.setInput(i);
+	{	for(Info i : INPUTS) if(i.getName().equals(s)) this.setInput(i);
 	}
 
 	private void setInput(Info i)
@@ -172,7 +179,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		{	this.setInput(MidiSystem.getMidiDevice(i));
 		}
 		catch(MidiUnavailableException e)
-		{	e.printStackTrace();
+		{	LOG.warning(e.getMessage());
 		}
 	}
 
@@ -190,7 +197,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 				{	MidiSystem.getTransmitter().setReceiver(this);
 				}
 				catch(MidiUnavailableException e1)
-				{	e1.printStackTrace();
+				{	LOG.warning(e1.getMessage());
 				}
 			}
 		}
@@ -226,10 +233,11 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	}
 
 	@Override public void midiSystemUpdated() throws CoreMidiException
-	{	this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT).toString());
+	{	initInputs();
+		initOutputs();
+		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT).toString());
 		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT).toString());
 		LOG.info("CoreMidiSystem updated, " + this.midiInput.getDeviceInfo() + "=" + this.midiInput.isOpen() + ", " + this.midiOutput.getDeviceInfo() + "=" + this.midiOutput.isOpen());
-		//	this.notifyConfigurationListeners();
 	}
 
 	private boolean transmit(XGMessage m)
@@ -324,7 +332,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		XGFrame root = new XGFrame("midi");
 		root.setLayout(new GridBagLayout());
 
-		JComponent c = new XGList<Info>("input", XGMidi.getInputs(), this.input);
+		JComponent c = new XGList<Info>("input", INPUTS, this.input);
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
@@ -332,7 +340,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		gbc.weighty = 0.5;
 		root.add(c, gbc);
 
-		c = new XGList<Info>("output", XGMidi.getOutputs(), this.output);
+		c = new XGList<Info>("output", OUTPUTS, this.output);
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		root.add(c, gbc);

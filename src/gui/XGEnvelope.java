@@ -21,7 +21,7 @@ public class XGEnvelope extends XGComponent
 		}
 		this.borderize();
 
-		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized " + minX + "/" + maxX + "/" + minY + "/" + maxY);
+		this.logInitSuccess();
 	}
 
 	public void setTableX(XGTable t)

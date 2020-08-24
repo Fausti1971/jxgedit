@@ -80,13 +80,13 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	}
 
 	private XMLNode(String tag, XGProperties attr)
+	{	this(tag, attr, "");
+	}
+
+	private XMLNode(String tag, XGProperties attr, String txt)
 	{	if(!XGStrings.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
 		this.tag = tag;
 		this.attributes = attr;
-	}
-
-	public XMLNode(String tag, XGProperties attr, String txt)
-	{	this(tag, attr);
 		this.content.replace(0, this.content.length(), txt);
 	}
 
@@ -135,7 +135,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	public final XMLNode getChildNodeOrNew(String tag)
 	{	XMLNode n = this.getChildNode(tag);
 		if(n == null)
-		{	n = new XMLNode(tag, null);
+		{	n = new XMLNode(tag);
 			this.addChildNode(n);
 		}
 		return n;
@@ -180,7 +180,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	public int parseChildNodeIntegerContentOrNew(String tag, int def)
 	{	XMLNode n = this.getChildNode(tag);
 		if(n == null)
-		{	n = new XMLNode(tag, null);
+		{	n = new XMLNode(tag);
 			n.setTextContent(def);
 			this.addChildNode(n);
 		}

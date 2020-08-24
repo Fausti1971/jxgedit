@@ -43,7 +43,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 		this.parameterChanged(this.value.getParameter());
 		this.borderize();
 
-		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
+		this.logInitSuccess();
 	}
 
 	@Override public void parameterChanged(XGParameter p)
@@ -90,11 +90,11 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 		}
 
 		@Override public boolean isSelected()
-		{	return this.entry.getValue() == this.value.getContent();
+		{	return this.entry.getValue() == this.value.getIndex();
 		}
 
 		@Override public void actionPerformed(ActionEvent e)
-		{	boolean changed = this.value.setContent(entry.getValue());
+		{	boolean changed = this.value.setIndex(entry.getValue());
 			if(changed) this.value.transmit();
 		}
 

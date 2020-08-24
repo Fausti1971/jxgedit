@@ -5,12 +5,13 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import device.XGDevice;
 
-public class XGDeviceDetector extends XGFrame implements DocumentListener, ActionListener, GuiConstants
+public class XGDeviceDetector extends JComponent implements DocumentListener, ActionListener, GuiConstants
 {	/**
 	 * 
 	 */
@@ -24,12 +25,12 @@ public class XGDeviceDetector extends XGFrame implements DocumentListener, Actio
 	private JButton button = new JButton("detect");
 
 	public XGDeviceDetector(String title, StringBuffer name, XGDevice dev)
-	{	super(name.toString());
-		this.setLayout(new BorderLayout());
+	{	this.setLayout(new BorderLayout());
 		this.value = name;
 		this.device = dev;
 		this.setAlignmentX(0.5f);
 		this.setName(title);
+		this.setBorder(XGComponent.defaultLineBorder);
 		Dimension dim = new Dimension(GRID * 5, GRID * 2);
 		this.text.setMinimumSize(dim);
 		this.text.setPreferredSize(dim);

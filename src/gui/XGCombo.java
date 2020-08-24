@@ -42,7 +42,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
 
-		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
+		this.logInitSuccess();
 	}
 
 	@Override public void parameterChanged(XGParameter p)
@@ -80,7 +80,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 			{	XGTable t = p.getTranslationTable();
 				for(XGTableEntry e : t) this.addItem(e);
 //				this.setMaximumRowCount(Toolkit.getDefaultToolkit().getScreenSize().height/this.row, t.size());
-				this.setSelectedItem(t.getByIndex(this.value.getContent()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
+				this.setSelectedItem(t.getByIndex(this.value.getIndex()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
 				this.addActionListener(this);
 			}
 			else this.setEnabled(false);

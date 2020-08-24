@@ -20,7 +20,11 @@ public class XGStatusBar extends JLabel implements XGLoggable
 	{	this.setPreferredSize(new Dimension(0, XGComponent.GRID));
 		this.setOpaque(true);
 		LOG.addHandler(new BarLogger(this));
-		LOG.info(this.getClass().getSimpleName() + " " + this.getName() + " initialized");
+		this.logInitSuccess();
+	}
+
+	@Override public String toString()
+	{	return "StatusBar";
 	}
 
 /***********************************************************************************************************/
