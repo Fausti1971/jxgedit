@@ -26,7 +26,7 @@ public interface XGParameterConstants extends XMLNodeConstants
 
 
 	static final String DEF_PARAMETERNAME = "unknown parameter: ";
-	static final int  DEF_MIN = 0, DEF_MAX = 127;
+	static final int  DEF_MIN = 0, DEF_MAX = 127, DEF_ORIGIN = 0;
 	static final int DEF_SELECTORVALUE = -1;
 
 	static enum ValueDataType

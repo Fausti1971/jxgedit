@@ -75,6 +75,10 @@ Problem:
 		Alternativ könnte man über die Pflege von Defaultwerten sinnieren.
 Problem:
 		nachdem die Statusbar indirekt vom EDT aktualisiert wird, rückt nun auch hier das leidige Threading näher. Konzept überdenken bezüglich XGMidi.requestThread.interrupt();
-	gelöst: durch die Abschaffung von Level.PROGRESS und Verwendung von ProgressMonitor
+	gelöst:
+		durch die Abschaffung von Level.PROGRESS, Verwendung von ProgressMonitor und requests im eigegnen Thread...
 Problem:
 		XGTableKonzept überdenken: bei bspw. XGEnvelope sind die Indizes der XGEnvelopePoints nicht mehr vergleichbar, da jeder Point aufgrund verschiedener Ranges neue XGTables erzeugt...
+	gelöst:
+		XGParameter hält nun wieder selbst seine begrenzenden min- und max-Indizies (errechnet aus den min- und max-Values aus XML) für seine XGTable.
+		Nur wenn der Parameter das Attribut "tablefilter" besitzt, wird eine neue (gefilterte) XGTable erzeugt.

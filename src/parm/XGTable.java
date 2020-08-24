@@ -56,8 +56,8 @@ public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameter
 	{	return this.getClass().getSimpleName()
 			+ ": " + this.getName()
 			+ " (" + this.size()
-			+ "); min = " + this.getMinEntry().getValue() + "(" + this.getMinEntry()
-			+ "); max = " + this.getMaxEntry().getValue() + "(" + this.getMaxEntry() + ")";
+			+ "); min=" + this.getMinEntry().getValue() + "(" + this.getMinEntry()
+			+ "); max=" + this.getMaxEntry().getValue() + "(" + this.getMaxEntry() + ")";
 	}
 
 	public default int getMinIndex()

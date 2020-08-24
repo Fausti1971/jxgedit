@@ -30,19 +30,29 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	private final String tag;
 	private final String longName, shortName;
-	private final int origin;
 	private final XGTable translationTable;
+	private final int minIndex, maxIndex, originIndex;
 	private final String unit;
 
 	protected XGParameter(XGDevice dev, XMLNode n)
 	{	this.tag = n.getStringAttribute(ATTR_ID).toString();
-		this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);// muss wegen validate() vor origin-Zuweisung ausgeführt werden; ist origin evtl. besser im Component aufgehoben? (template.xml)
-		this.origin = this.validate(this.translationTable.getIndex(n.getIntegerAttribute(ATTR_ORIGIN, 0)));
+		this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);// ist origin evtl. besser im Component aufgehoben? (template.xml)
+
+		int minValue = n.getIntegerAttribute(ATTR_MIN, DEF_MIN);
+		int maxValue = n.getIntegerAttribute(ATTR_MAX, DEF_MAX);
+		int originValue = n.getIntegerAttribute(ATTR_ORIGIN, DEF_ORIGIN);
+		this.minIndex = this.translationTable.getIndex(minValue);
+		this.maxIndex = this.translationTable.getIndex(maxValue);
+		this.originIndex = this.validate(this.translationTable.getIndex(originValue));
+
 		this.longName = n.getStringAttribute(ATTR_LONGNAME);
 		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
 		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, this.translationTable.getUnit());
-		LOG.info("parameter initialized: " + this);
-		if(this.translationTable == null) throw new RuntimeException("no table: " + this.toString());
+		if(this.translationTable == null)
+		{	LOG.severe(this.getClass().getSimpleName() + " " + this + " has no Table!");
+			throw new RuntimeException("no table: " + this);
+		}
+		LOG.info(this.getClass().getSimpleName() + " " + this + " intialized");
 	}
 
 	public XGParameter(String name, int v)//Dummy-Parameter für Festwerte
@@ -50,26 +60,33 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		this.longName = DEF_PARAMETERNAME;
 		this.shortName = name;
 		this.translationTable = XGVirtualTable.DEF_TABLE;
-		this.origin = 0;
+
+		this.minIndex = this.translationTable.getIndex(v);
+		this.maxIndex = this.translationTable.getIndex(v);
+		this.originIndex = this.translationTable.getIndex(v);
+
 		this.unit = "*";
-		LOG.info("parameter initialized: " + this);
-		if(this.translationTable == null) throw new RuntimeException("no table: " + this.toString());
-	}
-
-	public int getMinIndex()
-	{	return this.translationTable.getMinIndex();
-	}
-
-	public int getMaxIndex()
-	{	return this.translationTable.getMaxIndex();
+		if(this.translationTable == null)
+		{	LOG.severe(this.getClass().getSimpleName() + " " + this + " has no Table!");
+			throw new RuntimeException("no table: " + this);
+		}
+		LOG.info(this.getClass().getSimpleName() + " " + this + " intialized");
 	}
 
 	public XGTable getTranslationTable()
 	{	return this.translationTable;
 	}
 
+	public int getMinIndex()
+	{	return this.minIndex;
+	}
+
+	public int getMaxIndex()
+	{	return this.maxIndex;
+	}
+
 	public int getOrigin()
-	{	return this.origin;
+	{	return this.originIndex;
 	}
 
 	public int validate(int i)

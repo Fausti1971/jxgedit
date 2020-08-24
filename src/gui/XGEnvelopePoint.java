@@ -62,8 +62,8 @@ public class XGEnvelopePoint extends JButton implements XGValueChangeListener, G
 		int offs = GRID/2;
 		this.setToolTipText(s);
 		this.setName(s);
-		int x = XGMath.linearIO(this.valueX.getValue(), this.envelope.getMinX(), this.envelope.getMaxX(), this.envelope.getX(), this.envelope.getWidth()) - offs;
-		int y = XGMath.linearIO(this.valueY.getValue(), this.envelope.getMinY(), this.envelope.getMaxY(), this.envelope.getY(), this.envelope.getHeight()) - offs;
+		int x = XGMath.linearIO(this.valueX.getContent(), this.envelope.getMinX(), this.envelope.getMaxX(), this.envelope.getX(), this.envelope.getWidth()) - offs;
+		int y = XGMath.linearIO(this.valueY.getContent(), this.envelope.getMinY(), this.envelope.getMaxY(), this.envelope.getHeight() - offs, this.envelope.getY());
 		this.setBounds(x, y, GRID, GRID);
 		this.repaint();
 	}

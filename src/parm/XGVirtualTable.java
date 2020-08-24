@@ -221,9 +221,7 @@ public class XGVirtualTable implements XGTable
 	}
 
 	@Override public XGTable filter(XMLNode n)
-	{	int min = n.getIntegerAttribute(ATTR_MIN, XGParameterConstants.DEF_MIN);
-		int max = n.getIntegerAttribute(ATTR_MAX, XGParameterConstants.DEF_MAX);
-		return new XGVirtualTable(min, max, this.name, this.translate, this.retranslate);
+	{	return this;
 	}
 
 	@Override public int size()
