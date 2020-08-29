@@ -19,12 +19,30 @@ public interface XGMath
 		return in / in_range * out_range + out_min;
 	}
 //Test
-	public static void main(String[] args)
+	static void createTable(String[] args)
 	{	int min = 0, max = 139, i;
 		float f = 0f;
 		for(i = min; i <= max; i++)
 		{	f = linearIO(i, min, max, 0.1f, 36.2f);
 			System.out.println("<item value=\"" + i + "\" name=\"" + String.format("%1$4.2f", f) + "\"/>");
 		}
+	}
+
+	public static void main(String[] args)
+	{	int
+			minMSB = 126 << 14,
+			maxMSB = 127 << 14,
+			minLSB = 0 << 7,
+			maxLSB = 0 << 7,
+			minPRG = 0,
+			maxPRG = 127;
+		System.out.println("kit: " + (minMSB |= minLSB |= minPRG) + "..." + (maxMSB |= maxLSB |= maxPRG));
+		minMSB = 0 << 14;
+		maxMSB = 64 << 14;
+		minLSB = 0 << 14;
+		maxLSB = 127 << 7;
+		minPRG = 0 ;
+		maxPRG = 127;
+		System.out.println("voice: " + (minMSB |= minLSB |= minPRG) + "..." + (maxMSB |= maxLSB |= maxPRG));
 	}
 }

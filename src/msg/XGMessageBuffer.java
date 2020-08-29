@@ -40,7 +40,7 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	{	return this.source.getMessengerName() + " buffer";
 	}
 
-	@Override public void submit(XGResponse m)
+	@Override public void submit(XGMessage m)
 	{	this.add(m);
 		LOG.info("msg buffered: " + m);
 		((DefaultListModel<XGMessage>)this.list.getModel()).addElement(m);
@@ -139,9 +139,9 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 				{	m.setDestination(source);
 					if(m instanceof XGResponse) try
 					{
-						source.submit((XGResponse)m);
+						source.submit(m);
 					}
-					catch(InvalidXGAddressException e1)
+					catch(InvalidXGAddressException | XGMessengerException e1)
 					{
 						// TODO Auto-generated catch block
 						e1.printStackTrace();

@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import application.XGLoggable;
 import device.XGDevice;
+import parm.XGTable.Preference;
 import tag.XGTagable;
 import xml.XMLNode;
 
@@ -35,23 +36,24 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 	private final String unit;
 
 	protected XGParameter(XGDevice dev, XMLNode n)
-	{	this.tag = n.getStringAttribute(ATTR_ID).toString();
-		this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);// ist origin evtl. besser im Component aufgehoben? (template.xml)
-
-		int minValue = n.getIntegerAttribute(ATTR_MIN, DEF_MIN);
-		int maxValue = n.getIntegerAttribute(ATTR_MAX, DEF_MAX);
-		int originValue = n.getIntegerAttribute(ATTR_ORIGIN, DEF_ORIGIN);
-		this.minIndex = this.translationTable.getIndex(minValue);
-		this.maxIndex = this.translationTable.getIndex(maxValue);
-		this.originIndex = this.validate(this.translationTable.getIndex(originValue));
-
-		this.longName = n.getStringAttribute(ATTR_LONGNAME);
-		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
-		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, this.translationTable.getUnit());
+	{	this.tag = n.getStringAttribute(ATTR_ID);
+		this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);
 		if(this.translationTable == null)
 		{	LOG.severe(this.getClass().getSimpleName() + " " + this + " has no Table!");
 			throw new RuntimeException("no table: " + this);
 		}
+
+		int minValue = n.getValueAttribute(ATTR_MIN, DEF_MIN);
+		int maxValue = n.getValueAttribute(ATTR_MAX, DEF_MAX);
+		int originValue = n.getIntegerAttribute(ATTR_ORIGIN, DEF_ORIGIN);
+		this.minIndex = this.translationTable.getIndex(minValue, Preference.ABOVE);
+		this.maxIndex = this.translationTable.getIndex(maxValue, Preference.BELOW);
+		this.originIndex = this.validate(this.translationTable.getIndex(originValue, Preference.CLOSEST));
+
+		this.longName = n.getStringAttribute(ATTR_LONGNAME);
+		this.shortName = n.getStringAttribute(ATTR_SHORTNAME);
+		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, this.translationTable.getUnit());
+
 		LOG.info(this.getClass().getSimpleName() + " " + this + " intialized");
 	}
 
@@ -61,16 +63,16 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 		this.shortName = name;
 		this.translationTable = XGVirtualTable.DEF_TABLE;
 
-		this.minIndex = this.translationTable.getIndex(v);
-		this.maxIndex = this.translationTable.getIndex(v);
-		this.originIndex = this.translationTable.getIndex(v);
+		this.minIndex = this.translationTable.getIndex(v, Preference.CLOSEST);
+		this.maxIndex = this.translationTable.getIndex(v, Preference.CLOSEST);
+		this.originIndex = this.translationTable.getIndex(v, Preference.CLOSEST);
 
 		this.unit = "*";
 		if(this.translationTable == null)
 		{	LOG.severe(this.getClass().getSimpleName() + " " + this + " has no Table!");
 			throw new RuntimeException("no table: " + this);
 		}
-		LOG.info(this.getClass().getSimpleName() + " " + this + " intialized");
+//		LOG.info(this.getClass().getSimpleName() + " " + this.getInfo() + " intialized");
 	}
 
 	public XGTable getTranslationTable()
@@ -103,6 +105,10 @@ public class XGParameter implements XGLoggable, XGParameterConstants, XGTagable
 
 	public String getUnit()
 	{	return this.unit;
+	}
+
+	public String getInfo()
+	{	return this.longName + " (" + this.translationTable.getInfo() + " " + this.minIndex + "..." + this.maxIndex + ")";
 	}
 
 	@Override public String toString()

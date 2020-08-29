@@ -60,7 +60,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 
 		this.parameterChanged(this.value.getParameter());
 
-		this.logInitSuccess();
+//		this.logInitSuccess();
 		}
 
 	@Override public void contentChanged(XGValue v)

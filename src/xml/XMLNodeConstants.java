@@ -62,6 +62,7 @@ public interface XMLNodeConstants
 		TAG_PARAMETERS = "parameters",
 		TAG_PARAMETER = "parameter",
 
+		ATTR_TYPE = "type",
 		ATTR_PARAMETER_ID = "parameterID",
 		ATTR_PARAMETERSELECTOR ="parameterSelector",
 		ATTR_MIN = "min",
@@ -69,6 +70,7 @@ public interface XMLNodeConstants
 		ATTR_TRANSLATOR = "translator",
 		ATTR_TABLEFILTER = "tableFilter",
 		ATTR_TABLECATEGORIES = "categories",
+		ATTR_FALLBACKMASK = "fallbackMask",
 		ATTR_LONGNAME = "longName",
 		ATTR_SHORTNAME = "shortName",
 		ATTR_UNIT = "unit",
@@ -79,8 +81,8 @@ public interface XMLNodeConstants
 		TAG_TABLE = "table",
 		TAG_ITEM = "item",
 		ATTR_VALUE = "value",
-		ATTR_MSB = "msb",
-		ATTR_LSB = "lsb",
+//		ATTR_MSB = "msb",
+//		ATTR_LSB = "lsb",
 
 		TAG_FRAME = "frame",
 		TAG_KNOB = "knob",
@@ -91,6 +93,7 @@ public interface XMLNodeConstants
 		TAG_ENVELOPE = "envelope",
 		TAG_POINT = "point",
 		TAG_BUTTON = "button",
+		TAG_SELECTOR = "selector",
 		TAG_AUTO = "auto",
 		ATTR_ORIGIN = "origin",
 

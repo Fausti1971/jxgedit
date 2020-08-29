@@ -4,7 +4,7 @@ import xml.XMLNodeConstants;
 
 public interface XGParameterConstants extends XMLNodeConstants
 {
-	static final String
+	String
 		TABLE_NORMAL = "normal",
 		TABLE_ADD1 = "add1",
 		TABLE_DIV10 = "div10",
@@ -16,22 +16,22 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_NONE = "none",
 		DEF_TABLENAME = TABLE_NORMAL;
 
-	static final String
+	String
 		XACTION_BEFORE_EDIT = "before_edit",
 		XACTION_AFTER_EDIT = "after_edit",
 		XACTION_BEFORE_SEND = "before_send",
 		XACTION_AFTER_SEND = "after_send";
 
-	static final String XACTION[]={XACTION_BEFORE_EDIT, XACTION_AFTER_EDIT, XACTION_BEFORE_SEND, XACTION_AFTER_SEND};
+	String XACTION[]={XACTION_BEFORE_EDIT, XACTION_AFTER_EDIT, XACTION_BEFORE_SEND, XACTION_AFTER_SEND};
 
+	String MUTABLE = "mutable", IMMUTABLE = "immutable";
+	String DEF_PARAMETERNAME = "unknown parameter: ";
+	int  DEF_MIN = 0, DEF_MAX = 127, DEF_ORIGIN = 0;
+	int DEF_SELECTORVALUE = -1;
 
-	static final String DEF_PARAMETERNAME = "unknown parameter: ";
-	static final int  DEF_MIN = 0, DEF_MAX = 127, DEF_ORIGIN = 0;
-	static final int DEF_SELECTORVALUE = -1;
-
-	static enum ValueDataType
+	enum ValueDataType
 	{	MSB, LSB, MSN, LSN
 	}
 
-	static final ValueDataType DEF_DATATYPE = ValueDataType.LSB;
+	ValueDataType DEF_DATATYPE = ValueDataType.LSB;
 }

@@ -43,7 +43,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 		this.parameterChanged(this.value.getParameter());
 		this.borderize();
 
-		this.logInitSuccess();
+//		this.logInitSuccess();
 	}
 
 	@Override public void parameterChanged(XGParameter p)

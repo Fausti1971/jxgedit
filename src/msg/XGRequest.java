@@ -4,7 +4,7 @@ import adress.InvalidXGAddressException;
 
 public interface XGRequest extends XGMessage
 {
-	default void request() throws InvalidXGAddressException
+	default void request() throws InvalidXGAddressException, XGMessengerException
 	{	this.getDestination().request(this);
 	}
 /**

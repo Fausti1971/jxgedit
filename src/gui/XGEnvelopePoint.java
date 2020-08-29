@@ -43,7 +43,7 @@ public class XGEnvelopePoint extends JButton implements XGValueChangeListener, G
 		this.valueX.addValueListener(this);
 		this.valueY.addValueListener(this);
 
-		this.logInitSuccess();
+//		this.logInitSuccess();
 	}
 
 //	@Override public void paint(Graphics g)

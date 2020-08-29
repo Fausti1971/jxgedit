@@ -28,7 +28,7 @@ public class XGList<E extends Object> extends JList<E> implements ListSelectionL
 		this.value = s;
 		this.addListSelectionListener(this);
 
-		this.logInitSuccess();
+//		this.logInitSuccess();
 	}
 
 	@Override public void valueChanged(ListSelectionEvent e)

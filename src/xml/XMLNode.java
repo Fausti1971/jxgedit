@@ -3,10 +3,13 @@ package xml;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.function.Consumer;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -90,6 +93,13 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 		this.content.replace(0, this.content.length(), txt);
 	}
 
+	public void traverse(String tag, Consumer<XMLNode> func)
+	{	for(XMLNode x : this.getChildNodes(tag))
+		{	if(x.hasChildNode(tag)) x.traverse(tag, func);
+			else func.accept(x);
+		}
+	}
+
 	public XMLNode getParentNode()
 	{	return this.parent;
 	}
@@ -117,6 +127,10 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 
 	public Set<XMLNode> getChildNodes()
 	{	return this.childNodes;
+	}
+
+	public boolean hasChildNode(String tag)
+	{	return this.getChildNode(tag) != null;
 	}
 
 	public final XMLNode getChildNode(String tag)
@@ -202,6 +216,26 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	{	return this.attributes.containsKey(name);
 	}
 
+	public List<XMLNode> getParents()
+	{	List<XMLNode> set = new ArrayList<>();
+		XMLNode x = this;
+		while(x != null)
+		{	set.add(0, x);
+			x = x.getParentNode();
+		}
+		return set;
+	}
+
+	public List<XMLNode> getParents(String tag)
+	{	List<XMLNode> set = new ArrayList<>();
+		XMLNode x = this;
+		while(x != null && x.getTag().equals(tag))
+		{	set.add(0, x);
+			x = x.getParentNode();
+		}
+		return set;
+	}
+
 /**
  * returniert den StringBuffer des Attributes attr, legt dieses bei Abstinenz an
  * @param attr Attributname
@@ -237,6 +271,10 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	public void setStringAttribute(final String attr, final String content)
 	{	if(!XGStrings.isAlNum(attr)) throw new RuntimeException(attr + ERRORSTRING);
 		this.attributes.put(attr, content);
+	}
+
+	public int getValueAttribute(String attr, int def)
+	{	return XGStrings.parseValue(this.getStringAttribute(attr), def);
 	}
 
 	public final int getIntegerAttribute(String a, int def)

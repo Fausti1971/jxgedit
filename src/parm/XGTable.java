@@ -10,6 +10,8 @@ import xml.XMLNode;
 
 public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameterConstants, XGTagable, Iterable<XGTableEntry>
 {
+	static int DEF_FALLBACKMASK = 127;
+	static enum Preference{BELOW, EQUAL, ABOVE, CLOSEST, FALLBACK};
 	public static void init(XGDevice dev)
 	{
 		File file;
@@ -33,7 +35,7 @@ public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameter
 	public XGTableEntry getByIndex(int i);
 	public XGTableEntry getByValue(int v);
 	public XGTableEntry getByName(String name);
-	public int getIndex(int v);
+	public int getIndex(int v, Preference pref);
 	public int getIndex(String name);
 	public XGTable filter(XMLNode n);
 	public String getName();
@@ -53,11 +55,7 @@ public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameter
 	}
 
 	public default String getInfo()
-	{	return this.getClass().getSimpleName()
-			+ ": " + this.getName()
-			+ " (" + this.size()
-			+ "); min=" + this.getMinEntry().getValue() + "(" + this.getMinEntry()
-			+ "); max=" + this.getMaxEntry().getValue() + "(" + this.getMaxEntry() + ")";
+	{	return this.getClass().getSimpleName() + ": " + this.getName() + "(" + this.size() + "): " + this.getMinEntry().getInfo() + "..." + this.getMaxEntry().getInfo();
 	}
 
 	public default int getMinIndex()

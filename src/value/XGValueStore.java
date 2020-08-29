@@ -6,7 +6,9 @@ import adress.XGAddress;
 import adress.XGAddressableSet;
 import application.XGLoggable;
 import device.XGDevice;
+import msg.XGMessage;
 import msg.XGMessenger;
+import msg.XGMessengerException;
 import msg.XGRequest;
 import msg.XGResponse;
 
@@ -26,8 +28,9 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	{	return super.toString();
 	}
 
-	@Override public void submit(XGResponse msg) throws InvalidXGAddressException
-	{
+	@Override public void submit(XGMessage message) throws InvalidXGAddressException, XGMessengerException
+	{	if(!(message instanceof XGResponse)) throw new XGMessengerException(message + " is not of type XGResponse");
+		XGResponse msg = (XGResponse)message;
 		int end = msg.getBulkSize() + msg.getBaseOffset(),
 			offset = msg.getAddress().getLo().getValue(),
 			hi = msg.getAddress().getHi().getValue(),

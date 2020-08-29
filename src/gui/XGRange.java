@@ -71,7 +71,7 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		this.bar.setEnabled(ena);
 		this.label.setEnabled(ena);
 
-		this.logInitSuccess();
+//		this.logInitSuccess();
 	}
 
 	@Override public void paint(Graphics g)

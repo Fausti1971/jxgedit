@@ -16,11 +16,8 @@ public class XGTableEntry implements ConfigurationConstants
 	private final Set<String> categories;
 
 	public XGTableEntry(XMLNode n)
-	{	int v = 0;
-		if(n.hasAttribute(ATTR_VALUE)) v = n.getIntegerAttribute(ATTR_VALUE);
-		if(n.hasAttribute(ATTR_MSB)) v = n.getIntegerAttribute(ATTR_MSB) << 7;
-		if(n.hasAttribute(ATTR_LSB)) v |= n.getIntegerAttribute(ATTR_LSB);
-		this.value = v;
+	{
+		this.value = n.getValueAttribute(ATTR_VALUE, 0);
 		this.name = n.getStringAttributeOrDefault(ATTR_NAME, "no value");
 		this.filters = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLEFILTER));
 		this.categories = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLECATEGORIES));
@@ -55,5 +52,9 @@ public class XGTableEntry implements ConfigurationConstants
 
 	@Override public String toString()
 	{	return this.name;
+	}
+
+	public String getInfo()
+	{	return this.value + "(" + this.name + ")";
 	}
 }

@@ -21,31 +21,37 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	private final ValueDataType dataType;
 	private final Map<Integer, XGParameter> parameters = new HashMap<>();
 	private final Map<String, Set<String>> actions = new HashMap<>();
+	private final boolean isMutable;
 
 	public XGOpcode(XGDevice dev, XGBulkDump bulk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
 	{	this.device = dev;
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), bulk.getAddress());
-		this.dataType = ValueDataType.valueOf(n.getStringAttributeOrDefault(ATTR_DATATYPE, DEF_DATATYPE.name()).toString());
+		this.dataType = ValueDataType.valueOf(n.getStringAttributeOrDefault(ATTR_DATATYPE, DEF_DATATYPE.name()));
+		this.isMutable = MUTABLE.equals(n.getStringAttribute(ATTR_TYPE));
 
-		if(n.hasAttribute(ATTR_PARAMETERSELECTOR))
-		{	this.parameterSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_PARAMETERSELECTOR).toString(), null);
+		if(this.isMutable)
+		{	if(!n.hasAttribute(ATTR_PARAMETERSELECTOR)) throw new RuntimeException("opcode " + this.address + " is " + n.getStringAttribute(ATTR_TYPE) + " but has not declared " + ATTR_PARAMETERSELECTOR);
+
+			this.parameterSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_PARAMETERSELECTOR), null);
 			for(XMLNode s : n.getChildNodes(TAG_PARAM))
-			{	int msb = s.getIntegerAttribute(ATTR_MSB, 0)  << 7;
-				int lsb = s.getIntegerAttribute(ATTR_LSB, 0);
-				int v = msb | lsb;
-				if(s.hasAttribute(ATTR_ADDRESS)) v = s.getIntegerAttribute(ATTR_ADDRESS);
-				XGParameter parm = dev.getParameters().get(s.getStringAttribute(ATTR_PARAMETER_ID).toString());
+			{
+				int v = s.getValueAttribute(ATTR_VALUE, 0);
+				XGParameter parm = dev.getParameters().get(s.getStringAttribute(ATTR_PARAMETER_ID));
 				this.parameters.put(v, parm);
 			}
 		}
 		else
 		{	this.parameterSelectorAddress = null;
-			this.parameters.put(DEF_SELECTORVALUE, dev.getParameters().get(n.getStringAttribute(ATTR_PARAMETER_ID).toString()));
+			this.parameters.put(DEF_SELECTORVALUE, dev.getParameters().get(n.getStringAttribute(ATTR_PARAMETER_ID)));
 		}
 		for(String s: XACTION)
 		{	if(n.hasAttribute(s))
 				this.actions.put(s, XGStrings.splitCSV(n.getStringAttribute(s).toString()));
 		}
+	}
+
+	public boolean isMutable()
+	{	return isMutable;
 	}
 
 	public ValueDataType getDataType()
@@ -60,21 +66,9 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	{	return this.parameters;
 	}
 
-//	public String getParameterID()
-//	{	return this.parameterID;
-//	}
-
 	public XGAddress getParameterSelectorAddress()
 	{	return this.parameterSelectorAddress;
 	}
-
-//	public XGBulkDump getBulk()
-//	{	return this.bulk;
-//	}
-//
-//	public XGModule getModule()
-//	{	return this.module;
-//	}
 
 	public XGDevice getDevice()
 	{	return this.device;

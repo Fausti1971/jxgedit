@@ -24,7 +24,7 @@ public interface XGBulkDumper extends XGLoggable
 	default void transmitAll(XGMessenger src, XGMessenger dest)
 	{	if(src == null || dest == null) return;
 
-		int count = 0;
+		int requested = 0, responsed = 0;
 		long time = System.currentTimeMillis();
 		XGRequest r = null;
 		XGAddressableSet<XGBulkDump> set = this.getBulks();
@@ -36,21 +36,22 @@ public interface XGBulkDumper extends XGLoggable
 		{	try
 			{	r = new XGMessageBulkRequest(dest, src, b);
 				r.request();
+				++requested;
 				if(r.isResponsed())
 				{	dest.submit(r.getResponse());
 					pm.setNote(r.toString());
-					pm.setProgress(++count);
+					pm.setProgress(++responsed);
 				}
 				missed.add(r);
 			}
-			catch(InvalidXGAddressException | InvalidMidiDataException e)
+			catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e)
 			{	LOG.log(Level.SEVERE, e.getMessage());
 			}
 		}
 		Level level;
-		if(missed.isEmpty()) level = Level.INFO;
+		if(requested - responsed == 0) level = Level.INFO;
 		else level = Level.SEVERE;
-		LOG.log(level, count + "/" + set.size() + " dumps transmitted from " + src + " to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
+		LOG.log(level, requested + " requested / " + responsed + " responsed by " + src + " transmitted to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
 }

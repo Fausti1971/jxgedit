@@ -23,7 +23,7 @@ public interface XGMessenger
  * @param m XGResponse
  * @throws InvalidXGAddressException
  */
-	void submit(XGResponse msg) throws InvalidXGAddressException;
+	void submit(XGMessage msg) throws InvalidXGAddressException, XGMessengerException;
 
 /**
  * übermittelt den übergebenen XGRequest an req.getDestination(), lässt den aufrufenden XGMessenger für max. #timeout warten bzw. weckt ihn im Falle einer
@@ -33,7 +33,7 @@ public interface XGMessenger
  * @throws TimeoutException 
  * @throws InterruptedException 
  */
-	void request(XGRequest req) throws InvalidXGAddressException;
+	void request(XGRequest req) throws InvalidXGAddressException, XGMessengerException;
 
 	@Override String toString();
 

@@ -80,5 +80,7 @@ Problem:
 Problem:
 		XGTableKonzept überdenken: bei bspw. XGEnvelope sind die Indizes der XGEnvelopePoints nicht mehr vergleichbar, da jeder Point aufgrund verschiedener Ranges neue XGTables erzeugt...
 	gelöst:
-		XGParameter hält nun wieder selbst seine begrenzenden min- und max-Indizies (errechnet aus den min- und max-Values aus XML) für seine XGTable.
-		Nur wenn der Parameter das Attribut "tablefilter" besitzt, wird eine neue (gefilterte) XGTable erzeugt.
+		XGParameter hält nun wieder selbst seine begrenzenden min- und max-Indizies (errechnet aus den min- und max-Values aus XML).
+		Nur wenn der Parameter das Attribut "tablefilter" besitzt, wird eine neue (gefilterte, aber nicht durch min- und max kastrierte) XGTable erzeugt.
+Problem:
+		streng genommen beschreibt die module.xml lediglich das Potential von ValueStorage - im Hinterkopf behalten;

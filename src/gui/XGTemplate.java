@@ -30,7 +30,7 @@ public class XGTemplate implements XGAddressable, XGLoggable, XMLNodeConstants
 	public XGTemplate(XMLNode n)
 	{	this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), null);
 		this.xml = n;
-		this.logInitSuccess();
+//		this.logInitSuccess();
 	}
 
 	@Override public XGAddress getAddress()

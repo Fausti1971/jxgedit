@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NavigableMap;
+import java.util.TreeMap;
 import xml.XMLNode;
 
 public class XGXMLTable implements XGTable
@@ -13,35 +15,56 @@ public class XGXMLTable implements XGTable
 
 	protected final String name;
 	private final String unit;
-	private final ArrayList<XGTableEntry> list = new ArrayList<>();
-	private final Map<Integer, Integer> indexes = new HashMap<>();//value, index
+	private final int fallbackMask;
+	private final ArrayList<XGTableEntry> list = new ArrayList<>();//entry
+	private final NavigableMap<Integer, Integer> indexes = new TreeMap<>();//value, index
 	private final Map<String, Integer> names = new HashMap<>();//name, index
 /**
- * lediglich eine Map von Integerwerten und dazugehörigen XMLNodes
+ * lediglich eine indizierte Map von Integerwerten und dazugehörigen XMLNodes
  * @param n
  */
 	XGXMLTable(XMLNode n)
 	{	this.name = n.getStringAttribute(ATTR_NAME);
 		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, "");
-		int i = 0;
-		for(XMLNode e : n.getChildNodes(TAG_ITEM))
-		{	this.add(i++, new XGTableEntry(e));
-		}
+		this.fallbackMask = n.getValueAttribute(ATTR_FALLBACKMASK, DEF_FALLBACKMASK);
+		n.traverse(TAG_ITEM, (XMLNode x)->{this.add(new XGTableEntry(x));});
 		LOG.info(this.getInfo());
 	}
 
-	XGXMLTable(String name, String unit)
+	XGXMLTable(String name, String unit, int fbm)
 	{	this.name = name;
 		this.unit = unit;
+		this.fallbackMask = fbm;
 		LOG.info(this.name);
 	}
 
-	private void add(int i, XGTableEntry e)
-	{	this.list.add(i, e);
-		this.indexes.put(e.getValue(), i);
-		this.names.put(e.getName(), i);
+	private void add(XGTableEntry e)
+	{	this.list.add(e);
+		this.indexes.put(e.getValue(), this.list.indexOf(e));
+		this.names.put(e.getName(), this.list.indexOf(e));
 	}
-	
+
+	private int limitize(int v, Preference pref)
+	{	v = Math.max(this.indexes.firstKey(), Math.min(v, this.indexes.lastKey()));
+		int above = this.indexes.ceilingKey(v);
+		int below = this.indexes.floorKey(v);
+		switch(pref)
+		{	case CLOSEST:	return (v - below > above - v ? above : below);
+			case EQUAL:		return v;
+			case FALLBACK:	return this.getFallback(v);
+			case ABOVE:		return above;
+			case BELOW:		return below;
+			default:		return v;
+		}
+	}
+
+	private int getFallback(int v)
+	{	if(this.indexes.containsKey(v)) return v;
+		v &= this.fallbackMask;
+		if(this.indexes.containsKey(v)) return v;
+		else return this.list.get(this.getMinIndex()).getValue();
+	}
+
 	@Override public XGTableEntry getByIndex(int i)
 	{	if(this.list.isEmpty()) throw new IndexOutOfBoundsException("index " + i + " out of bounds in " + this.getName());
 		return this.list.get(Math.min(this.getMaxIndex(), Math.max(0, i)));
@@ -55,10 +78,15 @@ public class XGXMLTable implements XGTable
 	{	return this.list.get(this.names.get(name));
 	}
 
-	@Override public int getIndex(int v)
-	{	if(this.indexes.containsKey(v)) return(this.indexes.get(v));
-		if(v > this.getMaxEntry().getValue()) return this.getMaxIndex();
-		else return this.getMinIndex();
+	@Override public int getIndex(int v, Preference pref)
+	{	int i = this.limitize(v, pref);
+		try
+		{	return this.indexes.get(i);
+		}
+		catch(NullPointerException e)
+		{	LOG.warning("neither value " + v + " nor " + pref.name() + " value " + i  + " doesn´t exist in " + this);
+		}
+		return this.getMinIndex();
 	}
 
 	@Override public int getIndex(String name)
@@ -68,9 +96,8 @@ public class XGXMLTable implements XGTable
 	@Override public XGXMLTable filter(XMLNode n)
 	{	if(!n.hasAttribute(ATTR_TABLEFILTER)) return this;
 		String f = n.getStringAttribute(ATTR_TABLEFILTER);
-		XGXMLTable table = new XGXMLTable(this.name + "-" + f, this.unit);
-		int i = 0;
-		for(XGTableEntry e : this) if(e.hasFilter(f)) table.add(i++, e);
+		XGXMLTable table = new XGXMLTable(this.name + "-" + f, this.unit, this.fallbackMask);
+		for(XGTableEntry e : this) if(e.hasFilter(f)) table.add(e);
 		return table;
 	}
 

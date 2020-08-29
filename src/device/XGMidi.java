@@ -22,6 +22,7 @@ import gui.XGSpinner;
 import msg.XGMessage;
 import msg.XGMessageBuffer;
 import msg.XGMessenger;
+import msg.XGMessengerException;
 import msg.XGRequest;
 import msg.XGResponse;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
@@ -240,23 +241,12 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		LOG.info("CoreMidiSystem updated, " + this.midiInput.getDeviceInfo() + "=" + this.midiInput.isOpen() + ", " + this.midiOutput.getDeviceInfo() + "=" + this.midiOutput.isOpen());
 	}
 
-	private boolean transmit(XGMessage m)
-	{	if(this.transmitter == null)
-		{	LOG.severe(this + ": no transmitter initialized!");
-			return false;
-		}
-		if(m == null)
-		{	LOG.severe(this + ": message was null");
-			return false;
-		}
+	@Override public void submit(XGMessage m) throws XGMessengerException
+	{	if(this.transmitter == null) throw new XGMessengerException(this + ": no transmitter initialized!");
+		if(m == null)throw new XGMessengerException(this + ": message was null");
 		m.setTimeStamp();
 		MidiMessage mm = (MidiMessage)m;
 		this.transmitter.send(mm, -1L);
-		return true;
-	}
-
-	@Override public void submit(XGResponse msg)
-	{	this.transmit(msg);
 	}
 
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
@@ -275,8 +265,8 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		}
 	}
 
-	@Override public void request(XGRequest msg)
-	{	if(this.transmit(msg))
+	@Override public void request(XGRequest msg) throws XGMessengerException
+	{	this.submit(msg);
 		{	try
 			{	this.request = msg;
 				synchronized(this.request)

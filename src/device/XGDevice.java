@@ -41,6 +41,7 @@ import msg.XGBulkDumper;
 import msg.XGMessageBulkRequest;
 import msg.XGMessageParameterChange;
 import msg.XGMessenger;
+import msg.XGMessengerException;
 import msg.XGRequest;
 import msg.XGResponse;
 import parm.XGParameter;
@@ -178,9 +179,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	public File getResourceFile(String fName) throws FileNotFoundException
 	{	Path extPath = this.getResourcePath();
 		File extFile = extPath.resolve(fName).toFile();
-//		File intFile = JXG.getApp().getRscPath().resolve(this.name.getContent()).resolve(fName).toFile();
 		if(extFile.canRead()) return extFile;
-//		if(intFile.canRead()) return intFile;
 		throw new FileNotFoundException("can't read file " + extFile);//TODO: interner Pfad wird außerhalb von eclipse nicht aufgelöst!
 	}
 
@@ -238,7 +237,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 				}
 				else JOptionPane.showMessageDialog(this.getChildWindow(), "no response for " + m);
 			}
-			catch(InvalidXGAddressException e)
+			catch(InvalidXGAddressException | XGMessengerException e)
 			{	LOG.severe(e.getMessage());
 			}
 		}
@@ -251,7 +250,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	try
 		{	new XGMessageParameterChange(this.values, this.midi, new byte[]{0,0,0,0,0,0,0x7E,0,0}, true).transmit();
 		}
-		catch(InvalidXGAddressException|InvalidMidiDataException e1)
+		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
 		}
 	}
@@ -260,7 +259,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	try
 		{	new XGMessageParameterChange(this.values, this.midi, new byte[]{0,0,0,0,0,0,0x7F,0,0}, true).transmit();
 		}
-		catch(InvalidXGAddressException|InvalidMidiDataException e1)
+		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
 		}
 	}

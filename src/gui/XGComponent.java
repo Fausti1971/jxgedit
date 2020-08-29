@@ -48,6 +48,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 			case TAG_COMBO:		c = new XGCombo(n, mod); break;
 			case TAG_RADIO:		c = new XGRadio(n, mod); break;
 			case TAG_BUTTON:	c = new XGButton(n, mod); break;
+			case TAG_SELECTOR:	c = new XGProgramSelector(n, mod); break;
 			default:			c = new XGFrame("unknown_" + s); break;
 		}
 		return c;

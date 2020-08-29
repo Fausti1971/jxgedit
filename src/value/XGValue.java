@@ -10,12 +10,14 @@ import device.XGDevice;
 import msg.XGBulkDump;
 import msg.XGMessageParameterChange;
 import msg.XGMessenger;
+import msg.XGMessengerException;
 import msg.XGResponse;
 import parm.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
 import parm.XGTable;
+import parm.XGTable.Preference;
 import parm.XGTableEntry;
 /**
  * 
@@ -56,7 +58,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.opcode = opc;
 		this.address = new XGAddress(blk.getAddress().getHi(), blk.getAddress().getMid(), new XGAddressField(opc.getAddress().getLo().getMin()));
 		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
-		if(this.opcode.getParameterSelectorAddress() != null)
+		if(this.opcode.isMutable())
 		{	XGAddress a = this.opcode.getParameterSelectorAddress().complement(this.address);
 			this.parameterSelector = src.getDevice().getValues().get(a);
 			this.parameterSelector.addValueListener(this);
@@ -82,8 +84,12 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	this.parameterListeners.remove(l);
 	}
 
-	public synchronized void notifyListeners()
+	public void notifyValueListeners()
 	{	for(XGValueChangeListener l : this.valueListeners) l.contentChanged(this);
+	}
+
+	public void notifyParameterListeners()
+	{	for(XGParameterChangeListener l : this.parameterListeners) l.parameterChanged(this.parameter);
 	}
 
 	public XGMessenger getSource()
@@ -106,11 +112,15 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.opcode.getAddress().getLo().getSize();
 	}
 
+	public XGValue getParameterSelector()
+	{	return this.parameterSelector;
+	}
+
 	private void assignParameter()
-	{	if(this.parameterSelector != null)
+	{	if(this.opcode.isMutable())
 		{	int progNr = this.parameterSelector.getValue();
 			this.parameter = this.opcode.getParameters().get(progNr);
-			for(XGParameterChangeListener l : this.parameterListeners) l.parameterChanged(this.parameter);
+			this.notifyParameterListeners();
 		}
 		else this.parameter = this.opcode.getParameters().get(DEF_SELECTORVALUE);
 	}
@@ -165,7 +175,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		if(p != null) this.index = p.validate(i);
 		boolean changed = this.index != old;
 		if(changed)
-		{	this.notifyListeners();
+		{	this.notifyValueListeners();
 			this.actions(XACTION_AFTER_EDIT);
 		}
 		return changed;
@@ -205,7 +215,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public boolean setValue(int v)
 	{	XGParameter p = this.getParameter();
 		if(p == null) return true;
-		return this.setIndex(p.getTranslationTable().getIndex(v));
+		return this.setIndex(p.getTranslationTable().getIndex(v, Preference.FALLBACK));
 	}
 
 	public void transmit()
@@ -214,7 +224,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		try
 		{	new XGMessageParameterChange(this.source, dev.getMidi(), this).transmit();
 		}
-		catch(InvalidXGAddressException | InvalidMidiDataException e1)
+		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e1)
 		{	e1.printStackTrace();
 		}
 		this.actions(XACTION_AFTER_SEND);
@@ -231,7 +241,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		if(set != null)
 			for(String s : set)
 			{	switch(s)
-				{	case("module_request"): this.getBulk().getModule().transmitAll(this.source.getDevice().getMidi(), this.source.getDevice().getValues());
+				{	case("module_request"): this.getBulk().getModule().transmitAll(this.source.getDevice().getMidi(), this.source.getDevice().getValues()); break;
+					case("send"): 	break;
 				}
 			}
 	}
@@ -250,6 +261,6 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	@Override public void contentChanged(XGValue v)
 	{	if(v.equals(this.parameterSelector)) this.assignParameter();
-		else this.notifyListeners();
+		else this.notifyValueListeners();
 	}
 }

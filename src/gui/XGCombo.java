@@ -42,7 +42,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
 
-		this.logInitSuccess();
+//		this.logInitSuccess();
 	}
 
 	@Override public void parameterChanged(XGParameter p)

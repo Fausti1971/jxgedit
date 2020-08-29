@@ -63,7 +63,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		gbc.anchor = GridBagConstraints.SOUTH;
 		this.add(this.label, gbc);
 
-		this.logInitSuccess();
+//		this.logInitSuccess();
 	}
 
 	@Override public void paint(Graphics g)

@@ -25,6 +25,6 @@ public class XGFrame extends XGComponent
 			{	LOG.severe(e.getMessage());
 			}
 		}
-		this.logInitSuccess();
+//		this.logInitSuccess();
 	}
 }

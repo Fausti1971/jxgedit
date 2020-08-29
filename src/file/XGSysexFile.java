@@ -47,7 +47,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 
 	private final XGDevice device;
 //	private XGMessageBuffer buffer = new XGMessageBuffer(this);
-	private XGAddressableSet<XGResponse> buffer = new XGAddressableSet<>();
+	private XGAddressableSet<XGMessage> buffer = new XGAddressableSet<>();
 	private boolean changed = false;
 
 	public XGSysexFile(XGDevice dev, final String path) throws IOException, FileNotFoundException
@@ -97,7 +97,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 	{	int count = 0;
 		if(this.changed && this.canWrite())
 		{	try(FileOutputStream fos = new FileOutputStream(this))
-			{	for(XGResponse r : this.buffer)
+			{	for(XGMessage r : this.buffer)
 				{	fos.write(r.getByteArray());
 					LOG.info("written: " + ++count + "/" + this.buffer.size());
 				}
@@ -120,14 +120,14 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 	{	return this.getAbsolutePath();
 	}
 
-	@Override public void submit(XGResponse msg)
+	@Override public void submit(XGMessage msg)
 	{	this.buffer.add(msg);
 		this.changed = true;
 	}
 
 	@Override public void request(XGRequest req) throws InvalidXGAddressException
-	{	XGResponse response = this.buffer.get(req.getAddress());
-		req.setResponsed(response);
+	{	XGMessage response = this.buffer.get(req.getAddress());
+		req.setResponsed((XGResponse)response);
 	}
 
 	@Override public void close()

@@ -199,7 +199,7 @@ public class XGVirtualTable implements XGTable
 		return new XGTableEntry(v, this.translate.apply(v));
 	}
 
-	@Override public int getIndex(int v)
+	@Override public int getIndex(int v, Preference pref)
 	{	return v - this.minValue;
 	}
 
