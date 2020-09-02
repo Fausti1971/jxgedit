@@ -1,5 +1,6 @@
 package module;
 
+import java.awt.Component;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -83,6 +84,10 @@ public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTr
 		this.device = dev;
 		this.idTranslator = dev.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
 		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
+	}
+
+	@Override public Component getSourceComponent()
+	{	return this.getNodeComponent();
 	}
 
 	@Override public void setTreeComponent(XGTree t)

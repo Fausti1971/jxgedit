@@ -50,8 +50,8 @@ public class XGModuleInstance extends XGModule
 		}
 	}
 
-	private void edit()
-	{	if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, this.getDevice() + "/" + this.category + " " + this.getTranslatedID());
+	private void editWindow()
+	{	if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, false, this.getDevice() + "/" + this.category + " " + this.getTranslatedID());
 		else this.window.toFront();
 	}
 
@@ -65,7 +65,7 @@ public class XGModuleInstance extends XGModule
 
 	@Override public void actionPerformed(ActionEvent e)
 	{	switch(e.getActionCommand())
-		{	case ACTION_EDIT:		this.edit(); break;
+		{	case ACTION_EDIT:		this.editWindow(); break;
 			case ACTION_REQUEST:	new Thread(() -> {	this.transmitAll(this.device.getMidi(), this.device.getValues());}).start(); break;
 			case ACTION_TRANSMIT:	new Thread(() -> {	this.transmitAll(this.device.getValues(), this.device.getMidi());}).start(); break;
 		}
@@ -75,7 +75,7 @@ public class XGModuleInstance extends XGModule
 	{	String s = this.getTranslatedID() + ":\t";
 		if(this.idTranslator == null) s = this.category + ":\t";
 		else s = this.idTranslator.getByIndex(this.getID()) + ":\t";
-		for(XGValue v : this.info) s += "\t" + v.getInfo();
+		for(XGValue v : this.info) s += "\t\t" + v;
 		return s;
 	}
 

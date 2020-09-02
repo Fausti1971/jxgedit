@@ -1,5 +1,6 @@
 package msg;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -44,7 +45,7 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	{	this.add(m);
 		LOG.info("msg buffered: " + m);
 		((DefaultListModel<XGMessage>)this.list.getModel()).addElement(m);
-		if(this.window == null) this.setChildWindow(new XGWindow(this, XGWindow.getRootWindow(), false, this.getMessengerName()));
+		if(this.window == null) this.setChildWindow(new XGWindow(this, XGWindow.getRootWindow(), false, true, this.getMessengerName()));
 		this.status.setText(this.size() + " messages buffered");
 
 		if(this.window.isVisible())
@@ -171,5 +172,11 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	{
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override public Component getSourceComponent()
+	{
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
+import javax.swing.JRadioButton;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import module.XGModule;
@@ -71,7 +71,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 
 /****************************************************************************************************/
 
-	private class XGRadioButton extends JCheckBox implements ActionListener
+	private class XGRadioButton extends JRadioButton implements ActionListener
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -94,8 +94,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 		}
 
 		@Override public void actionPerformed(ActionEvent e)
-		{	boolean changed = this.value.setIndex(entry.getValue());
-			if(changed) this.value.transmit();
+		{	this.value.editIndex(entry.getValue());
 		}
 
 		@Override public void paint(Graphics g)

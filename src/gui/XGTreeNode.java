@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,6 +53,15 @@ public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
 
 	default XGTreeNode getRootNode()
 	{	return (XGTreeNode)this.getTreePath().getPathComponent(0);
+	}
+
+	default Component getNodeComponent()
+	{	XGTree t = this.getRootNode().getTreeComponent();
+		TreePath p = this.getTreePath();
+		Component c = t.getCellRenderer().getTreeCellRendererComponent(t, this, true, true, true, 0, true);
+		c.setBounds(t.getPathBounds(p));
+		c.invalidate();
+		return c;
 	}
 
 	default void repaintNode()

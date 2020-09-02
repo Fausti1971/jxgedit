@@ -84,3 +84,7 @@ Problem:
 		Nur wenn der Parameter das Attribut "tablefilter" besitzt, wird eine neue (gefilterte, aber nicht durch min- und max kastrierte) XGTable erzeugt.
 Problem:
 		streng genommen beschreibt die module.xml lediglich das Potential von ValueStorage - im Hinterkopf behalten;
+Vermerk:
+		dem XGTableTreeModel neben der eigentlichen XGTable noch eine Liste an XGCategorizern mitgeben, sodass bspw. die GM-Categories automatisch errechnet werden können oder auch
+		nach LSB-Categories gefaltet werden kann. Außerdem wäre eine Filtermöglichkeit schön. Außerdem sollte das TableModel erweitert werden, da dies nach wie vor unbefriedigend ist.
+		Vielleicht ist ja auch der XGTree verwendbar...

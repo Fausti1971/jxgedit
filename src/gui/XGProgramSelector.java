@@ -1,23 +1,27 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.JButton;
-import adress.InvalidXGAddressException;
+import javax.swing.JComponent;
+import javax.swing.JTree;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import module.XGModule;
-import msg.XGMessageBulkDump;
-import msg.XGMessengerException;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
+import parm.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGProgramSelector extends XGComponent implements XGParameterChangeListener, XGValueChangeListener, ActionListener
+public class XGProgramSelector extends XGComponent implements XGParameterChangeListener, XGValueChangeListener, XGWindowSource, TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
 
@@ -25,12 +29,14 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 
 	private final XGValue value;
 	private final XGAddress address;
-	private final JButton inc = new JButton(">"), dec = new JButton("<"), select;
+	private XGWindow window;
+	private final JButton inc = new JButton(">"), dec = new JButton("<"), select = new JButton();
 
 	public XGProgramSelector(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{
 		super(n, mod);
-		this.setLayout(new BorderLayout());
+		BorderLayout layout = new BorderLayout();
+		this.setLayout(layout);
 		
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
@@ -43,54 +49,77 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 
-		this.inc.addActionListener(this);
+		this.inc.addActionListener((ActionEvent e)->{this.value.addIndex(1);});
+		this.inc.setPreferredSize(new Dimension(GRID, GRID));
 		this.add(this.inc, BorderLayout.EAST);
 
-		this.dec.addActionListener(this);
+		this.dec.addActionListener((ActionEvent e)->{this.value.addIndex(-1);});
+		this.dec.setPreferredSize(new Dimension(GRID, GRID));
 		this.add(this.dec, BorderLayout.WEST);
 
-		this.select = new JButton(this.value.toString());
-		this.select.addActionListener(this);
+		this.select.setText(this.value.toString());
+		this.select.addActionListener((ActionEvent e)->{this.selectionWindow();});
 		this.add(this.select, BorderLayout.CENTER);
 
 		this.parameterChanged(this.value.getParameter());
 	}
 
+	private void selectionWindow()
+	{	new XGWindow(this, this.value.getBulk().getModule().getChildWindow(), true, true, "select " + this.getName());
+	}
+
 	@Override public void contentChanged(XGValue v)
 	{
-int i = v.getValue();
-System.out.println("content: msb=" + ((i >> 14) & 0x7F) + " lsb=" + ((i >> 7) & 0x7F) + " prg=" + (i & 0x7F));
+//int i = v.getValue();
+//System.out.println("content: msb=" + ((i >> 14) & 0x7F) + " lsb=" + ((i >> 7) & 0x7F) + " prg=" + (i & 0x7F));
 		this.select.setText(this.value.toString());
-		this.repaint();
+		super.repaint();
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{
-		this.repaint();
+	{	this.setName(p.getLongName());
+		this.borderize();
 	}
 
-	@Override public void actionPerformed(ActionEvent e)
-	{	boolean changed = false;
-		if(e.getSource() == inc) changed = this.value.setIndex(this.value.getIndex() + 1);
-		if(e.getSource() == dec) changed = this.value.setIndex(this.value.getIndex() - 1);
-		if(e.getSource() == select) System.out.println("select");
-		if(changed)
-		{	XGAddress adr = this.value.getAddress();
-			try
-			{	
-				XGMessageBulkDump msg = new XGMessageBulkDump(this.value.getSource(), this.value.getSource().getDevice().getMidi(), new XGAddress(adr.getHi(), adr.getMid(), this.value.getOpcode().getAddress().getLo()));
-				msg.encodeLSB(msg.getBaseOffset(), msg.getBulkSize(), this.value.getValue());
-				msg.setChecksum();
-				msg.transmit();
-			}
-			catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
-			{
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-		}
-		
-		
-//		this.value.transmit();
+	@Override public XGWindow getChildWindow()
+	{	return this.window;
+	}
+
+	@Override public void setChildWindow(XGWindow win)
+	{	this.window = win;
+	}
+
+	@Override public JComponent getChildWindowContent()
+	{	JTree t = new JTree(new XGTableTreeModel(this.value.getParameter().getTranslationTable()));
+
+		XGTableEntry e = this.value.getEntry();
+		Object[] o;
+		if(e.getCategories().isEmpty()) o = new Object[]{t.getModel().getRoot(), e};
+		else o = new Object[]{t.getModel().getRoot(), e.getCategories().iterator().next(), e};
+		TreePath p = new TreePath(o);
+
+//		t.setSelectionModel(new DefaultTreeSelectionModel());
+		t.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+		t.setSelectionPath(p);
+//		t.setLeadSelectionPath(p);
+		t.scrollPathToVisible(p);
+		t.setExpandsSelectedPaths(true);
+		t.setScrollsOnExpand(true);
+		t.addTreeSelectionListener(this);
+		t.setShowsRootHandles(true);
+		t.setRootVisible(false);
+		return t;
+	}
+
+	@Override public void valueChanged(TreeSelectionEvent e)
+	{	TreePath p = e.getNewLeadSelectionPath();
+		if(p == null) return;
+		Object o = p.getLastPathComponent();
+		if(o == null) return;
+		if(o instanceof XGTableEntry) this.value.editEntry((XGTableEntry)o);
+	}
+
+	@Override public Component getSourceComponent()
+	{	return this;
 	}
 }

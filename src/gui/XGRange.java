@@ -185,36 +185,20 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		{	boolean changed = false;
 			if(e.getButton() != MouseEvent.BUTTON1) return;
 			this.setCurrent(e.getX());
-			if(e.getX() > this.curX) changed = this.curValue.setIndex(this.curValue.getIndex() + 1);
-			else changed = this.curValue.setIndex(this.curValue.getIndex() - 1);
-			if(changed)
-			{	this.limitize();
-				this.curValue.transmit();
-			}
+			if(e.getX() > this.curX)this.curValue.addIndex(1);
+			else this.curValue.addIndex(-1);
 			e.consume();
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	boolean loChanged = this.loValue.setIndex(this.loValue.getIndex() + e.getWheelRotation());
-			boolean hiChanged = this.hiValue.setIndex(this.hiValue.getIndex() + e.getWheelRotation());
-			if(hiChanged)
-			{	this.limitize();
-				this.hiValue.transmit();
-			}
-			if(loChanged)
-			{	this.limitize();
-				this.loValue.transmit();
-			}
+		{	this.loValue.addIndex(e.getWheelRotation());
+			this.hiValue.addIndex(e.getWheelRotation());
 			e.consume();
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGComponent.dragEvent.getX();
-			boolean changed = this.curValue.setIndex(this.curValue.getIndex() + distance);
-			if(changed)
-			{	this.limitize();
-				this.curValue.transmit();
-			}
+			this.curValue.addIndex(distance);
 			XGComponent.dragEvent = e;
 			e.consume();
 		}

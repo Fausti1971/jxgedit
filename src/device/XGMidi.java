@@ -241,6 +241,10 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		LOG.info("CoreMidiSystem updated, " + this.midiInput.getDeviceInfo() + "=" + this.midiInput.isOpen() + ", " + this.midiOutput.getDeviceInfo() + "=" + this.midiOutput.isOpen());
 	}
 
+	public void transmit(MidiMessage mm)
+	{	this.transmitter.send(mm, -1L);
+	}
+
 	@Override public void submit(XGMessage m) throws XGMessengerException
 	{	if(this.transmitter == null) throw new XGMessengerException(this + ": no transmitter initialized!");
 		if(m == null)throw new XGMessengerException(this + ": message was null");

@@ -1,6 +1,7 @@
 package device;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.SysexMessage;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -64,6 +66,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		ACTIONS.add(ACTION_TRANSMIT);
 		ACTIONS.add(ACTION_RESET);
 		ACTIONS.add(ACTION_XGON);
+		ACTIONS.add(ACTION_GMON);
 	}
 
 	public static Set<XGDevice> getDevices()
@@ -118,7 +121,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	};
 	private final StringBuffer defaultFileName, name;
-	private XGTree tree;
+//	private XGTree tree;
 	private Color color;
 	private boolean isSelected = false;
 
@@ -255,6 +258,15 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	}
 
+	private void resetGM()
+	{	try
+		{	this.midi.transmit(new SysexMessage(new byte[]{(byte)0xF0,0x7E,0x7F,0x09,0x01,(byte)0xF7}, 6));
+		}
+		catch(InvalidMidiDataException e)
+		{	e.printStackTrace();
+		}
+	}
+
 	private void resetAll()
 	{	try
 		{	new XGMessageParameterChange(this.values, this.midi, new byte[]{0,0,0,0,0,0,0x7F,0,0}, true).transmit();
@@ -325,7 +337,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public void configure()
-	{	new XGWindow(this, XGWindow.getRootWindow(), true, this.toString());
+	{	new XGWindow(this, XGWindow.getRootWindow(), true, false, this.toString());
 	}
 
 	@Override public int hashCode()
@@ -380,6 +392,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			case ACTION_REQUEST:	new Thread(() -> {	this.transmitAll(this.midi, this.values);}).start(); break;
 			case ACTION_RESET:		this.resetAll(); break;
 			case ACTION_XGON:		this.resetXG(); break;
+			case ACTION_GMON:		this.resetGM(); break;
 			default:				break;
 		}
 	}
@@ -442,14 +455,18 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	@Override public void setTreeComponent(XGTree t)
-	{	this.tree = t;
+	{	//this.tree = t;
 	}
 
 	@Override public XGTree getTreeComponent()
-	{	return this.tree;
+	{	return this.getRootNode().getTreeComponent();
 	}
 
 	@Override public void nodeFocussed(boolean b)
 	{
+	}
+
+	@Override public Component getSourceComponent()
+	{	return this.getNodeComponent();
 	}
 }

@@ -23,7 +23,8 @@ public interface XGDeviceConstants extends XMLNodeConstants
 		ACTION_SAVEFILE = "save file...",
 		ACTION_REQUEST = "request",
 		ACTION_TRANSMIT = "transmit",
-		ACTION_XGON = "reset xg system",
+		ACTION_XGON = "switch xg ",
+		ACTION_GMON = "switch gm",
 		ACTION_RESET = "reset all parameters";
 
 	static final Set<String> ACTIONS = new LinkedHashSet<>();

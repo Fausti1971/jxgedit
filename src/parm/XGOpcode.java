@@ -1,6 +1,7 @@
 package parm;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import adress.XGAddress;
@@ -44,6 +45,15 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 		{	this.parameterSelectorAddress = null;
 			this.parameters.put(DEF_SELECTORVALUE, dev.getParameters().get(n.getStringAttribute(ATTR_PARAMETER_ID)));
 		}
+
+//TODO: Krücke, XACTION_AFTER_EDIT="send" gehört normalerweise in die module.xml
+		Set<String> set;
+		if((set = this.actions.get(XACTION_AFTER_EDIT)) == null)
+		{	set = new LinkedHashSet<>();
+			this.actions.put(XACTION_AFTER_EDIT, set);
+		}
+		set.add("send");
+
 		for(String s: XACTION)
 		{	if(n.hasAttribute(s))
 				this.actions.put(s, XGStrings.splitCSV(n.getStringAttribute(s).toString()));

@@ -28,7 +28,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 			XGTreeNode n = (XGTreeNode)value;
 			XGTreeNode f = t.getFocussedNode();
 			hasFocus = f != null && f.equals(n);
-			return DTCR.getTreeCellRendererComponent(tree, value, n.isSelected(), expanded, leaf, row, hasFocus);
+			return DTCR.getTreeCellRendererComponent(tree, n, n.isSelected(), expanded, leaf, row, hasFocus);
 		}
 	};
 
@@ -50,7 +50,11 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 		this.setScrollsOnExpand(true);
 		this.setRootVisible(showRoot);
 		this.setShowsRootHandles(true);
-		DTCR.setLeafIcon(new ImageIcon(this.getClass().getResource(ICON_LEAF)));
+		DTCR.setLeafIcon(new ImageIcon(this.getClass().getResource(ICON_LEAF24)));
+	}
+
+	public XGTree(XGTableTreeModel table)
+	{	super(table);
 	}
 
 	private void setFocussedNode(XGTreeNode n)

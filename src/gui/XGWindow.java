@@ -1,10 +1,12 @@
 package gui;
 
+import java.awt.Point;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 import application.ConfigurationConstants;
 import application.JXG;
 
@@ -35,7 +37,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
 	}
 
-	public XGWindow(XGWindowSource src, XGWindow own, boolean mod, String name)
+	public XGWindow(XGWindowSource src, XGWindow own, boolean mod, boolean resize, String name)
 	{	super(own, name, mod);
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 		this.source = src;
@@ -44,17 +46,26 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.addWindowListener(src);
 		this.getContentPane().add(new JScrollPane(this.rootComponent));
-		int x = (int)own.getLocation().getX() + own.getWidth();
-		int y = (int)own.getLocation().getY();
-		this.setLocation(x, y);
+//		int x = (int)own.getLocation().getX() + own.getWidth();
+//		int y = (int)own.getLocation().getY();
+//		this.setLocation(x, y);
+		Point p = new Point();
+		SwingUtilities.convertPointToScreen(p, src.getSourceComponent());
+		this.setLocation(p);
+
 //		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
 		this.pack();
-		this.setResizable(false);
+		this.setResizable(resize);
 		this.setAlwaysOnTop(mod);
 		this.setVisible(true);
 		this.toFront();
 //		System.out.println(this.getModalityType());
 	}
+
+//	public void open()
+//	{	this.setVisible(true);
+//		this.toFront();
+//	}
 
 	public XGWindowSource getSource()
 	{	return this.source;

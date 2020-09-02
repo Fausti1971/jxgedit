@@ -168,15 +168,13 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		}
 
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	boolean changed = this.value.setIndex(this.value.getIndex() + e.getWheelRotation());
-			if(changed) this.value.transmit();
+		{	this.value.editIndex(this.value.getIndex() + e.getWheelRotation());
 			e.consume();
 		}
 
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGComponent.dragEvent.getX();
-			boolean changed = this.value.setIndex(this.value.getIndex() + distance);
-			if(changed) this.value.transmit();
+			this.value.editIndex(this.value.getIndex() + distance);
 			XGComponent.dragEvent = e;
 			e.consume();
 		}

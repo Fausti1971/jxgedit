@@ -33,10 +33,7 @@ public class XGRangeLabel extends JTextField implements GuiConstants, ActionList
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{	boolean changed = this.loValue.setIndex(this.loValue.getParameter().getTranslationTable().getIndex(this.getText().trim()));
-		if(changed) this.loValue.transmit();
-		this.setText(this.loValue + "..." + this.hiValue);
-//		this.repaint();
+	{
 	}
 
 	@Override protected void paintComponent(Graphics g)

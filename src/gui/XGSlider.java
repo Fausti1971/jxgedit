@@ -156,22 +156,19 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		@Override public void mouseClicked(MouseEvent e)
 		{	boolean changed = false;
 			if(e.getButton() != MouseEvent.BUTTON1) return;
-			if(this.getX() + this.barWidth < e.getX()) changed = this.value.setIndex(this.value.getIndex() + 1);
-			else changed = this.value.setIndex(this.value.getIndex() - 1);
-			if(changed) this.value.transmit();
+			if(this.getX() + this.barWidth < e.getX()) this.value.addIndex(1);
+			else this.value.addIndex(-1);
 			e.consume();
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	boolean changed = this.value.setIndex(this.value.getIndex() + e.getWheelRotation());
-			if(changed) this.value.transmit();
+		{	this.value.addIndex(e.getWheelRotation());
 			e.consume();
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGComponent.dragEvent.getX();
-			boolean changed = this.value.setIndex(this.value.getIndex() + distance);
-			if(changed) this.value.transmit();
+			this.value.addIndex(distance);
 			XGComponent.dragEvent = e;
 			e.consume();
 		}

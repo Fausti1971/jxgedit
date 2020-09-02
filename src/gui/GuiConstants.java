@@ -15,7 +15,7 @@ public interface GuiConstants extends ConfigurationConstants
 {
 	static final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-	String ICON_LEAF = "XGLogo32.gif";
+	String ICON_LEAF32 = "XGLogo32.gif", ICON_LEAF24 = "XGLogo24.gif";
 
 	Color
 		COL_FOCUS = UIManager.getColor("Focus.color"),

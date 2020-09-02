@@ -1,6 +1,8 @@
 package parm;
 
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.function.Function;
 import application.XGMath;
 import device.XGDevice;
@@ -238,6 +240,14 @@ public class XGVirtualTable implements XGTable
 
 	@Override public String toString()
 	{	return this.getInfo();
+	}
+
+	@Override public XGTable categorize(String cat)
+	{	return this;
+	}
+
+	@Override public Set<String> getCategories()
+	{	return new HashSet<>();
 	}
 
 }

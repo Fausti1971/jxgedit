@@ -3,13 +3,15 @@ package parm;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NavigableMap;
+import java.util.Set;
 import java.util.TreeMap;
 import xml.XMLNode;
 
 public class XGXMLTable implements XGTable
-{
+{	private static final String ALL_CATEGORIES = "All";
 
 /********************************************************************************************************/
 
@@ -19,6 +21,8 @@ public class XGXMLTable implements XGTable
 	private final ArrayList<XGTableEntry> list = new ArrayList<>();//entry
 	private final NavigableMap<Integer, Integer> indexes = new TreeMap<>();//value, index
 	private final Map<String, Integer> names = new HashMap<>();//name, index
+	private final Map<String, XGXMLTable> categories = new LinkedHashMap<>();
+//	private final Set<String> categoryNames = new LinkedHashSet<>();
 /**
  * lediglich eine indizierte Map von Integerwerten und dazugehörigen XMLNodes
  * @param n
@@ -27,6 +31,7 @@ public class XGXMLTable implements XGTable
 	{	this.name = n.getStringAttribute(ATTR_NAME);
 		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, "");
 		this.fallbackMask = n.getValueAttribute(ATTR_FALLBACKMASK, DEF_FALLBACKMASK);
+		this.categories.put(ALL_CATEGORIES, this);
 		n.traverse(TAG_ITEM, (XMLNode x)->{this.add(new XGTableEntry(x));});
 		LOG.info(this.getInfo());
 	}
@@ -35,32 +40,35 @@ public class XGXMLTable implements XGTable
 	{	this.name = name;
 		this.unit = unit;
 		this.fallbackMask = fbm;
-		LOG.info(this.name);
+		this.categories.put(ALL_CATEGORIES, this);
+//		LOG.info(this.name);
 	}
 
 	private void add(XGTableEntry e)
 	{	this.list.add(e);
-		this.indexes.put(e.getValue(), this.list.indexOf(e));
-		this.names.put(e.getName(), this.list.indexOf(e));
+		int i = this.list.indexOf(e);
+		this.indexes.put(e.getValue(), i);
+		this.names.put(e.getName(), i);
+		for(String s : e.getCategories()) this.categories.put(s, new XGXMLTable(this.name, this.unit, this.fallbackMask));
 	}
 
-	private int limitize(int v, Preference pref)
-	{	v = Math.max(this.indexes.firstKey(), Math.min(v, this.indexes.lastKey()));
+	private int findValue(int v, Preference pref)
+	{	if(this.indexes.containsKey(v)) return v;
+		v = Math.max(this.indexes.firstKey(), Math.min(v, this.indexes.lastKey()));
 		int above = this.indexes.ceilingKey(v);
 		int below = this.indexes.floorKey(v);
 		switch(pref)
 		{	case CLOSEST:	return (v - below > above - v ? above : below);
 			case EQUAL:		return v;
-			case FALLBACK:	return this.getFallback(v);
+			case FALLBACK:	return this.getFallbackValue(v);
 			case ABOVE:		return above;
 			case BELOW:		return below;
 			default:		return v;
 		}
 	}
 
-	private int getFallback(int v)
-	{	if(this.indexes.containsKey(v)) return v;
-		v &= this.fallbackMask;
+	private int getFallbackValue(int v)
+	{	v &= this.fallbackMask;
 		if(this.indexes.containsKey(v)) return v;
 		else return this.list.get(this.getMinIndex()).getValue();
 	}
@@ -79,7 +87,7 @@ public class XGXMLTable implements XGTable
 	}
 
 	@Override public int getIndex(int v, Preference pref)
-	{	int i = this.limitize(v, pref);
+	{	int i = this.findValue(v, pref);
 		try
 		{	return this.indexes.get(i);
 		}
@@ -91,6 +99,21 @@ public class XGXMLTable implements XGTable
 
 	@Override public int getIndex(String name)
 	{	return this.names.get(name);
+	}
+
+	@Override public Set<String> getCategories()
+	{	return this.categories.keySet();
+	}
+
+	@Override public XGTable categorize(String cat)
+	{	XGXMLTable table = this.categories.get(cat);
+		if(table == null)
+		{	table = new XGXMLTable(this.name + "-" + cat, this.unit, this.fallbackMask);
+			this.categories.put(cat, table);
+		}
+		if(table.size() != 0) return table;
+		for(XGTableEntry e : this) if(e.hasCategory(cat)) table.add(e);
+		return table;
 	}
 
 	@Override public XGXMLTable filter(XMLNode n)

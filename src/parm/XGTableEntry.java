@@ -42,6 +42,14 @@ public class XGTableEntry implements ConfigurationConstants
 	{	return this.categories;
 	}
 
+	public boolean hasCategory(String cat)
+	{	if(cat == null || cat.isBlank()) return true;
+		for(String f : this.categories)
+		{	if(f.equals(cat)) return true;
+		}
+		return false;
+	}
+
 	public boolean hasFilter(String s)
 	{	if(s == null || s.isBlank()) return true;
 		for(String f : this.filters)

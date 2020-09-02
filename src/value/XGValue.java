@@ -6,8 +6,9 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressField;
 import adress.XGAddressable;
-import device.XGDevice;
+import application.XGLoggable;
 import msg.XGBulkDump;
+import msg.XGMessageBulkDump;
 import msg.XGMessageParameterChange;
 import msg.XGMessenger;
 import msg.XGMessengerException;
@@ -24,7 +25,7 @@ import parm.XGTableEntry;
  * @author thomas
  *
  */
-public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener
+public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable
 {
 
 /***********************************************************************************************/
@@ -164,20 +165,16 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 /**
- * setzt nach Validierung den XGTable-Index des XGValue auf den Wert i
+ * setzt nach Validierung den XGTable-Index des XGValue auf den Wert i ohne die XAction-Kette auszulösen
  * @param i	Index
  * @return	true, wenn sich der Inhalt änderte
  */
 	public boolean setIndex(Integer i)
-	{	this.actions(XACTION_BEFORE_EDIT);
-		int old = this.index;
+	{	int old = this.index;
 		XGParameter p = this.getParameter();
 		if(p != null) this.index = p.validate(i);
 		boolean changed = this.index != old;
-		if(changed)
-		{	this.notifyValueListeners();
-			this.actions(XACTION_AFTER_EDIT);
-		}
+		if(changed) this.notifyValueListeners();
 		return changed;
 	}
 
@@ -218,14 +215,49 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		return this.setIndex(p.getTranslationTable().getIndex(v, Preference.FALLBACK));
 	}
 
-	public void transmit()
+	public void editEntry(XGTableEntry e)
+	{	this.actions(XACTION_BEFORE_EDIT);
+		if(setEntry(e))
+		{	this.actions(XACTION_AFTER_EDIT);
+		}
+	}
+
+	public boolean editIndex(int i)
+	{	this.actions(XACTION_BEFORE_EDIT);
+		boolean changed = setIndex(i);
+		if(changed)
+		{	this.actions(XACTION_AFTER_EDIT);
+		}
+		return changed;
+	}
+
+	public boolean addIndex(int diff)
+	{	return this.editIndex(this.index + diff);
+	}
+
+	public void sendAction()
 	{	this.actions(XACTION_BEFORE_SEND);
-		XGDevice dev = this.getSource().getDevice();
 		try
-		{	new XGMessageParameterChange(this.source, dev.getMidi(), this).transmit();
+		{	new XGMessageParameterChange(this.source, this.source.getDevice().getMidi(), this).transmit();
 		}
 		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e1)
-		{	e1.printStackTrace();
+		{	LOG.severe(e1.getMessage());
+		}
+		this.actions(XACTION_AFTER_SEND);
+	}
+
+	public void bulkAction()
+	{	this.actions(XACTION_BEFORE_SEND);
+		{	XGAddress adr = this.getAddress();
+			try
+			{	XGMessageBulkDump msg = new XGMessageBulkDump(this.getSource(), this.getSource().getDevice().getMidi(), new XGAddress(adr.getHi(), adr.getMid(), this.getOpcode().getAddress().getLo()));
+				msg.encodeLSB(msg.getBaseOffset(), msg.getBulkSize(), this.getValue());
+				msg.setChecksum();
+				msg.transmit();
+			}
+			catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
+			{	LOG.severe(e1.getMessage());
+			}
 		}
 		this.actions(XACTION_AFTER_SEND);
 	}
@@ -239,12 +271,14 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	private void actions(String type)
 	{	Set<String> set = this.opcode.getActions().get(type);
 		if(set != null)
-			for(String s : set)
+		{	for(String s : set)
 			{	switch(s)
 				{	case("module_request"): this.getBulk().getModule().transmitAll(this.source.getDevice().getMidi(), this.source.getDevice().getValues()); break;
-					case("send"): 	break;
+					case("send"): 			this.sendAction(); break;
+					case ("bulk"):			this.bulkAction(); break;
 				}
 			}
+		}
 	}
 
 	@Override public String toString()

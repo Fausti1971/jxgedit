@@ -2,6 +2,7 @@ package parm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Set;
 import application.ConfigurationConstants;
 import application.XGLoggable;
 import device.XGDevice;
@@ -37,6 +38,8 @@ public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameter
 	public XGTableEntry getByName(String name);
 	public int getIndex(int v, Preference pref);
 	public int getIndex(String name);
+	public XGTable categorize(String cat);
+	public Set<String> getCategories();
 	public XGTable filter(XMLNode n);
 	public String getName();
 	public String getUnit();
