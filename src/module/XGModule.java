@@ -1,193 +1,104 @@
 package module;
 
-import java.awt.Component;
-import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collections;
-import java.util.Enumeration;
-import javax.swing.JComponent;
-import javax.swing.tree.TreeNode;
-import adress.InvalidXGAddressException;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import adress.XGAddress;
-import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
+import application.XGLoggable;
 import device.XGDevice;
-import gui.XGComponent;
 import gui.XGTemplate;
-import gui.XGTree;
-import gui.XGTreeNode;
-import gui.XGWindow;
-import gui.XGWindowSource;
-import msg.XGBulkDumper;
+import msg.XGBulkDump;
 import parm.XGTable;
-import value.XGValue;
-import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public abstract class XGModule implements XGAddressable, XGModuleConstants, XGTreeNode, XGWindowSource, XGValueChangeListener, XGBulkDumper
-{
-	public static void init(XGDevice dev) throws InvalidXGAddressException
-	{
+public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable
+{	static final Set<String> ACTIONS = new LinkedHashSet<>();
+
+	static
+	{	ACTIONS.add(ACTION_EDIT);
+		ACTIONS.add(ACTION_REQUEST);
+		ACTIONS.add(ACTION_TRANSMIT);
+		ACTIONS.add(ACTION_LOADFILE);
+		ACTIONS.add(ACTION_SAVEFILE);
+	}
+
+	public static XGAddressableSet<XGModule> init(XGDevice dev)
+	{	XGAddressableSet<XGModule> set = new XGAddressableSet<>();
 		File file;
 		try
-		{	file = dev.getResourceFile(XML_MODULE);
+		{	file = dev.getResourceFile(XML_STRUCTURE);
 		}
 		catch(FileNotFoundException e)
 		{	LOG.warning(e.getMessage());
-			return;
+			return set;
 		}
 		XMLNode xml = XMLNode.parse(file);
 		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
-		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), null);
-			XGModule hi = null;
-			String cat = n.getStringAttribute(ATTR_NAME).toString();
-			if(adr.getHi().getMin() > 47)//	falls DrumModule
-			{	for(int h : adr.getHi())
-				{	String name = cat + " " + (h - 47);
-					if(adr.getMid().isRange())
-					{	hi = new XGModuleFolder(dev, dev, name, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo()), n);
-						for(int m : adr.getMid()) hi.getChildModule().add(new XGModuleInstance(dev, hi, name, new XGAddress(new XGAddressField(h), new XGAddressField(m), adr.getLo()), n));
-					}
-					else hi = new XGModuleInstance(dev, dev, name, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo()), n);
-					dev.getModules().add(hi);
-				}
-			}
-			else
-			{	if(adr.getMid().isRange())
-				{	hi = new XGModuleFolder(dev, dev, cat, adr, n);
-					for(int m : adr.getAddress().getMid()) hi.getChildModule().add(new XGModuleInstance(dev, hi, cat, new XGAddress(adr.getHi(), new XGAddressField(m), adr.getLo()), n));
-				}
-				else hi = new XGModuleInstance(dev, dev, cat, new XGAddress(adr.getHi(), adr.getMid(), adr.getLo()), n);
-				dev.getModules().add(hi);
-			}
+		{	XGModule mod = new XGModule(dev, n);
+			dev.getStructure().add(mod);
 		}
+		LOG.info(dev.getStructure().size() + " modules initialized for " + dev);
+		return set;
 	}
 
 /********************************************************************************************************************/
 
-	private boolean selected;
-	protected XGWindow window;
-	private final XGTreeNode parentNode;
-	protected final XGAddressableSet<XGModule> childModules = new XGAddressableSet<>();
-	protected final String category;
+	private final XGDevice device;
+	private final Set<XGAddress> infoAddresses = new LinkedHashSet<>();
+	protected final String name;
 	protected final XGAddress address;
-	protected final XGDevice device;
 	private final XGTemplate guiTemplate;
 	protected final XGTable idTranslator;
+	private final XMLNode config;
+	private final XGAddressableSet<XGBulkDump> bulks;
 
-	public XGModule(XGDevice dev, XGTreeNode par, String cat, XGAddress adr, XMLNode cfg)
-	{	this.parentNode = par;
-		this.category = cat;
-		this.address = adr;
+	protected XGModule(XGDevice dev, XMLNode cfg)//für Prototypen
+	{	this.config = cfg;
 		this.device = dev;
-		this.idTranslator = dev.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
-		this.guiTemplate = dev.getTemplates().getFirstIncluding(this.address);
-	}
+		this.address = new XGAddress(cfg.getStringAttribute(ATTR_ADDRESS));
+		this.name = cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME);
+		this.idTranslator = this.device.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
 
-	@Override public Component getSourceComponent()
-	{	return this.getNodeComponent();
-	}
+		XGAddressableSet<XGTemplate> tSet = this.device.getTemplates().getAllIncluded(this.address);
+		if(tSet.size() != 1) throw new RuntimeException("found " + tSet.size() + " templates for address " + this.address);
+		this.guiTemplate = tSet.iterator().next();
 
-	@Override public void setTreeComponent(XGTree t)
-	{
+		this.getInfoAddresses().add(new XGAddress(cfg.getStringAttribute(ATTR_INFO1)));
+		this.getInfoAddresses().add(new XGAddress(cfg.getStringAttribute(ATTR_INFO2)));
+		this.getInfoAddresses().add(new XGAddress(cfg.getStringAttribute(ATTR_INFO3)));
+		 
+		this.bulks = XGBulkDump.init(this);
 	}
-
-	@Override public void setSelected(boolean s)
-	{	this.selected = s;
-	}
-
-	@Override public boolean isSelected()
-	{	return this.selected;
-	}
-
-	@Override public void nodeFocussed(boolean b)
-	{
-	}
-
-	@Override public void windowOpened(WindowEvent e)
-	{	this.setSelected(true);
-		this.repaintNode();
-	}
-
-	@Override public void windowClosed(WindowEvent e)
-	{	this.setSelected(false);
-		this.setChildWindow(null);
-		this.repaintNode();
-	}
-
 
 	public XGDevice getDevice()
 	{	return this.device;
-	}
-
-	XGTreeNode getParentNode()
-	{	return this.parentNode;
-	}
-
-	XGAddressableSet<XGModule> getChildModule()
-	{	return this.childModules;
 	}
 
 	public XGTemplate getGuiTemplate()
 	{	return this.guiTemplate;
 	}
 
-	public int getID()
-	{	XGAddress adr = this.getAddress();
-		try
-		{	return adr.getMid().getValue();
-		}
-		catch(InvalidXGAddressException e)
-		{	e.printStackTrace();
-			return adr.getMid().getMin();
-		}
-	}
-
-	public String getCategory()
-	{	return this.category;
-	}
-
-	public String getTranslatedID()
-	{	if(this.idTranslator == null) return "";
-		else return this.idTranslator.getByIndex(this.getID()).getName();
-	}
-
-	@Override public XGWindow getChildWindow()
-	{	return this.window;
-	}
-
-	@Override public void setChildWindow(XGWindow win)
-	{	this.window = win;
-	}
-
-	@Override public JComponent getChildWindowContent()
-	{	return XGComponent.init(this);
-	}
-
 	@Override public XGAddress getAddress()
 	{	return this.address;
 	}
 
-	@Override public XGTree getTreeComponent()
-	{	return this.getDevice().getTreeComponent();
+	public Set<XGAddress> getInfoAddresses()
+	{
+		return infoAddresses;
 	}
 
-	@Override public TreeNode getParent()
-	{	return this.getParentNode();
+	public XGAddressableSet<XGBulkDump> getBulks()
+	{	return this.bulks;
 	}
 
-	@Override public boolean getAllowsChildren()
-	{	return true;
+	public XMLNode getConfig()
+	{	return this.config;
 	}
 
-	@Override public Enumeration<? extends TreeNode> children()
-	{	return Collections.enumeration(this.getChildModule());
+	public String getName()
+	{	return this.name;
 	}
-
-	@Override public void contentChanged(XGValue v)
-	{	this.repaintNode();
-	}
-
 }

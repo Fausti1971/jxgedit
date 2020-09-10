@@ -13,7 +13,7 @@ import msg.XGRequest;
 import msg.XGResponse;
 
 public class XGValueStore extends XGAddressableSet<XGValue> implements XGMessenger, XGLoggable
-{	
+{
 	private final XGDevice device;
 
 	public XGValueStore(XGDevice dev)

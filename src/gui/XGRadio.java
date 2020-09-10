@@ -51,7 +51,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 		{	this.setLayout(new BoxLayout(this, this.orientation));
 			this.setEnabled(true);
 			this.setName(p.getShortName());
-			this.setToolTipText(p.getLongName());
+			this.setToolTipText(p.getName());
 			XGTable t = this.value.getParameter().getTranslationTable();
 			for(XGTableEntry e : t) this.add(new XGRadioButton(this.value, e));
 		}

@@ -8,9 +8,14 @@ public interface XMLNodeConstants
 
 	static final String
 		XML_CONFIG = "config.xml",
-		XML_MODULE = "module.xml",
+		XML_STRUCTURE = "structure.xml",
+//		XML_MODULE = "module.xml",
+//		XML_BULK = "bulk.xml",
+//		XML_OPCODE = "opcode.xml",
+		XML_PARAMETER = "parameter.xml",
+		XML_DEFAULT = "default.xml",
 		XML_TABLES = "tables.xml",
-		XML_TEMPLATES = "templates.xml";
+		XML_TEMPLATES = "template.xml";
 
 	static final String
 		TAG_WIN = "window",
@@ -48,7 +53,7 @@ public interface XMLNodeConstants
 		ATTR_INFO1 = "info1",
 		ATTR_INFO2 = "info2",
 		ATTR_INFO3 = "info3",
-		ATTR_ID = "id",
+//		ATTR_ID = "id",
 		ATTR_NAME = "name",
 
 		TAG_BULK = "bulk",
@@ -58,20 +63,25 @@ public interface XMLNodeConstants
 
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",
-		TAG_PARAM = "param",
-		TAG_PARAMETERS = "parameters",
 		TAG_PARAMETER = "parameter",
+		TAG_PARAMETERTABLES = "parameterTables",
+		TAG_PARAMETERTABLE = "parameterTable",
+		TAG_DEFAULTTABLES = "defaultTables",
+		TAG_DEFAULTTABLE = "defaultTable",
 
 		ATTR_TYPE = "type",
-		ATTR_PARAMETER_ID = "parameterID",
 		ATTR_PARAMETERSELECTOR ="parameterSelector",
+		ATTR_PARAMETERS = "parameters",
+//		ATTR_PARAMETER = "parameter",
 		ATTR_MIN = "min",
 		ATTR_MAX = "max",
+		ATTR_DEFAULT = "default",
+		ATTR_DEFAULTS = "defaults",
+		ATTR_DEFAULTSELECTOR = "defaultSelector",
 		ATTR_TRANSLATOR = "translator",
 		ATTR_TABLEFILTER = "tableFilter",
 		ATTR_TABLECATEGORIES = "categories",
 		ATTR_FALLBACKMASK = "fallbackMask",
-		ATTR_LONGNAME = "longName",
 		ATTR_SHORTNAME = "shortName",
 		ATTR_UNIT = "unit",
 
@@ -81,6 +91,7 @@ public interface XMLNodeConstants
 		TAG_TABLE = "table",
 		TAG_ITEM = "item",
 		ATTR_VALUE = "value",
+		ATTR_SELECTORVALUE = "selectorValue",
 //		ATTR_MSB = "msb",
 //		ATTR_LSB = "lsb",
 

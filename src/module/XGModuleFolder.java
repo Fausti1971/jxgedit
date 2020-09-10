@@ -3,10 +3,12 @@ package module;
 import java.awt.event.ActionEvent;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import javax.swing.JOptionPane;
 import adress.XGAddress;
 import adress.XGAddressableSet;
 import device.XGDevice;
 import gui.XGTreeNode;
+import gui.XGWindow;
 import msg.XGBulkDump;
 import xml.XMLNode;
 
@@ -38,11 +40,12 @@ public class XGModuleFolder extends XGModule
 	{	switch(e.getActionCommand())
 		{	case ACTION_REQUEST:	new Thread(() ->	{	this.transmitAll(this.device.getMidi(), this.device.getValues());}).start(); break;
 			case ACTION_TRANSMIT:	new Thread(() ->	{	this.transmitAll(this.device.getValues(), this.device.getMidi());}).start(); break;
+			default:				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
 		}
 	}
 
 	@Override public String toString()
-	{	return this.category + " (" + this.getChildCount() + ")";
+	{	return this.name + " (" + this.getChildCount() + ")";
 	}
 
 	@Override public XGAddressableSet<XGBulkDump> getBulks()

@@ -58,6 +58,10 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 		}
 	}
 
+	public XGAddress(String string)
+	{	this(string, null);
+	}
+
 /**
  * extrahiert und returniert das Hi-Field der XGAdress this
  * @return Wert des Fields als int

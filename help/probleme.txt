@@ -84,7 +84,11 @@ Problem:
 		Nur wenn der Parameter das Attribut "tablefilter" besitzt, wird eine neue (gefilterte, aber nicht durch min- und max kastrierte) XGTable erzeugt.
 Problem:
 		streng genommen beschreibt die module.xml lediglich das Potential von ValueStorage - im Hinterkopf behalten;
+		Frage: Arbeite ich auf dem File, Memory oder MIDI? Ein transmit() von einem File würde potentiell auch Dumps einschließen, die Memory nicht unterstützt.
+		Andersherum würde das Überschreiben eines Files mit einem durch Memory initiierten Request von MIDI die durch Memory nicht unterstützten Anteile im File entfernen. Oder nicht?
+	gelöst: durch parsen des files vor dem transmit und save;
 Vermerk:
 		dem XGTableTreeModel neben der eigentlichen XGTable noch eine Liste an XGCategorizern mitgeben, sodass bspw. die GM-Categories automatisch errechnet werden können oder auch
 		nach LSB-Categories gefaltet werden kann. Außerdem wäre eine Filtermöglichkeit schön. Außerdem sollte das TableModel erweitert werden, da dies nach wie vor unbefriedigend ist.
 		Vielleicht ist ja auch der XGTree verwendbar...
+	

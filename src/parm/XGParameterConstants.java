@@ -27,6 +27,9 @@ public interface XGParameterConstants extends XMLNodeConstants
 	String MUTABLE = "mutable", IMMUTABLE = "immutable";
 	String DEF_PARAMETERNAME = "unknown parameter: ";
 	int  DEF_MIN = 0, DEF_MAX = 127, DEF_ORIGIN = 0;
+/**
+ * ein Pseudo Selector-Value, damit auch der Parameter eines immutable-Opcodes im Set gespeichert werden kann (ebenso defaults)
+ */
 	int DEF_SELECTORVALUE = -1;
 
 	enum ValueDataType

@@ -28,7 +28,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 			XGTreeNode n = (XGTreeNode)value;
 			XGTreeNode f = t.getFocussedNode();
 			hasFocus = f != null && f.equals(n);
-			return DTCR.getTreeCellRendererComponent(tree, n, n.isSelected(), expanded, leaf, row, hasFocus);
+			return DTCR.getTreeCellRendererComponent(tree, n.getNodeText(), n.isSelected(), expanded, leaf, row, hasFocus);
 		}
 	};
 

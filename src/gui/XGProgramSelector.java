@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
@@ -42,7 +43,7 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
 		this.value.addParameterListener(this);
 		this.value.addValueListener(this);
-		this.setName(this.value.getParameter().getLongName());
+		this.setName(this.value.getParameter().getName());
 
 		this.borderize();
 
@@ -65,7 +66,7 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 	}
 
 	private void selectionWindow()
-	{	new XGWindow(this, this.value.getBulk().getModule().getChildWindow(), true, true, "select " + this.getName());
+	{	new XGWindow(this, (XGWindow)SwingUtilities.windowForComponent(this), true, true, "select " + this.getName());
 	}
 
 	@Override public void contentChanged(XGValue v)
@@ -77,7 +78,7 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	this.setName(p.getLongName());
+	{	this.setName(p.getName());
 		this.borderize();
 	}
 

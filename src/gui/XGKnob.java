@@ -71,7 +71,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 	@Override public void parameterChanged(XGParameter p)
 	{	if(p != null)
 		{	this.setName(p.getShortName());
-			this.setToolTipText(p.getLongName());
+			this.setToolTipText(p.getName());
 			this.bar.setEnabled(true);
 			this.label.setText(this.value.toString());
 			this.label.setEnabled(true);

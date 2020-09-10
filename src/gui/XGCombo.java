@@ -48,7 +48,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 	@Override public void parameterChanged(XGParameter p)
 	{	if(p != null)
 		{	this.setName(p.getShortName());
-			this.setToolTipText(p.getLongName());
+			this.setToolTipText(p.getName());
 		}
 		else
 		{	this.setName("n/a");

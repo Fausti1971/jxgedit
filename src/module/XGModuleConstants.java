@@ -9,6 +9,7 @@ public interface XGModuleConstants extends XMLNodeConstants
 //	{	system, info, sysfx, syseq, insfx, display, multipart, adpart, drumset, plugin
 //	};
 
+	static final String DEF_MODULENAME = "nameless module";
 	ActionMap MOD_ACTIONS = new ActionMap();
 
 	static final String

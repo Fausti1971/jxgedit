@@ -138,6 +138,13 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 		return null;
 	}
 
+	public XMLNode getChildNodeWithName(String tag, String name)
+	{	for(XMLNode x : this.getChildNodes(tag))
+			if(name.equals(x.getStringAttribute(ATTR_NAME)))
+				return x;
+		return null;
+	}
+
 	public Set<XMLNode> getChildNodes(String tag)
 	{	Set<XMLNode> set = new LinkedHashSet<>();
 		for(XMLNode x : this.childNodes)
@@ -199,13 +206,6 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 			this.addChildNode(n);
 		}
 		return XGStrings.parseIntOrDefault(n.getTextContent().toString(), def);
-	}
-
-	public XMLNode getChildNodeWithID(String tag, String id)
-	{	for(XMLNode x : this.getChildNodes(tag))
-			if(id.equals(x.getStringAttribute(ATTR_ID)))
-				return x;
-		return null;
 	}
 
 	public final XGProperties getAttributes()

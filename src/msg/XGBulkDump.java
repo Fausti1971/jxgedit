@@ -1,28 +1,24 @@
 package msg;
 import java.util.logging.Logger;
-import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
+import application.XGLoggable;
 import module.XGModule;
 import parm.XGOpcode;
-import value.XGValue;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
 
-public class XGBulkDump implements XGAddressable, XMLNodeConstants
+public class XGBulkDump implements XGAddressable, XMLNodeConstants, XGLoggable
 {
 	public static final Logger log = Logger.getAnonymousLogger();
 
-	public static XGAddressableSet<XGBulkDump> init(XGModule mod, XMLNode m)
+	public static XGAddressableSet<XGBulkDump> init(XGModule mod)
 	{	XGAddressableSet<XGBulkDump> set = new XGAddressableSet<>();
-		for(XMLNode b : m.getChildNodes(TAG_BULK))
-		try
-		{	set.add(new XGBulkDump(mod, b));
-		}
-		catch(InvalidXGAddressException e)
-		{	e.printStackTrace();
-		}
+		XMLNode xml = mod.getConfig();
+		for(XMLNode n : xml.getChildNodes(TAG_BULK))
+			set.add(new XGBulkDump(mod, n));
+		LOG.info(set.size() + " bulks initialized for " + mod.getDevice());
 		return set;
 	}
 
@@ -30,14 +26,13 @@ public class XGBulkDump implements XGAddressable, XMLNodeConstants
 
 	private final XGAddress address;
 	private final XGModule module;
+	private final XGAddressableSet<XGOpcode> opcodes = new XGAddressableSet<>();
 
-	public XGBulkDump(XGModule mod, XMLNode n) throws InvalidXGAddressException
-	{	this.module = mod;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), mod.getAddress()).complement(mod.getAddress());
+	public XGBulkDump(XGModule mod, XMLNode n)
+	{	this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS));
+		this.module = mod;
 		for(XMLNode o : n.getChildNodes(TAG_OPCODE))
-		{	XGOpcode opc = new XGOpcode(mod.getDevice(), this, o);
-			XGValue val = new XGValue(mod.getDevice().getValues(), opc, this);
-			mod.getDevice().getValues().add(val);
+		{	this.opcodes.add(new XGOpcode(this, o));
 		}
 	}
 

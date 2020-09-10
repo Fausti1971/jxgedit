@@ -16,7 +16,7 @@ public abstract class XGSuperMessage extends SysexMessage implements XGMessage, 
  * Konstruktor für XGMessages aus ByteArrays
  * @param src Herkunft
  * @param array Daten
- * @param init initialisiert eine neu erzeugte XGMessage mit SOX, SysexID, VendorID, ModelID und TimeStamp
+ * @param init initialisiert eine neu erzeugte XGMessage mit SOX, SysexID/MessageID, VendorID, ModelID, EOX und TimeStamp
  * @throws InvalidMidiDataException
  */
 	protected XGSuperMessage(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException // für manuell erzeugte

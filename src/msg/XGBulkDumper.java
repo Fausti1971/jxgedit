@@ -14,10 +14,11 @@ import gui.XGWindow;
  *
  */
 public interface XGBulkDumper extends XGLoggable
-{	XGAddressableSet<XGBulkDump> getBulks();
+{
+	XGAddressableSet<XGBulkDump> getBulks();
 
 /**
- * erfragt alle im BulkDumper konfigurierten (in module.xml deklarierten) Bulks von bei der src und übermittelt die jeweilige Response zum dest
+ * erfragt alle im BulkDumper konfigurierten (in bulks.xml deklarierten) Bulks von bei der src und übermittelt die jeweilige Response zum dest
  * @param src
  * @param dest
  */

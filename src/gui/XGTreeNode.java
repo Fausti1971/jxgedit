@@ -3,7 +3,9 @@ package gui;
 import java.awt.Component;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.List;
+import java.util.Set;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
@@ -51,6 +53,13 @@ public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
  */
 	void nodeFocussed(boolean b);
 
+/**
+ * erstellt den Text zur Repräsentation im Tree
+ * @return text
+ */
+	String getNodeText();
+
+
 	default XGTreeNode getRootNode()
 	{	return (XGTreeNode)this.getTreePath().getPathComponent(0);
 	}
@@ -81,6 +90,14 @@ public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
 			n = n.getParent();
 		}
 		return new TreePath(array.toArray());
+	}
+
+	@Override public default boolean getAllowsChildren()
+	{	return !this.isLeaf();
+	}
+
+	@Override public default Enumeration<? extends TreeNode> children()
+	{	return Collections.enumeration(this.getChildNodes());
 	}
 
 	@Override default int getChildCount()

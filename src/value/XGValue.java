@@ -4,10 +4,8 @@ import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import adress.XGAddressField;
 import adress.XGAddressable;
 import application.XGLoggable;
-import msg.XGBulkDump;
 import msg.XGMessageBulkDump;
 import msg.XGMessageParameterChange;
 import msg.XGMessenger;
@@ -37,9 +35,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	private XGMessenger source;
 	private final XGAddress address;
 	private final XGOpcode opcode;
-	private final XGBulkDump bulk;
 	private XGParameter parameter;
-	private final XGValue parameterSelector;
+	private final XGValue parameterSelector, defaultSelector;
 	private final Set<XGValueChangeListener> valueListeners = new HashSet<>();
 	private final Set<XGParameterChangeListener> parameterListeners = new HashSet<>();
 
@@ -49,23 +46,29 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.parameter = null;
 		this.index = v;
 		this.parameterSelector = null;
+		this.defaultSelector = null;
 		this.opcode = null;
-		this.bulk = null;
 	}
 
-	public XGValue(XGMessenger src, XGOpcode opc, XGBulkDump blk) throws InvalidXGAddressException
+	public XGValue(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
 	{	this.source = src;
-		this.bulk = blk;
-		this.opcode = opc;
-		this.address = new XGAddress(blk.getAddress().getHi(), blk.getAddress().getMid(), new XGAddressField(opc.getAddress().getLo().getMin()));
+		this.address = adr;
+		this.opcode = src.getDevice().getOpcodes().getFirstIncluding(this.address);
 		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
 		if(this.opcode.isMutable())
 		{	XGAddress a = this.opcode.getParameterSelectorAddress().complement(this.address);
 			this.parameterSelector = src.getDevice().getValues().get(a);
-			this.parameterSelector.addValueListener(this);
+			this.parameterSelector.addValueListener((XGValue v)->{this.assignParameter();});
 		}
 		else this.parameterSelector = null;
 		this.assignParameter();
+
+		if(this.opcode.hasMutableDefaults())
+		{	XGAddress a = this.opcode.getDefaultSelectorAddress().complement(this.address);
+			this.defaultSelector = src.getDevice().getValues().get(a);
+			this.defaultSelector.addValueListener((XGValue v)->{this.setDefaultValue(v);});
+		}
+		else this.defaultSelector = null;
 		this.index = 0;
 	}
 
@@ -105,10 +108,6 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.opcode;
 	}
 
-	public XGBulkDump getBulk()
-	{	return bulk;
-	}
-
 	public int getSize()
 	{	return this.opcode.getAddress().getLo().getSize();
 	}
@@ -124,6 +123,12 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 			this.notifyParameterListeners();
 		}
 		else this.parameter = this.opcode.getParameters().get(DEF_SELECTORVALUE);
+	}
+
+	private void setDefaultValue(XGValue v)
+	{	int prog = v.getValue();
+		int value = this.opcode.getDefaults().get(prog);
+		this.setValue(value);
 	}
 
 	public XGParameter getParameter()
@@ -273,9 +278,11 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		if(set != null)
 		{	for(String s : set)
 			{	switch(s)
-				{	case("module_request"): this.getBulk().getModule().transmitAll(this.source.getDevice().getMidi(), this.source.getDevice().getValues()); break;
-					case("send"): 			this.sendAction(); break;
-					case ("bulk"):			this.bulkAction(); break;
+				{	case "module_default":	break;	//TODO: lade alle defaults des gesamten modules
+					case "mutable_default":	break;	//TODO: lade nur defaults der mutable-default-values
+					case "send": 			this.sendAction(); break;	//send via XGMessageParameterChange (normal)
+					case "bulk":			this.bulkAction(); break;	//bulk via XGMessageBulkDump (voice-programs)
+					default:				LOG.info("unknown action: " + s + " for value: " + this.getInfo());
 				}
 			}
 		}
@@ -294,7 +301,6 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	@Override public void contentChanged(XGValue v)
-	{	if(v.equals(this.parameterSelector)) this.assignParameter();
-		else this.notifyValueListeners();
+	{	this.notifyValueListeners();
 	}
 }

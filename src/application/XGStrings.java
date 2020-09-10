@@ -57,4 +57,8 @@ public interface XGStrings
 	static boolean isAlNum(String name)
 	{	return name.matches(REGEX_ALNUM);
 	}
+
+	static String toShortName(String name)//TODO: das kannst Du besser!
+	{	return name.substring(0, Math.min(name.length(), 4));
+	}
 }

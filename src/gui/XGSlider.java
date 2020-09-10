@@ -75,7 +75,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	}
 
 	@Override public String getToolTipText()
-		{	return this.value.getParameter().getLongName();
+		{	return this.value.getParameter().getName();
 		}
 
 	@Override public boolean isEnabled()

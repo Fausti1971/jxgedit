@@ -3,8 +3,6 @@ package application;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.JOptionPane;
@@ -118,16 +116,8 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	{	return null;
 	}
 
-	@Override public boolean getAllowsChildren()
-	{	return true;
-	}
-
-	@Override public Enumeration<? extends TreeNode> children()
-	{	return Collections.enumeration(XGDevice.getDevices());
-	}
-
 	@Override public String toString()
-	{	return APPNAME + " (" + XGDevice.getDevices().size() + ")";
+	{	return APPNAME;
 	}
 
 	@Override public XMLNode getConfig()
@@ -174,5 +164,13 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 
 	@Override public void nodeFocussed(boolean b)
 	{
+	}
+
+	@Override public String getNodeText()
+	{	return APPNAME + " (" + XGDevice.getDevices().size() + ")";
+	}
+
+	@Override public Set<? extends XGTreeNode> getChildNodes()
+	{	return XGDevice.getDevices();
 	}
 }
