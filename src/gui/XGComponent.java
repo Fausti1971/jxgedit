@@ -15,7 +15,7 @@ import adress.XGMemberNotFoundException;
 import application.Configurable;
 import application.XGLoggable;
 import application.XGStrings;
-import module.XGModule;
+import module.XGModuleType;
 import value.XGValue;
 import xml.XMLNode;
 
@@ -28,7 +28,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 
 	static final XGValue DEF_VALUE = new XGValue("n/a", 0);
 
-	public static XGComponent init(XGModule mod)
+	public static XGComponent init(XGModuleType mod)
 	{	XGTemplate t = mod.getGuiTemplate();
 		XMLNode xml = null;
 		if(t != null) xml = t.getXMLNode();
@@ -36,7 +36,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		return new XGFrame(xml, mod);
 	}
 
-	protected static XGComponent newItem(XMLNode n, XGModule mod) throws XGMemberNotFoundException
+	protected static XGComponent newItem(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
 	{	String s = n.getTag();
 		XGComponent c = null;
 		switch(s)
@@ -63,7 +63,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		this.setName(text);
 	}
 
-	public XGComponent(XMLNode n, XGModule mod)
+	public XGComponent(XMLNode n, XGModuleType mod)
 	{	this.config = n;
 		this.setBounds();
 		this.setName(n.getStringAttributeOrDefault(ATTR_NAME, mod.toString()));

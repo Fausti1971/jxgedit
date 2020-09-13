@@ -14,7 +14,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
-import module.XGModule;
+import module.XGModuleType;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGTableEntry;
@@ -33,7 +33,7 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 	private XGWindow window;
 	private final JButton inc = new JButton(">"), dec = new JButton("<"), select = new JButton();
 
-	public XGProgramSelector(XMLNode n, XGModule mod) throws XGMemberNotFoundException
+	public XGProgramSelector(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
 	{
 		super(n, mod);
 		BorderLayout layout = new BorderLayout();

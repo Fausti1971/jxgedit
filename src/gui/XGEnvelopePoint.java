@@ -6,7 +6,7 @@ import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGLoggable;
 import application.XGMath;
-import module.XGModule;
+import module.XGModuleType;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
@@ -22,7 +22,7 @@ public class XGEnvelopePoint extends JButton implements XGValueChangeListener, G
 	private final XGValue valueX, valueY;
 	private Graphics2D g2;
 
-	public XGEnvelopePoint(XGEnvelope env, XMLNode n, XGModule mod) throws XGMemberNotFoundException
+	public XGEnvelopePoint(XGEnvelope env, XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
 	{	//super(n, mod);
 		this.envelope = env;
 

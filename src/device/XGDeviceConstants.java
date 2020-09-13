@@ -14,7 +14,8 @@ public interface XGDeviceConstants extends XMLNodeConstants
 
 
 	static final String
-		DEF_DEVNAME = "nameless device";
+		DEF_DEVNAME = "nameless device",
+		DEF_SYXFILENAME = "default.syx";
 
 	static final String
 		ACTION_CONFIGURE = "configure...",

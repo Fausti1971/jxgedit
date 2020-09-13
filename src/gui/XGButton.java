@@ -5,7 +5,7 @@ import java.awt.Insets;
 import javax.swing.JButton;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
-import module.XGModule;
+import module.XGModuleType;
 import value.XGValue;
 import xml.XMLNode;
 
@@ -21,7 +21,7 @@ public class XGButton extends XGComponent
 	private final XGValue value;
 	private final XGAddress address;
 
-	public XGButton(XMLNode n, XGModule mod) throws XGMemberNotFoundException
+	public XGButton(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
 	{
 		super(n, mod);
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());

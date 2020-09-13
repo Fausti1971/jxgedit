@@ -6,38 +6,29 @@ import java.util.Map;
 import java.util.Set;
 import adress.XGAddress;
 import adress.XGAddressable;
-import adress.XGAddressableSet;
 import application.XGLoggable;
 import application.XGStrings;
 import device.XGDevice;
-import msg.XGBulkDump;
+import module.XGModuleType;
 import xml.XMLNode;
 
 public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 {
-	public static XGAddressableSet<XGOpcode> init(XGBulkDump blk, XMLNode xml)
-	{
-		XGAddressableSet<XGOpcode> set = new XGAddressableSet<>();
-		for(XMLNode n : xml.getChildNodes(TAG_OPCODE))
-			set.add(new XGOpcode(blk, n));
-		LOG.info(set.size() + " opcodes initialized for " + blk);
-		return set;
-	}
 
 /*******************************************************************************************************************************/
 
+	private final XGModuleType moduleType;
 	private final XGAddress address, parameterSelectorAddress, defaultSelectorAddress;
 	private final ValueDataType dataType;
 	private final Map<Integer, XGParameter> parameters = new HashMap<>();
 	private final Map<Integer, Integer> defaults;
 	private final Map<String, Set<String>> actions = new HashMap<>();
 	private final boolean isMutable, hasMutableDefaults;
-	private final XGBulkDump bulk;
 
-	public XGOpcode(XGBulkDump blk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
-	{	XGDevice dev = blk.getModule().getDevice();
-		this.bulk = blk;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), null);
+	public XGOpcode(XGModuleType mod, XGAddress blk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
+	{	this.moduleType = mod;
+		XGDevice dev = mod.getDevice();
+		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), blk.getAddress());
 		this.dataType = ValueDataType.valueOf(n.getStringAttributeOrDefault(ATTR_DATATYPE, DEF_DATATYPE.name()));
 		this.isMutable = MUTABLE.equals(n.getStringAttribute(ATTR_TYPE));
 
@@ -115,7 +106,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	}
 
 	public XGDevice getDevice()
-	{	return this.bulk.getModule().getDevice();
+	{	return this.moduleType.getDevice();
 	}
 
 	public Map<String, Set<String>> getActions()

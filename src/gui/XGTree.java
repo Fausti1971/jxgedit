@@ -39,9 +39,10 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
  * Im Konstruktor muss der XGTree (mittels root.setTree(this)) in der root-node abgelegt werden.
  * @param root
  */
-	public XGTree(XGTreeNode root, boolean showRoot)
-	{	super(root);
-		root.setTreeComponent(this);
+	public XGTree(XGMainTreeModel model, boolean showRoot)
+	{
+		super(model);
+//		root.setTreeComponent(this);
 		this.addMouseListener(this);
 		this.addKeyListener(this);
 		this.setToggleClickCount(10);
@@ -60,12 +61,12 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	private void setFocussedNode(XGTreeNode n)
 	{	if(this.focussedNode != null)
 		{	this.focussedNode.nodeFocussed(false);
-			this.focussedNode.repaintNode();
+//			this.focussedNode.repaintNode();
 		}
 		this.focussedNode = n;
 		if(this.focussedNode != null)
 		{	this.focussedNode.nodeFocussed(true);
-			this.focussedNode.repaintNode();
+//			this.focussedNode.repaintNode();
 		}
 	}
 

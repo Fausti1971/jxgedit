@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.ProgressMonitor;
 import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import adress.XGAddressableSet;
 import application.XGLoggable;
 import gui.XGWindow;
@@ -15,7 +16,7 @@ import gui.XGWindow;
  */
 public interface XGBulkDumper extends XGLoggable
 {
-	XGAddressableSet<XGBulkDump> getBulks();
+	XGAddressableSet<XGAddress> getBulks();
 
 /**
  * erfragt alle im BulkDumper konfigurierten (in bulks.xml deklarierten) Bulks von bei der src und übermittelt die jeweilige Response zum dest
@@ -28,12 +29,12 @@ public interface XGBulkDumper extends XGLoggable
 		int requested = 0, responsed = 0;
 		long time = System.currentTimeMillis();
 		XGRequest r = null;
-		XGAddressableSet<XGBulkDump> set = this.getBulks();
+		XGAddressableSet<XGAddress> set = this.getBulks();
 		XGAddressableSet<XGRequest> missed = new XGAddressableSet<>();
 		ProgressMonitor pm = new ProgressMonitor(XGWindow.getRootWindow(), src + " -> " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
-		for(XGBulkDump b : set)
+		for(XGAddress b : set)
 		{	try
 			{	r = new XGMessageBulkRequest(dest, src, b);
 				r.request();

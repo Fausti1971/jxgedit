@@ -31,11 +31,6 @@ public class XGMessageBulkRequest extends XGSuperMessage implements XGRequest
 //	{	super(src, dest, msg);
 //	}
 
-	public XGMessageBulkRequest(XGMessenger src, XGMessenger dest, XGBulkDump dump) throws InvalidMidiDataException, InvalidXGAddressException
-	{	this(src, dest, dump.getAddress());
-		this.setResponse(new XGMessageBulkDump(src, dest, dump.getAddress()));
-	}
-
 	@Override public boolean isResponsed()
 	{	return this.responsed;
 	}

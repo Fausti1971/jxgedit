@@ -16,7 +16,7 @@ import javax.swing.JComponent;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
-import module.XGModule;
+import module.XGModuleType;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import value.XGValue;
@@ -37,7 +37,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 	private final XGValue value;
 	private final XGAddress address;
 
-	public XGKnob(XMLNode n, XGModule mod) throws XGMemberNotFoundException
+	public XGKnob(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());

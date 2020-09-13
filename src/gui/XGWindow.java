@@ -8,7 +8,6 @@ import javax.swing.JDialog;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import application.ConfigurationConstants;
-import application.JXG;
 
 public class XGWindow extends JDialog implements GuiConstants, ConfigurationConstants
 {	static
@@ -32,7 +31,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 
 	protected XGWindow()	//nur für Root-Window
 	{	this.source = null;
-		this.rootComponent = new XGTree(JXG.getApp(), true);
+		this.rootComponent = new XGTree(new XGMainTreeModel(), true);
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
 	}

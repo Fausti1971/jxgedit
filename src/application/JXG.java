@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.JOptionPane;
-import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
 import adress.InvalidXGAddressException;
 import device.XGDevice;
@@ -104,16 +103,12 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 		{	dev = new XGDevice(null);
 			if(XGDevice.getDevices().add(dev))
 			{	this.config.addChildNode(dev.getConfig());
-				dev.reloadTree();
+//				dev.reloadTree();
 			};
 		}
 		catch(InvalidXGAddressException e)
 		{	LOG.warning(e.getMessage());
 		}
-	}
-
-	@Override public TreeNode getParent()
-	{	return null;
 	}
 
 	@Override public String toString()
@@ -154,23 +149,11 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 		}
 	}
 
-	@Override public void setTreeComponent(XGTree t)
-	{	this.tree = t;
-	}
-
-	@Override public XGTree getTreeComponent()
-	{	return this.tree;
-	}
-
 	@Override public void nodeFocussed(boolean b)
 	{
 	}
 
 	@Override public String getNodeText()
 	{	return APPNAME + " (" + XGDevice.getDevices().size() + ")";
-	}
-
-	@Override public Set<? extends XGTreeNode> getChildNodes()
-	{	return XGDevice.getDevices();
 	}
 }

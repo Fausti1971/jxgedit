@@ -29,10 +29,10 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 /***********************************************************************************************/
 
 /**
- * Index in der im Parameter angehängten XGTable
+ * Index des XGTableEntry in der (im XGParameter anhängenden) XGTable
  */
 	private Integer index;
-	private XGMessenger source;
+	private XGMessenger source;//TODO: überdenken; ist hier tatsächlich der XGMessenger erforderlich oder reicht auch lediglich das XGDevice
 	private final XGAddress address;
 	private final XGOpcode opcode;
 	private XGParameter parameter;
@@ -52,9 +52,14 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	public XGValue(XGMessenger src, XGAddress adr) throws InvalidXGAddressException
 	{	this.source = src;
+
+		if(!adr.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + adr);
 		this.address = adr;
-		this.opcode = src.getDevice().getOpcodes().getFirstIncluding(this.address);
-		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
+
+		Set<XGOpcode> set = src.getDevice().getOpcodes().getAllIncluding(this.address);
+		if(set.size() != 1) throw new RuntimeException("found " + set.size() + " matches for address " + this.address);
+		this.opcode = set.iterator().next();
+
 		if(this.opcode.isMutable())
 		{	XGAddress a = this.opcode.getParameterSelectorAddress().complement(this.address);
 			this.parameterSelector = src.getDevice().getValues().get(a);

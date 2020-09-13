@@ -44,7 +44,7 @@ public class XGTableTreeModel implements TreeModel
 	}
 
 	@Override public int getIndexOfChild(Object parent, Object child)
-	{	return 0;
+	{	return -1;
 	}
 
 	@Override public void addTreeModelListener(TreeModelListener l)

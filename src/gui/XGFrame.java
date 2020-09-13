@@ -1,7 +1,7 @@
 package gui;
 
 import adress.XGMemberNotFoundException;
-import module.XGModule;
+import module.XGModuleType;
 import xml.XMLNode;
 
 public class XGFrame extends XGComponent
@@ -14,7 +14,7 @@ public class XGFrame extends XGComponent
 		this.borderize();
 	}
 
-	public XGFrame(XMLNode n, XGModule mod)
+	public XGFrame(XMLNode n, XGModuleType mod)
 	{	super(n, mod);
 		if(n.hasAttribute(ATTR_NAME)) this.borderize();
 		for(XMLNode x : n.getChildNodes())

@@ -17,12 +17,11 @@ import javax.sound.midi.SysexMessage;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
+import adress.XGAddress;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.Configurable;
-import application.JXG;
 import file.XGSysexFile;
 import file.XGSysexFileConstants;
 import gui.XGContext;
@@ -31,12 +30,11 @@ import gui.XGFileSelector;
 import gui.XGFrame;
 import gui.XGSpinner;
 import gui.XGTemplate;
-import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import module.XGModule;
-import msg.XGBulkDump;
+import module.XGModuleType;
 import msg.XGBulkDumper;
 import msg.XGMessageBulkRequest;
 import msg.XGMessageParameterChange;
@@ -86,7 +84,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 				try
 				{	d = new XGDevice(n);
 					synchronized(DEVICES)
-					{	if(DEVICES.add(d)) d.reloadTree();
+					{	if(DEVICES.add(d));// d.reloadTree();
 					}
 				}
 				catch(InvalidXGAddressException e)
@@ -102,7 +100,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		if(DEVICES.remove(dev))
 		{	dev.exit();
 			dev.getConfig().removeNode();
-			dev.reloadTree();
+//			dev.reloadTree();
 			LOG.info(dev + " removed");
 		}
 		else LOG.info(dev + " not found");
@@ -129,32 +127,29 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	private final XMLNode parameterTables;
 	private final XMLNode defaultsTables;
 	private final XGAddressableSet<XGTemplate> templates = new XGAddressableSet<>();
-	private final XGAddressableSet<XGModule> structure;
-	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();
-	private final XGAddressableSet<XGOpcode> opcodes = new XGAddressableSet<>();
-	private final XGAddressableSet<XGBulkDump> bulks = new XGAddressableSet<>();
+
+	private final XGAddressableSet<XGModuleType> moduleTypes = new XGAddressableSet<>();//Prototypen (inkl. XGAddress bulks); initialisiert auch XGOpcodes
+	private final XGAddressableSet<XGOpcode> opcodes = new XGAddressableSet<>();//Prototypen
+
+	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();//Instanzen
+	private final XGValueStore values;
 
 	private int info1, info2;
 	private final XMLNode files;
 	private XGSysexFile defaultFile;
 	private XGMidi midi;
-	private final XGValueStore values;
 	private int sysexID;
 	private XGWindow childWindow;
 
 	private XGDevice()
-	{	this.defaultFileName = new StringBuffer("default.syx");
+	{	this.defaultFileName = new StringBuffer(DEF_SYXFILENAME);
 		this.files = new XMLNode("files");
 		this.name = new StringBuffer("XG");
 		this.parameterTables = XGParameter.init(this);
 		this.defaultsTables = XGDefaults.init(this);
 		XGTemplate.init(this);
 		XGTable.init(this);
-//		XGModule.init(this);
-//		XGBulkDump.init(this);
-//		XGOpcode.init(this);
-		this.structure = XGModule.init(this);
-		this.values = new XGValueStore(this);
+		this.values = null;
 	}
 
 	public XGDevice(XMLNode cfg) throws InvalidXGAddressException
@@ -164,14 +159,14 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
 			this.midi = new XGMidi(this);
 			this.files = this.config.getChildNodeOrNew(TAG_FILES);
-			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, HOMEPATH.resolve("default.syx").toString());
+			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, HOMEPATH.resolve(DEF_SYXFILENAME).toString());
 			this.configure();
 		}
 		else
 		{	this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
 			this.midi = new XGMidi(this);
 			this.files = this.config.getChildNodeOrNew(TAG_FILES);
-			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, HOMEPATH.resolve("default.syx").toString());
+			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, HOMEPATH.resolve(DEF_SYXFILENAME).toString());
 		}
 		this.sysex.setContent(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
 		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
@@ -180,10 +175,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		this.defaultsTables = XGDefaults.init(this);
 		XGTemplate.init(this);
 		XGTable.init(this);
-//		XGModule.init(this);
-//		XGBulkDump.init(this);
-//		XGOpcode.init(this);
-		this.structure = XGModule.init(this);
+		this.initStructure();
 		this.values = new XGValueStore(this);
 
 		try
@@ -195,6 +187,37 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		{	LOG.severe(e.getMessage());
 		}
 		LOG.info("device initialized: " + this);
+	}
+
+	private void initStructure()
+	{	
+		File file;
+		try
+		{	file = this.getResourceFile(XML_STRUCTURE);
+		}
+		catch(FileNotFoundException e)
+		{	LOG.warning(e.getMessage());
+			return;
+		}
+		XMLNode xml = XMLNode.parse(file);
+		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
+			this.getModuleTypes().add(new XGModuleType(this, n));
+
+		LOG.info(this.getModuleTypes().size() + " modules initialized for " + this);
+	}
+
+	private void initInstances()
+	{	for(XGModuleType mt : this.moduleTypes)
+		{	for(int m : mt.getAddress().getMid())
+			{	try
+				{	XGModule mi = new XGModule(mt, m);
+					this.modules.add(mi);
+				}
+				catch(InvalidXGAddressException e)
+				{	LOG.warning(e.getMessage());
+				}
+			}
+		}
 	}
 
 	public void exit()
@@ -232,8 +255,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.values;
 	}
 
-	public XGAddressableSet<XGModule> getStructure()
-	{	return this.structure;
+	public XGAddressableSet<XGModuleType> getModuleTypes()
+	{	return moduleTypes;
 	}
 
 	public XGAddressableSet<XGTemplate> getTemplates()
@@ -361,10 +384,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	}
 
-	@Override public XGAddressableSet<XGBulkDump> getBulks()
-	{	return this.bulks;
-	}
-
 	public XGMessenger getMidi()
 	{	return this.midi;
 	}
@@ -389,10 +408,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	@Override public XMLNode getConfig()
 	{	return this.config;
-	}
-
-	@Override public TreeNode getParent()
-	{	return JXG.getApp();
 	}
 
 	@Override public boolean isSelected()
@@ -479,23 +494,21 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		return root;
 	}
 
-	@Override public void setTreeComponent(XGTree t)
-	{	//this.tree = t;
-	}
-
-	@Override public XGTree getTreeComponent()
-	{	return this.getRootNode().getTreeComponent();
-	}
-
 	@Override public void nodeFocussed(boolean b)
 	{
 	}
 
 	@Override public Component getSourceComponent()
-	{	return this.getNodeComponent();
+	{	return null;
 	}
 
 	@Override public String getNodeText()
 	{	return this.name.toString() + "." + this.sysexID;
+	}
+
+	@Override public XGAddressableSet<XGAddress> getBulks()
+	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
+		for(XGModule mi : this.modules) set.addAll(mi.getBulks());
+		return set;
 	}
 }

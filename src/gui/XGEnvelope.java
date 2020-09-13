@@ -1,7 +1,7 @@
 package gui;
 
 import adress.XGMemberNotFoundException;
-import module.XGModule;
+import module.XGModuleType;
 import parm.XGTable;
 import xml.XMLNode;
 
@@ -14,7 +14,7 @@ public class XGEnvelope extends XGComponent
 	private int minX = 127, maxX = 0, minY = 127, maxY = 0, origin;
 	private XGTable tableX = null, tableY = null;
 
-	public XGEnvelope(XMLNode n, XGModule mod) throws XGMemberNotFoundException
+	public XGEnvelope(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		for(XMLNode p : n.getChildNodes(TAG_POINT))
 		{	this.add("point", new XGEnvelopePoint(this, p, mod));//TODE: XGComponent überschreibt add(Component c); vielleicht mal ändern...

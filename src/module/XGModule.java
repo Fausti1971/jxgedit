@@ -1,20 +1,29 @@
 package module;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
 import java.util.LinkedHashSet;
 import java.util.Set;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import adress.InvalidXGAddressException;
 import adress.XGAddress;
+import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.XGLoggable;
 import device.XGDevice;
-import gui.XGTemplate;
-import msg.XGBulkDump;
-import parm.XGTable;
-import xml.XMLNode;
+import gui.XGComponent;
+import gui.XGTreeNode;
+import gui.XGWindow;
+import gui.XGWindowSource;
+import msg.XGBulkDumper;
+import parm.XGOpcode;
+import value.XGValue;
+import value.XGValueChangeListener;
 
-public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable
+public class XGModule implements XGAddressable, XGModuleConstants, XGValueChangeListener, XGLoggable, XGTreeNode, XGWindowSource, XGBulkDumper
 {	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 	static
@@ -25,80 +34,138 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable
 		ACTIONS.add(ACTION_SAVEFILE);
 	}
 
-	public static XGAddressableSet<XGModule> init(XGDevice dev)
-	{	XGAddressableSet<XGModule> set = new XGAddressableSet<>();
-		File file;
-		try
-		{	file = dev.getResourceFile(XML_STRUCTURE);
+/***************************************************************************************************************/
+
+	private final Set<XGValue> infoValues = new LinkedHashSet<>();
+	private final XGAddress address;
+	private final XGModuleType type;
+	private XGWindow window;
+	private boolean selected;
+
+	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException
+	{	this.type = mt;
+		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
+		for(XGOpcode opc : mt.getOpcodes())
+		{	
 		}
-		catch(FileNotFoundException e)
-		{	LOG.warning(e.getMessage());
-			return set;
+		this.registerValueListener();
+	}
+
+	void registerValueListener()
+	{	for(XGAddress adr : this.type.getInfoAddresses())
+		{	XGAddress a;
+			try
+			{	a = adr.complement(this.address);
+				XGValue v = this.type.getDevice().getValues().get(a);
+				if(v != null)
+				{	this.infoValues.add(v);
+					v.addValueListener(this);
+				}
+			}
+			catch(InvalidXGAddressException e)
+			{	LOG.warning(e.getMessage());
+			}
 		}
-		XMLNode xml = XMLNode.parse(file);
-		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
-		{	XGModule mod = new XGModule(dev, n);
-			dev.getStructure().add(mod);
+	}
+
+	public XGModuleType getType()
+	{	return this.type;
+	}
+
+	public String getTranslatedID()
+	{	try
+		{	return this.type.idTranslator.getByIndex(this.address.getMid().getValue()).getName();
 		}
-		LOG.info(dev.getStructure().size() + " modules initialized for " + dev);
+		catch(InvalidXGAddressException | NullPointerException e)
+		{	return this.address.getMid().toString();
+		}
+	}
+
+	private void editWindow()
+	{	if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, false, this.type.getDevice() + "/" + this + " " + this.getTranslatedID());
+		else this.window.toFront();
+	}
+
+	@Override public Set<String> getContexts()
+	{	return ACTIONS;
+	}
+
+	@Override public void actionPerformed(ActionEvent e)
+	{	XGDevice dev = this.type.getDevice();
+		switch(e.getActionCommand())
+		{	case ACTION_EDIT:		this.editWindow(); break;
+			case ACTION_REQUEST:	new Thread(() -> {	this.transmitAll(dev.getMidi(), dev.getValues());}).start(); break;
+			case ACTION_TRANSMIT:	new Thread(() -> {	this.transmitAll(dev.getValues(), dev.getMidi());}).start(); break;
+			default:				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
+		}
+	}
+
+	@Override public String toString()
+	{	return this.type.getName() + this.getTranslatedID();
+	}
+
+	@Override public void setSelected(boolean s)
+	{	this.selected = s;
+	}
+
+	@Override public boolean isSelected()
+	{	return this.selected;
+	}
+
+	@Override public void nodeFocussed(boolean b)
+	{
+	}
+
+	@Override public void windowOpened(WindowEvent e)
+	{	this.setSelected(true);
+	}
+
+	@Override public void windowClosed(WindowEvent e)
+	{	this.setSelected(false);
+		this.setChildWindow(null);
+	}
+
+	@Override public XGWindow getChildWindow()
+	{	return this.window;
+	}
+
+	@Override public void setChildWindow(XGWindow win)
+	{	this.window = win;
+	}
+
+	@Override public JComponent getChildWindowContent()
+	{	return XGComponent.init(this.type);
+	}
+
+	@Override public XGAddressableSet<XGAddress> getBulks()
+	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
+		for(XGAddress bd : this.type.getBulks())
+		{	try
+			{	set.add(bd.getAddress().complement(this.address));
+			}
+			catch(InvalidXGAddressException e)
+			{	LOG.warning(e.getMessage());
+			}
+		}
 		return set;
 	}
 
-/********************************************************************************************************************/
-
-	private final XGDevice device;
-	private final Set<XGAddress> infoAddresses = new LinkedHashSet<>();
-	protected final String name;
-	protected final XGAddress address;
-	private final XGTemplate guiTemplate;
-	protected final XGTable idTranslator;
-	private final XMLNode config;
-	private final XGAddressableSet<XGBulkDump> bulks;
-
-	protected XGModule(XGDevice dev, XMLNode cfg)//für Prototypen
-	{	this.config = cfg;
-		this.device = dev;
-		this.address = new XGAddress(cfg.getStringAttribute(ATTR_ADDRESS));
-		this.name = cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME);
-		this.idTranslator = this.device.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
-
-		XGAddressableSet<XGTemplate> tSet = this.device.getTemplates().getAllIncluded(this.address);
-		if(tSet.size() != 1) throw new RuntimeException("found " + tSet.size() + " templates for address " + this.address);
-		this.guiTemplate = tSet.iterator().next();
-
-		this.getInfoAddresses().add(new XGAddress(cfg.getStringAttribute(ATTR_INFO1)));
-		this.getInfoAddresses().add(new XGAddress(cfg.getStringAttribute(ATTR_INFO2)));
-		this.getInfoAddresses().add(new XGAddress(cfg.getStringAttribute(ATTR_INFO3)));
-		 
-		this.bulks = XGBulkDump.init(this);
+	@Override public void contentChanged(XGValue v)
+	{
 	}
 
-	public XGDevice getDevice()
-	{	return this.device;
-	}
-
-	public XGTemplate getGuiTemplate()
-	{	return this.guiTemplate;
+	@Override public String getNodeText()
+	{	String s = this.getTranslatedID() + ":\t";
+		for(XGValue v : this.infoValues) s += "\t" + v;
+		return s;
 	}
 
 	@Override public XGAddress getAddress()
 	{	return this.address;
 	}
 
-	public Set<XGAddress> getInfoAddresses()
-	{
-		return infoAddresses;
+	@Override public Component getSourceComponent()
+	{	return null;
 	}
 
-	public XGAddressableSet<XGBulkDump> getBulks()
-	{	return this.bulks;
-	}
-
-	public XMLNode getConfig()
-	{	return this.config;
-	}
-
-	public String getName()
-	{	return this.name;
-	}
 }
