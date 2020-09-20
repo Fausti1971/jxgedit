@@ -21,19 +21,9 @@
 			<locationURI>PARENT-1-PROJECT_LOC/CM4J</locationURI>
 		</link>
 		<link>
-			<name>rsc/MU80</name>
+			<name>JXG</name>
 			<type>2</type>
-			<location>/Users/thomas/JXG/MU80</location>
-		</link>
-		<link>
-			<name>rsc/XG</name>
-			<type>2</type>
-			<location>/Users/thomas/JXG/XG</location>
-		</link>
-		<link>
-			<name>rsc/xsd</name>
-			<type>2</type>
-			<location>/Users/thomas/JXG/xsd</location>
+			<location>/Users/thomas/JXG</location>
 		</link>
 	</linkedResources>
 </projectDescription>

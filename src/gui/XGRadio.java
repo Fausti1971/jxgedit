@@ -9,7 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JRadioButton;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
-import module.XGModuleType;
+import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGTable;
@@ -33,11 +33,11 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 	private final XGAddress address;
 	private final int orientation;
 
-	public XGRadio(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
+	public XGRadio(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.orientation = ORIENTATION.getOrDefault(n.getStringAttribute(ATTR_ORIENTATION), BoxLayout.X_AXIS);
-		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
+		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
 		this.value.addValueListener(this);
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());

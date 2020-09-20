@@ -4,12 +4,14 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import application.XGLoggable;
 import application.XGStrings;
 import device.XGDevice;
 import module.XGModuleType;
+import value.XGValue;
 import xml.XMLNode;
 
 public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
@@ -20,46 +22,48 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	private final XGModuleType moduleType;
 	private final XGAddress address, parameterSelectorAddress, defaultSelectorAddress;
 	private final ValueDataType dataType;
-	private final Map<Integer, XGParameter> parameters = new HashMap<>();
-	private final Map<Integer, Integer> defaults;
+	private final XGParameterTable parameters;
+	private final XGDefaultsTable defaults;
 	private final Map<String, Set<String>> actions = new HashMap<>();
 	private final boolean isMutable, hasMutableDefaults;
 
-	public XGOpcode(XGModuleType mod, XGAddress blk, XMLNode n)//für init via xml, initialisiert für alle addresses ein XGValue
+	public XGOpcode(XGModuleType mod, XGAddress blk, XMLNode n) throws InvalidXGAddressException
 	{	this.moduleType = mod;
 		XGDevice dev = mod.getDevice();
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString(), blk.getAddress());
+		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString()).complement(blk.getAddress());
 		this.dataType = ValueDataType.valueOf(n.getStringAttributeOrDefault(ATTR_DATATYPE, DEF_DATATYPE.name()));
-		this.isMutable = MUTABLE.equals(n.getStringAttribute(ATTR_TYPE));
 
+		this.isMutable = MUTABLE.equals(n.getStringAttribute(ATTR_TYPE));
 		if(this.isMutable)
 		{	if(!n.hasAttribute(ATTR_PARAMETERSELECTOR)) throw new RuntimeException("opcode " + this.address + " is " + n.getStringAttribute(ATTR_TYPE) + " but has not declared " + ATTR_PARAMETERSELECTOR);
 			if(!n.hasAttribute(ATTR_PARAMETERS)) throw new RuntimeException("opcode " + this.address + " is " + n.getStringAttribute(ATTR_TYPE) + " but has not declared " + ATTR_PARAMETERS);
 
 			this.parameterSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_PARAMETERSELECTOR));
-			String tabName = n.getStringAttribute(ATTR_PARAMETERS);
-			XMLNode t = dev.getParameterTables().getChildNodeWithName(TAG_PARAMETERTABLE, tabName);
-			for(XMLNode p : t.getChildNodes(TAG_PARAMETER))
-			{
-				int v = p.getValueAttribute(ATTR_VALUE, DEF_SELECTORVALUE);
-				XGParameter parm = new XGParameter(dev, p);
-				this.parameters.put(v, parm);
-			}
+			String parTabName = n.getStringAttribute(ATTR_PARAMETERS);
+			this.parameters = dev.getParameterTables().get(parTabName);
+			if(this.parameters == null) throw new RuntimeException(ATTR_PARAMETERS + " " + parTabName + " not found!");
 		}
 		else
 		{	this.parameterSelectorAddress = null;
+			this.parameters = new XGParameterTable(dev);
 			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(dev, n));
 		}
 
 		this.hasMutableDefaults = n.hasAttribute(ATTR_DEFAULTS) && n.hasAttribute(ATTR_DEFAULTSELECTOR);
 		if(this.hasMutableDefaults)
 		{	this.defaultSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_DEFAULTSELECTOR));
+			String defTabName = n.getStringAttribute(ATTR_DEFAULTS);
+			this.defaults = dev.getDefaultsTables().get(defTabName);
+			if(this.defaults == null) throw new RuntimeException(ATTR_DEFAULTS + " " + defTabName + " not found!");
 		}
-		else this.defaultSelectorAddress = null;
-		this.defaults = XGDefaults.getDefaultsTable(dev, n);
+		else
+		{	this.defaultSelectorAddress = null;
+			this.defaults = new XGDefaultsTable(n);
+			this.defaults.put(DEF_SELECTORVALUE, n.getValueAttribute(ATTR_DEFAULT, 0));
+		}
 
 
-//TODO: Krücke, XACTION_AFTER_EDIT="send" gehört normalerweise in die module.xml
+//TODO: Krücke, XACTION_AFTER_EDIT="send" gehört normalerweise in die structure.xml
 		Set<String> set;
 		if((set = this.actions.get(XACTION_AFTER_EDIT)) == null)
 		{	set = new LinkedHashSet<>();
@@ -71,10 +75,15 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 		{	if(n.hasAttribute(s))
 				this.actions.put(s, XGStrings.splitCSV(n.getStringAttribute(s).toString()));
 		}
+		LOG.info(this + " initialized");
 	}
 
 	public boolean isMutable()
 	{	return isMutable;
+	}
+
+	public boolean hasMutableDefaults()
+	{	return this.hasMutableDefaults;
 	}
 
 	public ValueDataType getDataType()
@@ -85,10 +94,6 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	{	return this.address;
 	}
 
-	public Map<Integer, XGParameter> getParameters()
-	{	return this.parameters;
-	}
-
 	public XGAddress getParameterSelectorAddress()
 	{	return this.parameterSelectorAddress;
 	}
@@ -97,12 +102,15 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	{	return this.defaultSelectorAddress;
 	}
 
-	public Map<Integer, Integer> getDefaults()
-	{	return this.defaults;
+	public XGParameter getParameter(XGValue selector)
+	{	if(this.isMutable) return this.parameters.getOrDefault(selector.getValue(), NO_PARAMETER);
+		else return this.parameters.get(DEF_SELECTORVALUE);
 	}
 
-	public boolean hasMutableDefaults()
-	{	return this.hasMutableDefaults;
+	public int getDefaultValue(XGValue selector)
+	{	int val = selector.getValue();
+		if(this.hasMutableDefaults && this.defaults.containsKey(val)) return this.defaults.get(val);
+		else return this.defaults.getOrDefault(DEF_SELECTORVALUE, 0);
 	}
 
 	public XGDevice getDevice()
@@ -111,5 +119,9 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 	public Map<String, Set<String>> getActions()
 	{	return this.actions;
+	}
+
+	@Override public String toString()
+	{	return this.getClass().getSimpleName() + this.address;
 	}
 }

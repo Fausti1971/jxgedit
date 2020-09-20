@@ -117,7 +117,7 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
  * @throws InvalidXGAddressException 
   */
 	public XGAddressField intersection(XGAddressField f) throws InvalidXGAddressException
-	{	//if(this.min > f.max || this.max < f.min) throw new InvalidXGAddressException("no intersection: " + this + "/" + f);
+	{	if(this.min > f.max || this.max < f.min) throw new InvalidXGAddressException("no intersection: " + this + "/" + f);
 		return new XGAddressField(Math.max(this.min, f.min), Math.min(this.max, f.max), this.mask);
 	}
 

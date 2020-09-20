@@ -1,6 +1,5 @@
 package msg;
 
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -172,11 +171,5 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	{
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override public Component getSourceComponent()
-	{
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

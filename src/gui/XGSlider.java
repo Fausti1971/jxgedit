@@ -17,7 +17,7 @@ import javax.swing.JComponent;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
-import module.XGModuleType;
+import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
@@ -37,11 +37,11 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	private final XGSliderBar bar;
 	private final XGValueLabel label;
 
-	public XGSlider(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
+	public XGSlider(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
+		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
 
 		if(this.isEnabled())
 		{	this.setToolTipText(null);
@@ -154,8 +154,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		}
 
 		@Override public void mouseClicked(MouseEvent e)
-		{	boolean changed = false;
-			if(e.getButton() != MouseEvent.BUTTON1) return;
+		{	if(e.getButton() != MouseEvent.BUTTON1) return;
 			if(this.getX() + this.barWidth < e.getX()) this.value.addIndex(1);
 			else this.value.addIndex(-1);
 			e.consume();

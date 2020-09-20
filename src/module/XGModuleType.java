@@ -1,15 +1,19 @@
 package module;
 
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.JOptionPane;
+import javax.swing.tree.TreeNode;
+import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.XGLoggable;
 import device.XGDevice;
 import gui.XGTemplate;
+import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
 import msg.XGBulkDumper;
@@ -51,19 +55,25 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		this.name = cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME);
 		this.idTranslator = this.device.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
 
-		XGAddressableSet<XGTemplate> tSet = this.device.getTemplates().getAllIncluded(this.address);
+		XGAddressableSet<XGTemplate> tSet = this.device.getTemplates().getAllIncluding(this.address);
 		if(tSet.size() > 1) throw new RuntimeException("found " + tSet.size() + " templates for address " + this.address);
-		this.guiTemplate = tSet.iterator().next();
+		if(tSet.size() == 1) this.guiTemplate = tSet.iterator().next();
+		else this.guiTemplate = null;
 
-		this.getInfoAddresses().add(new XGAddress(cfg.getStringAttribute(ATTR_INFO1)));
-		this.getInfoAddresses().add(new XGAddress(cfg.getStringAttribute(ATTR_INFO2)));
-		this.getInfoAddresses().add(new XGAddress(cfg.getStringAttribute(ATTR_INFO3)));
+		if(cfg.hasAttribute(ATTR_INFO1)) this.infoAddresses.add(new XGAddress(cfg.getStringAttribute(ATTR_INFO1)));
+		if(cfg.hasAttribute(ATTR_INFO2)) this.infoAddresses.add(new XGAddress(cfg.getStringAttribute(ATTR_INFO2)));
+		if(cfg.hasAttribute(ATTR_INFO3)) this.infoAddresses.add(new XGAddress(cfg.getStringAttribute(ATTR_INFO3)));
 		 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))
 		{	XGAddress adr = new XGAddress(x.getStringAttribute(ATTR_ADDRESS), this.address);
 			this.bulks.add(adr);
 			for(XMLNode o : x.getChildNodes(TAG_OPCODE))
-			{	dev.getOpcodes().add(new XGOpcode(this, adr, o));
+			{	try
+				{	dev.getOpcodes().add(new XGOpcode(this, adr, o));
+				}
+				catch(InvalidXGAddressException e)
+				{	LOG.severe(e.getMessage());
+				}
 			}
 		}
 	}
@@ -94,6 +104,10 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 	public XGAddressableSet<XGOpcode> getOpcodes()
 	{	return this.device.getOpcodes().getAllIncluded(this.address);
+	}
+
+	public XGAddressableSet<XGAddress> getBulkAdresses()
+	{	return this.bulks;
 	}
 
 	@Override public Set<String> getContexts()
@@ -129,6 +143,24 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()
-	{	return this.bulks;
+	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
+		for(XGModule m : this.getModules()) set.addAll(m.getBulks());
+		return set;
+	}
+
+	@Override public TreeNode getParent()
+	{	return this.device;
+	}
+
+	@Override public XGTree getTreeComponent()
+	{	return this.getRootNode().getTreeComponent();
+	}
+
+	@Override public void setTreeComponent(XGTree t)
+	{
+	}
+
+	@Override public Collection<? extends TreeNode> getChildNodes()
+	{	return this.getModules();
 	}
 }

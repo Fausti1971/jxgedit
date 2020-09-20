@@ -118,7 +118,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	{	XGAddressableSet<T> set = new XGAddressableSet<>();
 		for(T i : this.values()) if(adr.contains(i.getAddress())) set.add(i);
 		this.addListener(set);
-		LOG.info(set.size() + " " + this.memberName + "(s) found included in address: " + adr);
+//		LOG.info(set.size() + " " + this.memberName + "(s) found included in address: " + adr);
 		return set;
 	}
 
@@ -131,7 +131,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	{	XGAddressableSet<T> set = new XGAddressableSet<>();
 		for(T i : this.values()) if(i.getAddress().contains(adr)) set.add(i);
 		this.addListener(set);
-		LOG.info(set.size() + " " + this.memberName + "(s) found containing address: " + adr);
+//		LOG.info(set.size() + " " + this.memberName + "(s) found containing address: " + adr);
 		return set;
 	}
 

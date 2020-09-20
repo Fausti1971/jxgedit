@@ -17,7 +17,7 @@ import javax.swing.JComponent;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
-import module.XGModuleType;
+import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
@@ -37,13 +37,13 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 	private final XGValue loValue, hiValue;
 	private final XGAddress loAddress, hiAddress;
 
-	public XGRange(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
+	public XGRange(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
 		this.loAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_LO), mod.getAddress());
 		this.hiAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_HI), mod.getAddress());
-		this.loValue = mod.getDevice().getValues().getFirstIncluded(this.loAddress);
-		this.hiValue = mod.getDevice().getValues().getFirstIncluded(this.hiAddress);
+		this.loValue = mod.getType().getDevice().getValues().getFirstIncluded(this.loAddress);
+		this.hiValue = mod.getType().getDevice().getValues().getFirstIncluded(this.hiAddress);
 		this.loValue.addValueListener(this);
 		this.hiValue.addValueListener(this);
 

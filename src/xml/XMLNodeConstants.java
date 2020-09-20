@@ -15,7 +15,7 @@ public interface XMLNodeConstants
 		XML_PARAMETER = "parameter.xml",
 		XML_DEFAULT = "default.xml",
 		XML_TABLES = "tables.xml",
-		XML_TEMPLATES = "template.xml";
+		XML_TEMPLATE = "template.xml";
 
 	static final String
 		TAG_WIN = "window",
@@ -63,11 +63,14 @@ public interface XMLNodeConstants
 
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",
-		TAG_PARAMETER = "parameter",
+
 		TAG_PARAMETERTABLES = "parameterTables",
 		TAG_PARAMETERTABLE = "parameterTable",
+		TAG_PARAMETER = "parameter",
+
 		TAG_DEFAULTTABLES = "defaultTables",
 		TAG_DEFAULTTABLE = "defaultTable",
+		TAG_DEFAULT = "default",
 
 		ATTR_TYPE = "type",
 		ATTR_PARAMETERSELECTOR ="parameterSelector",

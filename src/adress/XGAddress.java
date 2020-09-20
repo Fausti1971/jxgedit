@@ -100,8 +100,8 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 /**
  * komplettiert this mittels adr, indem variable Fields durch diese aus adr möglichst konkretisiert werden 
  * @param adr Adresse mittels derer this konkretisiert werden soll
- * @return  die erfolgreich komplettierte Adresse
- * @throws InvalidXGAddressException 
+ * @return  die erfolgreich konktretisierte Adresse
+ * @throws InvalidXGAddressException falls keine Schnittmenge ermittelt werden kann
  */
 	public XGAddress complement(XGAddress adr) throws InvalidXGAddressException
 	{	//		if(this.isFixed()) return this;
@@ -123,6 +123,15 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 	{	if(this.hi.contains(adr.hi) && this.mid.contains(adr.mid) && this.lo.contains(adr.lo)) return true;
 		return false;
 	}
+
+/**
+ * Erzeugt durch die Verwendung der min-Werte aller Felder aus der Adress eine valide ValueAddress, bei der alle Felder fix sind.
+ * @return neue valide ValueAddress
+ */
+	public XGAddress toValueAddress()
+	{	return new XGAddress(this.hi.getMin(), this.mid.getMin(), this.lo.getMin());
+	}
+
 
 /**
  * testet alle Felder, inklusive ihrer Validität auf Gleichheit

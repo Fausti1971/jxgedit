@@ -38,7 +38,7 @@ public interface XGStrings
 	static int parseValue(String s, int def)
 	{	if(s == null) return def;
 		int i = 0;
-		for(String n : s.split("/"))
+		for(String n : s.split("\\."))
 		{	i <<= 7;
 			i |= XGStrings.parseIntOrDefault(n, def);
 		}

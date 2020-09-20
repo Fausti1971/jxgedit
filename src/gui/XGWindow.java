@@ -1,13 +1,12 @@
 package gui;
 
-import java.awt.Point;
 import java.awt.Toolkit;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JScrollPane;
-import javax.swing.SwingUtilities;
 import application.ConfigurationConstants;
+import application.JXG;
 
 public class XGWindow extends JDialog implements GuiConstants, ConfigurationConstants
 {	static
@@ -31,7 +30,7 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 
 	protected XGWindow()	//nur für Root-Window
 	{	this.source = null;
-		this.rootComponent = new XGTree(new XGMainTreeModel(), true);
+		this.rootComponent = new XGTree(JXG.getApp(), true);
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
 	}
@@ -48,9 +47,9 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 //		int x = (int)own.getLocation().getX() + own.getWidth();
 //		int y = (int)own.getLocation().getY();
 //		this.setLocation(x, y);
-		Point p = new Point();
-		SwingUtilities.convertPointToScreen(p, src.getSourceComponent());
-		this.setLocation(p);
+//		Point p = new Point();
+//		SwingUtilities.convertPointToScreen(p, src.getSourceComponent());
+//		this.setLocation(XGComponent.dragEvent.getLocationOnScreen());
 
 //		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
 		this.pack();

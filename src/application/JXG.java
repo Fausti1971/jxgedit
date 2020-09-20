@@ -3,9 +3,11 @@ package application;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.JOptionPane;
+import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
 import adress.InvalidXGAddressException;
 import device.XGDevice;
@@ -68,7 +70,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	public JXG()
 	{	
 //		this.xsdPath = rscPath.resolve("xsd");
-		HOMEPATH.toFile().mkdirs();
+		CONFIGPATH.toFile().mkdirs();//TODO: der Ordner soll nur angelegt werden, wenn CONFIGPATH = HOMEPATH
 
 		File f = CONFIGFILEPATH.toFile();
 		if(f.exists()) this.config = XMLNode.parse(f);
@@ -103,7 +105,7 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 		{	dev = new XGDevice(null);
 			if(XGDevice.getDevices().add(dev))
 			{	this.config.addChildNode(dev.getConfig());
-//				dev.reloadTree();
+				dev.reloadTree();
 			};
 		}
 		catch(InvalidXGAddressException e)
@@ -134,15 +136,9 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	@Override public void actionPerformed(ActionEvent e)
 	{	if(e == null || e.getActionCommand() == null) return;
 		switch(e.getActionCommand())
-		{	case ACTION_CONFIGURE:
-				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
-				break;
-			case ACTION_ADDNEWDEVICE:
-				this.addDevice();
-				break;
-			case ACTION_REFRESHDEVICELIST:
-				XGDevice.init(this.config);
-				break;
+		{	case ACTION_CONFIGURE:		JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand()); break;
+			case ACTION_ADDNEWDEVICE:	this.addDevice(); break;
+			case ACTION_REFRESHDEVICELIST:	XGDevice.init(this.config); break;
 			case ACTION_INFO:
 			default:
 				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
@@ -155,5 +151,21 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 
 	@Override public String getNodeText()
 	{	return APPNAME + " (" + XGDevice.getDevices().size() + ")";
+	}
+
+	@Override public TreeNode getParent()
+	{	return null;
+	}
+
+	@Override public XGTree getTreeComponent()
+	{	return this.tree;
+	}
+
+	@Override public void setTreeComponent(XGTree t)
+	{	this.tree = t;
+	}
+
+	@Override public Collection<? extends TreeNode> getChildNodes()
+	{	return XGDevice.getDevices();
 	}
 }

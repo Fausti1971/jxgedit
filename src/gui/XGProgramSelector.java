@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
@@ -14,7 +13,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
-import module.XGModuleType;
+import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGTableEntry;
@@ -33,14 +32,14 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 	private XGWindow window;
 	private final JButton inc = new JButton(">"), dec = new JButton("<"), select = new JButton();
 
-	public XGProgramSelector(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
+	public XGProgramSelector(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{
 		super(n, mod);
 		BorderLayout layout = new BorderLayout();
 		this.setLayout(layout);
 		
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
+		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
 		this.value.addParameterListener(this);
 		this.value.addValueListener(this);
 		this.setName(this.value.getParameter().getName());
@@ -118,9 +117,5 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 		Object o = p.getLastPathComponent();
 		if(o == null) return;
 		if(o instanceof XGTableEntry) this.value.editEntry((XGTableEntry)o);
-	}
-
-	@Override public Component getSourceComponent()
-	{	return this;
 	}
 }

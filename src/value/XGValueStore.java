@@ -20,6 +20,11 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	{	this.device = dev;
 	}
 
+	@Override public synchronized XGValue get(XGAddress adr)
+	{	if(adr.isFixed()) return super.get(adr);
+		else throw new RuntimeException(adr + " is not a valid value-address!");
+	}
+
 	@Override public XGDevice getDevice()
 	{	return this.device;
 	}

@@ -1,12 +1,14 @@
 package module;
 
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressField;
@@ -15,16 +17,16 @@ import adress.XGAddressableSet;
 import application.XGLoggable;
 import device.XGDevice;
 import gui.XGComponent;
+import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import msg.XGBulkDumper;
-import parm.XGOpcode;
 import value.XGValue;
-import value.XGValueChangeListener;
 
-public class XGModule implements XGAddressable, XGModuleConstants, XGValueChangeListener, XGLoggable, XGTreeNode, XGWindowSource, XGBulkDumper
-{	static final Set<String> ACTIONS = new LinkedHashSet<>();
+public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, XGTreeNode, XGWindowSource, XGBulkDumper
+{
+	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 	static
 	{	ACTIONS.add(ACTION_EDIT);
@@ -45,22 +47,12 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGValueChange
 	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
-		for(XGOpcode opc : mt.getOpcodes())
-		{	
-		}
-		this.registerValueListener();
-	}
 
-	void registerValueListener()
-	{	for(XGAddress adr : this.type.getInfoAddresses())
-		{	XGAddress a;
-			try
-			{	a = adr.complement(this.address);
-				XGValue v = this.type.getDevice().getValues().get(a);
-				if(v != null)
-				{	this.infoValues.add(v);
-					v.addValueListener(this);
-				}
+		for(XGAddress adr : this.type.getInfoAddresses())
+		{	try
+			{	XGValue v = this.type.getDevice().getValues().get(adr.complement(this.address));
+				this.infoValues.add(v);
+				v.addValueListener((XGValue val)->{this.repaintNode();});
 			}
 			catch(InvalidXGAddressException e)
 			{	LOG.warning(e.getMessage());
@@ -70,6 +62,14 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGValueChange
 
 	public XGModuleType getType()
 	{	return this.type;
+	}
+
+	public boolean isSingleton()
+	{	return this.type.getAddress().getMid().isFix();
+	}
+
+	public XGAddressableSet<XGValue> getValues()
+	{	return this.type.getDevice().getValues().getAllIncluded(this.address);
 	}
 
 	public String getTranslatedID()
@@ -82,7 +82,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGValueChange
 	}
 
 	private void editWindow()
-	{	if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, false, this.type.getDevice() + "/" + this + " " + this.getTranslatedID());
+	{	if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, false, this.type.getDevice() + "/" + this);
 		else this.window.toFront();
 	}
 
@@ -101,7 +101,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGValueChange
 	}
 
 	@Override public String toString()
-	{	return this.type.getName() + this.getTranslatedID();
+	{	return this.type.getName() + " " + this.getTranslatedID();
 	}
 
 	@Override public void setSelected(boolean s)
@@ -134,12 +134,12 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGValueChange
 	}
 
 	@Override public JComponent getChildWindowContent()
-	{	return XGComponent.init(this.type);
+	{	return XGComponent.init(this);
 	}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()
 	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
-		for(XGAddress bd : this.type.getBulks())
+		for(XGAddress bd : this.type.getBulkAdresses())
 		{	try
 			{	set.add(bd.getAddress().complement(this.address));
 			}
@@ -150,12 +150,10 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGValueChange
 		return set;
 	}
 
-	@Override public void contentChanged(XGValue v)
-	{
-	}
-
 	@Override public String getNodeText()
-	{	String s = this.getTranslatedID() + ":\t";
+	{	String s;
+		if(this.isSingleton()) s = this.type.getName();
+		else s = this.getTranslatedID() + ":";
 		for(XGValue v : this.infoValues) s += "\t" + v;
 		return s;
 	}
@@ -164,8 +162,20 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGValueChange
 	{	return this.address;
 	}
 
-	@Override public Component getSourceComponent()
-	{	return null;
+	@Override public TreeNode getParent()
+	{	if(this.isSingleton()) return this.type.getParent();
+		else return this.type;
 	}
 
+	@Override public XGTree getTreeComponent()
+	{	return this.getRootNode().getTreeComponent();
+	}
+
+	@Override public void setTreeComponent(XGTree t)
+	{
+	}
+
+	@Override public Collection<? extends TreeNode> getChildNodes()
+	{	return Collections.emptySet();
+	}
 }

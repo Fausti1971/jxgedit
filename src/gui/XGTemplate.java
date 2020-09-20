@@ -12,7 +12,7 @@ public class XGTemplate implements XGAddressable, XGLoggable, XMLNodeConstants
 {
 	public static void init(XGDevice dev)
 	{	try
-		{	XMLNode x = XMLNode.parse(dev.getResourceFile(XML_TEMPLATES));
+		{	XMLNode x = XMLNode.parse(dev.getResourceFile(XML_TEMPLATE));
 			for(XMLNode t : x.getChildNodes(TAG_FRAME))
 				dev.getTemplates().add(new XGTemplate(t));
 			LOG.info(dev + " has " + dev.getTemplates().size() + " templates");

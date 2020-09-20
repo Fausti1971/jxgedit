@@ -53,6 +53,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 		}
 		catch(XMLStreamException e)
 		{	LOG.severe(e.getMessage() + xml);
+			e.printStackTrace();
 		}
 		return root_node;
 	}

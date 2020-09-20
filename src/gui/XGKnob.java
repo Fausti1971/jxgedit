@@ -16,7 +16,7 @@ import javax.swing.JComponent;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
-import module.XGModuleType;
+import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import value.XGValue;
@@ -37,14 +37,14 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 	private final XGValue value;
 	private final XGAddress address;
 
-	public XGKnob(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
+	public XGKnob(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
+		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
 		this.addMouseListener(this);
 		this.addFocusListener(this);
-		this.value.addParameterListener(this);
+		if(this.value.getOpcode().isMutable()) this.value.addParameterListener(this);
 		this.value.addValueListener(this);
 
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,2,0), 0, 0);
@@ -69,21 +69,12 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	if(p != null)
-		{	this.setName(p.getShortName());
-			this.setToolTipText(p.getName());
-			this.bar.setEnabled(true);
-			this.label.setText(this.value.toString());
-			this.label.setEnabled(true);
-			this.setEnabled(true);
-		}
-		else
-		{	this.setName("n/a");
-			this.setToolTipText("no parameter");
-			this.bar.setEnabled(false);
-			this.label.setEnabled(false);
-			this.setEnabled(false);
-		}
+	{	this.setName(p.getShortName());
+		this.setToolTipText(p.getName());
+		this.label.setText(this.value.toString());
+		this.bar.setEnabled(p.isValid());
+		this.label.setEnabled(p.isValid());
+		this.setEnabled(p.isValid());
 		this.borderize();
 	}
 

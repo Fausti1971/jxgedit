@@ -30,7 +30,7 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 	private final JButton button;
 
 	public XGFileSelector(final StringBuffer path, String title, String button, FileFilter filter)
-	{	if(path == null) this.path = new StringBuffer(JXG.HOMEPATH.toString());
+	{	if(path == null) this.path = new StringBuffer(JXG.CONFIGPATH.toString());
 		else this.path = path;
 		this.text = new JTextField(this.path.toString());
 		this.button = new JButton(button);

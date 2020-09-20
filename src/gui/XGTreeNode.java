@@ -1,5 +1,13 @@
 package gui;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
+import javax.swing.tree.TreePath;
 import application.XGLoggable;
 
 /**
@@ -8,10 +16,23 @@ import application.XGLoggable;
  *
  */
 
-public interface XGTreeNode extends XGContext, XGLoggable
+public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
 {
 
 /*****************************************************************************************************************/
+
+/**
+ * returniert den XGTree, zu dem diese XGTreeNode gehört;
+ * this.tree ist im Normalfall null und nur bei rootNodes gesetzt, deshalb im Regelfall this.getRootNode().getTreeComponent() aufrufen;
+ * @return tree
+ */
+	XGTree getTreeComponent();
+
+/**
+ * setzt den übergebenen XGTree in dieser XGTreeNode; wird standardmäßig bei der XGTree-Konstruktion mittels RootNode in derselben gesetzt;
+ * @param t
+ */
+	void setTreeComponent(XGTree t);
 
 /**
  * übergibt den selected-Status an die XGTreeNode, damit diese darauf reagieren kann; Darstellung und Aktualisierung übernimmt weiterhin der XGTree;
@@ -36,5 +57,52 @@ public interface XGTreeNode extends XGContext, XGLoggable
  * @return text
  */
 	String getNodeText();
+	Collection<? extends TreeNode> getChildNodes();
 
+	default XGTreeNode getRootNode()
+	{	return (XGTreeNode)this.getTreePath().getPathComponent(0);
+	}
+
+	default void repaintNode()
+	{	XGTree t = this.getRootNode().getTreeComponent();
+		((DefaultTreeModel)t.getModel()).nodeChanged(this);
+	}
+
+	default void reloadTree()
+	{	((DefaultTreeModel) this.getRootNode().getTreeComponent().getModel()).reload(this.getParent());
+	}
+
+	default public TreePath getTreePath()
+	{	List<TreeNode> array = new ArrayList<>();
+		TreeNode n = this;
+		while(n != null)
+		{	array.add(0, n);
+			n = n.getParent();
+		}
+		return new TreePath(array.toArray());
+	}
+
+	@Override public default boolean getAllowsChildren()
+	{	return !this.isLeaf();
+	}
+
+	@Override public default Enumeration<? extends TreeNode> children()
+	{	return Collections.enumeration(this.getChildNodes());
+	}
+
+	@Override default int getChildCount()
+	{	return Collections.list(this.children()).size();
+	}
+
+	@Override default public int getIndex(TreeNode node)
+	{	return Collections.list(this.children()).indexOf(node);
+	}
+
+	@Override default public TreeNode getChildAt(int childIndex)
+	{	return Collections.list(this.children()).get(childIndex);
+	}
+
+	@Override default public boolean isLeaf()
+	{	return this.getChildCount() == 0;
+	}
 }

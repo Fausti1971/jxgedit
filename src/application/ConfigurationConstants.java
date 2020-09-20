@@ -20,8 +20,10 @@ public interface ConfigurationConstants extends XMLNodeConstants
 //	Path ICONPATH = RSCPATH.resolve("icon");
 //	Path XSDPATH = RSCPATH.resolve("xsd");
 
+	Path APPPATH = Paths.get(System.getProperties().getProperty("user.dir"), APPNAME);
 	Path HOMEPATH = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
-	Path CONFIGFILEPATH = HOMEPATH.resolve(XML_CONFIG);
+	Path CONFIGPATH = HOMEPATH;
+	Path CONFIGFILEPATH = CONFIGPATH.resolve(XML_CONFIG);
 
 	int MIN_W = 300, MIN_H = 400;
 }

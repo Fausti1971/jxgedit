@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
-import module.XGModuleType;
+import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGTable;
@@ -30,11 +30,11 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 	private final XGValue value;
 	private final XGAddress address;
 
-	public XGCombo(XMLNode n, XGModuleType mod) throws XGMemberNotFoundException
+	public XGCombo(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getDevice().getValues().getFirstIncluded(this.address);
+		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
 		this.combo = new XGComboBox<>(this.value);
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
 		this.add(this.combo, gbc);
