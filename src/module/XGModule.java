@@ -5,9 +5,11 @@ import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
+import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -19,6 +21,7 @@ import device.XGDevice;
 import gui.XGComponent;
 import gui.XGTree;
 import gui.XGTreeNode;
+import gui.XGValueTreeModel;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import msg.XGBulkDumper;
@@ -82,7 +85,9 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	}
 
 	private void editWindow()
-	{	if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, false, this.type.getDevice() + "/" + this);
+	{	if(this.window == null)
+			if(this.type.getGuiTemplate() != null) new XGWindow(this, XGWindow.getRootWindow(), false, false, this.type.getDevice() + "/" + this);
+			else new XGWindow(this, XGWindow.getRootWindow(), true, true, this.type.getDevice() + "/" + this);//TODO: Krücke!
 		else this.window.toFront();
 	}
 
@@ -134,7 +139,15 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	}
 
 	@Override public JComponent getChildWindowContent()
-	{	return XGComponent.init(this);
+	{	try
+		{	return XGComponent.init(this);
+		}
+		catch(NoSuchElementException e)//TODO: Krücke!
+		{	JTree tree = new JTree(new XGValueTreeModel(this.getValues()));
+			tree.setRootVisible(false);
+			tree.setShowsRootHandles(true);
+			return tree;
+		}
 	}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()

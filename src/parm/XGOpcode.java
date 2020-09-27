@@ -11,15 +11,17 @@ import application.XGLoggable;
 import application.XGStrings;
 import device.XGDevice;
 import module.XGModuleType;
+import tag.XGCategorizeable;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
+public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants, XGCategorizeable
 {
 
 /*******************************************************************************************************************************/
 
 	private final XGModuleType moduleType;
+	private final String category;
 	private final XGAddress address, parameterSelectorAddress, defaultSelectorAddress;
 	private final ValueDataType dataType;
 	private final XGParameterTable parameters;
@@ -32,6 +34,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 		XGDevice dev = mod.getDevice();
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString()).complement(blk.getAddress());
 		this.dataType = ValueDataType.valueOf(n.getStringAttributeOrDefault(ATTR_DATATYPE, DEF_DATATYPE.name()));
+		this.category = n.getStringAttributeOrDefault(ATTR_CATEGORY, DEF_CATEGORY);
 
 		this.isMutable = MUTABLE.equals(n.getStringAttribute(ATTR_TYPE));
 		if(this.isMutable)
@@ -123,5 +126,9 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 	@Override public String toString()
 	{	return this.getClass().getSimpleName() + this.address;
+	}
+
+	@Override public String getCategory()
+	{	return this.category;
 	}
 }

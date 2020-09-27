@@ -8,6 +8,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.NoSuchElementException;
 import javax.swing.JComponent;
 import javax.swing.border.TitledBorder;
 import adress.XGAddressConstants;
@@ -28,11 +29,11 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 
 	static final XGValue DEF_VALUE = new XGValue("n/a", 0);
 
-	public static XGComponent init(XGModule mod)
+	public static XGComponent init(XGModule mod) throws NoSuchElementException
 	{	XGTemplate t = mod.getType().getGuiTemplate();
 		XMLNode xml = null;
 		if(t != null) xml = t.getXMLNode();
-		if(xml == null) return new XGFrame("no template");
+		if(xml == null) throw new NoSuchElementException();
 		return new XGFrame(xml, mod);
 	}
 

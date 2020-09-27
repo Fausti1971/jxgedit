@@ -86,6 +86,7 @@ public interface XMLNodeConstants
 		ATTR_TABLECATEGORIES = "categories",
 		ATTR_FALLBACKMASK = "fallbackMask",
 		ATTR_SHORTNAME = "shortName",
+		ATTR_CATEGORY = "category",
 		ATTR_UNIT = "unit",
 
 		TAG_TEMPLATES = "templates",

@@ -19,12 +19,13 @@ import parm.XGParameterConstants;
 import parm.XGTable;
 import parm.XGTable.Preference;
 import parm.XGTableEntry;
+import tag.XGCategorizeable;
 /**
  * 
  * @author thomas
  *
  */
-public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable
+public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable, XGCategorizeable
 {
 
 /***********************************************************************************************/
@@ -281,5 +282,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	@Override public void contentChanged(XGValue v)
 	{	this.notifyValueListeners();
+	}
+
+	@Override public String getCategory()
+	{	return this.opcode.getCategory();
 	}
 }

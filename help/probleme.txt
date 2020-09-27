@@ -91,4 +91,9 @@ Vermerk:
 		dem XGTableTreeModel neben der eigentlichen XGTable noch eine Liste an XGCategorizern mitgeben, sodass bspw. die GM-Categories automatisch errechnet werden können oder auch
 		nach LSB-Categories gefaltet werden kann. Außerdem wäre eine Filtermöglichkeit schön. Außerdem sollte das TableModel erweitert werden, da dies nach wie vor unbefriedigend ist.
 		Vielleicht ist ja auch der XGTree verwendbar...
-	
+Anregung:
+		Für fehlende GUITemplates könnte man (nach ursprünglicher Idee) eine Liste (evtl. gefaltet nach Kategorien) mit allen verfügbaren (sprich: per XML definierten) Parametern einblenden
+		und nach Selektion eines Parameters eine weitere Liste mit möglichen Werten...
+Anregung:
+		Im Parent (XGFrame) könnte das Grid festgelegt werden, das für dieses GUITemplate gilt (bei Fehlen das Standard-Grid nutzen);
+		somit könnten besonders volle XGFrames mit kleineren Steuerelementen versehen werden.

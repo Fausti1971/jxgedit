@@ -44,7 +44,10 @@ public interface XGBulkDumper extends XGLoggable
 					pm.setNote(r.toString());
 					pm.setProgress(++responsed);
 				}
-				missed.add(r);
+				else
+				{	LOG.severe("no response for " + r);
+					missed.add(r);
+				}
 			}
 			catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e)
 			{	LOG.log(Level.SEVERE, e.getMessage());
@@ -53,7 +56,7 @@ public interface XGBulkDumper extends XGLoggable
 		Level level;
 		if(requested - responsed == 0) level = Level.INFO;
 		else level = Level.SEVERE;
-		LOG.log(level, requested + " requested / " + responsed + " responsed by " + src + " transmitted to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
+		LOG.log(level, responsed + "/" + requested + " requests responsed by \"" + src + "\" transmitted to \"" + dest + "\" within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
 }
