@@ -48,6 +48,7 @@ public interface XGBulkDumper extends XGLoggable
 				{	LOG.severe("no response for " + r);
 					missed.add(r);
 				}
+				if(pm.isCanceled()) break;
 			}
 			catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e)
 			{	LOG.log(Level.SEVERE, e.getMessage());
