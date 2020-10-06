@@ -18,7 +18,7 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGRadio extends XGFrame implements XGValueChangeListener, XGParameterChangeListener
+public class XGRadio extends XGComponent implements XGValueChangeListener, XGParameterChangeListener
 {	
 	private static final long serialVersionUID = 1L;
 	private static Map<String, Integer> ORIENTATION = new HashMap<>();
@@ -42,8 +42,6 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
 		this.borderize();
-
-//		this.logInitSuccess();
 	}
 
 	@Override public void parameterChanged(XGParameter p)

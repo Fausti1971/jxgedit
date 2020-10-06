@@ -1,5 +1,8 @@
 package gui;
 
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Insets;
 import adress.XGMemberNotFoundException;
 import module.XGModule;
 import xml.XMLNode;
@@ -26,5 +29,18 @@ public class XGFrame extends XGComponent
 			}
 		}
 //		this.logInitSuccess();
+	}
+
+	@Override public Component add(Component comp)
+	{	Dimension dim = this.getSize();
+		Insets ins = this.getInsets();
+		comp.setLocation(comp.getX() + ins.left, comp.getY() + ins.top);
+		super.add(comp);
+		dim.width = Math.max(dim.width, comp.getX() + comp.getWidth() + ins.right);
+		dim.height = Math.max(dim.height, comp.getY() + comp.getHeight() + ins.bottom);
+		this.setMinimumSize(dim);
+		this.setPreferredSize(dim);
+		this.setSize(dim);
+		return comp;
 	}
 }

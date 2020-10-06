@@ -49,6 +49,13 @@ public interface XMLNodeConstants
 		ATTR_ADDRESS_HI = "address_hi",
 		ATTR_ADDRESS_X = "address_x",
 		ATTR_ADDRESS_Y = "address_y",
+		ATTR_FIXED_X = "fixed_x",
+		ATTR_FIXED_Y = "fixed_y",
+
+		ATTR_START_X = "start_x",
+		ATTR_END_X = "end_x",
+		ATTR_DEPTH = "depth",
+		ATTR_OFFSET = "offset",
 
 		ATTR_INFO1 = "info1",
 		ATTR_INFO2 = "info2",
@@ -88,6 +95,7 @@ public interface XMLNodeConstants
 		ATTR_SHORTNAME = "shortName",
 		ATTR_CATEGORY = "category",
 		ATTR_UNIT = "unit",
+		ATTR_ORIGIN = "origin",
 
 		TAG_TEMPLATES = "templates",
 		TAG_TEMPLATE = "template",
@@ -106,13 +114,15 @@ public interface XMLNodeConstants
 		TAG_COMBO = "combo",
 		TAG_RADIO = "radio",
 		TAG_ENVELOPE = "envelope",
+		TAG_VELOCITY = "velocity",
 		TAG_POINT = "point",
 		TAG_BUTTON = "button",
 		TAG_SELECTOR = "selector",
 		TAG_AUTO = "auto",
-		ATTR_ORIGIN = "origin",
 
 		ATTR_GRID = "grid",
+		ATTR_LINES_H = "lines_h",
+		ATTR_LINES_V = "lines_v",
 		ATTR_ORIENTATION = "orientation";
 //		ATTR_GB_FILL = "grid_fill",
 //		ATTR_GB_WEIGHT_X = "grid_weight_x",

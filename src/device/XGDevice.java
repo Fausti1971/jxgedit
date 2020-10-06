@@ -21,6 +21,7 @@ import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressConstants;
+import adress.XGAddressField;
 import adress.XGAddressableSet;
 import application.Configurable;
 import application.JXG;
@@ -206,7 +207,15 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 		XMLNode xml = XMLNode.parse(file);
 		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
+		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS));
+			if(adr.getHi().getMin() >= 48)//falls Drumset
+			{	for(int h : adr.getHi())//erzeuge für jedes Drumset ein ModuleType
+				{	this.moduleTypes.add(new XGModuleType(this, n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo()), n.getStringAttribute(ATTR_NAME) + (h - 47)));
+				}
+				continue;
+			}
 			this.moduleTypes.add(new XGModuleType(this, n));
+		}
 
 		LOG.info(this.moduleTypes.size() + " moduleTypes initialized for " + this);
 	}

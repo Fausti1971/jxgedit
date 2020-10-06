@@ -1,8 +1,6 @@
 package gui;
 
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -41,7 +39,8 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	{	String s = n.getTag();
 		XGComponent c = null;
 		switch(s)
-		{	case TAG_ENVELOPE:	c = new XGEnvelope(n, mod); break;
+		{	case TAG_VELOCITY:	c = new XGVelocity(n, mod); break;
+			case TAG_ENVELOPE:	c = new XGEnvelope(n, mod); break;
 			case TAG_FRAME:		c = new XGFrame(n, mod); break;
 			case TAG_KNOB:		c = new XGKnob(n, mod); break;
 			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
@@ -70,19 +69,6 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		this.setName(n.getStringAttributeOrDefault(ATTR_NAME, mod.toString()));
 	}
 
-	@Override public Component add(Component comp)
-	{	Dimension dim = this.getSize();
-		Insets ins = this.getInsets();
-		comp.setLocation(comp.getX() + ins.left, comp.getY() + ins.top);
-		super.add(comp);
-		dim.width = Math.max(dim.width, comp.getX() + comp.getWidth() + ins.right);
-		dim.height = Math.max(dim.height, comp.getY() + comp.getHeight() + ins.bottom);
-		this.setMinimumSize(dim);
-		this.setPreferredSize(dim);
-		this.setSize(dim);
-		return comp;
-	}
-
 	public void setBounds()
 	{	Rectangle r = new XGGrid(this.config.getStringAttribute(ATTR_GRID));
 		super.setBounds(GRID * r.x, GRID * r.y, GRID * r.width, GRID * r.height);
@@ -101,7 +87,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		else this.setBorder(new TitledBorder(defaultLineBorder, "n/a", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
 	}
 
-	public  void deborderize()
+	public void deborderize()
 	{	this.setBorder(null);
 	}
 
@@ -169,7 +155,7 @@ System.out.println("doubleclick detected");
 			}
 			String[] str = s.split(",");
 			if(str.length < 4)
-			{	LOG.warning("grid incomplete");;
+			{	LOG.warning("grid incomplete");
 				return;
 			}
 			this.x = Integer.parseInt(str[0]);

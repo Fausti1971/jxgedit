@@ -29,6 +29,19 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	private final Map<String, Set<String>> actions = new HashMap<>();
 	private final boolean isMutable, hasMutableDefaults;
 
+//	public XGOpcode()
+//	{	this.moduleType = null;
+//		this.category = null;
+//		this.address = null;
+//		this.parameterSelectorAddress = null;
+//		this.defaultSelectorAddress = null;
+//		this.dataType = DEF_DATATYPE;
+//		this.parameters = null;
+//		this.defaults = null;
+//		this.isMutable = false;
+//		this.hasMutableDefaults = false;
+//	}
+
 	public XGOpcode(XGModuleType mod, XGAddress blk, XMLNode n) throws InvalidXGAddressException
 	{	this.moduleType = mod;
 		XGDevice dev = mod.getDevice();

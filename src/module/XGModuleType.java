@@ -48,11 +48,11 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	private final XMLNode config;
 	private final XGAddressableSet<XGAddress> bulks = new XGAddressableSet<>();
 
-	public XGModuleType(XGDevice dev, XMLNode cfg)//für Prototypen
+	public XGModuleType(XGDevice dev, XMLNode cfg, XGAddress adr, String name)//für Drumsets
 	{	this.config = cfg;
 		this.device = dev;
-		this.address = new XGAddress(cfg.getStringAttribute(ATTR_ADDRESS));
-		this.name = cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME);
+		this.address = adr;
+		this.name = name;
 		this.idTranslator = this.device.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
 
 		XGAddressableSet<XGTemplate> tSet = this.device.getTemplates().getAllIncluding(this.address);
@@ -65,17 +65,21 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		if(cfg.hasAttribute(ATTR_INFO3)) this.infoAddresses.add(new XGAddress(cfg.getStringAttribute(ATTR_INFO3)));
 		 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))
-		{	XGAddress adr = new XGAddress(x.getStringAttribute(ATTR_ADDRESS), this.address);
-			this.bulks.add(adr);
+		{	XGAddress a = new XGAddress(x.getStringAttribute(ATTR_ADDRESS), this.address);
+			this.bulks.add(a);
 			for(XMLNode o : x.getChildNodes(TAG_OPCODE))
 			{	try
-				{	dev.getOpcodes().add(new XGOpcode(this, adr, o));
+				{	dev.getOpcodes().add(new XGOpcode(this, a, o));
 				}
 				catch(InvalidXGAddressException e)
 				{	LOG.severe(e.getMessage());
 				}
 			}
 		}
+	}
+
+	public XGModuleType(XGDevice dev, XMLNode cfg)
+	{	this(dev, cfg, new XGAddress(cfg.getStringAttribute(ATTR_ADDRESS)), cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
 	}
 
 	public XGDevice getDevice()
@@ -120,6 +124,10 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 			case ACTION_TRANSMIT:	new Thread(() -> {this.transmitAll(this.device.getValues(), this.device.getMidi());}).start(); break;
 			default:				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
 		}
+	}
+
+	@Override public String toString()
+	{	return this.name;
 	}
 
 	@Override public XGAddress getAddress()

@@ -28,12 +28,16 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 
 	static final String
 		ACTION_CONFIGURE = "configure...",
+		ACTION_REQUEST = "request",
+		ACTION_TRANSMIT = "transmit",
 		ACTION_ADDNEWDEVICE = "add new device...",
 		ACTION_REFRESHDEVICELIST = "reinit devices",
 		ACTION_INFO = "info...";
 
 	static
 	{	JXG.ACTIONS.add(ACTION_CONFIGURE);
+		JXG.ACTIONS.add(ACTION_REQUEST);
+		JXG.ACTIONS.add(ACTION_TRANSMIT);
 		JXG.ACTIONS.add(ACTION_ADDNEWDEVICE);
 		JXG.ACTIONS.add(ACTION_REFRESHDEVICELIST);
 		JXG.ACTIONS.add(ACTION_INFO);
@@ -113,6 +117,18 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 		}
 	}
 
+	private void requestAll()
+	{	for(XGDevice d : XGDevice.getDevices())
+		{	new Thread(() -> {d.transmitAll(d.getMidi(), d.getValues());}).start();
+		}
+	}
+
+	private void transmitAll()
+	{	for(XGDevice d : XGDevice.getDevices())
+		{	new Thread(() -> {d.transmitAll(d.getValues(), d.getMidi());}).start();
+		}
+	}
+
 	@Override public String toString()
 	{	return APPNAME;
 	}
@@ -137,6 +153,8 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	{	if(e == null || e.getActionCommand() == null) return;
 		switch(e.getActionCommand())
 		{	case ACTION_CONFIGURE:		JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand()); break;
+			case ACTION_REQUEST:		this.requestAll(); break;
+			case ACTION_TRANSMIT:		this.transmitAll(); break;
 			case ACTION_ADDNEWDEVICE:	this.addDevice(); break;
 			case ACTION_REFRESHDEVICELIST:	XGDevice.init(this.config); break;
 			case ACTION_INFO:

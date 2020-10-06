@@ -146,7 +146,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 			this.g2.setColor(COL_BAR_BACK);
 			this.g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 	// draw foreground
-			this.originWidth = XGMath.linearIO(this.parameter.getOrigin(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth());
+			this.originWidth = XGMath.linearIO(this.parameter.getOriginIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth());
 			this.barWidth = XGMath.linearIO(this.value.getIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth()) - this.originWidth;
 			this.g2.setColor(COL_BAR_FORE);
 			this.g2.fillRoundRect(0 + Math.min(this.originWidth, this.originWidth + this.barWidth), 0, Math.abs(this.barWidth), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);

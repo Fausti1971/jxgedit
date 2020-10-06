@@ -78,9 +78,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		this.borderize();
 	}
 
-	@Override protected void paintComponent(Graphics g)
-	{	if(this.isEnabled()) super.paintComponent(g);
-	}
+/******************************************************************************************************************************************/
 
 	private class XGKnobBar extends JComponent implements GuiConstants, MouseListener, MouseMotionListener, MouseWheelListener
 	{
@@ -89,12 +87,13 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		 */
 		private static final long serialVersionUID = 1L;
 
-/**************************************************************************************************************/
+/*****************************************************************************************/
 
 		private final XGValue value;
 		private XGParameter parameter;
 		private int size, radius, lengthArc, originArc;
 		private Point middle = new Point(), strokeStart = new Point(), strokeEnd = new Point();
+		private Graphics2D g2;
 
 		private XGKnobBar(XGValue v)
 		{	this.value = v;
@@ -109,31 +108,31 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 
 		@Override public void paintComponent(Graphics g)
 		{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
-			Graphics2D g2 = (Graphics2D)g.create();
-			g2.addRenderingHints(XGComponent.AALIAS);
+			this.g2 = (Graphics2D)g.create();
+			this.g2.addRenderingHints(XGComponent.AALIAS);
 			this.size = Math.min(this.getWidth() - DEF_STROKEWIDTH, this.getHeight());
 			this.radius = this.size / 2;
 			this.middle.x = this.getWidth() / 2;
 			this.middle.y = 4 + this.radius;// getY() liefert IMMER 15! (sowohl mit als auch ohen Border), daher die "4"
 	
 	// paint background arc
-			g2.setColor(COL_BAR_BACK);
-			g2.setStroke(DEF_ARCSTROKE);
-			g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, START_ARC, LENGTH_ARC);
+			this.g2.setColor(COL_BAR_BACK);
+			this.g2.setStroke(DEF_ARCSTROKE);
+			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, START_ARC, LENGTH_ARC);
 	// paint foreground arc
 			this.parameter = this.value.getParameter();
-			this.originArc = XGMath.linearIO(parameter.getOrigin(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
+			this.originArc = XGMath.linearIO(parameter.getOriginIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
 			this.lengthArc = XGMath.linearIO(this.value.getIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
-			g2.setColor(COL_BAR_FORE);
-			g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, this.originArc + START_ARC, this.lengthArc - originArc);
+			this.g2.setColor(COL_BAR_FORE);
+			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, this.originArc + START_ARC, this.lengthArc - originArc);
 	// paint marker
 			double endRad = Math.toRadians(this.lengthArc + START_ARC);
 			strokeStart.x = (int)(middle.x + radius * Math.cos(endRad));
 			strokeStart.y = (int)(middle.y - radius * Math.sin(endRad));
 			strokeEnd.x = (int)(middle.x + radius/2 * Math.cos(endRad));
 			strokeEnd.y = (int)(middle.y - radius/2 * Math.sin(endRad));
-			g2.drawLine(strokeStart.x, strokeStart.y, strokeEnd.x, strokeEnd.y);
-			g2.dispose();
+			this.g2.drawLine(strokeStart.x, strokeStart.y, strokeEnd.x, strokeEnd.y);
+			this.g2.dispose();
 		}
 
 		@Override public void mouseClicked(MouseEvent e)
@@ -165,7 +164,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGComponent.dragEvent.getX();
-			this.value.editIndex(this.value.getIndex() + distance);
+			this.value.addIndex(distance);
 			XGComponent.dragEvent = e;
 			e.consume();
 		}
