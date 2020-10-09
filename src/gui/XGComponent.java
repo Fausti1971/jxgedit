@@ -41,6 +41,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		switch(s)
 		{	case TAG_VELOCITY:	c = new XGVelocity(n, mod); break;
 			case TAG_ENVELOPE:	c = new XGEnvelope(n, mod); break;
+			case TAG_EQ:		c = new XGEQCurve(n, mod); break;
 			case TAG_FRAME:		c = new XGFrame(n, mod); break;
 			case TAG_KNOB:		c = new XGKnob(n, mod); break;
 			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
@@ -70,7 +71,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	}
 
 	public void setBounds()
-	{	Rectangle r = new XGGrid(this.config.getStringAttribute(ATTR_GRID));
+	{	Rectangle r = new XGGrid(this.config.getStringAttribute(ATTR_BOUNDS));
 		super.setBounds(GRID * r.x, GRID * r.y, GRID * r.width, GRID * r.height);
 		Dimension dim = new Dimension(this.getBounds().getSize());
 		this.setMinimumSize(dim);

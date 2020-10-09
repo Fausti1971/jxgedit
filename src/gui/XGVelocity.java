@@ -3,6 +3,7 @@ package gui;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
+import javax.swing.JPanel;
 import adress.XGAddress;
 import device.XGDevice;
 import module.XGModule;
@@ -17,8 +18,8 @@ public class XGVelocity extends XGComponent
 
 /***************************************************************************************/
 
-	private final XGArea panel;
-	private final XGPoint startPoint, endPoint;
+	private final JPanel panel;
+	private final XGAbsolutePoint startPoint, endPoint;
 	private final XGValue valStart, valEnd, valDepth, valOffset;
 	private XGParameter parStart, parEnd, parDepth, parOffset;
 	private int iMin, iMax;
@@ -41,9 +42,9 @@ public class XGVelocity extends XGComponent
 
 		this.borderize();
 		this.setLayout(null);
-		this.panel = new XGArea(this, mod);
-		this.startPoint = new XGPoint(this.panel, this.valStart, new XGFixedValue("fix", 0));
-		this.endPoint = new XGPoint(this.panel, this.valEnd, new XGFixedValue("fix", 0));
+		this.panel = new JPanel();
+		this.startPoint = new XGAbsolutePoint(this.panel, this.valStart, new XGFixedValue("fix", 0));
+		this.endPoint = new XGAbsolutePoint(this.panel, this.valEnd, new XGFixedValue("fix", 0));
 
 		this.add(this.panel);
 		this.panel.addPoint(this.startPoint);

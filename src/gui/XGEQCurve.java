@@ -16,13 +16,14 @@ import parm.XGTable;
 import value.XGFixedValue;
 import xml.XMLNode;
 
-public class XGArea extends JPanel implements GuiConstants
+public class XGEQCurve extends XGComponent implements GuiConstants
 {
 	private static final long serialVersionUID = 1L;
 
 /*****************************************************************************************/
 
-	private ArrayList<XGPoint> points = new ArrayList<>();
+	private final JPanel panel;
+	private ArrayList<XGAbsolutePoint> points = new ArrayList<>();
 	private final Set<Integer> vLines = new HashSet<>(), hLines = new HashSet<>();
 	private ButtonGroup group = new ButtonGroup();
 	private Integer minXIndex = null, maxXIndex = null, minYIndex = null, maxYIndex = null;
@@ -30,34 +31,38 @@ public class XGArea extends JPanel implements GuiConstants
 	private String xUnit = "", yUnit = "";
 	private Graphics2D g2;
 
-	public XGArea(XGComponent par, XGModule mod)
-	{	super();
+	public XGEQCurve(XMLNode n, XGModule mod)
+	{	super(n, mod);
+		this.borderize();
 		this.setLayout(null);
-		this.setBackground(COL_BAR_BACK);
 
-		Rectangle r = new Rectangle(par.getBounds());
-		Insets ins = par.getInsets();
+		Rectangle r = new Rectangle(this.getBounds());
+		Insets ins = this.getInsets();
 		r.x = ins.left;
 		r.y = ins.top;
 		r.width -= (ins.left + ins.right);
 		r.height -= (ins.top + ins.bottom);
-		this.setBounds(r);
+		this.panel = new JPanel();
+		this.panel.setBounds(r);
+		this.panel.setBackground(COL_BAR_BACK);
 
-		int hl = par.getConfig().getIntegerAttribute(ATTR_LINES_H, 0);
-		int vl = par.getConfig().getIntegerAttribute(ATTR_LINES_V, 0);
-		int sect = r.height / (hl + 1);
-		for(int i = 1; i <= hl; i++) this.hLines.add(i * sect);
-		sect = r.width / (vl + 1);
-		for(int i = 1; i <= vl; i++) this.vLines.add(i * sect);
+		int l = n.getIntegerAttribute(ATTR_GRID_X, 0);
+		int sect = r.height / (l + 1);
+		for(int i = 1; i <= l; i++) this.hLines.add(i * sect);
 
-		for(XMLNode pn : par.getConfig().getChildNodes(TAG_POINT))
-		{	this.addPoint(new XGPoint(this, pn, mod));
+		l = n.getIntegerAttribute(ATTR_GRID_Y, 0);
+		sect = r.width / (l + 1);
+		for(int i = 1; i <= l; i++) this.vLines.add(i * sect);
+
+		int index = 0;
+		for(XMLNode pn : n.getChildNodes(TAG_POINT))
+		{	this.addPoint(new XGAbsolutePoint(this.panel, index++, pn, mod));
 		}
 
-		for(XGPoint p : this.points) p.setLocation();
+		for(XGAbsolutePoint p : this.points) p.setLocation();
 	}
 
-	void addPoint(XGPoint p)
+	void addPoint(XGAbsolutePoint p)
 	{	if(!(p.getValueX() instanceof XGFixedValue))
 		{	this.setXTable(p.getValueX().getParameter().getTranslationTable());
 			this.setXLimits(p);
@@ -83,7 +88,7 @@ public class XGArea extends JPanel implements GuiConstants
 		if(tab.getUnit() != null && !tab.getUnit().isBlank()) this.yUnit = tab.getUnit();
 	}
 
-	private void setXLimits(XGPoint p)
+	private void setXLimits(XGAbsolutePoint p)
 	{	int min = p.getValueX().getParameter().getMinIndex();
 		int max = p.getValueX().getParameter().getMaxIndex();
 
@@ -96,7 +101,7 @@ public class XGArea extends JPanel implements GuiConstants
 		this.xUnit = p.getValueX().getParameter().getUnit();
 	}
 
-	private void setYLimits(XGPoint p)
+	private void setYLimits(XGAbsolutePoint p)
 	{	int min = p.getValueY().getParameter().getMinIndex();
 		int max = p.getValueY().getParameter().getMaxIndex();
 
@@ -144,7 +149,7 @@ public class XGArea extends JPanel implements GuiConstants
 		int x = 0;
 		int y = this.getHeight();
 		gp.moveTo(x, y);
-		for(XGPoint p : this.points)
+		for(XGAbsolutePoint p : this.points)
 		{	x = p.getX() + p.getWidth()/2;
 			y = p.getY() + p.getHeight()/2;
 			gp.lineTo(x, y);

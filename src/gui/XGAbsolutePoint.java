@@ -1,9 +1,11 @@
 package gui;
 
 import java.awt.Cursor;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import adress.XGAddress;
 import application.XGLoggable;
@@ -13,7 +15,7 @@ import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, MouseListener, MouseMotionListener
+public class XGAbsolutePoint extends JRadioButton implements GuiConstants, XGLoggable, MouseListener, MouseMotionListener
 {
 	private static final long serialVersionUID = 1L;
 //	private static final int POINT_RADIUS = 20;
@@ -21,10 +23,12 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 /******************************************************************************************************/
 
 	private final XGValue valueX, valueY;
-	private final XGArea panel;
+	private final XGDrawPanel panel;
+	private final int index;
 
-	public XGPoint(XGArea panel, XMLNode n, XGModule mod)
+	public XGAbsolutePoint(XGDrawPanel panel, int index, XMLNode n, XGModule mod)
 	{	this.panel = panel;
+		this.index = index;
 		XGAddress ax = null, ay = null;
 		XGValue vx, vy;
 		if(n.hasAttribute(ATTR_ADDRESS_X))
@@ -46,9 +50,9 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 		else vy = new XGFixedValue("no value y", 0);
 
 		this.valueX = vx;
-		this.valueX.addValueListener((XGValue)->{this.setLocation();});
+		this.valueX.addValueListener((XGValue)->{this.panel.repaint();});
 		this.valueY = vy;
-		this.valueY.addValueListener((XGValue)->{this.setLocation();});
+		this.valueY.addValueListener((XGValue)->{this.panel.repaint();});
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
 		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -56,30 +60,31 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 		this.setSize(super.getPreferredSize());//JComponents werden ohne LayoutManager nicht resized
 	}
 
-	public XGPoint(XGArea panel, XGValue valX, XGValue valY)
+	public XGAbsolutePoint(JPanel panel, int index, XGValue valX, XGValue valY)
 	{	this.panel = panel;
+		this.index = index;
 		this.valueX = valX;
-		this.valueX.addValueListener((XGValue)->{this.setLocation();});
+		this.valueX.addValueListener((XGValue)->{this.panel.repaint();});
 		this.valueY = valY;
-		this.valueY.addValueListener((XGValue)->{this.setLocation();});
+		this.valueY.addValueListener((XGValue)->{this.panel.repaint();});
 		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 //		this.setLocation();
 	}
 
-//	@Override public Point getLocation()
-//	{	int x = XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, this.panel.getWidth());
-//		int y = XGMath.linearIO(this.valueY.getIndex(), this.panel.getMinYIndex(), this.panel.getMaxYIndex(), this.panel.getHeight(), 0);
-//		return new Point(x, y);
-//	}
-
-	void setLocation()
+	@Override public Point getLocation()
 	{	int x = XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, this.panel.getWidth());
 		int y = XGMath.linearIO(this.valueY.getIndex(), this.panel.getMinYIndex(), this.panel.getMaxYIndex(), this.panel.getHeight(), 0);
-		this.setLocation(x - this.getWidth()/2, y - this.getHeight()/2);
-		this.panel.repaint();
-		this.setToolTipText("x=" + this.valueX.getInfo() + "\ny=" + this.valueY.getInfo());
-//System.out.println(this + "=" + this.getBounds());
+		return new Point(x, y);
 	}
+
+//	void setLocation()
+//	{	int x = XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, this.panel.getWidth());
+//		int y = XGMath.linearIO(this.valueY.getIndex(), this.panel.getMinYIndex(), this.panel.getMaxYIndex(), this.panel.getHeight(), 0);
+//		this.setLocation(x - this.getWidth()/2, y - this.getHeight()/2);
+//		this.panel.repaint();
+//		this.setToolTipText("x=" + this.valueX.getInfo() + "\ny=" + this.valueY.getInfo());
+////System.out.println(this + "=" + this.getBounds());
+//	}
 
 	XGValue getValueX()
 	{	return this.valueX;

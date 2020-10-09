@@ -10,13 +10,13 @@ public class XGEnvelope extends XGComponent
 
 /**************************************************************************************/
 
-	private final XGArea panel;
+	private final XGEQCurve panel;
 
 	public XGEnvelope(XMLNode n, XGModule mod) throws XGMemberNotFoundException
 	{	super(n, mod);
 		this.borderize();
 		this.setLayout(null);
-		this.panel = new XGArea(this, mod);
+		this.panel = new XGEQCurve(this, mod);
 		this.add(this.panel);
 	}
 }
