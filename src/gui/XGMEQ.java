@@ -1,7 +1,10 @@
 package gui;
 
 import adress.XGAddress;
+import adress.XGAddressableSet;
 import module.XGModule;
+import value.XGFixedValue;
+import value.XGValue;
 import xml.XMLNode;
 
 public class XGMEQ extends XGComponent implements GuiConstants
@@ -29,14 +32,52 @@ public class XGMEQ extends XGComponent implements GuiConstants
 /*****************************************************************************************/
 
 	private final XGDrawPanel panel;
+	private final XGValue g1, g2, g3, g4, g5, f1, f2, f3, f4, f5, q1, q2, q3, q4, q5, s1, s5;
+	private final int minX, maxX, minY, maxY, midY;
 
 	public XGMEQ(XMLNode n, XGModule mod)
 	{	super(n, mod);
 		this.borderize();
 		this.setLayout(null);
 
+		XGAddressableSet<XGValue> set = mod.getValues();
+		this.g1 = set.get(G1);
+		this.g2 = set.get(G2);
+		this.g3 = set.get(G3);
+		this.g4 = set.get(G4);
+		this.g5 = set.get(G5);
+
+		this.f1 = set.get(F1);
+		this.f2 = set.get(F2);
+		this.f3 = set.get(F3);
+		this.f4 = set.get(F4);
+		this.f5 = set.get(F5);
+
+		this.q1 = set.get(Q1);
+		this.q2 = set.get(Q2);
+		this.q3 = set.get(Q3);
+		this.q4 = set.get(Q4);
+		this.q5 = set.get(Q5);
+
+		this.s1 = set.get(S1);
+		this.s5 = set.get(S5);
+
 		this.panel = new XGDrawPanel(this, n);
+		this.minX = this.f1.getParameter().getMinIndex();
+		this.maxX = this.f5.getParameter().getMaxIndex();
+		this.minY = this.g1.getParameter().getMinIndex();
+		this.maxY = this.g1.getParameter().getMaxIndex();
+		this.midY = (this.maxY - this.minY)/2 + this.minY;
+
+		this.panel.setLimits(this.minX, this.maxX, this.minY, this.maxY);
 
 		this.add(this.panel);
+		this.panel.add(new XGPoint(0, new XGFixedValue("fixed", this.minX), new XGFixedValue("fixed", this.midY), true, true));
+		this.panel.add(new XGPoint(1, this.f1, this.g1, true, true));
+		this.panel.add(new XGPoint(2, this.f2, this.g2, true, true));
+		this.panel.add(new XGPoint(3, this.f3, this.g3, true, true));
+		this.panel.add(new XGPoint(4, this.f4, this.g4, true, true));
+		this.panel.add(new XGPoint(5, this.f5, this.g5, true, true));
+		this.panel.add(new XGPoint(6, new XGFixedValue("fixed", this.maxX), new XGFixedValue("fixed", this.midY), true, true));
 	}
 }

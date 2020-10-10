@@ -90,7 +90,7 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 	}
 
 	@Override protected void paintComponent(Graphics g)
-	{	this.points.get(0).setLocation();
+	{	for(XGPoint p : this.points) p.setLocation();
 		super.paintComponent(g);
 		this.g2 = (Graphics2D)g.create();
 //grid

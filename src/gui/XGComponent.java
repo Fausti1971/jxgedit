@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
@@ -27,6 +28,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	 */
 	private static final long serialVersionUID = 1L;
 	public static MouseEvent dragEvent = null;
+	public static Cursor lastCursor = null;
 
 	static final XGValue DEF_VALUE = new XGValue("n/a", 0);
 
@@ -42,7 +44,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	{	String s = n.getTag();
 		XGComponent c = null;
 		switch(s)
-		{	case TAG_VEG:		c = new XGVelocity(n, mod); break;
+		{	case TAG_VEG:		c = new XGVEG(n, mod); break;
 			case TAG_AEG:		c = new XGAEG(n, mod); break;
 			case TAG_MEQ:		c = new XGMEQ(n, mod); break;
 			case TAG_FRAME:		c = new XGFrame(n, mod); break;

@@ -12,7 +12,7 @@ import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGVelocity extends XGComponent
+public class XGVEG extends XGComponent
 {
 	private static final long serialVersionUID = 1L;
 
@@ -27,7 +27,7 @@ public class XGVelocity extends XGComponent
 	private Insets ins;
 	private Rectangle area = new Rectangle();
 
-	public XGVelocity(XMLNode n, XGModule mod)
+	public XGVEG(XMLNode n, XGModule mod)
 	{	super(n, mod);
 		XGDevice dev = mod.getType().getDevice();
 		XGAddress adrStart, adrEnd, adrDepth, adrOffset;

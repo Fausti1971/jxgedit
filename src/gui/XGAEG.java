@@ -31,12 +31,12 @@ public class XGAEG extends XGComponent
 		maxX += this.release.getParameter().getMaxIndex() - this.release.getParameter().getMinIndex();
 
 		this.panel = new XGDrawPanel(this, n);
-		this.panel.setLimits(0, maxX, 0, 127);
+		this.panel.setLimits(0, maxX, 0, 2);
 		this.panel.setUnits("ms", "amp");
 
 		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), new XGFixedValue("fixed", 0), true, true));
-		this.panel.add(new XGPoint(1, this.attack, new XGFixedValue("fixed",  127), false, true));
-		this.panel.add(new XGPoint(2, this.decay, new XGFixedValue("fixed", 64), false, true));
+		this.panel.add(new XGPoint(1, this.attack, new XGFixedValue("fixed",  2), false, true));
+		this.panel.add(new XGPoint(2, this.decay, new XGFixedValue("fixed", 1), false, true));
 		this.panel.add(new XGPoint(3, this.release, new XGFixedValue("fixed", 0), false, true));
 
 		this.add(this.panel);

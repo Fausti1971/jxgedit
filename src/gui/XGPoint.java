@@ -1,11 +1,11 @@
 package gui;
 
 import java.awt.Cursor;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JRadioButton;
-import javax.swing.JToolTip;
 import application.XGLoggable;
 import application.XGMath;
 import value.XGValue;
@@ -22,7 +22,7 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 	private final boolean isXAbsolute, isYAbsolute;
 	private final int index;
 	private XGPoint previous = null, next = null;
-	private JToolTip tooltip;
+	private final XGTooltip tooltip = new XGTooltip();
 
 	public XGPoint(int index, XGValue valX, XGValue valY, boolean xAbs, boolean yAbs)
 	{	this.index = index;
@@ -30,16 +30,9 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 		this.valueY = valY;
 		this.isXAbsolute = xAbs;
 		this.isYAbsolute = yAbs;
-		this.createToolTip();
 		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
-	}
-
-	@Override public JToolTip createToolTip()
-	{	this.tooltip = new JToolTip();
-		this.tooltip.setComponent(this);
-		return this.tooltip;
 	}
 
 	void setPanel(XGDrawPanel pnl)
@@ -48,8 +41,8 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 		{	this.previous = this.panel.getPoints().get(this.index - 1);
 			this.previous.next = this;
 		}
-		this.valueX.addValueListener((XGValue)->{this.setLocation();});
-		this.valueY.addValueListener((XGValue)->{this.setLocation();});
+		this.valueX.addValueListener((XGValue)->{this.panel.repaint();});
+		this.valueY.addValueListener((XGValue)->{this.panel.repaint();});
 		this.setLocation();
 	}
 
@@ -74,11 +67,13 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 			}
 		}
 		this.setLocation(x - this.getWidth()/2, y - this.getHeight()/2);
-		this.tooltip.setLocation(x, y);
-		this.setToolTipText(this.toString());
-		if(this.next != null) this.next.setLocation();
-		this.panel.repaint();
-		this.setToolTipText(this.toString());
+		this.tooltip.setName(this.toString());
+		if(this.isShowing())
+		{	Point p = this.getLocationOnScreen();
+			p.x += this.getWidth();
+//			p.y -= this.tooltip.getHeight();
+			this.tooltip.setLocation(p);
+		}
 	}
 
 	XGValue getValueX()
@@ -95,6 +90,7 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 
 	@Override public void mousePressed(MouseEvent e)
 	{	XGComponent.dragEvent = e;
+//		this.tooltip.setLocation(e.getXOnScreen(), e.getYOnScreen());
 		this.tooltip.setVisible(true);
 		e.consume();
 	}
@@ -117,7 +113,6 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 	{	this.valueX.addIndex(e.getXOnScreen() - XGComponent.dragEvent.getXOnScreen());
 		this.valueY.addIndex(XGComponent.dragEvent.getYOnScreen() - e.getYOnScreen());
 		this.setLocation();
-//System.out.println("x0=" + XGComponent.dragEvent.getX() + " x1=" + e.getX());
 		XGComponent.dragEvent = e;
 		e.consume();
 	}
