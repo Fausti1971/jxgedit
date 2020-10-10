@@ -19,7 +19,7 @@ public class XGVelocity extends XGComponent
 /***************************************************************************************/
 
 	private final JPanel panel;
-	private final XGAbsolutePoint startPoint, endPoint;
+	private final XGPoint startPoint, endPoint;
 	private final XGValue valStart, valEnd, valDepth, valOffset;
 	private XGParameter parStart, parEnd, parDepth, parOffset;
 	private int iMin, iMax;
@@ -43,11 +43,13 @@ public class XGVelocity extends XGComponent
 		this.borderize();
 		this.setLayout(null);
 		this.panel = new JPanel();
-		this.startPoint = new XGAbsolutePoint(this.panel, this.valStart, new XGFixedValue("fix", 0));
-		this.endPoint = new XGAbsolutePoint(this.panel, this.valEnd, new XGFixedValue("fix", 0));
+//		this.startPoint = new XGPoint(0, this.valStart, new XGFixedValue("fix", 0), true, true);
+//		this.endPoint = new XGPoint(1, this.valEnd, new XGFixedValue("fix", 0), true, true);
+		this.startPoint = null;
+		this.endPoint = null;
 
 		this.add(this.panel);
-		this.panel.addPoint(this.startPoint);
-		this.panel.addPoint(this.endPoint);
+//		this.panel.add(this.startPoint);
+//		this.panel.add(this.endPoint);
 	}
 }

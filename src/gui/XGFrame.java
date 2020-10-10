@@ -3,6 +3,7 @@ package gui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import adress.InvalidXGAddressException;
 import adress.XGMemberNotFoundException;
 import module.XGModule;
 import xml.XMLNode;
@@ -24,7 +25,7 @@ public class XGFrame extends XGComponent
 		{	try
 			{	this.add(newItem(x, mod));
 			}
-			catch(XGMemberNotFoundException e)
+			catch(XGMemberNotFoundException | InvalidXGAddressException e)
 			{	LOG.severe(e.getMessage());
 			}
 		}

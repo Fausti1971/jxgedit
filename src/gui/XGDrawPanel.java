@@ -1,91 +1,97 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
 import java.awt.geom.GeneralPath;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
-import parm.XGTable;
-import value.XGFixedValue;
+import xml.XMLNode;
 
 public class XGDrawPanel extends JPanel implements GuiConstants
 {
 	private static final long serialVersionUID = 1L;
 
-	void addPoint(XGAbsolutePoint p)
-	{	if(!(p.getValueX() instanceof XGFixedValue))
-		{	this.setXTable(p.getValueX().getParameter().getTranslationTable());
-			this.setXLimits(p);
+/***************************************************************************************/
+
+	private final ArrayList<XGPoint> points = new ArrayList<>();
+	private final Set<Integer> vLines = new HashSet<>(), hLines = new HashSet<>();
+	private ButtonGroup group = new ButtonGroup();
+	private int minXIndex = 0, maxXIndex = 0, minYIndex = 0, maxYIndex = 0;
+	private String xUnit = "", yUnit = "";
+	private Graphics2D g2;
+
+	public XGDrawPanel(XGComponent par, XMLNode n)
+	{	Rectangle r = new Rectangle(par.getBounds());
+		Insets ins = par.getInsets();
+		r.x = ins.left;
+		r.y = ins.top;
+		r.width -= (ins.left + ins.right);
+		r.height -= (ins.top + ins.bottom);
+		this.setBounds(r);
+		this.setBackground(COL_BAR_BACK);
+
+		int l = n.getIntegerAttribute(ATTR_GRID_X, 0);
+		int sect = r.height / (l + 1);
+		for(int i = 1; i <= l; i++) this.hLines.add(i * sect);
+
+		l = n.getIntegerAttribute(ATTR_GRID_Y, 0);
+		sect = r.width / (l + 1);
+		for(int i = 1; i <= l; i++) this.vLines.add(i * sect);
+	}
+
+	@Override public Component add(Component comp)
+	{	this.group.add((AbstractButton)comp);
+		if(comp instanceof XGPoint)
+		{	XGPoint p = (XGPoint)comp;
+			p.setPanel(this);
+			this.points.add(p);
 		}
-		if(!(p.getValueY() instanceof XGFixedValue))
-		{	this.setYTable(p.getValueY().getParameter().getTranslationTable());
-			this.setYLimits(p);
-		}
-		this.points.add(p);
-		this.group.add(p);
-		this.add(p);
+		return super.add(comp);
 	}
 
-	private void setXTable(XGTable tab)
-	{	if(this.xTable == null) this.xTable = tab;
-		else if(!this.xTable.equals(tab)) throw new RuntimeException("x-Tables are not equal: old=" + this.xTable + " new=" + tab);
-		if(tab.getUnit() != null && !tab.getUnit().isBlank()) this.xUnit = tab.getUnit();
+	ArrayList<XGPoint> getPoints()
+	{	return this.points;
 	}
 
-	private void setYTable(XGTable tab)
-	{	if(this.yTable == null) this.yTable = tab;
-		else if(!this.yTable.equals(tab)) throw new RuntimeException("y-Tables are not equal: old=" + this.yTable + " new=" + tab);
-		if(tab.getUnit() != null && !tab.getUnit().isBlank()) this.yUnit = tab.getUnit();
+	void setUnits(String xUnit, String yUnit)
+	{	this.xUnit = xUnit;
+		this.yUnit = yUnit;
 	}
 
-	private void setXLimits(XGAbsolutePoint p)
-	{	int min = p.getValueX().getParameter().getMinIndex();
-		int max = p.getValueX().getParameter().getMaxIndex();
-
-		if(this.minXIndex == null) this.minXIndex = min;
-		else this.minXIndex = Math.min(this.minXIndex, min);
-
-		if(this.maxXIndex == null) this.maxXIndex = max;
-		else this.maxXIndex = Math.max(this.maxXIndex, max);
-
-		this.xUnit = p.getValueX().getParameter().getUnit();
-	}
-
-	private void setYLimits(XGAbsolutePoint p)
-	{	int min = p.getValueY().getParameter().getMinIndex();
-		int max = p.getValueY().getParameter().getMaxIndex();
-
-		if(this.minYIndex == null) this.minYIndex = min;
-		else this.minYIndex = Math.min(this.minYIndex, min);
-
-		if(this.maxYIndex == null) this.maxYIndex = max;
-		else this.maxYIndex = Math.max(this.maxYIndex, max);
-
-		this.yUnit = p.getValueY().getParameter().getUnit();
+	void setLimits(int minX, int maxX, int minY, int maxY)
+	{	this.minXIndex = minX;
+		this.maxXIndex = maxX;
+		this.minYIndex = minY;
+		this.maxYIndex = maxY;
 	}
 
 	int getMinXIndex()
-	{	if(this.minXIndex != null) return this.minXIndex;
-		else return 0;
+	{	return this.minXIndex;
 	}
 
 	int getMinYIndex()
-	{	if(this.minYIndex != null) return this.minYIndex;
-		else return 0;
+	{	return this.minYIndex;
 	}
 
 	int getMaxXIndex()
-	{	if(this.maxXIndex != null) return this.maxXIndex;
-		else return 0;
+	{	return this.maxXIndex;
 	}
 
 	int getMaxYIndex()
-	{	if(this.maxYIndex != null) return this.maxYIndex;
-		else return 0;
+	{	return this.maxYIndex;
 	}
 
 	@Override protected void paintComponent(Graphics g)
-	{	super.paintComponent(g);
+	{	this.points.get(0).setLocation();
+		super.paintComponent(g);
 		this.g2 = (Graphics2D)g.create();
 //grid
 		this.g2.setColor(this.getBackground().darker());
@@ -99,7 +105,7 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 		int x = 0;
 		int y = this.getHeight();
 		gp.moveTo(x, y);
-		for(XGAbsolutePoint p : this.points)
+		for(XGPoint p : this.points)
 		{	x = p.getX() + p.getWidth()/2;
 			y = p.getY() + p.getHeight()/2;
 			gp.lineTo(x, y);
@@ -116,5 +122,4 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 		this.g2.drawString(this.yUnit, 0, this.g2.getFontMetrics().stringWidth(this.yUnit));
 		this.g2.dispose();
 	}
-
 }

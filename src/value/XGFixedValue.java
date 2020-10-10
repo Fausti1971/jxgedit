@@ -14,4 +14,9 @@ public class XGFixedValue extends XGValue
 	@Override public XGParameter getParameter()
 	{	return this.parameter;
 	}
+
+	@Override public boolean editIndex(int i)
+	{	return false;
+	}
+
 }

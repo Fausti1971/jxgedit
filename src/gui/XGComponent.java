@@ -8,7 +8,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.NoSuchElementException;
 import javax.swing.JComponent;
+import javax.swing.ToolTipManager;
 import javax.swing.border.TitledBorder;
+import javax.swing.plaf.ToolTipUI;
+import adress.InvalidXGAddressException;
 import adress.XGAddressConstants;
 import adress.XGMemberNotFoundException;
 import application.Configurable;
@@ -35,13 +38,13 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		return new XGFrame(xml, mod);
 	}
 
-	protected static XGComponent newItem(XMLNode n, XGModule mod) throws XGMemberNotFoundException
+	protected static XGComponent newItem(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
 	{	String s = n.getTag();
 		XGComponent c = null;
 		switch(s)
-		{	case TAG_VELOCITY:	c = new XGVelocity(n, mod); break;
-			case TAG_ENVELOPE:	c = new XGEnvelope(n, mod); break;
-			case TAG_EQ:		c = new XGEQCurve(n, mod); break;
+		{	case TAG_VEG:		c = new XGVelocity(n, mod); break;
+			case TAG_AEG:		c = new XGAEG(n, mod); break;
+			case TAG_MEQ:		c = new XGMEQ(n, mod); break;
 			case TAG_FRAME:		c = new XGFrame(n, mod); break;
 			case TAG_KNOB:		c = new XGKnob(n, mod); break;
 			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
