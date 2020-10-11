@@ -70,14 +70,24 @@ public class XGMEQ extends XGComponent implements GuiConstants
 		this.midY = (this.maxY - this.minY)/2 + this.minY;
 
 		this.panel.setLimits(this.minX, this.maxX, this.minY, this.maxY);
+		this.panel.setUnits("Hz", "dB");
 
 		this.add(this.panel);
-		this.panel.add(new XGPoint(0, new XGFixedValue("fixed", this.minX), new XGFixedValue("fixed", this.midY), true, true));
+		this.panel.add(new XGPoint(0, new XGFixedValue("fixed", this.minX), this.g1, true, true));
 		this.panel.add(new XGPoint(1, this.f1, this.g1, true, true));
 		this.panel.add(new XGPoint(2, this.f2, this.g2, true, true));
 		this.panel.add(new XGPoint(3, this.f3, this.g3, true, true));
 		this.panel.add(new XGPoint(4, this.f4, this.g4, true, true));
 		this.panel.add(new XGPoint(5, this.f5, this.g5, true, true));
-		this.panel.add(new XGPoint(6, new XGFixedValue("fixed", this.maxX), new XGFixedValue("fixed", this.midY), true, true));
+		this.panel.add(new XGPoint(6, new XGFixedValue("fixed", this.maxX), this.g5, true, true));
+
+		this.s1.addValueListener((XGValue s)->{this.setShape(s.getValue(), 0, this.g1);});
+		this.s5.addValueListener((XGValue s)->{this.setShape(s.getValue(), 6, this.g5);});
+	}
+
+	private void setShape(int s, int i, XGValue g)
+	{	XGPoint p = this.panel.getPoints().get(i);
+		if(s == 0) p.setYValue(g);
+		else p.setYValue(new XGFixedValue("fixed", this.midY));
 	}
 }

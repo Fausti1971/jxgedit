@@ -1,28 +1,33 @@
 package gui;
 
 import java.awt.Cursor;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import javax.swing.JRadioButton;
+import javax.swing.JComponent;
 import application.XGLoggable;
 import application.XGMath;
+import parm.XGParameter;
 import value.XGValue;
 
-public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, MouseListener, MouseMotionListener
+public class XGPoint extends JComponent implements GuiConstants, XGLoggable, MouseListener, MouseMotionListener
 {
 	private static final long serialVersionUID = 1L;
-//	private static final int POINT_RADIUS = 20;
+	private static final int POINT_RADIUS = 5;
+	private static final int POINT_SIZE = POINT_RADIUS * 2;
 
 /******************************************************************************************************/
 
-	private final XGValue valueX, valueY;
+	private XGValue valueX, valueY;
 	private XGDrawPanel panel;
 	private final boolean isXAbsolute, isYAbsolute;
 	private final int index;
-	private XGPoint previous = null, next = null;
+	private XGPoint previous = null;
 	private final XGTooltip tooltip = new XGTooltip();
+	private Graphics2D g2;
 
 	public XGPoint(int index, XGValue valX, XGValue valY, boolean xAbs, boolean yAbs)
 	{	this.index = index;
@@ -30,20 +35,39 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 		this.valueY = valY;
 		this.isXAbsolute = xAbs;
 		this.isYAbsolute = yAbs;
-		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		this.setSize(POINT_SIZE + 1, POINT_SIZE + 1);
+		this.setPreferredSize(this.getSize());
+		if(this.isMovable()) this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		else this.setVisible(false);
 		this.addMouseListener(this);
 		this.addMouseMotionListener(this);
+	}
+
+	private boolean isMovable()
+	{	XGParameter xP = this.valueX.getParameter(), yP = this.valueY.getParameter();
+		return xP.getMaxIndex() - xP.getMinIndex() != 0 || yP.getMaxIndex() - yP.getMinIndex() != 0;
 	}
 
 	void setPanel(XGDrawPanel pnl)
 	{	this.panel = pnl;
 		if(this.index != 0)
 		{	this.previous = this.panel.getPoints().get(this.index - 1);
-			this.previous.next = this;
+//			this.previous.next = this;
 		}
-		this.valueX.addValueListener((XGValue)->{this.panel.repaint();});
-		this.valueY.addValueListener((XGValue)->{this.panel.repaint();});
+		this.valueX.addValueListener((XGValue)->{this.panel.setSelectedPoint(this);});
+		this.valueY.addValueListener((XGValue)->{this.panel.setSelectedPoint(this);});
 		this.setLocation();
+	}
+
+	void setYValue(XGValue v)
+	{	this.valueY = v;
+		if(this.isMovable())
+		{	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+			this.valueY.addValueListener((XGValue)->{this.panel.setSelectedPoint(this);});
+			this.setVisible(true);
+		}
+		else this.setVisible(false);
+		this.panel.repaint();
 	}
 
 	void setLocation()
@@ -51,7 +75,7 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 		x = XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, this.panel.getWidth());
 		if(!this.isXAbsolute && this.previous != null)
 		{	try
-			{	x += this.previous.getX() + this.previous.getWidth()/2;
+			{	x += this.previous.getX() + POINT_RADIUS;
 			}
 			catch(IndexOutOfBoundsException e)
 			{
@@ -60,17 +84,17 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 		y = XGMath.linearIO(this.valueY.getIndex(), this.panel.getMinYIndex(), this.panel.getMaxYIndex(), this.panel.getHeight(), 0);
 		if(!this.isYAbsolute && this.previous != null)
 		{	try
-			{	y += this.previous.getY() + this.previous.getWidth()/2;
+			{	y += this.previous.getY() + POINT_RADIUS;
 			}
 			catch(IndexOutOfBoundsException e)
 			{
 			}
 		}
-		this.setLocation(x - this.getWidth()/2, y - this.getHeight()/2);
+		this.setLocation(x - POINT_RADIUS, y - POINT_RADIUS);
 		this.tooltip.setName(this.toString());
 		if(this.isShowing())
 		{	Point p = this.getLocationOnScreen();
-			p.x += this.getWidth();
+			p.x += POINT_SIZE;
 //			p.y -= this.tooltip.getHeight();
 			this.tooltip.setLocation(p);
 		}
@@ -90,7 +114,6 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 
 	@Override public void mousePressed(MouseEvent e)
 	{	XGComponent.dragEvent = e;
-//		this.tooltip.setLocation(e.getXOnScreen(), e.getYOnScreen());
 		this.tooltip.setVisible(true);
 		e.consume();
 	}
@@ -118,10 +141,22 @@ public class XGPoint extends JRadioButton implements GuiConstants, XGLoggable, M
 	}
 
 	@Override public void mouseClicked(MouseEvent e)
-	{
+	{	this.requestFocusInWindow();
+		this.repaint();
+
 	}
 
 	@Override public void mouseMoved(MouseEvent e)
 	{
+	}
+
+	@Override protected void paintComponent(Graphics g)
+	{	super.paintComponent(g);
+		this.g2 = (Graphics2D)g.create();
+		this.g2.addRenderingHints(XGComponent.AALIAS);
+		this.g2.setColor(COL_BAR_FORE);
+		if(this.equals(this.panel.getSelectedPoint())) this.g2.fillOval(0, 0, POINT_SIZE, POINT_SIZE);
+		else this.g2.drawOval(0, 0, POINT_SIZE, POINT_SIZE);
+		this.g2.dispose();
 	}
 }

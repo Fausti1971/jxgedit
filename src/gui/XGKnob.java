@@ -82,9 +82,6 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 
 	private class XGKnobBar extends JComponent implements GuiConstants, MouseListener, MouseMotionListener, MouseWheelListener
 	{
-		/**
-		 * 
-		 */
 		private static final long serialVersionUID = 1L;
 
 /*****************************************************************************************/
@@ -121,17 +118,17 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, START_ARC, LENGTH_ARC);
 	// paint foreground arc
 			this.parameter = this.value.getParameter();
-			this.originArc = XGMath.linearIO(parameter.getOriginIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
+			this.originArc = XGMath.linearIO(this.parameter.getOriginIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
 			this.lengthArc = XGMath.linearIO(this.value.getIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
 			this.g2.setColor(COL_BAR_FORE);
-			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, this.originArc + START_ARC, this.lengthArc - originArc);
+			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, this.originArc + START_ARC, this.lengthArc - this.originArc);
 	// paint marker
 			double endRad = Math.toRadians(this.lengthArc + START_ARC);
-			strokeStart.x = (int)(middle.x + radius * Math.cos(endRad));
-			strokeStart.y = (int)(middle.y - radius * Math.sin(endRad));
-			strokeEnd.x = (int)(middle.x + radius/2 * Math.cos(endRad));
-			strokeEnd.y = (int)(middle.y - radius/2 * Math.sin(endRad));
-			this.g2.drawLine(strokeStart.x, strokeStart.y, strokeEnd.x, strokeEnd.y);
+			this.strokeStart.x = (int)(this.middle.x + this.radius * Math.cos(endRad));
+			this.strokeStart.y = (int)(this.middle.y - this.radius * Math.sin(endRad));
+			this.strokeEnd.x = (int)(this.middle.x + this.radius/2 * Math.cos(endRad));
+			this.strokeEnd.y = (int)(this.middle.y - this.radius/2 * Math.sin(endRad));
+			this.g2.drawLine(this.strokeStart.x, this.strokeStart.y, this.strokeEnd.x, this.strokeEnd.y);
 			this.g2.dispose();
 		}
 

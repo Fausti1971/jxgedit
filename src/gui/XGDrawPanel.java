@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -10,8 +9,6 @@ import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.AbstractButton;
-import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import xml.XMLNode;
 
@@ -22,8 +19,8 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 /***************************************************************************************/
 
 	private final ArrayList<XGPoint> points = new ArrayList<>();
+	private XGPoint selectedPoint;
 	private final Set<Integer> vLines = new HashSet<>(), hLines = new HashSet<>();
-	private ButtonGroup group = new ButtonGroup();
 	private int minXIndex = 0, maxXIndex = 0, minYIndex = 0, maxYIndex = 0;
 	private String xUnit = "", yUnit = "";
 	private Graphics2D g2;
@@ -35,6 +32,7 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 		r.y = ins.top;
 		r.width -= (ins.left + ins.right);
 		r.height -= (ins.top + ins.bottom);
+		this.setLayout(null);
 		this.setBounds(r);
 		this.setBackground(COL_BAR_BACK);
 
@@ -48,13 +46,22 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 	}
 
 	@Override public Component add(Component comp)
-	{	this.group.add((AbstractButton)comp);
-		if(comp instanceof XGPoint)
+	{	if(comp instanceof XGPoint)
 		{	XGPoint p = (XGPoint)comp;
 			p.setPanel(this);
 			this.points.add(p);
 		}
 		return super.add(comp);
+	}
+
+	void setSelectedPoint(XGPoint p)
+	{	if(this.selectedPoint != null) this.selectedPoint.repaint();
+		this.selectedPoint = p;
+		if(this.selectedPoint != null) this.repaint();
+	}
+
+	XGPoint getSelectedPoint()
+	{	return this.selectedPoint;
 	}
 
 	ArrayList<XGPoint> getPoints()
@@ -100,7 +107,7 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 		for(int i : this.hLines) g2.drawLine(0, i, this.getWidth(), i);
 //polygon
 		this.g2.addRenderingHints(XGComponent.AALIAS);
-		this.g2.setColor(new Color(COL_BAR_FORE.getRed(), COL_BAR_FORE.getGreen(), COL_BAR_FORE.getBlue(), 40));
+		this.g2.setColor(COL_SHAPE);
 		GeneralPath gp = new GeneralPath();
 		int x = 0;
 		int y = this.getHeight();
@@ -119,7 +126,7 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 		this.g2.setFont(FONT);
 		this.g2.setColor(this.getBackground().darker());
 		this.g2.drawString(this.xUnit, this.getWidth() - this.g2.getFontMetrics().stringWidth(this.xUnit), this.getHeight());
-		this.g2.drawString(this.yUnit, 0, this.g2.getFontMetrics().stringWidth(this.yUnit));
+		this.g2.drawString(this.yUnit, 0, this.g2.getFontMetrics().getHeight());
 		this.g2.dispose();
 	}
 }

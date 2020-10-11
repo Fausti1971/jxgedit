@@ -27,7 +27,8 @@ public interface GuiConstants extends ConfigurationConstants
 		COL_NODE_SELECTED_TEXT = Color.white,
 		COL_BORDER = Color.lightGray,
 		COL_BAR_BACK = SystemColor.scrollbar.brighter(),
-		COL_BAR_FORE = UIManager.getColor("Tree.selectionBackground").brighter();
+		COL_BAR_FORE = UIManager.getColor("Tree.selectionBackground").brighter(),
+		COL_SHAPE = new Color(COL_BAR_FORE.getRed(), COL_BAR_FORE.getGreen(), COL_BAR_FORE.getBlue(), 40);
 
 	float FONTSIZE = 10f;
 
