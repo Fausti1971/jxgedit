@@ -1,5 +1,6 @@
 package module;
 
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.Collection;
@@ -128,6 +129,10 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	@Override public void windowClosed(WindowEvent e)
 	{	this.setSelected(false);
 		this.setChildWindow(null);
+	}
+
+	@Override public Point childWindowLocationOnScreen()
+	{	return this.locationOnScreen();
 	}
 
 	@Override public XGWindow getChildWindow()

@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Point;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.JComponent;
@@ -14,7 +15,7 @@ public interface XGWindowSource extends WindowListener
 	public XGWindow getChildWindow();
 	public void setChildWindow(XGWindow win);
 	public JComponent getChildWindowContent();
-
+	public Point childWindowLocationOnScreen();
 
 	@Override public default void windowOpened(WindowEvent e)
 	{

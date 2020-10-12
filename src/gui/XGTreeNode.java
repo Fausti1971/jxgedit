@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -80,6 +82,15 @@ public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
 			n = n.getParent();
 		}
 		return new TreePath(array.toArray());
+	}
+
+	default Point locationOnScreen()
+	{	XGTree t = this.getTreeComponent();
+		Point p = t.getLocationOnScreen();
+		Rectangle r = t.getPathBounds(this.getTreePath());
+		p.x += r.x + r.width;
+		p.y += r.y + r.height;
+		return p;
 	}
 
 	@Override public default boolean getAllowsChildren()

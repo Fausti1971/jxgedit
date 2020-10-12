@@ -44,26 +44,14 @@ public class XGWindow extends JDialog implements GuiConstants, ConfigurationCons
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.addWindowListener(src);
 		this.getContentPane().add(new JScrollPane(this.rootComponent));
-//		int x = (int)own.getLocation().getX() + own.getWidth();
-//		int y = (int)own.getLocation().getY();
-//		this.setLocation(x, y);
-//		Point p = new Point();
-//		SwingUtilities.convertPointToScreen(p, src.getSourceComponent());
-//		this.setLocation(XGComponent.dragEvent.getLocationOnScreen());
+		this.setLocation(src.childWindowLocationOnScreen());
 
-//		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
 		this.pack();
 		this.setResizable(resize);
 		this.setAlwaysOnTop(mod);
 		this.setVisible(true);
 		this.toFront();
-//		System.out.println(this.getModalityType());
 	}
-
-//	public void open()
-//	{	this.setVisible(true);
-//		this.toFront();
-//	}
 
 	public XGWindowSource getSource()
 	{	return this.source;

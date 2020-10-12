@@ -3,6 +3,7 @@ package device;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.io.File;
@@ -461,6 +462,10 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	@Override public void setChildWindow(XGWindow win)
 	{	this.childWindow = win;
+	}
+
+	@Override public Point childWindowLocationOnScreen()
+	{	return this.locationOnScreen();
 	}
 
 	@Override public void windowOpened(WindowEvent e)

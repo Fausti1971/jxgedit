@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -117,5 +118,9 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 		Object o = p.getLastPathComponent();
 		if(o == null) return;
 		if(o instanceof XGTableEntry) this.value.editEntry((XGTableEntry)o);
+	}
+
+	@Override public Point childWindowLocationOnScreen()
+	{	return this.select.getLocationOnScreen();
 	}
 }

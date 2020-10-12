@@ -2,6 +2,7 @@ package msg;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import javax.swing.AbstractAction;
@@ -93,6 +94,10 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 
 	@Override public void windowDeactivated(WindowEvent e)
 	{
+	}
+
+	@Override public Point childWindowLocationOnScreen()
+	{	return new Point(50, 50);
 	}
 
 	@Override public XGWindow getChildWindow()
