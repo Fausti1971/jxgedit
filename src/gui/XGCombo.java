@@ -3,8 +3,6 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
@@ -34,15 +32,13 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
+		this.value = mod.getType().getDevice().getValues().get(this.address);
 		this.combo = new XGComboBox<>(this.value);
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
 		this.add(this.combo, gbc);
 		this.value.addValueListener(this);
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
-
-//		this.logInitSuccess();
 	}
 
 	@Override public void parameterChanged(XGParameter p)
@@ -64,7 +60,7 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 
 /*****************************************************************************************************/
 
-	private class XGComboBox<T> extends JComboBox<XGTableEntry> implements ActionListener
+	private class XGComboBox<T> extends JComboBox<XGTableEntry>
 	{	/**
 		 * 
 		 */
@@ -79,15 +75,14 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 			if(p != null)
 			{	XGTable t = p.getTranslationTable();
 				for(XGTableEntry e : t) this.addItem(e);
-//				this.setMaximumRowCount(Toolkit.getDefaultToolkit().getScreenSize().height/this.row, t.size());
 				this.setSelectedItem(t.getByIndex(this.value.getIndex()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
-				this.addActionListener(this);
+				this.addActionListener((ActionEvent)->{this.entrySelected();});
 			}
 			else this.setEnabled(false);
 			this.setAutoscrolls(true);
 		}
 
-		@Override public void actionPerformed(ActionEvent ae)
+		private void entrySelected()
 		{	this.value.editEntry((XGTableEntry)this.getSelectedItem());
 		}
 	}

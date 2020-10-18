@@ -66,14 +66,12 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 	}
 
 	private void selectionWindow()
-	{	new XGWindow(this, (XGWindow)SwingUtilities.windowForComponent(this), true, true, "select " + this.getName());
+	{	if(this.getChildWindow() == null) new XGWindow(this, (XGWindow)SwingUtilities.windowForComponent(this), true, true, "select " + this.getName());
+		else this.getChildWindow().toFront();
 	}
 
 	@Override public void contentChanged(XGValue v)
-	{
-//int i = v.getValue();
-//System.out.println("content: msb=" + ((i >> 14) & 0x7F) + " lsb=" + ((i >> 7) & 0x7F) + " prg=" + (i & 0x7F));
-		this.select.setText(this.value.toString());
+	{	this.select.setText(this.value.toString());
 		super.repaint();
 	}
 
@@ -99,14 +97,13 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 		else o = new Object[]{t.getModel().getRoot(), e.getCategories().iterator().next(), e};
 		TreePath p = new TreePath(o);
 
-//		t.setSelectionModel(new DefaultTreeSelectionModel());
 		t.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		t.setSelectionPath(p);
-//		t.setLeadSelectionPath(p);
 		t.scrollPathToVisible(p);
 		t.setExpandsSelectedPaths(true);
 		t.setScrollsOnExpand(true);
 		t.addTreeSelectionListener(this);
+//		this.inc.addActionListener((ActionEvent)->{t.setSelectionPath(path);};);
 		t.setShowsRootHandles(true);
 		t.setRootVisible(false);
 		return t;
@@ -121,6 +118,6 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 	}
 
 	@Override public Point childWindowLocationOnScreen()
-	{	return this.select.getLocationOnScreen();
+	{	return this.getLocationOnScreen();
 	}
 }

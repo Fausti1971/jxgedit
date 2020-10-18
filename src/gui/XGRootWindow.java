@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog.ModalExclusionType;
 import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -39,7 +40,7 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 			this.config.getIntegerAttribute(ATTR_Y, 20),
 			this.config.getIntegerAttribute(ATTR_W, MIN_W),
 			this.config.getIntegerAttribute(ATTR_H, MIN_H));
-		this.setModal(false);
+		this.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		this.setVisible(true);
 	}
 

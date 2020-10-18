@@ -114,6 +114,8 @@ public interface XMLNodeConstants
 		TAG_VEG = "veg",
 		TAG_BUTTON = "button",
 		TAG_SELECTOR = "selector",
+		TAG_FLAGBOX = "flagbox",
+		TAG_FLAG = "flag",
 		TAG_AUTO = "auto",
 
 		ATTR_BOUNDS = "bounds",

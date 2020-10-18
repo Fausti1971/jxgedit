@@ -220,6 +220,12 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.editIndex(this.index + diff);
 	}
 
+	public boolean toggleIndex()
+	{	XGParameter p = this.getParameter();
+		if(this.index == p.getMinIndex()) return this.editIndex(p.getMaxIndex());
+		else return this.editIndex(p.getMinIndex());
+	}
+
 	public void sendAction()
 	{	this.actions(XACTION_BEFORE_SEND);
 		XGDevice dev = this.opcode.getDevice();

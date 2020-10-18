@@ -88,8 +88,14 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 			return;
 		}
 		this.setFocussedNode((XGTreeNode)c);
-		if(e.getButton() == MouseEvent.BUTTON3 && this.focussedNode != null && !this.focussedNode.getContexts().isEmpty()) //e.isPopupTrigger() funktioniert manchmal nicht
-		{	new XGPopup(this, this.focussedNode, e.getLocationOnScreen());
+		if(this.focussedNode != null && !this.focussedNode.getContexts().isEmpty())
+		{	if(e.getButton() == MouseEvent.BUTTON3) //e.isPopupTrigger() funktioniert manchmal nicht
+			{	new XGPopup(this, this.focussedNode, e.getLocationOnScreen());
+				return;
+			}
+			if(e.getButton() == MouseEvent.BUTTON1 && e.getClickCount() > 1)
+			{	this.focussedNode.actionPerformed(new ActionEvent(this, 0, this.focussedNode.getContexts().iterator().next()));
+			}
 		}
 	}
 
