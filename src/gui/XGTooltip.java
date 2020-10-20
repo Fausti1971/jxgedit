@@ -15,6 +15,9 @@ public class XGTooltip extends JFrame implements GuiConstants	//TODO: Ausführun
 	{	this.add(this.label);
 		this.label.setFont(FONT);
 		this.setUndecorated(true);
+		this.setFocusable(false);
+		this.setAutoRequestFocus(false);
+//		this.setFocusableWindowState(false);
 	}
 
 	@Override public void setName(String name)

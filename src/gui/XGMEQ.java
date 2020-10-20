@@ -2,6 +2,7 @@ package gui;
 
 import adress.XGAddress;
 import adress.XGAddressableSet;
+import gui.XGPoint.PointRelation;
 import module.XGModule;
 import value.XGFixedValue;
 import value.XGValue;
@@ -31,7 +32,7 @@ public class XGMEQ extends XGComponent implements GuiConstants
 
 /*****************************************************************************************/
 
-	private final XGDrawPanel panel;
+	private final XGPointPanel panel;
 	private final XGValue g1, g2, g3, g4, g5, f1, f2, f3, f4, f5, q1, q2, q3, q4, q5, s1, s5;
 	private final int minX, maxX, minY, maxY, midY;
 
@@ -62,7 +63,7 @@ public class XGMEQ extends XGComponent implements GuiConstants
 		this.s1 = set.get(S1);
 		this.s5 = set.get(S5);
 
-		this.panel = new XGDrawPanel(this, n);
+		this.panel = new XGPointPanel(this, n);
 		this.minX = this.f1.getParameter().getMinIndex();
 		this.maxX = this.f5.getParameter().getMaxIndex();
 		this.minY = this.g1.getParameter().getMinIndex();
@@ -73,13 +74,13 @@ public class XGMEQ extends XGComponent implements GuiConstants
 		this.panel.setUnits("Hz", "dB");
 
 		this.add(this.panel);
-		this.panel.add(new XGPoint(0, new XGFixedValue("fixed", this.minX), this.g1, true, true));
-		this.panel.add(new XGPoint(1, this.f1, this.g1, true, true));
-		this.panel.add(new XGPoint(2, this.f2, this.g2, true, true));
-		this.panel.add(new XGPoint(3, this.f3, this.g3, true, true));
-		this.panel.add(new XGPoint(4, this.f4, this.g4, true, true));
-		this.panel.add(new XGPoint(5, this.f5, this.g5, true, true));
-		this.panel.add(new XGPoint(6, new XGFixedValue("fixed", this.maxX), this.g5, true, true));
+		this.panel.add(new XGPoint(0, new XGFixedValue("fixed", this.minX), this.g1, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(1, this.f1, this.g1, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(2, this.f2, this.g2, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(3, this.f3, this.g3, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(4, this.f4, this.g4, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(5, this.f5, this.g5, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(6, new XGFixedValue("fixed", this.maxX), this.g5, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 
 		this.s1.addValueListener((XGValue s)->{this.setShape(s.getValue(), 0, this.g1);});
 		this.s5.addValueListener((XGValue s)->{this.setShape(s.getValue(), 6, this.g5);});

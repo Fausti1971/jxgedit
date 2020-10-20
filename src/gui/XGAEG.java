@@ -3,6 +3,7 @@ package gui;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
+import gui.XGPoint.PointRelation;
 import module.XGModule;
 import value.XGFixedValue;
 import value.XGValue;
@@ -15,7 +16,7 @@ public class XGAEG extends XGComponent
 
 /**************************************************************************************/
 
-	private final XGDrawPanel panel;
+	private final XGPointPanel panel;
 	private final XGValue attack, decay, release;
 
 	public XGAEG(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
@@ -30,14 +31,14 @@ public class XGAEG extends XGComponent
 		maxX += this.decay.getParameter().getMaxIndex() - this.decay.getParameter().getMinIndex();
 		maxX += this.release.getParameter().getMaxIndex() - this.release.getParameter().getMinIndex();
 
-		this.panel = new XGDrawPanel(this, n);
+		this.panel = new XGPointPanel(this, n);
 		this.panel.setLimits(0, maxX, 0, 2);
 		this.panel.setUnits("ms", "amp");
 
-		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), new XGFixedValue("fixed", 0), true, true));
-		this.panel.add(new XGPoint(1, this.attack, new XGFixedValue("fixed",  2), false, true));
-		this.panel.add(new XGPoint(2, this.decay, new XGFixedValue("fixed", 1), false, true));
-		this.panel.add(new XGPoint(3, this.release, new XGFixedValue("fixed", 0), false, true));
+		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), new XGFixedValue("fixed", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(1, this.attack, new XGFixedValue("fixed",  2), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(2, this.decay, new XGFixedValue("fixed", 1), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(3, this.release, new XGFixedValue("fixed", 0), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
 
 		this.add(this.panel);
 	}

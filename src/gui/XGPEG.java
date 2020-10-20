@@ -1,0 +1,43 @@
+package gui;
+import adress.InvalidXGAddressException;
+import adress.XGAddress;
+import adress.XGMemberNotFoundException;
+import gui.XGPoint.PointRelation;
+import module.XGModule;
+import value.XGFixedValue;
+import value.XGValue;
+import xml.XMLNode;
+
+public class XGPEG extends XGComponent
+{
+	private static final long serialVersionUID = 1L;
+	private static final XGAddress A_TIME = new XGAddress("8//106"), A_LEVEL = new XGAddress("8//105"), R_TIME = new XGAddress("8//108"), R_LEVEL = new XGAddress("8//107");
+
+/**************************************************************************************/
+
+	private final XGPointPanel panel;
+	private final XGValue a_time, a_level, r_time, r_level;
+
+	public XGPEG(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
+	{	super(n, mod);
+		this.borderize();
+		this.setLayout(null);
+
+		this.a_time = mod.getValues().get(A_TIME.complement(mod.getAddress()));
+		this.a_level = mod.getValues().get(A_LEVEL.complement(mod.getAddress()));
+		this.r_time = mod.getValues().get(R_TIME.complement(mod.getAddress()));
+		this.r_level = mod.getValues().get(R_LEVEL.complement(mod.getAddress()));
+
+		this.panel = new XGPointPanel(this, n);
+		this.panel.setLimits(0, 3 * 127, 0, 127);
+//		this.panel.setUnits("ms", "amp");
+
+		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), this.a_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(1, this.a_time, new XGFixedValue("fixed",  64), PointRelation.ADD_PREVIOUS_VALUE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(2, new XGFixedValue("fix", 127), new XGFixedValue("fixed", 64), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(3, this.r_time, this.r_level, PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(4, new XGFixedValue("", 0), new XGFixedValue("", 64), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+
+		this.add(this.panel);
+	}
+}

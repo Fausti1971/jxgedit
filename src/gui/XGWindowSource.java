@@ -18,7 +18,7 @@ public interface XGWindowSource extends WindowListener
 	public Point childWindowLocationOnScreen();
 
 	@Override public default void windowOpened(WindowEvent e)
-	{
+	{	this.setChildWindow((XGWindow)e.getWindow());
 	}
 
 	@Override public default void windowClosing(WindowEvent e)
@@ -26,7 +26,7 @@ public interface XGWindowSource extends WindowListener
 	}
 
 	@Override public default void windowClosed(WindowEvent e)
-	{
+	{	this.setChildWindow(null);
 	}
 
 	@Override public default void windowIconified(WindowEvent e)

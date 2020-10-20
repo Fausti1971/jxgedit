@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JPanel;
+import application.XGMath;
 import xml.XMLNode;
 
-public class XGDrawPanel extends JPanel implements GuiConstants
+public class XGPointPanel extends JPanel implements GuiConstants
 {
 	private static final long serialVersionUID = 1L;
 
@@ -22,10 +23,12 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 	private XGPoint selectedPoint;
 	private final Set<Integer> vLines = new HashSet<>(), hLines = new HashSet<>();
 	private int minXIndex = 0, maxXIndex = 0, minYIndex = 0, maxYIndex = 0;
+	private int origin_x, origin_y;
+	private final int origin_x_index, origin_y_index;
 	private String xUnit = "", yUnit = "";
 	private Graphics2D g2;
 
-	public XGDrawPanel(XGComponent par, XMLNode n)
+	public XGPointPanel(XGComponent par, XMLNode n)
 	{	Rectangle r = new Rectangle(par.getBounds());
 		Insets ins = par.getInsets();
 		r.x = ins.left;
@@ -43,6 +46,9 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 		l = n.getIntegerAttribute(ATTR_GRID_Y, 0);
 		sect = r.width / (l + 1);
 		for(int i = 1; i <= l; i++) this.vLines.add(i * sect);
+
+		this.origin_x_index = n.getIntegerAttribute(ATTR_ORIGIN_X, 0);
+		this.origin_y_index = n.getIntegerAttribute(ATTR_ORIGIN_Y, 0);
 	}
 
 	@Override public Component add(Component comp)
@@ -78,6 +84,8 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 		this.maxXIndex = maxX;
 		this.minYIndex = minY;
 		this.maxYIndex = maxY;
+		this.origin_x = XGMath.linearIO(this.origin_x_index, minX, maxX, 0, this.getWidth());
+		this.origin_y = XGMath.linearIO(this.origin_y_index, minY, maxY, this.getHeight(), 0);
 	}
 
 	int getMinXIndex()
@@ -109,16 +117,16 @@ public class XGDrawPanel extends JPanel implements GuiConstants
 		this.g2.addRenderingHints(XGComponent.AALIAS);
 		this.g2.setColor(COL_SHAPE);
 		GeneralPath gp = new GeneralPath();
-		int x = 0;
-		int y = this.getHeight();
+		int x = this.origin_x;
+		int y = this.origin_y;
 		gp.moveTo(x, y);
 		for(XGPoint p : this.points)
 		{	x = p.getX() + p.getWidth()/2;
 			y = p.getY() + p.getHeight()/2;
 			gp.lineTo(x, y);
 		}
-		gp.lineTo(this.getWidth(), y);
-		gp.lineTo(this.getWidth(), this.getHeight());
+		gp.lineTo(this.getWidth(), this.origin_y);
+//		gp.lineTo(this.origin_x, this.getHeight());
 		gp.closePath();
 		this.g2.fill(gp);
 //		this.g2.draw(gp);

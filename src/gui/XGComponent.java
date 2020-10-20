@@ -11,7 +11,6 @@ import java.util.NoSuchElementException;
 import javax.swing.JComponent;
 import javax.swing.ToolTipManager;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.ToolTipUI;
 import adress.InvalidXGAddressException;
 import adress.XGAddressConstants;
 import adress.XGMemberNotFoundException;
@@ -29,8 +28,16 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	private static final long serialVersionUID = 1L;
 	public static MouseEvent dragEvent = null;
 	public static Cursor lastCursor = null;
+	public static boolean mousePressed = false;
 
 	static final XGValue DEF_VALUE = new XGValue("n/a", 0);
+	static final ToolTipManager TTMI = ToolTipManager.sharedInstance();
+	static
+	{	TTMI.setInitialDelay(10);
+		TTMI.setDismissDelay(1000);
+		TTMI.setReshowDelay(0);
+	}
+
 
 	public static XGComponent init(XGModule mod) throws NoSuchElementException
 	{	XGTemplate t = mod.getType().getGuiTemplate();
@@ -46,6 +53,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		switch(s)
 		{	case TAG_VEG:		c = new XGVEG(n, mod); break;
 			case TAG_AEG:		c = new XGAEG(n, mod); break;
+			case TAG_PEG:		c = new XGPEG(n, mod); break;
 			case TAG_MEQ:		c = new XGMEQ(n, mod); break;
 			case TAG_FRAME:		c = new XGFrame(n, mod); break;
 			case TAG_KNOB:		c = new XGKnob(n, mod); break;
@@ -56,6 +64,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 			case TAG_BUTTON:	c = new XGButton(n, mod); break;
 			case TAG_SELECTOR:	c = new XGProgramSelector(n, mod); break;
 			case TAG_FLAGBOX:	c = new XGFlagBox(n, mod); break;
+			case TAG_SCALE:		c = new XGScale(n, mod); break;
 			default:			c = new XGFrame("unknown_" + s); break;
 		}
 		return c;
@@ -122,16 +131,18 @@ System.out.println("doubleclick detected");
 	}
 
 	@Override public void mousePressed(MouseEvent e)
-	{	XGComponent.dragEvent = e;
+	{	XGComponent.mousePressed = true;
+		XGComponent.dragEvent = e;
 		e.consume();
 	}
 
 	@Override public void mouseReleased(MouseEvent e)
-	{	XGComponent.dragEvent = e;
+	{	XGComponent.mousePressed = false;
+		XGComponent.dragEvent = e;
 	}
 
 	@Override public void mouseEntered(MouseEvent e)
-	{	if(XGComponent.dragEvent == null || XGComponent.dragEvent.getID() == MouseEvent.MOUSE_RELEASED) this.requestFocusInWindow();
+	{	if(!XGComponent.mousePressed) this.requestFocusInWindow();
 	}
 
 	@Override public void mouseExited(MouseEvent e)

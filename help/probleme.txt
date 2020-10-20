@@ -97,3 +97,5 @@ Anregung:
 Anregung:
 		Im Parent (XGFrame) könnte das Grid festgelegt werden, das für dieses GUITemplate gilt (bei Fehlen das Standard-Grid nutzen);
 		somit könnten besonders volle XGFrames mit kleineren Steuerelementen versehen werden.
+Anregung:
+		Wie ich heute las, kann man die Selection im JTree vom Focus entkoppeln (default=true), was den nativen JTree wieder interressanter macht.
