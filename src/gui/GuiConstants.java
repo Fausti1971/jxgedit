@@ -32,7 +32,7 @@ public interface GuiConstants extends ConfigurationConstants
 
 	float FONTSIZE = 10f;
 
-	Font FONT = new JEditorPane().getFont().deriveFont(FONTSIZE);
+	Font SMALL_FONT = new JEditorPane().getFont().deriveFont(FONTSIZE);
 
 	int
 		GRID = 22,

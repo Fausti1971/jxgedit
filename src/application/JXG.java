@@ -3,6 +3,7 @@ package application;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -65,36 +66,33 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	}
 
 /***************************************************************************************************************/
-
+//überlege: wenn HOMEPATH (~/JXG) existiert setze diesen als CONFIGPATH; ansonsten APPPATH
 	private XGTree tree;
 	private boolean isSelected = false;
 	private final XMLNode config;
-//	private final Path rscPath = Paths.get("rsc"), xsdPath;
+	private final Path configPath;
+	private final Path configFile;
 
 	public JXG()
-	{	
-//		this.xsdPath = rscPath.resolve("xsd");
-		CONFIGPATH.toFile().mkdirs();//TODO: der Ordner soll nur angelegt werden, wenn CONFIGPATH = HOMEPATH
+	{	if(HOMEPATH.toFile().isDirectory()) this.configPath = HOMEPATH;
+		else this.configPath = APPPATH;
+		this.configFile = this.configPath.resolve(XML_CONFIG);
 
-		File f = CONFIGFILEPATH.toFile();
+		File f = configFile.toFile();
 		if(f.exists()) this.config = XMLNode.parse(f);
 		else this.config = new XMLNode(APPNAME);
 
 		LOG.info("JXG config initialized");
 	}
 
-//	public Path getRscPath()
-//	{	return this.rscPath;
-//	}
-
-//	public Path getXsdPath()
-//	{	return this.xsdPath;
-//	}
+	public Path getConfigPath()
+	{	return this.configPath;
+	}
 
 	public void quit()
 	{	LOG.info("exiting application");
 		try
-		{	APP.getConfig().save(CONFIGFILEPATH.toFile());
+		{	APP.getConfig().save(configFile.toFile());
 			for(XGDevice d : XGDevice.getDevices()) d.exit();
 		}
 		catch(IOException|XMLStreamException e)

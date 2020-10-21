@@ -40,7 +40,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	private final Set<XGValueChangeListener> valueListeners = new HashSet<>();
 	private final Set<XGParameterChangeListener> parameterListeners = new HashSet<>();
 
-	public XGValue(String name, int v)
+	XGValue(String name, int v)
 	{	this.address = XGALLADDRESS;
 		this.index = v;
 		this.parameterSelector = null;

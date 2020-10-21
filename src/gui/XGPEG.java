@@ -30,13 +30,13 @@ public class XGPEG extends XGComponent
 
 		this.panel = new XGPointPanel(this, n);
 		this.panel.setLimits(0, 3 * 127, 0, 127);
-//		this.panel.setUnits("ms", "amp");
+		this.panel.setUnits("Time", "Pitch");
 
 		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), this.a_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(1, this.a_time, new XGFixedValue("fixed",  64), PointRelation.ADD_PREVIOUS_VALUE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(2, new XGFixedValue("fix", 127), new XGFixedValue("fixed", 64), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(3, this.r_time, this.r_level, PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(4, new XGFixedValue("", 0), new XGFixedValue("", 64), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(1, this.a_time, new XGFixedValue("fixed",  64), PointRelation.ADD_TO_PREVIOUS_VALUE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(2, new XGFixedValue("fix", 127), new XGFixedValue("fixed", 64), PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(3, this.r_time, this.r_level, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(4, new XGFixedValue("", 0), new XGFixedValue("", 64), PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
 
 		this.add(this.panel);
 	}

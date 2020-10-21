@@ -18,7 +18,19 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 	private static final long serialVersionUID = 1L;
 	private static final int POINT_RADIUS = 5;
 	static final int POINT_SIZE = POINT_RADIUS * 2;
-	public static enum PointRelation{ABSOLUTE, PREVIOUS_VALUE, ADD_PREVIOUS_VALUE, SUB_PREVIOUS_VALUE, ADD_PREVIOUS_COORDINATE};
+	public static enum PointRelation
+	{	ABSOLUTE,
+		REVERSE,
+
+		PREVIOUS_VALUE,
+		NEXT_VALUE,
+
+		ADD_TO_PREVIOUS_VALUE,
+		ADD_TO_PREVIOUS_COORDINATE,
+
+		SUB_FROM_NEXT_VALUE,
+		SUB_FROM_NEXT_COORDINATE
+	};
 
 /******************************************************************************************************/
 
@@ -26,7 +38,7 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 	private XGPointPanel panel;
 	private final PointRelation relationX, relationY;
 	private final int index;
-	private XGPoint previous = null;
+	private XGPoint previous = null, next = null;
 	private final XGTooltip tooltip = new XGTooltip();
 	private Graphics2D g2;
 
@@ -40,7 +52,6 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 		this.setPreferredSize(this.getSize());
 		if(this.isMovable())
 		{	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.setToolTipText("");
 		}
 		else this.setVisible(false);
 		this.addMouseListener(this);
@@ -56,10 +67,10 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 	{	this.panel = pnl;
 		if(this.index != 0)
 		{	this.previous = this.panel.getPoints().get(this.index - 1);
-//			this.previous.next = this;
+			this.previous.next = this;
 		}
-		this.valueX.addValueListener((XGValue)->{this.panel.setSelectedPoint(this);});
-		this.valueY.addValueListener((XGValue)->{this.panel.setSelectedPoint(this);});
+		this.valueX.addValueListener((XGValue v)->{this.panel.setSelectedValue(v);});
+		this.valueY.addValueListener((XGValue v)->{this.panel.setSelectedValue(v);});
 		this.setLocation();
 	}
 
@@ -67,7 +78,7 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 	{	this.valueY = v;
 		if(this.isMovable())
 		{	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.valueY.addValueListener((XGValue)->{this.panel.setSelectedPoint(this);});
+			this.valueY.addValueListener((XGValue)->{this.panel.setSelectedValue(v);});
 			this.setVisible(true);
 		}
 		else this.setVisible(false);
@@ -76,27 +87,45 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 
 	void setLocation()
 	{	int x = 0, y = 0;
-		int xi = this.valueX.getIndex(), yi = this.valueY.getIndex(), pxi = 0, pyi = 0;
+		int xi = this.valueX.getIndex(), yi = this.valueY.getIndex(), pxi = 0, pyi = 0, nxi, nyi;
 		if(this.previous != null)
 		{	pxi = this.previous.getValueX().getIndex();
 			pyi = this.previous.getValueY().getIndex();
 			switch(this.relationX)
 			{	case ABSOLUTE:				break;
-				case ADD_PREVIOUS_VALUE:	xi += pxi; break;
-				case SUB_PREVIOUS_VALUE:	xi -= pxi; break;
+				case ADD_TO_PREVIOUS_VALUE:	xi += pxi; break;
 				case PREVIOUS_VALUE:		xi = pxi; break;
-				case ADD_PREVIOUS_COORDINATE:	x = this.previous.getX() + POINT_RADIUS; break;
+				case ADD_TO_PREVIOUS_COORDINATE:	x = this.previous.getX() + POINT_RADIUS; break;
 				default:					break;
 			}
 			switch(this.relationY)
 			{	case ABSOLUTE:				break;
-				case ADD_PREVIOUS_VALUE:	yi += pyi; break;
-				case SUB_PREVIOUS_VALUE:	yi -= pyi; break;
+				case ADD_TO_PREVIOUS_VALUE:	yi += pyi; break;
 				case PREVIOUS_VALUE:		yi = pyi; break;
-				case ADD_PREVIOUS_COORDINATE:	y = this.previous.getY() + POINT_RADIUS; break;
+				case ADD_TO_PREVIOUS_COORDINATE:	y = this.previous.getY() + POINT_RADIUS; break;
 				default:					break;
 			}
 		}
+
+		if(this.next != null)
+		{	nxi = this.next.getValueX().getIndex();
+			nyi = this.next.getValueY().getIndex();
+			switch(this.relationX)
+			{	case ABSOLUTE:				break;
+				case SUB_FROM_NEXT_VALUE:	xi -= nxi; break;
+				case NEXT_VALUE:			xi = nxi; break;
+				case SUB_FROM_NEXT_COORDINATE:	x = this.next.getX() + POINT_RADIUS; break;
+				default:					break;
+			}
+			switch(this.relationY)
+			{	case ABSOLUTE:				break;
+				case SUB_FROM_NEXT_VALUE:	yi -= nyi; break;
+				case NEXT_VALUE:		yi = nyi; break;
+				case SUB_FROM_NEXT_COORDINATE:	y = this.next.getY() + POINT_RADIUS; break;
+				default:					break;
+			}
+		}
+
 		x += XGMath.linearIO(xi, this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, this.panel.getWidth());
 		y += XGMath.linearIO(yi, this.panel.getMinYIndex(), this.panel.getMaxYIndex(), this.panel.getHeight(), 0);
 
@@ -104,8 +133,7 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 		this.tooltip.setName(this.toString());
 		if(this.isShowing())
 		{	Point p = this.getLocationOnScreen();
-			p.x += POINT_SIZE;
-			this.tooltip.setLocation(p);
+			this.tooltip.setLocation(p.x + POINT_SIZE, p.y + POINT_SIZE);
 		}
 	}
 
@@ -137,7 +165,8 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 
 	@Override public void mouseEntered(MouseEvent e)
 	{	if(!XGComponent.mousePressed)
-		{	this.tooltip.setLocation(e.getLocationOnScreen().x + POINT_SIZE, e.getLocationOnScreen().y + POINT_SIZE);
+		{	Point p = e.getLocationOnScreen();
+			this.tooltip.setLocation(p.x + POINT_SIZE, p.y + POINT_SIZE);
 			this.tooltip.setVisible(true);
 		}
 	}
@@ -168,7 +197,7 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 		this.g2 = (Graphics2D)g.create();
 		this.g2.addRenderingHints(XGComponent.AALIAS);
 		this.g2.setColor(COL_BAR_FORE);
-		if(this.equals(this.panel.getSelectedPoint())) this.g2.fillOval(0, 0, POINT_SIZE, POINT_SIZE);
+		if(this.valueX.equals(this.panel.getSelectedValue()) || this.valueY.equals(this.panel.getSelectedValue())) this.g2.fillOval(0, 0, POINT_SIZE, POINT_SIZE);
 		else this.g2.drawOval(0, 0, POINT_SIZE, POINT_SIZE);
 		this.g2.dispose();
 	}

@@ -35,6 +35,7 @@ public class XGScale extends XGComponent
 		this.borderize();
 		this.panel = new XGPointPanel(this, n);
 		this.panel.setLimits(0, 11, 0, 127);
+		this.panel.setUnits("Note", "Pitch");
 		this.add(this.panel);
 
 		this.val_c = mod.getValues().get(ADR_C.complement(mod.getAddress()));

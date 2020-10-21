@@ -24,7 +24,7 @@ public class XGList<E extends Object> extends JList<E> implements ListSelectionL
 	{	super(new Vector<E>(list));
 		this.setSelectedValue(s.getContent(), true);
 		this.setName(name);
-		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, COL_BORDER));
 		this.value = s;
 		this.addListSelectionListener(this);
 

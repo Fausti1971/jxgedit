@@ -165,14 +165,14 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
 			this.midi = new XGMidi(this);
 			this.files = this.config.getChildNodeOrNew(TAG_FILES);
-			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, CONFIGPATH.resolve(DEF_SYXFILENAME).toString());
+			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, JXG.getApp().getConfigPath().resolve(DEF_SYXFILENAME).toString());
 			this.configure();
 		}
 		else
 		{	this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
 			this.midi = new XGMidi(this);
 			this.files = this.config.getChildNodeOrNew(TAG_FILES);
-			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, CONFIGPATH.resolve(DEF_SYXFILENAME).toString());
+			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, JXG.getApp().getConfigPath().resolve(DEF_SYXFILENAME).toString());
 		}
 		this.sysex.setContent(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
 		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
@@ -251,7 +251,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public Path getResourcePath()
-	{	return CONFIGPATH.resolve(this.name.toString());
+	{	return JXG.getApp().getConfigPath().resolve(this.name.toString());
 	}
 
 	public Color getColor()

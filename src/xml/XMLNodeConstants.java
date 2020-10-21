@@ -113,6 +113,7 @@ public interface XMLNodeConstants
 		TAG_PEG = "peg",
 		TAG_MEQ = "meq",
 		TAG_VEG = "veg",
+		TAG_FILTER = "filter",
 		TAG_BUTTON = "button",
 		TAG_SELECTOR = "selector",
 		TAG_FLAGBOX = "flagbox",

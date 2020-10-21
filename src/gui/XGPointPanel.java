@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.swing.JPanel;
 import application.XGMath;
+import value.XGValue;
 import xml.XMLNode;
 
 public class XGPointPanel extends JPanel implements GuiConstants
@@ -20,7 +21,7 @@ public class XGPointPanel extends JPanel implements GuiConstants
 /***************************************************************************************/
 
 	private final ArrayList<XGPoint> points = new ArrayList<>();
-	private XGPoint selectedPoint;
+	private XGValue selectedValue;
 	private final Set<Integer> vLines = new HashSet<>(), hLines = new HashSet<>();
 	private int minXIndex = 0, maxXIndex = 0, minYIndex = 0, maxYIndex = 0;
 	private int origin_x, origin_y;
@@ -60,14 +61,19 @@ public class XGPointPanel extends JPanel implements GuiConstants
 		return super.add(comp);
 	}
 
-	void setSelectedPoint(XGPoint p)
-	{	if(this.selectedPoint != null) this.selectedPoint.repaint();
-		this.selectedPoint = p;
-		if(this.selectedPoint != null) this.repaint();
+//	private Set<XGPoint> getPoints(XGValue v)
+//	{	Set<XGPoint> set = new HashSet<>();
+//		for(XGPoint p : this.points) if(p.getValueX().equals(v) || p.getValueY().equals(v)) set.add(p);
+//		return set;
+//	}
+
+	void setSelectedValue(XGValue v)
+	{	this.selectedValue = v;
+		this.repaint();
 	}
 
-	XGPoint getSelectedPoint()
-	{	return this.selectedPoint;
+	XGValue getSelectedValue()
+	{	return this.selectedValue;
 	}
 
 	ArrayList<XGPoint> getPoints()
@@ -131,7 +137,7 @@ public class XGPointPanel extends JPanel implements GuiConstants
 		this.g2.fill(gp);
 //		this.g2.draw(gp);
 //units
-		this.g2.setFont(FONT);
+		this.g2.setFont(SMALL_FONT);
 		this.g2.setColor(this.getBackground().darker());
 		this.g2.drawString(this.xUnit, this.getWidth() - this.g2.getFontMetrics().stringWidth(this.xUnit), this.getHeight());
 		this.g2.drawString(this.yUnit, 0, this.g2.getFontMetrics().getHeight());

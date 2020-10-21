@@ -32,13 +32,13 @@ public class XGAEG extends XGComponent
 		maxX += this.release.getParameter().getMaxIndex() - this.release.getParameter().getMinIndex();
 
 		this.panel = new XGPointPanel(this, n);
-		this.panel.setLimits(0, maxX, 0, 2);
-		this.panel.setUnits("ms", "amp");
+		this.panel.setLimits(0, maxX, 0, 127);
+		this.panel.setUnits("Time", "Gain");
 
-		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), new XGFixedValue("fixed", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(1, this.attack, new XGFixedValue("fixed",  2), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(2, this.decay, new XGFixedValue("fixed", 1), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(3, this.release, new XGFixedValue("fixed", 0), PointRelation.ADD_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(0, XGFixedValue.VALUE_0, XGFixedValue.VALUE_0, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(1, this.attack, XGFixedValue.VALUE_127, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(2, this.decay, XGFixedValue.VALUE_64, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(3, this.release, XGFixedValue.VALUE_0, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
 
 		this.add(this.panel);
 	}

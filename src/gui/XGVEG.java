@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Cursor;
+import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import adress.InvalidXGAddressException;
@@ -37,11 +38,11 @@ public class XGVEG extends XGComponent implements MouseMotionListener
 		this.setLayout(null);
 		this.panel = new XGPointPanel(this, n);
 		this.panel.setLimits(0, 127, 64, 127);
-		this.panel.setUnits("Vel", "Vol");
+		this.panel.setUnits("Velocity", "Volume");
 
 		this.panel.add(new XGPoint(0, this.low, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 		this.panel.add(new XGPoint(1, this.low, this.offset, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(2, this.high, this.depth, PointRelation.ABSOLUTE, PointRelation.ADD_PREVIOUS_VALUE));
+		this.panel.add(new XGPoint(2, this.high, this.depth, PointRelation.ABSOLUTE, PointRelation.ADD_TO_PREVIOUS_VALUE));
 		this.panel.add(new XGPoint(3, this.high, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 
 		this.panel.addMouseMotionListener(this);
@@ -64,7 +65,8 @@ public class XGVEG extends XGComponent implements MouseMotionListener
 	{	this.depth.addIndex(e.getXOnScreen() - XGComponent.dragEvent.getXOnScreen());
 		this.offset.addIndex(XGComponent.dragEvent.getYOnScreen() - e.getYOnScreen());
 		this.tooltip.setName(this.getInfo());
-		this.tooltip.setLocation(e.getLocationOnScreen().x + XGPoint.POINT_SIZE, e.getLocationOnScreen().y + XGPoint.POINT_SIZE);
+		Point p = e.getLocationOnScreen();
+		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
 		this.tooltip.setVisible(true);
 		XGComponent.dragEvent = e;
 		e.consume();
@@ -73,7 +75,8 @@ public class XGVEG extends XGComponent implements MouseMotionListener
 	@Override public void mouseEntered(MouseEvent e)
 	{	super.mouseEntered(e);
 		this.tooltip.setName(this.getInfo());
-		this.tooltip.setLocation(e.getLocationOnScreen().x + XGPoint.POINT_SIZE, e.getLocationOnScreen().y + XGPoint.POINT_SIZE);
+		Point p = e.getLocationOnScreen();
+		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
 		if(!XGComponent.mousePressed) this.tooltip.setVisible(true);
 	}
 
@@ -83,6 +86,8 @@ public class XGVEG extends XGComponent implements MouseMotionListener
 	}
 
 	@Override public void mouseMoved(MouseEvent e)
-	{	if(!XGComponent.mousePressed) this.tooltip.setLocation(e.getLocationOnScreen().x + XGPoint.POINT_SIZE, e.getLocationOnScreen().y + XGPoint.POINT_SIZE);
+	{	if(XGComponent.mousePressed) return;
+		Point p = e.getLocationOnScreen();
+		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
 	}
 }

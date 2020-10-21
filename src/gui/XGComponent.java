@@ -18,6 +18,7 @@ import application.Configurable;
 import application.XGLoggable;
 import application.XGStrings;
 import module.XGModule;
+import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
@@ -30,7 +31,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	public static Cursor lastCursor = null;
 	public static boolean mousePressed = false;
 
-	static final XGValue DEF_VALUE = new XGValue("n/a", 0);
+	static final XGValue DEF_VALUE = new XGFixedValue("n/a", 0);
 	static final ToolTipManager TTMI = ToolTipManager.sharedInstance();
 	static
 	{	TTMI.setInitialDelay(10);
@@ -55,6 +56,7 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 			case TAG_AEG:		c = new XGAEG(n, mod); break;
 			case TAG_PEG:		c = new XGPEG(n, mod); break;
 			case TAG_MEQ:		c = new XGMEQ(n, mod); break;
+			case TAG_FILTER:	c = new XGFilterCurve(n, mod); break;
 			case TAG_FRAME:		c = new XGFrame(n, mod); break;
 			case TAG_KNOB:		c = new XGKnob(n, mod); break;
 			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
@@ -96,11 +98,11 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 	public void borderize()
 	{	if(this.isEnabled())
 		{	if(this.hasFocus())
-				this.setBorder(new TitledBorder(focusLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_NODE_FOCUS));
+				this.setBorder(new TitledBorder(focusLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, COL_NODE_FOCUS));
 			else
-				this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+				this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, COL_BORDER));
 		}
-		else this.setBorder(new TitledBorder(defaultLineBorder, "n/a", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, FONT, COL_BORDER));
+		else this.setBorder(new TitledBorder(defaultLineBorder, "n/a", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, COL_BORDER));
 	}
 
 	public void deborderize()

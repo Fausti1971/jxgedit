@@ -3,7 +3,7 @@ package gui;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class XGTooltip extends JFrame implements GuiConstants	//TODO: Ausführung als JFrame überdenken wegen Focuswechsel; vielleicht als Popup...
+public class XGTooltip extends JFrame implements GuiConstants
 {
 	private static final long serialVersionUID = 1L;
 
@@ -13,7 +13,7 @@ public class XGTooltip extends JFrame implements GuiConstants	//TODO: Ausführun
 
 	public XGTooltip()
 	{	this.add(this.label);
-		this.label.setFont(FONT);
+		this.label.setFont(SMALL_FONT);
 		this.setUndecorated(true);
 		this.setFocusable(false);
 		this.setAutoRequestFocus(false);
