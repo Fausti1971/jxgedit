@@ -56,8 +56,8 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 			case TAG_AEG:		c = new XGAEG(n, mod); break;
 			case TAG_PEG:		c = new XGPEG(n, mod); break;
 			case TAG_MEQ:		c = new XGMEQ(n, mod); break;
-			case TAG_FILTER:	c = new XGFilterCurve(n, mod); break;
 			case TAG_FRAME:		c = new XGFrame(n, mod); break;
+			case TAG_TABS:		c = new XGTabFrame(n, mod); break;
 			case TAG_KNOB:		c = new XGKnob(n, mod); break;
 			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
 			case TAG_RANGE:		c = new XGRange(n, mod); break;
@@ -76,6 +76,10 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 
 	protected final XMLNode config;
 
+	public XGComponent(XMLNode n)
+	{	this.config = n;
+	}
+
 	public XGComponent(String text)
 	{	this.config = new XMLNode(text.replaceAll(XGStrings.REGEX_NON_ALNUM, XGStrings.TEXT_REPLACEMENT));
 		this.setName(text);
@@ -87,8 +91,8 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 		this.setName(n.getStringAttributeOrDefault(ATTR_NAME, mod.toString()));
 	}
 
-	public void setBounds()
-	{	Rectangle r = new XGGrid(this.config.getStringAttribute(ATTR_BOUNDS));
+	private void setBounds()
+	{	Rectangle r = new XGGrid(this.config.getStringAttributeOrDefault(ATTR_BOUNDS, "0,0,0,0"));
 		super.setBounds(GRID * r.x, GRID * r.y, GRID * r.width, GRID * r.height);
 		Dimension dim = new Dimension(this.getBounds().getSize());
 		this.setMinimumSize(dim);

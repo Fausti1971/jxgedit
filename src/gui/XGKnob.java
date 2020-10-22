@@ -41,7 +41,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 	{	super(n, mod);
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
+		this.value = mod.getType().getDevice().getValues().get(this.address);
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 		if(this.value.getOpcode().isMutable()) this.value.addParameterListener(this);

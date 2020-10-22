@@ -12,6 +12,7 @@ public class XGPEG extends XGComponent
 {
 	private static final long serialVersionUID = 1L;
 	private static final XGAddress A_TIME = new XGAddress("8//106"), A_LEVEL = new XGAddress("8//105"), R_TIME = new XGAddress("8//108"), R_LEVEL = new XGAddress("8//107");
+	private static final XGFixedValue VALUE_255 = new XGFixedValue("fix", 255), VALUE_381 = new XGFixedValue("fix", 381);
 
 /**************************************************************************************/
 
@@ -29,14 +30,14 @@ public class XGPEG extends XGComponent
 		this.r_level = mod.getValues().get(R_LEVEL.complement(mod.getAddress()));
 
 		this.panel = new XGPointPanel(this, n);
-		this.panel.setLimits(0, 3 * 127, 0, 127);
+		this.panel.setLimits(0, 381, 0, 127);
 		this.panel.setUnits("Time", "Pitch");
 
 		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), this.a_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(1, this.a_time, new XGFixedValue("fixed",  64), PointRelation.ADD_TO_PREVIOUS_VALUE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(2, new XGFixedValue("fix", 127), new XGFixedValue("fixed", 64), PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(3, this.r_time, this.r_level, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(4, new XGFixedValue("", 0), new XGFixedValue("", 64), PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(1, this.a_time, XGFixedValue.VALUE_64, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(2, VALUE_255, XGFixedValue.VALUE_64, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(3, this.r_time, XGFixedValue.VALUE_64, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(4, VALUE_381, this.r_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 
 		this.add(this.panel);
 	}

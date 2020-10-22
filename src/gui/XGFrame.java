@@ -13,6 +13,10 @@ public class XGFrame extends XGComponent
 
 /********************************************************************************************************************/
 
+	public XGFrame(XMLNode n)
+	{	super(n);
+	}
+
 	public XGFrame(String text)
 	{	super(text);
 		this.borderize();

@@ -20,16 +20,7 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 	static final int POINT_SIZE = POINT_RADIUS * 2;
 	public static enum PointRelation
 	{	ABSOLUTE,
-		REVERSE,
-
-		PREVIOUS_VALUE,
-		NEXT_VALUE,
-
-		ADD_TO_PREVIOUS_VALUE,
 		ADD_TO_PREVIOUS_COORDINATE,
-
-		SUB_FROM_NEXT_VALUE,
-		SUB_FROM_NEXT_COORDINATE
 	};
 
 /******************************************************************************************************/
@@ -86,48 +77,40 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 	}
 
 	void setLocation()
-	{	int x = 0, y = 0;
-		int xi = this.valueX.getIndex(), yi = this.valueY.getIndex(), pxi = 0, pyi = 0, nxi, nyi;
-		if(this.previous != null)
-		{	pxi = this.previous.getValueX().getIndex();
-			pyi = this.previous.getValueY().getIndex();
-			switch(this.relationX)
-			{	case ABSOLUTE:				break;
-				case ADD_TO_PREVIOUS_VALUE:	xi += pxi; break;
-				case PREVIOUS_VALUE:		xi = pxi; break;
-				case ADD_TO_PREVIOUS_COORDINATE:	x = this.previous.getX() + POINT_RADIUS; break;
-				default:					break;
-			}
-			switch(this.relationY)
-			{	case ABSOLUTE:				break;
-				case ADD_TO_PREVIOUS_VALUE:	yi += pyi; break;
-				case PREVIOUS_VALUE:		yi = pyi; break;
-				case ADD_TO_PREVIOUS_COORDINATE:	y = this.previous.getY() + POINT_RADIUS; break;
-				default:					break;
-			}
+	{	int x = 0, y = 0, xe = this.panel.getWidth(), ye = this.panel.getHeight();
+		
+		switch(this.relationX)
+		{	default:
+			case ABSOLUTE:
+				x = XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, xe);
+				break;
+			case ADD_TO_PREVIOUS_COORDINATE:
+				if(this.previous != null) x = this.previous.getX() + POINT_RADIUS;
+				x += XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, xe);
+				break;
+//			case SUB_FROM_NEXT_COORDINATE:
+//				if(this.next != null) x = this.next.getX() + POINT_RADIUS;
+//				else x = xe;
+//				x -= XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, xe);
+//				break;
 		}
-
-		if(this.next != null)
-		{	nxi = this.next.getValueX().getIndex();
-			nyi = this.next.getValueY().getIndex();
-			switch(this.relationX)
-			{	case ABSOLUTE:				break;
-				case SUB_FROM_NEXT_VALUE:	xi -= nxi; break;
-				case NEXT_VALUE:			xi = nxi; break;
-				case SUB_FROM_NEXT_COORDINATE:	x = this.next.getX() + POINT_RADIUS; break;
-				default:					break;
-			}
-			switch(this.relationY)
-			{	case ABSOLUTE:				break;
-				case SUB_FROM_NEXT_VALUE:	yi -= nyi; break;
-				case NEXT_VALUE:		yi = nyi; break;
-				case SUB_FROM_NEXT_COORDINATE:	y = this.next.getY() + POINT_RADIUS; break;
-				default:					break;
-			}
+		switch(this.relationY)
+		{	default:
+			case ABSOLUTE:
+				y = XGMath.linearIO(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, ye);
+				break;
+			case ADD_TO_PREVIOUS_COORDINATE:
+				if(this.previous != null) y = this.previous.getY() + POINT_RADIUS;
+				y -= XGMath.linearIO(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, ye);
+				break;
+//			case SUB_FROM_NEXT_COORDINATE:
+//				if(this.next != null) y = this.next.getY() + POINT_RADIUS;
+//				else y = ye;
+//				y -= XGMath.linearIO(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, ye);
+//				break;
 		}
-
-		x += XGMath.linearIO(xi, this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, this.panel.getWidth());
-		y += XGMath.linearIO(yi, this.panel.getMinYIndex(), this.panel.getMaxYIndex(), this.panel.getHeight(), 0);
+//		x = XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, this.getWidth());
+//		y = XGMath.linearIO(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, this.getHeight());
 
 		this.setLocation(x - POINT_RADIUS, y - POINT_RADIUS);
 		this.tooltip.setName(this.toString());

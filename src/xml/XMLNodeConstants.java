@@ -104,6 +104,7 @@ public interface XMLNodeConstants
 //		ATTR_LSB = "lsb",
 
 		TAG_FRAME = "frame",
+		TAG_TABS = "tabs",
 		TAG_KNOB = "knob",
 		TAG_SLIDER = "slider",
 		TAG_RANGE = "range",
@@ -113,7 +114,6 @@ public interface XMLNodeConstants
 		TAG_PEG = "peg",
 		TAG_MEQ = "meq",
 		TAG_VEG = "veg",
-		TAG_FILTER = "filter",
 		TAG_BUTTON = "button",
 		TAG_SELECTOR = "selector",
 		TAG_FLAGBOX = "flagbox",

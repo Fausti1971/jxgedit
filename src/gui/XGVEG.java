@@ -42,7 +42,7 @@ public class XGVEG extends XGComponent implements MouseMotionListener
 
 		this.panel.add(new XGPoint(0, this.low, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 		this.panel.add(new XGPoint(1, this.low, this.offset, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(2, this.high, this.depth, PointRelation.ABSOLUTE, PointRelation.ADD_TO_PREVIOUS_VALUE));
+		this.panel.add(new XGPoint(2, this.high, this.depth, PointRelation.ABSOLUTE, PointRelation.ADD_TO_PREVIOUS_COORDINATE));
 		this.panel.add(new XGPoint(3, this.high, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 
 		this.panel.addMouseMotionListener(this);
