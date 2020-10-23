@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
@@ -167,6 +168,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			this.files = this.config.getChildNodeOrNew(TAG_FILES);
 			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, JXG.getApp().getConfigPath().resolve(DEF_SYXFILENAME).toString());
 			this.configure();
+System.out.println("Configure...");
 		}
 		else
 		{	this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
@@ -408,7 +410,12 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	public void configure()
-	{	new XGWindow(this, XGWindow.getRootWindow(), true, false, this.toString());
+	{	JDialog d = new JDialog(XGWindow.getRootWindow(), this.toString(), true);
+		d.add(this.getChildWindowContent());
+		d.pack();
+		d.setVisible(true);
+		
+//		new XGWindow(this, XGWindow.getRootWindow(), true, false, this.toString());// seit XGWindow von JFrame erbt, kann es nicht mehr modal gemacht werden
 	}
 
 	@Override public int hashCode()

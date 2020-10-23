@@ -88,6 +88,7 @@ public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
 	{	XGTree t = this.getTreeComponent();
 		Point p = t.getLocationOnScreen();
 		Rectangle r = t.getPathBounds(this.getTreePath());
+		if(r == null) return p;
 		p.x += r.x + r.width;
 		p.y += r.y + r.height;
 		return p;
