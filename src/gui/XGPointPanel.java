@@ -38,7 +38,7 @@ public class XGPointPanel extends JPanel implements XGUI
 		r.height -= (ins.top + ins.bottom);
 		this.setLayout(null);
 		this.setBounds(r);
-		this.setBackground(COL_BAR_BACK);
+		this.setBackground(this.getBackground().brighter());
 
 		int l = n.getIntegerAttribute(ATTR_GRID_X, 0);
 		int sect = r.height / (l + 1);

@@ -21,7 +21,8 @@ public class XGValueLabel extends JTextField implements XGUI, ActionListener, Mo
 	public XGValueLabel(XGValue v)
 	{	super();
 		this.value = v;
-		this.setBackground(COL_TRANSPARENT);
+		this.setOpaque(false);
+//		this.setBackground(COL_TRANSPARENT);
 		this.setBorder(null);
 //		if(this.isEnabled()) this.setText(this.getText());
 		this.setFont(SMALL_FONT);

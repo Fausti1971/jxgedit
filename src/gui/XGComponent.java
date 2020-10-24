@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Rectangle;
@@ -8,6 +9,7 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.NoSuchElementException;
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.border.TitledBorder;
 import adress.InvalidXGAddressException;
@@ -91,12 +93,13 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 
 	public void borderize()
 	{	if(this.isEnabled())
-		{	if(this.hasFocus())
-				this.setBorder(new TitledBorder(focusLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, COL_NODE_FOCUS));
-			else
-				this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, COL_BORDER));
+		{	Color c = this.getBackground();
+			if(c == null) c = COL_PANEL_BACK;
+			c = c.darker();
+			if(this.hasFocus()) c = c.darker();
+			this.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
 		}
-		else this.setBorder(new TitledBorder(defaultLineBorder, "n/a", TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, COL_BORDER));
+		else this.setBorder(null);
 	}
 
 	public void deborderize()

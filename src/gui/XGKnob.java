@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -113,7 +114,8 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 			this.middle.y = 4 + this.radius;// getY() liefert IMMER 15! (sowohl mit als auch ohen Border), daher die "4"
 	
 	// paint background arc
-			this.g2.setColor(COL_BAR_BACK);
+			//this.g2.setColor(COL_BAR_BACK);
+			this.g2.setColor(this.getBackground().brighter());
 			this.g2.setStroke(DEF_ARCSTROKE);
 			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, START_ARC, LENGTH_ARC);
 	// paint foreground arc

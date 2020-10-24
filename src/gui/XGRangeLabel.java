@@ -22,7 +22,8 @@ public class XGRangeLabel extends JTextField implements XGUI, ActionListener, Mo
 	{	super();
 		this.loValue = lo;
 		this.hiValue = hi;
-		this.setBackground(COL_TRANSPARENT);
+		this.setOpaque(false);
+//		this.setBackground(COL_TRANSPARENT);
 		this.setBorder(null);
 //		if(this.isEnabled()) this.setText(this.getText());
 		this.setText(this.loValue + "..." + this.hiValue);

@@ -37,7 +37,7 @@ public class XGVEG extends XGComponent implements MouseMotionListener
 		this.borderize();
 		this.setLayout(null);
 		this.panel = new XGPointPanel(this, n);
-		this.panel.setLimits(0, 127, 64, 127);
+		this.panel.setLimits(1, 127, 64, 127);
 		this.panel.setUnits("Velocity", "Volume");
 
 		this.panel.add(new XGPoint(0, this.low, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));

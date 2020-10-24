@@ -1,6 +1,8 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import javax.swing.BorderFactory;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.TitledBorder;
@@ -28,7 +30,9 @@ public class XGSpinner extends JSpinner implements ChangeListener, XGUI
 		Dimension dim = new Dimension(GRID * 4, GRID * 2);
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
-		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, COL_BORDER));
+
+		Color c = this.getBackground().darker();
+		this.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
 //		this.setAlignmentX(0.5f);
 //		this.setAlignmentY(0.5f);
 	}

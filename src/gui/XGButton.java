@@ -27,7 +27,7 @@ public class XGButton extends XGComponent
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
 		this.button.setText(this.value.getParameter().getName());
-		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
 		this.add(this.button, gbc);
 
 //		this.logInitSuccess();

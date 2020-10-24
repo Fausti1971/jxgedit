@@ -13,17 +13,24 @@ public class XGFrame extends XGComponent
 
 /********************************************************************************************************************/
 
+//	private JPanel panel = new JPanel();
 	public XGFrame(XMLNode n)
 	{	super(n);
+		this.setOpaque(true);
+		this.setBackground(COL_NODE_SELECTED_BACK);
 	}
 
 	public XGFrame(String text)
 	{	super(text);
+		this.setBackground(COL_NODE_SELECTED_BACK);
+		this.setOpaque(true);
 		this.borderize();
 	}
 
 	public XGFrame(XMLNode n, XGModule mod)
 	{	super(n, mod);
+		this.setBackground(COL_NODE_SELECTED_BACK);
+		this.setOpaque(true);
 		if(n.hasAttribute(ATTR_NAME)) this.borderize();
 		for(XMLNode x : n.getChildNodes())
 		{	try

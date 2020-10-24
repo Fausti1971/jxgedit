@@ -4,13 +4,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.RenderingHints;
-import java.awt.SystemColor;
-import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.border.Border;
 import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalTheme;
 import javax.swing.plaf.metal.OceanTheme;
@@ -35,15 +32,18 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 		LAF_METAL_OCEAN = new OceanTheme();
 //		LAF_METAL_TEST = new TestTheme();
 
-//		MetalLookAndFeel.setCurrentTheme(LAF_METAL_TEST);
-//		UIManager.setLookAndFeel(new MetalLookAndFeel()); 
 		static void init(XMLNode n)
-		{	LookAndFeelInfo[] array = UIManager.getInstalledLookAndFeels();
+		{
+			LookAndFeelInfo[] array = UIManager.getInstalledLookAndFeels();
 			for(LookAndFeelInfo i : array) System.out.println(i.getName());
 			try
-			{	UIManager.setLookAndFeel(LAF_CROSS);
+			{
+//				MetalLookAndFeel.setCurrentTheme(LAF_METAL_DEFAULT);
+//				UIManager.setLookAndFeel(new MetalLookAndFeel()); 
+
+				UIManager.setLookAndFeel(LAF_NIMBUS);
 			}
-			catch(ClassNotFoundException|InstantiationException|IllegalAccessException|UnsupportedLookAndFeelException e)
+			catch(UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
 			{	LOG.info(e.getMessage());
 			}
 		}
@@ -52,14 +52,15 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 
 	Color
 		COL_FOCUS = UIManager.getColor("Focus.color"),
-		COL_TRANSPARENT = new Color(0, 0, 0, 0),
+		COL_PANEL_BACK = UIManager.getColor("Panel.background"),
+//		COL_TRANSPARENT = new Color(0, 0, 0, 0),
 		COL_NODE_SELECTED_BACK = Color.lightGray,
 		COL_NODE_BACK = UIManager.getColor("Tree.textBackground"),
 		COL_NODE_FOCUS = UIManager.getColor("Tree.selectionBorderColor"),
 		COL_NODE_TEXT = Color.darkGray,
 		COL_NODE_SELECTED_TEXT = Color.white,
-		COL_BORDER = Color.lightGray,
-		COL_BAR_BACK = SystemColor.scrollbar.brighter(),
+//		COL_BORDER = Color.lightGray,
+//		COL_BAR_BACK = SystemColor.scrollbar.brighter(),
 		COL_BAR_FORE = UIManager.getColor("Tree.selectionBackground").brighter(),
 		COL_SHAPE = new Color(COL_BAR_FORE.getRed(), COL_BAR_FORE.getGreen(), COL_BAR_FORE.getBlue(), 40);
 
@@ -82,7 +83,7 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 	int END_ARC = 315;
 	int LENGTH_ARC = -270;
 
-	Border defaultLineBorder = BorderFactory.createLineBorder(COL_BORDER, 1, true);
-	Border focusLineBorder = BorderFactory.createLineBorder(COL_NODE_FOCUS, 1, true);
+//	Border defaultLineBorder = BorderFactory.createLineBorder(COL_BORDER, 1, true);
+//	Border focusLineBorder = BorderFactory.createLineBorder(COL_NODE_FOCUS, 1, true);
 
 }

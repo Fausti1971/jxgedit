@@ -1,7 +1,9 @@
 package gui;
 
+import java.awt.Color;
 import java.util.Set;
 import java.util.Vector;
+import javax.swing.BorderFactory;
 import javax.swing.JList;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -24,7 +26,10 @@ public class XGList<E extends Object> extends JList<E> implements ListSelectionL
 	{	super(new Vector<E>(list));
 		this.setSelectedValue(s.getContent(), true);
 		this.setName(name);
-		this.setBorder(new TitledBorder(defaultLineBorder, this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, COL_BORDER));
+
+		Color c = this.getBackground().darker();
+		this.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
+
 		this.value = s;
 		this.addListSelectionListener(this);
 
