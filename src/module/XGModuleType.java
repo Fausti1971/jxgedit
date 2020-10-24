@@ -13,7 +13,6 @@ import adress.XGAddressableSet;
 import application.XGLoggable;
 import device.XGDevice;
 import gui.XGTemplate;
-import gui.XGTree;
 import gui.XGTreeNode;
 import gui.XGWindow;
 import msg.XGBulkDumper;
@@ -158,14 +157,6 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 	@Override public TreeNode getParent()
 	{	return this.device;
-	}
-
-	@Override public XGTree getTreeComponent()
-	{	return this.getRootNode().getTreeComponent();
-	}
-
-	@Override public void setTreeComponent(XGTree t)
-	{
 	}
 
 	@Override public Collection<? extends TreeNode> getChildNodes()

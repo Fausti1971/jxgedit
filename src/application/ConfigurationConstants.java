@@ -11,17 +11,9 @@ public interface ConfigurationConstants extends XMLNodeConstants
 	int HASH = 17;
 
 	String APPNAME = "JXG";
-//	static final String SYSFILESEP = System.getProperty("file.separator");
-
-//	URL RSCPATH = ClassLoader.getSystemResource("rsc");
-//	URL ICONPATH = new URL(RSCPATH.getPath() + "icon");
-
-//	Path RSCPATH = Path.of("rsc");
-//	Path ICONPATH = RSCPATH.resolve("icon");
-//	Path XSDPATH = RSCPATH.resolve("xsd");
-
-	Path APPPATH = Paths.get(System.getProperties().getProperty("user.dir"));
-	Path HOMEPATH = Paths.get(System.getProperties().getProperty("user.home"), APPNAME);
+	Path CWD = Paths.get(System.getProperties().getProperty("user.dir"));
+	Path HOMEPATH = Paths.get(System.getProperties().getProperty("user.home")).resolve(APPNAME);
+//merke: "user.dir" returniert das (cwd) currentWorkingDirectory und nicht den applicationPath
 
 	int MIN_W = 300, MIN_H = 400;
 }

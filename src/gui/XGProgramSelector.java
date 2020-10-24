@@ -117,7 +117,7 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 		if(o instanceof XGTableEntry) this.value.editEntry((XGTableEntry)o);
 	}
 
-	@Override public Point childWindowLocationOnScreen()
+	@Override public Point getSourceLocationOnScreen()
 	{	return this.getLocationOnScreen();
 	}
 }

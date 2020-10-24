@@ -14,7 +14,7 @@ import javax.swing.JScrollPane;
 import application.ConfigurationConstants;
 import application.JXG;
 
-public class XGWindow extends JFrame implements GuiConstants, ConfigurationConstants, WindowListener
+public class XGWindow extends JFrame implements XGUI, ConfigurationConstants, WindowListener
 {	static
 	{	JDialog.setDefaultLookAndFeelDecorated(true);
 	}
@@ -56,7 +56,7 @@ public class XGWindow extends JFrame implements GuiConstants, ConfigurationConst
 //		this.addWindowListener(src);
 		this.addWindowListener(this);
 		this.getContentPane().add(new JScrollPane(this.rootComponent));
-		this.setLocation(src.childWindowLocationOnScreen());
+		this.setLocation(src.getSourceLocationOnScreen());
 
 		this.pack();
 		this.setResizable(resize);

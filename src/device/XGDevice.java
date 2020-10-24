@@ -471,7 +471,7 @@ System.out.println("Configure...");
 	{	this.childWindow = win;
 	}
 
-	@Override public Point childWindowLocationOnScreen()
+	@Override public Point getSourceLocationOnScreen()
 	{	return this.locationOnScreen();
 	}
 
@@ -542,11 +542,11 @@ System.out.println("Configure...");
 	{	return JXG.getApp();
 	}
 
-	@Override public XGTree getTreeComponent()
-	{	return this.getRootNode().getTreeComponent();
+	@Override public XGTree getTree()
+	{	return this.getRootNode().getTree();
 	}
 
-	@Override public void setTreeComponent(XGTree t)
+	@Override public void setTree(XGTree t)
 	{
 	}
 

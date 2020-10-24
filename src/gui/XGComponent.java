@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.NoSuchElementException;
 import javax.swing.JComponent;
-import javax.swing.ToolTipManager;
 import javax.swing.border.TitledBorder;
 import adress.InvalidXGAddressException;
 import adress.XGAddressConstants;
@@ -22,35 +21,26 @@ import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
-public abstract class XGComponent extends JComponent implements XGAddressConstants, GuiConstants, Configurable, MouseListener, FocusListener, XGLoggable
-{	/**
-	 * 
-	 */
+public abstract class XGComponent extends JComponent implements XGAddressConstants, XGUI, Configurable, MouseListener, FocusListener, XGLoggable
+{
 	private static final long serialVersionUID = 1L;
 	public static MouseEvent dragEvent = null;
 	public static Cursor lastCursor = null;
 	public static boolean mousePressed = false;
 
 	static final XGValue DEF_VALUE = new XGFixedValue("n/a", 0);
-	static final ToolTipManager TTMI = ToolTipManager.sharedInstance();
-	static
-	{	TTMI.setInitialDelay(10);
-		TTMI.setDismissDelay(1000);
-		TTMI.setReshowDelay(0);
-	}
 
-
-	public static XGComponent init(XGModule mod) throws NoSuchElementException
+	public static JComponent init(XGModule mod) throws NoSuchElementException
 	{	XGTemplate t = mod.getType().getGuiTemplate();
 		XMLNode xml = null;
-		if(t != null) xml = t.getXMLNode();
-		if(xml == null) throw new NoSuchElementException();
+		if(t != null) xml = t.getConfig();
+		if(xml == null) throw new NoSuchElementException(mod.getType() + " has no GUI");
 		return new XGFrame(xml, mod);
 	}
 
-	protected static XGComponent newItem(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
+	protected static JComponent newItem(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
 	{	String s = n.getTag();
-		XGComponent c = null;
+		JComponent c = null;
 		switch(s)
 		{	case TAG_VEG:		c = new XGVEG(n, mod); break;
 			case TAG_AEG:		c = new XGAEG(n, mod); break;

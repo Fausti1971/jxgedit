@@ -278,7 +278,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	XGParameter p = this.getParameter();
 		XGTable t = p.getTranslationTable();
 		String s = t.getByIndex(this.index).getName();
-		if(p.getUnit().isBlank()) return s + " " + t.getUnit();
+		if(p.getUnit().isEmpty()) return s + " " + t.getUnit();
 		else return s + " " + p.getUnit();
 	}
 

@@ -8,7 +8,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import value.ChangeableContent;
 
-public class XGSpinner extends JSpinner implements ChangeListener, GuiConstants
+public class XGSpinner extends JSpinner implements ChangeListener, XGUI
 {
 
 	/**

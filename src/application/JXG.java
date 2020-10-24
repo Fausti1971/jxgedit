@@ -15,10 +15,11 @@ import device.XGDevice;
 import gui.XGContext;
 import gui.XGTree;
 import gui.XGTreeNode;
+import gui.XGUI;
 import gui.XGWindow;
 import xml.XMLNode;
 
-public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
+public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable, XGUI
 {
 	static
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
@@ -53,20 +54,14 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 
 	public static void main(String[] args)
 	{	APP = new JXG();
-//		Runtime.getRuntime().addShutdownHook
-//		(	new Thread()
-//			{	@Override public void run()
-//				{	log.info("application exited");
-//				}
-//			}
-//		);
+		XGUI.init(APP.getConfig());
 		XGWindow.getRootWindow();
 		new Thread(() -> {	XGDevice.init(APP.getConfig());}).start();
 //		quit();
 	}
 
 /***************************************************************************************************************/
-//überlege: wenn HOMEPATH (~/JXG) existiert setze diesen als CONFIGPATH; ansonsten APPPATH
+
 	private XGTree tree;
 	private boolean isSelected = false;
 	private final XMLNode config;
@@ -74,8 +69,10 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	private final Path configFile;
 
 	public JXG()
-	{	if(HOMEPATH.toFile().isDirectory()) this.configPath = HOMEPATH;
-		else this.configPath = APPPATH;
+	{
+		if(HOMEPATH.toFile().exists()) this.configPath = HOMEPATH;
+		else this.configPath = CWD;
+		LOG.info("path for configuration: " + this.configPath);
 		this.configFile = this.configPath.resolve(XML_CONFIG);
 
 		File f = configFile.toFile();
@@ -173,11 +170,11 @@ public class JXG implements Configurable, XGTreeNode, XGContext, XGLoggable
 	{	return null;
 	}
 
-	@Override public XGTree getTreeComponent()
+	@Override public XGTree getTree()
 	{	return this.tree;
 	}
 
-	@Override public void setTreeComponent(XGTree t)
+	@Override public void setTree(XGTree t)
 	{	this.tree = t;
 	}
 

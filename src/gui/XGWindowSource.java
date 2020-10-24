@@ -15,7 +15,7 @@ public interface XGWindowSource extends WindowListener
 	public XGWindow getChildWindow();
 	public void setChildWindow(XGWindow win);
 	public JComponent getChildWindowContent();
-	public Point childWindowLocationOnScreen();
+	public Point getSourceLocationOnScreen();
 
 	@Override public default void windowOpened(WindowEvent e)
 	{	this.setChildWindow((XGWindow)e.getWindow());

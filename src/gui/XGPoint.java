@@ -13,7 +13,7 @@ import application.XGMath;
 import parm.XGParameter;
 import value.XGValue;
 
-public class XGPoint extends JComponent implements GuiConstants, XGLoggable, MouseListener, MouseMotionListener
+public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListener, MouseMotionListener
 {
 	private static final long serialVersionUID = 1L;
 	private static final int POINT_RADIUS = 5;
@@ -22,6 +22,9 @@ public class XGPoint extends JComponent implements GuiConstants, XGLoggable, Mou
 	{	ABSOLUTE,
 		ADD_TO_PREVIOUS_COORDINATE,
 	};
+
+//TODO: vielleicht sollte man dem XGPoint eine Variable zugestehen, die angibt,
+//		in welche Richtung (zum origin, zu nächsten XGPoint, zum min oder max) eine Linie strebt und wie schnell (wäre für EQ und Filterhüllkrve hilfreich)
 
 /******************************************************************************************************/
 

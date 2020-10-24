@@ -8,7 +8,7 @@ import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGMEQ extends XGComponent implements GuiConstants
+public class XGMEQ extends XGComponent implements XGUI
 {
 	private static final long serialVersionUID = 1L;
 	private static final XGAddress

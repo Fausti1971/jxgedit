@@ -25,16 +25,20 @@ public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
 
 /**
  * returniert den XGTree, zu dem diese XGTreeNode gehört;
- * this.tree ist im Normalfall null und nur bei rootNodes gesetzt, deshalb im Regelfall this.getRootNode().getTreeComponent() aufrufen;
+ * this.tree ist im Normalfall null und nur bei rootNodes gesetzt, deshalb muss eine RootNode diese Methode zwingend überschreiben
  * @return tree
  */
-	XGTree getTreeComponent();
+	default XGTree getTree()
+	{	return this.getRootNode().getTree();
+	}
 
 /**
- * setzt den übergebenen XGTree in dieser XGTreeNode; wird standardmäßig bei der XGTree-Konstruktion mittels RootNode in derselben gesetzt;
+ * setzt den übergebenen XGTree in der RootNode des Trees dieser XGTreeNode; wird standardmäßig bei der XGTree-Konstruktion mittels RootNode in derselben gesetzt, weshalb RootNodes diese Methode zwingend überschreiben müssen.
  * @param t
  */
-	void setTreeComponent(XGTree t);
+	default void setTree(XGTree t)
+	{	this.getRootNode().setTree(t);
+	}
 
 /**
  * übergibt den selected-Status an die XGTreeNode, damit diese darauf reagieren kann; Darstellung und Aktualisierung übernimmt weiterhin der XGTree;
@@ -66,12 +70,12 @@ public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
 	}
 
 	default void repaintNode()
-	{	XGTree t = this.getRootNode().getTreeComponent();
+	{	XGTree t = this.getRootNode().getTree();
 		((DefaultTreeModel)t.getModel()).nodeChanged(this);
 	}
 
 	default void reloadTree()
-	{	((DefaultTreeModel) this.getRootNode().getTreeComponent().getModel()).reload(this.getParent());
+	{	((DefaultTreeModel) this.getRootNode().getTree().getModel()).reload(this.getParent());
 	}
 
 	default public TreePath getTreePath()
@@ -85,7 +89,7 @@ public interface XGTreeNode extends TreeNode, XGContext, XGLoggable
 	}
 
 	default Point locationOnScreen()
-	{	XGTree t = this.getTreeComponent();
+	{	XGTree t = this.getTree();
 		Point p = t.getLocationOnScreen();
 		Rectangle r = t.getPathBounds(this.getTreePath());
 		if(r == null) return p;

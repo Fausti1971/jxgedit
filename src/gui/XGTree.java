@@ -12,7 +12,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreePath;
 
-public class XGTree extends JTree implements MouseListener, KeyListener, GuiConstants
+public class XGTree extends JTree implements MouseListener, KeyListener, XGUI
 {	/**
 	 * 
 	 */
@@ -42,7 +42,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, GuiCons
 	public XGTree(XGTreeNode root, boolean showRoot)
 	{
 		super(root);
-		root.setTreeComponent(this);
+		root.setTree(this);
 		this.addMouseListener(this);
 		this.addKeyListener(this);
 		this.setToggleClickCount(10);

@@ -80,7 +80,7 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 
 /******************************************************************************************************************************************/
 
-	private class XGKnobBar extends JComponent implements GuiConstants, MouseListener, MouseMotionListener, MouseWheelListener
+	private class XGKnobBar extends JComponent implements XGUI, MouseListener, MouseMotionListener, MouseWheelListener
 	{
 		private static final long serialVersionUID = 1L;
 

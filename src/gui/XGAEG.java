@@ -24,9 +24,9 @@ public class XGAEG extends XGComponent
 		this.borderize();
 		this.setLayout(null);
 
-		this.attack = mod.getValues().get(ATTACK.complement(mod.getAddress()));
-		this.decay = mod.getValues().get(DECAY.complement(mod.getAddress()));
-		this.release = mod.getValues().get(RELEASE.complement(mod.getAddress()));
+		this.attack = mod.getValues().getOrDefault(ATTACK.complement(mod.getAddress()), XGFixedValue.VALUE_0);
+		this.decay = mod.getValues().getOrDefault(DECAY.complement(mod.getAddress()), XGFixedValue.VALUE_0);
+		this.release = mod.getValues().getOrDefault(RELEASE.complement(mod.getAddress()), XGFixedValue.VALUE_0);
 		int maxX = this.attack.getParameter().getMaxIndex() - this.attack.getParameter().getMinIndex();
 		maxX += this.decay.getParameter().getMaxIndex() - this.decay.getParameter().getMinIndex();
 		maxX += this.release.getParameter().getMaxIndex() - this.release.getParameter().getMinIndex();

@@ -96,7 +96,7 @@ public class XGMessageBuffer extends XGAddressableSet<XGMessage> implements XGMe
 	{
 	}
 
-	@Override public Point childWindowLocationOnScreen()
+	@Override public Point getSourceLocationOnScreen()
 	{	return new Point(50, 50);
 	}
 

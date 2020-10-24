@@ -9,7 +9,7 @@ import javax.swing.event.ListSelectionListener;
 import application.XGLoggable;
 import value.ChangeableContent;
 
-public class XGList<E extends Object> extends JList<E> implements ListSelectionListener, GuiConstants, XGLoggable
+public class XGList<E extends Object> extends JList<E> implements ListSelectionListener, XGUI, XGLoggable
 {
 	/**
 	 * 

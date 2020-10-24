@@ -11,7 +11,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import device.XGDevice;
 
-public class XGDeviceDetector extends JComponent implements DocumentListener, ActionListener, GuiConstants
+public class XGDeviceDetector extends JComponent implements DocumentListener, ActionListener, XGUI
 {	/**
 	 * 
 	 */

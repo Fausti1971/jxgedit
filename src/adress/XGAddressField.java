@@ -27,7 +27,7 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
 	}
 
 	public XGAddressField(String v, XGAddressField def)
-	{	if(v == null || v.isBlank())
+	{	if(v == null || v.isEmpty())
 		{	this.min = def.min;
 			this.max = def.max;
 			this.mask = def.mask;

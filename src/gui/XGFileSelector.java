@@ -17,7 +17,7 @@ import application.JXG;
 import application.XGStrings;
 import file.XGSysexFileConstants;
 
-public class XGFileSelector extends JFileChooser implements XGSysexFileConstants, GuiConstants, DocumentListener, ActionListener, XGStrings
+public class XGFileSelector extends JFileChooser implements XGSysexFileConstants, XGUI, DocumentListener, ActionListener, XGStrings
 {	/**
 	 * 
 	 */

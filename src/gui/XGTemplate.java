@@ -3,12 +3,13 @@ package gui;
 import java.io.FileNotFoundException;
 import adress.XGAddress;
 import adress.XGAddressable;
+import application.Configurable;
 import application.XGLoggable;
 import device.XGDevice;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
 
-public class XGTemplate implements XGAddressable, XGLoggable, XMLNodeConstants
+public class XGTemplate implements XGAddressable, XGLoggable, XMLNodeConstants, Configurable
 {
 	public static void init(XGDevice dev)
 	{	try
@@ -18,18 +19,18 @@ public class XGTemplate implements XGAddressable, XGLoggable, XMLNodeConstants
 			LOG.info(dev + " has " + dev.getTemplates().size() + " templates");
 		}
 		catch(FileNotFoundException e)
-		{	LOG.info(dev + " has no templates: " + e.getMessage());
+		{	LOG.info(dev + " has no GUI: " + e.getMessage());
 		}
 	}
 
 /*******************************************************************************************/
 
 	private final XGAddress address;
-	private final XMLNode xml;
+	private final XMLNode config;
 
 	public XGTemplate(XMLNode n)
 	{	this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS));
-		this.xml = n;
+		this.config = n;
 //		this.logInitSuccess();
 	}
 
@@ -37,7 +38,7 @@ public class XGTemplate implements XGAddressable, XGLoggable, XMLNodeConstants
 	{	return this.address;
 	}
 
-	public XMLNode getXMLNode()
-	{	return this.xml;
+	@Override public XMLNode getConfig()
+	{	return this.config;
 	}
 }

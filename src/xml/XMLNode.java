@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.function.Consumer;
+import javax.swing.JOptionPane;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
@@ -53,7 +54,8 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 		}
 		catch(XMLStreamException e)
 		{	LOG.severe(e.getMessage() + xml);
-			e.printStackTrace();
+			new JOptionPane(e.getMessage() + xml);
+			System.exit(1);
 		}
 		return root_node;
 	}

@@ -8,12 +8,45 @@ import java.awt.SystemColor;
 import javax.swing.BorderFactory;
 import javax.swing.JEditorPane;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.Border;
+import javax.swing.plaf.metal.DefaultMetalTheme;
+import javax.swing.plaf.metal.MetalTheme;
+import javax.swing.plaf.metal.OceanTheme;
 import application.ConfigurationConstants;
+import application.XGLoggable;
+import xml.XMLNode;
 
-public interface GuiConstants extends ConfigurationConstants
+public interface XGUI extends ConfigurationConstants, XGLoggable
 {
 	static final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+	static final String
+		LAF_SYSTEM = UIManager.getSystemLookAndFeelClassName(),
+		LAF_CROSS = UIManager.getCrossPlatformLookAndFeelClassName(),
+		LAF_MOTIF = "com.sun.java.swing.plaf.motif.MotifLookAndFeel",
+		LAF_NIMBUS = "javax.swing.plaf.nimbus.NimbusLookAndFeel",
+		LAF_GTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel",
+		LAF_METAL = "javax.swing.plaf.metal.MetalLookAndFeel";
+
+	static final MetalTheme
+		LAF_METAL_DEFAULT = new DefaultMetalTheme(),
+		LAF_METAL_OCEAN = new OceanTheme();
+//		LAF_METAL_TEST = new TestTheme();
+
+//		MetalLookAndFeel.setCurrentTheme(LAF_METAL_TEST);
+//		UIManager.setLookAndFeel(new MetalLookAndFeel()); 
+		static void init(XMLNode n)
+		{	LookAndFeelInfo[] array = UIManager.getInstalledLookAndFeels();
+			for(LookAndFeelInfo i : array) System.out.println(i.getName());
+			try
+			{	UIManager.setLookAndFeel(LAF_CROSS);
+			}
+			catch(ClassNotFoundException|InstantiationException|IllegalAccessException|UnsupportedLookAndFeelException e)
+			{	LOG.info(e.getMessage());
+			}
+		}
 
 	String ICON_LEAF32 = "XGLogo32.gif", ICON_LEAF24 = "XGLogo24.gif";
 

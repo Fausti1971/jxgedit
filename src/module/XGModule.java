@@ -9,8 +9,8 @@ import java.util.LinkedHashSet;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -20,9 +20,7 @@ import adress.XGAddressableSet;
 import application.XGLoggable;
 import device.XGDevice;
 import gui.XGComponent;
-import gui.XGTree;
 import gui.XGTreeNode;
-import gui.XGValueTreeModel;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import msg.XGBulkDumper;
@@ -86,9 +84,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	}
 
 	private void editWindow()
-	{	if(this.window == null)
-			if(this.type.getGuiTemplate() != null) new XGWindow(this, XGWindow.getRootWindow(), false, false, this.type.getDevice() + "/" + this);
-			else new XGWindow(this, XGWindow.getRootWindow(), true, true, this.type.getDevice() + "/" + this);//TODO: Krücke!
+	{	if(this.window == null) new XGWindow(this, XGWindow.getRootWindow(), false, false, this.type.getDevice() + "/" + this);
 		else this.window.toFront();
 	}
 
@@ -131,7 +127,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 		this.setChildWindow(null);
 	}
 
-	@Override public Point childWindowLocationOnScreen()
+	@Override public Point getSourceLocationOnScreen()
 	{	return this.locationOnScreen();
 	}
 
@@ -147,11 +143,8 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	{	try
 		{	return XGComponent.init(this);
 		}
-		catch(NoSuchElementException e)//TODO: Krücke!
-		{	JTree tree = new JTree(new XGValueTreeModel(this.getValues()));
-			tree.setRootVisible(false);
-			tree.setShowsRootHandles(true);
-			return tree;
+		catch(NoSuchElementException e)
+		{	return new JLabel(e.getMessage());
 		}
 	}
 
@@ -183,14 +176,6 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	@Override public TreeNode getParent()
 	{	if(this.isSingleton()) return this.type.getParent();
 		else return this.type;
-	}
-
-	@Override public XGTree getTreeComponent()
-	{	return this.getRootNode().getTreeComponent();
-	}
-
-	@Override public void setTreeComponent(XGTree t)
-	{
 	}
 
 	@Override public Collection<? extends TreeNode> getChildNodes()

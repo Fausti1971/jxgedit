@@ -14,7 +14,7 @@ import application.XGMath;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGPointPanel extends JPanel implements GuiConstants
+public class XGPointPanel extends JPanel implements XGUI
 {
 	private static final long serialVersionUID = 1L;
 

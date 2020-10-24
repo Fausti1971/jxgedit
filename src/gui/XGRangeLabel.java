@@ -8,7 +8,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JTextField;
 import value.XGValue;
 
-public class XGRangeLabel extends JTextField implements GuiConstants, ActionListener, MouseListener
+public class XGRangeLabel extends JTextField implements XGUI, ActionListener, MouseListener
 {	/**
 	 * 
 	 */
