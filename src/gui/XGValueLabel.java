@@ -22,7 +22,7 @@ public class XGValueLabel extends JTextField implements XGUI, ActionListener, Mo
 	{	super();
 		this.value = v;
 		this.setOpaque(false);
-//		this.setBackground(COL_TRANSPARENT);
+		this.setBackground(COL_TRANSPARENT);
 		this.setBorder(null);
 //		if(this.isEnabled()) this.setText(this.getText());
 		this.setFont(SMALL_FONT);
@@ -35,10 +35,6 @@ public class XGValueLabel extends JTextField implements XGUI, ActionListener, Mo
 	{	this.value.editIndex(this.value.getParameter().getTranslationTable().getIndex(this.getText().trim()));
 		this.setText(this.value.toString());
 		this.repaint();
-	}
-
-	@Override protected void paintComponent(Graphics g)
-	{	if(this.isEnabled()) super.paintComponent(g);
 	}
 
 	@Override public void mouseClicked(MouseEvent e)

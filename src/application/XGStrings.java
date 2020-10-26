@@ -26,6 +26,12 @@ public interface XGStrings
 		return a;
 	}
 
+/**
+ * 	returniert möglichst den Integerwert des übergebenen Strings, im Fehlerfall den Defaultwert
+ * @param s	zu interpretierender String
+ * @param def Fallbackwert
+ * @return Integer
+ */
 	static int parseIntOrDefault(String s, int def)
 	{	try
 		{	return Integer.parseInt(s);
@@ -35,6 +41,12 @@ public interface XGStrings
 		}
 	}
 
+/**
+ * versucht aus den im übergebenen String, durch "." getrennten Strings durch einen Bitshift um 7 Bits nach links einen Integerwert zu interpretieren
+ * @param s String mit durch "." getrennten 7Bit MSBs
+ * @param def Fallbackwert
+ * @return Integer
+ */
 	static int parseValue(String s, int def)
 	{	if(s == null) return def;
 		int i = 0;
@@ -45,6 +57,12 @@ public interface XGStrings
 		return i;
 	}
 
+/**
+ * überprüft den übergebenen String lediglich auf null
+ * @param s	übergebener String, kann null sein
+ * @param def	FallbackString, falls s null ist
+ * @return String s oder def
+ */
 	static String getStringOrDefault(String s, String def)
 	{	if(s == null) return def;
 		return s;

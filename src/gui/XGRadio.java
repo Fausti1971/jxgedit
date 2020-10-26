@@ -1,11 +1,10 @@
 package gui;
 
 import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
@@ -18,7 +17,7 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGRadio extends XGComponent implements XGValueChangeListener, XGParameterChangeListener
+public class XGRadio extends JPanel implements XGComponent, XGValueChangeListener, XGParameterChangeListener
 {	
 	private static final long serialVersionUID = 1L;
 	private static Map<String, Integer> ORIENTATION = new HashMap<>();
@@ -29,12 +28,14 @@ public class XGRadio extends XGComponent implements XGValueChangeListener, XGPar
 
 /*********************************************************************************************************/
 
+	private final XMLNode config;
 	private final XGValue value;
 	private final XGAddress address;
 	private final int orientation;
 
 	public XGRadio(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n, mod);
+	{	this.config = n;
+		this.setBounds();
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.orientation = ORIENTATION.getOrDefault(n.getStringAttribute(ATTR_ORIENTATION), BoxLayout.X_AXIS);
 		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
@@ -67,9 +68,14 @@ public class XGRadio extends XGComponent implements XGValueChangeListener, XGPar
 	{	if(this.isEnabled()) super.paintComponent(g);
 	}
 
+	@Override public XMLNode getConfig()
+	{	return this.config;
+	}
+
+
 /****************************************************************************************************/
 
-	private class XGRadioButton extends JRadioButton implements ActionListener
+	private class XGRadioButton extends JRadioButton
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -84,15 +90,11 @@ public class XGRadio extends XGComponent implements XGValueChangeListener, XGPar
 			this.setToolTipText(e.toString());
 			this.entry = e;
 			this.value = v;
-			this.addActionListener(this);
+			this.addActionListener((ActionEvent)->{this.value.editIndex(entry.getValue());});
 		}
 
 		@Override public boolean isSelected()
 		{	return this.entry.getValue() == this.value.getIndex();
-		}
-
-		@Override public void actionPerformed(ActionEvent e)
-		{	this.value.editIndex(entry.getValue());
 		}
 
 		@Override public void paint(Graphics g)

@@ -1,5 +1,8 @@
 package gui;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import gui.XGPoint.PointRelation;
@@ -8,7 +11,7 @@ import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGScale extends XGComponent
+public class XGScale extends XGFrame
 {
 	private static final long serialVersionUID = 1L;
 	private static final XGAddress
@@ -31,12 +34,13 @@ public class XGScale extends XGComponent
 	private final XGPointPanel panel;
 
 	public XGScale(XMLNode n, XGModule mod) throws InvalidXGAddressException
-	{	super(n, mod);
+	{	super(n);
 		this.borderize();
-		this.panel = new XGPointPanel(this, n);
-		this.panel.setLimits(0, 11, 0, 127);
+		this.panel = new XGPointPanel(n, 0, 11, 0, 127);
 		this.panel.setUnits("Note", "Pitch");
-		this.add(this.panel);
+		this.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
+		this.add(this.panel, gbc);
 
 		this.val_c = mod.getValues().get(ADR_C.complement(mod.getAddress()));
 		this.val_cis = mod.getValues().get(ADR_CIS.complement(mod.getAddress()));

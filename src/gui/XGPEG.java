@@ -1,4 +1,5 @@
 package gui;
+import java.awt.GridBagLayout;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
@@ -8,7 +9,7 @@ import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGPEG extends XGComponent
+public class XGPEG extends XGFrame
 {
 	private static final long serialVersionUID = 1L;
 	private static final XGAddress A_TIME = new XGAddress("8//106"), A_LEVEL = new XGAddress("8//105"), R_TIME = new XGAddress("8//108"), R_LEVEL = new XGAddress("8//107");
@@ -20,17 +21,15 @@ public class XGPEG extends XGComponent
 	private final XGValue a_time, a_level, r_time, r_level;
 
 	public XGPEG(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
-	{	super(n, mod);
+	{	super(n);
 		this.borderize();
-		this.setLayout(null);
 
 		this.a_time = mod.getValues().get(A_TIME.complement(mod.getAddress()));
 		this.a_level = mod.getValues().get(A_LEVEL.complement(mod.getAddress()));
 		this.r_time = mod.getValues().get(R_TIME.complement(mod.getAddress()));
 		this.r_level = mod.getValues().get(R_LEVEL.complement(mod.getAddress()));
 
-		this.panel = new XGPointPanel(this, n);
-		this.panel.setLimits(0, 381, 0, 127);
+		this.panel = new XGPointPanel(n, 0, 381, 0, 127);
 		this.panel.setUnits("Time", "Pitch");
 
 		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), this.a_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
@@ -39,6 +38,7 @@ public class XGPEG extends XGComponent
 		this.panel.add(new XGPoint(3, this.r_time, XGFixedValue.VALUE_64, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
 		this.panel.add(new XGPoint(4, VALUE_381, this.r_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 
-		this.add(this.panel);
+		this.setLayout(new GridBagLayout());
+		this.add(this.panel, DEF_GBC);
 	}
 }

@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -24,11 +23,8 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGKnob extends XGComponent implements XGParameterChangeListener, XGValueChangeListener
+public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
 {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
 /*****************************************************************************************************************************/
@@ -39,16 +35,16 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 	private final XGAddress address;
 
 	public XGKnob(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n, mod);
-		this.setLayout(new GridBagLayout());
+	{	super(n);
+
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getType().getDevice().getValues().get(this.address);
-		this.addMouseListener(this);
-		this.addFocusListener(this);
+		this.value = mod.getValues().get(this.address);
 		if(this.value.getOpcode().isMutable()) this.value.addParameterListener(this);
 		this.value.addValueListener(this);
 
+		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,2,0), 0, 0);
+
 		this.bar = new XGKnobBar(this.value);
 		this.add(this.bar, gbc);
 
@@ -59,6 +55,8 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		this.add(this.label, gbc);
 
+		this.addMouseListener(this);
+		this.addFocusListener(this);
 		this.parameterChanged(this.value.getParameter());
 
 //		this.logInitSuccess();
@@ -139,21 +137,13 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGComponent.dragEvent = e;
+		{	XGComponent.GLOBALS.dragEvent = e;
 			e.consume();
 		}
 
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGComponent.dragEvent = e;
+		{	XGComponent.GLOBALS.dragEvent = e;
 			e.consume();
-		}
-
-		@Override public void mouseEntered(MouseEvent e)
-		{
-		}
-
-		@Override public void mouseExited(MouseEvent e)
-		{
 		}
 
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
@@ -162,13 +152,21 @@ public class XGKnob extends XGComponent implements XGParameterChangeListener, XG
 		}
 
 		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - XGComponent.dragEvent.getX();
+		{	int distance = e.getX() - XGComponent.GLOBALS.dragEvent.getX();
 			this.value.addIndex(distance);
-			XGComponent.dragEvent = e;
+			XGComponent.GLOBALS.dragEvent = e;
 			e.consume();
 		}
 
 		@Override public void mouseMoved(MouseEvent e)
+		{
+		}
+
+		@Override public void mouseEntered(MouseEvent e)
+		{
+		}
+
+		@Override public void mouseExited(MouseEvent e)
 		{
 		}
 	}

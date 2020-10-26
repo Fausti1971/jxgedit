@@ -6,14 +6,13 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.JComponent;
+import javax.swing.JPanel;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
@@ -24,7 +23,7 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGRange extends XGComponent implements KeyListener, XGParameterConstants, XGValueChangeListener
+public class XGRange extends JPanel implements XGComponent, XGParameterConstants, XGValueChangeListener
 {	/**
 	 * 
 	 */
@@ -32,13 +31,15 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 
 /*******************************************************************************************************/
 
+	private final XMLNode config;
 	private final XGRangeBar bar;
 	private final XGRangeLabel label;
 	private final XGValue loValue, hiValue;
 	private final XGAddress loAddress, hiAddress;
 
 	public XGRange(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n, mod);
+	{	this.config = n;
+		this.setBounds();
 		this.setLayout(new GridBagLayout());
 		this.loAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_LO), mod.getAddress());
 		this.hiAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_HI), mod.getAddress());
@@ -74,6 +75,10 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 //		this.logInitSuccess();
 	}
 
+	@Override public XMLNode getConfig()
+	{	return this.config;
+	}
+
 	@Override public void paint(Graphics g)
 	{	if(this.isEnabled()) super.paint(g);
 	}
@@ -91,18 +96,6 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		this.label.setText(this.loValue + "..." + this.hiValue);
 	}
 
-	@Override public void keyTyped(KeyEvent e)
-	{
-	}
-
-	@Override public void keyPressed(KeyEvent e)
-	{
-	}
-
-	@Override public void keyReleased(KeyEvent e)
-	{
-	}
-
 	@Override public boolean isManagingFocus()
 	{	return true;
 	}
@@ -114,9 +107,7 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 /***************************************************************************************************/
 
 	private class XGRangeBar extends JComponent implements XGValueChangeListener, MouseMotionListener, MouseWheelListener, MouseListener
-	{	/**
-		 * 
-		 */
+	{
 		private static final long serialVersionUID = 1L;
 
 /**********************************************************************************************/
@@ -197,9 +188,9 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - XGComponent.dragEvent.getX();
+		{	int distance = e.getX() - XGComponent.GLOBALS.dragEvent.getX();
 			this.curValue.addIndex(distance);
-			XGComponent.dragEvent = e;
+			XGComponent.GLOBALS.dragEvent = e;
 			e.consume();
 		}
 
@@ -212,13 +203,13 @@ public class XGRange extends XGComponent implements KeyListener, XGParameterCons
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGComponent.dragEvent = e;
+		{	XGComponent.GLOBALS.dragEvent = e;
 			this.setCurrent(e.getX());
 			e.consume();
 		}
 	
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGComponent.dragEvent = e;
+		{	XGComponent.GLOBALS.dragEvent = e;
 			this.setCurrent(e.getX());
 		}
 

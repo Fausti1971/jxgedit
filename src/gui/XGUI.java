@@ -3,6 +3,8 @@ package gui;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.RenderingHints;
 import javax.swing.JEditorPane;
 import javax.swing.UIManager;
@@ -18,6 +20,7 @@ import xml.XMLNode;
 public interface XGUI extends ConfigurationConstants, XGLoggable
 {
 	static final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	static final GridBagConstraints DEF_GBC = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
 
 	static final String
 		LAF_SYSTEM = UIManager.getSystemLookAndFeelClassName(),
@@ -53,7 +56,7 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 	Color
 		COL_FOCUS = UIManager.getColor("Focus.color"),
 		COL_PANEL_BACK = UIManager.getColor("Panel.background"),
-//		COL_TRANSPARENT = new Color(0, 0, 0, 0),
+		COL_TRANSPARENT = new Color(0, 0, 0, 0),
 		COL_NODE_SELECTED_BACK = Color.lightGray,
 		COL_NODE_BACK = UIManager.getColor("Tree.textBackground"),
 		COL_NODE_FOCUS = UIManager.getColor("Tree.selectionBorderColor"),

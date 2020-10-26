@@ -8,39 +8,38 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.NoSuchElementException;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 import adress.InvalidXGAddressException;
 import adress.XGAddressConstants;
 import adress.XGMemberNotFoundException;
 import application.Configurable;
 import application.XGLoggable;
-import application.XGStrings;
 import module.XGModule;
-import value.XGFixedValue;
-import value.XGValue;
 import xml.XMLNode;
 
-public abstract class XGComponent extends JComponent implements XGAddressConstants, XGUI, Configurable, MouseListener, FocusListener, XGLoggable
+public interface XGComponent extends XGAddressConstants, XGUI, Configurable, MouseListener, FocusListener, XGLoggable
 {
-	private static final long serialVersionUID = 1L;
-	public static MouseEvent dragEvent = null;
-	public static Cursor lastCursor = null;
-	public static boolean mousePressed = false;
+	static class Globals
+	{	public MouseEvent dragEvent = null;
+		public Cursor lastCursor = null;
+		public boolean mousePressed = false;
+	}
 
-	static final XGValue DEF_VALUE = new XGFixedValue("n/a", 0);
+	Globals GLOBALS = new Globals();
+//	static final XGValue DEF_VALUE = new XGFixedValue("n/a", 0);
 
-	public static JComponent init(XGModule mod) throws NoSuchElementException
+	public static JComponent init(XGModule mod)
 	{	XGTemplate t = mod.getType().getGuiTemplate();
 		XMLNode xml = null;
 		if(t != null) xml = t.getConfig();
-		if(xml == null) throw new NoSuchElementException(mod.getType() + " has no GUI");
+		if(xml == null) return new JLabel(mod.getType() + " has no GUI");
 		return new XGFrame(xml, mod);
 	}
 
-	protected static JComponent newItem(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
+	static JComponent newItem(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
 	{	String s = n.getTag();
 		JComponent c = null;
 		switch(s)
@@ -66,101 +65,73 @@ public abstract class XGComponent extends JComponent implements XGAddressConstan
 
 /********************************************************************************************/
 
-	protected final XMLNode config;
-
-	public XGComponent(XMLNode n)
-	{	this.config = n;
+	default JComponent getJComponent()
+	{	return (JComponent)this;
 	}
 
-	public XGComponent(String text)
-	{	this.config = new XMLNode(text.replaceAll(XGStrings.REGEX_NON_ALNUM, XGStrings.TEXT_REPLACEMENT));
-		this.setName(text);
+	default void setBounds()
+	{	JComponent j = this.getJComponent();
+		j.setLayout(null);
+		Rectangle r = new XGGrid(this.getConfig().getStringAttributeOrDefault(ATTR_BOUNDS, "0,0,0,0"));
+		j.setBounds(GRID * r.x, GRID * r.y, GRID * r.width, GRID * r.height);
+		Dimension dim = new Dimension(j.getBounds().getSize());
+		j.setMinimumSize(dim);
+		j.setPreferredSize(dim);
 	}
 
-	public XGComponent(XMLNode n, XGModule mod)
-	{	this.config = n;
-		this.setBounds();
-		this.setName(n.getStringAttributeOrDefault(ATTR_NAME, mod.toString()));
-	}
-
-	private void setBounds()
-	{	Rectangle r = new XGGrid(this.config.getStringAttributeOrDefault(ATTR_BOUNDS, "0,0,0,0"));
-		super.setBounds(GRID * r.x, GRID * r.y, GRID * r.width, GRID * r.height);
-		Dimension dim = new Dimension(this.getBounds().getSize());
-		this.setMinimumSize(dim);
-		this.setPreferredSize(dim);
-	}
-
-	public void borderize()
-	{	if(this.isEnabled())
-		{	Color c = this.getBackground();
-			if(c == null) c = COL_PANEL_BACK;
-			c = c.darker();
-			if(this.hasFocus()) c = c.darker();
-			this.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
+	public default void borderize()
+	{	JComponent j = this.getJComponent();
+		if(j.isEnabled())
+		{	Color c = j.getBackground().darker();
+			if(j.hasFocus()) c = c.darker();
+			j.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), j.getName(), TitledBorder.CENTER, TitledBorder.CENTER, SMALL_FONT, c));
 		}
-		else this.setBorder(null);
+		else j.setBorder(null);
 	}
 
-	public void deborderize()
-	{	this.setBorder(null);
+	public default void deborderize()
+	{	this.getJComponent().setBorder(null);
 	}
 
-	@Override public boolean isFocusable()
-	{	return this.isEnabled();
-	}
-
-	@Override public boolean isManagingFocus()
-	{	return this.isEnabled();
-	}
-	
-	@Override public boolean isFocusTraversable()
-	{	return this.isEnabled();
-	}
-
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
-
-	@Override public void mouseClicked(MouseEvent e)
+	@Override public default void mouseClicked(MouseEvent e)
 	{	if(e.getClickCount() == 2)
 		{
 System.out.println("doubleclick detected");
 		}
 	}
 
-	@Override public void mousePressed(MouseEvent e)
-	{	XGComponent.mousePressed = true;
-		XGComponent.dragEvent = e;
+	@Override public default void mousePressed(MouseEvent e)
+	{	XGComponent.GLOBALS.mousePressed = true;
+		XGComponent.GLOBALS.dragEvent = e;
 		e.consume();
 	}
 
-	@Override public void mouseReleased(MouseEvent e)
-	{	XGComponent.mousePressed = false;
-		XGComponent.dragEvent = e;
+	@Override public default void mouseReleased(MouseEvent e)
+	{	XGComponent.GLOBALS.mousePressed = false;
+		XGComponent.GLOBALS.dragEvent = e;
 	}
 
-	@Override public void mouseEntered(MouseEvent e)
-	{	if(!XGComponent.mousePressed) this.requestFocusInWindow();
+	@Override public default void mouseEntered(MouseEvent e)
+	{	if(!XGComponent.GLOBALS.mousePressed) this.getJComponent().requestFocusInWindow();
 	}
 
-	@Override public void mouseExited(MouseEvent e)
+	@Override public default void mouseExited(MouseEvent e)
 	{
 	}
 
-	@Override public void focusLost(FocusEvent e)
+	@Override public default void focusLost(FocusEvent e)
 	{	this.borderize();
-		this.repaint();
+		this.getJComponent().repaint();
 	}
 
-	@Override public void focusGained(FocusEvent e)
+	@Override public default void focusGained(FocusEvent e)
 	{	this.borderize();
-		this.repaint();
+		this.getJComponent().repaint();
 	}
 
 /************************************************************************************************************/
 
-	private class XGGrid extends Rectangle
+	class XGGrid extends Rectangle
 	{
 		private static final long serialVersionUID = 1L;
 

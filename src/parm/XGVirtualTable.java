@@ -5,163 +5,52 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.function.Function;
 import application.XGMath;
+import application.XGStrings;
 import device.XGDevice;
 import xml.XMLNode;
 
 public class XGVirtualTable implements XGTable
 {	private static final int MIN = 0, MAX = Integer.MAX_VALUE & 0x0000FFFF;
 
-	static final XGTable DEF_TABLE = new XGVirtualTable
-		(MIN, MAX & 0x0000FFFF, DEF_TABLENAME,
-			new Function<Integer, String>()
-			{	@Override public String apply(Integer t)
-				{	return t.toString();
-				};
-			},
-			new Function<String, Integer>()
-			{	@Override public Integer apply(String s)
-				{	return Integer.parseInt(s);
-				}
-			});
+	static final XGTable DEF_TABLE = new XGVirtualTable(MIN, MAX & 0x0000FFFF, DEF_TABLENAME,
+		(Integer i)->{return i.toString();},
+		(String s)->{return Integer.parseInt(s);});
 
 	public static void init(XGDevice dev)
 	{	dev.getTables().add(DEF_TABLE);
 
-		dev.getTables().add
-			(new XGVirtualTable
-				(MIN, MAX, TABLE_ADD1,
-					new Function<Integer,  String>()
-					{	@Override public String apply(Integer t)
-						{	return Integer.toString(t + 1);
-						};
-					},
-					new Function<String, Integer>()
-					{	@Override public Integer apply(String t)
-						{	return Integer.parseInt(t) - 1;
-						};
-					}
-				)
-			);
+		dev.getTables().add(new XGVirtualTable(MIN, MAX, TABLE_ADD1,
+			(Integer i)->{return Integer.toString(i + 1);},
+			(String s)->{return XGStrings.parseIntOrDefault(s, MIN + 1) - 1;}));
+
+		dev.getTables().add(new XGVirtualTable(MIN, MAX, TABLE_DIV10,
+			(Integer i)->{return Float.toString((float)i / 10);},
+			(String s)->{Float f = Float.parseFloat(s) * 10; return f.intValue();}));
 
 		dev.getTables().add
-			(new XGVirtualTable
-				(MIN, MAX, TABLE_DIV10,
-					new Function<Integer,  String>()
-					{	@Override public String apply(Integer t)
-						{	return Float.toString((float)t / 10);
-						};
-					},
-					new Function<String, Integer>()
-					{	@Override public Integer apply(String t)
-						{	Float f = Float.parseFloat(t) * 10;
-							return f.intValue();
-						};
-					}
-				)
-			);
+		(	new XGVirtualTable(MIN, MAX, TABLE_SUB64,
+			(Integer i)->{return Integer.toString(i - 64);},
+			(String s)->{return Integer.parseInt(s) + 64;}));
 
-		dev.getTables().add
-			(new XGVirtualTable
-				(MIN, MAX, TABLE_SUB64,
-					new Function<Integer,  String>()
-					{	@Override public String apply(Integer t)
-						{	return Integer.toString(t - 64);
-						};
-					},
-					new Function<String, Integer>()
-					{	@Override public Integer apply(String t)
-						{	return Integer.parseInt(t) + 64;
-						};
-					}
-				)
-			);
+		dev.getTables().add(new XGVirtualTable(MIN, MAX, TABLE_SUB1024DIV10,
+			(Integer i)->{Float f = (i.floatValue() - 1024) / 10; return f.toString();},
+			(String s)->{Float f = Float.parseFloat(s) * 10 + 1024; return f.intValue();}));
 
-		dev.getTables().add
-			(new XGVirtualTable
-				(MIN, MAX, TABLE_SUB1024DIV10,
-					new Function<Integer,  String>()
-					{	@Override public String apply(Integer t)
-						{	Float f = (t.floatValue() - 1024) / 10;
-							return f.toString();
-						};
-					},
-					new Function<String, Integer>()
-					{	@Override public Integer apply(String t)
-						{	Float f = Float.parseFloat(t) * 10 + 1024;
-							return f.intValue();
-						};
-					}
-				)
-			);
+		dev.getTables().add(new XGVirtualTable(MIN, MAX, TABLE_SUB128DIV10,
+			(Integer i)->{Float f = (i.floatValue() - 128) / 10; return f.toString();},
+			(String s)->{Float f = Float.parseFloat(s) * 10 + 128; return f.intValue();}));
 
-		dev.getTables().add
-			(new XGVirtualTable
-				(MIN, MAX, TABLE_SUB128DIV10,
-					new Function<Integer,  String>()
-					{	@Override public String apply(Integer t)
-						{	Float f = (t.floatValue() - 128) / 10;
-							return f.toString();
-						};
-					},
-					new Function<String, Integer>()
-					{	@Override public Integer apply(String t)
-						{	Float f = Float.parseFloat(t) * 10 + 128;
-							return f.intValue();
-						};
-					}
-				)
-			);
+		dev.getTables().add(new XGVirtualTable(0, 127, TABLE_PANORAMA,
+			(Integer i)->{if(i == 0) return "Rnd"; if(i < 64) return "L" + Math.abs(i - 64); if(i > 64) return "R" + Math.abs(i - 64); else return "C";},
+			(String s)->{return Integer.parseInt(s);}));
 
-		dev.getTables().add
-			(new XGVirtualTable
-				(0, 127, TABLE_PANORAMA,
-					new Function<Integer, String>()
-					{	@Override public String apply(Integer t)
-						{	if(t == 0) return "Rnd";
-							if(t < 64) return "L" + Math.abs(t - 64);
-							if(t > 64) return "R" + Math.abs(t - 64);
-							else return "C";
-						};
-					},
-					new Function<String, Integer>()
-					{	@Override public Integer apply(String t)
-						{	return Integer.parseInt(t);//TODO:
-						};
-					}
-				)
-			);
+		dev.getTables().add(new XGVirtualTable(4, 124, TABLE_DEGREES,
+			(Integer i)->{	return Integer.toString(XGMath.linearIO(i, 4, 124, -180, 180));},
+			(String s)->{	return Integer.parseInt(s);}));
 
-		dev.getTables().add
-			(new XGVirtualTable
-				(4, 124, TABLE_DEGREES,
-					new Function<Integer, String>()
-					{	@Override public String apply(Integer t)
-						{	return Integer.toString(XGMath.linearIO(t, 4, 124, -180, 180));
-						};
-					},
-					new Function<String, Integer>()
-					{	@Override public Integer apply(String t)
-						{	return Integer.parseInt(t);//TODO:
-						};
-					}
-				)
-			);
-
-		dev.getTables().add
-			(new XGVirtualTable
-				(0, 0, TABLE_NONE,
-					new Function<Integer, String>()
-					{	@Override public String apply(Integer t)
-						{	return "";
-						};
-					},
-					new Function<String, Integer>()
-					{	@Override public Integer apply(String t)
-						{	return 0;
-						};
-					}
-				)
-			);
+		dev.getTables().add(new XGVirtualTable(0, 0, TABLE_NONE,
+			(Integer i)->{return "";},
+			(String s)->{return 0;}));
 
 //TODO: weiter so...
 

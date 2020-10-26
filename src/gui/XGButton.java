@@ -9,7 +9,7 @@ import module.XGModule;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGButton extends XGComponent
+public class XGButton extends XGFrame
 {	/**
 	 * 
 	 */
@@ -17,19 +17,17 @@ public class XGButton extends XGComponent
 
 /*******************************************************************************/
 
-	private JButton button = new JButton();
+	private final JButton button = new JButton();
 	private final XGValue value;
 	private final XGAddress address;
 
 	public XGButton(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{
-		super(n, mod);
+	{	super(n);
+		this.borderize();
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
 		this.button.setText(this.value.getParameter().getName());
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
 		this.add(this.button, gbc);
-
-//		this.logInitSuccess();
 	}
 }

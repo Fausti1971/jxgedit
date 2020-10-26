@@ -47,7 +47,4 @@ public class XGPopup extends JPopupMenu
 		}
 		this.setVisible(true);
 	}
-
-
-
 }

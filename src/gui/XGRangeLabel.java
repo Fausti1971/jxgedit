@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -23,7 +22,7 @@ public class XGRangeLabel extends JTextField implements XGUI, ActionListener, Mo
 		this.loValue = lo;
 		this.hiValue = hi;
 		this.setOpaque(false);
-//		this.setBackground(COL_TRANSPARENT);
+		this.setBackground(COL_TRANSPARENT);
 		this.setBorder(null);
 //		if(this.isEnabled()) this.setText(this.getText());
 		this.setText(this.loValue + "..." + this.hiValue);
@@ -35,10 +34,6 @@ public class XGRangeLabel extends JTextField implements XGUI, ActionListener, Mo
 
 	@Override public void actionPerformed(ActionEvent e)
 	{
-	}
-
-	@Override protected void paintComponent(Graphics g)
-	{	if(this.isEnabled()) super.paintComponent(g);
 	}
 
 	@Override public void mouseClicked(MouseEvent e)

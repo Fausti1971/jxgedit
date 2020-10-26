@@ -22,7 +22,7 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGProgramSelector extends XGComponent implements XGParameterChangeListener, XGValueChangeListener, XGWindowSource, TreeSelectionListener
+public class XGProgramSelector extends XGFrame implements XGComponent, XGParameterChangeListener, XGValueChangeListener, XGWindowSource, TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
 
@@ -31,13 +31,11 @@ public class XGProgramSelector extends XGComponent implements XGParameterChangeL
 	private final XGValue value;
 	private final XGAddress address;
 	private XGWindow window;
-	private final JButton inc = new JButton(">"), dec = new JButton("<"), select = new JButton();
+	private final JButton inc = new JButton("+"), dec = new JButton("-"), select = new JButton();
 
 	public XGProgramSelector(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{
-		super(n, mod);
-		BorderLayout layout = new BorderLayout();
-		this.setLayout(layout);
+	{	super(n);
+		this.setLayout(new BorderLayout());
 		
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);

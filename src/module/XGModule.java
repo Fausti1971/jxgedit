@@ -6,10 +6,8 @@ import java.awt.event.WindowEvent;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
@@ -140,12 +138,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	}
 
 	@Override public JComponent getChildWindowContent()
-	{	try
-		{	return XGComponent.init(this);
-		}
-		catch(NoSuchElementException e)
-		{	return new JLabel(e.getMessage());
-		}
+	{	return XGComponent.init(this);
 	}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()

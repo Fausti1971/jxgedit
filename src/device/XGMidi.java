@@ -15,7 +15,6 @@ import javax.swing.JComponent;
 import adress.InvalidXGAddressException;
 import application.Configurable;
 import application.XGLoggable;
-import gui.XGComponent;
 import gui.XGFrame;
 import gui.XGList;
 import gui.XGSpinner;
@@ -321,7 +320,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	{	return this.config;
 	}
 
-	public XGComponent getConfigComponent()
+	public JComponent getConfigComponent()
 	{	GridBagConstraints gbc = new GridBagConstraints();
 		XGFrame root = new XGFrame("midi");
 		root.setLayout(new GridBagLayout());

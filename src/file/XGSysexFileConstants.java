@@ -10,7 +10,7 @@ public interface XGSysexFileConstants
 		{	return "Raw SystemExlusive File";
 		}
 		@Override public boolean accept(File f)
-		{	return f.exists() && f.canRead() && f.isFile() && f.getName().endsWith(".syx");
+		{	return f.isDirectory() || f.exists() && f.canRead() && f.isFile() && f.getName().endsWith(".syx");
 		}
 	};
 }

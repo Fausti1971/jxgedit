@@ -85,7 +85,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	{	this(tag, new XGProperties());
 	}
 
-	private XMLNode(String tag, XGProperties attr)
+	public XMLNode(String tag, XGProperties attr)
 	{	this(tag, attr, "");
 	}
 

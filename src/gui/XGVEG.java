@@ -1,6 +1,7 @@
 package gui;
 
 import java.awt.Cursor;
+import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
@@ -12,7 +13,7 @@ import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGVEG extends XGComponent implements MouseMotionListener
+public class XGVEG extends XGFrame implements MouseMotionListener
 {
 	private static final long serialVersionUID = 1L;
 	private static final XGAddress
@@ -28,16 +29,15 @@ public class XGVEG extends XGComponent implements MouseMotionListener
 	private final XGTooltip tooltip = new XGTooltip();
 
 	public XGVEG(XMLNode n, XGModule mod) throws InvalidXGAddressException
-	{	super(n, mod);
+	{	super(n);
+		this.borderize();
+
 		this.depth = mod.getValues().get(DEPTH.complement(mod.getAddress()));
 		this.offset = mod.getValues().get(OFFSET.complement(mod.getAddress()));
 		this.low = mod.getValues().get(LOW.complement(mod.getAddress()));
 		this.high = mod.getValues().get(HIGH.complement(mod.getAddress()));
 
-		this.borderize();
-		this.setLayout(null);
-		this.panel = new XGPointPanel(this, n);
-		this.panel.setLimits(1, 127, 64, 127);
+		this.panel = new XGPointPanel(n, 1, 127, 64, 127);
 		this.panel.setUnits("Velocity", "Volume");
 
 		this.panel.add(new XGPoint(0, this.low, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
@@ -53,8 +53,8 @@ public class XGVEG extends XGComponent implements MouseMotionListener
 //y1 = offset
 //x2 = high
 //y2 = offset + depth
-
-		this.add(this.panel);
+		this.setLayout(new GridBagLayout());
+		this.add(this.panel, DEF_GBC);
 	}
 
 	private String getInfo()
@@ -62,31 +62,29 @@ public class XGVEG extends XGComponent implements MouseMotionListener
 	}
 
 	@Override public void mouseDragged(MouseEvent e)
-	{	this.depth.addIndex(e.getXOnScreen() - XGComponent.dragEvent.getXOnScreen());
-		this.offset.addIndex(XGComponent.dragEvent.getYOnScreen() - e.getYOnScreen());
+	{	this.depth.addIndex(e.getXOnScreen() - XGComponent.GLOBALS.dragEvent.getXOnScreen());
+		this.offset.addIndex(XGComponent.GLOBALS.dragEvent.getYOnScreen() - e.getYOnScreen());
 		this.tooltip.setName(this.getInfo());
 		Point p = e.getLocationOnScreen();
 		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
 		this.tooltip.setVisible(true);
-		XGComponent.dragEvent = e;
+		XGComponent.GLOBALS.dragEvent = e;
 		e.consume();
 	}
 
 	@Override public void mouseEntered(MouseEvent e)
-	{	super.mouseEntered(e);
-		this.tooltip.setName(this.getInfo());
+	{	this.tooltip.setName(this.getInfo());
 		Point p = e.getLocationOnScreen();
 		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
-		if(!XGComponent.mousePressed) this.tooltip.setVisible(true);
+		if(!XGComponent.GLOBALS.mousePressed) this.tooltip.setVisible(true);
 	}
 
 	@Override public void mouseExited(MouseEvent e)
-	{	super.mouseExited(e);
-		if(!XGComponent.mousePressed) this.tooltip.setVisible(false);
+	{	if(!XGComponent.GLOBALS.mousePressed) this.tooltip.setVisible(false);
 	}
 
 	@Override public void mouseMoved(MouseEvent e)
-	{	if(XGComponent.mousePressed) return;
+	{	if(XGComponent.GLOBALS.mousePressed) return;
 		Point p = e.getLocationOnScreen();
 		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
 	}

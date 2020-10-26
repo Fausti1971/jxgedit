@@ -12,7 +12,7 @@ import module.XGModule;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGFlagBox extends XGComponent
+public class XGFlagBox extends XGFrame
 {
 	/**
 	 * 
@@ -21,13 +21,13 @@ public class XGFlagBox extends XGComponent
 
 /*****************************************************************************************************************/
 
-	private final JButton button;
+	private final JButton button = new JButton();
 	private final Set<XGValue> values = new LinkedHashSet<>();
 
 	public XGFlagBox(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n, mod);
-		this.borderize();
+	{	super(n);
 		this.setLayout(new GridBagLayout());
+
 		XGAddress adr;
 		XGValue val;
 		for(XMLNode f : n.getChildNodes(TAG_FLAG))
@@ -36,10 +36,11 @@ public class XGFlagBox extends XGComponent
 			if(val == null) throw new XGMemberNotFoundException(mod + " has no value for address " + adr);
 			this.values.add(val);
 		}
-		this.button = new JButton(n.getStringAttribute(ATTR_NAME));
-		this.button.addActionListener((ActionEvent)->{new XGPopup(this.button, this.values);});
-		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
-		this.add(this.button, gbc);
+		this.button.addActionListener((ActionEvent)->{new XGPopup(this, this.values);});
+		this.button.setText("select...");
 		this.addFocusListener(this);
+
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
+		this.add(this.button, gbc);
 	}
 }

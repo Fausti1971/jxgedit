@@ -38,7 +38,8 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	private final XGValueLabel label;
 
 	public XGSlider(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n, mod);
+	{	super(n);
+		this.setBounds();
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
@@ -166,9 +167,9 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - XGComponent.dragEvent.getX();
+		{	int distance = e.getX() - XGComponent.GLOBALS.dragEvent.getX();
 			this.value.addIndex(distance);
-			XGComponent.dragEvent = e;
+			XGComponent.GLOBALS.dragEvent = e;
 			e.consume();
 		}
 
@@ -181,12 +182,12 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGComponent.dragEvent = e;
+		{	XGComponent.GLOBALS.dragEvent = e;
 			e.consume();
 		}
 	
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGComponent.dragEvent = e;
+		{	XGComponent.GLOBALS.dragEvent = e;
 		}
 
 

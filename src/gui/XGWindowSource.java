@@ -12,9 +12,28 @@ import javax.swing.JComponent;
  */
 public interface XGWindowSource extends WindowListener
 {
+/**
+ * erfagt eine zur WindowSource gehörende Fenster-Instanz;
+ * @return null, wenn es keine solche gibt
+ */
 	public XGWindow getChildWindow();
+
+/**
+ * setzt die übergebene Fenster-Instanz als Childwindow der WindowSource;
+ * @param win
+ */
 	public void setChildWindow(XGWindow win);
+
+/**
+ * erfragt den im ChildWindow darzustellenden Inhalt;
+ * @return Content
+ */
 	public JComponent getChildWindowContent();
+
+/**
+ * erfragt die Position, an der das ChildWindow dargestellt werden soll
+ * @return Location
+ */
 	public Point getSourceLocationOnScreen();
 
 	@Override public default void windowOpened(WindowEvent e)

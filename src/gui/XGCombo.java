@@ -12,10 +12,9 @@ import parm.XGParameterChangeListener;
 import parm.XGTable;
 import parm.XGTableEntry;
 import value.XGValue;
-import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGCombo extends XGComponent implements XGValueChangeListener, XGParameterChangeListener
+public class XGCombo extends XGFrame implements XGParameterChangeListener
 {
 	/**
 	 * 
@@ -24,22 +23,38 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 
 /*****************************************************************************************************************/
 
-	private final JComboBox<XGTableEntry> combo;
+	private final JComboBox<XGTableEntry> combo = new JComboBox<>();
 	private final XGValue value;
 	private final XGAddress address;
 
 	public XGCombo(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n, mod);
+	{	super(n);
+		this.borderize();
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.value = mod.getType().getDevice().getValues().get(this.address);
-		this.combo = new XGComboBox<>(this.value);
-		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
-		this.add(this.combo, gbc);
+
+		XGParameter p = this.value.getParameter();
+		if(p != null)
+		{	XGTable t = p.getTranslationTable();
+			for(XGTableEntry e : t) this.combo.addItem(e);
+			this.combo.setSelectedItem(t.getByIndex(this.value.getIndex()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
+			this.combo.addActionListener((ActionEvent)->{this.entrySelected();});
+		}
+		else this.setEnabled(false);
+		this.setAutoscrolls(true);
+
 		this.addFocusListener(this);
-		this.value.addValueListener(this);
+		this.value.addValueListener((XGValue v)->{this.combo.setSelectedItem(this.value.getEntry());});
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
+
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
+		this.add(this.combo, gbc);
+	}
+
+	private void entrySelected()
+	{	this.value.editEntry((XGTableEntry)this.combo.getSelectedItem());
 	}
 
 	@Override public void parameterChanged(XGParameter p)
@@ -53,38 +68,5 @@ public class XGCombo extends XGComponent implements XGValueChangeListener, XGPar
 		}
 		this.borderize();
 		this.repaint();
-	}
-
-	@Override public void contentChanged(XGValue v)
-	{	this.combo.setSelectedItem(this.value.getEntry());
-	}
-
-/*****************************************************************************************************/
-
-	private class XGComboBox<T> extends JComboBox<XGTableEntry>
-	{	/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		private final XGValue value;
-
-		public XGComboBox(XGValue v)
-		{	super();
-			this.value = v;
-			XGParameter p = this.value.getParameter();
-			if(p != null)
-			{	XGTable t = p.getTranslationTable();
-				for(XGTableEntry e : t) this.addItem(e);
-				this.setSelectedItem(t.getByIndex(this.value.getIndex()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
-				this.addActionListener((ActionEvent)->{this.entrySelected();});
-			}
-			else this.setEnabled(false);
-			this.setAutoscrolls(true);
-		}
-
-		private void entrySelected()
-		{	this.value.editEntry((XGTableEntry)this.getSelectedItem());
-		}
 	}
 }

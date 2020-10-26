@@ -23,7 +23,7 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 		ADD_TO_PREVIOUS_COORDINATE,
 	};
 
-//TODO: vielleicht sollte man dem XGPoint eine Variable zugestehen, die angibt,
+//TODO: vielleicht sollte man dem XGPoint eine Gradient-Variable zugestehen, die angibt,
 //		in welche Richtung (zum origin, zu nächsten XGPoint, zum min oder max) eine Linie strebt und wie schnell (wäre für EQ und Filterhüllkrve hilfreich)
 
 /******************************************************************************************************/
@@ -136,21 +136,21 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 	}
 
 	@Override public void mousePressed(MouseEvent e)
-	{	XGComponent.mousePressed = true;
-		XGComponent.dragEvent = e;
+	{	XGComponent.GLOBALS.mousePressed = true;
+		XGComponent.GLOBALS.dragEvent = e;
 		this.tooltip.setVisible(true);
 		e.consume();
 	}
 
 	@Override public void mouseReleased(MouseEvent e)
-	{	XGComponent.mousePressed = false;
-		XGComponent.dragEvent = e;
+	{	XGComponent.GLOBALS.mousePressed = false;
+		XGComponent.GLOBALS.dragEvent = e;
 		this.tooltip.setVisible(false);
 		e.consume();
 	}
 
 	@Override public void mouseEntered(MouseEvent e)
-	{	if(!XGComponent.mousePressed)
+	{	if(!XGComponent.GLOBALS.mousePressed)
 		{	Point p = e.getLocationOnScreen();
 			this.tooltip.setLocation(p.x + POINT_SIZE, p.y + POINT_SIZE);
 			this.tooltip.setVisible(true);
@@ -158,14 +158,14 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 	}
 
 	@Override public void mouseExited(MouseEvent e)
-	{	if(!XGComponent.mousePressed) this.tooltip.setVisible(false);
+	{	if(!XGComponent.GLOBALS.mousePressed) this.tooltip.setVisible(false);
 	}
 
 	@Override public void mouseDragged(MouseEvent e)
-	{	this.valueX.addIndex(e.getXOnScreen() - XGComponent.dragEvent.getXOnScreen());
-		this.valueY.addIndex(XGComponent.dragEvent.getYOnScreen() - e.getYOnScreen());
+	{	this.valueX.addIndex(e.getXOnScreen() - XGComponent.GLOBALS.dragEvent.getXOnScreen());
+		this.valueY.addIndex(XGComponent.GLOBALS.dragEvent.getYOnScreen() - e.getYOnScreen());
 		this.setLocation();
-		XGComponent.dragEvent = e;
+		XGComponent.GLOBALS.dragEvent = e;
 		e.consume();
 	}
 
@@ -181,7 +181,7 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 	@Override protected void paintComponent(Graphics g)
 	{	super.paintComponent(g);
 		this.g2 = (Graphics2D)g.create();
-		this.g2.addRenderingHints(XGComponent.AALIAS);
+		this.g2.addRenderingHints(AALIAS);
 		this.g2.setColor(COL_BAR_FORE);
 		if(this.valueX.equals(this.panel.getSelectedValue()) || this.valueY.equals(this.panel.getSelectedValue())) this.g2.fillOval(0, 0, POINT_SIZE, POINT_SIZE);
 		else this.g2.drawOval(0, 0, POINT_SIZE, POINT_SIZE);

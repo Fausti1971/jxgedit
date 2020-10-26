@@ -99,3 +99,10 @@ Anregung:
 		somit könnten besonders volle XGFrames mit kleineren Steuerelementen versehen werden.
 Anregung:
 		Wie ich heute las, kann man die Selection im JTree vom Focus entkoppeln (default=true), was den nativen JTree wieder interressanter macht.
+Probleme:
+		inaktives XGValueLabel wird trotzdem gezeichnet;
+		Low- und High-Value einer XGValueRange können sich überschneiden;
+		XGFrame übernimmt nicht die BackgroundColor des Parents;
+		PitchEG ReleaseTime falsche Darstellung
+		selektierte aber unfokussierte XGTreeNodes werden in manchen LookAndFeels schlecht dargestellt (Nimbus: weiß auf weiß)
+		Liste der letzten Dumpfiles wird nicht auf Dopplung geprüft und nicht chronologisch sortiert;

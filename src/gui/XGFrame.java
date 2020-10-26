@@ -3,44 +3,45 @@ package gui;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
+import javax.swing.JPanel;
 import adress.InvalidXGAddressException;
 import adress.XGMemberNotFoundException;
 import module.XGModule;
+import xml.XGProperties;
 import xml.XMLNode;
 
-public class XGFrame extends XGComponent
+public class XGFrame extends JPanel implements XGComponent
 {	private static final long serialVersionUID=-2090844398565572567L;
 
 /********************************************************************************************************************/
 
-//	private JPanel panel = new JPanel();
+	private final XMLNode config;
+
 	public XGFrame(XMLNode n)
-	{	super(n);
-		this.setOpaque(true);
-		this.setBackground(COL_NODE_SELECTED_BACK);
+	{	this.config = n;
+		this.setBounds();
+		if(n.hasAttribute(ATTR_NAME))
+		{	this.setName(n.getStringAttribute(ATTR_NAME));
+			this.borderize();
+		}
+//		this.setOpaque(true);
+//		this.setBackground(COL_NODE_SELECTED_BACK);
 	}
 
 	public XGFrame(String text)
-	{	super(text);
-		this.setBackground(COL_NODE_SELECTED_BACK);
-		this.setOpaque(true);
-		this.borderize();
+	{	this(new XMLNode(text, new XGProperties(ATTR_NAME, text)));
 	}
 
-	public XGFrame(XMLNode n, XGModule mod)
-	{	super(n, mod);
-		this.setBackground(COL_NODE_SELECTED_BACK);
-		this.setOpaque(true);
-		if(n.hasAttribute(ATTR_NAME)) this.borderize();
+	protected XGFrame(XMLNode n, XGModule mod)
+	{	this(n);
 		for(XMLNode x : n.getChildNodes())
 		{	try
-			{	this.add(newItem(x, mod));
+			{	this.add(XGComponent.newItem(x, mod));
 			}
 			catch(XGMemberNotFoundException | InvalidXGAddressException e)
 			{	LOG.severe(e.getMessage());
 			}
 		}
-//		this.logInitSuccess();
 	}
 
 	@Override public Component add(Component comp)
@@ -53,6 +54,11 @@ public class XGFrame extends XGComponent
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
 		this.setSize(dim);
+		comp.setBackground(this.getBackground());
 		return comp;
+	}
+
+	@Override public XMLNode getConfig()
+	{	return this.config;
 	}
 }

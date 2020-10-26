@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.GridBagLayout;
 import adress.XGAddress;
 import adress.XGAddressableSet;
 import gui.XGPoint.PointRelation;
@@ -8,7 +9,7 @@ import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGMEQ extends XGComponent implements XGUI
+public class XGMEQ extends XGFrame
 {
 	private static final long serialVersionUID = 1L;
 	private static final XGAddress
@@ -37,9 +38,8 @@ public class XGMEQ extends XGComponent implements XGUI
 	private final int minX, maxX, minY, maxY, midY;
 
 	public XGMEQ(XMLNode n, XGModule mod)
-	{	super(n, mod);
+	{	super(n);
 		this.borderize();
-		this.setLayout(null);
 
 		XGAddressableSet<XGValue> set = mod.getValues();
 		this.g1 = set.get(G1);
@@ -63,17 +63,18 @@ public class XGMEQ extends XGComponent implements XGUI
 		this.s1 = set.get(S1);
 		this.s5 = set.get(S5);
 
-		this.panel = new XGPointPanel(this, n);
 		this.minX = this.f1.getParameter().getMinIndex();
 		this.maxX = this.f5.getParameter().getMaxIndex();
 		this.minY = this.g1.getParameter().getMinIndex();
 		this.maxY = this.g1.getParameter().getMaxIndex();
 		this.midY = (this.maxY - this.minY)/2 + this.minY;
 
-		this.panel.setLimits(this.minX, this.maxX, this.minY, this.maxY);
+		this.panel = new XGPointPanel(n, this.minX, this.maxX, this.minY, this.maxY);
 		this.panel.setUnits("Hz", "dB");
 
-		this.add(this.panel);
+		this.setLayout(new GridBagLayout());
+		this.add(this.panel, DEF_GBC);
+
 		this.panel.add(new XGPoint(0, new XGFixedValue("fixed", this.minX), this.g1, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 		this.panel.add(new XGPoint(1, this.f1, this.g1, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 		this.panel.add(new XGPoint(2, this.f2, this.g2, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
