@@ -62,13 +62,13 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 	}
 
 	@Override public void mouseDragged(MouseEvent e)
-	{	this.depth.addIndex(e.getXOnScreen() - XGComponent.GLOBALS.dragEvent.getXOnScreen());
-		this.offset.addIndex(XGComponent.GLOBALS.dragEvent.getYOnScreen() - e.getYOnScreen());
+	{	this.depth.addIndex(e.getXOnScreen() - VARIABLES.dragEvent.getXOnScreen());
+		this.offset.addIndex(VARIABLES.dragEvent.getYOnScreen() - e.getYOnScreen());
 		this.tooltip.setName(this.getInfo());
 		Point p = e.getLocationOnScreen();
 		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
 		this.tooltip.setVisible(true);
-		XGComponent.GLOBALS.dragEvent = e;
+		VARIABLES.dragEvent = e;
 		e.consume();
 	}
 
@@ -76,15 +76,15 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 	{	this.tooltip.setName(this.getInfo());
 		Point p = e.getLocationOnScreen();
 		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
-		if(!XGComponent.GLOBALS.mousePressed) this.tooltip.setVisible(true);
+		if(!VARIABLES.mousePressed) this.tooltip.setVisible(true);
 	}
 
 	@Override public void mouseExited(MouseEvent e)
-	{	if(!XGComponent.GLOBALS.mousePressed) this.tooltip.setVisible(false);
+	{	if(!VARIABLES.mousePressed) this.tooltip.setVisible(false);
 	}
 
 	@Override public void mouseMoved(MouseEvent e)
-	{	if(XGComponent.GLOBALS.mousePressed) return;
+	{	if(VARIABLES.mousePressed) return;
 		Point p = e.getLocationOnScreen();
 		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
 	}

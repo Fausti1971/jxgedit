@@ -2,10 +2,12 @@ package gui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.event.MouseEvent;
 import javax.swing.JEditorPane;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
@@ -19,8 +21,16 @@ import xml.XMLNode;
 
 public interface XGUI extends ConfigurationConstants, XGLoggable
 {
-	static final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	static final GridBagConstraints DEF_GBC = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
+	class Globals
+	{	public MouseEvent dragEvent = null;
+		public Cursor lastCursor = null;
+		public boolean mousePressed = false;
+	}
+
+	static final Globals VARIABLES = new Globals();
+
+	final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	final GridBagConstraints DEF_GBC = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
 
 	static final String
 		LAF_SYSTEM = UIManager.getSystemLookAndFeelClassName(),
@@ -44,7 +54,7 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 //				MetalLookAndFeel.setCurrentTheme(LAF_METAL_DEFAULT);
 //				UIManager.setLookAndFeel(new MetalLookAndFeel()); 
 
-				UIManager.setLookAndFeel(LAF_NIMBUS);
+				UIManager.setLookAndFeel(LAF_SYSTEM);
 			}
 			catch(UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
 			{	LOG.info(e.getMessage());
@@ -54,18 +64,9 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 	String ICON_LEAF32 = "XGLogo32.gif", ICON_LEAF24 = "XGLogo24.gif";
 
 	Color
-		COL_FOCUS = UIManager.getColor("Focus.color"),
-		COL_PANEL_BACK = UIManager.getColor("Panel.background"),
 		COL_TRANSPARENT = new Color(0, 0, 0, 0),
-		COL_NODE_SELECTED_BACK = Color.lightGray,
-		COL_NODE_BACK = UIManager.getColor("Tree.textBackground"),
-		COL_NODE_FOCUS = UIManager.getColor("Tree.selectionBorderColor"),
-		COL_NODE_TEXT = Color.darkGray,
-		COL_NODE_SELECTED_TEXT = Color.white,
-//		COL_BORDER = Color.lightGray,
-//		COL_BAR_BACK = SystemColor.scrollbar.brighter(),
 		COL_BAR_FORE = UIManager.getColor("Tree.selectionBackground").brighter(),
-		COL_SHAPE = new Color(COL_BAR_FORE.getRed(), COL_BAR_FORE.getGreen(), COL_BAR_FORE.getBlue(), 40);
+		COL_SHAPE = new XGColor(COL_BAR_FORE).add(0, -210);
 
 	float FONTSIZE = 10f;
 
@@ -76,7 +77,8 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 		COL_STEP = 16,
 		GAP = 5,
 		DEF_STROKEWIDTH = 4,
-		ROUND_RADIUS = 6;
+		ROUND_RADIUS = 6,
+		DEF_DEVCOLOR = 0xF0F0F0;
 
 	BasicStroke DEF_ARCSTROKE = new BasicStroke(DEF_STROKEWIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
 	BasicStroke DEF_STROKE = new BasicStroke(2f);

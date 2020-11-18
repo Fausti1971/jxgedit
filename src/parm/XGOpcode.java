@@ -91,7 +91,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 		{	if(n.hasAttribute(s))
 				this.actions.put(s, XGStrings.splitCSV(n.getStringAttribute(s).toString()));
 		}
-		LOG.info(this + " initialized");
+//		LOG.info(this + " initialized");
 	}
 
 	public boolean isMutable()

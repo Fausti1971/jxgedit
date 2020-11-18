@@ -1,6 +1,7 @@
 package xml;
 
 import java.util.LinkedHashMap;
+import application.XGStrings;
 
 public class XGProperties extends LinkedHashMap<String, StringBuffer>
 {
@@ -10,7 +11,7 @@ public class XGProperties extends LinkedHashMap<String, StringBuffer>
 
 	public XGProperties(String name, String value)
 	{	super();
-		this.put(name, value);
+		this.put(XGStrings.toAlNum(name), value);
 	}
 
 	public XGProperties()

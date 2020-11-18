@@ -100,9 +100,11 @@ Anregung:
 Anregung:
 		Wie ich heute las, kann man die Selection im JTree vom Focus entkoppeln (default=true), was den nativen JTree wieder interressanter macht.
 Probleme:
-		inaktives XGValueLabel wird trotzdem gezeichnet;
-		Low- und High-Value einer XGValueRange können sich überschneiden;
+		inaktives XGValueLabel wird trotzdem gezeichnet; (fixed; setVisible())
+		Low- und High-Value einer XGValueRange können sich überschneiden;(workarounded)
 		XGFrame übernimmt nicht die BackgroundColor des Parents;
-		PitchEG ReleaseTime falsche Darstellung
+		PitchEG ReleaseTime falsche Darstellung; (fixed)
 		selektierte aber unfokussierte XGTreeNodes werden in manchen LookAndFeels schlecht dargestellt (Nimbus: weiß auf weiß)
 		Liste der letzten Dumpfiles wird nicht auf Dopplung geprüft und nicht chronologisch sortiert;
+		XGSysexFileSelector Exception bei Cancel;
+		eigener ModuleType für Drumsets?

@@ -44,7 +44,7 @@ public class XGXMLTable implements XGTable
 //		LOG.info(this.name);
 	}
 
-	private void add(XGTableEntry e)
+	public void add(XGTableEntry e)
 	{	this.list.add(e);
 		int i = this.list.indexOf(e);
 		this.indexes.put(e.getValue(), i);

@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -20,7 +21,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, XGUI
 
 	private static final DefaultTreeCellRenderer DTCR = new DefaultTreeCellRenderer();
 	static
-	{	DTCR.setBackgroundSelectionColor(COL_NODE_SELECTED_BACK);
+	{	DTCR.setBackgroundSelectionColor(Color.lightGray);
 	}
 	private static final TreeCellRenderer TCR = new TreeCellRenderer()
 	{	@Override public Component getTreeCellRendererComponent(JTree tree, Object value, boolean selected, boolean expanded, boolean leaf, int row, boolean hasFocus)

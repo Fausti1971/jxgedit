@@ -90,8 +90,8 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	}
 
 	private XMLNode(String tag, XGProperties attr, String txt)
-	{	if(!XGStrings.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
-		this.tag = tag;
+	{	//if(!XGStrings.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
+		this.tag = XGStrings.toAlNum(tag);
 		this.attributes = attr;
 		this.content.replace(0, this.content.length(), txt);
 	}

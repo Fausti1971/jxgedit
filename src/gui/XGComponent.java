@@ -1,8 +1,8 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -22,15 +22,6 @@ import xml.XMLNode;
 
 public interface XGComponent extends XGAddressConstants, XGUI, Configurable, MouseListener, FocusListener, XGLoggable
 {
-	static class Globals
-	{	public MouseEvent dragEvent = null;
-		public Cursor lastCursor = null;
-		public boolean mousePressed = false;
-	}
-
-	Globals GLOBALS = new Globals();
-//	static final XGValue DEF_VALUE = new XGFixedValue("n/a", 0);
-
 	public static JComponent init(XGModule mod)
 	{	XGTemplate t = mod.getType().getGuiTemplate();
 		XMLNode xml = null;
@@ -58,6 +49,7 @@ public interface XGComponent extends XGAddressConstants, XGUI, Configurable, Mou
 			case TAG_SELECTOR:	c = new XGProgramSelector(n, mod); break;
 			case TAG_FLAGBOX:	c = new XGFlagBox(n, mod); break;
 			case TAG_SCALE:		c = new XGScale(n, mod); break;
+			case TAG_KEYBOARD:	c = new XGKeyboard(n, mod); break;
 			default:			c = new XGFrame("unknown_" + s); break;
 		}
 		return c;
@@ -69,6 +61,11 @@ public interface XGComponent extends XGAddressConstants, XGUI, Configurable, Mou
 	{	return (JComponent)this;
 	}
 
+//	default void setComponentEnabled(boolean b)
+//	{	this.getJComponent().setEnabled(b);
+//		for(Component c : this.getJComponent().getComponents()) c.setVisible(b);
+//	}
+
 	default void setBounds()
 	{	JComponent j = this.getJComponent();
 		j.setLayout(null);
@@ -77,6 +74,7 @@ public interface XGComponent extends XGAddressConstants, XGUI, Configurable, Mou
 		Dimension dim = new Dimension(j.getBounds().getSize());
 		j.setMinimumSize(dim);
 		j.setPreferredSize(dim);
+		if(dim.width != 0 || dim.height != 0) j.setMaximumSize(dim);
 	}
 
 	public default void borderize()
@@ -93,6 +91,16 @@ public interface XGComponent extends XGAddressConstants, XGUI, Configurable, Mou
 	{	this.getJComponent().setBorder(null);
 	}
 
+	public default Rectangle getContentArea()
+	{	Rectangle r = new Rectangle(this.getJComponent().getBounds());
+		Insets ins = this.getJComponent().getInsets();
+		r.x = ins.left;
+		r.y = ins.top;
+		r.width -= (ins.right + ins.left);
+		r.height -= (ins.top + ins.bottom);
+		return r;
+	}
+
 	@Override public default void mouseClicked(MouseEvent e)
 	{	if(e.getClickCount() == 2)
 		{
@@ -101,18 +109,18 @@ System.out.println("doubleclick detected");
 	}
 
 	@Override public default void mousePressed(MouseEvent e)
-	{	XGComponent.GLOBALS.mousePressed = true;
-		XGComponent.GLOBALS.dragEvent = e;
+	{	VARIABLES.mousePressed = true;
+		VARIABLES.dragEvent = e;
 		e.consume();
 	}
 
 	@Override public default void mouseReleased(MouseEvent e)
-	{	XGComponent.GLOBALS.mousePressed = false;
-		XGComponent.GLOBALS.dragEvent = e;
+	{	VARIABLES.mousePressed = false;
+		VARIABLES.dragEvent = e;
 	}
 
 	@Override public default void mouseEntered(MouseEvent e)
-	{	if(!XGComponent.GLOBALS.mousePressed) this.getJComponent().requestFocusInWindow();
+	{	if(!VARIABLES.mousePressed) this.getJComponent().requestFocusInWindow();
 	}
 
 	@Override public default void mouseExited(MouseEvent e)

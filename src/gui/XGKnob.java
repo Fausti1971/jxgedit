@@ -58,8 +58,6 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 		this.parameterChanged(this.value.getParameter());
-
-//		this.logInitSuccess();
 		}
 
 	@Override public void contentChanged(XGValue v)
@@ -71,8 +69,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 	{	this.setName(p.getShortName());
 		this.setToolTipText(p.getName());
 		this.label.setText(this.value.toString());
-		this.bar.setEnabled(p.isValid());
-		this.label.setEnabled(p.isValid());
+		this.setVisible(p != XGParameter.NO_PARAMETER);
 		this.setEnabled(p.isValid());
 		this.borderize();
 	}
@@ -103,9 +100,9 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 		}
 
 		@Override public void paintComponent(Graphics g)
-		{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
+		{
 			this.g2 = (Graphics2D)g.create();
-			this.g2.addRenderingHints(XGComponent.AALIAS);
+			this.g2.addRenderingHints(AALIAS);
 			this.size = Math.min(this.getWidth() - DEF_STROKEWIDTH, this.getHeight());
 			this.radius = this.size / 2;
 			this.middle.x = this.getWidth() / 2;
@@ -113,7 +110,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 	
 	// paint background arc
 			//this.g2.setColor(COL_BAR_BACK);
-			this.g2.setColor(this.getBackground().brighter());
+			this.g2.setColor(new XGColor(this.getBackground()).add(COL_STEP, 0));
 			this.g2.setStroke(DEF_ARCSTROKE);
 			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, START_ARC, LENGTH_ARC);
 	// paint foreground arc
@@ -137,12 +134,12 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGComponent.GLOBALS.dragEvent = e;
+		{	XGUI.VARIABLES.dragEvent = e;
 			e.consume();
 		}
 
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGComponent.GLOBALS.dragEvent = e;
+		{	XGUI.VARIABLES.dragEvent = e;
 			e.consume();
 		}
 
@@ -152,9 +149,9 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 		}
 
 		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - XGComponent.GLOBALS.dragEvent.getX();
+		{	int distance = e.getX() - XGUI.VARIABLES.dragEvent.getX();
 			this.value.addIndex(distance);
-			XGComponent.GLOBALS.dragEvent = e;
+			XGUI.VARIABLES.dragEvent = e;
 			e.consume();
 		}
 

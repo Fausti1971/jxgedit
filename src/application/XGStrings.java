@@ -12,6 +12,10 @@ public interface XGStrings
 	static final String REGEX_ALL = "[\\s\\S]";
 	static final String TEXT_REPLACEMENT = "_";
 
+	static String toAlNum(String dirty)
+	{	return dirty.replaceAll(REGEX_NON_ALNUM, TEXT_REPLACEMENT);
+	}
+
 /**
  * zerlegt einen String an eventuell vorhandenen Kommas und returniert ein Set an (von führenden und folgenden Leerzeichen bereinigten) Strings;
  * @param s	Eingangsstring mit (oder ohne) Kommas

@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -24,7 +23,6 @@ public class XGValueLabel extends JTextField implements XGUI, ActionListener, Mo
 		this.setOpaque(false);
 		this.setBackground(COL_TRANSPARENT);
 		this.setBorder(null);
-//		if(this.isEnabled()) this.setText(this.getText());
 		this.setFont(SMALL_FONT);
 		this.setHorizontalAlignment(JTextField.CENTER);
 		this.addMouseListener(this);

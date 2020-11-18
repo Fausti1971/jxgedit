@@ -94,7 +94,7 @@ public interface XMLNodeConstants
 		ATTR_ORIGIN = "origin",
 
 		TAG_TEMPLATES = "templates",
-		TAG_TEMPLATE = "template",
+//		TAG_TEMPLATE = "template",
 		TAG_TABLES = "tables",
 		TAG_TABLE = "table",
 		TAG_ITEM = "item",
@@ -119,6 +119,7 @@ public interface XMLNodeConstants
 		TAG_FLAGBOX = "flagbox",
 		TAG_FLAG = "flag",
 		TAG_SCALE = "scale",
+		TAG_KEYBOARD = "keyboard",
 		TAG_AUTO = "auto",
 
 		ATTR_BOUNDS = "bounds",

@@ -17,5 +17,6 @@ public interface XGModuleConstants extends XMLNodeConstants
 		ACTION_LOADFILE = "load file...",
 		ACTION_SAVEFILE = "save file...",
 		ACTION_REQUEST = "request",
-		ACTION_TRANSMIT = "transmit";
+		ACTION_TRANSMIT = "transmit",
+		ACTION_RESET = "reset";
 }

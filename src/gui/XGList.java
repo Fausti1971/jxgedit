@@ -29,6 +29,7 @@ public class XGList<E extends Object> extends JList<E> implements ListSelectionL
 
 		Color c = this.getBackground().darker();
 		this.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
+		this.setVisibleRowCount(list.size());
 
 		this.value = s;
 		this.addListSelectionListener(this);

@@ -10,6 +10,7 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
+import application.Configurable;
 import application.XGLoggable;
 import device.XGDevice;
 import gui.XGTemplate;
@@ -25,7 +26,7 @@ import xml.XMLNode;
  * @author thomas
  *
  */
-public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGTreeNode, XGBulkDumper
+public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGTreeNode, XGBulkDumper, Configurable
 {	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 	static
@@ -47,7 +48,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	private final XMLNode config;
 	private final XGAddressableSet<XGAddress> bulks = new XGAddressableSet<>();
 
-	public XGModuleType(XGDevice dev, XMLNode cfg, XGAddress adr, String name)//für Drumsets
+	public XGModuleType(XGDevice dev, XMLNode cfg, XGAddress adr, String name)
 	{	this.config = cfg;
 		this.device = dev;
 		this.address = adr;
@@ -97,7 +98,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	return this.infoAddresses;
 	}
 
-	public XMLNode getConfig()
+	@Override public XMLNode getConfig()
 	{	return this.config;
 	}
 
@@ -111,6 +112,10 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 	public XGAddressableSet<XGAddress> getBulkAdresses()
 	{	return this.bulks;
+	}
+
+	public void resetValues()
+	{	for(XGModule m : this.getModules()) m.resetValues();
 	}
 
 	@Override public Set<String> getContexts()

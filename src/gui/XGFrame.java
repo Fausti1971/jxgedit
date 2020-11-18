@@ -16,6 +16,7 @@ public class XGFrame extends JPanel implements XGComponent
 /********************************************************************************************************************/
 
 	private final XMLNode config;
+	private final boolean root;
 
 	public XGFrame(XMLNode n)
 	{	this.config = n;
@@ -24,8 +25,8 @@ public class XGFrame extends JPanel implements XGComponent
 		{	this.setName(n.getStringAttribute(ATTR_NAME));
 			this.borderize();
 		}
-//		this.setOpaque(true);
-//		this.setBackground(COL_NODE_SELECTED_BACK);
+		this.root = n.getParentNode() == null || n.getParentNode().getTag().equals(TAG_TEMPLATES);
+		this.setOpaque(root);
 	}
 
 	public XGFrame(String text)
@@ -42,6 +43,7 @@ public class XGFrame extends JPanel implements XGComponent
 			{	LOG.severe(e.getMessage());
 			}
 		}
+		if(this.root) this.setBackground(mod.getType().getDevice().getColor());
 	}
 
 	@Override public Component add(Component comp)
@@ -49,12 +51,11 @@ public class XGFrame extends JPanel implements XGComponent
 		Insets ins = this.getInsets();
 		comp.setLocation(comp.getX() + ins.left, comp.getY() + ins.top);
 		super.add(comp);
-		dim.width = Math.max(dim.width, comp.getX() + comp.getWidth() + ins.right);
-		dim.height = Math.max(dim.height, comp.getY() + comp.getHeight() + ins.bottom);
+		dim.width = Math.min(this.getMaximumSize().width, Math.max(dim.width, comp.getX() + comp.getWidth() + ins.right));
+		dim.height = Math.min(this.getMaximumSize().height, Math.max(dim.height, comp.getY() + comp.getHeight() + ins.bottom));
 		this.setMinimumSize(dim);
 		this.setPreferredSize(dim);
 		this.setSize(dim);
-		comp.setBackground(this.getBackground());
 		return comp;
 	}
 

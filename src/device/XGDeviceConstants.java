@@ -9,9 +9,7 @@ import xml.XMLNodeConstants;
 public interface XGDeviceConstants extends XMLNodeConstants
 {
 	static final int
-		DEF_DEVCOLOR = 0xFFFFFF,
 		DEF_SYSEXID = 0;
-
 
 	static final String
 		DEF_DEVNAME = "nameless device",

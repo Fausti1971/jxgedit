@@ -92,16 +92,17 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable
 		this.g2 = (Graphics2D)g.create();
 //background
 		int w = this.getWidth(), h = this.getHeight();
-		this.g2.setColor(this.getBackground().brighter());
+		XGColor bg = new XGColor(this.getBackground());
+		this.g2.setColor(bg.add(COL_STEP, 0));
 		this.g2.fillRect(0, 0, w, h);
 
 //grid
-		this.g2.setColor(this.getBackground().darker());
+		this.g2.setColor(bg.add(-COL_STEP, 0));
 		this.g2.setStroke(DEF_DOTTED_STROKE);
 		for(int i : this.vLines) g2.drawLine(i, 0, i, h);
 		for(int i : this.hLines) g2.drawLine(0, i, w, i);
 //polygon
-		this.g2.addRenderingHints(XGComponent.AALIAS);
+		this.g2.addRenderingHints(AALIAS);
 		this.g2.setColor(COL_SHAPE);
 		GeneralPath gp = new GeneralPath();
 		int x = this.origin_x;

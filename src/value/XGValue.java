@@ -26,7 +26,7 @@ import tag.XGCategorizeable;
  *
  */
 public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable, XGCategorizeable
-{
+{	private static final XGValue DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
 
 /***********************************************************************************************/
 
@@ -43,8 +43,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	XGValue(String name, int v)
 	{	this.address = XGALLADDRESS;
 		this.index = v;
-		this.parameterSelector = null;
-		this.defaultSelector = null;
+		this.parameterSelector = DEFAULTSELECTOR;
+		this.defaultSelector = DEFAULTSELECTOR;
 		this.opcode = null;
 	}
 
@@ -62,6 +62,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 			this.parameterSelector = psv;
 			this.parameterSelector.addValueListener((XGValue val)->{this.notifyParameterListeners();});
 		}
+		else this.parameterSelector = DEFAULTSELECTOR;
+
 		if(this.opcode.hasMutableDefaults())
 		{	XGAddress dsa = this.opcode.getDefaultSelectorAddress().complement(this.address);
 			XGValue dsv = this.opcode.getDevice().getValues().get(dsa);
@@ -69,6 +71,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 			this.defaultSelector = dsv;
 			this.defaultSelector.addValueListener((XGValue val)->{this.setDefaultValue(val);});
 		}
+		else this.defaultSelector = DEFAULTSELECTOR;
 	}
 
 	public void addValueListener(XGValueChangeListener l)
@@ -105,6 +108,10 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	public XGValue getParameterSelector()
 	{	return this.parameterSelector;
+	}
+
+	public void setDefaultValue()
+	{	this.setDefaultValue(this.defaultSelector);
 	}
 
 	private void setDefaultValue(XGValue v)
@@ -190,7 +197,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 /**
- * setzt den Inhalt des XGValue auf den Index des zum übergebenen value passenden XGTable-Eintrags
+ * setzt den Inhalt des XGValue auf den Index des zum übergebenen value passenden XGTable-Eintrags ohne Action
  * @param v Value
  * @return true, wenn sich der Inhalt änderte
  */
@@ -200,13 +207,25 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		return this.setIndex(p.getTranslationTable().getIndex(v, Preference.FALLBACK));
 	}
 
-	public void editEntry(XGTableEntry e)
+/**
+ * setzt den übergebenen Entry im Value und durchläuft die Action-Kette
+ * @param e
+ * @return true, wenn sich Inhalt änderte
+ */
+	public boolean editEntry(XGTableEntry e)
 	{	this.actions(XACTION_BEFORE_EDIT);
-		if(setEntry(e))
+		boolean changed = setEntry(e);
+		if(changed)
 		{	this.actions(XACTION_AFTER_EDIT);
 		}
+		return changed;
 	}
 
+/**
+ * setzt den übergebenen Index im Value und durchläuft die Action-Kette
+ * @param i
+ * @return true, wenn sich Inhalt änderte
+ */
 	public boolean editIndex(int i)
 	{	this.actions(XACTION_BEFORE_EDIT);
 		boolean changed = setIndex(i);
@@ -216,16 +235,27 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		return changed;
 	}
 
+/**
+ * addiert nach Validierung/Limitierung den übergebenen Wert zum Index und durchläuft die Action-Kette
+ * @param diff
+ * @return true, wenn sich Inhalt änderte
+ */
 	public boolean addIndex(int diff)
 	{	return this.editIndex(this.index + diff);
 	}
 
+/**
+ * schaltet um zwischen Min- und MaxIndex und durchläuft die Action-Kette
+ * @return true, wenn sich Inhalt änderte
+ */
 	public boolean toggleIndex()
 	{	XGParameter p = this.getParameter();
 		if(this.index == p.getMinIndex()) return this.editIndex(p.getMaxIndex());
 		else return this.editIndex(p.getMinIndex());
 	}
-
+/**
+ * sendet den Value mittels XGMessageParameterChange
+ */
 	public void sendAction()
 	{	this.actions(XACTION_BEFORE_SEND);
 		XGDevice dev = this.opcode.getDevice();
@@ -238,6 +268,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.actions(XACTION_AFTER_SEND);
 	}
 
+/**
+ * sendet den Value mittels XGMessageBulkDump
+ */
 	public void bulkAction()
 	{	this.actions(XACTION_BEFORE_SEND);
 		XGDevice dev = this.opcode.getDevice();

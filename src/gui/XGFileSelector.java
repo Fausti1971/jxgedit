@@ -1,15 +1,19 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFileChooser;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
@@ -49,7 +53,11 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 	}
 
 	public JComponent small()
-	{	XGFrame root = new XGFrame(this.getDialogTitle());
+	{	JPanel root = new JPanel();
+		this.setName(this.getDialogTitle());
+		Color c = Color.gray;
+		root.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
+
 		root.setLayout(new BorderLayout());
 		root.setToolTipText(this.path.toString());
 		root.setAlignmentX(0.5f);

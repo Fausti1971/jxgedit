@@ -1,8 +1,9 @@
 package device;
 
-import java.awt.Color;
+import java.awt.Dialog.ModalityType;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
@@ -19,6 +20,7 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -29,6 +31,7 @@ import application.Configurable;
 import application.JXG;
 import file.XGSysexFile;
 import file.XGSysexFileConstants;
+import gui.XGColor;
 import gui.XGContext;
 import gui.XGDeviceDetector;
 import gui.XGFileSelector;
@@ -37,8 +40,10 @@ import gui.XGSpinner;
 import gui.XGTemplate;
 import gui.XGTree;
 import gui.XGTreeNode;
+import gui.XGUI;
 import gui.XGWindow;
 import gui.XGWindowSource;
+import module.XGDrumsetModuleType;
 import module.XGModule;
 import module.XGModuleType;
 import msg.XGBulkDumper;
@@ -126,7 +131,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		}
 	};
 	private final StringBuffer defaultFileName, name;
-	private Color color;
+	private XGColor color;
 	private boolean isSelected = false;
 
 	private XMLNode config;
@@ -168,7 +173,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			this.files = this.config.getChildNodeOrNew(TAG_FILES);
 			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, JXG.getApp().getConfigPath().resolve(DEF_SYXFILENAME).toString());
 			this.configure();
-System.out.println("Configure...");
 		}
 		else
 		{	this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
@@ -177,7 +181,7 @@ System.out.println("Configure...");
 			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, JXG.getApp().getConfigPath().resolve(DEF_SYXFILENAME).toString());
 		}
 		this.sysex.setContent(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
-		this.setColor(new Color(this.config.getIntegerAttribute(ATTR_COLOR, DEF_DEVCOLOR)));
+		this.setColor(new XGColor(this.config.getIntegerAttribute(ATTR_COLOR, XGUI.DEF_DEVCOLOR)));
 
 		XGTemplate.init(this);
 		XGTable.init(this);
@@ -194,6 +198,7 @@ System.out.println("Configure...");
 		}
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());
+			for(XGModuleType mt : this.getModuleTypes()) mt.resetValues();
 		}
 		LOG.info("device initialized: " + this);
 	}
@@ -213,7 +218,7 @@ System.out.println("Configure...");
 		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS));
 			if(adr.getHi().getMin() >= 48)//falls Drumset
 			{	for(int h : adr.getHi())//erzeuge für jedes Drumset ein ModuleType
-				{	this.moduleTypes.add(new XGModuleType(this, n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo()), n.getStringAttribute(ATTR_NAME) + (h - 47)));
+				{	this.moduleTypes.add(new XGDrumsetModuleType(this, n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo())));
 				}
 				continue;
 			}
@@ -236,6 +241,9 @@ System.out.println("Configure...");
 				{	LOG.warning(e.getMessage());
 				}
 			}
+			if(mt instanceof XGDrumsetModuleType)
+			{	((XGDrumsetModuleType)mt).initDepencies();
+			}
 		}
 		LOG.info(this.modules.size() + " moduleInstances initialized for " + this);
 		LOG.info(this.values.size() + " Values initialized for " + this);
@@ -256,11 +264,11 @@ System.out.println("Configure...");
 	{	return JXG.getApp().getConfigPath().resolve(this.name.toString());
 	}
 
-	public Color getColor()
-	{	return color;
+	public XGColor getColor()
+	{	return this.color;
 	}
 
-	public void setColor(Color color)
+	public void setColor(XGColor color)
 	{	this.color = color;
 	}
 
@@ -313,8 +321,11 @@ System.out.println("Configure...");
 			{	m.request();
 				if(m.isResponsed())
 				{	XGResponse r = m.getResponse();
-					String s = r.getString(r.getBaseOffset(), r.getBaseOffset() + r.getBulkSize());
+					int offs = r.getBaseOffset();
+					String s = r.getString(offs, offs + 14);
 					this.name.replace(0, this.name.length(), s.trim());
+					this.info1 = r.decodeLSB(offs + 14);
+					this.info2 = r.decodeLSB(offs + 15);
 				}
 				else JOptionPane.showMessageDialog(this.getChildWindow(), "no response for " + m);
 			}
@@ -330,6 +341,7 @@ System.out.println("Configure...");
 	private void resetXG()
 	{	try
 		{	new XGMessageParameterChange(this.values, this.midi, new byte[]{0,0,0,0,0,0,0x7E,0,0}, true).transmit();
+			for(XGModuleType mt : this.getModuleTypes()) mt.resetValues();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
@@ -339,6 +351,7 @@ System.out.println("Configure...");
 	private void resetGM()
 	{	try
 		{	this.midi.transmit(new SysexMessage(new byte[]{(byte)0xF0,0x7E,0x7F,0x09,0x01,(byte)0xF7}, 6));
+			for(XGModuleType mt : this.getModuleTypes()) mt.resetValues();
 		}
 		catch(InvalidMidiDataException e)
 		{	e.printStackTrace();
@@ -348,6 +361,7 @@ System.out.println("Configure...");
 	private void resetAll()
 	{	try
 		{	new XGMessageParameterChange(this.values, this.midi, new byte[]{0,0,0,0,0,0,0x7F,0,0}, true).transmit();
+			for(XGModuleType mt : this.getModuleTypes()) mt.resetValues();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
@@ -490,35 +504,25 @@ System.out.println("Configure...");
 	}
 
 	public JComponent getConfigComponent()
-	{	GridBagConstraints gbc = new GridBagConstraints();
-		XGFrame root = new XGFrame("device");
+	{	GridBagConstraints gbc = new GridBagConstraints(GridBagConstraints.RELATIVE, GridBagConstraints.RELATIVE, 2, 2, 0.5, 0.5, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
+		JPanel root = new JPanel();
 		root.setLayout(new GridBagLayout());
 
 		JComponent c = this.midi.getConfigComponent();
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.weightx = 0.5;
-		gbc.weighty = 0.5;
-		gbc.anchor = GridBagConstraints.WEST;
-		gbc.fill = GridBagConstraints.BOTH;
 		root.add(c, gbc);
 
 		c = new XGSpinner("sysexID", this.sysex, 0, 15, 1);
 		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.gridwidth = 1;
-		gbc.anchor = GridBagConstraints.EAST;
+		gbc.gridheight = 1;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.weightx = 0;
+		gbc.weighty = 0;
 		root.add(c, gbc);
 
 		c = new XGDeviceDetector("device name", this.name, this);
-		gbc.gridx = 0;
-		gbc.gridy = 2;
 		root.add(c, gbc);
 
 		c = new XGFileSelector(this.defaultFileName, "default dump file", "select", XGSysexFileConstants.SYX_FILEFILTER).small();
-		gbc.gridx = 0;
-		gbc.gridy = 3;
 		root.add(c, gbc);
 
 		return root;

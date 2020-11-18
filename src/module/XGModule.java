@@ -34,6 +34,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 		ACTIONS.add(ACTION_TRANSMIT);
 		ACTIONS.add(ACTION_LOADFILE);
 		ACTIONS.add(ACTION_SAVEFILE);
+		ACTIONS.add(ACTION_RESET);
 	}
 
 /***************************************************************************************************************/
@@ -86,6 +87,10 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 		else this.window.toFront();
 	}
 
+	public void resetValues()
+	{	for(XGValue v : this.getValues()) v.setDefaultValue();
+	}
+
 	@Override public Set<String> getContexts()
 	{	return ACTIONS;
 	}
@@ -94,8 +99,9 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	{	XGDevice dev = this.type.getDevice();
 		switch(e.getActionCommand())
 		{	case ACTION_EDIT:		this.editWindow(); break;
-			case ACTION_REQUEST:	new Thread(() -> {	this.transmitAll(dev.getMidi(), dev.getValues());}).start(); break;
-			case ACTION_TRANSMIT:	new Thread(() -> {	this.transmitAll(dev.getValues(), dev.getMidi());}).start(); break;
+			case ACTION_REQUEST:	new Thread(() -> {this.transmitAll(dev.getMidi(), dev.getValues());}).start(); break;
+			case ACTION_TRANSMIT:	new Thread(() -> {this.transmitAll(dev.getValues(), dev.getMidi());}).start(); break;
+			case ACTION_RESET:		if(JOptionPane.showConfirmDialog(XGWindow.getRootWindow(), "Do you really want to reset " + this, "Reset Module?", JOptionPane.CANCEL_OPTION) == JOptionPane.OK_OPTION) this.resetValues(); break;
 			default:				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
 		}
 	}
@@ -105,7 +111,9 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	}
 
 	@Override public void setSelected(boolean s)
-	{	this.selected = s;
+	{	boolean changed = s != this.selected;
+		this.selected = s;
+		if(changed) this.repaintNode();
 	}
 
 	@Override public boolean isSelected()
@@ -113,7 +121,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	}
 
 	@Override public void nodeFocussed(boolean b)
-	{
+	{	if(this.window != null) this.window.toFront();
 	}
 
 	@Override public void windowOpened(WindowEvent e)

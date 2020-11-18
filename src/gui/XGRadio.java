@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.BoxLayout;
-import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
@@ -17,7 +16,7 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGRadio extends JPanel implements XGComponent, XGValueChangeListener, XGParameterChangeListener
+public class XGRadio extends XGFrame implements XGComponent, XGValueChangeListener, XGParameterChangeListener
 {	
 	private static final long serialVersionUID = 1L;
 	private static Map<String, Integer> ORIENTATION = new HashMap<>();
@@ -28,13 +27,12 @@ public class XGRadio extends JPanel implements XGComponent, XGValueChangeListene
 
 /*********************************************************************************************************/
 
-	private final XMLNode config;
 	private final XGValue value;
 	private final XGAddress address;
 	private final int orientation;
 
 	public XGRadio(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	this.config = n;
+	{	super(n);
 		this.setBounds();
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.orientation = ORIENTATION.getOrDefault(n.getStringAttribute(ATTR_ORIENTATION), BoxLayout.X_AXIS);
@@ -67,11 +65,6 @@ public class XGRadio extends JPanel implements XGComponent, XGValueChangeListene
 	@Override protected void paintComponent(Graphics g)
 	{	if(this.isEnabled()) super.paintComponent(g);
 	}
-
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
-
 
 /****************************************************************************************************/
 

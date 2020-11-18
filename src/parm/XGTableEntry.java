@@ -1,5 +1,6 @@
 package parm;
 
+import java.util.HashSet;
 import java.util.Set;
 import application.ConfigurationConstants;
 import application.XGStrings;
@@ -27,7 +28,7 @@ public class XGTableEntry implements ConfigurationConstants
 	{	this.value = v;
 		this.name = translate;
 		this.filters = null;
-		this.categories = null;
+		this.categories = new HashSet<>();
 	}
 
 	public int getValue()

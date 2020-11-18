@@ -27,9 +27,10 @@ public class XGSpinner extends JSpinner implements ChangeListener, XGUI
 		this.value = v;
 		this.addChangeListener(this);
 		this.setName(name);
-		Dimension dim = new Dimension(GRID * 4, GRID * 2);
-		this.setMinimumSize(dim);
-		this.setPreferredSize(dim);
+//		Dimension dim = new Dimension(GRID * 4, GRID * 2);
+//		this.setMinimumSize(dim);
+//		this.setPreferredSize(dim);
+//		this.setMaximumSize(dim);
 
 		Color c = this.getBackground().darker();
 		this.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));

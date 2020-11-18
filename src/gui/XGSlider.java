@@ -139,7 +139,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		}
 
 		@Override protected void paintComponent(Graphics g)
-		{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
+		{
 			this.g2 = (Graphics2D)g.create();
 			this.g2.addRenderingHints(AALIAS);
 			this.parameter = this.value.getParameter();
@@ -167,9 +167,9 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - XGComponent.GLOBALS.dragEvent.getX();
+		{	int distance = e.getX() - XGUI.VARIABLES.dragEvent.getX();
 			this.value.addIndex(distance);
-			XGComponent.GLOBALS.dragEvent = e;
+			XGUI.VARIABLES.dragEvent = e;
 			e.consume();
 		}
 
@@ -182,12 +182,12 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGComponent.GLOBALS.dragEvent = e;
+		{	XGUI.VARIABLES.dragEvent = e;
 			e.consume();
 		}
 	
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGComponent.GLOBALS.dragEvent = e;
+		{	XGUI.VARIABLES.dragEvent = e;
 		}
 
 

@@ -11,7 +11,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
@@ -23,7 +22,7 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGRange extends JPanel implements XGComponent, XGParameterConstants, XGValueChangeListener
+public class XGRange extends XGFrame implements XGComponent, XGParameterConstants, XGValueChangeListener
 {	/**
 	 * 
 	 */
@@ -31,14 +30,13 @@ public class XGRange extends JPanel implements XGComponent, XGParameterConstants
 
 /*******************************************************************************************************/
 
-	private final XMLNode config;
 	private final XGRangeBar bar;
 	private final XGRangeLabel label;
 	private final XGValue loValue, hiValue;
 	private final XGAddress loAddress, hiAddress;
 
 	public XGRange(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	this.config = n;
+	{	super(n);
 		this.setBounds();
 		this.setLayout(new GridBagLayout());
 		this.loAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_LO), mod.getAddress());
@@ -75,20 +73,12 @@ public class XGRange extends JPanel implements XGComponent, XGParameterConstants
 //		this.logInitSuccess();
 	}
 
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
-
-	@Override public void paint(Graphics g)
-	{	if(this.isEnabled()) super.paint(g);
-	}
-
 	@Override public String getToolTipText()
 		{	return this.loValue.getValue() + "..." + this.hiValue.getValue();
 		}
 
-	@Override public boolean isEnabled()
-	{	return super.isEnabled() && this.loValue != null && this.loValue.getParameter() != null  && this.hiValue != null && this.hiValue.getParameter() != null;
+	@Override public boolean isVisible()
+	{	return this.loValue != null && this.loValue.getParameter() != null  && this.hiValue != null && this.hiValue.getParameter() != null;
 	}
 
 	@Override public void contentChanged(XGValue v)
@@ -106,14 +96,14 @@ public class XGRange extends JPanel implements XGComponent, XGParameterConstants
 
 /***************************************************************************************************/
 
-	private class XGRangeBar extends JComponent implements XGValueChangeListener, MouseMotionListener, MouseWheelListener, MouseListener
+	private class XGRangeBar extends JPanel implements XGValueChangeListener, MouseMotionListener, MouseWheelListener, MouseListener
 	{
 		private static final long serialVersionUID = 1L;
 
 /**********************************************************************************************/
 
 		private final XGValue loValue, hiValue;
-		private XGValue curValue;
+		private XGValue currentValue, otherValue;
 		private XGParameter loParameter, hiParameter;
 		private int loX, hiX, curX;
 		private Graphics2D g2;
@@ -132,21 +122,23 @@ public class XGRange extends JPanel implements XGComponent, XGParameterConstants
 			this.addMouseWheelListener(this);
 		}
 
-		private void limitize()
-		{	int min = this.loValue.getIndex();
-			int max = this.hiValue.getIndex();
-			this.loValue.setIndex(Math.min(min, max));
-			this.hiValue.setIndex(Math.max(min, max));
-		}
+//		private void limitize()
+//		{	int min = this.loValue.getIndex();
+//			int max = this.hiValue.getIndex();
+//			this.loValue.setIndex(Math.min(min, max));
+//			this.hiValue.setIndex(Math.max(min, max));
+//		}
 
 		private void setCurrent(int x)
 		{	if(Math.abs(x - this.loX) < Math.abs(x - this.hiX))
 			{	this.curX = this.loX;
-				this.curValue = this.loValue;
+				this.currentValue = this.loValue;
+				this.otherValue = this.hiValue;
 			}
 			else
 			{	this.curX = this.hiX;
-				this.curValue = this.hiValue;
+				this.currentValue = this.hiValue;
+				this.otherValue = this.loValue;
 			}
 		}
 
@@ -155,15 +147,16 @@ public class XGRange extends JPanel implements XGComponent, XGParameterConstants
 		}
 
 		@Override protected void paintComponent(Graphics g)
-		{	if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
+		{
+//if(!(g instanceof Graphics2D) || !this.isEnabled()) return;
 			this.g2 = (Graphics2D)g.create();
 			this.g2.addRenderingHints(AALIAS);
 			this.loParameter = this.loValue.getParameter();
 			this.hiParameter = this.hiValue.getParameter();
-	// draw background
-			this.g2.setColor(this.getBackground().brighter());
+// draw background
+			this.g2.setColor(new XGColor(this.getBackground()).add(COL_STEP, 0));
 			this.g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
-	// draw foreground
+// draw foreground
 			this.loX = XGMath.linearIO(this.loValue.getIndex(), this.loParameter.getMinIndex(), this.loParameter.getMaxIndex(), 0, this.getWidth());
 			this.hiX = XGMath.linearIO(this.hiValue.getIndex(), this.hiParameter.getMinIndex(), this.hiParameter.getMaxIndex(), 0, this.getWidth());
 //			this.originWidth = XGMath.linearIO(this.loParameter.getOrigin(), this.loParameter.getMinIndex(), this.loParameter.getMaxIndex(), 0, this.getWidth());
@@ -173,24 +166,34 @@ public class XGRange extends JPanel implements XGComponent, XGParameterConstants
 		}
 
 		@Override public void mouseClicked(MouseEvent e)
-		{	boolean changed = false;
-			if(e.getButton() != MouseEvent.BUTTON1) return;
+		{	if(e.getButton() != MouseEvent.BUTTON1) return;
 			this.setCurrent(e.getX());
-			if(e.getX() > this.curX)this.curValue.addIndex(1);
-			else this.curValue.addIndex(-1);
+			if(e.getX() > this.curX)this.currentValue.addIndex(1);
+			else this.currentValue.addIndex(-1);
 			e.consume();
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	this.loValue.addIndex(e.getWheelRotation());
-			this.hiValue.addIndex(e.getWheelRotation());
+		{	int r = e.getWheelRotation();
+			if(r < 0)
+			{	if(this.loValue.addIndex(r))
+				{	this.hiValue.addIndex(r);
+				}
+			}
+			else
+			{	if(this.hiValue.addIndex(r))
+				{	this.loValue.addIndex(r);
+				}
+			}
 			e.consume();
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - XGComponent.GLOBALS.dragEvent.getX();
-			this.curValue.addIndex(distance);
-			XGComponent.GLOBALS.dragEvent = e;
+		{	int distance = e.getX() - XGUI.VARIABLES.dragEvent.getX();
+			this.currentValue.addIndex(distance);
+			int range = this.hiValue.getIndex() - this.loValue.getIndex();
+			if(range < 0) this.otherValue.addIndex(distance); //TODO: suboptimal; bildet zwar das Device-Verhalten ab, sendet aber unnötig Werte
+			XGUI.VARIABLES.dragEvent = e;
 			e.consume();
 		}
 
@@ -203,16 +206,17 @@ public class XGRange extends JPanel implements XGComponent, XGParameterConstants
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGComponent.GLOBALS.dragEvent = e;
+		{	XGUI.VARIABLES.dragEvent = e;
+			XGUI.VARIABLES.mousePressed = true;
 			this.setCurrent(e.getX());
 			e.consume();
 		}
 	
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGComponent.GLOBALS.dragEvent = e;
+		{	XGUI.VARIABLES.dragEvent = e;
+			XGUI.VARIABLES.mousePressed = false;
 			this.setCurrent(e.getX());
 		}
-
 
 		@Override public void mouseEntered(MouseEvent e)
 		{

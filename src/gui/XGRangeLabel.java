@@ -24,7 +24,6 @@ public class XGRangeLabel extends JTextField implements XGUI, ActionListener, Mo
 		this.setOpaque(false);
 		this.setBackground(COL_TRANSPARENT);
 		this.setBorder(null);
-//		if(this.isEnabled()) this.setText(this.getText());
 		this.setText(this.loValue + "..." + this.hiValue);
 		this.setFont(SMALL_FONT);
 		this.setHorizontalAlignment(JTextField.CENTER);
