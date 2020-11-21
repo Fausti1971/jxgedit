@@ -91,7 +91,6 @@ System.out.println("partmode changed " + v.getInfo());
 	{	
 		int mid = this.getID(v);
 		
-
 System.out.println("program changed " + v.getInfo());
 	}
 

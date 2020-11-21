@@ -108,3 +108,6 @@ Probleme:
 		Liste der letzten Dumpfiles wird nicht auf Dopplung geprüft und nicht chronologisch sortiert;
 		XGSysexFileSelector Exception bei Cancel;
 		eigener ModuleType für Drumsets?
+Problem:
+		das Ermitteln des Defaults für einen Drumsound erfordert einen weiteren Parameter (ID), den die bisherige XGDefaultTable so nicht hergibt.
+		Sinnvollerweise wäre die XGDefaultTable besser dem XGValue zugeordnet anstatt dem XGOpcode. Ebenso möglicherweise die XGParameterTable...

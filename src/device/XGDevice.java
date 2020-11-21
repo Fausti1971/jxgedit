@@ -224,7 +224,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			}
 			this.moduleTypes.add(new XGModuleType(this, n));
 		}
-
 		LOG.info(this.moduleTypes.size() + " moduleTypes initialized for " + this);
 	}
 

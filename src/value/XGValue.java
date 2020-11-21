@@ -50,7 +50,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	public XGValue(XGOpcode opc, int id) throws InvalidXGAddressException
 	{	this.opcode = opc;
-		this.address = new XGAddress(opc.getAddress().getHi(), new XGAddressField(id), new XGAddressField(opc.getAddress().getLo().getMin()));
+		this.address = new XGAddress(opc.getAddress().getHi().getValue(), id, opc.getAddress().getLo().getMin());
 		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
 	}
 

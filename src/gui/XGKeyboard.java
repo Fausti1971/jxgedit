@@ -3,7 +3,6 @@ package gui;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.HashMap;
@@ -14,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -51,6 +51,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 	private final JPanel panel = new JPanel(null);
 	private final JScrollPane scrollpane = new JScrollPane(this.panel);
 	private final ShortMessage message = new ShortMessage();
+//	private final JComponent column;
 
 	protected XGKeyboard(XMLNode n, XGModule mod) throws InvalidXGAddressException
 	{	super(n);
@@ -84,17 +85,20 @@ public class XGKeyboard extends XGFrame implements XGUI
 		
 		this.panel.setPreferredSize(this.panel.getSize());
 
+//		this.column = new JLabel("Test");
+
 		this.add(this.scrollpane);
 		this.scrollpane.setBorder(null);
 		this.scrollpane.setViewportBorder(null);
 		this.scrollpane.setBounds(this.getContentArea());
+//		this.scrollpane.setColumnHeaderView(this.column);
 		this.scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 //		this.scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	}
 
-	boolean sendMessage(int status, XGKey num)
+	private boolean sendMessage(int status, XGKey num)
 	{	try
-		{	this.message.setMessage(status, num.number, DEF_VELOCITY);
+		{	this.message.setMessage(status | this.midiChannelValue.getValue(), num.number, DEF_VELOCITY);
 			((XGMidi)this.device.getMidi()).transmit(this.message);
 			return true;
 		}
@@ -113,15 +117,15 @@ public class XGKeyboard extends XGFrame implements XGUI
 	}
 
 	private void maxKeyChanged()
-	{	// TODO: disable keys above maxKeyValue;
+	{	this.repaint();
 	}
 
 	private void minKeyChanged()
-	{	// TODO: disable keys beyound minKeyValue;
+	{	this.repaint();
 	}
 
 	private void partmodeChanged()
-	{	//TODO: show oder hide this, dependently by partmodeValue;
+	{	//TODO: show oder hide note- or drumnames, dependently by partmodeValue;
 	}
 
 /************************************************************************************************************************************************/
@@ -136,7 +140,6 @@ public class XGKeyboard extends XGFrame implements XGUI
 		private final XGKeyboard keyboard;
 		private final Color normalColor, pressedColor;
 		private final boolean isBlack;
-		private Graphics2D g2;
 
 		public XGKey(XGKeyboard brd, int num)
 		{	this.keyboard = brd;
@@ -145,22 +148,34 @@ public class XGKeyboard extends XGFrame implements XGUI
 			if(this.isBlack)
 			{	this.normalColor = Color.black;
 				this.pressedColor = COL_BAR_FORE;
+				this.setForeground(Color.white);
 			}
 			else
 			{	this.normalColor = Color.white;
 				this.pressedColor = COL_BAR_FORE;
+				this.setForeground(Color.black);
 				this.setBorder(new LineBorder(Color.lightGray, 1));
 			}
 			this.setBackground(this.normalColor);
 			this.setOpaque(true);
-//			this.setVerticalAlignment(SwingConstants.BOTTOM);
-//			this.setHorizontalAlignment(SwingConstants.CENTER);
-//			this.setFont(SMALL_FONT);
-//			this.setText(brd.getKeyText(this));
+			this.setVerticalAlignment(SwingConstants.TOP);
+			this.setHorizontalAlignment(SwingConstants.CENTER);
+			this.setFont(SMALL_FONT);
+			this.setName(brd.getKeyText(this));
+			this.setText(this.getHTML("" + (this.getOctave() - 2)));
 			this.setToolTipText(brd.getKeyText(this));
 //			int h = brd.panel.getHeight() - (brd.panel.getInsets().top + brd.panel.getInsets().bottom);
 			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			this.addMouseListener(this);
+		}
+
+		private String getHTML(String text)
+		{	String tmp = new String("<html>");
+			for(char c : text.toCharArray())
+			{	tmp += c + "<br>";
+			}
+			tmp += "</html>";
+			return tmp;
 		}
 
 		private int getNumber()
@@ -180,32 +195,36 @@ public class XGKeyboard extends XGFrame implements XGUI
 		}
 
 		@Override public void mouseClicked(MouseEvent e)
-		{	//TODO: if doubleclick && partmode > 0 open drumEditWindow
+		{	if(e.getClickCount() == 2 & this.keyboard.partmodeValue.getValue() > 0) System.out.println("doublecklick should open a drumedit window " + this.keyboard.getKeyText(this));
+		
+			//TODO: if doubleclick && partmode > 0 open drumEditWindow
 			//TODO: if rightclick ask for lowLimit or highLimit and setLimit
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	if(this.keyboard.sendMessage(ShortMessage.NOTE_ON, this))
+		{	XGUI.VARIABLES.mousePressed = true;
+			if(!this.isEnabled() || e.getButton() != MouseEvent.BUTTON1) return;
+			if(this.keyboard.sendMessage(ShortMessage.NOTE_ON, this))
 			{	this.setBackground(this.pressedColor);
 				this.keyboard.repaint();
 			}
-			//TODO: start play tone
 		}
 
 		@Override public void mouseReleased(MouseEvent e)
-		{	if(this.keyboard.sendMessage(ShortMessage.NOTE_OFF, this))
+		{	XGUI.VARIABLES.mousePressed = false;
+			if(!this.isEnabled() || e.getButton() != MouseEvent.BUTTON1) return;
+			if(this.keyboard.sendMessage(ShortMessage.NOTE_OFF, this))
 			{	this.setBackground(this.normalColor);
 				this.keyboard.repaint();
 			}
-			// TODO: stop play tone
 		}
 
 		@Override public void mouseEntered(MouseEvent e)
-		{	// TODO: if mouse pressed, start play tone
+		{	if(!XGUI.VARIABLES.mousePressed);
 		}
-
+	
 		@Override public void mouseExited(MouseEvent e)
-		{	// TODO: if mouse pressed stop play tone
+		{	if(!XGUI.VARIABLES.mousePressed);
 		}
 	}
 }
