@@ -4,7 +4,6 @@ import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import adress.XGAddressField;
 import adress.XGAddressable;
 import application.XGLoggable;
 import device.XGDevice;
@@ -12,10 +11,12 @@ import msg.XGMessageBulkDump;
 import msg.XGMessageParameterChange;
 import msg.XGMessengerException;
 import msg.XGResponse;
+import parm.XGDefaultsTable;
 import parm.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
+import parm.XGParameterTable;
 import parm.XGTable;
 import parm.XGTable.Preference;
 import parm.XGTableEntry;
@@ -37,6 +38,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	private final XGAddress address;
 	private final XGOpcode opcode;
 	private XGValue parameterSelector = null, defaultSelector = null;
+	private final XGParameterTable parameters;
+	private final XGDefaultsTable defaults;
 	private final Set<XGValueChangeListener> valueListeners = new HashSet<>();
 	private final Set<XGParameterChangeListener> parameterListeners = new HashSet<>();
 
@@ -45,6 +48,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.index = v;
 		this.parameterSelector = DEFAULTSELECTOR;
 		this.defaultSelector = DEFAULTSELECTOR;
+		this.parameters = null;
+		this.defaults = null;
 		this.opcode = null;
 	}
 
@@ -52,6 +57,22 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	this.opcode = opc;
 		this.address = new XGAddress(opc.getAddress().getHi().getValue(), id, opc.getAddress().getLo().getMin());
 		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
+		if(opc.isMutable())
+		{	this.parameters = opc.getDevice().getParameterTables().get(opc.getParameterTableName());
+			if(this.parameters == null) throw new RuntimeException(ATTR_PARAMETERS + " " + opc.getParameterTableName() + " not found!");
+		}
+		else
+		{	this.parameters = new XGParameterTable(opc.getDevice());
+			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getDevice(), opc.getConfig()));
+		}
+		if(opc.hasMutableDefaults())
+		{	this.defaults = opc.getDevice().getDefaultsTables().get(opc.getDefaultTableName());
+			if(this.defaults == null) throw new RuntimeException(ATTR_DEFAULTS + " " + opc.getDefaultTableName() + " not found!");
+		}
+		else
+		{	this.defaults = new XGDefaultsTable(opc.getConfig());
+//			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, opc.getConfig().getValueAttribute(ATTR_DEFAULT, 0));
+		}
 	}
 
 	public void initValueDepencies() throws InvalidXGAddressException
@@ -67,9 +88,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		if(this.opcode.hasMutableDefaults())
 		{	XGAddress dsa = this.opcode.getDefaultSelectorAddress().complement(this.address);
 			XGValue dsv = this.opcode.getDevice().getValues().get(dsa);
-			if(dsv == null) throw new RuntimeException("defaultsSelector " + dsa + " not found for value " + this.address);
+			if(dsv == null) throw new RuntimeException("defaultsSelector " + dsa + " not found for value " + this.address);//TODO: drumset hat zwar mutableDefaults aber kann keinen festen defaultSelector (multipartProgram) haben
 			this.defaultSelector = dsv;
-			this.defaultSelector.addValueListener((XGValue val)->{this.setDefaultValue(val);});
+			this.defaultSelector.addValueListener((XGValue)->{this.setDefaultValue();});
 		}
 		else this.defaultSelector = DEFAULTSELECTOR;
 	}
@@ -111,15 +132,18 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	public void setDefaultValue()
-	{	this.setDefaultValue(this.defaultSelector);
-	}
-
-	private void setDefaultValue(XGValue v)
-	{	this.setValue(this.opcode.getDefaultValue(v));
+	{	int id = DEF_SELECTORVALUE;
+		try
+		{	id = this.address.getMid().getValue();
+		}
+		catch(InvalidXGAddressException e)
+		{	LOG.info(e.getMessage());
+		}
+		this.setValue(this.defaults.get(id, this.defaultSelector.getValue()));
 	}
 
 	public XGParameter getParameter()
-	{	return this.opcode.getParameter(this.parameterSelector);
+	{	return this.parameters.getOrDefault(this.parameterSelector.getValue(), NO_PARAMETER);
 	}
 
 	@Override public XGAddress getAddress()

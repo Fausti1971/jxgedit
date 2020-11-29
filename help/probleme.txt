@@ -111,3 +111,14 @@ Probleme:
 Problem:
 		das Ermitteln des Defaults für einen Drumsound erfordert einen weiteren Parameter (ID), den die bisherige XGDefaultTable so nicht hergibt.
 		Sinnvollerweise wäre die XGDefaultTable besser dem XGValue zugeordnet anstatt dem XGOpcode. Ebenso möglicherweise die XGParameterTable...
+	Lösung:
+		XGDefaultTable um eine Dimension ID (int) erweitern zu folgender Struktur: HashMap<Integer, HashMap<Integer, Integer>>
+		die erste Dimension stellt die ID dar und sollte mit DEF_SELECTORVALUE (-1) initialisiert werden für XGValues, die keine IDs haben bzw. bei deren Defaults die ID keine Rolle spielt (A/D-Parts, System- und Insertion-FX...).
+		Für eine nicht auffindbare ID wird der Wert der Fallback-ID (-1) zurückgeliefert.
+		Der zweite int bleibt, wie gehabt, der Selektor.
+		Die Hürde bleibt aber, die neuen XGDefaulTables mit alten XML-Files zu initialisieren, ohne diese zu umschreiben zu müssen. Bspw. bei fehlender ID automatisch mit -1 zu initialisieren, was allerdings wiederum im Opcode hinterlegt werden müsste...
+Problem:
+		drumset hat zwar mutableDefaults aber kann keinen festen defaultSelector (multipartProgram) haben
+	Lösung:
+		keine, außer vielleicht der Abschaffung von defaults (wieder per request)
+		

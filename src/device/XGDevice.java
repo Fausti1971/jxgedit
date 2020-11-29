@@ -1,6 +1,5 @@
 package device;
 
-import java.awt.Dialog.ModalityType;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -35,7 +34,6 @@ import gui.XGColor;
 import gui.XGContext;
 import gui.XGDeviceDetector;
 import gui.XGFileSelector;
-import gui.XGFrame;
 import gui.XGSpinner;
 import gui.XGTemplate;
 import gui.XGTree;
@@ -191,15 +189,15 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		this.values = new XGValueStore(this);
 		this.initInstances();
 
-		try
-		{	this.defaultFile = new XGSysexFile(this, this.defaultFileName.toString());
-			this.defaultFile.parse();
-			this.transmitAll(this.defaultFile, this.values);
-		}
-		catch(IOException e)
-		{	LOG.severe(e.getMessage());
-			for(XGModuleType mt : this.getModuleTypes()) mt.resetValues();
-		}
+//		try
+//		{	this.defaultFile = new XGSysexFile(this, this.defaultFileName.toString());
+//			this.defaultFile.parse();
+//			this.transmitAll(this.defaultFile, this.values);
+//		}
+//		catch(IOException e)
+//		{	LOG.severe(e.getMessage());
+//			for(XGModuleType mt : this.getModuleTypes()) mt.resetValues();
+//		}
 		LOG.info("device initialized: " + this);
 	}
 
@@ -244,6 +242,8 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			{	((XGDrumsetModuleType)mt).initDepencies();
 			}
 		}
+		for(XGValue v : this.values) v.setDefaultValue();
+
 		LOG.info(this.modules.size() + " moduleInstances initialized for " + this);
 		LOG.info(this.values.size() + " Values initialized for " + this);
 	}

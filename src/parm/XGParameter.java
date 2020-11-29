@@ -28,7 +28,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	private final String unit;
 	private final boolean isValid;
 
-	protected XGParameter(XGDevice dev, XMLNode n)
+	public XGParameter(XGDevice dev, XMLNode n)
 	{	this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);
 //		if(this.translationTable == null) throw new RuntimeException("no table: " + this);
 

@@ -99,7 +99,8 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 		{	try(FileOutputStream fos = new FileOutputStream(this))
 			{	for(XGMessage r : this.buffer)
 				{	fos.write(r.getByteArray());
-					LOG.info("written: " + ++count + "/" + this.buffer.size());
+					count++;
+//					LOG.info("written: " + ++count + "/" + this.buffer.size());
 				}
 				fos.close();
 				this.changed = false;

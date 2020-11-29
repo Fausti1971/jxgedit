@@ -147,7 +147,11 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 				return x;
 		return null;
 	}
-
+/**
+ * liefert ein Set von (ausschließlich direkten) Kindern mit zutreffendem Tag
+ * @param tag	zu findender Tag
+ * @return Set von direkten Kindern mit zutreffendem Tag
+ */
 	public Set<XMLNode> getChildNodes(String tag)
 	{	Set<XMLNode> set = new LinkedHashSet<>();
 		for(XMLNode x : this.childNodes)

@@ -74,6 +74,7 @@ public interface XMLNodeConstants
 		TAG_DEFAULTTABLES = "defaultTables",
 		TAG_DEFAULTTABLE = "defaultTable",
 		TAG_DEFAULT = "default",
+		TAG_ID = "id",
 
 		ATTR_TYPE = "type",
 		ATTR_PARAMETERSELECTOR ="parameterSelector",
@@ -100,6 +101,7 @@ public interface XMLNodeConstants
 		TAG_ITEM = "item",
 		ATTR_VALUE = "value",
 		ATTR_SELECTORVALUE = "selectorValue",
+		ATTR_ID = "id",
 //		ATTR_MSB = "msb",
 //		ATTR_LSB = "lsb",
 

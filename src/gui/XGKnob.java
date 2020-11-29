@@ -106,7 +106,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			this.size = Math.min(this.getWidth() - DEF_STROKEWIDTH, this.getHeight());
 			this.radius = this.size / 2;
 			this.middle.x = this.getWidth() / 2;
-			this.middle.y = 4 + this.radius;// getY() liefert IMMER 15! (sowohl mit als auch ohen Border), daher die "4"
+			this.middle.y = 4 + this.radius;// getY() liefert IMMER 15! (sowohl mit als auch ohne Border), daher die "4"
 	
 	// paint background arc
 			//this.g2.setColor(COL_BAR_BACK);
