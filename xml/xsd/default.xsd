@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="defaultTables">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="defaultTable" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="defaultTable">
+		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="id" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="default" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		<xs:attribute name="name" use="required" type="xs:NCName"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="id">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="default" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+			<xs:attribute name="id" type="xs:nonNegativeInteger"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="default">
+		<xs:complexType>
+			<xs:attribute name="selectorValue" type="valueType" use="required"/>
+			<xs:attribute name="default" type="valueType" use="optional"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="valueType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d+((\.\d+)+)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

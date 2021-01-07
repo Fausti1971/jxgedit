@@ -1,6 +1,8 @@
 package module;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -10,6 +12,27 @@ import device.XGDevice;
 import value.XGValue;
 import xml.XMLNode;
 
+
+/*
+-registriere jedes drumset permanent als changelistener an jedem partmode
+
+-wenn partmode zu this geändert wird, frage multipartprogramm ab
+-und setze es in Map<Integer, Integer> oldMultipartPrograms(mp-id, prog)
+-und setze multipartprogram zu this.program(default=StandardKit)
+-und registriere this als changelistener an multipartprogram
+
+-wenn multipartprogram geändert wird setze prog an this.program (und an allen in oldMultipartPrograms registrierten multiparts)
+
+-wenn partmode von this.partmode zu 0 oder 1 geändert wird, setze multipartprogram zu oldMultipartPrograms.get(mp-id);
+! bei Änderung von this.partmode zu partmode > 1 muss oldMultipartProgram.get(mp-id) irgendwie an das neue Drumset gereicht werden, damit dieses evtl. das originalprogram zurücksetzen kann
+! vielleicht sollte es eine device-globale oldMultipartPrograms für alle Drumsets geben, die sobald der multipart die drumsets verlässt (partmode < 2) die oldMultipartPrograms setzt
+-und entferne mp-id aus oldMultipartPrograms
+-und deregistriere changelistener this an multipartprogram
+
+! weiteres Problem: jeder Multipart kann als Drumkit (Partmode 1) jedes Drumkits annehmen und dieses bleibt je Multipart erhalten, wie auch die Normal-Voice je Multipart erhalten bleibt, was vermutlich ein "Zentralorgan" unvermeidlich macht!
+Die Einführung dieser Blackbox führt die bisherigen Bestrebungen ad absurdum und schreit förmlich nach Wiedereinführung der "module_request_action"....
+ */
+
 public class XGDrumsetModuleType extends XGModuleType
 {
 	private static final XGAddress PARTMODEADDRESS = new XGAddress("8//7"), PROGRAMMADDRESS = new XGAddress("8//1");
@@ -17,7 +40,7 @@ public class XGDrumsetModuleType extends XGModuleType
 
 /****************************************************************************************************************************/
 
-	private Set<Integer> multiparts = new HashSet<>();//alle Multiparts, die diesen Partmode und somit dieses Program teilen
+	private Map<Integer, Integer> multiparts = new HashMap<>();//alle Multiparts, die diesen Partmode (und somit dieses Program) teilen und deren alte programme (für partmode 0 oder 1)
 	private int program;
 	private final int partmode, hi, id;
 
@@ -76,7 +99,7 @@ public class XGDrumsetModuleType extends XGModuleType
 	void partmodeChanged(XGValue v)
 	{	int mid = this.getID(v);
 		if(v.getValue() == this.partmode)
-		{	this.multiparts.add(mid);
+		{	this.multiparts.put(mid, 0);
 			
 			this.repaintNode();
 System.out.println("partmode changed " + v.getInfo());

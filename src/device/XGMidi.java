@@ -249,8 +249,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	{	if(this.transmitter == null) throw new XGMessengerException(this + ": no transmitter initialized!");
 		if(m == null)throw new XGMessengerException(this + ": message was null");
 		m.setTimeStamp();
-		MidiMessage mm = (MidiMessage)m;
-		this.transmitter.send(mm, -1L);
+		this.transmitter.send((MidiMessage)m, -1L);
 	}
 
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
@@ -262,7 +261,6 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 				}
 				return;
 			}
-//			m.getDestination().submit((XGResponse)m);
 		}
 		catch(InvalidMidiDataException|InvalidXGAddressException e)
 		{	LOG.info(e.getMessage());
