@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="template.xsd">
+	<frame address="0/0/" grid="0,0,0,0">
+		<knob address="0/0/0" grid="0,0,3,4"/>
+		<knob address="0/0/4" grid="3,0,3,4"/>
+		<knob address="0/0/5" grid="6,0,3,4"/>
+		<knob address="0/0/6" grid="9,0,3,4"/>
+	</frame>
+	<frame address="2/1/0-21" grid="0,0,0,0">
+		<selector address="2/1/0" grid="0,0,15,2"/>
+		<knob address="2/1/12" grid="15,0,3,4"/>
+		<knob address="2/1/13" grid="18,0,3,4"/>
+
+		<knob address="2/1/2" grid="0,4,3,4"/>
+		<knob address="2/1/3" grid="3,4,3,4"/>
+		<knob address="2/1/4" grid="6,4,3,4"/>
+		<knob address="2/1/5" grid="9,4,3,4"/>
+		<knob address="2/1/6" grid="12,4,3,4"/>
+		<knob address="2/1/7" grid="15,4,3,4"/>
+		<knob address="2/1/8" grid="18,4,3,4"/>
+		<knob address="2/1/9" grid="21,4,3,4"/>
+		<knob address="2/1/10" grid="24,4,3,4"/>
+		<knob address="2/1/11" grid="27,4,3,4"/>
+		<knob address="2/1/16" grid="30,4,3,4"/>
+		<knob address="2/1/17" grid="33,4,3,4"/>
+		<knob address="2/1/18" grid="36,4,3,4"/>
+		<knob address="2/1/19" grid="39,4,3,4"/>
+		<knob address="2/1/20" grid="42,4,3,4"/>
+		<knob address="2/1/21" grid="45,4,3,4"/>
+	</frame>
+
+	<frame address="2/1/32-53" grid="0,0,0,0">
+		<selector address="2/1/32" grid="0,0,15,2"/>
+		<knob address="2/1/44" grid="15,0,3,4"/>
+		<knob address="2/1/45" grid="18,0,3,4"/>
+		<knob address="2/1/46" grid="21,0,3,4"/>
+
+		<knob address="2/1/34" grid="0,4,3,4"/>
+		<knob address="2/1/35" grid="3,4,3,4"/>
+		<knob address="2/1/36" grid="6,4,3,4"/>
+		<knob address="2/1/37" grid="9,4,3,4"/>
+		<knob address="2/1/38" grid="12,4,3,4"/>
+		<knob address="2/1/39" grid="15,4,3,4"/>
+		<knob address="2/1/40" grid="18,4,3,4"/>
+		<knob address="2/1/41" grid="21,4,3,4"/>
+		<knob address="2/1/42" grid="24,4,3,4"/>
+		<knob address="2/1/43" grid="27,4,3,4"/>
+		<knob address="2/1/48" grid="30,4,3,4"/>
+		<knob address="2/1/49" grid="33,4,3,4"/>
+		<knob address="2/1/50" grid="36,4,3,4"/>
+		<knob address="2/1/51" grid="39,4,3,4"/>
+		<knob address="2/1/52" grid="42,4,3,4"/>
+		<knob address="2/1/53" grid="45,4,3,4"/>
+	</frame>
+
+	<frame address="2/1/64-117"  grid="0,0,0,0">
+		<selector address="2/1/64" grid="0,0,15,2"/>
+		<knob address="2/1/86" grid="15,0,3,4"/>
+		<knob address="2/1/87" grid="18,0,3,4"/>
+		<knob address="2/1/88" grid="21,0,3,4"/>
+		<knob address="2/1/89" grid="24,0,3,4"/>
+		<radio address="2/1/90" grid="27,0,5,4" orientation="vertical"/>
+		<knob address="2/1/91" grid="32,0,3,4"/>
+
+		<knob address="2/1/92" grid="0,4,3,4"/>
+		<knob address="2/1/93" grid="3,4,3,4"/>
+		<knob address="2/1/94" grid="6,4,3,4"/>
+		<knob address="2/1/95" grid="9,4,3,4"/>
+		<knob address="2/1/96" grid="12,4,3,4"/>
+		<knob address="2/1/97" grid="15,4,3,4"/>
+		<knob address="2/1/98" grid="18,4,3,4"/>
+
+		<knob address="2/1/66" grid="0,8,3,4"/>
+		<knob address="2/1/68" grid="3,8,3,4"/>
+		<knob address="2/1/70" grid="6,8,3,4"/>
+		<knob address="2/1/72" grid="9,8,3,4"/>
+		<knob address="2/1/74" grid="12,8,3,4"/>
+		<knob address="2/1/76" grid="15,8,3,4"/>
+		<knob address="2/1/78" grid="18,8,3,4"/>
+		<knob address="2/1/80" grid="21,8,3,4"/>
+		<knob address="2/1/82" grid="24,8,3,4"/>
+		<knob address="2/1/84" grid="27,8,3,4"/>
+		<knob address="2/1/112" grid="30,8,3,4"/>
+		<knob address="2/1/113" grid="33,8,3,4"/>
+		<knob address="2/1/114" grid="36,8,3,4"/>
+		<knob address="2/1/115" grid="39,8,3,4"/>
+		<knob address="2/1/116" grid="42,8,3,4"/>
+		<knob address="2/1/117" grid="45,8,3,4"/>
+	</frame>
+	<frame address="3//" grid="0,0,0,0">
+		<selector address="3//0" grid="0,0,15,2"/>
+		<knob address="3//12" grid="15,0,3,4"/>
+
+		<knob address="3//13" grid="0,4,3,4"/>
+		<knob address="3//14" grid="3,4,3,4"/>
+		<knob address="3//15" grid="6,4,3,4"/>
+		<knob address="3//16" grid="9,4,3,4"/>
+		<knob address="3//17" grid="12,4,3,4"/>
+		<knob address="3//18" grid="15,4,3,4"/>
+		<knob address="3//19" grid="18,4,3,4"/>
+
+		<knob address="3//2" grid="0,8,3,4"/>
+		<knob address="3//3" grid="3,8,3,4"/>
+		<knob address="3//4" grid="6,8,3,4"/>
+		<knob address="3//5" grid="9,8,3,4"/>
+		<knob address="3//6" grid="12,8,3,4"/>
+		<knob address="3//7" grid="15,8,3,4"/>
+		<knob address="3//8" grid="18,8,3,4"/>
+		<knob address="3//9" grid="21,8,3,4"/>
+		<knob address="3//10" grid="24,8,3,4"/>
+		<knob address="3//11" grid="27,8,3,4"/>
+		<knob address="3//32" grid="30,8,3,4"/>
+		<knob address="3//33" grid="33,8,3,4"/>
+		<knob address="3//34" grid="36,8,3,4"/>
+		<knob address="3//35" grid="39,8,3,4"/>
+		<knob address="3//36" grid="42,8,3,4"/>
+		<knob address="3//37" grid="45,8,3,4"/>
+	</frame>
+
+	<frame name="Multi EQ" grid="0,0,0,0" address="2/64/">
+		<radio grid="0,0,15,2" address="//0" orientation="horizontal"/>
+
+		<envelope name="Graphic" grid="0,2,15,6">
+			<point address_y="//1" address_x="//2"/>
+			<point address_y="//5" address_x="//6"/>
+			<point address_y="//9" address_x="//10"/>
+			<point address_y="//13" address_x="//14"/>
+			<point address_y="//17" address_x="//18"/>
+		</envelope>
+
+		<knob grid="0,8,3,4" address="//1"/>
+		<knob grid="0,12,3,4" address="//2"/>
+		<knob grid="0,16,3,4" address="//3"/>
+		<radio grid="0,20,3,3" address="//4" orientation="vertical"/>
+
+		<knob grid="3,8,3,4" address="//5"/>
+		<knob grid="3,12,3,4" address="//6"/>
+		<knob grid="3,16,3,4" address="//7"/>
+
+		<knob grid="6,8,3,4" address="//9"/>
+		<knob grid="6,12,3,4" address="//10"/>
+		<knob grid="6,16,3,4" address="//11"/>
+
+		<knob grid="9,8,3,4" address="//13"/>
+		<knob grid="9,12,3,4" address="//14"/>
+		<knob grid="9,16,3,4" address="//15"/>
+
+		<knob grid="12,8,3,4" address="//17"/>
+		<knob grid="12,12,3,4" address="//18"/>
+		<knob grid="12,16,3,4" address="//19"/>
+		<radio grid="12,20,3,3" address="//20" orientation="vertical"/>
+	</frame>
+
+	<frame address="8-10//" grid="0,0,0,0">
+		<frame address="8-10//" name="Midi" grid="0,0,0,0">
+			<knob address="8//4" grid="0,0,3,4"/>
+			<velocity name="Velocity" start_x="8//109" end_x="8//110" depth="8//12" offset="8//13" grid="3,0,12,4"/>
+			<range name="Note Limit" address_lo="8//15" address_hi="8//16" grid="0,4,15,2"/>
+		</frame>
+		<frame address="8-10//" name="Voice" grid="0,9,0,0">
+			<combo address="8//7" grid="0,0,6,2"/>
+			<selector address="8//1" grid="6,0,15,2"/>
+			<combo address="8//5" grid="21,0,6,2"/>
+			<combo address="8//6" grid="27,0,6,2"/>
+
+			<knob address="8//0" grid="0,2,3,4"/>
+			<knob address="8//8" grid="3,2,3,4"/>
+			<knob address="8//9-10" grid="6,2,3,4"/>
+			<knob address="8//11" grid="9,2,3,4"/>
+			<knob address="8//14" grid="12,2,3,4"/>
+
+			<envelope name="Amp Envelope Generator" grid="0,6,12,8">
+				<point fixed_y="0" fixed_x="0"/>
+			</envelope>
+		</frame>
+	</frame>
+
+	<frame grid="0,0,0,0" address="16-18//">
+		<knob address="//89" grid="0,0,3,4"/>
+		<knob address="//96" grid="3,0,3,4"/>
+	</frame>
+</templates>
