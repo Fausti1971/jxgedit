@@ -1,18 +1,17 @@
 package gui;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.Dialog.ModalExclusionType;
-import java.awt.Dimension;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import javax.swing.JScrollPane;
+import javax.swing.*;
 import application.Configurable;
 import application.JXG;
 import xml.XMLNode;
 
-public class XGRootWindow extends XGWindow implements Configurable, WindowListener, ComponentListener
+public class XGMainWindow extends JFrame implements Configurable, WindowListener, ComponentListener
 {	/**
 	 * 
 	 */
@@ -20,12 +19,12 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 
 /**********************************************************************************************************************/
 
-	private final XMLNode config = JXG.getApp().getConfig().getChildNodeOrNew(TAG_WIN);
+	private JMenuBar menu = new JMenuBar();
 	private XGStatusBar status = new XGStatusBar();
 
-	public XGRootWindow()
-	{	super();
-		this.setLayout(new BorderLayout());
+	public XGMainWindow()
+	{
+		this.setJMenuBar(menu);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.addWindowListener(this);
 		this.addComponentListener(this);
@@ -36,7 +35,7 @@ public class XGRootWindow extends XGWindow implements Configurable, WindowListen
 
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
 		this.setBounds(
-			this.config.getIntegerAttribute(ATTR_X, 20),
+			JXG
 			this.config.getIntegerAttribute(ATTR_Y, 20),
 			this.config.getIntegerAttribute(ATTR_W, MIN_W),
 			this.config.getIntegerAttribute(ATTR_H, MIN_H));

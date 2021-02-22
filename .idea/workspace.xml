@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="Default Changelist" comment="">
+    <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="Default Changelist" comment="backup single">
+      <change afterPath="$PROJECT_DIR$/src/application/XGConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MU80.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGRootWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRootWindow.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,6 +78,13 @@
       </pane>
     </panes>
   </component>
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="flattenPackages" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+  </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="JAVA" />
@@ -81,7 +93,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -116,6 +128,7 @@
       </serviceView>
     </option>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="StructureViewFactory">
     <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
     <option name="ACTIVE_ACTIONS" value=",SHOW_NON_PUBLIC,SHOW_FIELDS,SHOW_INTERFACES" />
@@ -128,6 +141,21 @@
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
     </task>
+    <task id="LOCAL-00001" summary="zurück aus S...&#10;minor changes">
+      <created>1613852861911</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1613852861911</updated>
+    </task>
+    <task id="LOCAL-00002" summary="backup single">
+      <created>1613852922209</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1613852922209</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -196,7 +224,8 @@
     <MESSAGE value="zurück aus L..." />
     <MESSAGE value="zurück aus S...&#10;spezifische XGObject entfernt, statische XGObjectDescription komplettiert;&#10;statische Object- und Parameterinitialisation;" />
     <MESSAGE value="zurück aus S...&#10;minor changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="zurück aus S...&#10;minor changes" />
+    <MESSAGE value="backup single" />
+    <option name="LAST_COMMIT_MESSAGE" value="backup single" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
