@@ -1,8 +1,7 @@
 package application;
 
 import java.awt.*;import java.awt.event.ActionEvent;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -12,12 +11,8 @@ import javax.swing.tree.TreeNode;
 import javax.xml.stream.XMLStreamException;
 import adress.InvalidXGAddressException;
 import device.XGDevice;
-import gui.XGContext;
-import gui.XGTree;
-import gui.XGTreeNode;
-import gui.XGUI;
-import gui.XGWindow;
-import xml.XMLNode;
+import gui.*;
+import xml.*;
 
 public class JXG implements XGLoggable, XGUI
 {
@@ -26,9 +21,11 @@ public class JXG implements XGLoggable, XGUI
 		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
 	}
 
-	private final static Set<String> ACTIONS = new LinkedHashSet<>();
-
-	public static Rectangle mainWindow = new Rectangle();
+	private static XMLNode configXML;
+	private static File configFile;
+	private static XGDevice device;
+	public static Rectangle mainWindowBounds = new Rectangle();
+	public static XGMainWindow mainWindow;
 
 	public static int
 		sysexID = 0,
@@ -38,41 +35,39 @@ public class JXG implements XGLoggable, XGUI
 		midiInput = "",
 		midiOutput = "";
 
-	public static void loadConfig()
-	{
-	}
-
-	public static void saveConfig()
-	{
-	}
-
 	public static void main(String[] args)
-	{	
-		if(HOMEPATH.toFile().exists()) this.configPath = HOMEPATH;
-		else this.configPath = CWD;
-		LOG.info("path for configuration: " + this.configPath);
-		this.configFile = this.configPath.resolve(XML_CONFIG);
+	{
+		configFile = new File(APPPATH + FILESEPERATOR + XML_CONFIG);
+		try
+		{	configXML = XMLNode.parse(configFile);
+		}
+		catch(IOException e)
+		{	LOG.info(e.getMessage());
+			configXML = new XMLNode(TAG_CONFIG);
+		}
 
-		File f = configFile.toFile();
-		if(f.exists()) this.config = XMLNode.parse(f);
-		else this.config = new XMLNode(APPNAME);
+		LOG.info(APPNAME + " initialized from " + configFile);
 
-		LOG.info("JXG config initialized");
+		try
+		{	device = new XGDevice(configXML.getChildNodeOrNew(TAG_DEVICE));
+		}
+		catch(InvalidXGAddressException e)
+		{	LOG.severe(e.getMessage());
+		}
 
-		XGUI.init(APP.getConfig());
-		XGWindow.getRootWindow();
-		new Thread(() -> {	XGDevice.init(APP.getConfig());}).start();
-//		quit();
+		XGUI.init(configXML.getChildNodeOrNew(TAG_UI));
 	}
+
 	public static void quit()
 	{	LOG.info("exiting application");
 		try
-		{	APP.getConfig().save(configFile.toFile());
-			for(XGDevice d : XGDevice.getDevices()) d.exit();
+		{	configXML.save(configFile);
 		}
-		catch(IOException|XMLStreamException e)
-		{	e.printStackTrace();
+		catch(IOException | XMLStreamException e)
+		{	LOG.warning(e.getMessage());
 		}
+
+		device.exit();
 		System.exit(0);
 	}
 }

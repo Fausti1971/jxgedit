@@ -1,17 +1,14 @@
 package gui;
 
 import java.awt.*;
-import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
-import application.Configurable;
-import application.JXG;
-import xml.XMLNode;
+import application.*;
 
-public class XGMainWindow extends JFrame implements Configurable, WindowListener, ComponentListener
+public class XGMainWindow extends JFrame implements WindowListener, ComponentListener, ConfigurationConstants
 {	/**
 	 * 
 	 */
@@ -19,27 +16,26 @@ public class XGMainWindow extends JFrame implements Configurable, WindowListener
 
 /**********************************************************************************************************************/
 
-	private JMenuBar menu = new JMenuBar();
-	private XGStatusBar status = new XGStatusBar();
+	private final JMenuBar menu = this.createMenu();
+	private final XGStatusBar status = new XGStatusBar();
 
 	public XGMainWindow()
 	{
 		this.setJMenuBar(menu);
+		this.setContentPane(this.createContent());
+
+		this.setTitle(APPNAME);
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		this.addWindowListener(this);
 		this.addComponentListener(this);
-	
-		this.setTitle(APPNAME);
-		this.getContentPane().add(new JScrollPane(this.getRootComponent()), BorderLayout.CENTER);
-		this.getContentPane().add(this.status, BorderLayout.SOUTH);
 
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
 		this.setBounds(
-			JXG
-			this.config.getIntegerAttribute(ATTR_Y, 20),
-			this.config.getIntegerAttribute(ATTR_W, MIN_W),
-			this.config.getIntegerAttribute(ATTR_H, MIN_H));
-		this.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+			JXG.mainWindowBounds.x,
+			JXG.mainWindowBounds.y,
+			JXG.mainWindowBounds.width,
+			JXG.mainWindowBounds.height);
+//		this.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		this.setVisible(true);
 	}
 
@@ -47,8 +43,14 @@ public class XGMainWindow extends JFrame implements Configurable, WindowListener
 	{	return this.status;
 	}
 
-	@Override public XMLNode getConfig()
-	{	return this.config;
+	private JMenuBar createMenu()
+	{	JMenuBar bar = new JMenuBar();
+		return bar;
+	}
+
+	private JComponent createContent()
+	{	JPanel content = new JPanel();
+		return content; 
 	}
 
 	@Override public void windowOpened(WindowEvent e)
@@ -60,7 +62,7 @@ public class XGMainWindow extends JFrame implements Configurable, WindowListener
 	}
 
 	@Override public void windowClosed(WindowEvent e)
-	{	JXG.getApp().quit();
+	{	JXG.quit();
 	}
 
 	@Override public void windowIconified(WindowEvent e)
@@ -80,13 +82,13 @@ public class XGMainWindow extends JFrame implements Configurable, WindowListener
 	}
 
 	@Override public void componentResized(ComponentEvent e)
-	{	this.config.setIntegerAttribute(ATTR_W, e.getComponent().getWidth());
-		this.config.setIntegerAttribute(ATTR_H, e.getComponent().getHeight());
+	{	JXG.mainWindowBounds.width = e.getComponent().getWidth();
+		JXG.mainWindowBounds.height = e.getComponent().getHeight();
 	}
 
 	@Override public void componentMoved(ComponentEvent e)
-	{	this.config.setIntegerAttribute(ATTR_X, e.getComponent().getX());
-		this.config.setIntegerAttribute(ATTR_Y, e.getComponent().getY());
+	{	JXG.mainWindowBounds.x = e.getComponent().getX();
+		JXG.mainWindowBounds.y = e.getComponent().getY();
 	}
 
 	@Override public void componentShown(ComponentEvent e)

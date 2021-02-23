@@ -28,8 +28,8 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 {
 	private static final String ERRORSTRING = " contains invalid character";
 
-	public static XMLNode parse(File xml)
-	{	if(xml == null || !xml.canRead()) return null;
+	public static XMLNode parse(File xml)throws IOException
+	{	if(xml == null || !xml.canRead()) throw new IOException();
 		XMLNode current_node = null, parent_node = null, root_node = null;
 
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();

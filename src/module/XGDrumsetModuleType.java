@@ -101,7 +101,7 @@ public class XGDrumsetModuleType extends XGModuleType
 		if(v.getValue() == this.partmode)
 		{	this.multiparts.put(mid, 0);
 			
-			this.repaintNode();
+//			this.repaintNode();
 System.out.println("partmode changed " + v.getInfo());
 		}
 		else
@@ -115,9 +115,5 @@ System.out.println("partmode changed " + v.getInfo());
 		int mid = this.getID(v);
 		
 System.out.println("program changed " + v.getInfo());
-	}
-
-	@Override public String getNodeText()
-	{	return this.name + " " + this.id + " (" + this.program + ")";
 	}
 }

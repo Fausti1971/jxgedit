@@ -1,7 +1,6 @@
 package parm;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.Set;
 import application.ConfigurationConstants;
 import application.XGLoggable;
@@ -15,17 +14,15 @@ public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameter
 	static enum Preference{BELOW, EQUAL, ABOVE, CLOSEST, FALLBACK};
 	public static void init(XGDevice dev)
 	{
-		File file;
 		try
-		{	file = dev.getResourceFile(XML_TABLES);
+		{
+			XMLNode xml = XMLNode.parse(dev.getResourceFile(XML_TABLES));
+			for(XMLNode x : xml.getChildNodes(TAG_TABLE))
+			{	dev.getTables().add(new XGXMLTable(x));
+			}
 		}
-		catch(FileNotFoundException e)
-		{	return;
-		}
-
-		XMLNode xml = XMLNode.parse(file);
-		for(XMLNode x : xml.getChildNodes(TAG_TABLE))
-		{	dev.getTables().add(new XGXMLTable(x));
+		catch(IOException e)
+		{	LOG.severe(e.getMessage());
 		}
 		XGVirtualTable.init(dev);
 		return;

@@ -6,23 +6,19 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
+import java.awt.event.*;
 import javax.swing.JPanel;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
-import module.XGModule;
+import static gui.XGUI.*;import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGRange extends XGFrame implements XGComponent, XGParameterConstants, XGValueChangeListener
+public class XGRange extends JPanel implements XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener
 {	/**
 	 * 
 	 */
@@ -36,8 +32,7 @@ public class XGRange extends XGFrame implements XGComponent, XGParameterConstant
 	private final XGAddress loAddress, hiAddress;
 
 	public XGRange(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n);
-		this.setBounds();
+	{
 		this.setLayout(new GridBagLayout());
 		this.loAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_LO), mod.getAddress());
 		this.hiAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_HI), mod.getAddress());
@@ -51,7 +46,6 @@ public class XGRange extends XGFrame implements XGComponent, XGParameterConstant
 			this.setFocusable(true);
 		}
 		this.setName(n.getStringAttribute(ATTR_NAME));
-		this.borderize();
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 
@@ -86,13 +80,34 @@ public class XGRange extends XGFrame implements XGComponent, XGParameterConstant
 		this.label.setText(this.loValue + "..." + this.hiValue);
 	}
 
-	@Override public boolean isManagingFocus()
-	{	return true;
+	public void focusGained(FocusEvent event)
+	{
 	}
-	
-	@Override public boolean isFocusTraversable()
-	{	return true;
+
+	public void focusLost(FocusEvent event)
+	{
 	}
+
+	public void mouseClicked(MouseEvent event)
+	{
+	}
+
+	public void mousePressed(MouseEvent event)
+	{
+	}
+
+	public void mouseReleased(MouseEvent event)
+	{
+	}
+
+	public void mouseEntered(MouseEvent event)
+	{
+	}
+
+	public void mouseExited(MouseEvent event)
+	{
+	}
+
 
 /***************************************************************************************************/
 
@@ -109,7 +124,7 @@ public class XGRange extends XGFrame implements XGComponent, XGParameterConstant
 		private Graphics2D g2;
 //		private Cursor lastCursor;
 
-		private XGRangeBar(XGValue lo, XGValue hi)
+		XGRangeBar(XGValue lo, XGValue hi)
 		{	//super();
 			//this.setBorder(null);	buggy: getX() liefert IMMER inset.left; getY() IMMER inset.top; (5, 15)! Bug?; deshalb beim malen diese koordinaten ignorieren...
 			this.loValue = lo;
@@ -154,7 +169,7 @@ public class XGRange extends XGFrame implements XGComponent, XGParameterConstant
 			this.loParameter = this.loValue.getParameter();
 			this.hiParameter = this.hiValue.getParameter();
 // draw background
-			this.g2.setColor(new XGColor(this.getBackground()).add(COL_STEP, 0));
+			this.g2.setColor(new XGColor(this.getBackground()).brighter());
 			this.g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 // draw foreground
 			this.loX = XGMath.linearIO(this.loValue.getIndex(), this.loParameter.getMinIndex(), this.loParameter.getMaxIndex(), 0, this.getWidth());

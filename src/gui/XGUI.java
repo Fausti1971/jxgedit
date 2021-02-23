@@ -54,7 +54,7 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 //				MetalLookAndFeel.setCurrentTheme(LAF_METAL_DEFAULT);
 //				UIManager.setLookAndFeel(new MetalLookAndFeel()); 
 
-				UIManager.setLookAndFeel(LAF_SYSTEM);
+				UIManager.setLookAndFeel(LAF_GTK);
 			}
 			catch(UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
 			{	LOG.info(e.getMessage());
@@ -73,9 +73,9 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 	Font SMALL_FONT = new JEditorPane().getFont().deriveFont(FONTSIZE);
 
 	int
-		GRID = 22,
-		COL_STEP = 16,
-		GAP = 5,
+		//GRID = 22,
+		//COL_STEP = 16,
+		//GAP = 5,
 		DEF_STROKEWIDTH = 4,
 		ROUND_RADIUS = 6,
 		DEF_DEVCOLOR = 0xF0F0F0;

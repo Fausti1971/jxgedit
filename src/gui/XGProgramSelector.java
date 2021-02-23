@@ -49,11 +49,11 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 		this.addFocusListener(this);
 
 		this.inc.addActionListener((ActionEvent e)->{this.value.addIndex(1);});
-		this.inc.setPreferredSize(new Dimension(GRID, GRID));
+//		this.inc.setPreferredSize(new Dimension(GRID, GRID));
 		this.add(this.inc, BorderLayout.EAST);
 
 		this.dec.addActionListener((ActionEvent e)->{this.value.addIndex(-1);});
-		this.dec.setPreferredSize(new Dimension(GRID, GRID));
+//		this.dec.setPreferredSize(new Dimension(GRID, GRID));
 		this.add(this.dec, BorderLayout.WEST);
 
 		this.select.setText(this.value.toString());

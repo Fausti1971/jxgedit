@@ -3,8 +3,7 @@ package gui;
 import java.awt.Graphics;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.BoxLayout;
-import javax.swing.JRadioButton;
+import javax.swing.*;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import module.XGModule;
@@ -14,9 +13,9 @@ import parm.XGTable;
 import parm.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
-import xml.XMLNode;
+import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_ADDRESS;import static xml.XMLNodeConstants.ATTR_ORIENTATION;
 
-public class XGRadio extends XGFrame implements XGComponent, XGValueChangeListener, XGParameterChangeListener
+public class XGRadio extends JPanel implements XGValueChangeListener, XGParameterChangeListener
 {	
 	private static final long serialVersionUID = 1L;
 	private static Map<String, Integer> ORIENTATION = new HashMap<>();
@@ -32,15 +31,13 @@ public class XGRadio extends XGFrame implements XGComponent, XGValueChangeListen
 	private final int orientation;
 
 	public XGRadio(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n);
-		this.setBounds();
+	{
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.orientation = ORIENTATION.getOrDefault(n.getStringAttribute(ATTR_ORIENTATION), BoxLayout.X_AXIS);
 		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
 		this.value.addValueListener(this);
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
-		this.borderize();
 	}
 
 	@Override public void parameterChanged(XGParameter p)

@@ -1,8 +1,6 @@
 package gui;
 
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -93,11 +91,11 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable
 //background
 		int w = this.getWidth(), h = this.getHeight();
 		XGColor bg = new XGColor(this.getBackground());
-		this.g2.setColor(bg.add(COL_STEP, 0));
+		this.g2.setColor(COL_SHAPE);
 		this.g2.fillRect(0, 0, w, h);
 
 //grid
-		this.g2.setColor(bg.add(-COL_STEP, 0));
+		this.g2.setColor(Color.BLACK);
 		this.g2.setStroke(DEF_DOTTED_STROKE);
 		for(int i : this.vLines) g2.drawLine(i, 0, i, h);
 		for(int i : this.hLines) g2.drawLine(0, i, w, i);

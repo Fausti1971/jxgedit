@@ -6,25 +6,19 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import javax.swing.JComponent;
+import java.awt.event.*;
+import javax.swing.*;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
-import module.XGModule;
+import static gui.XGUI.*;import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;
 import xml.XMLNode;
 
-public class XGSlider extends XGFrame implements KeyListener, XGParameterConstants, XGValueChangeListener
+public class XGSlider extends JPanel implements KeyListener, XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener
 {	/**
 	 * 
 	 */
@@ -38,8 +32,7 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	private final XGValueLabel label;
 
 	public XGSlider(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n);
-		this.setBounds();
+	{
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
@@ -49,7 +42,6 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 			this.setFocusable(true);
 		}
 //		this.setName(this.value.getParameter().getShortName());
-		this.borderize();
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 
@@ -99,15 +91,6 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 	@Override public void keyReleased(KeyEvent e)
 	{
 	}
-
-	@Override public boolean isManagingFocus()
-	{	return true;
-	}
-	
-	@Override public boolean isFocusTraversable()
-	{	return true;
-	}
-
 
 	private class XGSliderBar extends JComponent implements XGValueChangeListener, MouseMotionListener, MouseWheelListener, MouseListener
 	{	/**
@@ -199,4 +182,18 @@ public class XGSlider extends XGFrame implements KeyListener, XGParameterConstan
 		{	
 		}
 	}
-}
+public void focusGained(FocusEvent event)
+	{
+	}public void focusLost(FocusEvent event)
+	{
+	}public void mouseClicked(MouseEvent event)
+	{
+	}public void mousePressed(MouseEvent event)
+	{
+	}public void mouseReleased(MouseEvent event)
+	{
+	}public void mouseEntered(MouseEvent event)
+	{
+	}public void mouseExited(MouseEvent event)
+	{
+	}}

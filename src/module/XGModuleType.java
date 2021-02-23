@@ -26,7 +26,7 @@ import xml.XMLNode;
  * @author thomas
  *
  */
-public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGTreeNode, XGBulkDumper, Configurable
+public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper, Configurable
 {	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 	static
@@ -118,17 +118,13 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	for(XGModule m : this.getModules()) m.resetValues();
 	}
 
-	@Override public Set<String> getContexts()
-	{	return ACTIONS;
-	}
-
-	@Override public void actionPerformed(ActionEvent e)
-	{	switch(e.getActionCommand())
-		{	case ACTION_REQUEST:	new Thread(() -> {this.transmitAll(this.device.getMidi(), this.device.getValues());}).start(); break;
-			case ACTION_TRANSMIT:	new Thread(() -> {this.transmitAll(this.device.getValues(), this.device.getMidi());}).start(); break;
-			default:				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
-		}
-	}
+	//@Override public void actionPerformed(ActionEvent e)
+	//{	switch(e.getActionCommand())
+	//	{	case ACTION_REQUEST:	new Thread(() -> {this.transmitAll(this.device.getMidi(), this.device.getValues());}).start(); break;
+	//		case ACTION_TRANSMIT:	new Thread(() -> {this.transmitAll(this.device.getValues(), this.device.getMidi());}).start(); break;
+	//		default:				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
+	//	}
+	//}
 
 	@Override public String toString()
 	{	return this.name;
@@ -138,33 +134,9 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	return this.address;
 	}
 
-	@Override public void setSelected(boolean s)
-	{
-	}
-
-	@Override public boolean isSelected()
-	{	return false;
-	}
-
-	@Override public void nodeFocussed(boolean b)
-	{
-	}
-
-	@Override public String getNodeText()
-	{	return this.name + " (" + this.getModules().size() + ")";
-	}
-
 	@Override public XGAddressableSet<XGAddress> getBulks()
 	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
 		for(XGModule m : this.getModules()) set.addAll(m.getBulks());
 		return set;
-	}
-
-	@Override public TreeNode getParent()
-	{	return this.device;
-	}
-
-	@Override public Collection<? extends TreeNode> getChildNodes()
-	{	return this.getModules();
 	}
 }

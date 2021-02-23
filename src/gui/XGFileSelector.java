@@ -34,7 +34,7 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 	private final JButton button;
 
 	public XGFileSelector(final StringBuffer path, String title, String button, FileFilter filter)
-	{	if(path == null) this.path = new StringBuffer(JXG.getApp().getConfigPath().toString());
+	{	if(path == null) this.path = new StringBuffer(JXG.APPPATH);
 		else this.path = path;
 		this.text = new JTextField(this.path.toString());
 		this.button = new JButton(button);
@@ -61,9 +61,9 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 		root.setLayout(new BorderLayout());
 		root.setToolTipText(this.path.toString());
 		root.setAlignmentX(0.5f);
-		Dimension dim = new Dimension(GRID * 5, GRID * 2);
-		this.text.setMinimumSize(dim);
-		this.text.setPreferredSize(dim);
+//		Dimension dim = new Dimension(GRID * 5, GRID * 2);
+//		this.text.setMinimumSize(dim);
+//		this.text.setPreferredSize(dim);
 		this.text.getDocument().addDocumentListener(this);
 		root.add(text, BorderLayout.CENTER);
 		root.add(button, BorderLayout.EAST);

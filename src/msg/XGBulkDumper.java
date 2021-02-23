@@ -6,7 +6,7 @@ import javax.swing.ProgressMonitor;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
-import application.XGLoggable;
+import application.*;
 import gui.XGWindow;
 
 /**
@@ -31,7 +31,7 @@ public interface XGBulkDumper extends XGLoggable
 		XGRequest r = null;
 		XGAddressableSet<XGAddress> set = this.getBulks();
 		XGAddressableSet<XGRequest> missed = new XGAddressableSet<>();
-		ProgressMonitor pm = new ProgressMonitor(XGWindow.getRootWindow(), src + " -> " + dest, "", 0, set.size());
+		ProgressMonitor pm = new ProgressMonitor(JXG.mainWindow, src + " -> " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGAddress b : set)

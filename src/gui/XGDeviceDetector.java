@@ -35,9 +35,9 @@ public class XGDeviceDetector extends JPanel implements DocumentListener, Action
 		this.setName(title);
 		Color c = Color.gray;
 		this.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
-		Dimension dim = new Dimension(GRID * 5, GRID * 2);
-		this.text.setMinimumSize(dim);
-		this.text.setPreferredSize(dim);
+//		Dimension dim = new Dimension(GRID * 5, GRID * 2);
+//		this.text.setMinimumSize(dim);
+//		this.text.setPreferredSize(dim);
 		this.text.setText(name.toString());
 		this.text.getDocument().addDocumentListener(this);
 		this.add(text, BorderLayout.CENTER);

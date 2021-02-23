@@ -27,6 +27,8 @@ public interface XMLNodeConstants
 		TAG_CONFIG = "config",
 		TAG_VERSION = "version",
 
+		TAG_UI = "ui",
+		ATTR_LOOKANDFEEL = "lookAndFeel",
 		TAG_FILES = "files",
 
 		TAG_DEVICE = "device",

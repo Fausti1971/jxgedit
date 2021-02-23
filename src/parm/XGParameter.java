@@ -1,6 +1,5 @@
 package parm;
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import application.XGLoggable;
 import device.XGDevice;
 import parm.XGTable.Preference;
@@ -9,15 +8,14 @@ import xml.XMLNode;
 public class XGParameter implements XGLoggable, XGParameterConstants
 {
 	public static XMLNode init(XGDevice dev)
-	{	File file;
+	{
 		try
-		{	file = dev.getResourceFile(XML_PARAMETER);
+		{	return XMLNode.parse(dev.getResourceFile(XML_PARAMETER));
 		}
-		catch(FileNotFoundException e)
+		catch(IOException e)
 		{	LOG.info(e.getMessage());
 			return new XMLNode("parameterTables");
 		}
-		return XMLNode.parse(file);
 	}
 
 /******************************************************************************************************************/

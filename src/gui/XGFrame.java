@@ -20,7 +20,6 @@ public class XGFrame extends JPanel implements XGComponent
 
 	public XGFrame(XMLNode n)
 	{	this.config = n;
-		this.setBounds();
 		if(n.hasAttribute(ATTR_NAME))
 		{	this.setName(n.getStringAttribute(ATTR_NAME));
 			this.borderize();

@@ -66,17 +66,6 @@ public interface XGComponent extends XGAddressConstants, XGUI, Configurable, Mou
 //		for(Component c : this.getJComponent().getComponents()) c.setVisible(b);
 //	}
 
-	default void setBounds()
-	{	JComponent j = this.getJComponent();
-		j.setLayout(null);
-		Rectangle r = new XGGrid(this.getConfig().getStringAttributeOrDefault(ATTR_BOUNDS, "0,0,0,0"));
-		j.setBounds(GRID * r.x, GRID * r.y, GRID * r.width, GRID * r.height);
-		Dimension dim = new Dimension(j.getBounds().getSize());
-		j.setMinimumSize(dim);
-		j.setPreferredSize(dim);
-		if(dim.width != 0 || dim.height != 0) j.setMaximumSize(dim);
-	}
-
 	public default void borderize()
 	{	JComponent j = this.getJComponent();
 		if(j.isEnabled())

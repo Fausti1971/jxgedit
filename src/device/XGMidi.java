@@ -20,7 +20,6 @@ import application.XGLoggable;
 import gui.XGList;
 import gui.XGSpinner;
 import msg.XGMessage;
-import msg.XGMessageBuffer;
 import msg.XGMessenger;
 import msg.XGMessengerException;
 import msg.XGRequest;
@@ -116,7 +115,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	private MidiDevice midiInput = null;
 	private XGRequest request = null;
 	private int timeoutValue;
-	private final XGMessageBuffer buffer;
+//	private final XGMessageBuffer buffer;
 
 	public XGMidi(XGDevice dev)
 	{	this.device = dev;
@@ -124,7 +123,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT));
 		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT));
 		this.timeout.setContent(this.config.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
-		this.buffer = new XGMessageBuffer(this);
+//		this.buffer = new XGMessageBuffer(this);
 
 		try
 		{	CoreMidiDeviceProvider.addNotificationListener(this);
@@ -254,7 +253,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	try
-		{	XGMessage m = XGMessage.newMessage(this, this.buffer, mmsg);
+		{	XGMessage m = XGMessage.newMessage(this, this.device.getValues(), mmsg);
 			if(this.request != null && this.request.setResponsed((XGResponse)m))
 			{	synchronized(this.request)
 				{	this.request.notify();

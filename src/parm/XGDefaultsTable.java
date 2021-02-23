@@ -1,7 +1,6 @@
 package parm;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import application.XGLoggable;
@@ -18,15 +17,15 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 	public static final int NO_ID = DEF_SELECTORVALUE;
 
 	public static void init(XGDevice dev)
-	{	File file;
+	{
 		try
-		{	file = dev.getResourceFile(XML_DEFAULT);
-			XMLNode n = XMLNode.parse(file);
+		{
+			XMLNode n = XMLNode.parse(dev.getResourceFile(XML_DEFAULT));
 			for(XMLNode t : n.getChildNodes(TAG_DEFAULTTABLE))
 			{	dev.getDefaultsTables().add(new XGDefaultsTable(t));
 			}
 		}
-		catch(FileNotFoundException e)
+		catch(IOException e)
 		{	LOG.info(e.getMessage());
 		}
 		dev.getDefaultsTables().add(new XGDefaultsTable("id")

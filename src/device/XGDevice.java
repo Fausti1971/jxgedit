@@ -3,24 +3,16 @@ package device;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Collection;
+import java.io.*;
+import java.net.*;import java.nio.file.*;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressConstants;
@@ -31,16 +23,12 @@ import application.JXG;
 import file.XGSysexFile;
 import file.XGSysexFileConstants;
 import gui.XGColor;
-import gui.XGContext;
 import gui.XGDeviceDetector;
 import gui.XGFileSelector;
 import gui.XGSpinner;
 import gui.XGTemplate;
-import gui.XGTree;
-import gui.XGTreeNode;
 import gui.XGUI;
 import gui.XGWindow;
-import gui.XGWindowSource;
 import module.XGDrumsetModuleType;
 import module.XGModule;
 import module.XGModuleType;
@@ -61,7 +49,7 @@ import value.XGValue;
 import value.XGValueStore;
 import xml.XMLNode;
 
-public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XGContext, XGWindowSource, XGBulkDumper
+public class XGDevice implements XGDeviceConstants, Configurable, XGBulkDumper
 {
 	private static Set<XGDevice> DEVICES = new LinkedHashSet<>();
 //	private static XGDevice DEF = new XGDevice();
@@ -75,45 +63,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		ACTIONS.add(ACTION_RESET);
 		ACTIONS.add(ACTION_XGON);
 		ACTIONS.add(ACTION_GMON);
-	}
-
-	public static Set<XGDevice> getDevices()
-	{	return DEVICES;
-	}
-
-//	public static XGDevice getDefaultDevice()
-//	{	return DEF;
-//	}
-
-	public static void init(XMLNode x)
-	{	for(XMLNode n : x.getChildNodes(TAG_DEVICE))
-		{
-			new Thread(()->
-			{
-				XGDevice d = null;
-				try
-				{	d = new XGDevice(n);
-					synchronized(DEVICES)
-					{	if(DEVICES.add(d)) d.reloadTree();
-					}
-				}
-				catch(InvalidXGAddressException e)
-				{	LOG.severe(e.getMessage());
-				}
-			}).start();
-		}
-		LOG.info(DEVICES.size() + " devices initialized");
-	}
-
-	private static void removeDevice(XGDevice dev)
-	{	if(JOptionPane.showConfirmDialog(XGWindow.getRootWindow(), "Do you really want to remove " + dev, "remove device...", JOptionPane.YES_NO_OPTION) == JOptionPane.NO_OPTION) return;
-		if(DEVICES.remove(dev))
-		{	dev.exit();
-			dev.getConfig().removeNode();
-			dev.reloadTree();
-			LOG.info(dev + " removed");
-		}
-		else LOG.info(dev + " not found");
 	}
 
 /***************************************************************************************************************************/
@@ -169,19 +118,18 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 			this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
 			this.midi = new XGMidi(this);
 			this.files = this.config.getChildNodeOrNew(TAG_FILES);
-			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, JXG.getApp().getConfigPath().resolve(DEF_SYXFILENAME).toString());
-			this.configure();
+			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, Paths.get(APPPATH).resolve(DEF_SYXFILENAME).toString());
+//			this.configure();
 		}
 		else
 		{	this.name = this.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
 			this.midi = new XGMidi(this);
 			this.files = this.config.getChildNodeOrNew(TAG_FILES);
-			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, JXG.getApp().getConfigPath().resolve(DEF_SYXFILENAME).toString());
+			this.defaultFileName = this.files.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, Paths.get(APPPATH).resolve(DEF_SYXFILENAME).toString());
 		}
 		this.sysex.setContent(this.config.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID));
 		this.setColor(new XGColor(this.config.getIntegerAttribute(ATTR_COLOR, XGUI.DEF_DEVCOLOR)));
 
-		XGTemplate.init(this);
 		XGTable.init(this);
 		XGDefaultsTable.init(this);
 		XGParameterTable.init(this);
@@ -202,16 +150,16 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	}
 
 	private void initStructure()
-	{	
-		File file;
+	{	XMLNode xml;
 		try
-		{	file = this.getResourceFile(XML_STRUCTURE);
+		{
+			xml = XMLNode.parse(this.getResourceFile(XML_STRUCTURE));
 		}
-		catch(FileNotFoundException e)
-		{	LOG.warning(e.getMessage());
+		catch(IOException e)
+		{	
+			LOG.warning(e.getMessage());
 			return;
 		}
-		XMLNode xml = XMLNode.parse(file);
 		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
 		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS));
 			if(adr.getHi().getMin() >= 48)//falls Drumset
@@ -252,15 +200,18 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	this.midi.close();
 	}
 
-	public File getResourceFile(String fName) throws FileNotFoundException//Merke: SAX scheint mit mac-Aliases nicht zurecht zu kommen, daher bei Bedarf Softlinks erzeugen (ln -s Quelle Ziel)
-	{	Path extPath = this.getResourcePath();
+/**
+* returniert das angegebene File aus dem Applikationspfad; falls dieses nicht vorhanden ist, wird versucht, es aus dem internen Pfad (*.jar) dorthin zu kopieren
+*/
+	public File getResourceFile(String fName) throws IOException //Merke: SAX scheint mit mac-Aliases nicht zurecht zu kommen, daher bei Bedarf Softlinks erzeugen (ln -s Quelle Ziel)
+	{	Path extPath = Paths.get(JXG.APPPATH);
 		File extFile = extPath.resolve(fName).toFile();
-		if(extFile.canRead()) return extFile;
-		throw new FileNotFoundException("can't read file " + extFile);
-	}
-
-	public Path getResourcePath()
-	{	return JXG.getApp().getConfigPath().resolve(this.name.toString());
+		if(!extFile.canRead())
+		{	InputStream link = ClassLoader.getSystemResourceAsStream(fName);
+			LOG.info(extFile + " doesn't exist; copy " + link + " to " + extFile);
+			Files.copy(link, extFile.toPath());
+		}
+		return extFile;
 	}
 
 	public XGColor getColor()
@@ -326,7 +277,7 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 					this.info1 = r.decodeLSB(offs + 14);
 					this.info2 = r.decodeLSB(offs + 15);
 				}
-				else JOptionPane.showMessageDialog(this.getChildWindow(), "no response for " + m);
+				else JOptionPane.showMessageDialog(null, "no response for " + m);
 			}
 			catch(InvalidXGAddressException | XGMessengerException e)
 			{	LOG.severe(e.getMessage());
@@ -422,15 +373,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 	{	return this.midi;
 	}
 
-	public void configure()
-	{	JDialog d = new JDialog(XGWindow.getRootWindow(), this.toString(), true);
-		d.add(this.getChildWindowContent());
-		d.pack();
-		d.setVisible(true);
-		
-//		new XGWindow(this, XGWindow.getRootWindow(), true, false, this.toString());// seit XGWindow von JFrame erbt, kann es nicht mehr modal gemacht werden
-	}
-
 	@Override public int hashCode()
 	{	return HASH * this.midi.hashCode() + HASH * this.sysexID;
 	}
@@ -447,59 +389,6 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 
 	@Override public XMLNode getConfig()
 	{	return this.config;
-	}
-
-	@Override public boolean isSelected()
-	{	return this.isSelected;
-	}
-
-	@Override public void setSelected(boolean s)
-	{	this.isSelected = s;
-	}
-
-	@Override public Set<String> getContexts()
-	{	return ACTIONS;
-	}
-
-	@Override public void actionPerformed(ActionEvent e)
-	{	switch(e.getActionCommand())
-		{	case ACTION_CONFIGURE:	this.configure(); break;
-			case ACTION_REMOVE:		removeDevice(this); break;
-			case ACTION_LOADFILE:	this.load(); break;
-			case ACTION_SAVEFILE:	this.save(); break;
-			case ACTION_TRANSMIT:	new Thread(() -> {this.transmitAll(this.values, this.midi);}).start(); break;
-			case ACTION_REQUEST:	new Thread(() -> {this.transmitAll(this.midi, this.values);}).start(); break;
-			case ACTION_RESET:		this.resetAll(); break;
-			case ACTION_XGON:		this.resetXG(); break;
-			case ACTION_GMON:		this.resetGM(); break;
-			default:				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
-		}
-	}
-
-	@Override public XGWindow getChildWindow()
-	{	return this.childWindow;
-	}
-
-	@Override public void setChildWindow(XGWindow win)
-	{	this.childWindow = win;
-	}
-
-	@Override public Point getSourceLocationOnScreen()
-	{	return this.locationOnScreen();
-	}
-
-	@Override public void windowOpened(WindowEvent e)
-	{	XGWindowSource.super.windowOpened(e);
-		this.setSelected(true);
-	}
-
-	@Override public void windowClosed(WindowEvent e)
-	{	XGWindowSource.super.windowClosed(e);
-		this.setSelected(false);
-	}
-
-	@Override public JComponent getChildWindowContent()
-	{	return this.getConfigComponent();
 	}
 
 	public JComponent getConfigComponent()
@@ -527,40 +416,9 @@ public class XGDevice implements XGDeviceConstants, Configurable, XGTreeNode, XG
 		return root;
 	}
 
-	@Override public void nodeFocussed(boolean b)
-	{
-	}
-
-	@Override public String getNodeText()
-	{	return this.name.toString() + "." + this.sysexID;
-	}
-
 	@Override public XGAddressableSet<XGAddress> getBulks()
 	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
 		for(XGModule mi : this.modules) set.addAll(mi.getBulks());
-		return set;
-	}
-
-	@Override public TreeNode getParent()
-	{	return JXG.getApp();
-	}
-
-	@Override public XGTree getTree()
-	{	return this.getRootNode().getTree();
-	}
-
-	@Override public void setTree(XGTree t)
-	{
-	}
-
-	@Override public Collection<? extends TreeNode> getChildNodes()
-	{	Set<XGTreeNode> set = new LinkedHashSet<>();
-		for(XGModuleType t : this.getModuleTypes())
-		{	XGAddressableSet<XGModule> temp = t.getModules();
-			if(temp.size() == 0) continue;
-			if(temp.size() == 1) set.add(temp.get(0));
-			else set.add(t);
-		}
 		return set;
 	}
 }

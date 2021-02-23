@@ -18,16 +18,6 @@ public class XGWindow extends JFrame implements XGUI, ConfigurationConstants, Wi
 {	static
 	{	JDialog.setDefaultLookAndFeelDecorated(true);
 	}
-	private static XGRootWindow ROOT;
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID=1L;
-
-	public static XGRootWindow getRootWindow()
-	{	if(ROOT == null) ROOT = new XGRootWindow();
-		return ROOT;
-	}
 
 /*************************************************************************************************************/
 
@@ -35,15 +25,6 @@ public class XGWindow extends JFrame implements XGUI, ConfigurationConstants, Wi
 	private final XGWindowSource source;
 	private final Set<XGWindow> childWindows = new LinkedHashSet<>();
 	private final XGWindow owner;
-
-	protected XGWindow()	//nur für Root-Window
-	{	this.source = null;
-		this.owner = null;
-		this.rootComponent = new XGTree(JXG.getApp(), true);
-		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
-		this.setIconImage(new ImageIcon(this.getClass().getResource("XGLogo32.gif")).getImage());
-		this.addWindowListener(this);
-	}
 
 	public XGWindow(XGWindowSource src, XGWindow own, boolean mod, boolean resize, String name)
 	{	super(name);

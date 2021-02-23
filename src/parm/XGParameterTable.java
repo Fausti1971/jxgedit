@@ -1,7 +1,6 @@
 package parm;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.HashMap;
 import application.XGLoggable;
 import device.XGDevice;
@@ -15,15 +14,14 @@ public class XGParameterTable extends HashMap<Integer, XGParameter> implements X
 	private static int count = 0;
 
 	public static void init(XGDevice dev)
-	{	File file;
-		try
-		{	file = dev.getResourceFile(XML_PARAMETER);
-			XMLNode n = XMLNode.parse(file);
+	{	try
+		{
+			XMLNode n = XMLNode.parse(dev.getResourceFile(XML_PARAMETER));
 			for(XMLNode t : n.getChildNodes(TAG_PARAMETERTABLE))
 			{	dev.getParameterTables().add(new XGParameterTable(dev, t));
 			}
 		}
-		catch(FileNotFoundException e)
+		catch(IOException e)
 		{	LOG.info(e.getMessage());
 		}
 	}

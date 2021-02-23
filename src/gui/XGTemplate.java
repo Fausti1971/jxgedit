@@ -11,17 +11,6 @@ import xml.XMLNodeConstants;
 
 public class XGTemplate implements XGAddressable, XGLoggable, XMLNodeConstants, Configurable
 {
-	public static void init(XGDevice dev)
-	{	try
-		{	XMLNode x = XMLNode.parse(dev.getResourceFile(XML_TEMPLATE));
-			for(XMLNode t : x.getChildNodes(TAG_FRAME))
-				dev.getTemplates().add(new XGTemplate(t));
-			LOG.info(dev + " has " + dev.getTemplates().size() + " templates");
-		}
-		catch(FileNotFoundException e)
-		{	LOG.info(dev + " has no GUI: " + e.getMessage());
-		}
-	}
 
 /*******************************************************************************************/
 

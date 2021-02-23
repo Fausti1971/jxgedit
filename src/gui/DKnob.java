@@ -149,14 +149,6 @@ public class DKnob extends JComponent
 	public int getDragType()
 	{	return dragType;
 	}
-	
-	@Override public boolean isManagingFocus()
-	{	return true;
-	}
-	
-	@Override public boolean isFocusTraversable()
-	{	return true;
-	}
 
 	private void incValue()
 	{	setValue(val + CLICK_SPEED);
