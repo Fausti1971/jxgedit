@@ -13,7 +13,7 @@ import parm.XGTable;
 import parm.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
-import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_ADDRESS;import static xml.XMLNodeConstants.ATTR_ORIENTATION;
+import static value.XGValueStore.STORE;import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_ADDRESS;import static xml.XMLNodeConstants.ATTR_ORIENTATION;
 
 public class XGRadio extends JPanel implements XGValueChangeListener, XGParameterChangeListener
 {	
@@ -34,7 +34,7 @@ public class XGRadio extends JPanel implements XGValueChangeListener, XGParamete
 	{
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
 		this.orientation = ORIENTATION.getOrDefault(n.getStringAttribute(ATTR_ORIENTATION), BoxLayout.X_AXIS);
-		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
+		this.value = STORE.getFirstIncluded(this.address);
 		this.value.addValueListener(this);
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());

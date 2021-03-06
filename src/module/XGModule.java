@@ -22,10 +22,12 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import msg.XGBulkDumper;
-import value.XGValue;
+import value.*;import static value.XGValueStore.STORE;
 
 public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper
 {
+	public static final XGAddressableSet<XGModule> INSTANCES = new XGAddressableSet<>();//Instanzen
+
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 	static
@@ -42,8 +44,8 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	private final Set<XGValue> infoValues = new LinkedHashSet<>();
 	private final XGAddress address;
 	private final XGModuleType type;
-	private XGWindow window;
-	private boolean selected;
+	//private XGWindow window;
+	//private boolean selected;
 
 	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException
 	{	this.type = mt;
@@ -51,7 +53,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 
 		for(XGAddress adr : this.type.getInfoAddresses())
 		{	try
-			{	XGValue v = this.type.getDevice().getValues().get(adr.complement(this.address));
+			{	XGValue v = STORE.get(this.address.complement(adr));
 				this.infoValues.add(v);
 //				v.addValueListener((XGValue val)->{this.repaintNode();});
 			}
@@ -70,7 +72,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	}
 
 	public XGAddressableSet<XGValue> getValues()
-	{	return this.type.getDevice().getValues().getAllIncluded(this.address);
+	{	return STORE.getAllIncluded(this.address);
 	}
 
 	public String getTranslatedID()

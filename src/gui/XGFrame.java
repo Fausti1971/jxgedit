@@ -32,18 +32,17 @@ public class XGFrame extends JPanel implements XGComponent
 	{	this(new XMLNode(text, new XGProperties(ATTR_NAME, text)));
 	}
 
-	protected XGFrame(XMLNode n, XGModule mod)
-	{	this(n);
-		for(XMLNode x : n.getChildNodes())
-		{	try
-			{	this.add(XGComponent.newItem(x, mod));
-			}
-			catch(XGMemberNotFoundException | InvalidXGAddressException e)
-			{	LOG.severe(e.getMessage());
-			}
-		}
-		if(this.root) this.setBackground(mod.getType().getDevice().getColor());
-	}
+	//protected XGFrame(XMLNode n, XGModule mod)
+	//{	this(n);
+	//	for(XMLNode x : n.getChildNodes())
+	//	{	try
+	//		{	this.add(XGComponent.newItem(x, mod));
+	//		}
+	//		catch(XGMemberNotFoundException | InvalidXGAddressException e)
+	//		{	LOG.severe(e.getMessage());
+	//		}
+	//	}
+	//}
 
 	@Override public Component add(Component comp)
 	{	Dimension dim = this.getSize();
@@ -56,9 +55,5 @@ public class XGFrame extends JPanel implements XGComponent
 		this.setPreferredSize(dim);
 		this.setSize(dim);
 		return comp;
-	}
-
-	@Override public XMLNode getConfig()
-	{	return this.config;
 	}
 }

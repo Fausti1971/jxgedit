@@ -20,7 +20,7 @@ import parm.XGParameterChangeListener;
 import parm.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
-import xml.XMLNode;
+import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGProgramSelector extends XGFrame implements XGComponent, XGParameterChangeListener, XGValueChangeListener, XGWindowSource, TreeSelectionListener
 {
@@ -38,7 +38,7 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 		this.setLayout(new BorderLayout());
 		
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
+		this.value = STORE.getFirstIncluded(this.address);
 		this.value.addParameterListener(this);
 		this.value.addValueListener(this);
 		this.setName(this.value.getParameter().getName());

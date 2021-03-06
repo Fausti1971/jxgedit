@@ -16,39 +16,39 @@ public class XGVirtualTable implements XGTable
 		(Integer i)->{return i.toString();},
 		(String s)->{return Integer.parseInt(s);});
 
-	public static void init(XGDevice dev)
-	{	dev.getTables().add(DEF_TABLE);
+	public static void init()
+	{	TABLES.add(DEF_TABLE);
 
-		dev.getTables().add(new XGVirtualTable(MIN, MAX, TABLE_ADD1,
+		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_ADD1,
 			(Integer i)->{return Integer.toString(i + 1);},
 			(String s)->{return XGStrings.parseIntOrDefault(s, MIN + 1) - 1;}));
 
-		dev.getTables().add(new XGVirtualTable(MIN, MAX, TABLE_DIV10,
+		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_DIV10,
 			(Integer i)->{return Float.toString((float)i / 10);},
 			(String s)->{Float f = Float.parseFloat(s) * 10; return f.intValue();}));
 
-		dev.getTables().add
+		TABLES.add
 		(	new XGVirtualTable(MIN, MAX, TABLE_SUB64,
 			(Integer i)->{return Integer.toString(i - 64);},
 			(String s)->{return Integer.parseInt(s) + 64;}));
 
-		dev.getTables().add(new XGVirtualTable(MIN, MAX, TABLE_SUB1024DIV10,
+		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_SUB1024DIV10,
 			(Integer i)->{Float f = (i.floatValue() - 1024) / 10; return f.toString();},
 			(String s)->{Float f = Float.parseFloat(s) * 10 + 1024; return f.intValue();}));
 
-		dev.getTables().add(new XGVirtualTable(MIN, MAX, TABLE_SUB128DIV10,
+		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_SUB128DIV10,
 			(Integer i)->{Float f = (i.floatValue() - 128) / 10; return f.toString();},
 			(String s)->{Float f = Float.parseFloat(s) * 10 + 128; return f.intValue();}));
 
-		dev.getTables().add(new XGVirtualTable(0, 127, TABLE_PANORAMA,
+		TABLES.add(new XGVirtualTable(0, 127, TABLE_PANORAMA,
 			(Integer i)->{if(i == 0) return "Rnd"; if(i < 64) return "L" + Math.abs(i - 64); if(i > 64) return "R" + Math.abs(i - 64); else return "C";},
 			(String s)->{return Integer.parseInt(s);}));
 
-		dev.getTables().add(new XGVirtualTable(4, 124, TABLE_DEGREES,
+		TABLES.add(new XGVirtualTable(4, 124, TABLE_DEGREES,
 			(Integer i)->{	return Integer.toString(XGMath.linearIO(i, 4, 124, -180, 180));},
 			(String s)->{	return Integer.parseInt(s);}));
 
-		dev.getTables().add(new XGVirtualTable(0, 0, TABLE_NONE,
+		TABLES.add(new XGVirtualTable(0, 0, TABLE_NONE,
 			(Integer i)->{return "";},
 			(String s)->{return 0;}));
 

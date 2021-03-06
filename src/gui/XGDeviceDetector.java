@@ -23,18 +23,14 @@ public class XGDeviceDetector extends JPanel implements DocumentListener, Action
 /***********************************************************************************************************************************/
 
 	private StringBuffer value;
-	private XGDevice device;
 	private JTextField text = new JTextField();
 	private JButton button = new JButton("detect");
 
-	public XGDeviceDetector(String title, StringBuffer name, XGDevice dev)
+	public XGDeviceDetector(StringBuffer name)
 	{	this.setLayout(new BorderLayout());
 		this.value = name;
-		this.device = dev;
 		this.setAlignmentX(0.5f);
-		this.setName(title);
-		Color c = Color.gray;
-		this.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
+//		this.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
 //		Dimension dim = new Dimension(GRID * 5, GRID * 2);
 //		this.text.setMinimumSize(dim);
 //		this.text.setPreferredSize(dim);
@@ -58,7 +54,7 @@ public class XGDeviceDetector extends JPanel implements DocumentListener, Action
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{	this.device.requestInfo();
+	{	XGDevice.getDevice().requestInfo();
 		this.text.setText(value.toString());
 	}
 }

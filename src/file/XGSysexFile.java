@@ -4,62 +4,52 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.*;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
-import application.ConfigurationConstants;
-import application.XGLoggable;
+import application.*;
 import device.XGDevice;
 import msg.XGMessage;
 import msg.XGMessenger;
 import msg.XGRequest;
-import msg.XGResponse;
+import msg.XGResponse;import xml.*;
 
 public class XGSysexFile extends File implements XGSysexFileConstants, ConfigurationConstants, XGMessenger, XGLoggable
 {	private static final long serialVersionUID=870648549558099401L;
 
-//	public static Path selectFile(String s, String title, String button, boolean ask) throws FileNotFoundException
-//	{	if(s == null) s = JXG.HOMEPATH.toString();
-//		JFileChooser fc = new JFileChooser(s);
-//		fc.setDialogTitle(title);
-//		fc.setAcceptAllFileFilterUsed(false);
-//		fc.setFileFilter(SYX_FILEFILTER);
-//		int res = fc.showDialog(XGWindow.getRootWindow(), button);
-//		if(res == JFileChooser.APPROVE_OPTION) return fc.getSelectedFile().toPath();
-//		throw new FileNotFoundException("fileselection aborted");
-//	}
+	public static XMLNode config;
+	private static XGSysexFile currentFile = null;
 
-//	public static Path selectPath(String s, String title, String button, boolean ask)
-//	{	if(s == null) s = JXG.HOMEPATH.toString();
-//		JFileChooser fc = new JFileChooser(s);
-//		fc.setDialogTitle("select folder...");
-//		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-//		fc.setAcceptAllFileFilterUsed(false);
-//		int res = fc.showDialog(XGWindow.getRootWindow(), "select");
-//		if(res == JFileChooser.APPROVE_OPTION) return fc.getCurrentDirectory().toPath();
-//		else return Paths.get(s);
-//	}
+	public static void init()
+	{	config = JXG.config.getChildNodeOrNew(XMLNodeConstants.TAG_FILES);
 
-
-
+		for(XMLNode x : config.getChildNodes(TAG_ITEM))
+		{	try
+			{	File f =  new File(String.valueOf(x.getTextContent()));
+			}
+			catch( NullPointerException e)
+			{	LOG.info(x + " doesn't exisit; removing from files...");
+				config.removeChildNode(x);
+			}
+		}
+	}
 /******************************************************************************************************************************************/
 
-	private final XGDevice device;
+//	private final XGDevice device;
 //	private XGMessageBuffer buffer = new XGMessageBuffer(this);
-	private XGAddressableSet<XGMessage> buffer = new XGAddressableSet<>();
+	private final XGAddressableSet<XGMessage> buffer = new XGAddressableSet<>();
 	private boolean changed = false;
 
-	public XGSysexFile(XGDevice dev, final String path) throws IOException, FileNotFoundException
+	public XGSysexFile(final String path) throws IOException
 	{	super(path);
-		if(!this.canRead()) this.createNewFile();
-		this.device = dev;
+//		if(!this.canRead()) this.createNewFile();
+//		this.device = dev;
 //		this.parse();
 	}
 
 /**
  * lädt und parst ein SysexFile in den internen Puffer
- * @param dest
  * @throws IOException 
  */
 	public void parse() throws IOException, FileNotFoundException
@@ -111,10 +101,6 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 			}
 		}
 		else LOG.info("file is unchanged: " + this);
-	}
-
-	@Override public XGDevice getDevice()
-	{	return this.device;
 	}
 
 	@Override public String getMessengerName()

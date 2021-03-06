@@ -14,14 +14,14 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 
 /***********************************************************************************************************/
 
-	private String memberName = "XGAddressableMember";
+	private String memberName = "";
 	private final SortedMap<XGAddress, T> map = new TreeMap<XGAddress,T>();
 	private final Set<XGAddressableSetListener> listeners = new HashSet<XGAddressableSetListener>();
 
 	@Override public synchronized boolean add(T obj)
 	{	synchronized(this.map)
 		{	if(obj == null) return false;
-			this.memberName = obj.getClass().getSimpleName();
+			if(this.memberName.equals("")) this.memberName = obj.getClass().getSimpleName();
 			XGAddress adr = obj.getAddress();
 			this.map.put(adr, obj);
 			this.notifyListeners(adr);

@@ -10,7 +10,7 @@ import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import module.XGModule;
 import value.XGValue;
-import xml.XMLNode;
+import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGFlagBox extends XGFrame
 {
@@ -32,7 +32,7 @@ public class XGFlagBox extends XGFrame
 		XGValue val;
 		for(XMLNode f : n.getChildNodes(TAG_FLAG))
 		{	adr = new XGAddress(f.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-			val = mod.getType().getDevice().getValues().get(adr);
+			val = STORE.get(adr);
 			if(val == null) throw new XGMemberNotFoundException(mod + " has no value for address " + adr);
 			this.values.add(val);
 		}

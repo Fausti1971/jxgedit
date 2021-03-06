@@ -55,9 +55,7 @@ public interface XMLNodeConstants
 		ATTR_DEPTH = "depth",
 		ATTR_OFFSET = "offset",
 
-		ATTR_INFO1 = "info1",
-		ATTR_INFO2 = "info2",
-		ATTR_INFO3 = "info3",
+		TAG_INFO = "info",
 //		ATTR_ID = "id",
 		ATTR_NAME = "name",
 

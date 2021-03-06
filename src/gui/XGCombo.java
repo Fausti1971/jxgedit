@@ -12,7 +12,7 @@ import parm.XGParameterChangeListener;
 import parm.XGTable;
 import parm.XGTableEntry;
 import value.XGValue;
-import xml.XMLNode;
+import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGCombo extends XGFrame implements XGParameterChangeListener
 {
@@ -32,7 +32,7 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 		this.borderize();
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getType().getDevice().getValues().get(this.address);
+		this.value = STORE.get(this.address);
 
 		XGParameter p = this.value.getParameter();
 		if(p != null)

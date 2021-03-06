@@ -2,29 +2,30 @@ package parm;
 
 import java.io.*;
 import java.util.Set;
-import application.ConfigurationConstants;
-import application.XGLoggable;
+import application.*;
 import device.XGDevice;
-import tag.XGTagable;
+import tag.*;
 import xml.XMLNode;
 
 public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameterConstants, XGTagable, Iterable<XGTableEntry>
 {
+	public XGTagableSet<XGTable> TABLES = new XGTagableSet<>();
 	static int DEF_FALLBACKMASK = 127;
 	static enum Preference{BELOW, EQUAL, ABOVE, CLOSEST, FALLBACK};
-	public static void init(XGDevice dev)
+
+	public static void init()
 	{
 		try
 		{
-			XMLNode xml = XMLNode.parse(dev.getResourceFile(XML_TABLES));
+			XMLNode xml = XMLNode.parse(JXG.getResourceFile(XML_TABLES));
 			for(XMLNode x : xml.getChildNodes(TAG_TABLE))
-			{	dev.getTables().add(new XGXMLTable(x));
+			{	TABLES.add(new XGXMLTable(x));
 			}
 		}
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());
 		}
-		XGVirtualTable.init(dev);
+		XGVirtualTable.init();
 		return;
 	}
 

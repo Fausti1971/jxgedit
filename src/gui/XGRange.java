@@ -16,7 +16,7 @@ import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;
-import xml.XMLNode;
+import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGRange extends JPanel implements XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener
 {	/**
@@ -36,8 +36,8 @@ public class XGRange extends JPanel implements XGParameterConstants, XGValueChan
 		this.setLayout(new GridBagLayout());
 		this.loAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_LO), mod.getAddress());
 		this.hiAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_HI), mod.getAddress());
-		this.loValue = mod.getType().getDevice().getValues().getFirstIncluded(this.loAddress);
-		this.hiValue = mod.getType().getDevice().getValues().getFirstIncluded(this.hiAddress);
+		this.loValue = STORE.getFirstIncluded(this.loAddress);
+		this.hiValue = STORE.getFirstIncluded(this.hiAddress);
 		this.loValue.addValueListener(this);
 		this.hiValue.addValueListener(this);
 

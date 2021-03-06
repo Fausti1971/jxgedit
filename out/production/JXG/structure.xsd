@@ -12,14 +12,18 @@
 	<xs:element name="module">
 		<xs:complexType>
 			<xs:sequence>
+				<xs:element ref="info" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="bulk" maxOccurs="unbounded"/>
 			</xs:sequence>
 		<xs:attribute name="name" use="required" type="xs:string"/>
 		<xs:attribute name="address" use="required" type="moduleAddress"/>
 		<xs:attribute name="translator" use="optional" type="xs:string"/>
-		<xs:attribute name="info1" use="optional" type="valueAddress"/>
-		<xs:attribute name="info2" use="optional" type="valueAddress"/>
-		<xs:attribute name="info3" use="optional" type="valueAddress"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="info">
+		<xs:complexType>
+			<xs:attribute name="address" type="valueAddress"/>
 		</xs:complexType>
 	</xs:element>
 

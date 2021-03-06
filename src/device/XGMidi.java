@@ -15,10 +15,8 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import adress.InvalidXGAddressException;
-import application.Configurable;
-import application.XGLoggable;
+import application.*;
 import gui.XGList;
-import gui.XGSpinner;
 import msg.XGMessage;
 import msg.XGMessenger;
 import msg.XGMessengerException;
@@ -28,11 +26,25 @@ import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
 import value.ChangeableContent;
-import xml.XMLNode;
+import static value.XGValueStore.STORE;import xml.*;
 
-public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMidiNotification, Configurable, Receiver, AutoCloseable
-{	private static Set<Info> INPUTS = new LinkedHashSet<>();
-	private static Set<Info> OUTPUTS = new LinkedHashSet<>();
+public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, Receiver, AutoCloseable, XMLNodeConstants
+{	private static final int DEF_TIMEOUT = 100;
+	private static XGMidi MIDI = null;
+	private static XMLNode config = null;
+
+	public static XGMidi getMidi()
+	{	if(MIDI == null) XGMidi.init();
+		return MIDI;
+	}
+
+	public static void init()
+	{	config = JXG.config.getChildNodeOrNew(TAG_MIDI);
+		MIDI = new XGMidi(config);
+	}
+
+	public static Set<Info> INPUTS = new LinkedHashSet<>();
+	public static Set<Info> OUTPUTS = new LinkedHashSet<>();
 
 	static
 	{	synchronized(INPUTS)
@@ -77,39 +89,37 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 
 /******************************************************************************************************************/
 
-	public final ChangeableContent<Info> input = new ChangeableContent<Info>()
-		{	@Override public Info getContent()
-			{	if(getInput() != null) return getInput().getDeviceInfo();
-				else return null;
-			}
-			@Override public boolean setContent(Info s)
-			{	setInput(s);
-				return true;
-			}
-		};
-	public final ChangeableContent<Info> output = new ChangeableContent<Info>()
-		{	@Override public Info getContent()
-			{	if(getOutput() != null) return getOutput().getDeviceInfo();
-				else return null;
-			}
-			@Override public boolean setContent(Info s)
-			{	setOutput(s);
-				return true;
-			}
-		};
-	public final ChangeableContent<Integer> timeout = new ChangeableContent<Integer>()
-		{	@Override public Integer getContent()
-			{	return timeoutValue;
-			}
-			@Override public boolean setContent(Integer s)
-			{	int old = getContent();
-				setTimeout(s);
-				return old != getContent();
-			}
-		};
+	//public final ChangeableContent<Info> input = new ChangeableContent<Info>()
+	//	{	@Override public Info getContent()
+	//		{	if(getInput() != null) return getInput().getDeviceInfo();
+	//			else return null;
+	//		}
+	//		@Override public boolean setContent(Info s)
+	//		{	setInput(s);
+	//			return true;
+	//		}
+	//	};
+	//public final ChangeableContent<Info> output = new ChangeableContent<Info>()
+	//	{	@Override public Info getContent()
+	//		{	if(getOutput() != null) return getOutput().getDeviceInfo();
+	//			else return null;
+	//		}
+	//		@Override public boolean setContent(Info s)
+	//		{	setOutput(s);
+	//			return true;
+	//		}
+	//	};
+	//public final ChangeableContent<Integer> timeout = new ChangeableContent<Integer>()
+	//	{	@Override public Integer getContent()
+	//		{	return timeoutValue;
+	//		}
+	//		@Override public boolean setContent(Integer s)
+	//		{	int old = getContent();
+	//			setTimeout(s);
+	//			return old != getContent();
+	//		}
+	//	};
 
-	private final XGDevice device;
-	private final XMLNode config;
 	private Receiver transmitter;
 	private MidiDevice midiOutput = null;
 	private MidiDevice midiInput = null;
@@ -117,13 +127,11 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	private int timeoutValue;
 //	private final XGMessageBuffer buffer;
 
-	public XGMidi(XGDevice dev)
-	{	this.device = dev;
-		this.config = this.device.getConfig().getChildNodeOrNew(TAG_MIDI);
-		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT));
-		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT));
-		this.timeout.setContent(this.config.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
-//		this.buffer = new XGMessageBuffer(this);
+	public XGMidi(XMLNode cfg)
+	{
+		this.setInput(cfg.getStringAttribute(ATTR_MIDIINPUT));
+		this.setOutput(cfg.getStringAttribute(ATTR_MIDIOUTPUT));
+		this.setTimeout(cfg.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
 
 		try
 		{	CoreMidiDeviceProvider.addNotificationListener(this);
@@ -137,7 +145,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	{	for(Info i : OUTPUTS) if(i.getName().equals(s)) this.setOutput(i);
 	}
 
-	private void setOutput(Info i)
+	public void setOutput(Info i)
 	{	try
 		{	this.setOutput(MidiSystem.getMidiDevice(i));
 		}
@@ -166,15 +174,14 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 			}
 		}
 		LOG.info(this.getOutputName());
-		this.config.setStringAttribute(ATTR_MIDIOUTPUT, this.getOutputName());
-		return;
+		config.setStringAttribute(ATTR_MIDIOUTPUT, this.getOutputName());
 	}
 
 	private void setInput(String s)
 	{	for(Info i : INPUTS) if(i.getName().equals(s)) this.setInput(i);
 	}
 
-	private void setInput(Info i)
+	public void setInput(Info i)
 	{	try
 		{	this.setInput(MidiSystem.getMidiDevice(i));
 		}
@@ -202,15 +209,14 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 			}
 		}
 		LOG.info(this.getInputName());
-		this.config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
-		return;
+		config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
 	}
 
-	private MidiDevice getInput()
+	public MidiDevice getInput()
 	{	return this.midiInput;
 	}
 
-	private MidiDevice getOutput()
+	public MidiDevice getOutput()
 	{	return this.midiOutput;
 	}
 
@@ -235,8 +241,8 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	@Override public void midiSystemUpdated() throws CoreMidiException
 	{	initInputs();
 		initOutputs();
-		this.setInput(this.config.getStringAttribute(ATTR_MIDIINPUT).toString());
-		this.setOutput(this.config.getStringAttribute(ATTR_MIDIOUTPUT).toString());
+		this.setInput(config.getStringAttribute(ATTR_MIDIINPUT));
+		this.setOutput(config.getStringAttribute(ATTR_MIDIOUTPUT));
 		LOG.info("CoreMidiSystem updated, " + this.midiInput.getDeviceInfo() + "=" + this.midiInput.isOpen() + ", " + this.midiOutput.getDeviceInfo() + "=" + this.midiOutput.isOpen());
 	}
 
@@ -253,7 +259,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	try
-		{	XGMessage m = XGMessage.newMessage(this, this.device.getValues(), mmsg);
+		{	XGMessage m = XGMessage.newMessage(this, STORE, mmsg);
 			if(this.request != null && this.request.setResponsed((XGResponse)m))
 			{	synchronized(this.request)
 				{	this.request.notify();
@@ -271,7 +277,7 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		{	try
 			{	this.request = msg;
 				synchronized(this.request)
-				{	this.request.wait(this.timeout.getContent());
+				{	this.request.wait(this.timeoutValue);
 				}
 			}
 			catch (InterruptedException e)
@@ -281,29 +287,20 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 		this.request = null;
 	}
 
-	@Override public int hashCode()
-	{	if(this.midiInput == null || this.midiOutput == null) return HASH;
-		return HASH * this.midiInput.hashCode() + HASH * this.midiOutput.hashCode();
-	}
-
 	@Override public boolean equals(Object o)
 	{	if(this == o) return true;
 		if(!(o instanceof XGMidi)) return false;
 		return this.hashCode() == o.hashCode();
 	}
 
-	@Override public XGDevice getDevice()
-	{	return this.device;
-	}
-
 	public int getTimeout()
-	{	return this.timeout.getContent();
+	{	return this.timeoutValue;
 	}
 
 	public void setTimeout(int t)
 	{	this.timeoutValue = t;
-		this.config.setIntegerAttribute(ATTR_MIDITIMEOUT, t);
-		LOG.info("timeout set to " + t);
+		config.setIntegerAttribute(ATTR_MIDITIMEOUT, t);
+		LOG.info("" + t);
 	}
 
 	@Override public String toString()
@@ -314,33 +311,17 @@ public class XGMidi implements XGMidiConstants, XGLoggable, XGMessenger, CoreMid
 	{	return this.getInputName();
 	}
 
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
-
 	public JComponent getConfigComponent()
 	{	GridBagConstraints gbc = new GridBagConstraints();
 		JPanel root = new JPanel();
 		root.setLayout(new GridBagLayout());
 
-		JComponent c = new XGList<Info>("input", INPUTS, this.input);
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.gridx = GridBagConstraints.RELATIVE;
-		gbc.anchor = GridBagConstraints.NORTHWEST;
-		gbc.weightx = 1;
-		gbc.weighty = 1;
-		gbc.gridy = 0;
-		root.add(new JScrollPane(c), gbc);
-
-		c = new XGList<Info>("output", OUTPUTS, this.output);
-		root.add(new JScrollPane(c), gbc);
-
-		c = new XGSpinner("timeout", this.timeout, 30, 1000, 10);
-		gbc.gridx = 0;
-		gbc.gridy = GridBagConstraints.RELATIVE;
-//		gbc.gridwidth = 1;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		root.add(c, gbc);
+//		c = new XGSpinner("timeout", this.timeout, 30, 1000, 10);
+//		gbc.gridx = 0;
+//		gbc.gridy = GridBagConstraints.RELATIVE;
+////		gbc.gridwidth = 1;
+//		gbc.fill = GridBagConstraints.HORIZONTAL;
+//		root.add(c, gbc);
 
 		return root;
 	}

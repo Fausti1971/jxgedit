@@ -16,7 +16,7 @@ import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;
-import xml.XMLNode;
+import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGSlider extends JPanel implements KeyListener, XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener
 {	/**
@@ -35,7 +35,7 @@ public class XGSlider extends JPanel implements KeyListener, XGParameterConstant
 	{
 		this.setLayout(new GridBagLayout());
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
+		this.value = STORE.getFirstIncluded(this.address);
 
 		if(this.isEnabled())
 		{	this.setToolTipText(null);

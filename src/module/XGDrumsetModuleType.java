@@ -9,7 +9,7 @@ import adress.XGAddress;
 import adress.XGAddressableSet;
 import adress.XGMemberNotFoundException;
 import device.XGDevice;
-import value.XGValue;
+import value.*;
 import xml.XMLNode;
 
 
@@ -44,8 +44,8 @@ public class XGDrumsetModuleType extends XGModuleType
 	private int program;
 	private final int partmode, hi, id;
 
-	public XGDrumsetModuleType(XGDevice dev, XMLNode n, XGAddress adr)
-	{	super(dev, n, adr, n.getStringAttributeOrDefault(ATTR_NAME, DEF_NAME));
+	public XGDrumsetModuleType(XMLNode n, XGAddress adr)
+	{	super(n, adr, n.getStringAttributeOrDefault(ATTR_NAME, DEF_NAME));
 		int i = 48;
 		try
 		{	i = this.address.getHi().getValue();
@@ -59,7 +59,7 @@ public class XGDrumsetModuleType extends XGModuleType
 	}
 
 	public void initDepencies()
-	{	XGAddressableSet<XGModule> set = this.getDevice().getModules().getAllIncluded(new XGAddress("8-10//"));
+	{	XGAddressableSet<XGModule> set = XGModule.INSTANCES.getAllIncluded(new XGAddress("8-10//"));
 		for(XGModule mod : set)
 		{	XGValue pm;
 			try
@@ -78,7 +78,7 @@ public class XGDrumsetModuleType extends XGModuleType
 
 	private XGValue getProgramForPartmode(XGValue pm)
 	{	try
-		{	return this.getDevice().getValues().getFirstIncluded(new XGAddress(PROGRAMMADDRESS.getHi().getValue(), this.getID(pm), PROGRAMMADDRESS.getLo().getValue()));
+		{	return XGValueStore.STORE.getFirstIncluded(new XGAddress(PROGRAMMADDRESS.getHi().getValue(), this.getID(pm), PROGRAMMADDRESS.getLo().getValue()));
 		}
 		catch(XGMemberNotFoundException | InvalidXGAddressException e)
 		{	LOG.severe(e.getMessage());

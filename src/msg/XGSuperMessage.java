@@ -2,7 +2,7 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import adress.XGAddressable;
+import adress.XGAddressable;import device.*;
 
 public abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddressable
 {
@@ -59,7 +59,7 @@ public abstract class XGSuperMessage extends SysexMessage implements XGMessage, 
 	}
 
 	@Override public void setSysexID()
-	{	this.setSysexID(this.source.getDevice().getSysexID());
+	{	this.setSysexID(XGDevice.getDevice().getSysexID());
 	}
 
 	@Override public byte[] getByteArray()

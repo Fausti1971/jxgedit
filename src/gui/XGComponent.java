@@ -20,40 +20,15 @@ import application.XGLoggable;
 import module.XGModule;
 import xml.XMLNode;
 
-public interface XGComponent extends XGAddressConstants, XGUI, Configurable, MouseListener, FocusListener, XGLoggable
+public interface XGComponent extends XGAddressConstants, XGUI, MouseListener, FocusListener, XGLoggable
 {
-	public static JComponent init(XGModule mod)
-	{	XGTemplate t = mod.getType().getGuiTemplate();
-		XMLNode xml = null;
-		if(t != null) xml = t.getConfig();
-		if(xml == null) return new JLabel(mod.getType() + " has no GUI");
-		return new XGFrame(xml, mod);
-	}
-
-	static JComponent newItem(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
-	{	String s = n.getTag();
-		JComponent c = null;
-		switch(s)
-		{	case TAG_VEG:		c = new XGVEG(n, mod); break;
-			case TAG_AEG:		c = new XGAEG(n, mod); break;
-			case TAG_PEG:		c = new XGPEG(n, mod); break;
-			case TAG_MEQ:		c = new XGMEQ(n, mod); break;
-			case TAG_FRAME:		c = new XGFrame(n, mod); break;
-			case TAG_TABS:		c = new XGTabFrame(n, mod); break;
-			case TAG_KNOB:		c = new XGKnob(n, mod); break;
-			case TAG_SLIDER:	c = new XGSlider(n, mod); break;
-			case TAG_RANGE:		c = new XGRange(n, mod); break;
-			case TAG_COMBO:		c = new XGCombo(n, mod); break;
-			case TAG_RADIO:		c = new XGRadio(n, mod); break;
-			case TAG_BUTTON:	c = new XGButton(n, mod); break;
-			case TAG_SELECTOR:	c = new XGProgramSelector(n, mod); break;
-			case TAG_FLAGBOX:	c = new XGFlagBox(n, mod); break;
-			case TAG_SCALE:		c = new XGScale(n, mod); break;
-			case TAG_KEYBOARD:	c = new XGKeyboard(n, mod); break;
-			default:			c = new XGFrame("unknown_" + s); break;
-		}
-		return c;
-	}
+	//public static JComponent init(XGModule mod)
+	//{	XGTemplate t = mod.getType().getGuiTemplate();
+	//	XMLNode xml = null;
+	//	if(t != null) xml = t.getConfig();
+	//	if(xml == null) return new JLabel(mod.getType() + " has no GUI");
+	//	return new XGFrame(xml, mod);
+	//}
 
 /********************************************************************************************/
 
@@ -124,29 +99,5 @@ System.out.println("doubleclick detected");
 	@Override public default void focusGained(FocusEvent e)
 	{	this.borderize();
 		this.getJComponent().repaint();
-	}
-
-/************************************************************************************************************/
-
-	class XGGrid extends Rectangle
-	{
-		private static final long serialVersionUID = 1L;
-
-		public XGGrid(String s)
-		{	super(0,0,0,0);
-			if(s == null)
-			{	LOG.warning("no grid found");
-				return;
-			}
-			String[] str = s.split(",");
-			if(str.length < 4)
-			{	LOG.warning("grid incomplete");
-				return;
-			}
-			this.x = Integer.parseInt(str[0]);
-			this.y = Integer.parseInt(str[1]);
-			this.width = Integer.parseInt(str[2]);
-			this.height = Integer.parseInt(str[3]);
-		}
 	}
 }

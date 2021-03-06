@@ -9,18 +9,16 @@ import device.XGDevice;
  */
 public interface XGMessenger
 {
-	public XGDevice getDevice();
-
 /**
  * @return returniert den Namen des XGMessengers
  */
 	public default String getMessengerName()
-	{	return this.getDevice() + " " + this.getClass().getSimpleName();
+	{	return this.getClass().getSimpleName();
 	}
 
 /**
  * übergibt dem XGMessenger (file, mem, midi) eine XGMessage zur weiteren Be- oder Verarbeitung
- * @param m XGResponse
+ * @param msg XGResponse
  * @throws InvalidXGAddressException
  */
 	void submit(XGMessage msg) throws InvalidXGAddressException, XGMessengerException;

@@ -1,18 +1,8 @@
 package gui;
 
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
-import javax.swing.JComponent;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
@@ -21,29 +11,40 @@ import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import value.XGValue;
 import value.XGValueChangeListener;
-import xml.XMLNode;
+import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_ADDRESS;
 
-public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
+public class XGKnob extends JPanel implements XGParameterChangeListener, XGValueChangeListener, MouseListener, FocusListener, XGComponent
 {
 	private static final long serialVersionUID = 1L;
+	private static final Dimension SIZE = new Dimension(66,88);
 
 /*****************************************************************************************************************************/
 
 	private final XGKnobBar bar;
 	private final XGValueLabel label;
 	private final XGValue value;
-	private final XGAddress address;
+//	private final XGAddress address;
 
-	public XGKnob(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n);
-
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getValues().get(this.address);
+	public XGKnob(XGValue val)
+	{
+		//this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
+		//this.value = mod.getValues().get(this.address);
+		this.setPreferredSize(SIZE);
+		this.setMinimumSize(SIZE);
+		this.value = val;
+		if(this.value == null)
+		{	this.setVisible(false);
+			this.bar = null;
+			this.label = null;
+			return;
+		}
+		this.setName(this.value.getParameter().getName());
+		this.borderize();
 		if(this.value.getOpcode().isMutable()) this.value.addParameterListener(this);
 		this.value.addValueListener(this);
 
 		this.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,2,0), 0, 0);
+		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
 
 		this.bar = new XGKnobBar(this.value);
 		this.add(this.bar, gbc);
@@ -71,7 +72,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 		this.label.setText(this.value.toString());
 		this.setVisible(p != XGParameter.NO_PARAMETER);
 		this.setEnabled(p.isValid());
-		this.borderize();
+		//this.borderize();
 	}
 
 /******************************************************************************************************************************************/
@@ -109,8 +110,8 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			this.middle.y = 4 + this.radius;// getY() liefert IMMER 15! (sowohl mit als auch ohne Border), daher die "4"
 	
 	// paint background arc
-			//this.g2.setColor(COL_BAR_BACK);
-			this.g2.setColor(new XGColor(this.getBackground()).brighter());
+			this.g2.setColor(COL_BAR_BACK);
+			//this.g2.setColor(new XGColor(this.getBackground()).brighter());
 			this.g2.setStroke(DEF_ARCSTROKE);
 			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, START_ARC, LENGTH_ARC);
 	// paint foreground arc
@@ -167,4 +168,19 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 		{
 		}
 	}
-}
+public void focusGained(FocusEvent event)
+	{
+	}public void focusLost(FocusEvent event)
+	{
+	}
+	public void mouseClicked(MouseEvent event)
+	{
+	}public void mousePressed(MouseEvent event)
+	{
+	}public void mouseReleased(MouseEvent event)
+	{
+	}public void mouseEntered(MouseEvent event)
+	{
+	}public void mouseExited(MouseEvent event)
+	{
+	}}

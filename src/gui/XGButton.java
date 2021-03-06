@@ -7,7 +7,7 @@ import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import module.XGModule;
 import value.XGValue;
-import xml.XMLNode;
+import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGButton extends XGFrame
 {	/**
@@ -25,7 +25,7 @@ public class XGButton extends XGFrame
 	{	super(n);
 		this.borderize();
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = mod.getType().getDevice().getValues().getFirstIncluded(this.address);
+		this.value = STORE.getFirstIncluded(this.address);
 		this.button.setText(this.value.getParameter().getName());
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 0.5, 0.5, GridBagConstraints.SOUTH, GridBagConstraints.HORIZONTAL, new Insets(0,0,0,0), 0, 0);
 		this.add(this.button, gbc);

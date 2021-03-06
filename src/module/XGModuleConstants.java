@@ -1,13 +1,14 @@
 package module;
 
 import javax.swing.ActionMap;
-import xml.XMLNodeConstants;
+import adress.*;import xml.XMLNodeConstants;
 
 public interface XGModuleConstants extends XMLNodeConstants
 {
-//	public static enum XGModuleTag
-//	{	system, info, sysfx, syseq, insfx, display, multipart, adpart, drumset, plugin
-//	};
+	//enum TAG
+	//{	SYSTEM, INFO, REV, CHO, VAR, EQ, INSFX, DISPLAY, MULTIPART, ADPART, DRUMSET, PLUGIN
+	//};
+
 
 	static final String DEF_MODULENAME = "nameless module";
 	ActionMap MOD_ACTIONS = new ActionMap();

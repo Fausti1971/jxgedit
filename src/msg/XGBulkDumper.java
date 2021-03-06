@@ -7,7 +7,7 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
 import application.*;
-import gui.XGWindow;
+import gui.*;
 
 /**
  * qualifiziert die implementierende Klasse als Sammler aller enthaltenen BuklDumps (getBulks()) und Transmitter derselben (transmitAll())
@@ -31,7 +31,7 @@ public interface XGBulkDumper extends XGLoggable
 		XGRequest r = null;
 		XGAddressableSet<XGAddress> set = this.getBulks();
 		XGAddressableSet<XGRequest> missed = new XGAddressableSet<>();
-		ProgressMonitor pm = new ProgressMonitor(JXG.mainWindow, src + " -> " + dest, "", 0, set.size());
+		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.getWindow(), src + " to " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGAddress b : set)

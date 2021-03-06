@@ -4,7 +4,6 @@ import xml.XMLNodeConstants;import java.io.*;
 
 public interface ConfigurationConstants extends XMLNodeConstants
 {
-	int HASH = 17;
 	String
 		APPNAME = "JXG",
 		RSCPATH = "rsc",

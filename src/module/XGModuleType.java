@@ -19,7 +19,7 @@ import gui.XGWindow;
 import msg.XGBulkDumper;
 import parm.XGOpcode;
 import parm.XGTable;
-import xml.XMLNode;
+import static parm.XGTable.TABLES;import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen
@@ -27,10 +27,13 @@ import xml.XMLNode;
  *
  */
 public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper, Configurable
-{	static final Set<String> ACTIONS = new LinkedHashSet<>();
+{
+	public static final XGAddressableSet<XGModuleType> TYPES = new XGAddressableSet<>();//Prototypen (inkl. XGAddress bulks); initialisiert auch XGOpcodes
+
+	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 	static
-	{//	ACTIONS.add(ACTION_EDIT);
+	{	ACTIONS.add(ACTION_EDIT);
 		ACTIONS.add(ACTION_REQUEST);
 		ACTIONS.add(ACTION_TRANSMIT);
 		ACTIONS.add(ACTION_LOADFILE);
@@ -39,37 +42,28 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 /********************************************************************************************************************/
 
-	private final XGDevice device;
 	private final Set<XGAddress> infoAddresses = new LinkedHashSet<>();
 	protected final String name;
 	protected final XGAddress address;
-	private final XGTemplate guiTemplate;
 	protected final XGTable idTranslator;
 	private final XMLNode config;
 	private final XGAddressableSet<XGAddress> bulks = new XGAddressableSet<>();
 
-	public XGModuleType(XGDevice dev, XMLNode cfg, XGAddress adr, String name)
+	public XGModuleType(XMLNode cfg, XGAddress adr, String name)
 	{	this.config = cfg;
-		this.device = dev;
 		this.address = adr;
 		this.name = name;
-		this.idTranslator = this.device.getTables().get(cfg.getStringAttribute(ATTR_TRANSLATOR));
+		this.idTranslator = TABLES.get(cfg.getStringAttribute(ATTR_TRANSLATOR));
 
-		XGAddressableSet<XGTemplate> tSet = this.device.getTemplates().getAllIncluding(this.address);
-		if(tSet.size() > 1) throw new RuntimeException("found " + tSet.size() + " templates for address " + this.address);
-		if(tSet.size() == 1) this.guiTemplate = tSet.iterator().next();
-		else this.guiTemplate = null;
+		for(XMLNode n : cfg.getChildNodes(TAG_INFO))
+			this.infoAddresses.add(new XGAddress(n.getStringAttribute(ATTR_ADDRESS)));
 
-		if(cfg.hasAttribute(ATTR_INFO1)) this.infoAddresses.add(new XGAddress(cfg.getStringAttribute(ATTR_INFO1)));
-		if(cfg.hasAttribute(ATTR_INFO2)) this.infoAddresses.add(new XGAddress(cfg.getStringAttribute(ATTR_INFO2)));
-		if(cfg.hasAttribute(ATTR_INFO3)) this.infoAddresses.add(new XGAddress(cfg.getStringAttribute(ATTR_INFO3)));
-		 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))
 		{	XGAddress a = new XGAddress(x.getStringAttribute(ATTR_ADDRESS), this.address);
 			this.bulks.add(a);
 			for(XMLNode o : x.getChildNodes(TAG_OPCODE))
 			{	try
-				{	dev.getOpcodes().add(new XGOpcode(this, a, o));
+				{	XGOpcode.OPCODES.add(new XGOpcode(this, a, o));
 				}
 				catch(InvalidXGAddressException e)
 				{	LOG.severe(e.getMessage());
@@ -78,20 +72,12 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		}
 	}
 
-	public XGModuleType(XGDevice dev, XMLNode cfg)
-	{	this(dev, cfg, new XGAddress(cfg.getStringAttribute(ATTR_ADDRESS)), cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
-	}
-
-	public XGDevice getDevice()
-	{	return this.device;
+	public XGModuleType(XMLNode cfg)
+	{	this(cfg, new XGAddress(cfg.getStringAttribute(ATTR_ADDRESS)), cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
 	}
 
 	public XGAddressableSet<XGModule> getModules()
-	{	return this.device.getModules().getAllIncluded(this.address);
-	}
-
-	public XGTemplate getGuiTemplate()
-	{	return this.guiTemplate;
+	{	return XGModule.INSTANCES.getAllIncluded(this.address);
 	}
 
 	public Set<XGAddress> getInfoAddresses()
@@ -107,7 +93,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	}
 
 	public XGAddressableSet<XGOpcode> getOpcodes()
-	{	return this.device.getOpcodes().getAllIncluded(this.address);
+	{	return XGOpcode.OPCODES.getAllIncluded(this.address);
 	}
 
 	public XGAddressableSet<XGAddress> getBulkAdresses()

@@ -3,7 +3,6 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -17,9 +16,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
-import application.JXG;
 import application.XGStrings;
-import file.XGSysexFileConstants;
+import file.*;import xml.*;
 
 public class XGFileSelector extends JFileChooser implements XGSysexFileConstants, XGUI, DocumentListener, ActionListener, XGStrings
 {	/**
@@ -34,7 +32,7 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 	private final JButton button;
 
 	public XGFileSelector(final StringBuffer path, String title, String button, FileFilter filter)
-	{	if(path == null) this.path = new StringBuffer(JXG.APPPATH);
+	{	if(path == null) this.path = new StringBuffer(XGSysexFile.config.getChildNode(XMLNodeConstants.TAG_ITEM).getStringAttribute(XMLNodeConstants.ATTR_NAME));
 		else this.path = path;
 		this.text = new JTextField(this.path.toString());
 		this.button = new JButton(button);
@@ -68,6 +66,10 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 		root.add(text, BorderLayout.CENTER);
 		root.add(button, BorderLayout.EAST);
 		return root;
+	}
+
+	public StringBuffer getPath()
+	{	return this.path;
 	}
 
 	@Override public void insertUpdate(DocumentEvent e)

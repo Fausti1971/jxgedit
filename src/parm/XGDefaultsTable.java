@@ -3,9 +3,9 @@ package parm;
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-import application.XGLoggable;
+import application.*;
 import device.XGDevice;
-import tag.XGTagable;
+import tag.*;
 import xml.XMLNode;
 /**
  * simple taggable HashMap<Integer, HashMap<Integer, Integer>>, deren erster int der Wert des Selektors, der zweite int der Wert des zugehörigen Defaults ist
@@ -15,26 +15,28 @@ import xml.XMLNode;
 public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTagable
 {
 	public static final int NO_ID = DEF_SELECTORVALUE;
+	public static final XGTagableSet<XGDefaultsTable> DEFAULTSTABLE = new XGTagableSet<>();
 
-	public static void init(XGDevice dev)
+	public static void init()
 	{
 		try
-		{
-			XMLNode n = XMLNode.parse(dev.getResourceFile(XML_DEFAULT));
+		{	XMLNode n = XMLNode.parse(JXG.getResourceFile(XML_DEFAULT));
 			for(XMLNode t : n.getChildNodes(TAG_DEFAULTTABLE))
-			{	dev.getDefaultsTables().add(new XGDefaultsTable(t));
+			{	DEFAULTSTABLE.add(new XGDefaultsTable(t));
 			}
 		}
 		catch(IOException e)
 		{	LOG.info(e.getMessage());
 		}
-		dev.getDefaultsTables().add(new XGDefaultsTable("id")
+
+		DEFAULTSTABLE.add(new XGDefaultsTable("id")
 			{	@Override public int get(int id, int sel)
 				{	return (id);
 				}
 			}
 		);
-		dev.getDefaultsTables().add(new XGDefaultsTable("mp_partmode")
+
+		DEFAULTSTABLE.add(new XGDefaultsTable("mp_partmode")
 			{	@Override public int get(int id, int sel)
 				{	if(id == 9) return 2;
 					if(id == 25) return 4;
@@ -43,7 +45,8 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 				}
 			}
 		);
-		dev.getDefaultsTables().add(new XGDefaultsTable("mp_program")
+
+		DEFAULTSTABLE.add(new XGDefaultsTable("mp_program")
 			{	@Override public int get(int id, int sel)
 				{	if(id == 9 || id == 25 || id == 41 || id == 57) return 127 << 14;
 					return 0;

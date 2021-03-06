@@ -4,9 +4,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import adress.InvalidXGAddressException;
-import adress.XGAddress;
-import adress.XGAddressable;
+import adress.*;
 import application.Configurable;
 import application.XGLoggable;
 import application.XGStrings;
@@ -17,6 +15,9 @@ import xml.XMLNode;
 
 public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants, XGCategorizeable, Configurable
 {
+
+	public static final XGAddressableSet<XGOpcode> OPCODES = new XGAddressableSet<>();//Prototypen
+
 
 /*******************************************************************************************************************************/
 
@@ -68,7 +69,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 //			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(dev, n));
 		}
 
-		this.hasMutableDefaults = n.hasAttribute(ATTR_DEFAULTS) && n.hasAttribute(ATTR_DEFAULTSELECTOR);
+		this.hasMutableDefaults = n.hasAttribute(ATTR_DEFAULTS);// && n.hasAttribute(ATTR_DEFAULTSELECTOR);
 		if(this.hasMutableDefaults)
 		{	this.defaultSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_DEFAULTSELECTOR));
 			this.defaultTableName = n.getStringAttribute(ATTR_DEFAULTS);
@@ -93,7 +94,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 		for(String s: XACTION)
 		{	if(n.hasAttribute(s))
-				this.actions.put(s, XGStrings.splitCSV(n.getStringAttribute(s).toString()));
+				this.actions.put(s, XGStrings.splitCSV(n.getStringAttribute(s)));
 		}
 //		LOG.info(this + " initialized");
 	}
@@ -104,6 +105,10 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 	public boolean hasMutableDefaults()
 	{	return this.hasMutableDefaults;
+	}
+
+	public Map<String,Set<String>> getActions()
+	{	return this.actions;
 	}
 
 	@Override public XMLNode getConfig()
@@ -130,27 +135,8 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	{	return this.defaultSelectorAddress;
 	}
 
-//	public XGParameter getParameter(XGValue selector)
-//	{	if(this.isMutable) return this.parameters.getOrDefault(selector.getValue(), NO_PARAMETER);
-//		else return this.parameters.get(DEF_SELECTORVALUE);
-//	}
-
-//	public int getDefaultValue(XGValue selector)
-//	{	int val = selector.getValue();
-//		if(this.hasMutableDefaults && this.defaults.containsKey(val)) return this.defaults.get(val);
-//		else return this.defaults.getOrDefault(DEF_SELECTORVALUE, 0);
-//	}
-
 	public String getDefaultTableName()
 	{	return this.defaultTableName;
-	}
-
-	public XGDevice getDevice()
-	{	return this.moduleType.getDevice();
-	}
-
-	public Map<String, Set<String>> getActions()
-	{	return this.actions;
 	}
 
 	@Override public String toString()

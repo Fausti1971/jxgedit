@@ -6,28 +6,29 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import application.XGLoggable;
-import device.XGDevice;
+import device.*;
 import msg.XGMessageBulkDump;
 import msg.XGMessageParameterChange;
 import msg.XGMessengerException;
 import msg.XGResponse;
 import parm.XGDefaultsTable;
-import parm.XGOpcode;
+import static parm.XGDefaultsTable.DEFAULTSTABLE;import parm.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
 import parm.XGParameterTable;
-import parm.XGTable;
+import static parm.XGParameterTable.PARAMETERTABLES;import parm.XGTable;
 import parm.XGTable.Preference;
 import parm.XGTableEntry;
-import tag.XGCategorizeable;
+import tag.XGCategorizeable;import static value.XGValueStore.STORE;
 /**
  * 
  * @author thomas
  *
  */
 public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable, XGCategorizeable
-{	private static final XGValue DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
+{
+	private static final XGValue DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
 
 /***********************************************************************************************/
 
@@ -58,15 +59,15 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.address = new XGAddress(opc.getAddress().getHi().getValue(), id, opc.getAddress().getLo().getMin());
 		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
 		if(opc.isMutable())
-		{	this.parameters = opc.getDevice().getParameterTables().get(opc.getParameterTableName());
+		{	this.parameters = PARAMETERTABLES.get(opc.getParameterTableName());
 			if(this.parameters == null) throw new RuntimeException(ATTR_PARAMETERS + " " + opc.getParameterTableName() + " not found!");
 		}
 		else
-		{	this.parameters = new XGParameterTable(opc.getDevice());
-			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getDevice(), opc.getConfig()));
+		{	this.parameters = new XGParameterTable();
+			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getConfig()));
 		}
 		if(opc.hasMutableDefaults())
-		{	this.defaults = opc.getDevice().getDefaultsTables().get(opc.getDefaultTableName());
+		{	this.defaults = DEFAULTSTABLE.get(opc.getDefaultTableName());
 			if(this.defaults == null) throw new RuntimeException(ATTR_DEFAULTS + " " + opc.getDefaultTableName() + " not found!");
 		}
 		else
@@ -78,7 +79,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public void initValueDepencies() throws InvalidXGAddressException
 	{	if(this.opcode.isMutable())
 		{	XGAddress psa = this.opcode.getParameterSelectorAddress().complement(this.address);
-			XGValue psv = this.opcode.getDevice().getValues().get(psa);
+			XGValue psv = STORE.get(psa);
 			if(psv == null) throw new RuntimeException("parameterSelector " + psa + " not found for value " + this.address);
 			this.parameterSelector = psv;
 			this.parameterSelector.addValueListener((XGValue val)->{this.notifyParameterListeners();});
@@ -87,7 +88,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 		if(this.opcode.hasMutableDefaults())
 		{	XGAddress dsa = this.opcode.getDefaultSelectorAddress().complement(this.address);
-			XGValue dsv = this.opcode.getDevice().getValues().get(dsa);
+			XGValue dsv = STORE.get(dsa);
 			if(dsv == null) throw new RuntimeException("defaultsSelector " + dsa + " not found for value " + this.address);//TODO: drumset hat zwar mutableDefaults aber kann keinen festen defaultSelector (multipartProgram) haben
 			this.defaultSelector = dsv;
 			this.defaultSelector.addValueListener((XGValue)->{this.setDefaultValue();});
@@ -205,7 +206,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 /**
  * 
- * @param setzt den Inhalt des XGValue auf den Index des übergebenen XGTable-Eintrags
+ * @param e setzt den Inhalt des XGValue auf den Index des übergebenen XGTable-Eintrags
  * @return true, wenn sich der Inhalt änderte
  */
 	public boolean setEntry(XGTableEntry e)
@@ -282,9 +283,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
  */
 	public void sendAction()
 	{	this.actions(XACTION_BEFORE_SEND);
-		XGDevice dev = this.opcode.getDevice();
 		try
-		{	new XGMessageParameterChange(dev.getValues(), dev.getMidi(), this).transmit();
+		{	new XGMessageParameterChange(STORE, XGMidi.getMidi(), this).transmit();
 		}
 		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
@@ -297,10 +297,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
  */
 	public void bulkAction()
 	{	this.actions(XACTION_BEFORE_SEND);
-		XGDevice dev = this.opcode.getDevice();
 		XGAddress adr = this.getAddress();
 		try
-		{	XGMessageBulkDump msg = new XGMessageBulkDump(dev.getValues(), dev.getMidi(), new XGAddress(adr.getHi(), adr.getMid(), this.getOpcode().getAddress().getLo()));
+		{	XGMessageBulkDump msg = new XGMessageBulkDump(STORE, XGMidi.getMidi(), new XGAddress(adr.getHi(), adr.getMid(), this.getOpcode().getAddress().getLo()));
 			msg.encodeLSB(msg.getBaseOffset(), msg.getBulkSize(), this.getValue());
 			msg.setChecksum();
 			msg.transmit();

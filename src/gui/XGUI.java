@@ -7,16 +7,13 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.awt.event.MouseEvent;
-import javax.swing.JEditorPane;
-import javax.swing.UIManager;
+import java.awt.event.MouseEvent;import java.util.*;
+import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalTheme;
 import javax.swing.plaf.metal.OceanTheme;
-import application.ConfigurationConstants;
-import application.XGLoggable;
+import application.*;
 import xml.XMLNode;
 
 public interface XGUI extends ConfigurationConstants, XGLoggable
@@ -25,9 +22,11 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 	{	public MouseEvent dragEvent = null;
 		public Cursor lastCursor = null;
 		public boolean mousePressed = false;
+		public XMLNode config = null;
 	}
-
 	static final Globals VARIABLES = new Globals();
+
+	Map<String, String> LOOKANDFEELS = new HashMap<>();
 
 	final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	final GridBagConstraints DEF_GBC = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
@@ -45,28 +44,41 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 		LAF_METAL_OCEAN = new OceanTheme();
 //		LAF_METAL_TEST = new TestTheme();
 
-		static void init(XMLNode n)
-		{
-			LookAndFeelInfo[] array = UIManager.getInstalledLookAndFeels();
-			for(LookAndFeelInfo i : array) System.out.println(i.getName());
-			try
-			{
-//				MetalLookAndFeel.setCurrentTheme(LAF_METAL_DEFAULT);
-//				UIManager.setLookAndFeel(new MetalLookAndFeel()); 
+		static void setLookAndFeel(String name)
+		{	for(String s : LOOKANDFEELS.keySet())
+			{	if(s.equals(name))
+				{	try
+					{	UIManager.setLookAndFeel(LOOKANDFEELS.get(s));
+						VARIABLES.config.setStringAttribute(ATTR_LOOKANDFEEL, name);
+						LOG.info(name);
+						XGMainWindow.updateUI();
+						return;
+					}
+					catch(UnsupportedLookAndFeelException|IllegalAccessException|InstantiationException|ClassNotFoundException e)
+					{	LOG.severe(e.getMessage());
+					}
+				}
+			}
+//			setLookAndFeel(LOOKANDFEELS.get("System"));
+		}
 
-				UIManager.setLookAndFeel(LAF_GTK);
-			}
-			catch(UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException | IllegalAccessException e)
-			{	LOG.info(e.getMessage());
-			}
+		static void init()
+		{	VARIABLES.config = JXG.config.getChildNodeOrNew(TAG_UI);
+
+//			LOOKANDFEELS.put("System", UIManager.getSystemLookAndFeelClassName());
+//			LOOKANDFEELS.put("Crossplatform", UIManager.getCrossPlatformLookAndFeelClassName());
+			for(LookAndFeelInfo i : UIManager.getInstalledLookAndFeels()) LOOKANDFEELS.put(i.getName(), i.getClassName());
+
+			XGUI.setLookAndFeel(VARIABLES.config.getStringAttribute(ATTR_LOOKANDFEEL));
 		}
 
 	String ICON_LEAF32 = "XGLogo32.gif", ICON_LEAF24 = "XGLogo24.gif";
 
 	Color
 		COL_TRANSPARENT = new Color(0, 0, 0, 0),
-		COL_BAR_FORE = UIManager.getColor("Tree.selectionBackground").brighter(),
-		COL_SHAPE = new XGColor(COL_BAR_FORE).add(0, -210);
+		COL_BAR_FORE = Color.blue,
+		COL_BAR_BACK = Color.white,
+		COL_SHAPE = Color.lightGray;
 
 	float FONTSIZE = 10f;
 

@@ -1,107 +1,19 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 <structure xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="structure.xsd">
-<!--	
-		<parameter id="fx_lpf_cutoff" longName="Lowpass Filter Cutoff Frequency" shortName="LPFCt" min="34" max="60" translator="table3" unit="Hz"/>
-		<parameter id="fx_hpf_cutoff" longName="Highpass Filter Cutoff Frequency" shortName="HPFCt" max="52" translator="table3" unit="Hz"/>
-		<parameter id="dry_wet_balance" longName="Dry/Wet Balance" shortName="D/W" min="1" translator="table15" origin="64"/>
-		<parameter id="initial_delay" longName="Initial Delay" shortName="InDly" max="63" translator="table5" unit="ms"/>
-		<parameter id="reverb_time" longName="Reverb Time" shortName="Time" max="69" translator="table4" unit="s"/>
-		<parameter id="diffusion" longName="Diffusion" shortName="Diff" max="10"/>
-		<parameter id="reverb_delay" longName="Reverb Delay" shortName="RvDly" max="63" translator="table5" unit="ms"/>
-		<parameter id="density" longName="Density" shortName="Dense" max="4"/>
-		<parameter id="er_rev_balance" longName="Early Reflection- /Reverb-Balance" shortName="ER/Rv" min="1" origin="64"/>
-		<parameter id="high_damp" longName="High Damp" shortName="HiDmp" min="1" max="10" translator="div10"/>
-		<parameter id="feedback_level" longName="Feedback Level" shortName="FBLvl" min="1" origin="64" translator="table16"/>
-		<parameter id="feedback_delay_w" longName="Feedback Delay" shortName="FBDly" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="feedback_delay_b" longName="Feedback Delay" shortName="FBDly" min="1" max="7150" translator="div10" unit="ms"/>
-		<parameter id="feedback_delay2_w" longName="Feedback Delay 2" shortName="FBDl2" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="feedback_delay2_b" longName="Feedback Delay 2" shortName="FBDl2" min="1" max="7150" translator="div10" unit="ms"/>
-		<parameter id="left_channel_feedback_level" longName="Left Channel Feedback Level" shortName="LFBL" min="1" max="127" translator="sub64" origin="64"/>
-		<parameter id="right_channel_feedback_level" longName="Right Channel Feedback Level" shortName="RFBL" min="1" max="127" translator="sub64" origin="64"/>
-
-		<parameter id="feedback_high_damp" longName="Feedback High Damp" shortName="FBDmp" min="1" max="10" translator="div10"/>
-
-		<parameter id="right_channel_delay_w" longName="Right Channel Delay" shortName="RDly" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="right_channel_delay_b" longName="Right Channel Delay" shortName="RDly" min="1" max="7150" translator="div10" unit="ms"/>
-		<parameter id="right_channel_delay2_w" longName="Right Channel Delay 2" shortName="RDly2" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="right_channel_delay2_b" longName="Right Channel Delay 2" shortName="RDly2" min="1" max="7150" translator="div10" unit="ms"/>
-		<parameter id="right_left_delay_w" shortName="RLDly" longName="Right->Left Delay" min="1" max="16383" translator="div10"/>
-		<parameter id="right_left_delay_b" shortName="RLDly" longName="Right->Left Delay" min="1" max="3550" translator="div10"/>
-
-		<parameter id="left_channel_delay_w" longName="Left Channel Delay" shortName="LDly" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="left_channel_delay_b" longName="Left Channel Delay" shortName="LDly" min="1" max="7150" translator="div10" unit="ms"/>
-		<parameter id="left_channel_delay2_w" longName="Left Channel Delay 2" shortName="LDly2" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="left_channel_delay2_b" longName="Left Channel Delay 2" shortName="LDly2" min="1" max="7150" translator="div10" unit="ms"/>
-		<parameter id="left_right_delay_w" shortName="LRDly" longName="Left->Right Delay" min="1" max="16383" translator="div10"/>
-		<parameter id="left_right_delay_b" shortName="LRDly" longName="Left->Right Delay" min="1" max="3550" translator="div10"/>
-
-		<parameter id="center_channel_delay_w" longName="Center Channel Delay" shortName="CDly" min="1" max="16383" translator="div10" unit="ms"/>
-		<parameter id="center_channel_delay_b" longName="Center Channel Delay" shortName="CDly" min="1" max="7150" translator="div10" unit="ms"/>
-		<parameter id="center_channel_level" longName="Center Channel Level" shortName="CLvl" translator="table18"/>
-
-		<parameter id="delay2_level" shortName="Dly2L" longName="Delay 2 Level" translator="table18"/>
-
-		<parameter id="input_select" shortName="Input" longName="Input Select" max="2" translator="input_select"/>
-		<parameter id="input_mode" shortName="Mode" longName="Input Mode" translator="mono_stereo"/>
-		<parameter id="mono_stereo_diffusion" shortName="Diff" longName="Diffusion" translator="mono_stereo"/>
-
-		<parameter id="early_reflection_type" shortName="Type" longName="Early Reflection Type" translator="er_type"/>
-
-		<parameter id="room_size" shortName="Size" longName="Room Size" max="44" translator="table6"/>
-
-		<parameter id="liveness" shortName="Live" longName="Liveness" max="10"/>
-		<parameter id="gate_type" shortName="Type" longName="Gate Type" translator="gate_type"/>
-
-		<parameter id="width" shortName="Width" longName="Width" max="37" translator="table11" unit="m"/>
-		<parameter id="height" shortName="Hight" longName="Height" max="73" translator="table11" unit="m"/>
-		<parameter id="depth" shortName="Depth" longName="Depth" max="104" translator="table11" unit="m"/>
-		<parameter id="wall_vary" shortName="Wall" longName="Wall Vary" max="30" translator="normal"/>
-
-		<parameter id="delay_time" shortName="DlyTm" longName="Delay Time" translator="table7" unit="ms"/>
-		<parameter id="tempo_delay_time" shortName="DlyTm" longName="Delay Time" max="19" translator="table14"/>
-		<parameter id="lr_diffusion" shortName="Diff" longName="L/R Diffusion" translator="sub64" origin="64" unit="ms"/>
-		<parameter id="delay_time_lr" shortName="LRDly" longName="Delay Time L->R" max="19" translator="table14"/>
-		<parameter id="delay_time_rl" shortName="RLDly" longName="Delay Time R->L" max="19" translator="table14"/>
-		<parameter id="lag" shortName="Lag" longName="Lag" min="1" translator="sub64" origin="64" unit="ms"/>
-
-		<parameter id="lfo_frequency" shortName="Speed" longName="LFO Frequency" translator="table1" unit="Hz"/>
-		<parameter id="lfo_depth" shortName="Depth" longName="LFO Depth" translator="table19"/>
-		<parameter id="lfo_phase_difference" shortName="Phase" longName="LFO Phase Difference" min="4" max="124" translator="degrees" unit="°"/>
-		<parameter id="phaseshift_offset" shortName="Shift" longName="Phase Shift Offset"/>
-		<parameter id="delay_offset" shortName="DlOfs" longName="Delay Offset" translator="table2" unit="ms"/>
-
-		<parameter id="drive" shortName="Drive" longName="Drive"/>
-		<parameter id="output_level" shortName="Level" longName="Output Level" translator="table18"/>
-		<parameter id="amp_type" shortName="Type" longName="Amp Type" translator="amp_type"/>
-		<parameter id="am_depth" shortName="AMDep" longName="AM Depth"/>
-		<parameter id="pm_depth" shortName="PMDep" longName="PM Depth"/>
-		<parameter id="lr_depth" shortName="L/R" longName="L/R Depth"/>
-		<parameter id="fr_depth" shortName="F/R" longName="F/R Depth"/>
-		<parameter id="pan_direction" shortName="Dir" longName="Pan Direction" translator="pan_direction"/>
-		<parameter id="stage" shortName="Stage" longName="Stage" min="4" max="22"/>
-
-		<parameter id="eq_width" shortName="Width" longName="EQ Band Width" min="10" max="120" translator="div10"/>
-
-		<parameter id="mp_bank_msb" longName="Bank Select MSB" shortName="bankM"/>
-		<parameter id="mp_bank_lsb" longName="Bank Select LSB" shortName="bankL"/>
-		<parameter id="velocitylimit_lo" shortName="LimLo" longName="Velocity Limit Low"/>
-		<parameter id="velocitylimit_hi" shortName="LimHi" longName="Velocity Limit High"/>
-		<parameter id="pat_control_depth" longName="Polyphonic Aftertouch Control Depth" shortName="PAT" translator="sub64" origin="64"/>
-
-
-	</parameters>
--->
 	<module name="Master" address="0/0/0-6">
 		<bulk address="//0-6">
-			<opcode xsi:type="immutable" address="//0-3" byteType="LSN" name="Master Tune" shortName="Tune" max="2047" origin="1024" translator="sub1024div10" unit="cnt"/>
-			<opcode xsi:type="immutable" address="//4" name="Volume" shortName="Vol"/>
-			<opcode xsi:type="immutable" address="//5" name="Attenuator" shortName="Damp"/>
-			<opcode xsi:type="immutable" address="//6" name="Transpose" shortName="Xpose" min="40" max="88" origin="64" translator="sub64" unit="st"/>
+			<opcode xsi:type="immutable" address="//0-3" byteType="LSN" name="Master Tune" shortName="Tune" max="2047" default="1024" origin="1024" translator="sub1024div10" unit="cnt"/>
+			<opcode xsi:type="immutable" address="//4" name="Volume" shortName="Vol" default="100"/>
+			<opcode xsi:type="immutable" address="//5" name="Attenuator" shortName="Damp" default="0"/>
+			<opcode xsi:type="immutable" address="//6" name="Transpose" shortName="Xpose" min="40" max="88" default="64" origin="64" translator="sub64" unit="st"/>
 		</bulk>
 	</module>
 
-	<module name="Reverb" address="2/1/0-21" info1="2/1/0" info2="2/1/13" info3="2/1/12">
+	<module name="Reverb" address="2/1/0-21">
+		<info address="2/1/0"/>
+		<info address="2/1/13"/>
+		<info address="2/1/12"/>
 		<bulk address="//0-13">
 			<opcode xsi:type="immutable" address="//0-1" name="Reverb Program" shortName="Prog" max="127.127" translator="fx_programs" tableFilter="reverb"/>
 			<opcode xsi:type="mutable" address="//2" parameterSelector="2/1/0" parameters="fx_parameter_1" defaultSelector="2/1/0" defaults="fx_parameter_1"/><!-- rev01 -->
@@ -127,7 +39,10 @@
 		</bulk>
 	</module>
 
-	<module name="Chorus" address="2/1/32-53" info1="2/1/32" info2="2/1/45" info3="2/1/44">
+	<module name="Chorus" address="2/1/32-53">
+		<info address="2/1/32"/>
+		<info address="2/1/45"/>
+		<info address="2/1/44"/>
 		<bulk address="//32-46">
 			<opcode xsi:type="immutable" address="//32-33" name="Chorus Program" shortName="Prog" max="127.127" translator="fx_programs" tableFilter="chorus"/>
 			<opcode xsi:type="mutable" address="//34" parameterSelector="2/1/32" parameters="fx_parameter_1" defaultSelector="2/1/32" defaults="fx_parameter_1"/><!-- cho01 -->
@@ -154,7 +69,10 @@
 		</bulk>
 	</module>
 
-	<module name="Variation" info1="2/1/64" info2="2/1/90" info3="2/1/86" address="2/1/64-117">
+	<module name="Variation" address="2/1/64-117">
+		<info address="2/1/64"/>
+		<info address="2/1/90"/>
+		<info address="2/1/86"/>
 		<bulk address="//64-96">
 			<opcode xsi:type="immutable" address="//64-65" name="Variation Program" shortName="Prog" max="127.127" translator="fx_programs" tableFilter="variation"/>
 			<opcode xsi:type="mutable" address="//66-67" parameterSelector="2/1/64" parameters="fx_parameter_1" defaultSelector="2/1/64" defaults="fx_parameter_1"/><!-- var01 -->
@@ -196,6 +114,7 @@
 	</module>
 
 	<module name="Multi EQ" address="2/64/">
+		<info address="2/64/0"/>
 		<bulk address="//0-20">
 			<opcode xsi:type="immutable" address="//0" name="EQ Type" shortName="Type" max="4" translator="eq_program"/>
 			<opcode xsi:type="immutable" address="//1" name="EQ Gain 1" shortName="Gain1" min="52" max="76" translator="sub64" origin="64" unit="dB" defaultSelector="2/64/0" defaults="eq_gain1"/>
@@ -221,7 +140,9 @@
 		</bulk>
 	</module>
 
-	<module name="Insertion" address="3/0-1/" info1="3//0" info2="3//12">
+	<module name="Insertion" address="3/0-1/">
+		<info address="3//0"/>
+		<info address="3//12"/>
 		<bulk address="//0-17">
 			<opcode xsi:type="immutable" address="//0-1" name="Insertion Program" shortName="Prog" max="127.127" translator="fx_programs" tableFilter="insertion"/>
 			<opcode xsi:type="mutable" address="//2" parameterSelector="3//0" parameters="fx_parameter_1" defaultSelector="3//0" defaults="fx_parameter_1"/><!-- ins01 -->
@@ -268,15 +189,18 @@
 			<opcode xsi:type="mutable" address="//66-67" parameterSelector="3//0" parameters="fx_parameter_10" defaultSelector="3//0" defaults="fx_parameter_10"/><!-- ins10 -->
 		</bulk>
 	</module>
-	<module name="Multipart" address="8-10/0-63/" translator="add1" info1="8//4" info2="8//7" info3="8//1">
+	<module name="Multipart" address="8-10/0-63/" translator="add1">
+		<info address="8//4"/>
+		<info address="8//7"/>
+		<info address="8//1"/>
 		<bulk address="8//0-40">
 			<opcode xsi:type="immutable" address="//0" name="Element Reserve" shortName="ElRes" max="32"/>
-			<opcode xsi:type="mutable" address="//1-3" parameterSelector="8//7" parameters="mp_partmode" after_edit="bulk"/>
-			<opcode xsi:type="immutable" address="//4" name="Midi Channel" shortName="Ch" translator="midi_channels"/>
+			<opcode xsi:type="mutable" address="//1-3" parameterSelector="8//7" parameters="mp_partmode" defaultSelector="8//7" defaults="mp_partmode"  after_edit="bulk"/>
+			<opcode xsi:type="immutable" address="//4" name="Midi Channel" shortName="Ch" defaults="id" translator="midi_channels"/>
 			<opcode xsi:type="immutable" address="//5" name="Ployphony" shortName="Poly" translator="mp_monopoly"/>
 			<opcode xsi:type="immutable" address="//6" name="Same Note Number Key On Assign" shortName="KeyOn" translator="key_on_assign"/>
-			<opcode xsi:type="immutable" address="//7" after_send="module_request" name="Part Mode" shortName="Mode" translator="mp_partmode"/>
-			<opcode xsi:type="immutable" address="//8" name="Transpose" shortName="Xpose" min="40" max="88" origin="64" translator="sub64" unit="st"/>
+			<opcode xsi:type="immutable" address="//7" name="Part Mode" shortName="Mode" defaults="mp_partmode" translator="mp_partmode"/>
+			<opcode xsi:type="immutable" address="//8" name="Transpose" shortName="Xpose" min="40" max="88" origin="64" default="64" translator="sub64" unit="st"/>
 			<opcode xsi:type="immutable" address="//9-10" byteType="LSN" name="Detune" shortName="Tune" max="255" translator="sub128div10" unit="Hz"/>
 			<opcode xsi:type="immutable" address="//11" name="Volume" shortName="Vol"/>
 			<opcode xsi:type="immutable" address="//12" name="Velocity Sense Depth" shortName="Depth"/>
@@ -471,6 +395,7 @@
 	</module>
 
 	<module name="A/D-Part" translator="add1" address="16-18/0-1/">
+		<info address="16//0"/>
 		<bulk address="16//0-20">
 			<opcode xsi:type="immutable" address="//0" name="Input Gain" max="1" translator="input_gain"/>
 			<opcode xsi:type="immutable" address="//1-3" name="Preset" min="0" max="0.127.127" default="0" translator="ad_presets" after_edit="bulk"/>

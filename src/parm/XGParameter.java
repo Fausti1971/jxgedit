@@ -1,16 +1,16 @@
 package parm;
 import java.io.*;
-import application.XGLoggable;
+import application.*;
 import device.XGDevice;
 import parm.XGTable.Preference;
-import xml.XMLNode;
+import static parm.XGTable.TABLES;import xml.XMLNode;
 
 public class XGParameter implements XGLoggable, XGParameterConstants
 {
-	public static XMLNode init(XGDevice dev)
+	public static XMLNode init()
 	{
 		try
-		{	return XMLNode.parse(dev.getResourceFile(XML_PARAMETER));
+		{	return XMLNode.parse(JXG.getResourceFile(XML_PARAMETER));
 		}
 		catch(IOException e)
 		{	LOG.info(e.getMessage());
@@ -26,8 +26,8 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	private final String unit;
 	private final boolean isValid;
 
-	public XGParameter(XGDevice dev, XMLNode n)
-	{	this.translationTable = dev.getTables().getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);
+	public XGParameter(XMLNode n)
+	{	this.translationTable = TABLES.getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);
 //		if(this.translationTable == null) throw new RuntimeException("no table: " + this);
 
 		int minValue = n.getValueAttribute(ATTR_MIN, DEF_MIN);

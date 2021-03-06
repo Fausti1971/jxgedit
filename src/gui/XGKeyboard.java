@@ -20,8 +20,8 @@ import adress.XGAddress;
 import device.XGDevice;
 import device.XGMidi;
 import module.XGModule;
-import value.XGValue;
-import xml.XMLNode;
+import static parm.XGTable.TABLES;import value.XGValue;
+import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGKeyboard extends XGFrame implements XGUI
 {
@@ -46,7 +46,6 @@ public class XGKeyboard extends XGFrame implements XGUI
 /******************************************************************************************************************************************/
 
 	private final XGValue partmodeValue, minKeyValue, maxKeyValue, midiChannelValue;
-	private final XGDevice device;
 	private final Map<Integer, XGKey> keyMap = new HashMap<>();
 	private final JPanel panel = new JPanel(null);
 	private final JScrollPane scrollpane = new JScrollPane(this.panel);
@@ -55,11 +54,10 @@ public class XGKeyboard extends XGFrame implements XGUI
 
 	protected XGKeyboard(XMLNode n, XGModule mod) throws InvalidXGAddressException
 	{	super(n);
-		this.device = mod.getType().getDevice();
-		this.partmodeValue = this.device.getValues().get(PARTMODEADDRESS.complement(mod.getAddress()));
-		this.midiChannelValue = this.device.getValues().get(MIDICHANNELADDRESS.complement(mod.getAddress()));
-		this.minKeyValue = this.device.getValues().get(MINKEYADDRESS.complement(mod.getAddress()));
-		this.maxKeyValue = this.device.getValues().get(MAXKEYADDRESS.complement(mod.getAddress()));
+		this.partmodeValue = STORE.get(PARTMODEADDRESS.complement(mod.getAddress()));
+		this.midiChannelValue = STORE.get(MIDICHANNELADDRESS.complement(mod.getAddress()));
+		this.minKeyValue = STORE.get(MINKEYADDRESS.complement(mod.getAddress()));
+		this.maxKeyValue = STORE.get(MAXKEYADDRESS.complement(mod.getAddress()));
 
 		this.partmodeValue.addValueListener((XGValue)->{this.partmodeChanged();});
 		this.minKeyValue.addValueListener((XGValue)->{this.minKeyChanged();});
@@ -99,7 +97,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 	private boolean sendMessage(int status, XGKey num)
 	{	try
 		{	this.message.setMessage(status | this.midiChannelValue.getValue(), num.number, DEF_VELOCITY);
-			((XGMidi)this.device.getMidi()).transmit(this.message);
+			(XGMidi.getMidi()).transmit(this.message);
 			return true;
 		}
 		catch(InvalidMidiDataException e)
@@ -113,7 +111,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 	}
 
 	private String getKeyText(XGKey key)
-	{	return this.device.getTables().get("tones").getByIndex(key.getNumber()).getName();
+	{	return TABLES.get("tones").getByIndex(key.getNumber()).getName();
 	}
 
 	private void maxKeyChanged()
