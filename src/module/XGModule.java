@@ -26,15 +26,7 @@ import parm.*;import tag.*;import value.*;import static value.XGValueStore.STORE
 
 public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper
 {
-	public static final XGAddressableSet<XGModule> INSTANCES = new XGAddressableSet<>();//Instanzen
-
-	public static XGAddressableSet getModule(XGModuleType type)
-	{	XGAddressableSet<XGModule> set = new XGAddressableSet<>();
-		for(XGModule m : INSTANCES)
-		{	if(m.getType().equals(type)) set.add(m);
-		}
-		return set;
-	}
+//	public static final XGAddressableSet<XGModule> INSTANCES = new XGAddressableSet<>();//Instanzen
 
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
@@ -49,7 +41,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 
 /***************************************************************************************************************/
 
-	private final Set<XGValue> infoValues = new LinkedHashSet<>();
+//	private final Set<XGValue> infoValues = new LinkedHashSet<>();
 	private final XGAddress address;
 	private final XGModuleType type;
 	//private XGWindow window;
@@ -59,11 +51,11 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
 
-		for(XGOpcode opc : this.type.getInfoOpcodes())
-		{	for(XGValue v : this.getValues())
-			{	if(v.getOpcode().equals(opc)) this.infoValues.add(v);
-			}
-		}
+		//for(String tag : this.type.getInfoOpcodes())
+		//{	for(XGValue v : this.getValues())
+		//	{	if(v.getTag().equals(tag)) this.infoValues.add(v);
+		//	}
+		//}
 	}
 
 	public XGModuleType getType()

@@ -6,7 +6,7 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 {
 	private final XGModuleType type;
 	private final Vector<XGModule> rows;
-	private final Vector<XGOpcode> cols;
+	private final Vector<String> cols;
 	private Set<TableModelListener> listeners = new HashSet<>();
 
 	XGModuleTableModel(XGModuleType t)
@@ -18,7 +18,7 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 
 	private int getColumn(String tag)
 	{	for(int i = 1; i < this.cols.size(); i++)
-			if(this.cols.get(i).getTag().equals(tag)) return i;
+			if(this.cols.get(i).equals(tag)) return i;
 		return -1;
 	}
 
@@ -45,7 +45,7 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 
 	public Object getValueAt(int r,int c)
 	{	if(c == 0) return this.rows.get(r).getTranslatedID();
-		String s = this.cols.get(c).getTag();
+		String s = this.cols.get(c);
 		XGValue v = this.rows.get(r).getValues().get(s);
 		v.addValueListener(this);
 		return v;

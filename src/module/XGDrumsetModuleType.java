@@ -22,11 +22,12 @@ public class XGDrumsetModuleType extends XGModuleType
 		int i = 48;
 		try
 		{	i = this.address.getHi().getValue();
-			this.id.append(" " + (48 - i));
+			int nr = i - 47;
+			this.id.append(" ").append(nr);
+			this.name.append(" ").append(nr);
 		}
 		catch(InvalidXGAddressException e)
 		{	LOG.severe(e.getMessage());
-			return;
 		}
 	}
 }

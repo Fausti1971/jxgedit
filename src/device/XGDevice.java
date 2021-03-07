@@ -26,7 +26,7 @@ import gui.XGWindow;
 import module.XGDrumsetModuleType;
 import module.XGModule;
 import module.XGModuleType;
-import msg.*;
+import static module.XGModuleType.TYPES;import msg.*;
 import parm.XGDefaultsTable;
 import parm.XGOpcode;
 import parm.XGParameterTable;
@@ -118,7 +118,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 	private void resetXG()
 	{	try
 		{	new XGMessageParameterChange(STORE, XGMidi.getMidi(), new byte[]{0,0,0,0,0,0,0x7E,0,0}, true).transmit();
-			for(XGModuleType mt : XGModuleType.TYPES) mt.resetValues();
+			for(XGModuleType mt : TYPES) mt.resetValues();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
@@ -128,7 +128,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 	private void resetGM()
 	{	try
 		{	XGMidi.getMidi().transmit(new SysexMessage(new byte[]{(byte)0xF0,0x7E,0x7F,0x09,0x01,(byte)0xF7}, 6));
-			for(XGModuleType mt : XGModuleType.TYPES) mt.resetValues();
+			for(XGModuleType mt : TYPES) mt.resetValues();
 		}
 		catch(InvalidMidiDataException e)
 		{	e.printStackTrace();
@@ -138,7 +138,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 	private void resetAll()
 	{	try
 		{	new XGMessageParameterChange(STORE, XGMidi.getMidi(), new byte[]{0,0,0,0,0,0,0x7F,0,0}, true).transmit();
-			for(XGModuleType mt : XGModuleType.TYPES) mt.resetValues();
+			for(XGModuleType mt : TYPES) mt.resetValues();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
@@ -227,7 +227,9 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 
 	@Override public XGAddressableSet<XGAddress> getBulks()
 	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
-		for(XGModule mi : XGModule.INSTANCES) set.addAll(mi.getBulks());
+		for(XGModuleType mt : TYPES)
+			for(XGModule mi : mt.getModules())
+				set.addAll(mi.getBulks());
 		return set;
 	}
 }

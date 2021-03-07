@@ -3,12 +3,18 @@ package value;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
 import application.*;
-import static application.ConfigurationConstants.APPNAME;import device.XGDevice;
-import module.*;import static module.XGModule.INSTANCES;import static module.XGModuleType.TYPES;import msg.XGMessage;
+import static application.ConfigurationConstants.APPNAME;
+import module.*;
+import static module.XGModuleType.TYPES;
+import msg.XGMessage;
 import msg.XGMessenger;
 import msg.XGMessengerException;
 import msg.XGRequest;
-import msg.XGResponse;import parm.*;import static parm.XGOpcode.OPCODES;import xml.*;import static xml.XMLNodeConstants.*;import java.io.*;
+import msg.XGResponse;
+import parm.*;
+import xml.*;
+import static xml.XMLNodeConstants.*;
+import java.io.*;
 
 public class XGValueStore extends XGAddressableSet<XGValue> implements XGMessenger, XGLoggable
 {
@@ -46,21 +52,20 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	{	for(XGModuleType mt : TYPES)
 		{	for(int id : mt.getAddress().getMid())
 			{	try
-				{	for(XGOpcode opc : OPCODES)
+				{	for(XGOpcode opc : mt.getOpcodes())
 					{	if(opc.getModuleType().equals(mt)) STORE.add(new XGValue(opc, id));
 					}
 					XGModule mod = new XGModule(mt, id);
-					INSTANCES.add(mod);
+					mt.getModules().add(mod);
 					for(XGValue val : mod.getValues()) val.initValueDepencies();
 				}
 				catch(InvalidXGAddressException e)
 				{	LOG.warning(e.getMessage());
 				}
 			}
+			LOG.info(mt.getModules().size() + " " + mt + "-Modules initialized");
 		}
 		for(XGValue v : STORE) v.setDefaultValue();
-
-		LOG.info(INSTANCES.size() + " Modules initialized");
 		LOG.info(STORE.size() + " Values initialized");
 	}
 

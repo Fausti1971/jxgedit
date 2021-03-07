@@ -10,9 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="Default Changelist" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JXG.iml" beforeDir="false" afterPath="$PROJECT_DIR$/JXG.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" afterDir="false" />
@@ -40,31 +38,24 @@
       <change beforePath="$PROJECT_DIR$/out/production/JXG/value/XGValue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/value/XGValue.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/value/XGValueStore.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/value/XGValueStore.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/xml/XMLNodeConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/xml/XMLNodeConstants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/parameter.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/parameter.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/structure.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/structure.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/structure.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/structure.xsd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/tables.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/tables.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/file/XGSysexFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGSysexFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/parm/XGOpcode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGOpcode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tag/XGTagableAddressableSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tag/XGTagableAddressableSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/value/XGValueStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValueStore.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="module" />
+    </option>
   </component>
   <component name="FavoritesManager">
     <favorites_list name="MU80" />
@@ -250,7 +241,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615054222226</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Backup vor Umbau Hierarchie;">
+      <created>1615140636150</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1615140636150</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -334,7 +332,8 @@
     <MESSAGE value="backup single" />
     <MESSAGE value="FileHandling umgestellt (für interne (jar) und externe Files);" />
     <MESSAGE value="Table begonnen; Backup vor (Wieder-)Einführung von ID-Tags;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Table begonnen; Backup vor (Wieder-)Einführung von ID-Tags;" />
+    <MESSAGE value="Backup vor Umbau Hierarchie;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Backup vor Umbau Hierarchie;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

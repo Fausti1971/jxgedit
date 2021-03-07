@@ -18,7 +18,7 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import msg.XGBulkDumper;
 import parm.XGOpcode;
-import static parm.XGOpcode.OPCODES;import parm.XGTable;
+import parm.XGTable;
 import static parm.XGTable.TABLES;import tag.*;import xml.XMLNode;
 
 /**
@@ -41,9 +41,10 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 /********************************************************************************************************************/
 
-	private final Set<XGOpcode> infoOpcodes = new LinkedHashSet<>();
-	protected final String name;
-	protected final StringBuffer id;
+	private final Set<String> infoOpcodes = new LinkedHashSet<>();
+	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<>();
+	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();
+	protected final StringBuffer name, id;
 	protected final XGAddress address;
 	protected final XGTable idTranslator;
 	private final XMLNode config;
@@ -52,7 +53,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	public XGModuleType(XMLNode cfg, XGAddress adr, String name)
 	{	this.config = cfg;
 		this.address = adr;
-		this.name = name;
+		this.name = new StringBuffer(name);
 		this.id = cfg.getStringBufferAttributeOrNew(ATTR_ID, "missing id " + adr);
 		this.idTranslator = TABLES.get(cfg.getStringAttribute(ATTR_TRANSLATOR));
 
@@ -61,7 +62,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 			this.bulks.add(a);
 			for(XMLNode o : x.getChildNodes(TAG_OPCODE))
 			{	try
-				{	OPCODES.add(new XGOpcode(this, a, o));
+				{	this.opcodes.add(new XGOpcode(this, a, o));
 				}
 				catch(InvalidXGAddressException e)
 				{	LOG.severe(e.getMessage());
@@ -70,7 +71,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		}
 
 		for(XMLNode n : cfg.getChildNodes(TAG_INFO))
-		{	XGOpcode opc = OPCODES.get(n.getStringAttribute(ATTR_REF));
+		{	String opc = n.getStringAttribute(ATTR_REF);
 			if(opc != null) this.infoOpcodes.add(opc);
 		}
 	}
@@ -80,10 +81,14 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	}
 
 	public XGAddressableSet<XGModule> getModules()
-	{	return XGModule.INSTANCES.getAllIncluded(this.address);
+	{	return this.modules;
 	}
 
-	public Set<XGOpcode> getInfoOpcodes()
+	public XGTagableAddressableSet<XGOpcode> getOpcodes()
+	{	return this.opcodes;
+	}
+
+	public Set<String> getInfoOpcodes()
 	{	return this.infoOpcodes;
 	}
 
@@ -92,7 +97,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	}
 
 	public String getName()
-	{	return this.name;
+	{	return this.name.toString();
 	}
 
 	//public XGAddressableSet<XGOpcode> getOpcodes()
@@ -116,7 +121,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	//}
 
 	@Override public String toString()
-	{	return this.name;
+	{	return this.name.toString();
 	}
 
 	@Override public XGAddress getAddress()

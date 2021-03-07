@@ -16,7 +16,7 @@ import xml.XMLNode;
 public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants, XGCategorizeable, Configurable, XGTagable
 {
 
-	public static final XGTagableAddressableSet<XGOpcode> OPCODES = new XGTagableAddressableSet<XGOpcode>();//Prototypen
+//	public static final XGTagableAddressableSet<XGOpcode> OPCODES = new XGTagableAddressableSet<XGOpcode>();//Prototypen
 
 
 /*******************************************************************************************************************************/
