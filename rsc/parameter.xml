@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<parameterTables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="parameter.xsd">
+<parameterTables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../rsc/parameter.xsd">
 	<parameterTable name="fx_parameter_1">
 		<parameter selectorValue="118.0" name="Input Level" min="0" max="127"/>
 		<parameter selectorValue="7.0" name="Lch Delay1" min="1" max="3550" unit="ms"/>
@@ -31,7 +31,7 @@
 		<parameter selectorValue="81.0" name="HPF Cutoff" min="28" max="58" translator="table3" unit="Hz"/>
 		<parameter selectorValue="98.2" name="Overdrive" min="0" max="100" unit="%"/>
 		<parameter selectorValue="91.0" name="Mode" min="0" max="3"/>
-		<parameter selectorValue="127.3" name="Wide" min="64" max="94" unit="deg"/>
+		<parameter selectorValue="127.3" name="Wide" min="64" max="94" unit="°"/>
 		<parameter selectorValue="73.1" name="Drive" min="0" max="127"/>
 		<parameter selectorValue="93.0" name="Vowel" min="0" max="4"/>
 		<parameter selectorValue="107.0" name="LFO Freq" min="5" max="21" translator="table14"/>

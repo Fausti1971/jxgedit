@@ -15,6 +15,7 @@
 				<xs:element ref="info" minOccurs="0" maxOccurs="unbounded"/>
 				<xs:element ref="bulk" maxOccurs="unbounded"/>
 			</xs:sequence>
+		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="name" use="required" type="xs:string"/>
 		<xs:attribute name="address" use="required" type="moduleAddress"/>
 		<xs:attribute name="translator" use="optional" type="xs:string"/>
@@ -23,7 +24,7 @@
 
 	<xs:element name="info">
 		<xs:complexType>
-			<xs:attribute name="address" type="valueAddress"/>
+			<xs:attribute name="ref" type="xs:IDREF"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -113,6 +114,7 @@
 	</xs:simpleType>
 
 	<xs:attributeGroup name="opcodeAttribute">
+		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="address" use="required" type="opcodeAddress"/>
 		<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
 		<xs:attribute name="defaultSelector" use="optional" type="valueAddress"/>

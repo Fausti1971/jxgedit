@@ -5,7 +5,7 @@ import adress.XGAddress;
 import adress.XGAddressableSet;
 import gui.XGPoint.PointRelation;
 import module.XGModule;
-import value.XGFixedValue;
+import tag.*;import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
@@ -41,7 +41,7 @@ public class XGMEQ extends XGFrame
 	{	super(n);
 		this.borderize();
 
-		XGAddressableSet<XGValue> set = mod.getValues();
+		XGTagableAddressableSet<XGValue> set = mod.getValues();
 		this.g1 = set.get(G1);
 		this.g2 = set.get(G2);
 		this.g3 = set.get(G3);

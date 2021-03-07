@@ -144,10 +144,10 @@ public class XGMainWindow extends JFrame implements WindowListener, ComponentLis
 		sysPane.add(eb, gbc);
 
 		JTabbedPane tabPane = new JTabbedPane();
-		XGAddress[] adr = new XGAddress[]{XGModuleTable.MULTIPARTADDRESS, XGModuleTable.ADPARTADDRESS, XGModuleTable.INSERTIONADDRESS, XGModuleTable.PLUGINADDRESS};
-		for(XGAddress a : adr)
+		String[] adr = {"mp", "ad", "ins", "plugin"};
+		for(String s : adr)
 		{	XGModuleType t = null;
-			t = TYPES.getFirstIncluding(a);
+			t = TYPES.get(s);
 				if(t != null) tabPane.addTab(t.getName(), new JScrollPane(new XGModuleTable(t)));
 			}
 

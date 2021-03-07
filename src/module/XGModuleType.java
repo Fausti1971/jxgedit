@@ -18,18 +18,17 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import msg.XGBulkDumper;
 import parm.XGOpcode;
-import parm.XGTable;
-import static parm.XGTable.TABLES;import xml.XMLNode;
+import static parm.XGOpcode.OPCODES;import parm.XGTable;
+import static parm.XGTable.TABLES;import tag.*;import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen
  * @author thomas
  *
  */
-public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper, Configurable
+public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper, Configurable, XGTagable
 {
-	public static final XGAddressableSet<XGModuleType> TYPES = new XGAddressableSet<>();//Prototypen (inkl. XGAddress bulks); initialisiert auch XGOpcodes
-
+	public static final XGTagableAddressableSet<XGModuleType> TYPES = new XGTagableAddressableSet<>();//Prototypen (inkl. XGAddress bulks); initialisiert auch XGOpcodes
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 	static
@@ -42,8 +41,9 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 /********************************************************************************************************************/
 
-	private final Set<XGAddress> infoAddresses = new LinkedHashSet<>();
+	private final Set<XGOpcode> infoOpcodes = new LinkedHashSet<>();
 	protected final String name;
+	protected final StringBuffer id;
 	protected final XGAddress address;
 	protected final XGTable idTranslator;
 	private final XMLNode config;
@@ -53,22 +53,25 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	this.config = cfg;
 		this.address = adr;
 		this.name = name;
+		this.id = cfg.getStringBufferAttributeOrNew(ATTR_ID, "missing id " + adr);
 		this.idTranslator = TABLES.get(cfg.getStringAttribute(ATTR_TRANSLATOR));
-
-		for(XMLNode n : cfg.getChildNodes(TAG_INFO))
-			this.infoAddresses.add(new XGAddress(n.getStringAttribute(ATTR_ADDRESS)));
 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))
 		{	XGAddress a = new XGAddress(x.getStringAttribute(ATTR_ADDRESS), this.address);
 			this.bulks.add(a);
 			for(XMLNode o : x.getChildNodes(TAG_OPCODE))
 			{	try
-				{	XGOpcode.OPCODES.add(new XGOpcode(this, a, o));
+				{	OPCODES.add(new XGOpcode(this, a, o));
 				}
 				catch(InvalidXGAddressException e)
 				{	LOG.severe(e.getMessage());
 				}
 			}
+		}
+
+		for(XMLNode n : cfg.getChildNodes(TAG_INFO))
+		{	XGOpcode opc = OPCODES.get(n.getStringAttribute(ATTR_REF));
+			if(opc != null) this.infoOpcodes.add(opc);
 		}
 	}
 
@@ -80,8 +83,8 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	return XGModule.INSTANCES.getAllIncluded(this.address);
 	}
 
-	public Set<XGAddress> getInfoAddresses()
-	{	return this.infoAddresses;
+	public Set<XGOpcode> getInfoOpcodes()
+	{	return this.infoOpcodes;
 	}
 
 	@Override public XMLNode getConfig()
@@ -92,9 +95,9 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	return this.name;
 	}
 
-	public XGAddressableSet<XGOpcode> getOpcodes()
-	{	return XGOpcode.OPCODES.getAllIncluded(this.address);
-	}
+	//public XGAddressableSet<XGOpcode> getOpcodes()
+	//{	return XGOpcode.OPCODES.getAllIncluded(this.address);
+	//}
 
 	public XGAddressableSet<XGAddress> getBulkAdresses()
 	{	return this.bulks;
@@ -124,5 +127,9 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
 		for(XGModule m : this.getModules()) set.addAll(m.getBulks());
 		return set;
+	}
+
+	public String getTag()
+	{	return this.id.toString();
 	}
 }

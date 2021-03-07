@@ -266,8 +266,9 @@ public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, R
 				}
 				return;
 			}
+			else STORE.submit(m);
 		}
-		catch(InvalidMidiDataException|InvalidXGAddressException e)
+		catch(InvalidMidiDataException | InvalidXGAddressException | XGMessengerException e)
 		{	LOG.info(e.getMessage());
 		}
 	}
@@ -308,7 +309,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, R
 	}
 
 	@Override public String getMessengerName()
-	{	return this.getInputName();
+	{	return "MIDI" + " (" + this.getInputName() + ")";
 	}
 
 	public JComponent getConfigComponent()

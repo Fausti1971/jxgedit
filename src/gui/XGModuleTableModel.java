@@ -1,19 +1,25 @@
 package gui;
 
-import adress.*;import static application.XGLoggable.LOG;import module.*;import parm.*;import value.*;import xml.*;import javax.swing.event.*;import javax.swing.table.*;import java.util.*;
+import adress.*;import static application.XGLoggable.LOG;import module.*;import parm.*;import tag.*;import value.*;import xml.*;import javax.swing.event.*;import javax.swing.table.*;import java.util.*;
 
 public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 {
 	private final XGModuleType type;
 	private final Vector<XGModule> rows;
-	private final Vector<XGAddress> cols;
+	private final Vector<XGOpcode> cols;
 	private Set<TableModelListener> listeners = new HashSet<>();
 
 	XGModuleTableModel(XGModuleType t)
 	{	this.type = t;
-		this.rows = new Vector<>(XGModule.INSTANCES.getAllIncluded(type.getAddress()));
-		this.cols = new Vector<>(this.type.getInfoAddresses());
+		this.rows = new Vector<>(this.type.getModules());
+		this.cols = new Vector<>(this.type.getInfoOpcodes());
 		this.cols.add(0, null);
+	}
+
+	private int getColumn(String tag)
+	{	for(int i = 1; i < this.cols.size(); i++)
+			if(this.cols.get(i).getTag().equals(tag)) return i;
+		return -1;
 	}
 
 	public int getRowCount()
@@ -26,35 +32,23 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 
 	public String getColumnName(int i)
 	{	if(i == 0) return ("ID");
-		try
-		{	return XGValueStore.STORE.getFirstIncluded(this.cols.get(i)).getParameter().getName();
-		}
-		catch(XGMemberNotFoundException e)
-		{	LOG.info(e.getMessage());
-			return "" + i;
-		}
+		return ((XGValue)this.getValueAt(0, i)).getParameter().getName();
 	}
 
 	public Class<?> getColumnClass(int i)
-	{	return XGParameter.class;
+	{	return XGOpcode.class;
 	}
 
-	public boolean isCellEditable(int i,int i1)
+	public boolean isCellEditable(int r,int c)
 	{	return false;
 	}
 
 	public Object getValueAt(int r,int c)
 	{	if(c == 0) return this.rows.get(r).getTranslatedID();
-		try
-		{	XGAddress adr = this.rows.get(r).getAddress().complement(this.cols.get(c));
-			XGValue v = XGValueStore.STORE.get(adr);
-			v.addValueListener(this);
-			return v;
-		}
-		catch(InvalidXGAddressException e)
-		{	LOG.severe(e.getMessage());
-		}
-		return null;
+		String s = this.cols.get(c).getTag();
+		XGValue v = this.rows.get(r).getValues().get(s);
+		v.addValueListener(this);
+		return v;
 	}
 
 	public void setValueAt(Object o,int i,int i1)
@@ -70,16 +64,19 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 	}
 
 	public void contentChanged(XGValue v)
-	{	int firstRow = -1;
+	{	int row = -1;
+		int col = 0;
 		try
-		{	firstRow = v.getAddress().getMid().getValue();
+		{	col = this.getColumn(v.getTag());
+			row = v.getAddress().getMid().getValue();
+			if(col != 0)
+			{	TableModelEvent e = new TableModelEvent(this, row, row, col, TableModelEvent.UPDATE);
+				for(TableModelListener l : this.listeners) l.tableChanged(e);
+			}
 		}
 		catch(InvalidXGAddressException e)
 		{	LOG.severe(e.getMessage());
 		}
-
-		TableModelEvent e = new TableModelEvent(this, firstRow, firstRow, -1, TableModelEvent.UPDATE);
-		for(TableModelListener l : this.listeners) l.tableChanged(e);
 	}
 }
 

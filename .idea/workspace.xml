@@ -10,145 +10,53 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="Default Changelist" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/XGReverbEditWindow.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/JXG.iml" beforeDir="false" afterPath="$PROJECT_DIR$/JXG.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/adress/XGAddressableSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/adress/XGAddressableSet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/application/ConfigurationConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/application/ConfigurationConstants.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGDevice$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/default.xsd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/device/XGDevice.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGMidi$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGMidi$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGMidi$3.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGMidi.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/device/XGMidi.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGMidiConstants.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/file/XGSysexFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/file/XGSysexFile.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGButton.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGButton.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGCombo.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGCombo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGComponent$XGGrid.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGComponent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGDeviceDetector.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGDeviceDetector.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGFileSelector.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGFileSelector.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGFlagBox.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGFlagBox.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGFrame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGKeyboard$XGKey.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGKeyboard$XGKey.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGKeyboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGKeyboard.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGKnob$XGKnobBar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGKnob$XGKnobBar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGKnob.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGKnob.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGProgramSelector.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGProgramSelector.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGRadio.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGRadio.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGRange.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGRange.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGSlider.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGSlider.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGTabFrame.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGUI$Globals.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGUI$Globals.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGAEG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGAEG.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGMEQ.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGMEQ.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGPEG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGPEG.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGScale.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGScale.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGVEG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGVEG.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGDrumsetModuleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGDrumsetModuleType.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGModule.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGModule.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGModuleConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGModuleConstants.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGModuleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGModuleType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGBulkDumper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGBulkDumper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGMessenger.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGMessenger.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGSuperMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGSuperMessage.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/old.7z" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/parameter.xsd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGOpcode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGOpcode.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGParameter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGParameter.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGParameterTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGParameterTable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGTable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGVirtualTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGVirtualTable.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/structure.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/structure.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/structure.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/structure.xsd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/value/XGValue$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/value/XGValue$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/structure.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/tables.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/tag/XGTagableAddressableSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/tag/XGTagableAddressableSet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/template.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/template.xsd" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/value/XGValue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/value/XGValue.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/value/XGValueStore.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/value/XGValueStore.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/xml/XMLNodeConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/xml/XMLNodeConstants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/META-INF/MU80.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU500/opcode.xml.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU500/parameter.xml.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU500/translation.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU500/type.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU80/default.syx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU80/opcode.xml.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU80/parameter.xml.old" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU80/template.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU80/translation.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/MU80/type.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/Reste/ByteArray.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/Reste/LKnob.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/Reste/tags" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/XG/module.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/XG/opcode.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/XG/parameter.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/XG/translation.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/XG/type.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/default.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/default.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/fxml/multipart.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/gui/XGLogo24.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/gui/XGLogo32.gif" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/gui/main.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/gui/setting.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/old.7z" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/parameter.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/parameter.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/structure.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/structure.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/tables.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/tables.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/template.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/template.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/xsd/module.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/xsd/opcode.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/xsd/parameter.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/xsd/translation.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80/xsd/type.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80:/home/thomas/Projekte/coremidi4j-1.5.jar/config.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/MU80:/home/thomas/Projekte/coremidi4j-1.5.jarconfig.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adress/XGAddressableSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adress/XGAddressableSet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/ConfigurationConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/ConfigurationConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsc/default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsc/parameter.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/parameter.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsc/structure.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/structure.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsc/structure.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/structure.xsd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsc/tables.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/tables.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGMidiConstants.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/file/XGSysexFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGSysexFile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGButton.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGButton.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGCombo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCombo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGDeviceDetector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGDeviceDetector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGFileSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGFileSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGFlagBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGFlagBox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGKeyboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKeyboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGKnob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKnob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGRadio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRadio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGRange.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRange.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSlider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGTabFrame.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGValueLabel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGValueLabel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGModuleConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleConstants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGBulkDumper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGBulkDumper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGMessenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessenger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGSuperMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGSuperMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parm/XGDefaultsTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGDefaultsTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/parm/XGOpcode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGOpcode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parm/XGParameter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGParameter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parm/XGParameterTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGParameterTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parm/XGTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parm/XGVirtualTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGVirtualTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tag/XGTagableAddressableSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tag/XGTagableAddressableSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/value/XGValueStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValueStore.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
@@ -242,7 +150,7 @@
     <property name="kotlin.migration.detection.enabled" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/rsc" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../coremidi4j-1.5.jar" />
-    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.sourceCode.XML" />
@@ -328,7 +236,21 @@
       <option name="project" value="LOCAL" />
       <updated>1614085063748</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Table begonnen; Backup vor (Wieder-)Einführung von ID-Tags;">
+      <created>1615054065863</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1615054065863</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Table begonnen; Backup vor (Wieder-)Einführung von ID-Tags;">
+      <created>1615054222226</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1615054222226</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -411,7 +333,8 @@
     <MESSAGE value="zurück aus S...&#10;minor changes" />
     <MESSAGE value="backup single" />
     <MESSAGE value="FileHandling umgestellt (für interne (jar) und externe Files);" />
-    <option name="LAST_COMMIT_MESSAGE" value="FileHandling umgestellt (für interne (jar) und externe Files);" />
+    <MESSAGE value="Table begonnen; Backup vor (Wieder-)Einführung von ID-Tags;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Table begonnen; Backup vor (Wieder-)Einführung von ID-Tags;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -422,6 +345,10 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+  </component>
+  <component name="XPathView.XPathProjectComponent">
+    <history />
+    <find-history />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/jxg$JXG.ic" NAME="JXG Coverage Results" MODIFIED="1612899571054" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />

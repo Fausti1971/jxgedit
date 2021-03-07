@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<defaultTables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="default.xsd">
+<defaultTables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../rsc/default.xsd">
 	<defaultTable name="fx_parameter_1">
 		<default selectorValue="118.0" default="80"/>
 		<default selectorValue="7.0" default="1700"/>

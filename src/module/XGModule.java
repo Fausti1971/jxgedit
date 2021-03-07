@@ -22,11 +22,19 @@ import gui.XGTreeNode;
 import gui.XGWindow;
 import gui.XGWindowSource;
 import msg.XGBulkDumper;
-import value.*;import static value.XGValueStore.STORE;
+import parm.*;import tag.*;import value.*;import static value.XGValueStore.STORE;
 
 public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper
 {
 	public static final XGAddressableSet<XGModule> INSTANCES = new XGAddressableSet<>();//Instanzen
+
+	public static XGAddressableSet getModule(XGModuleType type)
+	{	XGAddressableSet<XGModule> set = new XGAddressableSet<>();
+		for(XGModule m : INSTANCES)
+		{	if(m.getType().equals(type)) set.add(m);
+		}
+		return set;
+	}
 
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
@@ -51,14 +59,9 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
 
-		for(XGAddress adr : this.type.getInfoAddresses())
-		{	try
-			{	XGValue v = STORE.get(this.address.complement(adr));
-				this.infoValues.add(v);
-//				v.addValueListener((XGValue val)->{this.repaintNode();});
-			}
-			catch(InvalidXGAddressException e)
-			{	LOG.warning(e.getMessage());
+		for(XGOpcode opc : this.type.getInfoOpcodes())
+		{	for(XGValue v : this.getValues())
+			{	if(v.getOpcode().equals(opc)) this.infoValues.add(v);
 			}
 		}
 	}
@@ -67,12 +70,10 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	{	return this.type;
 	}
 
-	public boolean isSingleton()
-	{	return this.type.getAddress().getMid().isFix();
-	}
-
-	public XGAddressableSet<XGValue> getValues()
-	{	return STORE.getAllIncluded(this.address);
+	public XGTagableAddressableSet<XGValue> getValues()
+	{	XGTagableAddressableSet<XGValue> set = new XGTagableAddressableSet<XGValue>();
+		set.addAll(STORE.getAllIncluded(this.address));
+		return set;
 	}
 
 	public String getTranslatedID()

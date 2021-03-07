@@ -56,7 +56,8 @@ public interface XMLNodeConstants
 		ATTR_OFFSET = "offset",
 
 		TAG_INFO = "info",
-//		ATTR_ID = "id",
+		ATTR_REF = "ref",
+		ATTR_ID = "id",
 		ATTR_NAME = "name",
 
 		TAG_BULK = "bulk",
@@ -101,7 +102,6 @@ public interface XMLNodeConstants
 		TAG_ITEM = "item",
 		ATTR_VALUE = "value",
 		ATTR_SELECTORVALUE = "selectorValue",
-		ATTR_ID = "id",
 //		ATTR_MSB = "msb",
 //		ATTR_LSB = "lsb",
 

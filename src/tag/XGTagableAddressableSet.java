@@ -10,15 +10,25 @@ import application.XGLoggable;
 
 public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implements Iterable<T>, Set<T>, XGLoggable
 {
-	private XGAddressableSet<T> adrSet = new XGAddressableSet<>();
-	private XGTagableSet<T> tagSet = new XGTagableSet<T>();
+	private final XGAddressableSet<T> adrSet = new XGAddressableSet<>();
+	private final XGTagableSet<T> tagSet = new XGTagableSet<T>();
 
 	@Override public boolean add(T obj)
 	{	boolean res;
 		res = this.adrSet.add(obj);
 		res = this.tagSet.add(obj);
-		if(this.tagSet.size() != this.adrSet.size()) throw new RuntimeException("adresses/tags =" + this.adrSet.size() + "/" + this.tagSet.size() + " by: " + obj);
+		try
+		{	this.checkConsistency();
+		}
+		catch(Exception e)
+		{	LOG.severe(e.getMessage() + " caused by " + obj);
+			return false;
+		}
 		return res;
+	}
+
+	private void checkConsistency()throws Exception //TODO: Drumparameter haben unterschiedliche Adressen aber gleich Tags -> XGOpcode.OPCODES muss umziehen in die XGModuleType-Instanz
+	{	if(this.tagSet.size() != this.adrSet.size()) throw new Exception("Consistencycheck failed: " + this.adrSet.size() + " addresses/" + this.tagSet.size());
 	}
 
 	public T get(String tag)
@@ -98,18 +108,39 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 	{	boolean res = false;
 		res = this.adrSet.addAll(c);
 		res = this.tagSet.addAll(c);
+		try
+		{	this.checkConsistency();
+		}
+		catch(Exception e)
+		{	LOG.severe(e.getMessage() + " caused by " + c);
+			return false;
+		}
 		return res;
 	}
 
 	@Override public boolean retainAll(Collection<?> c)
 	{	boolean res = this.adrSet.retainAll(c);
 		res = this.tagSet.retainAll(c);
+		try
+		{	this.checkConsistency();
+		}
+		catch(Exception e)
+		{	LOG.severe(e.getMessage() + " caused by " + c);
+			return false;
+		}
 		return res;
 	}
 
 	@Override public boolean removeAll(Collection<?> c)
 	{	boolean res = this.adrSet.removeAll(c);
 		res = this.tagSet.removeAll(c);
+		try
+		{	this.checkConsistency();
+		}
+		catch(Exception e)
+		{	LOG.severe(e.getMessage() + " caused by " + c);
+			return false;
+		}
 		return res;
 	}
 

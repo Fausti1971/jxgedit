@@ -10,20 +10,20 @@ import application.XGLoggable;
 import application.XGStrings;
 import device.XGDevice;
 import module.XGModuleType;
-import tag.XGCategorizeable;
+import tag.*;
 import xml.XMLNode;
 
-public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants, XGCategorizeable, Configurable
+public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants, XGCategorizeable, Configurable, XGTagable
 {
 
-	public static final XGAddressableSet<XGOpcode> OPCODES = new XGAddressableSet<>();//Prototypen
+	public static final XGTagableAddressableSet<XGOpcode> OPCODES = new XGTagableAddressableSet<XGOpcode>();//Prototypen
 
 
 /*******************************************************************************************************************************/
 
 	private final XMLNode config;
 	private final XGModuleType moduleType;
-	private final String category;
+	private final String category, id;
 	private final XGAddress address, parameterSelectorAddress, defaultSelectorAddress;
 	private final ValueDataType dataType;
 	private final String parameterTableName, defaultTableName;
@@ -51,6 +51,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS).toString()).complement(blk.getAddress());
 		this.dataType = ValueDataType.valueOf(n.getStringAttributeOrDefault(ATTR_DATATYPE, DEF_DATATYPE.name()));
 		this.category = n.getStringAttributeOrDefault(ATTR_CATEGORY, DEF_CATEGORY);
+		this.id = n.getStringAttributeOrDefault(ATTR_ID, this.toString());
 
 		this.isMutable = MUTABLE.equals(n.getStringAttribute(ATTR_TYPE));
 		if(this.isMutable)
@@ -145,5 +146,13 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 	@Override public String getCategory()
 	{	return this.category;
+	}
+
+	public String getTag()
+	{	return this.id;
+	}
+
+	public XGModuleType getModuleType()
+	{	return moduleType;
 	}
 }

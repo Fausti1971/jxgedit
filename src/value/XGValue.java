@@ -20,13 +20,13 @@ import parm.XGParameterTable;
 import static parm.XGParameterTable.PARAMETERTABLES;import parm.XGTable;
 import parm.XGTable.Preference;
 import parm.XGTableEntry;
-import tag.XGCategorizeable;import static value.XGValueStore.STORE;
+import tag.*;import static value.XGValueStore.STORE;
 /**
  * 
  * @author thomas
  *
  */
-public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable, XGCategorizeable
+public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable, XGCategorizeable, XGTagable
 {
 	private static final XGValue DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
 
@@ -348,5 +348,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 	@Override public String getCategory()
 	{	return this.opcode.getCategory();
+	}
+
+	public String getTag()
+	{	return this.opcode.getTag();
 	}
 }

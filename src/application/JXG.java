@@ -21,8 +21,9 @@ public class JXG implements XGLoggable, XGUI
 	public static File getResourceFile(String fName) throws IOException //Merke: SAX scheint mit mac-Aliases nicht zurecht zu kommen, daher bei Bedarf Softlinks erzeugen (ln -s Quelle Ziel)
 	{	Path extPath = Paths.get(APPPATH);
 		File extFile = extPath.resolve(fName).toFile();
+		String intName = "rsc" + FILESEPERATOR + fName;
 		if(!extFile.canRead())
-		{	InputStream link = ClassLoader.getSystemResourceAsStream(fName);
+		{	InputStream link = ClassLoader.getSystemResourceAsStream(intName);
 			if(link == null) throw new IOException(fName + " in internal files not found!");
 			LOG.info(extFile + " doesn't exist; copy " + link + " to " + extFile);
 			Files.copy(link, extFile.toPath());

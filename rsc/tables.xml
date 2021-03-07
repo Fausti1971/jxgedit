@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="tables.xsd">
+<tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="../rsc/tables.xsd">
 
 	<table name="input_gain">
 		<item value="0" name="Mic"/>
