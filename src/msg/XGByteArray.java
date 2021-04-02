@@ -138,10 +138,11 @@ public interface XGByteArray
 
 	public default String toHexString()
 	{	if(getByteArray() == null) return "no data";
-		String s = new String();
+		StringBuilder s = new StringBuilder();
 		for(byte c : getByteArray())
-		{	s = s.concat(Integer.toHexString(c & 0xFF).toUpperCase() + ", ");
+		{	s.append(String.format("%02X", c & 0xFF));
+			s.append(", ");
 		}
-		return s;
+		return s.toString();
 	}
 }

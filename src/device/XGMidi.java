@@ -13,10 +13,8 @@ import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import adress.InvalidXGAddressException;
 import application.*;
-import gui.XGList;
 import msg.XGMessage;
 import msg.XGMessenger;
 import msg.XGMessengerException;
@@ -25,7 +23,6 @@ import msg.XGResponse;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
 import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
-import value.ChangeableContent;
 import static value.XGValueStore.STORE;import xml.*;
 
 public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, Receiver, AutoCloseable, XMLNodeConstants
@@ -40,7 +37,12 @@ public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, R
 
 	public static void init()
 	{	config = JXG.config.getChildNodeOrNew(TAG_MIDI);
-		MIDI = new XGMidi(config);
+		try
+{
+MIDI = new device.XGMidi(config);}catch(uk.co.xfactorylibrarians.coremidi4j.CoreMidiException e)
+{
+	e.printStackTrace();
+}
 	}
 
 	public static Set<Info> INPUTS = new LinkedHashSet<>();
@@ -127,16 +129,16 @@ public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, R
 	private int timeoutValue;
 //	private final XGMessageBuffer buffer;
 
-	public XGMidi(XMLNode cfg)
+	public XGMidi(xml.XMLNode cfg)throws uk.co.xfactorylibrarians.coremidi4j.CoreMidiException
 	{
 		this.setInput(cfg.getStringAttribute(ATTR_MIDIINPUT));
 		this.setOutput(cfg.getStringAttribute(ATTR_MIDIOUTPUT));
 		this.setTimeout(cfg.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
 
 		try
-		{	CoreMidiDeviceProvider.addNotificationListener(this);
+		{	uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider.addNotificationListener(this);
 		}
-		catch(CoreMidiException e)
+		catch(uk.co.xfactorylibrarians.coremidi4j.CoreMidiException e)
 		{	LOG.warning(e.getMessage());
 		}
 	}
@@ -156,21 +158,16 @@ public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, R
 
 	private void setOutput(MidiDevice dev)
 	{	if(this.transmitter != null) this.transmitter.close();
-		if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
-		this.midiOutput = dev;
+//		if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
 		if(dev != null)
 		{	try
-			{	dev.open();
+			{	if(!dev.isOpen()) dev.open();
+				this.midiOutput = dev;
 				this.transmitter = dev.getReceiver();
 			}
 			catch(MidiUnavailableException e)
-			{	e.printStackTrace();
-				try
-				{	this.transmitter = MidiSystem.getReceiver();
-				}
-				catch(MidiUnavailableException e1)
-				{	LOG.warning(e1.getMessage());
-				}
+			{	javax.swing.JOptionPane.showMessageDialog(null, e.getMessage() + ": " + dev.getDeviceInfo().getName(), "MIDI Output", javax.swing.JOptionPane.WARNING_MESSAGE);
+				LOG.severe(e.getMessage());
 			}
 		}
 		LOG.info(this.getOutputName());
@@ -191,21 +188,16 @@ public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, R
 	}
 
 	private void setInput(MidiDevice dev)
-	{	if(this.midiInput != null && this.midiInput.isOpen()) this.midiInput.close();
-		this.midiInput = dev;
+	{	//if(this.midiInput != null && this.midiInput.isOpen()) this.midiInput.close();
 		if(dev != null)
 		{	try
-			{	dev.getTransmitter().setReceiver(this);
-				dev.open();
+			{	if(!dev.isOpen()) dev.open();
+				dev.getTransmitter().setReceiver(this);
+				this.midiInput = dev;
 			}
 			catch(MidiUnavailableException e)
-			{	e.printStackTrace();
-				try
-				{	MidiSystem.getTransmitter().setReceiver(this);
-				}
-				catch(MidiUnavailableException e1)
-				{	LOG.warning(e1.getMessage());
-				}
+			{	javax.swing.JOptionPane.showMessageDialog(null, e.getMessage() + ": " + dev.getDeviceInfo().getName(), "MIDI Input", javax.swing.JOptionPane.WARNING_MESSAGE);
+				LOG.severe(e.getMessage());
 			}
 		}
 		LOG.info(this.getInputName());
@@ -221,12 +213,12 @@ public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, R
 	}
 
 	private String getInputName()
-	{	if(getInput() == null) return "no input device";
+	{	if(this.midiInput == null) return "no input device";
 		else return this.midiInput.getDeviceInfo().getName();
 	}
 
 	private String getOutputName()
-	{	if(getOutput() == null) return "no output device";
+	{	if(this.midiOutput == null) return "no output device";
 		else return this.midiOutput.getDeviceInfo().getName();
 	}
 

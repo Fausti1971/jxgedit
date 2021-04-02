@@ -1,28 +1,17 @@
 package module;
 
-import java.awt.Point;
-import java.awt.event.ActionEvent;
-import java.awt.event.WindowEvent;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
-import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.*;
-import device.XGDevice;
-import gui.XGComponent;
-import gui.XGTreeNode;
-import gui.XGWindow;
-import gui.XGWindowSource;
 import msg.XGBulkDumper;
-import parm.*;import tag.*;import value.*;import static value.XGValueStore.STORE;
+import tag.*;
+import value.*;
+import static value.XGValueStore.STORE;
 
 public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper
 {
@@ -44,13 +33,14 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 //	private final Set<XGValue> infoValues = new LinkedHashSet<>();
 	private final XGAddress address;
 	private final XGModuleType type;
+	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<XGValue>();
 	//private XGWindow window;
 	//private boolean selected;
 
 	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
-
+		this.values.addAll(STORE.getAllIncluded(this.address));
 		//for(String tag : this.type.getInfoOpcodes())
 		//{	for(XGValue v : this.getValues())
 		//	{	if(v.getTag().equals(tag)) this.infoValues.add(v);
@@ -63,9 +53,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	}
 
 	public XGTagableAddressableSet<XGValue> getValues()
-	{	XGTagableAddressableSet<XGValue> set = new XGTagableAddressableSet<XGValue>();
-		set.addAll(STORE.getAllIncluded(this.address));
-		return set;
+	{	return this.values;
 	}
 
 	public String getTranslatedID()

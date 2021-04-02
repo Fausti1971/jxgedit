@@ -18,18 +18,19 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 			case MSG_PC:	return new XGMessageParameterChange(src, dest, array, init);
 			case MSG_DR:	return new XGMessageBulkRequest(src, dest, array, init);
 			case MSG_PR:	return new XGMessageParameterRequest(src, dest, array, init);
-			default:		throw new InvalidMidiDataException("unknown xg message " + Arrays.toString(array));
+			default:		throw new InvalidMidiDataException("unknown xg message " + application.XGStrings.toHexString(array));
 		}
 	}
 
 	public static XGMessage newMessage(XGMessenger src, XGMessenger dest, MidiMessage msg) throws InvalidMidiDataException, InvalidXGAddressException
-	{	if(!(msg instanceof SysexMessage)) throw new InvalidMidiDataException("no sysex message: "+ Arrays.toString(msg.getMessage()));
-		return newMessage(src, dest, msg.getMessage(), false);
+	{	if(msg instanceof SysexMessage) return newMessage(src, dest, msg.getMessage(), false);
+		else throw new InvalidMidiDataException("no sysex message: " + application.XGStrings.toHexString(msg.getMessage()));
+//		Arrays.toString(msg.getMessage()));
 	}
 
 	public static void checkMessage(byte[] array) throws InvalidMidiDataException
 	{	if(array[VENDOR_OFFS] == VENDOR && array[MODEL_OFFS] == MODEL) return;
-		throw new InvalidMidiDataException("no xg message: " + Arrays.toString(array));
+		throw new InvalidMidiDataException("no xg message: " + application.XGStrings.toHexString(array));
 	}
 
 /***************************************************************************************************/

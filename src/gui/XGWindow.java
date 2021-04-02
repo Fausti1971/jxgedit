@@ -21,38 +21,20 @@ public class XGWindow extends JFrame implements XGUI, ConfigurationConstants, Wi
 
 /*************************************************************************************************************/
 
-	private final JComponent rootComponent;
-	private final XGWindowSource source;
 	private final Set<XGWindow> childWindows = new LinkedHashSet<>();
-	private final XGWindow owner;
+	private final JFrame owner;
 
-	public XGWindow(XGWindowSource src, XGWindow own, boolean mod, boolean resize, String name)
+	public XGWindow(JFrame own, String name)
 	{	super(name);
 		this.owner = own;
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
-		this.source = src;
-		this.source.setChildWindow(this);
-		this.rootComponent = src.getChildWindowContent();
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 //		this.addWindowListener(src);
 		this.addWindowListener(this);
-		this.getContentPane().add(new JScrollPane(this.rootComponent));
-		this.setLocation(src.getSourceLocationOnScreen());
 
 		this.pack();
-		this.setResizable(resize);
-		if(mod) this.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
-		this.setAlwaysOnTop(mod);
 		this.setVisible(true);
 		this.toFront();
-	}
-
-	public XGWindowSource getSource()
-	{	return this.source;
-	}
-
-	public JComponent getRootComponent()
-	{	return this.rootComponent;
 	}
 
 	private void disposeChildWindows()
@@ -63,38 +45,31 @@ public class XGWindow extends JFrame implements XGUI, ConfigurationConstants, Wi
 		}
 	}
 
-	@Override public String toString()
-	{	return this.getTitle();
-	}
-
 	@Override public void windowOpened(WindowEvent e)
-	{	if(this.source != null) this.source.windowOpened(e);
-		if(this.owner != null) this.owner.childWindows.add(this);
+	{
 	}
 
 	@Override public void windowClosing(WindowEvent e)
-	{	if(this.source != null) this.source.windowClosing(e);
-		if(this.owner != null) this.owner.childWindows.remove(this);
-		this.disposeChildWindows();
+	{
 	}
 
 	@Override public void windowClosed(WindowEvent e)
-	{	if(this.source != null) this.source.windowClosed(e);
+	{
 	}
 
 	@Override public void windowIconified(WindowEvent e)
-	{	if(this.source != null) this.source.windowIconified(e);
+	{
 	}
 
 	@Override public void windowDeiconified(WindowEvent e)
-	{	if(this.source != null) this.source.windowDeiconified(e);
+	{
 	}
 
 	@Override public void windowActivated(WindowEvent e)
-	{	if(this.source != null) this.source.windowActivated(e);
+	{
 	}
 
 	@Override public void windowDeactivated(WindowEvent e)
-	{	if(this.source != null) this.source.windowDeactivated(e);
+	{
 	}
 }

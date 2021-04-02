@@ -1,8 +1,6 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -22,7 +20,7 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import static value.XGValueStore.STORE;import xml.XMLNode;
 
-public class XGProgramSelector extends XGFrame implements XGComponent, XGParameterChangeListener, XGValueChangeListener, XGWindowSource, TreeSelectionListener
+public class XGProgramSelector extends XGFrame implements XGComponent, XGParameterChangeListener, XGValueChangeListener, TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
 
@@ -30,7 +28,6 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 
 	private final XGValue value;
 	private final XGAddress address;
-	private XGWindow window;
 	private final JButton inc = new JButton("+"), dec = new JButton("-"), select = new JButton();
 
 	public XGProgramSelector(XMLNode n, XGModule mod) throws XGMemberNotFoundException
@@ -57,15 +54,10 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 		this.add(this.dec, BorderLayout.WEST);
 
 		this.select.setText(this.value.toString());
-		this.select.addActionListener((ActionEvent e)->{this.selectionWindow();});
+		this.select.addActionListener((ActionEvent e)->{this.openDialog();});
 		this.add(this.select, BorderLayout.CENTER);
 
 		this.parameterChanged(this.value.getParameter());
-	}
-
-	private void selectionWindow()
-	{	if(this.getChildWindow() == null) new XGWindow(this, (XGWindow)SwingUtilities.windowForComponent(this), true, true, "select " + this.getName());
-		else this.getChildWindow().toFront();
 	}
 
 	@Override public void contentChanged(XGValue v)
@@ -78,16 +70,13 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 		this.borderize();
 	}
 
-	@Override public XGWindow getChildWindow()
-	{	return this.window;
-	}
+	private void openDialog()
+	{	javax.swing.JDialog d = new javax.swing.JDialog();
+		d.setLocationRelativeTo(this);
+		d.setModal(true);
+		d.setTitle("select " + this.value.getParameter().getName());
 
-	@Override public void setChildWindow(XGWindow win)
-	{	this.window = win;
-	}
-
-	@Override public JComponent getChildWindowContent()
-	{	JTree t = new JTree(new XGTableTreeModel(this.value.getParameter().getTranslationTable()));
+		JTree t = new JTree(new XGTableTreeModel(this.value.getParameter().getTranslationTable()));
 
 		XGTableEntry e = this.value.getEntry();
 		Object[] o;
@@ -104,7 +93,9 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 //		this.inc.addActionListener((ActionEvent)->{t.setSelectionPath(path);};);
 		t.setShowsRootHandles(true);
 		t.setRootVisible(false);
-		return t;
+		d.setContentPane(t);
+		d.setVisible(true);
+		d.dispose();
 	}
 
 	@Override public void valueChanged(TreeSelectionEvent e)
@@ -113,9 +104,5 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 		Object o = p.getLastPathComponent();
 		if(o == null) return;
 		if(o instanceof XGTableEntry) this.value.editEntry((XGTableEntry)o);
-	}
-
-	@Override public Point getSourceLocationOnScreen()
-	{	return this.getLocationOnScreen();
 	}
 }

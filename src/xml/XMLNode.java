@@ -47,7 +47,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 					else root_node = current_node;	//falls nicht ist diese node root-node
 				}
 				if(ev.isCharacters()) if(current_node != null) current_node.setTextContent(ev.asCharacters().getData().trim());
-				if(ev.isEndElement()) if(current_node != null) current_node = current_node.getParentNode();
+				if(ev.isEndElement()) if(current_node != null) current_node = current_node.parent;
 				if(ev.isEndDocument()) LOG.info("parsing finished: " + xml);
 			}
 			rd.close();
@@ -137,7 +137,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	}
 
 	public final XMLNode getChildNode(String tag)
-	{	for(XMLNode n : this.childNodes) if(n.getTag().equals(tag)) return n;
+	{	for(XMLNode n : this.childNodes) if(n.tag.equals(tag)) return n;
 		return null;
 	}
 
@@ -155,7 +155,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	public Set<XMLNode> getChildNodes(String tag)
 	{	Set<XMLNode> set = new LinkedHashSet<>();
 		for(XMLNode x : this.childNodes)
-			if(x.getTag().equals(tag))
+			if(x.tag.equals(tag))
 				set.add(x);
 		return set;
 	}
@@ -196,13 +196,13 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	public final StringBuffer getChildNodeTextContent(String tag, String def)
 	{	XMLNode n = this.getChildNode(tag);
 		if(n == null) return new StringBuffer(def);
-		return n.getTextContent();
+		return n.content;
 	}
 
 	public int parseChildNodeIntegerContent(String tag, int def)
 	{	XMLNode n = this.getChildNode(tag);
 		if(n == null) return def;
-		return XGStrings.parseIntOrDefault(n.getTextContent().toString(), def);
+		return XGStrings.parseIntOrDefault(n.content.toString(), def);
 	}
 
 	public int parseChildNodeIntegerContentOrNew(String tag, int def)
@@ -212,7 +212,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 			n.setTextContent(def);
 			this.addChildNode(n);
 		}
-		return XGStrings.parseIntOrDefault(n.getTextContent().toString(), def);
+		return XGStrings.parseIntOrDefault(n.content.toString(), def);
 	}
 
 	public final XGProperties getAttributes()
@@ -228,7 +228,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 		XMLNode x = this;
 		while(x != null)
 		{	set.add(0, x);
-			x = x.getParentNode();
+			x = x.parent;
 		}
 		return set;
 	}
@@ -236,9 +236,9 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	public List<XMLNode> getParents(String tag)
 	{	List<XMLNode> set = new ArrayList<>();
 		XMLNode x = this;
-		while(x != null && x.getTag().equals(tag))
+		while(x != null && x.tag.equals(tag))
 		{	set.add(0, x);
-			x = x.getParentNode();
+			x = x.parent;
 		}
 		return set;
 	}

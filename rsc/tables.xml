@@ -107,10 +107,11 @@
 	<table name="mp_partmode">
 		<item value="0" name="Normal"/>
 		<item value="1" name="Drum"/>
-		<item value="2" name="Drumset 1"/>
+<!--	<item value="2" name="Drumset 1"/>
 		<item value="3" name="Drumset 2"/>
 		<item value="4" name="Drumset 3"/>
 		<item value="5" name="Drumset 4"/>
+-->
 	</table>
 
 	<table name="audio_outputs">

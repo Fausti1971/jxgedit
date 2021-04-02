@@ -83,4 +83,14 @@ public interface XGStrings
 	static String toShortName(String name)//TODO: das kannst Du besser!
 	{	return name.substring(0, Math.min(name.length(), 4));
 	}
+
+	static String toHexString(byte[] array)
+	{	if(array == null) return "no data";
+		StringBuilder s = new StringBuilder();
+		for(byte c : array)
+		{	s.append(String.format("%02X", c & 0xFF));
+			s.append(", ");
+		}
+		return s.toString();
+	}
 }

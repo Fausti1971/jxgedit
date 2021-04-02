@@ -1,25 +1,19 @@
 package module;
 
-import java.awt.event.ActionEvent;
-import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import javax.swing.JOptionPane;
-import javax.swing.tree.TreeNode;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.Configurable;
 import application.XGLoggable;
-import device.XGDevice;
-import gui.XGTemplate;
-import gui.XGTreeNode;
-import gui.XGWindow;
 import msg.XGBulkDumper;
 import parm.XGOpcode;
 import parm.XGTable;
-import static parm.XGTable.TABLES;import tag.*;import xml.XMLNode;
+import static parm.XGTable.TABLES;
+import tag.*;
+import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen

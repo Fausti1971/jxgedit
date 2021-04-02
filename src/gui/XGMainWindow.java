@@ -3,7 +3,14 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import adress.*;import application.*;import static application.JXG.*;import device.*;import static java.awt.BorderLayout.*;import module.*;import static module.XGModuleType.TYPES;import static value.XGValueStore.STORE;import xml.*;
+import application.*;
+import static application.JXG.*;
+import device.*;
+import static java.awt.BorderLayout.*;
+import module.*;
+import static module.XGModuleType.TYPES;
+import static value.XGValueStore.STORE;
+import xml.*;
 
 public class XGMainWindow extends JFrame implements WindowListener, ComponentListener, ConfigurationConstants
 {	/**
@@ -91,7 +98,6 @@ public class XGMainWindow extends JFrame implements WindowListener, ComponentLis
 		JMenu midi = new JMenu("Midi");
 
 		JMenuItem requestAll = new JMenuItem("Request All");
-		//new Thread(() -> {dev.transmitAll(XGMidi.getMidi(), STORE);}).start()
 		requestAll.addActionListener((ActionEvent)->{new Thread(() -> {dev.transmitAll(XGMidi.getMidi(), STORE);}).start();});
 		midi.add(requestAll);
 
@@ -108,39 +114,44 @@ public class XGMainWindow extends JFrame implements WindowListener, ComponentLis
 	{
 		JPanel content = new JPanel();
 		content.setLayout(new BorderLayout());
+		XGModule master = TYPES.get("master").getModules().get(0);
+		XGModule reverb = TYPES.get("rev").getModules().get(0);
+		XGModule chorus = TYPES.get("cho").getModules().get(0);
+		XGModule variation = TYPES.get("var").getModules().get(0);
+		XGModule eq = TYPES.get("eq").getModules().get(0);
 
 		JPanel sysPane = new JPanel(new GridBagLayout());
 
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.1, 0.1, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(2,2,2,2), 2, 2);
-		sysPane.add(new XGKnob(STORE.get(new XGAddress(0, 0, 0))), gbc);
+		sysPane.add(new XGKnob(master.getValues().get("master_volume")), gbc);
 
 		gbc.gridx = 1;
-		sysPane.add(new XGKnob(STORE.get(new XGAddress(0, 0, 4))), gbc);
+		sysPane.add(new XGKnob(master.getValues().get("master_damp")), gbc);
 
 		gbc.gridx = 2;
-		sysPane.add(new XGKnob(STORE.get(new XGAddress(0, 0, 5))), gbc);
+		sysPane.add(new XGKnob(master.getValues().get("master_transpose")), gbc);
 
 		gbc.gridx = 3;
-		sysPane.add(new XGKnob(STORE.get(new XGAddress(0, 0, 6))), gbc);
+		sysPane.add(new XGKnob(master.getValues().get("master_tune")), gbc);
 
 		gbc.gridx = 4;
-		JButton rb = new JButton("Reverb");
-		rb.addActionListener((ActionEvent e)->{XGReverbEditWindow.open();});
+		XGButton2 rb = new XGButton2(reverb.getValues().get("rev_program"));
+		rb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(reverb).toFront();});
 		sysPane.add(rb, gbc);
 
 		gbc.gridx = 5;
-		JButton cb = new JButton("Chorus");
-		cb.addActionListener((ActionEvent e)->{XGReverbEditWindow.open();});
+		XGButton2 cb = new XGButton2(chorus.getValues().get("cho_program"));
+		cb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(chorus).toFront();});
 		sysPane.add(cb, gbc);
 
 		gbc.gridx = 6;
-		JButton vb = new JButton("Variation");
-		vb.addActionListener((ActionEvent e)->{XGReverbEditWindow.open();});
+		XGButton2 vb = new XGButton2(variation.getValues().get("var_program"));
+		vb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(variation).toFront();});
 		sysPane.add(vb, gbc);
 
 		gbc.gridx = 7;
-		JButton eb = new JButton("EQ");
-		eb.addActionListener((ActionEvent e)->{XGReverbEditWindow.open();});
+		XGButton2 eb = new XGButton2(eq.getValues().get("eq_program"));
+		eb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(eq).toFront();});
 		sysPane.add(eb, gbc);
 
 		JTabbedPane tabPane = new JTabbedPane();
@@ -152,10 +163,8 @@ public class XGMainWindow extends JFrame implements WindowListener, ComponentLis
 			}
 
 		content.add(tabPane, CENTER);
-
 		content.add(sysPane, NORTH);
 		content.add(this.status, SOUTH);
-
 		return content; 
 	}
 

@@ -57,25 +57,25 @@
 
 	<xs:simpleType name="moduleAddress">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="([\d]+|[\d]+-[\d]+)\/([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?"/>
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)/([\d]+|[\d]+-[\d]+)?/([\d]+|[\d]+-[\d]+)?"/>
 		</xs:restriction>
 	</xs:simpleType>
 
 	<xs:simpleType name="bulkAddress">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="([\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+-[\d]+)"/>
+			<xs:pattern value="([\d]+)?/([\d]+|[\d]+-[\d]+)?/([\d]+-[\d]+)"/>
 		</xs:restriction>
 	</xs:simpleType>
 
 	<xs:simpleType name="valueAddress">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+)"/>
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)?/([\d]+|[\d]+-[\d]+)?/([\d]+)"/>
 		</xs:restriction>
 	</xs:simpleType>
 
 	<xs:simpleType name="opcodeAddress">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)"/>
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)?/([\d]+|[\d]+-[\d]+)?/([\d]+|[\d]+-[\d]+)"/>
 		</xs:restriction>
 	</xs:simpleType>
 

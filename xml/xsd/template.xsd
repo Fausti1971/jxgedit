@@ -177,7 +177,7 @@
 
 	<xs:simpleType name="addressType">
 		<xs:restriction base="xs:string">
-			<xs:pattern value="([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?\/([\d]+|[\d]+-[\d]+)?"/>
+			<xs:pattern value="([\d]+|[\d]+-[\d]+)?/([\d]+|[\d]+-[\d]+)?/([\d]+|[\d]+-[\d]+)?"/>
 		</xs:restriction>
 	</xs:simpleType>
 

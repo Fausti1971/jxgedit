@@ -1,13 +1,9 @@
 package gui;
 import javax.swing.*;
 
-public class XGReverbEditWindow extends JFrame
+public class XGReverbEditWindow extends XGEditWindow
 {
-	private static XGReverbEditWindow window = null;
-
-	public static void open()
-	{	if(window == null) window = new XGReverbEditWindow();
-		window.setVisible(true);
-		window.toFront();
+	public XGReverbEditWindow(module.XGModule mod)
+	{	super(XGMainWindow.getWindow(), mod, mod.toString());
 	}
 }

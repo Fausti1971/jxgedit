@@ -57,7 +57,7 @@ public interface XGBulkDumper extends XGLoggable
 		Level level;
 		if(requested - responsed == 0) level = Level.INFO;
 		else level = Level.SEVERE;
-		LOG.log(level, responsed + "/" + requested + " requests responsed by \"" + src + "\" transmitted to \"" + dest + "\" within " + (System.currentTimeMillis() - time) + " ms");
+		LOG.log(level, responsed + " (of " + requested + ") requests responsed by \"" + src + "\" and transmitted to \"" + dest + "\" within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
 }

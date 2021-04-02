@@ -12,7 +12,7 @@
 	<module id="rev" name="Reverb" address="2/1/0-21">
 		<info ref="rev_program"/>
 		<bulk address="//0-13">
-			<opcode xsi:type="immutable" id="rev_program" address="//0-1" name="Reverb Program" shortName="Prog" max="127.127" translator="fx_programs" tableFilter="reverb"/>
+			<opcode xsi:type="immutable" id="rev_program" address="//0-1" name="Reverb Program" shortName="Prog" max="127.127" default="1.0" translator="fx_programs" tableFilter="reverb"/>
 			<opcode xsi:type="mutable" id="rev_p1" address="//2" parameterSelector="2/1/0" parameters="fx_parameter_1" defaultSelector="2/1/0" defaults="fx_parameter_1"/><!-- rev01 -->
 			<opcode xsi:type="mutable" id="rev_p2" address="//3" parameterSelector="2/1/0" parameters="fx_parameter_2" defaultSelector="2/1/0" defaults="fx_parameter_2"/><!-- rev02 -->
 			<opcode xsi:type="mutable" id="rev_p3" address="//4" parameterSelector="2/1/0" parameters="fx_parameter_3" defaultSelector="2/1/0" defaults="fx_parameter_3"/><!-- rev03 -->
@@ -39,7 +39,7 @@
 	<module id="cho" name="Chorus" address="2/1/32-53">
 		<info ref="cho_program"/>
 		<bulk address="//32-46">
-			<opcode xsi:type="immutable" id="cho_program" address="//32-33" name="Chorus Program" shortName="Prog" max="127.127" translator="fx_programs" tableFilter="chorus"/>
+			<opcode xsi:type="immutable" id="cho_program" address="//32-33" name="Chorus Program" shortName="Prog" max="127.127" default="65.0" translator="fx_programs" tableFilter="chorus"/>
 			<opcode xsi:type="mutable" id="cho_p1" address="//34" parameterSelector="2/1/32" parameters="fx_parameter_1" defaultSelector="2/1/32" defaults="fx_parameter_1"/><!-- cho01 -->
 			<opcode xsi:type="mutable" id="cho_p2" address="//35" parameterSelector="2/1/32" parameters="fx_parameter_2" defaultSelector="2/1/32" defaults="fx_parameter_2"/><!-- cho02 -->
 			<opcode xsi:type="mutable" id="cho_p3" address="//36" parameterSelector="2/1/32" parameters="fx_parameter_3" defaultSelector="2/1/32" defaults="fx_parameter_3"/><!-- cho03 -->
@@ -67,7 +67,7 @@
 	<module id="var" name="Variation" address="2/1/64-117">
 		<info ref="var_program"/>
 		<bulk address="//64-96">
-			<opcode xsi:type="immutable" id="var_program" address="//64-65" name="Variation Program" shortName="Prog" max="127.127" translator="fx_programs" tableFilter="variation"/>
+			<opcode xsi:type="immutable" id="var_program" address="//64-65" name="Variation Program" shortName="Prog" max="127.127" default="5.0" translator="fx_programs" tableFilter="variation"/>
 			<opcode xsi:type="mutable" id="var_p1" address="//66-67" parameterSelector="2/1/64" parameters="fx_parameter_1" defaultSelector="2/1/64" defaults="fx_parameter_1"/><!-- var01 -->
 			<opcode xsi:type="mutable" id="var_p2" address="//68-69" parameterSelector="2/1/64" parameters="fx_parameter_2" defaultSelector="2/1/64" defaults="fx_parameter_2"/><!-- var02 -->
 			<opcode xsi:type="mutable" id="var_p3" address="//70-71" parameterSelector="2/1/64" parameters="fx_parameter_3" defaultSelector="2/1/64" defaults="fx_parameter_3"/><!-- var03 -->
@@ -201,7 +201,7 @@
 			<opcode xsi:type="immutable" id="mp_partmode" address="//7" name="Part Mode" shortName="Mode" defaults="mp_partmode" translator="mp_partmode"/>
 			<opcode xsi:type="immutable" id="mp_transpose" address="//8" name="Transpose" shortName="Xpose" min="40" max="88" origin="64" default="64" translator="sub64" unit="st"/>
 			<opcode xsi:type="immutable" id="mp_detune" address="//9-10" byteType="LSN" name="Detune" shortName="Tune" max="255" translator="sub128div10" unit="Hz"/>
-			<opcode xsi:type="immutable" id="mp_volume" address="//11" name="Volume" shortName="Vol"/>
+			<opcode xsi:type="immutable" id="mp_volume" address="//11" name="Volume" shortName="Vol" default="100"/>
 			<opcode xsi:type="immutable" id="mp_velo_depth" address="//12" name="Velocity Sense Depth" shortName="Depth"/>
 			<opcode xsi:type="immutable" id="mp_velo_offset" address="//13" name="Velocity Sense Offset" shortName="Ofset"/>
 			<opcode xsi:type="immutable" id="mp_pan" address="//14" name="Panorama" shortName="Pan" default="64" translator="panorama" origin="64"/>

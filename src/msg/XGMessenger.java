@@ -27,9 +27,7 @@ public interface XGMessenger
  * übermittelt den übergebenen XGRequest an req.getDestination(), lässt den aufrufenden XGMessenger für max. #timeout warten bzw. weckt ihn im Falle einer
  * empfangenen und validierten XGResponse, die dann mittels getResponse() abgefragt werden kann;
  * @param req
- * @throws InvalidXGAddressException
- * @throws TimeoutException 
- * @throws InterruptedException 
+ * @throws InvalidXGAddressException 
  */
 	void request(XGRequest req) throws InvalidXGAddressException, XGMessengerException;
 

@@ -20,7 +20,7 @@ public class XGVirtualTable implements XGTable
 	{	TABLES.add(DEF_TABLE);
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_ADD1,
-			(Integer i)->{return Integer.toString(i + 1);},
+			(Integer i)->{return String.format("%03d", i + 1);},
 			(String s)->{return XGStrings.parseIntOrDefault(s, MIN + 1) - 1;}));
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_DIV10,
