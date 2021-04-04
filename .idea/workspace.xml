@@ -13,8 +13,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="Default Changelist" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/gui/XGButton2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/rsc/defaults.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Reste/fx_parameter.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Reste/fx_parameter.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Reste/main.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/Reste/main.fxml" afterDir="false" />
@@ -44,6 +43,7 @@
       <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGMessage.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/old.7z" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/parameter.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGOpcode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGOpcode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGVirtualTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGVirtualTable.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/structure.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/structure.xml" afterDir="false" />
@@ -57,30 +57,14 @@
       <change beforePath="$PROJECT_DIR$/out/production/JXG/value/XGValueStore.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/value/XGValueStore.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/xml/XMLNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/xml/XMLNode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/xml/XMLNodeConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/xml/XMLNodeConstants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/structure.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/structure.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/structure.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/structure.xsd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/tables.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/tables.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/template.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/template.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/rsc/template.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/template.xsd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/XGStrings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/XGStrings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsc/default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rsc/default.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/rsc/defaults.xsd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGButton.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGReverbEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGReverbEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGWindowSource.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGBulkDumper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGBulkDumper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGByteArray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGByteArray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGMessenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessenger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parm/XGVirtualTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGVirtualTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/XMLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xml/xsd/structure.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/xml/xsd/structure.xsd" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/xml/xsd/template.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/xml/xsd/template.xsd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGDefaultsTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGDefaultsTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGOpcode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGOpcode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,11 +164,11 @@
     <property name="kotlin.migration.detection.enabled" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/rsc" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../coremidi4j-1.5.jar" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
-    <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.editor" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -288,7 +272,14 @@
       <option name="project" value="LOCAL" />
       <updated>1615140636150</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="backup single">
+      <created>1617386473359</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1617386473359</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -369,11 +360,11 @@
     <MESSAGE value="zurück aus L..." />
     <MESSAGE value="zurück aus S...&#10;spezifische XGObject entfernt, statische XGObjectDescription komplettiert;&#10;statische Object- und Parameterinitialisation;" />
     <MESSAGE value="zurück aus S...&#10;minor changes" />
-    <MESSAGE value="backup single" />
     <MESSAGE value="FileHandling umgestellt (für interne (jar) und externe Files);" />
     <MESSAGE value="Table begonnen; Backup vor (Wieder-)Einführung von ID-Tags;" />
     <MESSAGE value="Backup vor Umbau Hierarchie;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Backup vor Umbau Hierarchie;" />
+    <MESSAGE value="backup single" />
+    <option name="LAST_COMMIT_MESSAGE" value="backup single" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

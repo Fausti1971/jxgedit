@@ -59,6 +59,7 @@ MIDI = new device.XGMidi(config);}catch(uk.co.xfactorylibrarians.coremidi4j.Core
 
 	private static void initInputs()
 	{	INPUTS.clear();
+LOG.info("MIDI Inputs Start...");
 		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
 		MidiDevice tmpDev = null;
 		for (MidiDevice.Info i : infos)	// i == i.getName() == dev.getDeviceInfo()
@@ -75,6 +76,7 @@ MIDI = new device.XGMidi(config);}catch(uk.co.xfactorylibrarians.coremidi4j.Core
 	
 	private static void initOutputs()
 	{	OUTPUTS.clear();
+LOG.info("MIDI Outputs Start...");
 		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
 		MidiDevice tmpDev = null;
 		for (MidiDevice.Info i : infos)
@@ -130,8 +132,7 @@ MIDI = new device.XGMidi(config);}catch(uk.co.xfactorylibrarians.coremidi4j.Core
 //	private final XGMessageBuffer buffer;
 
 	public XGMidi(xml.XMLNode cfg)throws uk.co.xfactorylibrarians.coremidi4j.CoreMidiException
-	{
-		this.setInput(cfg.getStringAttribute(ATTR_MIDIINPUT));
+	{	this.setInput(cfg.getStringAttribute(ATTR_MIDIINPUT));
 		this.setOutput(cfg.getStringAttribute(ATTR_MIDIOUTPUT));
 		this.setTimeout(cfg.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
 
@@ -188,8 +189,7 @@ MIDI = new device.XGMidi(config);}catch(uk.co.xfactorylibrarians.coremidi4j.Core
 	}
 
 	private void setInput(MidiDevice dev)
-	{	//if(this.midiInput != null && this.midiInput.isOpen()) this.midiInput.close();
-		if(dev != null)
+	{	if(dev != null)
 		{	try
 			{	if(!dev.isOpen()) dev.open();
 				dev.getTransmitter().setReceiver(this);

@@ -8,7 +8,6 @@ import adress.*;
 import application.Configurable;
 import application.XGLoggable;
 import application.XGStrings;
-import device.XGDevice;
 import module.XGModuleType;
 import tag.*;
 import xml.XMLNode;
@@ -26,7 +25,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	private final String category, id;
 	private final XGAddress address, parameterSelectorAddress, defaultSelectorAddress;
 	private final ValueDataType dataType;
-	private final String parameterTableName, defaultTableName;
+	private final String parameterTableName, defaultsTableName;
 //	private final XGParameterTable parameters;
 //	private final XGDefaultsTable defaults;
 	private final Map<String, Set<String>> actions = new HashMap<>();
@@ -73,13 +72,13 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 		this.hasMutableDefaults = n.hasAttribute(ATTR_DEFAULTS);// && n.hasAttribute(ATTR_DEFAULTSELECTOR);
 		if(this.hasMutableDefaults)
 		{	this.defaultSelectorAddress = new XGAddress(n.getStringAttribute(ATTR_DEFAULTSELECTOR));
-			this.defaultTableName = n.getStringAttribute(ATTR_DEFAULTS);
+			this.defaultsTableName = n.getStringAttribute(ATTR_DEFAULTS);
 //			this.defaults = dev.getDefaultsTables().get(defTabName);
 //			if(this.defaults == null) throw new RuntimeException(ATTR_DEFAULTS + " " + defTabName + " not found!");
 		}
 		else
 		{	this.defaultSelectorAddress = null;
-			this.defaultTableName = null;
+			this.defaultsTableName = null;
 //			this.defaults = new XGDefaultsTable(n);
 //			this.defaults.put(DEF_SELECTORVALUE, n.getValueAttribute(ATTR_DEFAULT, 0));
 		}
@@ -136,8 +135,8 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	{	return this.defaultSelectorAddress;
 	}
 
-	public String getDefaultTableName()
-	{	return this.defaultTableName;
+	public String getDefaultsTableName()
+	{	return this.defaultsTableName;
 	}
 
 	@Override public String toString()

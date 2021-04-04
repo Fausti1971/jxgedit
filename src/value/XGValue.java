@@ -66,13 +66,15 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		{	this.parameters = new XGParameterTable();
 			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getConfig()));
 		}
+
+//TODO: prüfe, ob die DefaultsTable wieder komplett nach XGOpcode umziehen kann! Vielleicht auch statisch: DEFAULTSTABLE.getOrNew(String tag, int id, int sel, int def)
 		if(opc.hasMutableDefaults())
-		{	this.defaults = DEFAULTSTABLE.get(opc.getDefaultTableName());
-			if(this.defaults == null) throw new RuntimeException(ATTR_DEFAULTS + " " + opc.getDefaultTableName() + " not found!");
+		{	this.defaults = DEFAULTSTABLE.get(opc.getDefaultsTableName());
+			if(this.defaults == null) throw new RuntimeException(ATTR_DEFAULTS + " " + opc.getDefaultsTableName() + " not found!");
 		}
 		else
-		{	this.defaults = new XGDefaultsTable(opc.getConfig());
-//			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, opc.getConfig().getValueAttribute(ATTR_DEFAULT, 0));
+		{	this.defaults = new XGDefaultsTable(opc.getTag());
+			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, opc.getConfig().getValueAttribute(ATTR_DEFAULT, 0));
 		}
 	}
 

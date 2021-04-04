@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import application.*;
-import device.XGDevice;
 import tag.*;
 import xml.XMLNode;
 /**
@@ -20,8 +19,8 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 	public static void init()
 	{
 		try
-		{	XMLNode n = XMLNode.parse(JXG.getResourceFile(XML_DEFAULT));
-			for(XMLNode t : n.getChildNodes(TAG_DEFAULTTABLE))
+		{	XMLNode n = XMLNode.parse(JXG.getResourceFile(XML_DEFAULTS));
+			for(XMLNode t : n.getChildNodes(TAG_DEFAULTSTABLE))
 			{	DEFAULTSTABLE.add(new XGDefaultsTable(t));
 			}
 		}
@@ -60,31 +59,29 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 	private final String tag;
 	private final Map<Integer, Map<Integer, Integer>> idMap = new HashMap<>();
 
-	private XGDefaultsTable(String tag)
+	public XGDefaultsTable(String tag)
 	{	this.tag = tag;
 	}
 
 	public XGDefaultsTable(XMLNode n)
 	{	this(n.getStringAttribute(ATTR_NAME));
 
-		int id = NO_ID;
+		int id;
 		this.put(NO_ID, DEF_SELECTORVALUE, n.getValueAttribute(ATTR_DEFAULT, 0));
 
-		Map<Integer, Integer> defMap = new HashMap<>();
 		if(n.hasChildNode(TAG_ID))
 		{	for(XMLNode i : n.getChildNodes(TAG_ID))
 			{	id = i.getIntegerAttribute(ATTR_ID, NO_ID);
-				defMap = new HashMap<>();
-				for(XMLNode d : i.getChildNodes(TAG_DEFAULT))
-				{	defMap.put(d.getValueAttribute(ATTR_SELECTORVALUE, DEF_SELECTORVALUE), d.getValueAttribute(ATTR_DEFAULT, 0));
+				for(XMLNode d : i.getChildNodes(TAG_ITEM))
+				{	this.put(id, d.getValueAttribute(ATTR_SELECTORVALUE, DEF_SELECTORVALUE), d.getValueAttribute(ATTR_DEFAULTVALUE, 0));
 				}
-				this.idMap.put(id, defMap);
 			}
 		}
 		else
-			for(XMLNode d : n.getChildNodes(TAG_DEFAULT))
-				this.put(NO_ID, d.getValueAttribute(ATTR_SELECTORVALUE, DEF_SELECTORVALUE), d.getValueAttribute(ATTR_DEFAULT, 0));
+			for(XMLNode d : n.getChildNodes(TAG_ITEM))
+				this.put(NO_ID, d.getValueAttribute(ATTR_SELECTORVALUE, DEF_SELECTORVALUE), d.getValueAttribute(ATTR_DEFAULTVALUE, 0));
 		if(!this.idMap.containsKey(NO_ID)) throw new RuntimeException("table " + this.tag + " has no fallback");
+		LOG.info("XGDefaultsTable " + this.tag + " initialized");
 	}
 
 	public void put(int id, int sel, int def)

@@ -24,7 +24,7 @@ public class XGFrame extends JPanel implements XGComponent
 		{	this.setName(n.getStringAttribute(ATTR_NAME));
 			this.borderize();
 		}
-		this.root = n.getParentNode() == null || n.getParentNode().getTag().equals(TAG_TEMPLATES);
+		this.root = n.getParentNode() == null || n.getParentNode().getTag().equals("TAG_TEMPLATES");
 		this.setOpaque(root);
 	}
 
