@@ -17,7 +17,8 @@ import adress.XGAddressConstants;
 import adress.XGAddressField;
 import adress.XGAddressableSet;
 import application.Configurable;
-import static application.ConfigurationConstants.APPPATH;import application.JXG;
+import static application.ConfigurationConstants.APPPATH;
+import application.JXG;
 import file.XGSysexFile;
 import file.XGSysexFileConstants;
 import gui.XGFileSelector;
@@ -26,7 +27,9 @@ import gui.XGWindow;
 import module.XGDrumsetModuleType;
 import module.XGModule;
 import module.XGModuleType;
-import static module.XGModuleType.TYPES;import msg.*;
+import static module.XGModuleType.TYPES;
+import msg.*;
+import static msg.XGMessageConstants.*;
 import parm.XGDefaultsTable;
 import parm.XGOpcode;
 import parm.XGParameterTable;
@@ -34,11 +37,13 @@ import parm.XGTable;
 import tag.XGTagableSet;
 import value.XGValue;
 import value.XGValueStore;
-import static value.XGValueStore.STORE;import xml.XMLNode;
+import static value.XGValueStore.STORE;
+import xml.XMLNode;
 
 public class XGDevice implements XGDeviceConstants, XGBulkDumper
 {	private static XGDevice device = null;
 	public static XMLNode config = null;
+	private String WARNSTRING = "This will reset all parameters!";
 
 	public static XGDevice getDevice()
 	{	if(device == null) XGDevice.init();
@@ -115,9 +120,12 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 		}
 	}
 
-	private void resetXG()
-	{	try
-		{	new XGMessageParameterChange(STORE, XGMidi.getMidi(), new byte[]{0,0,0,0,0,0,0x7E,0,0}, true).transmit();
+	public void resetXG(boolean send, boolean ask)
+	{	int answer = javax.swing.JOptionPane.CANCEL_OPTION;
+		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.window, WARNSTRING);
+		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
+		try
+		{	if(send)new XGMessageParameterChange(STORE, XGMidi.getMidi(), new byte[]{0,0,0,0,0,0,0x7E,0,0}, true).transmit();
 			for(XGModuleType mt : TYPES) mt.resetValues();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
@@ -125,9 +133,12 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 		}
 	}
 
-	private void resetGM()
-	{	try
-		{	XGMidi.getMidi().transmit(new SysexMessage(new byte[]{(byte)0xF0,0x7E,0x7F,0x09,0x01,(byte)0xF7}, 6));
+	public void resetGM(boolean send, boolean ask)
+	{	int answer = javax.swing.JOptionPane.CANCEL_OPTION;
+		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.window, WARNSTRING);
+		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
+		try
+		{	if(send) XGMidi.getMidi().transmit(new SysexMessage(new byte[]{(byte)0xF0,0x7E,0x7F,0x09,0x01,(byte)0xF7}, 6));
 			for(XGModuleType mt : TYPES) mt.resetValues();
 		}
 		catch(InvalidMidiDataException e)
@@ -135,9 +146,12 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 		}
 	}
 
-	private void resetAll()
-	{	try
-		{	new XGMessageParameterChange(STORE, XGMidi.getMidi(), new byte[]{0,0,0,0,0,0,0x7F,0,0}, true).transmit();
+	public void resetAll(boolean send, boolean ask)
+	{	int answer = javax.swing.JOptionPane.CANCEL_OPTION;
+		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.window, WARNSTRING);
+		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
+		try
+		{	if(send) new XGMessageParameterChange(STORE, XGMidi.getMidi(), new byte[]{0,0,0,0,0,0,0x7F,0,0}, true).transmit();
 			for(XGModuleType mt : TYPES) mt.resetValues();
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
@@ -198,31 +212,6 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 
 	@Override public String toString()
 	{	return this.name.toString();
-	}
-
-	public JComponent getConfigComponent()
-	{	GridBagConstraints gbc = new GridBagConstraints(GridBagConstraints.RELATIVE, GridBagConstraints.RELATIVE, 2, 2, 0.5, 0.5, GridBagConstraints.NORTHWEST, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
-		JPanel root = new JPanel();
-		root.setLayout(new GridBagLayout());
-
-		//JComponent c = this.midi.getConfigComponent();
-		//root.add(c, gbc);
-
-		//c = new XGSpinner("sysexID", this.sysex, 0, 15, 1);
-		//gbc.gridx = 0;
-		//gbc.gridheight = 1;
-		//gbc.fill = GridBagConstraints.HORIZONTAL;
-		//gbc.weightx = 0;
-		//gbc.weighty = 0;
-		//root.add(c, gbc);
-
-		//c = new XGDeviceDetector("device name", this.name, this);
-		//root.add(c, gbc);
-		//
-		//c = new XGFileSelector(this.defaultFileName, "default dump file", "select", XGSysexFileConstants.SYX_FILEFILTER).small();
-		//root.add(c, gbc);
-
-		return root;
 	}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()

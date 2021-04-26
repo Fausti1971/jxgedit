@@ -17,8 +17,8 @@ public class XGSettingsWindow extends JDialog
 /**************************************************************************************/
 
 	private XGSettingsWindow()
-	{	super(XGMainWindow.getWindow());
-		this.setLocationRelativeTo(XGMainWindow.getWindow());
+	{	super(XGMainWindow.window);
+		this.setLocationRelativeTo(XGMainWindow.window);
 		this.setModal(true);
 		this.setContentPane(this.createContent());
 		this.pack();

@@ -52,7 +52,7 @@ public class XGTree extends JTree implements MouseListener, KeyListener, XGUI
 		this.setScrollsOnExpand(true);
 		this.setRootVisible(showRoot);
 		this.setShowsRootHandles(true);
-		DTCR.setLeafIcon(new ImageIcon(this.getClass().getResource(ICON_LEAF24)));
+//		DTCR.setLeafIcon(new ImageIcon(this.getClass().getResource(ICON_LEAF24)));
 	}
 
 //	public XGTree(XGTableTreeModel table)

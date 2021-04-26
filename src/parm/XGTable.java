@@ -3,7 +3,6 @@ package parm;
 import java.io.*;
 import java.util.Set;
 import application.*;
-import device.XGDevice;
 import tag.*;
 import xml.XMLNode;
 
@@ -14,10 +13,8 @@ public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameter
 	static enum Preference{BELOW, EQUAL, ABOVE, CLOSEST, FALLBACK};
 
 	public static void init()
-	{
-		try
-		{
-			XMLNode xml = XMLNode.parse(JXG.getResourceFile(XML_TABLES));
+	{	try
+		{	XMLNode xml = XMLNode.parse(JXG.getResourceStream(XMLPATH + XML_TABLES));
 			for(XMLNode x : xml.getChildNodes(TAG_TABLE))
 			{	TABLES.add(new XGXMLTable(x));
 			}

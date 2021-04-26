@@ -31,29 +31,4 @@ public class XGFrame extends JPanel implements XGComponent
 	public XGFrame(String text)
 	{	this(new XMLNode(text, new XGProperties(ATTR_NAME, text)));
 	}
-
-	//protected XGFrame(XMLNode n, XGModule mod)
-	//{	this(n);
-	//	for(XMLNode x : n.getChildNodes())
-	//	{	try
-	//		{	this.add(XGComponent.newItem(x, mod));
-	//		}
-	//		catch(XGMemberNotFoundException | InvalidXGAddressException e)
-	//		{	LOG.severe(e.getMessage());
-	//		}
-	//	}
-	//}
-
-	@Override public Component add(Component comp)
-	{	Dimension dim = this.getSize();
-		Insets ins = this.getInsets();
-		comp.setLocation(comp.getX() + ins.left, comp.getY() + ins.top);
-		super.add(comp);
-		dim.width = Math.min(this.getMaximumSize().width, Math.max(dim.width, comp.getX() + comp.getWidth() + ins.right));
-		dim.height = Math.min(this.getMaximumSize().height, Math.max(dim.height, comp.getY() + comp.getHeight() + ins.bottom));
-		this.setMinimumSize(dim);
-		this.setPreferredSize(dim);
-		this.setSize(dim);
-		return comp;
-	}
 }

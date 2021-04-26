@@ -1,25 +1,40 @@
 package gui;
 
-public abstract class XGEditWindow extends XGWindow
+public abstract class XGEditWindow extends gui.XGWindow implements adress.XGAddressable
 {
-	private static final java.util.Map<module.XGModule, XGEditWindow> EDITWINDOWS = new java.util.HashMap<>();
+	protected static final int GAP = 0;
+	static final adress.XGAddressableSet<XGEditWindow> EDITWINDOWS = new adress.XGAddressableSet<>();
 
 	public static XGEditWindow getEditWindow(module.XGModule mod)
-	{	if(EDITWINDOWS.containsKey(mod)) return EDITWINDOWS.get(mod);
+	{	adress.XGAddress adr = mod.getAddress();
+		String tag = mod.getType().getTag();
+		XGEditWindow win = EDITWINDOWS.get(adr);
+		LOG.info("EditWindow requested: " + tag);
+		if(win != null) return win;
 		else
-			switch(mod.getType().getName())
-			{	case "rev":		return new gui.XGReverbEditWindow(mod);
-				default:		return null;
+		{	switch(tag)
+			{	case "rev":		win = new XGReverbEditWindow(mod); break;
+				case "cho":		win = new XGChorusEditWindow(mod); break;
+				case "var":		win = new XGVariationEditWindow(mod); break;
+				case "master":	win = new gui.XGMasterEditWindow(mod); break;
+				case "eq":		win = new XGEQEditWindow(mod); break;
+				default:		return win;
 			}
+			EDITWINDOWS.add(win);
+		}
+		return win;
 	}
 
 /***********************************************************************************************************/
 
-	private final module.XGModule module;
+	final module.XGModule module;
 
-	public XGEditWindow(javax.swing.JFrame own, module.XGModule mod, String name)
-	{	super(own,name);
+	public XGEditWindow(XGWindow own, module.XGModule mod, String name)
+	{	super(own, name);
 		this.module = mod;
-		EDITWINDOWS.put(this.module, this);
+	}
+
+	@Override public adress.XGAddress getAddress()
+	{	return this.module.getAddress();
 	}
 }

@@ -4,7 +4,7 @@ import java.awt.*;import java.io.*;import java.nio.file.*;
 import javax.swing.*;import javax.xml.stream.XMLStreamException;
 import device.*;
 import file.*;import gui.*;
-import parm.*;import value.*;import xml.*;
+import static java.lang.ClassLoader.getSystemResourceAsStream;import parm.*;import value.*;import xml.*;
 
 public class JXG implements XGLoggable, XGUI
 {
@@ -18,24 +18,16 @@ public class JXG implements XGLoggable, XGUI
 /**
 * returniert das angegebene File aus dem Applikationspfad; falls dieses nicht vorhanden ist, wird versucht, es aus dem internen Pfad (*.jar) dorthin zu kopieren
 */
-	public static File getResourceFile(String fName) throws IOException //Merke: SAX scheint mit mac-Aliases nicht zurecht zu kommen, daher bei Bedarf Softlinks erzeugen (ln -s Quelle Ziel)
-	{	Path extPath = Paths.get(APPPATH);
-		File extFile = extPath.resolve(fName).toFile();
-		String intName = "rsc" + FILESEPERATOR + fName;
-		if(!extFile.canRead())
-		{	InputStream link = ClassLoader.getSystemResourceAsStream(intName);
-			if(link == null) throw new IOException(fName + " in internal files not found!");
-			LOG.info(extFile + " doesn't exist; copy " + link + " to " + extFile);
-			Files.copy(link, extFile.toPath());
-		}
-		return extFile;
+	public static InputStream getResourceStream(String fName) throws IOException //Merke: SAX scheint mit mac-Aliases nicht zurecht zu kommen, daher bei Bedarf Softlinks erzeugen (ln -s Quelle Ziel)
+	{	
+		return JXG.class.getResourceAsStream(fName);
 	}
 
 	public static void main(String[] args)
 	{
 		configFile = new File(APPPATH + FILESEPERATOR + XML_CONFIG);
 		try
-		{	config = XMLNode.parse(configFile);
+		{	config = XMLNode.parse(new FileInputStream(configFile));
 		}
 		catch(IOException e)
 		{	LOG.info(e.getMessage());

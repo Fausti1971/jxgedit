@@ -119,7 +119,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, Configura
 
 	@Override public void close()
 	{	int choose = JOptionPane.NO_OPTION;
-		if(this.changed) choose = JOptionPane.showConfirmDialog(XGMainWindow.getWindow(), this.getMessengerName() + " has unsaved edits! Save before close?", "Close...", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
+		if(this.changed) choose = JOptionPane.showConfirmDialog(XGMainWindow.window, this.getMessengerName() + " has unsaved edits! Save before close?", "Close...", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null);
 		if(choose == JOptionPane.YES_OPTION) this.save();
 		LOG.info(this.getMessengerName() + " closed");
 	}

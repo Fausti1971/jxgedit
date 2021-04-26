@@ -95,6 +95,7 @@ public interface XMLNodeConstants
 		ATTR_CATEGORY = "category",
 		ATTR_UNIT = "unit",
 		ATTR_ORIGIN = "origin",
+		ATTR_ACTIONS = "actions",
 
 //		TAG_TEMPLATES = "templates",
 //		TAG_TEMPLATE = "template",

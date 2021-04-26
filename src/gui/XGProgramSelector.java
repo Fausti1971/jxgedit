@@ -3,39 +3,40 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JTree;
-import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
-import adress.XGAddress;
-import adress.XGMemberNotFoundException;
-import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
-import static value.XGValueStore.STORE;import xml.XMLNode;
 
-public class XGProgramSelector extends XGFrame implements XGComponent, XGParameterChangeListener, XGValueChangeListener, TreeSelectionListener
+public class XGProgramSelector extends javax.swing.JPanel implements XGComponent, XGParameterChangeListener, XGValueChangeListener, TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
+	private static final java.awt.Dimension DEF_MINDIM = new java.awt.Dimension(396, 44);
+	private static javax.swing.ImageIcon icon_next = new javax.swing.ImageIcon(XGUI.loadImage("arrow_right.png")), icon_prev = new javax.swing.ImageIcon(XGUI.loadImage("arrow_left.png"));
+	private static java.awt.Dimension ARROWSIZE = new java.awt.Dimension(icon_next.getIconWidth(), icon_next.getIconHeight());
 
 /*********************************************************************************************/
 
 	private final XGValue value;
-	private final XGAddress address;
-	private final JButton inc = new JButton("+"), dec = new JButton("-"), select = new JButton();
+	private final JButton next = new JButton(icon_next), prev = new JButton(icon_prev), select = new JButton();
 
-	public XGProgramSelector(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{	super(n);
-		this.setLayout(new BorderLayout());
-		
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = STORE.getFirstIncluded(this.address);
+	public XGProgramSelector(XGValue val)
+	{	this.setLayout(new BorderLayout());
+		this.setPreferredSize(DEF_MINDIM);
+		this.setMinimumSize(DEF_MINDIM);
+
+		this.value = val;
+		if(val == null)
+		{	this.setVisible(false);
+			this.setEnabled(false);
+			return;
+		}
 		this.value.addParameterListener(this);
 		this.value.addValueListener(this);
 		this.setName(this.value.getParameter().getName());
@@ -45,13 +46,15 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 
-		this.inc.addActionListener((ActionEvent e)->{this.value.addIndex(1);});
+		this.next.addActionListener((ActionEvent e)->{this.value.addIndex(1);});
+		this.next.setMinimumSize(ARROWSIZE);
 //		this.inc.setPreferredSize(new Dimension(GRID, GRID));
-		this.add(this.inc, BorderLayout.EAST);
+		this.add(this.next, BorderLayout.EAST);
 
-		this.dec.addActionListener((ActionEvent e)->{this.value.addIndex(-1);});
+		this.prev.addActionListener((ActionEvent e)->{this.value.addIndex(-1);});
+		this.prev.setMinimumSize(ARROWSIZE);
 //		this.dec.setPreferredSize(new Dimension(GRID, GRID));
-		this.add(this.dec, BorderLayout.WEST);
+		this.add(this.prev, BorderLayout.WEST);
 
 		this.select.setText(this.value.toString());
 		this.select.addActionListener((ActionEvent e)->{this.openDialog();});
@@ -72,7 +75,8 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 
 	private void openDialog()
 	{	javax.swing.JDialog d = new javax.swing.JDialog();
-		d.setLocationRelativeTo(this);
+//		d.setLocationRelativeTo(this);
+		d.setLocation(this.getLocationOnScreen());
 		d.setModal(true);
 		d.setTitle("select " + this.value.getParameter().getName());
 
@@ -93,7 +97,9 @@ public class XGProgramSelector extends XGFrame implements XGComponent, XGParamet
 //		this.inc.addActionListener((ActionEvent)->{t.setSelectionPath(path);};);
 		t.setShowsRootHandles(true);
 		t.setRootVisible(false);
-		d.setContentPane(t);
+		d.setContentPane(new javax.swing.JScrollPane(t));
+		d.pack();
+		d.setMinimumSize(new java.awt.Dimension(this.getWidth(), 400));
 		d.setVisible(true);
 		d.dispose();
 	}

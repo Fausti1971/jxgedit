@@ -4,7 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
 import application.*;
 import static application.ConfigurationConstants.APPNAME;
-import module.*;
+import static application.ConfigurationConstants.XMLPATH;import module.*;
 import static module.XGModuleType.TYPES;
 import msg.XGMessage;
 import msg.XGMessenger;
@@ -29,7 +29,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	private static void initStructure()
 	{	XMLNode xml;
 		try
-		{	xml = XMLNode.parse(JXG.getResourceFile(XML_STRUCTURE));
+		{	xml = XMLNode.parse(JXG.getResourceStream(XMLPATH + XML_STRUCTURE));
 		}
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());
@@ -52,11 +52,11 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	{	for(XGModuleType mt : TYPES)
 		{	for(int id : mt.getAddress().getMid())
 			{	try
-				{	for(XGOpcode opc : mt.getOpcodes())
-					{	if(opc.getModuleType().equals(mt)) STORE.add(new XGValue(opc, id));
-					}
-					XGModule mod = new XGModule(mt, id);
+				{	XGModule mod = new XGModule(mt, id);
 					mt.getModules().add(mod);
+					for(XGOpcode opc : mt.getOpcodes())
+					{	if(opc.getModuleType().equals(mt)) STORE.add(new XGValue(opc, mod));
+					}
 					for(XGValue val : mod.getValues()) val.initValueDepencies();
 				}
 				catch(InvalidXGAddressException e)

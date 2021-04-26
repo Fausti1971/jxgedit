@@ -36,7 +36,7 @@ public class XGScale extends XGFrame
 	public XGScale(XMLNode n, XGModule mod) throws InvalidXGAddressException
 	{	super(n);
 		this.borderize();
-		this.panel = new XGPointPanel(n, 0, 11, 0, 127);
+		this.panel = new XGPointPanel(0, 1, 0, 64, 0, 11, 0, 127);
 		this.panel.setUnits("Note", "Pitch");
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);

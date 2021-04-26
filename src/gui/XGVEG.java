@@ -37,7 +37,7 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 		this.low = mod.getValues().get(LOW.complement(mod.getAddress()));
 		this.high = mod.getValues().get(HIGH.complement(mod.getAddress()));
 
-		this.panel = new XGPointPanel(n, 1, 127, 64, 127);
+		this.panel = new XGPointPanel(0, 1, 0, 64, 1, 127, 64, 127);
 		this.panel.setUnits("Velocity", "Volume");
 
 		this.panel.add(new XGPoint(0, this.low, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));

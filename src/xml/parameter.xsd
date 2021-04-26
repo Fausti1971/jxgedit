@@ -26,6 +26,7 @@
 			<xs:attribute name="max" type="valueType" use="required"/>
 			<xs:attribute name="translator" type="xs:string" use="optional"/>
 			<xs:attribute name="unit" type="xs:string" use="optional"/>
+			<xs:attribute name="origin" type="valueType" use="optional"/>
 		</xs:complexType>
 	</xs:element>
 

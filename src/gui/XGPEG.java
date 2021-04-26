@@ -29,7 +29,7 @@ public class XGPEG extends XGFrame
 		this.r_time = mod.getValues().get(R_TIME.complement(mod.getAddress()));
 		this.r_level = mod.getValues().get(R_LEVEL.complement(mod.getAddress()));
 
-		this.panel = new XGPointPanel(n, 0, 381, 0, 127);
+		this.panel = new XGPointPanel(0, 0, 0, 0, 0, 381, 0, 127);
 		this.panel.setUnits("Time", "Pitch");
 
 		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), this.a_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));

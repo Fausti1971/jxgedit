@@ -13,6 +13,7 @@ import xml.XMLNode;
 public class XGPointPanel extends JPanel implements XGUI, XGResizeable
 {
 	private static final long serialVersionUID = 1L;
+	private static Dimension MIN_DIM = new java.awt.Dimension(5 * 66, 2 * 88);
 
 /***************************************************************************************/
 
@@ -26,18 +27,19 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable
 	private String xUnit = "", yUnit = "";
 	private Graphics2D g2;
 
-	public XGPointPanel(XMLNode n, int minX, int maxX, int minY, int maxY)
+	public XGPointPanel(int gridX, int gridY, int oriX, int oriY, int minX, int maxX, int minY, int maxY)
 	{
 		this.setLayout(null);
 		this.minXIndex = minX;
 		this.maxXIndex = maxX;
 		this.minYIndex = minY;
 		this.maxYIndex = maxY;
-		this.grid_x = n.getIntegerAttribute(ATTR_GRID_X, 0);
-		this.grid_y = n.getIntegerAttribute(ATTR_GRID_Y, 0);
-		this.origin_x_index = n.getIntegerAttribute(ATTR_ORIGIN_X, 0);
-		this.origin_y_index = n.getIntegerAttribute(ATTR_ORIGIN_Y, 0);
-
+		this.grid_x = gridX;
+		this.grid_y = gridY;
+		this.origin_x_index = oriX;
+		this.origin_y_index = oriY;
+		this.setPreferredSize(MIN_DIM);
+		this.setMinimumSize(MIN_DIM);
 		this.addComponentListener(this);
 	}
 
@@ -90,12 +92,11 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable
 		this.g2 = (Graphics2D)g.create();
 //background
 		int w = this.getWidth(), h = this.getHeight();
-		XGColor bg = new XGColor(this.getBackground());
-		this.g2.setColor(COL_SHAPE);
+		this.g2.setColor(COL_BAR_BACK);
 		this.g2.fillRect(0, 0, w, h);
 
 //grid
-		this.g2.setColor(Color.BLACK);
+		this.g2.setColor(java.awt.Color.gray);
 		this.g2.setStroke(DEF_DOTTED_STROKE);
 		for(int i : this.vLines) g2.drawLine(i, 0, i, h);
 		for(int i : this.hLines) g2.drawLine(0, i, w, i);

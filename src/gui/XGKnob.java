@@ -23,23 +23,18 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 	private final XGKnobBar bar;
 	private final XGValueLabel label;
 	private final XGValue value;
-//	private final XGAddress address;
 
 	public XGKnob(XGValue val)
-	{
-		//this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		//this.value = mod.getValues().get(this.address);
-		this.setPreferredSize(SIZE);
+	{	this.setPreferredSize(SIZE);
 		this.setMinimumSize(SIZE);
 		this.value = val;
 		if(this.value == null)
 		{	this.setVisible(false);
+			this.setEnabled(false);
 			this.bar = null;
 			this.label = null;
 			return;
 		}
-		this.setName(this.value.getParameter().getName());
-		this.borderize();
 		if(this.value.getOpcode().isMutable()) this.value.addParameterListener(this);
 		this.value.addValueListener(this);
 
@@ -72,7 +67,7 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 		this.label.setText(this.value.toString());
 		this.setVisible(p != XGParameter.NO_PARAMETER);
 		this.setEnabled(p.isValid());
-		//this.borderize();
+		this.borderize();
 	}
 
 /******************************************************************************************************************************************/
@@ -86,7 +81,7 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 		private final XGValue value;
 		private XGParameter parameter;
 		private int size, radius, lengthArc, originArc;
-		private Point middle = new Point(), strokeStart = new Point(), strokeEnd = new Point();
+		private final Point middle = new Point(), strokeStart = new Point(), strokeEnd = new Point();
 		private Graphics2D g2;
 
 		private XGKnobBar(XGValue v)
@@ -168,7 +163,7 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 		{
 		}
 	}
-public void focusGained(FocusEvent event)
+	public void focusGained(FocusEvent event)
 	{
 	}public void focusLost(FocusEvent event)
 	{
@@ -183,4 +178,5 @@ public void focusGained(FocusEvent event)
 	{
 	}public void mouseExited(MouseEvent event)
 	{
-	}}
+	}
+}

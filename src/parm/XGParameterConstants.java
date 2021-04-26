@@ -16,13 +16,7 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_NONE = "none",
 		DEF_TABLENAME = TABLE_NORMAL;
 
-	String
-		XACTION_BEFORE_EDIT = "before_edit",
-		XACTION_AFTER_EDIT = "after_edit",
-		XACTION_BEFORE_SEND = "before_send",
-		XACTION_AFTER_SEND = "after_send";
-
-	String XACTION[]={XACTION_BEFORE_EDIT, XACTION_AFTER_EDIT, XACTION_BEFORE_SEND, XACTION_AFTER_SEND};
+	enum XACTION{change,dump,none,switch_drumset};
 
 	String MUTABLE = "mutable", IMMUTABLE = "immutable";
 	String DEF_PARAMETERNAME = "unknown parameter: ";

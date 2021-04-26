@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import application.*;
-import tag.*;
+import static application.ConfigurationConstants.XMLPATH;import tag.*;
 import xml.XMLNode;
 /**
  * simple taggable HashMap<Integer, HashMap<Integer, Integer>>, deren erster int der Wert des Selektors, der zweite int der Wert des zugehörigen Defaults ist
@@ -19,7 +19,7 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 	public static void init()
 	{
 		try
-		{	XMLNode n = XMLNode.parse(JXG.getResourceFile(XML_DEFAULTS));
+		{	XMLNode n = XMLNode.parse(JXG.getResourceStream(XMLPATH + XML_DEFAULTS));
 			for(XMLNode t : n.getChildNodes(TAG_DEFAULTSTABLE))
 			{	DEFAULTSTABLE.add(new XGDefaultsTable(t));
 			}

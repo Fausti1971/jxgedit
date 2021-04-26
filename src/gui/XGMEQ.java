@@ -4,32 +4,32 @@ import java.awt.GridBagLayout;
 import adress.XGAddress;
 import adress.XGAddressableSet;
 import gui.XGPoint.PointRelation;
-import module.XGModule;
+import static gui.XGUI.DEF_GBC;import module.XGModule;
 import tag.*;import value.XGFixedValue;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGMEQ extends XGFrame
+public class XGMEQ extends javax.swing.JPanel
 {
 	private static final long serialVersionUID = 1L;
-	private static final XGAddress
-		G1 = new XGAddress("2/64/1"),
-		G2 = new XGAddress("2/64/5"),
-		G3 = new XGAddress("2/64/9"),
-		G4 = new XGAddress("2/64/13"),
-		G5 = new XGAddress("2/64/17"),
-		F1 = new XGAddress("2/64/2"),
-		F2 = new XGAddress("2/64/6"),
-		F3 = new XGAddress("2/64/10"),
-		F4 = new XGAddress("2/64/14"),
-		F5 = new XGAddress("2/64/18"),
-		Q1 = new XGAddress("2/64/3"),
-		Q2 = new XGAddress("2/64/6"),
-		Q3 = new XGAddress("2/64/11"),
-		Q4 = new XGAddress("2/64/15"),
-		Q5 = new XGAddress("2/64/19"),
-		S1 = new XGAddress("2/64/4"),
-		S5 = new XGAddress("2/64/20");
+	public static final String
+		G1 = "eq_gain1",
+		G2 = "eq_gain2",
+		G3 = "eq_gain3",
+		G4 = "eq_gain4",
+		G5 = "eq_gain5",
+		F1 = "eq_freq1",
+		F2 = "eq_freq2",
+		F3 = "eq_freq3",
+		F4 = "eq_freq4",
+		F5 = "eq_freq5",
+		Q1 = "eq_q1",
+		Q2 = "eq_q2",
+		Q3 = "eq_q3",
+		Q4 = "eq_q4",
+		Q5 = "eq_q5",
+		S1 = "eq_shape1",
+		S5 = "eq_shape5";
 
 /*****************************************************************************************/
 
@@ -37,10 +37,8 @@ public class XGMEQ extends XGFrame
 	private final XGValue g1, g2, g3, g4, g5, f1, f2, f3, f4, f5, q1, q2, q3, q4, q5, s1, s5;
 	private final int minX, maxX, minY, maxY, midY;
 
-	public XGMEQ(XMLNode n, XGModule mod)
-	{	super(n);
-		this.borderize();
-
+	public XGMEQ(XGModule mod)
+	{
 		XGTagableAddressableSet<XGValue> set = mod.getValues();
 		this.g1 = set.get(G1);
 		this.g2 = set.get(G2);
@@ -69,7 +67,7 @@ public class XGMEQ extends XGFrame
 		this.maxY = this.g1.getParameter().getMaxIndex();
 		this.midY = (this.maxY - this.minY)/2 + this.minY;
 
-		this.panel = new XGPointPanel(n, this.minX, this.maxX, this.minY, this.maxY);
+		this.panel = new XGPointPanel(1, 5, 0, 0, this.minX, this.maxX, this.minY, this.maxY);
 		this.panel.setUnits("Hz", "dB");
 
 		this.setLayout(new GridBagLayout());

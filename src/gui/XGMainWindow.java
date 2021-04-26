@@ -12,31 +12,18 @@ import static module.XGModuleType.TYPES;
 import static value.XGValueStore.STORE;
 import xml.*;
 
-public class XGMainWindow extends JFrame implements WindowListener, ComponentListener, ConfigurationConstants
+public class XGMainWindow extends XGWindow implements ComponentListener
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
 
 	private static XMLNode config = null;
-	private static XGMainWindow window = null;
-
-	public static XGMainWindow getWindow()
-	{	if(window == null) XGMainWindow.init();
-		return window;
-	}
+	public static XGMainWindow window = null;
 
 	public static void init()
 	{	config = JXG.config.getChildNodeOrNew(XMLNodeConstants.TAG_WIN);
 		window = new XGMainWindow();
-	}
-
-	public static void updateUI()
-	{	if(window != null)
-		{	SwingUtilities.updateComponentTreeUI(window);
-			for(Window w :window.getOwnedWindows())
-			SwingUtilities.updateComponentTreeUI(w);
-		}
 	}
 
 /**********************************************************************************************************************/
@@ -44,13 +31,10 @@ public class XGMainWindow extends JFrame implements WindowListener, ComponentLis
 	private final XGStatusBar status = new XGStatusBar();
 
 	public XGMainWindow()
-	{
+	{	super(null, APPNAME + " - " + XGDevice.getDevice());
 		this.setJMenuBar(this.createMenu());
 		this.setContentPane(this.createContent());
 
-		this.setTitle(APPNAME + " - " + XGDevice.getDevice());
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		this.addWindowListener(this);
 		this.addComponentListener(this);
 
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
@@ -59,7 +43,7 @@ public class XGMainWindow extends JFrame implements WindowListener, ComponentLis
 			config.getIntegerAttribute(ATTR_Y, MIN_Y),
 			config.getIntegerAttribute(ATTR_W, MIN_W),
 			config.getIntegerAttribute(ATTR_H, MIN_H));
-//		this.setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+//		this.pack();
 		this.setVisible(true);
 	}
 
@@ -123,35 +107,28 @@ public class XGMainWindow extends JFrame implements WindowListener, ComponentLis
 		JPanel sysPane = new JPanel(new GridBagLayout());
 
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.1, 0.1, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(2,2,2,2), 2, 2);
-		sysPane.add(new XGKnob(master.getValues().get("master_volume")), gbc);
+		JButton mb = new JButton("<html><center><b>" + "Master" + "</b></center></html>");
+		mb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(master).setVisible(true);});
+		sysPane.add(mb, gbc);
 
 		gbc.gridx = 1;
-		sysPane.add(new XGKnob(master.getValues().get("master_damp")), gbc);
-
-		gbc.gridx = 2;
-		sysPane.add(new XGKnob(master.getValues().get("master_transpose")), gbc);
-
-		gbc.gridx = 3;
-		sysPane.add(new XGKnob(master.getValues().get("master_tune")), gbc);
-
-		gbc.gridx = 4;
 		XGButton2 rb = new XGButton2(reverb.getValues().get("rev_program"));
-		rb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(reverb).toFront();});
+		rb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(reverb).setVisible(true);});
 		sysPane.add(rb, gbc);
 
-		gbc.gridx = 5;
+		gbc.gridx = 3;
 		XGButton2 cb = new XGButton2(chorus.getValues().get("cho_program"));
-		cb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(chorus).toFront();});
+		cb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(chorus).setVisible(true);});
 		sysPane.add(cb, gbc);
 
-		gbc.gridx = 6;
+		gbc.gridx = 4;
 		XGButton2 vb = new XGButton2(variation.getValues().get("var_program"));
-		vb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(variation).toFront();});
+		vb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(variation).setVisible(true);});
 		sysPane.add(vb, gbc);
 
-		gbc.gridx = 7;
+		gbc.gridx = 5;
 		XGButton2 eb = new XGButton2(eq.getValues().get("eq_program"));
-		eb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(eq).toFront();});
+		eb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(eq).setVisible(true);});
 		sysPane.add(eb, gbc);
 
 		JTabbedPane tabPane = new JTabbedPane();
@@ -168,32 +145,9 @@ public class XGMainWindow extends JFrame implements WindowListener, ComponentLis
 		return content; 
 	}
 
-	@Override public void windowOpened(WindowEvent e)
-	{
-	}
-
 	@Override public void windowClosing(WindowEvent e)
-	{
-	}
-
-	@Override public void windowClosed(WindowEvent e)
-	{	JXG.quit();
-	}
-
-	@Override public void windowIconified(WindowEvent e)
-	{
-	}
-
-	@Override public void windowDeiconified(WindowEvent e)
-	{
-	}
-
-	@Override public void windowActivated(WindowEvent e)
-	{
-	}
-
-	@Override public void windowDeactivated(WindowEvent e)
-	{
+	{	this.dispose();
+		JXG.quit();
 	}
 
 	@Override public void componentResized(ComponentEvent e)

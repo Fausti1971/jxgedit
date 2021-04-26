@@ -106,14 +106,6 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	for(XGModule m : this.getModules()) m.resetValues();
 	}
 
-	//@Override public void actionPerformed(ActionEvent e)
-	//{	switch(e.getActionCommand())
-	//	{	case ACTION_REQUEST:	new Thread(() -> {this.transmitAll(this.device.getMidi(), this.device.getValues());}).start(); break;
-	//		case ACTION_TRANSMIT:	new Thread(() -> {this.transmitAll(this.device.getValues(), this.device.getMidi());}).start(); break;
-	//		default:				JOptionPane.showMessageDialog(XGWindow.getRootWindow(), "action not implemented: " + e.getActionCommand());
-	//	}
-	//}
-
 	@Override public String toString()
 	{	return this.name.toString();
 	}

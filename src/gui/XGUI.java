@@ -24,14 +24,14 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 		public boolean mousePressed = false;
 		public XMLNode config = null;
 	}
-	static final Globals VARIABLES = new Globals();
+	Globals VARIABLES = new Globals();
 
 	Map<String, String> LOOKANDFEELS = new HashMap<>();
 
-	final RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-	final GridBagConstraints DEF_GBC = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
+	RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	GridBagConstraints DEF_GBC = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
 
-	static final String
+	String
 		LAF_SYSTEM = UIManager.getSystemLookAndFeelClassName(),
 		LAF_CROSS = UIManager.getCrossPlatformLookAndFeelClassName(),
 		LAF_MOTIF = "com.sun.java.swing.plaf.motif.MotifLookAndFeel",
@@ -39,46 +39,56 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 		LAF_GTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel",
 		LAF_METAL = "javax.swing.plaf.metal.MetalLookAndFeel";
 
-	static final MetalTheme
+	MetalTheme
 		LAF_METAL_DEFAULT = new DefaultMetalTheme(),
 		LAF_METAL_OCEAN = new OceanTheme();
 //		LAF_METAL_TEST = new TestTheme();
 
-		static void setLookAndFeel(String name)
-		{	for(String s : LOOKANDFEELS.keySet())
-			{	if(s.equals(name))
-				{	try
-					{	UIManager.setLookAndFeel(LOOKANDFEELS.get(s));
-						VARIABLES.config.setStringAttribute(ATTR_LOOKANDFEEL, name);
-						LOG.info(name);
-						XGMainWindow.updateUI();
-						return;
-					}
-					catch(UnsupportedLookAndFeelException|IllegalAccessException|InstantiationException|ClassNotFoundException e)
-					{	LOG.severe(e.getMessage());
-					}
+	static java.awt.Image loadImage(String name)
+	{	try
+		{	return javax.imageio.ImageIO.read(XGUI.class.getResource(name));
+		}
+		catch(java.io.IOException e)
+		{	LOG.warning(e.getMessage());
+			return null;
+		}
+	}
+
+	static void setLookAndFeel(String name)
+	{	for(String s : LOOKANDFEELS.keySet())
+		{	if(s.equals(name))
+			{	try
+				{	UIManager.setLookAndFeel(LOOKANDFEELS.get(s));
+					VARIABLES.config.setStringAttribute(ATTR_LOOKANDFEEL, name);
+					LOG.info(name);
+					if(XGMainWindow.window != null) XGMainWindow.window.updateUI();
+				}
+				catch(UnsupportedLookAndFeelException|IllegalAccessException|InstantiationException|ClassNotFoundException e)
+				{	LOG.severe(e.getMessage());
 				}
 			}
-//			setLookAndFeel(LOOKANDFEELS.get("System"));
 		}
+//		setLookAndFeel(LOOKANDFEELS.get("System"));
+	}
 
-		static void init()
-		{	VARIABLES.config = JXG.config.getChildNodeOrNew(TAG_UI);
+	static void init()
+	{	VARIABLES.config = JXG.config.getChildNodeOrNew(TAG_UI);
 
-//			LOOKANDFEELS.put("System", UIManager.getSystemLookAndFeelClassName());
-//			LOOKANDFEELS.put("Crossplatform", UIManager.getCrossPlatformLookAndFeelClassName());
-			for(LookAndFeelInfo i : UIManager.getInstalledLookAndFeels()) LOOKANDFEELS.put(i.getName(), i.getClassName());
+//		LOOKANDFEELS.put("System", UIManager.getSystemLookAndFeelClassName());
+//		LOOKANDFEELS.put("Crossplatform", UIManager.getCrossPlatformLookAndFeelClassName());
+		for(LookAndFeelInfo i : UIManager.getInstalledLookAndFeels()) LOOKANDFEELS.put(i.getName(), i.getClassName());
 
-			XGUI.setLookAndFeel(VARIABLES.config.getStringAttribute(ATTR_LOOKANDFEEL));
-		}
+		XGUI.setLookAndFeel(VARIABLES.config.getStringAttribute(ATTR_LOOKANDFEEL));
+	}
 
-	String ICON_LEAF32 = "XGLogo32.gif", ICON_LEAF24 = "XGLogo24.gif";
+		
+//	String ICON_LEAF32 = "gui/XGLogo32.gif", ICON_LEAF24 = "gui/XGLogo24.gif";
 
 	Color
 		COL_TRANSPARENT = new Color(0, 0, 0, 0),
 		COL_BAR_FORE = Color.blue,
 		COL_BAR_BACK = Color.white,
-		COL_SHAPE = Color.lightGray;
+		COL_SHAPE = new Color(COL_BAR_FORE.getRed(), COL_BAR_FORE.getGreen(), COL_BAR_FORE.getBlue(), 20);
 
 	float FONTSIZE = 10f;
 
@@ -89,8 +99,7 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 		//COL_STEP = 16,
 		//GAP = 5,
 		DEF_STROKEWIDTH = 4,
-		ROUND_RADIUS = 6,
-		DEF_DEVCOLOR = 0xF0F0F0;
+		ROUND_RADIUS = 6;
 
 	BasicStroke DEF_ARCSTROKE = new BasicStroke(DEF_STROKEWIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
 	BasicStroke DEF_STROKE = new BasicStroke(2f);

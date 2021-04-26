@@ -20,12 +20,10 @@ import msg.XGMessenger;
 import msg.XGMessengerException;
 import msg.XGRequest;
 import msg.XGResponse;
-import uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider;
-import uk.co.xfactorylibrarians.coremidi4j.CoreMidiException;
-import uk.co.xfactorylibrarians.coremidi4j.CoreMidiNotification;
-import static value.XGValueStore.STORE;import xml.*;
+import static value.XGValueStore.STORE;
+import xml.*;
 
-public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, Receiver, AutoCloseable, XMLNodeConstants
+public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable, XMLNodeConstants
 {	private static final int DEF_TIMEOUT = 100;
 	private static XGMidi MIDI = null;
 	private static XMLNode config = null;
@@ -37,13 +35,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, CoreMidiNotification, R
 
 	public static void init()
 	{	config = JXG.config.getChildNodeOrNew(TAG_MIDI);
-		try
-{
-MIDI = new device.XGMidi(config);}catch(uk.co.xfactorylibrarians.coremidi4j.CoreMidiException e)
-{
-	e.printStackTrace();
-}
-	}
+		MIDI = new XGMidi(config);
+		}
 
 	public static Set<Info> INPUTS = new LinkedHashSet<>();
 	public static Set<Info> OUTPUTS = new LinkedHashSet<>();
@@ -59,14 +52,16 @@ MIDI = new device.XGMidi(config);}catch(uk.co.xfactorylibrarians.coremidi4j.Core
 
 	private static void initInputs()
 	{	INPUTS.clear();
-LOG.info("MIDI Inputs Start...");
-		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
+		LOG.info("Requesting MIDI Devices...");
+		MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
+		LOG.info(infos.length + " MIDI-Devices detected");
 		MidiDevice tmpDev = null;
 		for (MidiDevice.Info i : infos)	// i == i.getName() == dev.getDeviceInfo()
 		{	try
 			{	tmpDev = MidiSystem.getMidiDevice(i);
 				if(tmpDev.getMaxTransmitters() == 0) continue;
 				INPUTS.add(i);
+				LOG.info("MIDI-Input detected: " + i);
 			}
 			catch (MidiUnavailableException e)
 			{	LOG.info(e.getMessage());
@@ -76,14 +71,16 @@ LOG.info("MIDI Inputs Start...");
 	
 	private static void initOutputs()
 	{	OUTPUTS.clear();
-LOG.info("MIDI Outputs Start...");
-		MidiDevice.Info[] infos = CoreMidiDeviceProvider.getMidiDeviceInfo();
+		LOG.info("Requesting MIDI Devices...");
+		MidiDevice.Info[] infos = MidiSystem.getMidiDeviceInfo();
+		LOG.info(infos.length + " MIDI-Devices detected");
 		MidiDevice tmpDev = null;
 		for (MidiDevice.Info i : infos)
 		{	try
 			{	tmpDev = MidiSystem.getMidiDevice(i);
 				if(tmpDev.getMaxReceivers() == 0) continue;
 				OUTPUTS.add(i);
+				LOG.info("MIDI-Output detected: " + i);
 			}
 			catch (MidiUnavailableException e)
 			{	LOG.info(e.getMessage());
@@ -131,17 +128,10 @@ LOG.info("MIDI Outputs Start...");
 	private int timeoutValue;
 //	private final XGMessageBuffer buffer;
 
-	public XGMidi(xml.XMLNode cfg)throws uk.co.xfactorylibrarians.coremidi4j.CoreMidiException
+	public XGMidi(xml.XMLNode cfg)
 	{	this.setInput(cfg.getStringAttribute(ATTR_MIDIINPUT));
 		this.setOutput(cfg.getStringAttribute(ATTR_MIDIOUTPUT));
 		this.setTimeout(cfg.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
-
-		try
-		{	uk.co.xfactorylibrarians.coremidi4j.CoreMidiDeviceProvider.addNotificationListener(this);
-		}
-		catch(uk.co.xfactorylibrarians.coremidi4j.CoreMidiException e)
-		{	LOG.warning(e.getMessage());
-		}
 	}
 
 	private void setOutput(String s)
@@ -228,14 +218,6 @@ LOG.info("MIDI Outputs Start...");
 		LOG.info("MidiInput closed: " + this.getInputName());
 		if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
 		LOG.info("MidiOutput closed: " + this.getOutputName());
-	}
-
-	@Override public void midiSystemUpdated() throws CoreMidiException
-	{	initInputs();
-		initOutputs();
-		this.setInput(config.getStringAttribute(ATTR_MIDIINPUT));
-		this.setOutput(config.getStringAttribute(ATTR_MIDIOUTPUT));
-		LOG.info("CoreMidiSystem updated, " + this.midiInput.getDeviceInfo() + "=" + this.midiInput.isOpen() + ", " + this.midiOutput.getDeviceInfo() + "=" + this.midiOutput.isOpen());
 	}
 
 	public void transmit(MidiMessage mm)

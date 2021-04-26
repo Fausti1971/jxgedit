@@ -15,26 +15,30 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import static value.XGValueStore.STORE;import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_ADDRESS;import static xml.XMLNodeConstants.ATTR_ORIENTATION;
 
-public class XGRadio extends JPanel implements XGValueChangeListener, XGParameterChangeListener
-{	
+public class XGRadio extends JPanel implements XGValueChangeListener, XGParameterChangeListener, XGComponent
+{
 	private static final long serialVersionUID = 1L;
-	private static Map<String, Integer> ORIENTATION = new HashMap<>();
-	static
-	{	ORIENTATION.put("horizontal", BoxLayout.X_AXIS);
-		ORIENTATION.put("vertical", BoxLayout.Y_AXIS);
-	};
+	private static final java.awt.Dimension MINDIM = new java.awt.Dimension(132, 88);
 
 /*********************************************************************************************************/
 
 	private final XGValue value;
-	private final XGAddress address;
 	private final int orientation;
 
-	public XGRadio(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.orientation = ORIENTATION.getOrDefault(n.getStringAttribute(ATTR_ORIENTATION), BoxLayout.X_AXIS);
-		this.value = STORE.getFirstIncluded(this.address);
+	public XGRadio(XGValue val)
+	{	this(val, javax.swing.BoxLayout.Y_AXIS);
+	}
+
+	public XGRadio(XGValue val, int orientation)
+	{	this.orientation = orientation;
+		this.value = val;
+		if(val == null)
+		{	this.setVisible(false);
+			this.setEnabled(false);
+			return;
+		}
+		this.setMinimumSize(MINDIM);
+		this.setPreferredSize(MINDIM);
 		this.value.addValueListener(this);
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());
@@ -53,15 +57,16 @@ public class XGRadio extends JPanel implements XGValueChangeListener, XGParamete
 		{	this.setEnabled(false);
 			this.setName("n/a");
 		}
+		this.borderize();
 	}
 
 	@Override public void contentChanged(XGValue v)
 	{	this.repaint();
 	}
 
-	@Override protected void paintComponent(Graphics g)
-	{	if(this.isEnabled()) super.paintComponent(g);
-	}
+	//@Override protected void paintComponent(Graphics g)
+	//{	if(this.isEnabled()) super.paintComponent(g);
+	//}
 
 /****************************************************************************************************/
 

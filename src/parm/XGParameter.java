@@ -1,7 +1,6 @@
 package parm;
 import java.io.*;
 import application.*;
-import device.XGDevice;
 import parm.XGTable.Preference;
 import static parm.XGTable.TABLES;import xml.XMLNode;
 
@@ -10,7 +9,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	public static XMLNode init()
 	{
 		try
-		{	return XMLNode.parse(JXG.getResourceFile(XML_PARAMETER));
+		{	return XMLNode.parse(JXG.getResourceStream(XML_PARAMETER));
 		}
 		catch(IOException e)
 		{	LOG.info(e.getMessage());
@@ -24,11 +23,10 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	private final XGTable translationTable;
 	private final int minIndex, maxIndex, originIndex;
 	private final String unit;
-	private final boolean isValid;
+	private final boolean isValid;//TODO: keine Ahnung, wofür das gut ist...
 
 	public XGParameter(XMLNode n)
 	{	this.translationTable = TABLES.getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);
-//		if(this.translationTable == null) throw new RuntimeException("no table: " + this);
 
 		int minValue = n.getValueAttribute(ATTR_MIN, DEF_MIN);
 		int maxValue = n.getValueAttribute(ATTR_MAX, DEF_MAX);
@@ -41,8 +39,6 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 		this.shortName = n.getStringAttributeOrDefault(ATTR_SHORTNAME, this.name);
 		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, this.translationTable.getUnit());
 		this.isValid = true;
-
-//		LOG.info(this.getClass().getSimpleName() + " " + this + " intialized");
 	}
 
 	public XGParameter(String name, int v)//Dummy-Parameter für Festwerte
@@ -56,7 +52,6 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 
 		this.unit = "";
 		this.isValid = v != NO_PARAMETERVALUE;
-//		LOG.info(this.getClass().getSimpleName() + " " + this + " intialized");
 	}
 
 	public boolean isValid()
@@ -102,10 +97,6 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	public String getUnit()
 	{	return this.unit;
 	}
-
-//	public String getInfo()
-//	{	return this.name + " (" + this.translationTable.getInfo() + " " + this.minIndex + "..." + this.maxIndex + ")";
-//	}
 
 	@Override public String toString()
 	{	return this.name;
