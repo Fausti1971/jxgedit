@@ -7,7 +7,7 @@ import adress.XGAddress;
 import adress.XGAddressable;
 import application.XGLoggable;
 import device.*;
-import msg.XGMessageBulkDump;
+import module.XGModule;import msg.XGMessageBulkDump;
 import msg.XGMessageParameterChange;
 import msg.XGMessengerException;
 import msg.XGResponse;
@@ -35,7 +35,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 /**
  * Index des XGTableEntry in der (im XGParameter anhängenden) XGTable
  */
-	private Integer index = 0;
+	private Integer index = 0, oldIndex = 0;
 	private final XGAddress address;
 	private final XGOpcode opcode;
 	private final module.XGModule module;
@@ -70,7 +70,6 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getConfig()));
 		}
 
-//TODO: prüfe, ob die DefaultsTable wieder komplett nach XGOpcode umziehen kann! Vielleicht auch statisch: DEFAULTSTABLE.getOrNew(String tag, int id, int sel, int def)
 		if(opc.hasMutableDefaults())
 		{	this.defaults = DEFAULTSTABLE.get(opc.getDefaultsTableName());
 			if(this.defaults == null) throw new RuntimeException(ATTR_DEFAULTS + opc.getDefaultsTableName() + " not found for value " + this.getTag());
@@ -103,6 +102,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 			}
 		}
 		else this.defaultSelector = DEFAULTSELECTOR;
+
+		//if(this.getTag().equals("mp_program")) this.addValueListener(XGProgramBuffer::bufferProgram);
+		//if(this.getTag().equals("mp_partmode")) this.addValueListener(XGProgramBuffer::restoreProgram);
 	}
 
 	public void addValueListener(XGValueChangeListener l)
@@ -122,7 +124,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	public void notifyValueListeners()
-	{	for(XGValueChangeListener l : this.valueListeners) l.contentChanged(this);
+	{	if(this.hasChanged()) for(XGValueChangeListener l : this.valueListeners) l.contentChanged(this);
 	}
 
 	public void notifyParameterListeners()
@@ -137,17 +139,18 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.opcode.getAddress().getLo().getSize();
 	}
 
-	//public XGValue getParameterSelector()
-	//{	return this.parameterSelector;
-	//}
+	public XGModule getModule()
+	{	return this.module;
+	}
 
 	public void setDefaultValue()
-	{	int id = DEF_SELECTORVALUE;
+	{	int id;
 		try
 		{	id = this.address.getMid().getValue();
 		}
 		catch(InvalidXGAddressException e)
 		{	LOG.info(e.getMessage());
+			id = DEF_SELECTORVALUE;
 		}
 		this.setValue(this.defaults.get(id, this.defaultSelector.getValue()));
 	}
@@ -190,18 +193,19 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	{	return this.index;
 	}
 
+	public boolean hasChanged()
+	{	return !this.index.equals(this.oldIndex);
+	}
+
 /**
  * setzt nach Validierung den XGTable-Index des XGValue auf den Wert i ohne die XAction-Kette auszulösen
  * @param i	Index
- * @return	true, wenn sich der Inhalt änderte
  */
-	public boolean setIndex(Integer i)
-	{	int old = this.index;
+	public void setIndex(Integer i)
+	{	this.oldIndex = this.index;
 		XGParameter p = this.getParameter();
 		if(p != null) this.index = p.validate(i);
-		boolean changed = this.index != old;
-		if(changed) this.notifyValueListeners();
-		return changed;
+		this.notifyValueListeners();
 	}
 
 /**
@@ -216,10 +220,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 /**
  * 
  * @param e setzt den Inhalt des XGValue auf den Index des übergebenen XGTable-Eintrags
- * @return true, wenn sich der Inhalt änderte
  */
-	public boolean setEntry(XGTableEntry e)
-	{	return this.setValue(e.getValue());
+	public void setEntry(XGTableEntry e)
+	{	this.setValue(e.getValue());
 	}
 
 /**
@@ -233,53 +236,46 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 /**
  * setzt den Inhalt des XGValue auf den Index des zum übergebenen value passenden XGTable-Eintrags ohne Action
  * @param v Value
- * @return true, wenn sich der Inhalt änderte
  */
-	public boolean setValue(int v)
+	public void setValue(int v)
 	{	XGParameter p = this.getParameter();
-		if(p == null) return true;
-		return this.setIndex(p.getTranslationTable().getIndex(v, Preference.FALLBACK));
+		if(p == null) return;
+		this.setIndex(p.getTranslationTable().getIndex(v, Preference.FALLBACK));
 	}
 
 /**
  * setzt den übergebenen Entry im Value und durchläuft die Action-Kette
- * @param e
- * @return true, wenn sich Inhalt änderte
+ * @param e Entry
  */
-	public boolean editEntry(XGTableEntry e)
-	{	boolean changed = setEntry(e);
-		if(changed) this.actions();
-		return changed;
+	public void editEntry(XGTableEntry e)
+	{	this.setEntry(e);
+		this.actions();
 	}
 
 /**
  * setzt den übergebenen Index im Value und startet die Action-Kette
- * @param i
- * @return true, wenn sich Inhalt änderte
+ * @param i index
  */
-	public boolean editIndex(int i)
-	{	boolean changed = setIndex(i);
-		if(changed) this.actions();
-		return changed;
+	public void editIndex(int i)
+	{	this.setIndex(i);
+		this.actions();
 	}
 
 /**
  * addiert nach Validierung/Limitierung den übergebenen Wert zum Index und durchläuft die Action-Kette
- * @param diff
- * @return true, wenn sich Inhalt änderte
+ * @param diff Differenz
  */
-	public boolean addIndex(int diff)
-	{	return this.editIndex(this.index + diff);
+	public void addIndex(int diff)
+	{	this.editIndex(this.index + diff);
 	}
 
 /**
  * schaltet um zwischen Min- und MaxIndex und durchläuft die Action-Kette
- * @return true, wenn sich Inhalt änderte
  */
-	public boolean toggleIndex()
+	public void toggleIndex()
 	{	XGParameter p = this.getParameter();
-		if(this.index == p.getMinIndex()) return this.editIndex(p.getMaxIndex());
-		else return this.editIndex(p.getMinIndex());
+		if(this.index == p.getMinIndex()) this.editIndex(p.getMaxIndex());
+		else this.editIndex(p.getMinIndex());
 	}
 /**
  * sendet den Value mittels XGMessageParameterChange
@@ -320,8 +316,9 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		{	switch(a)
 			{	case change: 			this.sendAction(); break;	//send via XGMessageParameterChange (normal)
 				case dump:				this.bulkAction(); break;	//bulk via XGMessageBulkDump (voice-programs)
-//				case switch_program:	break;
 				case none:				break;
+				case buffer_program:	XGProgramBuffer.bufferProgram(this); break;
+				case restore_program:	XGProgramBuffer.restoreProgram(this); break;
 				default:				LOG.info("unknown action: " + a.name() + " for value: " + this.getInfo());
 			}
 		}

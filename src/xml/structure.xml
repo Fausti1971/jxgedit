@@ -194,11 +194,11 @@
 		<info ref="mp_transpose"/>
 		<bulk address="8//0-40">
 			<opcode xsi:type="immutable" id="mp_reserve" address="//0" name="Element Reserve" shortName="ElRes" default="2" max="32" actions="change"/>
-			<opcode xsi:type="mutable" id="mp_program" address="//1-3" parameterSelector="mp_partmode" parameters="mp_partmode" defaultSelector="mp_partmode" defaults="mp_partmode"  actions="switch_program,dump"/>
+			<opcode xsi:type="mutable" id="mp_program" address="//1-3" parameterSelector="mp_partmode" parameters="mp_partmode" defaultSelector="mp_partmode" defaults="mp_program"  actions="dump,buffer_program"/>
 			<opcode xsi:type="immutable" id="mp_midi_channel" address="//4" name="Midi Channel" shortName="Ch" defaultSelector="mp_midi_channel" defaults="id" translator="midi_channels" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_poly" address="//5" name="Ployphony" shortName="Poly" translator="mp_monopoly" default="1" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_key_on_assign" address="//6" name="Same Note Number Key On Assign" shortName="KeyOn" default="1" translator="key_on_assign" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_partmode" address="//7" name="Part Mode" shortName="Mode" defaults="mp_partmode" translator="mp_partmode" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_partmode" address="//7" name="Part Mode" shortName="Mode" defaults="mp_partmode" translator="mp_partmode" actions="change,restore_program"/>
 			<opcode xsi:type="immutable" id="mp_transpose" address="//8" name="Transpose" shortName="Xpose" min="40" max="88" origin="64" default="64" translator="sub64" unit="st" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_detune" address="//9-10" byteType="LSN" name="Detune" shortName="Tune" max="255" translator="sub128div10" unit="Hz" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_volume" address="//11" name="Volume" shortName="Vol" default="100" actions="change"/>

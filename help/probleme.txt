@@ -136,4 +136,5 @@ Problem: Durch eine beschissene Architektur sind (ohne erträglichen Aufwand) In
 		eine "default.syx" muss vorgehalten werden -1
 		Bidirektionale Anschaltung (MIDI In + Out) ist Voraussetzung -3
 		die Synchronisierung (insbesondere bei Drumsets) dauert lange -5 (fällt nur beim Wechsel des Programs eines Drumsets ins Gewicht)
+	Aufgrund des doch schon sehr fortgeschrittenen Stadiums der Defaults-Integration entschied ich mich zur Beibehaltung derselben...
 	Info: ein DrumsetReset bewirkt lediglich das Zurücksetzen der Drumsetparameter aber nicht des momentan selektierten Drumprogramms (was somit einen erneuten Request des gesamten Drumsets erforderlich macht)

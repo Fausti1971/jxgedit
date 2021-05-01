@@ -191,12 +191,14 @@ public class XGRange extends JPanel implements XGParameterConstants, XGValueChan
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
 		{	int r = e.getWheelRotation();
 			if(r < 0)
-			{	if(this.loValue.addIndex(r))
+			{	this.loValue.addIndex(r);
+				if(this.loValue.hasChanged())
 				{	this.hiValue.addIndex(r);
 				}
 			}
 			else
-			{	if(this.hiValue.addIndex(r))
+			{	this.hiValue.addIndex(r);
+				if(this.hiValue.hasChanged())
 				{	this.loValue.addIndex(r);
 				}
 			}

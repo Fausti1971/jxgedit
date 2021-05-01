@@ -35,7 +35,7 @@ import parm.XGOpcode;
 import parm.XGParameterTable;
 import parm.XGTable;
 import tag.XGTagableSet;
-import value.XGValue;
+import value.XGProgramBuffer;import value.XGValue;
 import value.XGValueStore;
 import static value.XGValueStore.STORE;
 import xml.XMLNode;
@@ -131,6 +131,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
 		}
+		XGProgramBuffer.reset();
 	}
 
 	public void resetGM(boolean send, boolean ask)
@@ -144,6 +145,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 		catch(InvalidMidiDataException e)
 		{	e.printStackTrace();
 		}
+		XGProgramBuffer.reset();
 	}
 
 	public void resetAll(boolean send, boolean ask)
@@ -157,6 +159,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
 		}
+		XGProgramBuffer.reset();
 	}
 
 	public void load()

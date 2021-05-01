@@ -13,6 +13,7 @@ import xml.XMLNode;
  */
 public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTagable
 {
+	public static final int DEF_DRUMSETPROGRAM = 127 << 14;
 	public static final int NO_ID = DEF_SELECTORVALUE;
 	public static final XGTagableSet<XGDefaultsTable> DEFAULTSTABLE = new XGTagableSet<>();
 
@@ -47,7 +48,7 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 
 		DEFAULTSTABLE.add(new XGDefaultsTable("mp_program")
 			{	@Override public int get(int id, int sel)
-				{	if(id == 9 || id == 25 || id == 41 || id == 57) return 127 << 14;
+				{	if(id == 9 || id == 25 || id == 41 || id == 57) return DEF_DRUMSETPROGRAM;
 					return 0;
 				}
 			}
