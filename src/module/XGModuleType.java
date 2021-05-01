@@ -38,7 +38,8 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	private final Set<String> infoOpcodes = new LinkedHashSet<>();
 	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<>();
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();
-	protected final StringBuffer name, id;
+	protected final StringBuffer name;
+	protected String id;
 	protected final XGAddress address;
 	protected final XGTable idTranslator;
 	private final XMLNode config;
@@ -48,7 +49,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	this.config = cfg;
 		this.address = adr;
 		this.name = new StringBuffer(name);
-		this.id = cfg.getStringBufferAttributeOrNew(ATTR_ID, "missing id " + adr);
+		this.id = cfg.getStringAttribute(ATTR_ID);
 		this.idTranslator = TABLES.get(cfg.getStringAttribute(ATTR_TRANSLATOR));
 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))

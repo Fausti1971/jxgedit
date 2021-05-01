@@ -48,12 +48,10 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 
 		this.next.addActionListener((ActionEvent e)->{this.value.addIndex(1);});
 		this.next.setMinimumSize(ARROWSIZE);
-//		this.inc.setPreferredSize(new Dimension(GRID, GRID));
 		this.add(this.next, BorderLayout.EAST);
 
 		this.prev.addActionListener((ActionEvent e)->{this.value.addIndex(-1);});
 		this.prev.setMinimumSize(ARROWSIZE);
-//		this.dec.setPreferredSize(new Dimension(GRID, GRID));
 		this.add(this.prev, BorderLayout.WEST);
 
 		this.select.setText(this.value.toString());
@@ -71,6 +69,7 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 	@Override public void parameterChanged(XGParameter p)
 	{	this.setName(p.getName());
 		this.borderize();
+		this.repaint();
 	}
 
 	private void openDialog()

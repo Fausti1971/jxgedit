@@ -93,9 +93,14 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 		if(this.opcode.hasMutableDefaults())
 		{	XGValue dsv = this.module.getValues().get(this.opcode.getDefaultSelectorTag());
-			if(dsv == null) throw new RuntimeException(ATTR_DEFAULTSELECTOR + this.opcode.getDefaultSelectorTag() + " not found for value " + this.getTag());//TODO: drumset hat zwar mutableDefaults aber kann keinen festen defaultSelector (multipartProgram) haben
-			this.defaultSelector = dsv;
-			this.defaultSelector.addValueListener((XGValue)->{this.setDefaultValue();});
+			if(dsv != null)
+			{	this.defaultSelector = dsv;
+				this.defaultSelector.addValueListener((XGValue)->{this.setDefaultValue();});
+			}
+			else
+			{	LOG.warning(ATTR_DEFAULTSELECTOR + " " + this.opcode.getDefaultSelectorTag() + " not found for value " + this.getTag());//TODO: drumset hat zwar mutableDefaults aber kann keinen festen defaultSelector (multipartProgram) haben
+				this.defaultSelector = DEFAULTSELECTOR;
+			}
 		}
 		else this.defaultSelector = DEFAULTSELECTOR;
 	}
@@ -315,6 +320,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		{	switch(a)
 			{	case change: 			this.sendAction(); break;	//send via XGMessageParameterChange (normal)
 				case dump:				this.bulkAction(); break;	//bulk via XGMessageBulkDump (voice-programs)
+//				case switch_program:	break;
 				case none:				break;
 				default:				LOG.info("unknown action: " + a.name() + " for value: " + this.getInfo());
 			}

@@ -30,22 +30,14 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 
 /***************************************************************************************************************/
 
-//	private final Set<XGValue> infoValues = new LinkedHashSet<>();
 	private final XGAddress address;
 	private final XGModuleType type;
-	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<XGValue>();
-	//private XGWindow window;
-	//private boolean selected;
+	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
 
 	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
 		this.values.addAll(STORE.getAllIncluded(this.address));
-		//for(String tag : this.type.getInfoOpcodes())
-		//{	for(XGValue v : this.getValues())
-		//	{	if(v.getTag().equals(tag)) this.infoValues.add(v);
-		//	}
-		//}
 	}
 
 	public XGModuleType getType()

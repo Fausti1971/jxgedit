@@ -16,7 +16,7 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_NONE = "none",
 		DEF_TABLENAME = TABLE_NORMAL;
 
-	enum XACTION{change,dump,none,switch_drumset};
+	enum XACTION{change,dump,none,switch_program};
 
 	String MUTABLE = "mutable", IMMUTABLE = "immutable";
 	String DEF_PARAMETERNAME = "unknown parameter: ";

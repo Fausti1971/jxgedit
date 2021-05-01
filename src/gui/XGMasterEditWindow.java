@@ -21,7 +21,7 @@ public class XGMasterEditWindow extends XGEditWindow
 		XGFrame reset = new gui.XGFrame("Reset");
 		root.setLayout(new javax.swing.BoxLayout(root, javax.swing.BoxLayout.Y_AXIS));
 		parms.setLayout(new java.awt.GridLayout());
-		reset.setLayout(new javax.swing.BoxLayout(reset, javax.swing.BoxLayout.Y_AXIS));
+		reset.setLayout(new java.awt.GridBagLayout());
 		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();
 
 		parms.add(new XGKnob(values.get("master_volume")));
@@ -31,21 +31,26 @@ public class XGMasterEditWindow extends XGEditWindow
 
 		root.add(parms);
 
+		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints(1, 0, 1, 1, 0.5, 0.5, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(2,2,2,2), 2, 2);
+
 		for(module.XGModuleType mt : TYPES)
 		{	if(mt instanceof module.XGDrumsetModuleType)
 			{	javax.swing.JButton rb = new javax.swing.JButton("Reset " + mt.getName());
 				rb.addActionListener((java.awt.event.ActionEvent e)->{this.resetDrumset(mt);});
-				reset.add(rb);
+				gbc.gridy++;
+				reset.add(rb, gbc);
 			}
 		}
 		device.XGDevice dev = device.XGDevice.getDevice();
 		javax.swing.JButton rx = new javax.swing.JButton("XG System On");
 		rx.addActionListener((java.awt.event.ActionEvent e)->{dev.resetXG(true, true);});
-		reset.add(rx);
+		gbc.gridy++;
+		reset.add(rx, gbc);
 
 		javax.swing.JButton ra = new javax.swing.JButton("Reset All Parameters");
 		ra.addActionListener((java.awt.event.ActionEvent e)->{dev.resetAll(true, true);});
-		reset.add(ra);
+		gbc.gridy++;
+		reset.add(ra, gbc);
 
 		root.add(reset);
 

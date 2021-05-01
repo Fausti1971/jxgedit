@@ -124,6 +124,16 @@ Problem:
 	Lösung:
 		keine, außer vielleicht der Abschaffung von defaults (wieder per request)
 Problem:
-		Tests ergaben, dass jeweils nicht ausgewählte Programme zur Laufzeit (oder per Batterie) im Cache gehalten werden, bei einem Reset allerdings verloren gehen. Das heißt, dass bspw. die Normal-, Drum- bzw. Drumset-Programme zwar intern gecached 			werden, aber nicht mit übertragen und so nach einem Reset auch nicht restauriert werden können. Dieses Verhalten gilt es nachzubilden.
+		Tests ergaben, dass jeweils nicht ausgewählte Programme zur Laufzeit (oder per Batterie) im Cache gehalten werden, bei einem Reset allerdings verloren gehen. Das heißt, dass bspw. die Normal-, Drum- bzw. Drumset-Programme zwar intern gecached, aber nicht mit übertragen werden und so nach einem Reset auch nicht restauriert werden können. Dieses Verhalten gilt es nachzubilden. Streng genommen müsste der XGValue "mp_program" für "mp_partmode" 0 und 1 je ein Program vorhalten und für "mp_partmode" 2 bis 5 die Programmselektion delegieren.
 	Idee:
 		Selektion (mp_partmode) eines Drumsets blendet den XGProgramSelector (mp_program) des Multiparts aus und erlaubt somit keine Änderung - momentan selektiertes DrumKit- oder Voice-Programm verbleiben im XGValue (mp_program); Die Selektion eines Programs für Drumsets geschieht in einem eigenen JFrame, bleibt letzlich die Frage, wie in einem Dump die Programs für die Drumsets gespeichert und beim Transmit gesetzt werden...
+
+Problem: Durch eine beschissene Architektur sind (ohne erträglichen Aufwand) Inkonsistenzen unvermeidbar (s.o.)
+	Vorteile (durch "Shakehand" und Verzicht auf Defaults):
+		massive Verringerung der Komplexität +5
+		absolute Datenkonsistenz +5
+	Nachteile:
+		eine "default.syx" muss vorgehalten werden -1
+		Bidirektionale Anschaltung (MIDI In + Out) ist Voraussetzung -3
+		die Synchronisierung (insbesondere bei Drumsets) dauert lange -5 (fällt nur beim Wechsel des Programs eines Drumsets ins Gewicht)
+	Info: ein DrumsetReset bewirkt lediglich das Zurücksetzen der Drumsetparameter aber nicht des momentan selektierten Drumprogramms (was somit einen erneuten Request des gesamten Drumsets erforderlich macht)

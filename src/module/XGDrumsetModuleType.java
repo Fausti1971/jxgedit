@@ -23,8 +23,9 @@ public class XGDrumsetModuleType extends XGModuleType
 		try
 		{	i = this.address.getHi().getValue();
 			int nr = i - 47;
-			this.id.append(" ").append(nr);
+			this.id += nr;
 			this.name.append(" ").append(nr);
+			((parm.XGXMLTable)parm.XGTable.TABLES.get("mp_partmode")).add(new parm.XGTableEntry(nr + 1, this.name.toString()));
 		}
 		catch(InvalidXGAddressException e)
 		{	LOG.severe(e.getMessage());

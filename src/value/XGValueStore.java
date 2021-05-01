@@ -40,6 +40,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 			if(adr.getHi().getMin() >= 48)//falls Drumset
 			{	for(int h : adr.getHi())//erzeuge für jedes Drumset ein ModuleType
 				{	TYPES.add(new XGDrumsetModuleType(n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo())));
+					//TODO: muss noch in XGTable(mp_partmode) geadded werden...
 				}
 				continue;
 			}

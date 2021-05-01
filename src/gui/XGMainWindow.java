@@ -132,12 +132,17 @@ public class XGMainWindow extends XGWindow implements ComponentListener
 		sysPane.add(eb, gbc);
 
 		JTabbedPane tabPane = new JTabbedPane();
-		String[] adr = {"mp", "ad", "ins", "plugin"};
+		java.util.Set<String> adr = new java.util.LinkedHashSet<>();
+		adr.add("mp");
+		adr.add("ad");
+		adr.add("ins");
+		adr.add("plugin");
+		for(XGModuleType mt : TYPES) if(mt instanceof XGDrumsetModuleType) adr.add(mt.getTag());
 		for(String s : adr)
 		{	XGModuleType t = null;
 			t = TYPES.get(s);
-				if(t != null) tabPane.addTab(t.getName(), new JScrollPane(new XGModuleTable(t)));
-			}
+			if(t != null) tabPane.addTab(t.getName(), new JScrollPane(new XGModuleTable(t)));//TODO: hier müssen evtl. (?) noch die unbenutzten Drumsets ausgeblendet werden;
+		}
 
 		content.add(tabPane, CENTER);
 		content.add(sysPane, NORTH);

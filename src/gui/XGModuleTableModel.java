@@ -16,6 +16,10 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 		this.cols.add(0, null);
 	}
 
+	public java.util.Vector<module.XGModule> getRows()
+	{	return this.rows;
+	}
+
 	private int getColumn(String tag)
 	{	for(int i = 1; i < this.cols.size(); i++)
 			if(this.cols.get(i).equals(tag)) return i;
