@@ -11,9 +11,9 @@ import gui.XGPoint.PointRelation;
 import module.XGModule;
 import value.XGFixedValue;
 import value.XGValue;
-import xml.XMLNode;
+import xml.XMLNode;import javax.swing.*;
 
-public class XGVEG extends XGFrame implements MouseMotionListener
+public class XGVEG extends JPanel implements MouseMotionListener, XGComponent
 {
 	private static final long serialVersionUID = 1L;
 	private static final XGAddress
@@ -23,21 +23,31 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 		HIGH = new XGAddress("8//110");
 
 /***************************************************************************************/
-
+//TODO: Mach neu! die Kurvensteilheit stimmt nicht mehr, wenn die Velocity-Limits geändert werden...
 	private final XGPointPanel panel;
 	private final XGValue depth, offset, low, high;
 	private final XGTooltip tooltip = new XGTooltip();
 
-	public XGVEG(XMLNode n, XGModule mod) throws InvalidXGAddressException
-	{	super(n);
+	public XGVEG(XGValue dep, XGValue off, XGValue lo, XGValue hi)
+	{	this.depth = dep;
+		this.offset = off;
+
+		if(lo == null) this.low = new XGFixedValue("Limit low", 1);
+		else this.low = lo;
+
+		if(hi == null) this.high = new XGFixedValue("Limit High", 127);
+		else this.high = hi;
+
+		if(dep == null || off == null)
+		{	this.setEnabled(false);
+			this.setVisible(false);
+			this.panel = null;
+			return;
+		}
+		this.setName("Velocity");
 		this.borderize();
 
-		this.depth = mod.getValues().get(DEPTH.complement(mod.getAddress()));
-		this.offset = mod.getValues().get(OFFSET.complement(mod.getAddress()));
-		this.low = mod.getValues().get(LOW.complement(mod.getAddress()));
-		this.high = mod.getValues().get(HIGH.complement(mod.getAddress()));
-
-		this.panel = new XGPointPanel(0, 1, 0, 64, 1, 127, 64, 127);
+		this.panel = new XGPointPanel(1, 1, 0, 64, 1, 127, 64, 127);
 		this.panel.setUnits("Velocity", "Volume");
 
 		this.panel.add(new XGPoint(0, this.low, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));

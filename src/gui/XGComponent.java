@@ -41,21 +41,21 @@ public interface XGComponent extends XGAddressConstants, XGUI, MouseListener, Fo
 //		for(Component c : this.getJComponent().getComponents()) c.setVisible(b);
 //	}
 
-	public default void borderize()
+	default void borderize()
 	{	JComponent j = this.getJComponent();
 		if(j.isEnabled())
 		{	Color c = j.getBackground().darker();
 			if(j.hasFocus()) c = c.darker();
-			j.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), j.getName(), TitledBorder.CENTER, TitledBorder.CENTER, SMALL_FONT, c));
+			j.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), j.getName(), TitledBorder.CENTER, TitledBorder.TOP, SMALL_FONT, c));
 		}
 		else j.setBorder(null);
 	}
 
-	public default void deborderize()
+	default void deborderize()
 	{	this.getJComponent().setBorder(null);
 	}
 
-	public default Rectangle getContentArea()
+	default Rectangle getContentArea()
 	{	Rectangle r = new Rectangle(this.getJComponent().getBounds());
 		Insets ins = this.getJComponent().getInsets();
 		r.x = ins.left;
@@ -65,38 +65,38 @@ public interface XGComponent extends XGAddressConstants, XGUI, MouseListener, Fo
 		return r;
 	}
 
-	@Override public default void mouseClicked(MouseEvent e)
+	@Override  default void mouseClicked(MouseEvent e)
 	{	if(e.getClickCount() == 2)
 		{
 System.out.println("doubleclick detected");
 		}
 	}
 
-	@Override public default void mousePressed(MouseEvent e)
+	@Override  default void mousePressed(MouseEvent e)
 	{	VARIABLES.mousePressed = true;
 		VARIABLES.dragEvent = e;
 		e.consume();
 	}
 
-	@Override public default void mouseReleased(MouseEvent e)
+	@Override  default void mouseReleased(MouseEvent e)
 	{	VARIABLES.mousePressed = false;
 		VARIABLES.dragEvent = e;
 	}
 
-	@Override public default void mouseEntered(MouseEvent e)
+	@Override  default void mouseEntered(MouseEvent e)
 	{	if(!VARIABLES.mousePressed) this.getJComponent().requestFocusInWindow();
 	}
 
-	@Override public default void mouseExited(MouseEvent e)
+	@Override  default void mouseExited(MouseEvent e)
 	{
 	}
 
-	@Override public default void focusLost(FocusEvent e)
+	@Override  default void focusLost(FocusEvent e)
 	{	this.borderize();
 		this.getJComponent().repaint();
 	}
 
-	@Override public default void focusGained(FocusEvent e)
+	@Override  default void focusGained(FocusEvent e)
 	{	this.borderize();
 		this.getJComponent().repaint();
 	}

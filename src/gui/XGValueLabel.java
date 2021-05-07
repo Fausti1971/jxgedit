@@ -29,8 +29,9 @@ public class XGValueLabel extends JTextField implements XGUI, ActionListener, Mo
 		this.addActionListener(this);
 	}
 
-	@Override public void actionPerformed(ActionEvent e)
-	{	this.value.editIndex(this.value.getParameter().getTranslationTable().getIndex(this.getText().trim()));
+	@Override public void actionPerformed(ActionEvent e)//TODO: Unfallverhütung...
+	{	String s = this.getText().trim();
+		this.value.editIndex(this.value.getParameter().getTranslationTable().getIndex(s));
 		this.setText(this.value.toString());
 		this.repaint();
 	}

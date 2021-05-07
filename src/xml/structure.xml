@@ -195,25 +195,25 @@
 		<bulk address="8//0-40">
 			<opcode xsi:type="immutable" id="mp_reserve" address="//0" name="Element Reserve" shortName="ElRes" default="2" max="32" actions="change"/>
 			<opcode xsi:type="mutable" id="mp_program" address="//1-3" parameterSelector="mp_partmode" parameters="mp_partmode" defaultSelector="mp_partmode" defaults="mp_program"  actions="dump,buffer_program"/>
-			<opcode xsi:type="immutable" id="mp_midi_channel" address="//4" name="Midi Channel" shortName="Ch" defaultSelector="mp_midi_channel" defaults="id" translator="midi_channels" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_midi_channel" address="//4" name="Midi Channel" shortName="Ch" defaults="id" translator="midi_channels" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_poly" address="//5" name="Ployphony" shortName="Poly" translator="mp_monopoly" default="1" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_key_on_assign" address="//6" name="Same Note Number Key On Assign" shortName="KeyOn" default="1" translator="key_on_assign" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_partmode" address="//7" name="Part Mode" shortName="Mode" defaults="mp_partmode" translator="mp_partmode" actions="change,restore_program"/>
 			<opcode xsi:type="immutable" id="mp_transpose" address="//8" name="Transpose" shortName="Xpose" min="40" max="88" origin="64" default="64" translator="sub64" unit="st" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_detune" address="//9-10" byteType="LSN" name="Detune" shortName="Tune" max="255" translator="sub128div10" unit="Hz" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_detune" address="//9-10" byteType="LSN" name="Detune" shortName="Tune" max="255" origin="128" default="128" translator="sub128div10" unit="Hz" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_volume" address="//11" name="Volume" shortName="Vol" default="100" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_velo_depth" address="//12" name="Velocity Sense Depth" shortName="Depth" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_velo_offset" address="//13" name="Velocity Sense Offset" shortName="Ofset" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_velo_depth" address="//12" name="Velocity Sense Depth" shortName="Depth" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_velo_offset" address="//13" name="Velocity Sense Offset" shortName="Ofset" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_pan" address="//14" name="Panorama" shortName="Pan" default="64" translator="panorama" origin="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_note_lo" address="//15" name="Note Limit Low" shortName="LimLo" translator="tones" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_note_hi" address="//16" name="Note Limit High" shortName="LimHi" translator="tones" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_note_hi" address="//16" name="Note Limit High" shortName="LimHi" default="127" translator="tones" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_dry" address="//17" name="Dry Level" shortName="Dry" default="127" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cho" address="//18" name="Chorus Send" shortName="Cho" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_rev" address="//19" name="Reverb Send" shortName="Rev" default="40" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_var" address="//20" name="Variation Send" shortName="Var" default="0" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_vib_rate" address="//21" name="Vibrato Rate" shortName="Vib" origin="64" translator="table1" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_vib_rate" address="//21" name="Vibrato Rate" shortName="Vib" origin="0" translator="table1" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vib_depth" address="//22" name="Vibrato Depth" shortName="Depth" origin="64" translator="table19" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_vib_delay" address="//23" name="Vibrato Delay" shortName="Delay" origin="64" translator="table2" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_vib_delay" address="//23" name="Vibrato Delay" shortName="Delay" origin="0" translator="table2" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_lpf_cut" address="//24" name="Low Pass Filter Cutoff Frequency" shortName="LPF" origin="64" translator="table3" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_lpf_reso" address="//25" name="Low Pass Filter Resonance" shortName="Reso" origin="64" translator="sub64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_aeg_attack" address="//26" name="AEG Attack Time" shortName="Attck" origin="64" translator="table20" default="64" actions="change"/>
@@ -294,7 +294,7 @@
 			<opcode xsi:type="immutable" id="mp_ac2_lfo_lpf" address="//101" name="Assignable Controller 2 LFO Filter Modulation Depth" shortName="AC2FD" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_ac2_lfo_amp" address="//102" name="Assignable Controller 2 LFO Amplitude Modulation Depth" shortName="AC2AD" default="0" actions="change"/>
 
-			<opcode xsi:type="immutable" id="mp_portamento" address="//103" name="Portamento Switch" max="1" translator="on_off" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_portamento" address="//103" name="Portamento" shortName="PoSw" max="1" translator="on_off" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_portamento_time" address="//104" name="Portamento Time" default="0" actions="change"/>
 
 			<opcode xsi:type="immutable" id="mp_peg_init_level" address="//105" name="Pitch Envelope Generator Initial Level" shortName="PEGIL" translator="sub64" default="64" origin="64" actions="change"/>

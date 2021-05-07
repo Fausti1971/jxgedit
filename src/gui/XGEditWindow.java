@@ -9,7 +9,6 @@ public abstract class XGEditWindow extends gui.XGWindow implements adress.XGAddr
 	{	adress.XGAddress adr = mod.getAddress();
 		String tag = mod.getType().getTag();
 		XGEditWindow win = EDITWINDOWS.get(adr);
-		LOG.info("EditWindow requested: " + tag);
 		if(win != null) return win;
 		else
 		{	switch(tag)

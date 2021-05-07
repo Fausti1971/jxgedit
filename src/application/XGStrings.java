@@ -1,7 +1,7 @@
 package application;
 
-import java.util.HashSet;
-import java.util.Set;
+import static application.XGLoggable.LOG;import static java.lang.Math.abs;import java.awt.*;import java.util.HashSet;
+import java.util.Scanner;import java.util.Set;
 import java.util.StringTokenizer;
 
 public interface XGStrings
@@ -80,6 +80,61 @@ public interface XGStrings
 	{	return name.matches(REGEX_ALNUM);
 	}
 
+	static String commonString(String s1, String s2)
+	{	int i = 0, last = Math.min(s1.length(), s2.length());
+		for(; i < last; i++)
+		{	if(s1.charAt(i) != s2.charAt(i)) break;
+		}
+		return s1.substring(0, i);
+	}
+
+	static void main(String[] args)
+	{	System.out.println("String:");
+		Scanner sc = new Scanner(System.in);
+		String s = sc.next();
+		toGrid(s);
+	}
+
+	static Rectangle toGrid(String s)
+	{	Rectangle r = new Rectangle();
+		s = s.toUpperCase().trim();
+		String[] n = s.split("[A-Z]");
+		String[] a = s.split("\\d+");
+		int i = 0;
+		Point[] p = new Point[]{new Point(),new Point()};
+		for(String c : a)
+			if(XGStrings.isAlNum(c))
+				p[i++].x = c.charAt(0) - 'A';
+		i = 0;
+		for(String c : n)
+			if(XGStrings.isNumber(c))
+				p[i++].y = Integer.parseInt(c);
+		r.x = Math.min(p[0].x, p[1].x);
+		r.y = Math.min(p[0].y, p[1].y);
+		r.width = abs(p[0].x - p[1].x) + 1;
+		r.height = abs(p[0].y - p[1].y) + 1;
+		return r;
+	}
+/*
+	static Rectangle toGrid(String s)
+	{	Rectangle r = new Rectangle(0, 0,0 ,0);
+		if(s != null)
+		{	String[] sec = s.split(",");
+			if(sec.length == 4)
+			{	int x1 = Integer.parseInt(sec[0]);
+				int y1 = Integer.parseInt(sec[1]);
+				int x2 = Integer.parseInt(sec[2]);
+				int y2 = Integer.parseInt(sec[3]);
+				r.x = Math.min(x1, x2);
+				r.y = Math.min(y1, y2);
+				r.width = abs(x1 - x2) + 1;
+				r.height = abs(y1 - y2) + 1;
+			}
+			else LOG.severe("string (" + s + ") contains no valid grid...");
+		}
+		return r;
+	}
+*/
 	static String toShortName(String name)//TODO: das kannst Du besser!
 	{	return name.substring(0, Math.min(name.length(), 4));
 	}

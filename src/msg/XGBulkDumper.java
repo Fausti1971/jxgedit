@@ -46,6 +46,7 @@ public interface XGBulkDumper extends XGLoggable
 				}
 				else
 				{	LOG.severe("no response for " + r);
+					pm.setNote(r.toString());
 					missed.add(r);
 				}
 				if(pm.isCanceled()) break;

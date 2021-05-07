@@ -8,9 +8,9 @@ import gui.XGPoint.PointRelation;
 import module.XGModule;
 import value.XGFixedValue;
 import value.XGValue;
-import xml.XMLNode;
+import xml.XMLNode;import javax.swing.*;
 
-public class XGAEG extends XGFrame
+public class XGAEG extends JPanel implements XGComponent
 {
 	private static final long serialVersionUID = 1L;
 	private static final XGAddress ATTACK = new XGAddress("8//26"), DECAY = new XGAddress("8//27"), RELEASE = new XGAddress("8//28");
@@ -20,13 +20,19 @@ public class XGAEG extends XGFrame
 	private final XGPointPanel panel;
 	private final XGValue attack, decay, release;
 
-	public XGAEG(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
-	{	super(n);
+	public XGAEG(XGValue atk, XGValue dec, XGValue rel)
+	{	this.attack = atk;
+		this.decay = dec;
+		this.release = rel;
+		if(atk == null || dec == null || rel == null)
+		{	this.setEnabled(false);
+			this.setVisible(false);
+			this.panel = null;
+			return;
+		}
+		this.setName("Amplifier Envelope Generator");
 		this.borderize();
 
-		this.attack = mod.getValues().getOrDefault(ATTACK.complement(mod.getAddress()), XGFixedValue.VALUE_0);
-		this.decay = mod.getValues().getOrDefault(DECAY.complement(mod.getAddress()), XGFixedValue.VALUE_0);
-		this.release = mod.getValues().getOrDefault(RELEASE.complement(mod.getAddress()), XGFixedValue.VALUE_0);
 		int maxX = this.attack.getParameter().getMaxIndex() - this.attack.getParameter().getMinIndex();
 		maxX += this.decay.getParameter().getMaxIndex() - this.decay.getParameter().getMinIndex();
 		maxX += this.release.getParameter().getMaxIndex() - this.release.getParameter().getMinIndex();

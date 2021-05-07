@@ -95,7 +95,7 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 	Font SMALL_FONT = new JEditorPane().getFont().deriveFont(FONTSIZE);
 
 	int
-		//GRID = 22,
+		GRID = 22,
 		//COL_STEP = 16,
 		//GAP = 5,
 		DEF_STROKEWIDTH = 4,

@@ -53,7 +53,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 //	private final JComponent column;
 
 	protected XGKeyboard(XMLNode n, XGModule mod) throws InvalidXGAddressException
-	{	super(n);
+	{	super(n.getStringAttribute(ATTR_NAME));
 		this.partmodeValue = STORE.get(PARTMODEADDRESS.complement(mod.getAddress()));
 		this.midiChannelValue = STORE.get(MIDICHANNELADDRESS.complement(mod.getAddress()));
 		this.minKeyValue = STORE.get(MINKEYADDRESS.complement(mod.getAddress()));

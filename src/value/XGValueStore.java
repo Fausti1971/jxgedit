@@ -40,7 +40,6 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 			if(adr.getHi().getMin() >= 48)//falls Drumset
 			{	for(int h : adr.getHi())//erzeuge für jedes Drumset ein ModuleType
 				{	TYPES.add(new XGDrumsetModuleType(n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo())));
-					//TODO: muss noch in XGTable(mp_partmode) geadded werden...
 				}
 				continue;
 			}
@@ -66,6 +65,11 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 			}
 			LOG.info(mt.getModules().size() + " " + mt + "-Modules initialized");
 		}
+//export opcodes
+		//for(XGModuleType mt : TYPES)
+		//{	System.out.println(mt.getTag());
+		//	for(XGOpcode o : mt.getOpcodes()) System.out.println(o.getTag());
+		//}
 		for(XGValue v : STORE) v.setDefaultValue();
 		LOG.info(STORE.size() + " Values initialized");
 	}

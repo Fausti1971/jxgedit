@@ -41,7 +41,8 @@ import static value.XGValueStore.STORE;
 import xml.XMLNode;
 
 public class XGDevice implements XGDeviceConstants, XGBulkDumper
-{	private static XGDevice device = null;
+{
+	private static XGDevice device = null;
 	public static XMLNode config = null;
 	private String WARNSTRING = "This will reset all parameters!";
 
@@ -98,7 +99,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m;
 		try
-		{	m = new XGMessageBulkRequest(XGMidi.getMidi(), XGMidi.getMidi(), XGAddressConstants.XGMODELNAMEADRESS);// TODO: Krücke, für dest existiert hier noch kein XGMessenger, der allerdings für getDevice() erforderlich ist
+		{	m = new XGMessageBulkRequest(STORE, XGMidi.getMidi(), XGAddressConstants.XGMODELNAMEADRESS);
 			try
 			{	m.request();
 				if(m.isResponsed())

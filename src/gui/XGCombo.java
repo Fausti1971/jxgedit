@@ -1,8 +1,6 @@
 package gui;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import javax.swing.JComboBox;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
@@ -20,20 +18,21 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGParameterChang
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private static final Dimension MIN_DIM = new Dimension(XGUI.GRID * 6, XGUI.GRID * 2);
 
 /*****************************************************************************************************************/
 
-//	private final JComboBox<XGTableEntry> combo = new JComboBox<>();
 	private final XGValue value;
 
 	public XGCombo(XGValue val)
-	{	//this.setLayout(new GridBagLayout());
-		this.value = val;
+	{	this.value = val;
 		if(this.value == null)
 		{	this.setVisible(false);
 			this.setEnabled(false);
 			return;
 		}
+		this.setMinimumSize(MIN_DIM);
+		this.setPreferredSize(MIN_DIM);
 		this.borderize();
 		XGParameter p = this.value.getParameter();
 		if(p != null)
@@ -56,15 +55,10 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGParameterChang
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	if(p != null)
-		{	this.setName(p.getShortName());
-			this.setToolTipText(p.getName());
-		}
-		else
-		{	this.setName("n/a");
-			this.setToolTipText("no parameter");
-		}
-		this.setEnabled(p != null);
+	{	this.setName(p.getShortName());
+		this.setToolTipText(p.getName());
+		this.setEnabled(p.isValid());
+		this.setVisible(p != XGParameter.NO_PARAMETER);
 		this.borderize();
 		this.repaint();
 	}

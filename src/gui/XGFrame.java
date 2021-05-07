@@ -15,20 +15,13 @@ public class XGFrame extends JPanel implements XGComponent
 
 /********************************************************************************************************************/
 
-	private final XMLNode config;
-	private final boolean root;
-
-	public XGFrame(XMLNode n)
-	{	this.config = n;
-		if(n.hasAttribute(ATTR_NAME))
-		{	this.setName(n.getStringAttribute(ATTR_NAME));
-			this.borderize();
-		}
-		this.root = n.getParentNode() == null || n.getParentNode().getTag().equals("TAG_TEMPLATES");
-		this.setOpaque(root);
+	public XGFrame(String text, int gx, int gy)
+	{	this.setLayout(new XGLayout(new Dimension(gx, gy)));
+		this.setName(text);
+		this.borderize();
 	}
 
 	public XGFrame(String text)
-	{	this(new XMLNode(text, new XGProperties(ATTR_NAME, text)));
+	{	this(text, GRID, GRID);
 	}
 }

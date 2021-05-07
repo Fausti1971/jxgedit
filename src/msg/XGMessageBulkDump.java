@@ -66,7 +66,7 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 		if((sum & LSB) != 0) throw new InvalidMidiDataException("checksum error!");
 	}
 
-	@Override public void setChecksum()//TODO: meist falsch, liegt aber offenbar eher an der Länge als an der Berechnung...
+	@Override public void setChecksum()
 	{	int size = this.getBulkSize();
 		int pos = DATA_OFFS + size;//checksum-offset
 		int sum = this.calcChecksum(SIZE_OFFS, pos - 1);//Berechnung erstmal ohne checksum-offset, da diese erst errechnet und gesetzt werden muss

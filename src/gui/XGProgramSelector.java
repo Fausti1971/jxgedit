@@ -17,7 +17,7 @@ import value.XGValueChangeListener;
 public class XGProgramSelector extends javax.swing.JPanel implements XGComponent, XGParameterChangeListener, XGValueChangeListener, TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
-	private static final java.awt.Dimension DEF_MINDIM = new java.awt.Dimension(396, 44);
+	private static final java.awt.Dimension DEF_MINDIM = new java.awt.Dimension(GRID * 18, GRID * 2);
 	private static javax.swing.ImageIcon icon_next = new javax.swing.ImageIcon(XGUI.loadImage("arrow_right.png")), icon_prev = new javax.swing.ImageIcon(XGUI.loadImage("arrow_left.png"));
 	private static java.awt.Dimension ARROWSIZE = new java.awt.Dimension(icon_next.getIconWidth(), icon_next.getIconHeight());
 

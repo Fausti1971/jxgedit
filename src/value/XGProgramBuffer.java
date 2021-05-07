@@ -51,7 +51,6 @@ public interface XGProgramBuffer
 
 	static void reset()
 	{	normalPrograms.clear();
-LOG.info("normal programs buffered: " + normalPrograms.size());
 		drumKitPrograms.clear();
 		drumsets.clear();
 	}

@@ -27,7 +27,7 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 		return res;
 	}
 
-	private void checkConsistency()throws Exception //TODO: Drumparameter haben unterschiedliche Adressen aber gleich Tags -> XGOpcode.OPCODES muss umziehen in die XGModuleType-Instanz
+	private void checkConsistency()throws Exception
 	{	if(this.tagSet.size() != this.adrSet.size()) throw new Exception("Consistencycheck failed: " + this.adrSet.size() + " addresses/" + this.tagSet.size());
 	}
 

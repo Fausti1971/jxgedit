@@ -11,14 +11,14 @@ import javax.swing.JPanel;
 import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
-import static gui.XGUI.*;import module.XGModule;
+import application.XGStrings;import static gui.XGUI.*;import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;
 import static value.XGValueStore.STORE;import xml.XMLNode;
 
-public class XGRange extends JPanel implements XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener
+public class XGRange extends JPanel implements XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener, XGComponent
 {	/**
 	 * 
 	 */
@@ -29,23 +29,24 @@ public class XGRange extends JPanel implements XGParameterConstants, XGValueChan
 	private final XGRangeBar bar;
 	private final XGRangeLabel label;
 	private final XGValue loValue, hiValue;
-	private final XGAddress loAddress, hiAddress;
 
-	public XGRange(XMLNode n, XGModule mod) throws XGMemberNotFoundException
+	public XGRange(XGValue lo, XGValue hi)
 	{
 		this.setLayout(new GridBagLayout());
-		this.loAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_LO), mod.getAddress());
-		this.hiAddress = new XGAddress(n.getStringAttribute(ATTR_ADDRESS_HI), mod.getAddress());
-		this.loValue = STORE.getFirstIncluded(this.loAddress);
-		this.hiValue = STORE.getFirstIncluded(this.hiAddress);
+		this.loValue = lo;
+		this.hiValue = hi;
+		if(this.loValue == null || this.hiValue == null)
+		{	this.setEnabled(false);
+			this.setVisible(false);
+			this.bar = null;
+			this.label = null;
+			return;
+		}
 		this.loValue.addValueListener(this);
 		this.hiValue.addValueListener(this);
 
-		if(this.isEnabled())
-		{	this.setToolTipText(null);
-			this.setFocusable(true);
-		}
-		this.setName(n.getStringAttribute(ATTR_NAME));
+		this.setName(XGStrings.commonString(this.loValue.getParameter().getName(), this.hiValue.getParameter().getName()));
+		this.borderize();
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 

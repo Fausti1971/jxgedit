@@ -7,9 +7,9 @@ import gui.XGPoint.PointRelation;
 import module.XGModule;
 import value.XGFixedValue;
 import value.XGValue;
-import xml.XMLNode;
+import xml.XMLNode;import javax.swing.*;
 
-public class XGPEG extends XGFrame
+public class XGPEG extends JPanel implements XGComponent
 {
 	private static final long serialVersionUID = 1L;
 	private static final XGAddress A_TIME = new XGAddress("8//106"), A_LEVEL = new XGAddress("8//105"), R_TIME = new XGAddress("8//108"), R_LEVEL = new XGAddress("8//107");
@@ -20,16 +20,21 @@ public class XGPEG extends XGFrame
 	private final XGPointPanel panel;
 	private final XGValue a_time, a_level, r_time, r_level;
 
-	public XGPEG(XMLNode n, XGModule mod) throws XGMemberNotFoundException, InvalidXGAddressException
-	{	super(n);
+	public XGPEG(XGValue al, XGValue at, XGValue rl, XGValue rt)
+	{	this.a_level = al;
+		this.a_time = at;
+		this.r_level = rl;
+		this.r_time = rt;
+		if(al == null || at == null || rl == null || rt == null)
+		{	this.setEnabled(false);
+			this.setVisible(false);
+			this.panel = null;
+			return;
+		}
+		this.setName("Pitch Envelope Generator");
 		this.borderize();
 
-		this.a_time = mod.getValues().get(A_TIME.complement(mod.getAddress()));
-		this.a_level = mod.getValues().get(A_LEVEL.complement(mod.getAddress()));
-		this.r_time = mod.getValues().get(R_TIME.complement(mod.getAddress()));
-		this.r_level = mod.getValues().get(R_LEVEL.complement(mod.getAddress()));
-
-		this.panel = new XGPointPanel(0, 0, 0, 0, 0, 381, 0, 127);
+		this.panel = new XGPointPanel(1, 2, 0, 64, 0, 381, 0, 127);
 		this.panel.setUnits("Time", "Pitch");
 
 		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), this.a_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
