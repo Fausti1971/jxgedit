@@ -1,9 +1,8 @@
 package gui;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.*;
 
-public class XGTooltip extends JFrame implements XGUI
+public class XGTooltip extends JPopupMenu implements XGUI
 {
 	private static final long serialVersionUID = 1L;
 
@@ -13,10 +12,11 @@ public class XGTooltip extends JFrame implements XGUI
 
 	public XGTooltip()
 	{	this.add(this.label);
-		this.label.setFont(SMALL_FONT);
-		this.setUndecorated(true);
+//		this.label.setFont(SMALL_FONT);
+		this.setFont(SMALL_FONT);
+//		this.setUndecorated(true);
 		this.setFocusable(false);
-		this.setAutoRequestFocus(false);
+//		this.setAutoRequestFocus(false);
 //		this.setFocusableWindowState(false);
 	}
 

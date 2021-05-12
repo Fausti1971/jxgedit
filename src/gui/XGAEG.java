@@ -37,7 +37,7 @@ public class XGAEG extends JPanel implements XGComponent
 		maxX += this.decay.getParameter().getMaxIndex() - this.decay.getParameter().getMinIndex();
 		maxX += this.release.getParameter().getMaxIndex() - this.release.getParameter().getMinIndex();
 
-		this.panel = new XGPointPanel(0, 0, 0, 0, 0, maxX, 0, 127);
+		this.panel = new XGPointPanel(1, 5, 0, 0, 0, maxX, 0, 127);
 		this.panel.setUnits("Time", "Gain");
 
 		this.panel.add(new XGPoint(0, XGFixedValue.VALUE_0, XGFixedValue.VALUE_0, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));

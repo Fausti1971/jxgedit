@@ -1,4 +1,6 @@
 package gui;
+import javax.swing.*;
+
 public class XGVariationEditWindow extends XGEditWindow
 {
 	public XGVariationEditWindow(module.XGModule mod)
@@ -9,45 +11,46 @@ public class XGVariationEditWindow extends XGEditWindow
 	}
 
 	private javax.swing.JComponent createContent()
-	{	javax.swing.JPanel root = new javax.swing.JPanel(), main = new javax.swing.JPanel(), parms = new javax.swing.JPanel(), ctrl = new javax.swing.JPanel();
+	{	JPanel root = new JPanel();
+		XGFrame main = new XGFrame(null, GRID * 3, GRID * 2),
+			parms = new XGFrame(null, GRID * 3, GRID * 4),
+			ctrl = new XGFrame(null, GRID * 3, GRID * 4);
 		root.setLayout(new javax.swing.BoxLayout(root, javax.swing.BoxLayout.Y_AXIS));
-		main.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, GAP, GAP));
-		ctrl.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, GAP, GAP));
-		parms.setLayout(new java.awt.GridLayout());
+
 		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();
 
-		main.add(new gui.XGProgramSelector(values.get("var_program")));
-		main.add(new gui.XGKnob(values.get("var_return")));
-		main.add(new gui.XGKnob(values.get("var_pan")));
-		main.add(new gui.XGKnob(values.get("var_to_rev")));
-		main.add(new gui.XGKnob(values.get("var_to_cho")));
-		main.add(new gui.XGRadio(values.get("var_connection")));
-		main.add(new gui.XGKnob(values.get("var_part")));
+		main.add(new gui.XGProgramSelector(values.get("var_program")), "a0f0");
+		main.add(new gui.XGKnob(values.get("var_return")), "g0g1");
+		main.add(new gui.XGKnob(values.get("var_pan")), "h0h1");
+		main.add(new gui.XGKnob(values.get("var_to_rev")), "i0i1");
+		main.add(new gui.XGKnob(values.get("var_to_cho")), "j0j1");
+		main.add(new gui.XGRadio(values.get("var_connection"), BoxLayout.X_AXIS), "a1c1");
+		main.add(new gui.XGCombo(values.get("var_part")), "d1f1");
 		root.add(main);
 
-		parms.add(new gui.XGKnob(values.get("var_p1")));
-		parms.add(new gui.XGKnob(values.get("var_p2")));
-		parms.add(new gui.XGKnob(values.get("var_p3")));
-		parms.add(new gui.XGKnob(values.get("var_p4")));
-		parms.add(new gui.XGKnob(values.get("var_p5")));
-		parms.add(new gui.XGKnob(values.get("var_p6")));
-		parms.add(new gui.XGKnob(values.get("var_p7")));
-		parms.add(new gui.XGKnob(values.get("var_p8")));
-		parms.add(new gui.XGKnob(values.get("var_p9")));
-		parms.add(new gui.XGKnob(values.get("var_p10")));
-		parms.add(new gui.XGKnob(values.get("var_p11")));
-		parms.add(new gui.XGKnob(values.get("var_p12")));
-		parms.add(new gui.XGKnob(values.get("var_p13")));
-		parms.add(new gui.XGKnob(values.get("var_p14")));
-		parms.add(new gui.XGKnob(values.get("var_p15")));
-		parms.add(new gui.XGKnob(values.get("var_p16")));
+		parms.add(new gui.XGKnob(values.get("var_p1")), "a0a0");
+		parms.add(new gui.XGKnob(values.get("var_p2")), "b0b0");
+		parms.add(new gui.XGKnob(values.get("var_p3")), "c0c0");
+		parms.add(new gui.XGKnob(values.get("var_p4")), "d0d0");
+		parms.add(new gui.XGKnob(values.get("var_p5")), "e0e0");
+		parms.add(new gui.XGKnob(values.get("var_p6")), "f0f0");
+		parms.add(new gui.XGKnob(values.get("var_p7")), "g0g0");
+		parms.add(new gui.XGKnob(values.get("var_p8")), "h0h0");
+		parms.add(new gui.XGKnob(values.get("var_p9")), "i0i0");
+		parms.add(new gui.XGKnob(values.get("var_p10")), "j0j0");
+		parms.add(new gui.XGKnob(values.get("var_p11")), "k0k0");
+		parms.add(new gui.XGKnob(values.get("var_p12")), "l0l0");
+		parms.add(new gui.XGKnob(values.get("var_p13")), "m0m0");
+		parms.add(new gui.XGKnob(values.get("var_p14")), "n0n0");
+		parms.add(new gui.XGKnob(values.get("var_p15")), "o0o0");
+		parms.add(new gui.XGKnob(values.get("var_p16")), "p0p0");
 		root.add(parms);
 
-		ctrl.add(new gui.XGKnob(values.get("var_mw")));
-		ctrl.add(new gui.XGKnob(values.get("var_pb")));
-		ctrl.add(new gui.XGKnob(values.get("var_cat")));
-		ctrl.add(new gui.XGKnob(values.get("var_ac1")));
-		ctrl.add(new gui.XGKnob(values.get("var_ac2")));
+		ctrl.add(new gui.XGKnob(values.get("var_mw")), "a0a0");
+		ctrl.add(new gui.XGKnob(values.get("var_pb")), "b0b0");
+		ctrl.add(new gui.XGKnob(values.get("var_cat")), "c0c0");
+		ctrl.add(new gui.XGKnob(values.get("var_ac1")), "d0d0");
+		ctrl.add(new gui.XGKnob(values.get("var_ac2")), "e0e0");
 		root.add(ctrl);
 
 		return root;

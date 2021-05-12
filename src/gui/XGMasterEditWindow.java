@@ -17,40 +17,41 @@ public class XGMasterEditWindow extends XGEditWindow
 	}
 
 	private javax.swing.JComponent createContent()
-	{	javax.swing.JPanel root = new javax.swing.JPanel(), parms = new javax.swing.JPanel();
-		XGFrame reset = new gui.XGFrame("Reset");
+	{	javax.swing.JPanel root = new javax.swing.JPanel();
+		XGFrame parms = new XGFrame(null, GRID * 3, GRID * 4);
+		XGFrame reset = new XGFrame("Reset", GRID * 12,  GRID * 2);
 		root.setLayout(new javax.swing.BoxLayout(root, javax.swing.BoxLayout.Y_AXIS));
-		parms.setLayout(new java.awt.GridLayout());
-		reset.setLayout(new java.awt.GridBagLayout());
+
 		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();
 
-		parms.add(new XGKnob(values.get("master_volume")));
-		parms.add(new XGKnob(values.get("master_damp")));
-		parms.add(new XGKnob(values.get("master_transpose")));
-		parms.add(new XGKnob(values.get("master_tune")));
+		parms.add(new XGKnob(values.get("master_volume")), "a0a0");
+		parms.add(new XGKnob(values.get("master_damp")), "b0b0");
+		parms.add(new XGKnob(values.get("master_transpose")), "c0c0");
+		parms.add(new XGKnob(values.get("master_tune")), "d0d0");
 
 		root.add(parms);
 
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints(1, 0, 1, 1, 0.5, 0.5, java.awt.GridBagConstraints.CENTER, java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(2,2,2,2), 2, 2);
-
+		char x = 'a';
+		int y = 0;
+		String c;
 		for(module.XGModuleType mt : TYPES)
 		{	if(mt instanceof module.XGDrumsetModuleType)
 			{	javax.swing.JButton rb = new javax.swing.JButton("Reset " + mt.getName());
 				rb.addActionListener((java.awt.event.ActionEvent e)->{this.resetDrumset(mt);});
-				gbc.gridy++;
-				reset.add(rb, gbc);
+				c = "" + x + y + x + y++;
+				reset.add(rb, c);
 			}
 		}
 		device.XGDevice dev = device.XGDevice.getDevice();
 		javax.swing.JButton rx = new javax.swing.JButton("XG System On");
 		rx.addActionListener((java.awt.event.ActionEvent e)->{dev.resetXG(true, true);});
-		gbc.gridy++;
-		reset.add(rx, gbc);
+		c = "" + x + y + x + y++;
+		reset.add(rx, c);
 
 		javax.swing.JButton ra = new javax.swing.JButton("Reset All Parameters");
 		ra.addActionListener((java.awt.event.ActionEvent e)->{dev.resetAll(true, true);});
-		gbc.gridy++;
-		reset.add(ra, gbc);
+		c = "" + x + y + x + y++;
+		reset.add(ra, c);
 
 		root.add(reset);
 

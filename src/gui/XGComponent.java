@@ -43,9 +43,9 @@ public interface XGComponent extends XGAddressConstants, XGUI, MouseListener, Fo
 
 	default void borderize()
 	{	JComponent j = this.getJComponent();
-		if(j.isEnabled())
+		String name = j.getName();
+		if(j.isEnabled() && name != null)
 		{	Color c = j.getBackground().darker();
-			if(j.hasFocus()) c = c.darker();
 			j.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), j.getName(), TitledBorder.CENTER, TitledBorder.TOP, SMALL_FONT, c));
 		}
 		else j.setBorder(null);

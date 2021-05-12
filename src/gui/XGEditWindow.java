@@ -15,6 +15,7 @@ public abstract class XGEditWindow extends gui.XGWindow implements adress.XGAddr
 			{	case "rev":		win = new XGReverbEditWindow(mod); break;
 				case "cho":		win = new XGChorusEditWindow(mod); break;
 				case "var":		win = new XGVariationEditWindow(mod); break;
+				case "ins":		win = new XGInsertionEditWindow(mod); break;
 				case "master":	win = new gui.XGMasterEditWindow(mod); break;
 				case "eq":		win = new XGEQEditWindow(mod); break;
 				case "mp":		win = new XGMultipartEditWindow(mod); break;

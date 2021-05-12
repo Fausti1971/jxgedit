@@ -20,36 +20,12 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 {
 	public static XGValueStore STORE = null;
 
+/**
+* initialisiert zu jedem Moduletype die angegebene Anzahl Instanzen (XGModule) inkl. der Bulk-Instanzen (XGAddress) und Opcode-Instanzen (XGValues inkl. Abhängigkeiten)
+*/
 	public static void init()
-	{	initStructure();
-		STORE = new XGValueStore();
-		initInstances();
-	}
-
-	private static void initStructure()
-	{	XMLNode xml;
-		try
-		{	xml = XMLNode.parse(JXG.getResourceStream(XMLPATH + XML_STRUCTURE));
-		}
-		catch(IOException e)
-		{	LOG.severe(e.getMessage());
-			return;
-		}
-		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
-		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS));
-			if(adr.getHi().getMin() >= 48)//falls Drumset
-			{	for(int h : adr.getHi())//erzeuge für jedes Drumset ein ModuleType
-				{	TYPES.add(new XGDrumsetModuleType(n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo())));
-				}
-				continue;
-			}
-			TYPES.add(new XGModuleType(n));
-		}
-		LOG.info(TYPES.size() + " Module-Types initialized");
-	}
-
-	private static void initInstances()
-	{	for(XGModuleType mt : TYPES)
+	{	STORE = new XGValueStore();
+		for(XGModuleType mt : TYPES)
 		{	for(int id : mt.getAddress().getMid())
 			{	try
 				{	XGModule mod = new XGModule(mt, id);

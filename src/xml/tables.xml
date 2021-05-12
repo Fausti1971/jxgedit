@@ -1,6 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="tables.xsd">
 
+	<table name="controller">
+		<item value="0" name="Off"/>
+		<item value="1" name="1"/>
+		<item value="2" name="2"/>
+		<item value="3" name="3"/>
+		<item value="4" name="4"/>
+		<item value="5" name="5"/>
+		<item value="6" name="6"/>
+		<item value="7" name="7"/>
+		<item value="8" name="8"/>
+		<item value="9" name="9"/>
+		<item value="10" name="10"/>
+		<item value="11" name="11"/>
+		<item value="12" name="12"/>
+		<item value="13" name="13"/>
+		<item value="14" name="14"/>
+		<item value="15" name="15"/>
+		<item value="16" name="16"/>
+		<item value="17" name="17"/>
+		<item value="18" name="18"/>
+		<item value="19" name="29"/>
+		<item value="20" name="20"/>
+		<item value="21" name="21"/>
+		<item value="22" name="22"/>
+		<item value="23" name="23"/>
+		<item value="24" name="24"/>
+		<item value="25" name="25"/>
+		<item value="26" name="26"/>
+		<item value="27" name="27"/>
+		<item value="28" name="28"/>
+		<item value="29" name="29"/>
+		<item value="30" name="30"/>
+		<item value="31" name="31"/>
+		<item value="32" name="32"/>
+		<item value="33" name="33"/>
+		<item value="34" name="34"/>
+		<item value="35" name="35"/>
+		<item value="36" name="36"/>
+		<item value="37" name="37"/>
+		<item value="38" name="38"/>
+		<item value="39" name="39"/>
+		<item value="40" name="40"/>
+		<item value="41" name="41"/>
+		<item value="42" name="42"/>
+		<item value="43" name="43"/>
+		<item value="44" name="44"/>
+		<item value="45" name="45"/>
+		<item value="46" name="46"/>
+		<item value="47" name="47"/>
+		<item value="48" name="48"/>
+		<item value="49" name="49"/>
+		<item value="50" name="50"/>
+		<item value="51" name="51"/>
+		<item value="52" name="52"/>
+		<item value="53" name="53"/>
+		<item value="54" name="54"/>
+		<item value="55" name="55"/>
+		<item value="56" name="56"/>
+		<item value="57" name="57"/>
+		<item value="58" name="58"/>
+		<item value="59" name="59"/>
+		<item value="60" name="60"/>
+		<item value="61" name="61"/>
+		<item value="62" name="62"/>
+		<item value="63" name="63"/>
+		<item value="64" name="64"/>
+		<item value="65" name="65"/>
+		<item value="66" name="66"/>
+		<item value="67" name="67"/>
+		<item value="68" name="68"/>
+		<item value="69" name="69"/>
+		<item value="70" name="70"/>
+		<item value="71" name="71"/>
+		<item value="72" name="72"/>
+		<item value="73" name="73"/>
+		<item value="74" name="74"/>
+		<item value="75" name="75"/>
+		<item value="76" name="76"/>
+		<item value="77" name="77"/>
+		<item value="78" name="78"/>
+		<item value="79" name="79"/>
+		<item value="80" name="80"/>
+		<item value="81" name="81"/>
+		<item value="82" name="82"/>
+		<item value="83" name="83"/>
+		<item value="84" name="84"/>
+		<item value="85" name="85"/>
+		<item value="86" name="86"/>
+		<item value="87" name="87"/>
+		<item value="88" name="88"/>
+		<item value="89" name="89"/>
+		<item value="90" name="90"/>
+		<item value="91" name="91"/>
+		<item value="92" name="92"/>
+		<item value="93" name="93"/>
+		<item value="94" name="94"/>
+		<item value="95" name="95"/>
+		<item value="96" name="AT"/>
+		<item value="97" name="Vel"/>
+		<item value="98" name="PB"/>
+	</table>
+
 	<table name="input_gain">
 		<item value="0" name="Mic"/>
 		<item value="1" name="Line"/>
@@ -103,17 +205,16 @@
 		<item value="1" name="Multi"/>
 		<item value="2" name="Inst"/>
 	</table>
-
+<!--
 	<table name="mp_partmode">
 		<item value="0" name="Normal"/>
 		<item value="1" name="Drum"/>
-<!--	<item value="2" name="Drumset 1"/>
+	-	<item value="2" name="Drumset 1"/>
 		<item value="3" name="Drumset 2"/>
 		<item value="4" name="Drumset 3"/>
 		<item value="5" name="Drumset 4"/>
--->
 	</table>
-
+-->
 	<table name="audio_outputs">
 		<item value="0" name="Stereo 1"/>
 		<item value="1" name="Stereo 2"/>

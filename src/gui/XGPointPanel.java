@@ -10,7 +10,7 @@ import application.XGMath;
 import value.XGValue;
 import xml.XMLNode;
 
-public class XGPointPanel extends JPanel implements XGUI, XGResizeable
+public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGComponent
 {
 	private static final long serialVersionUID = 1L;
 	private static Dimension MIN_DIM = new java.awt.Dimension(5 * 66, 2 * 88);

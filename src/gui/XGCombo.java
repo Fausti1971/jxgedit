@@ -33,7 +33,7 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGParameterChang
 		}
 		this.setMinimumSize(MIN_DIM);
 		this.setPreferredSize(MIN_DIM);
-		this.borderize();
+//		this.borderize();
 		XGParameter p = this.value.getParameter();
 		if(p != null)
 		{	XGTable t = p.getTranslationTable();
@@ -44,7 +44,7 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGParameterChang
 		else this.setEnabled(false);
 		this.setAutoscrolls(true);
 
-		this.addFocusListener(this);
+//		this.addFocusListener(this);
 		this.value.addValueListener((XGValue v)->{this.setSelectedItem(this.value.getEntry());});
 		this.value.addParameterListener(this);
 		this.parameterChanged(this.value.getParameter());

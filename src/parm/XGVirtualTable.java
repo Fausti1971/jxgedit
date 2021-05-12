@@ -1,31 +1,26 @@
 package parm;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Function;
 import application.XGMath;
 import application.XGStrings;
 import device.XGDevice;
-import xml.XMLNode;
+import module.XGModule;import xml.XMLNode;
 
 public class XGVirtualTable implements XGTable
 {	private static final int MIN = 0, MAX = Integer.MAX_VALUE & 0x0000FFFF;
-
-	static final XGTable DEF_TABLE = new XGVirtualTable(MIN, MAX & 0x0000FFFF, DEF_TABLENAME,
-		(Integer i)->{return i.toString();},
-		(String s)->{return Integer.parseInt(s);});
+	public static final XGTable DEF_TABLE = new XGVirtualTable(MIN, MAX & 0x0000FFFF, DEF_TABLENAME, Object::toString, Integer::parseInt);
 
 	public static void init()
 	{	TABLES.add(DEF_TABLE);
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_ADD1,
-			(Integer i)->{return String.format("%03d", i + 1);},
+			(Integer i)->{return String.format("%02d", i + 1);},
 			(String s)->{return XGStrings.parseIntOrDefault(s, MIN + 1) - 1;}));
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_DIV10,
 			(Integer i)->{return Float.toString((float)i / 10);},
-			(String s)->{Float f = Float.parseFloat(s) * 10; return f.intValue();}));
+			(String s)->{float f = Float.parseFloat(s) * 10; return (int)f;}));
 
 		TABLES.add
 		(	new XGVirtualTable(MIN, MAX, TABLE_SUB64,
@@ -33,20 +28,34 @@ public class XGVirtualTable implements XGTable
 			(String s)->{return Integer.parseInt(s) + 64;}));
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_SUB1024DIV10,
-			(Integer i)->{Float f = (i.floatValue() - 1024) / 10; return f.toString();},
-			(String s)->{Float f = Float.parseFloat(s) * 10 + 1024; return f.intValue();}));
+			(Integer i)->{float f = (i.floatValue() - 1024) / 10; return Float.toString(f);},
+			(String s)->{float f = Float.parseFloat(s) * 10 + 1024; return (int)f;}));
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_SUB128DIV10,
-			(Integer i)->{Float f = (i.floatValue() - 128) / 10; return f.toString();},
-			(String s)->{Float f = Float.parseFloat(s) * 10 + 128; return f.intValue();}));
+			(Integer i)->{float f = (i.floatValue() - 128) / 10; return Float.toString(f);},
+			(String s)->{float f = Float.parseFloat(s) * 10 + 128; return (int)f;}));
 
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_PANORAMA,
-			(Integer i)->{if(i == 0) return "Rnd"; if(i < 64) return "L" + Math.abs(i - 64); if(i > 64) return "R" + Math.abs(i - 64); else return "C";},
-			(String s)->{return Integer.parseInt(s);}));
+			(Integer i)->
+			{	if(i == 0) return "Rnd";
+				if(i < 64) return "L" + Math.abs(i - 64);
+				if(i > 64) return "R" + Math.abs(i - 64);
+				else return "C";
+			},
+			Integer::parseInt));
 
 		TABLES.add(new XGVirtualTable(4, 124, TABLE_DEGREES,
 			(Integer i)->{	return Integer.toString(XGMath.linearIO(i, 4, 124, -180, 180));},
-			(String s)->{	return Integer.parseInt(s);}));
+			Integer::parseInt));
+
+		//TABLES.add(new XGVirtualTable(0, 127, TABLE_FX_PARTS,
+		//	(Integer i)->
+		//	{	if(FX_PARTS.containsKey(i)) return FX_PARTS.get(i).toString();
+		//		else return ("Off");
+		//	},
+		//	(String s)->
+		//	{	return 127;
+		//	}));
 
 		TABLES.add(new XGVirtualTable(0, 0, TABLE_NONE,
 			(Integer i)->{return "";},
@@ -99,7 +108,7 @@ public class XGVirtualTable implements XGTable
 	}
 
 	@Override public Iterator<XGTableEntry> iterator()
-	{	return new Iterator<XGTableEntry>()
+	{	return new Iterator<>()
 		{
 			@Override public boolean hasNext()
 			{	return iteratorCount < maxValue;

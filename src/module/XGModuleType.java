@@ -1,18 +1,15 @@
 package module;
 
-import java.util.LinkedHashSet;
+import java.io.IOException;import java.util.LinkedHashSet;
 import java.util.Set;
-import adress.InvalidXGAddressException;
-import adress.XGAddress;
-import adress.XGAddressable;
-import adress.XGAddressableSet;
+import adress.*;
 import application.Configurable;
-import application.XGLoggable;
+import application.JXG;import application.XGLoggable;
 import msg.XGBulkDumper;
 import parm.XGOpcode;
 import parm.XGTable;
 import static parm.XGTable.TABLES;
-import tag.*;
+import static parm.XGVirtualTable.DEF_TABLE;import tag.*;
 import xml.XMLNode;
 
 /**
@@ -24,6 +21,31 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 {
 	public static final XGTagableAddressableSet<XGModuleType> TYPES = new XGTagableAddressableSet<>();//Prototypen (inkl. XGAddress bulks); initialisiert auch XGOpcodes
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
+
+/**
+* instanziiert Moduletypen, Bulktypen und Valuetypen (XGOpcode)
+*/
+	public static void init()
+	{	XMLNode xml;
+		try
+		{	xml = XMLNode.parse(JXG.getResourceStream(XMLPATH + XML_STRUCTURE));
+		}
+		catch(IOException e)
+		{	LOG.severe(e.getMessage());
+			return;
+		}
+		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
+		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS));
+			if(adr.getHi().getMin() >= 48)//falls Drumset
+			{	for(int h : adr.getHi())//erzeuge für jedes Drumset ein ModuleType
+				{	TYPES.add(new XGDrumsetModuleType(n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo())));
+				}
+				continue;
+			}
+			TYPES.add(new XGModuleType(n));
+		}
+		LOG.info(TYPES.size() + " Module-Types initialized");
+	}
 
 	static
 	{	ACTIONS.add(ACTION_EDIT);
@@ -45,12 +67,15 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	private final XMLNode config;
 	private final XGAddressableSet<XGAddress> bulks = new XGAddressableSet<>();
 
+/**
+* instanziiert Moduletypen, Bulktypen und Valuetypen (XGOpcode)
+*/
 	public XGModuleType(XMLNode cfg, XGAddress adr, String name)
 	{	this.config = cfg;
 		this.address = adr;
 		this.name = new StringBuffer(name);
 		this.id = cfg.getStringAttribute(ATTR_ID);
-		this.idTranslator = TABLES.get(cfg.getStringAttribute(ATTR_TRANSLATOR));
+		this.idTranslator = TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TRANSLATOR), DEF_TABLE);
 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))
 		{	XGAddress a = new XGAddress(x.getStringAttribute(ATTR_ADDRESS), this.address);

@@ -287,7 +287,7 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	public final int getIntegerAttribute(String a, int def)
 	{	StringBuffer s = this.attributes.get(a);
 		if(s == null) return def;
-		return Integer.parseInt(this.attributes.get(a).toString());
+		return Integer.parseInt(s.toString());
 	}
 
 	public final int getIntegerAttribute(String a) throws NumberFormatException

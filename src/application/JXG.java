@@ -4,7 +4,7 @@ import java.awt.*;import java.io.*;import java.nio.file.*;
 import javax.swing.*;import javax.xml.stream.XMLStreamException;
 import device.*;
 import file.*;import gui.*;
-import static java.lang.ClassLoader.getSystemResourceAsStream;import parm.*;import value.*;import xml.*;
+import static java.lang.ClassLoader.getSystemResourceAsStream;import module.XGModuleType;import parm.*;import value.*;import xml.*;
 
 public class JXG implements XGLoggable, XGUI
 {
@@ -35,11 +35,12 @@ public class JXG implements XGLoggable, XGUI
 		}
 
 		XGTable.init();
-		XGParameterTable.init();
 		XGDefaultsTable.init();
+		XGParameterTable.init();
 		XGSysexFile.init();
 		XGMidi.init();
 		XGDevice.init();
+		XGModuleType.init();
 		XGValueStore.init();
 		XGUI.init();
 		XGMainWindow.init();

@@ -13,7 +13,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 		}
 		catch(IOException e)
 		{	LOG.info(e.getMessage());
-			return new XMLNode("parameterTables");
+			return new XMLNode(TAG_PARAMETERTABLES);
 		}
 	}
 
@@ -39,6 +39,11 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 		this.shortName = n.getStringAttributeOrDefault(ATTR_SHORTNAME, this.name);
 		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, this.translationTable.getUnit());
 		this.isValid = true;
+//System.out.println("par:" + this.name + " tab:" + this.translationTable + " min:" + this.minIndex + " max:" + this.maxIndex);
+//TODO Überlege, ob das machbar ist: bei fehlenden min- und max-Attributen werden (von getMinIndex() und getMaxIndex()) die min- und max-Values (bzw. -Inizes) der Table zurückgeliefert, da manche table sich zur Laufzeit ändern kann
+
+// if(this.minIndex != UNLIMITED) return this.table.getFirstIndex();
+// else return Math.max(this.minIndex, this.table.getFirstIndex());
 	}
 
 	public XGParameter(String name, int v)//Dummy-Parameter für Festwerte
@@ -83,7 +88,9 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	}
 
 	public int validate(int i)
-	{	return Math.max(Math.min(i, this.getMaxIndex()), this.getMinIndex());
+	{
+//System.out.println("p=" + this + " i=" + i + " max=" + this.getMaxIndex() + " min=" + this.getMinIndex() + " table=" + this.translationTable);
+		return Math.max(Math.min(i, this.getMaxIndex()), this.getMinIndex());
 	}
 
 	public String getShortName()

@@ -9,14 +9,16 @@ import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.*;
 import msg.XGBulkDumper;
+import static parm.XGParameterConstants.TABLE_FX_PARTS;
+import static parm.XGTable.TABLES;
+import parm.XGTableEntry;
+import parm.XGRealTable;
 import tag.*;
 import value.*;
 import static value.XGValueStore.STORE;
 
 public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper
 {
-//	public static final XGAddressableSet<XGModule> INSTANCES = new XGAddressableSet<>();//Instanzen
-
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 	static
@@ -38,6 +40,10 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
 		this.values.addAll(STORE.getAllIncluded(this.address));
+		XGRealTable tab = (XGRealTable)TABLES.get(TABLE_FX_PARTS);
+		String tag = mt.getTag();
+		if("mp".equals(tag)) tab.add(new XGTableEntry(id, this.toString()));
+		if("ad".equals(tag)) tab.add(new XGTableEntry(id + 64, this.toString()));
 	}
 
 	public XGModuleType getType()
@@ -52,7 +58,7 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	{	try
 		{	return this.type.idTranslator.getByIndex(this.address.getMid().getValue()).getName();
 		}
-		catch(InvalidXGAddressException | NullPointerException e)
+		catch(InvalidXGAddressException e)
 		{	return this.address.getMid().toString();
 		}
 	}

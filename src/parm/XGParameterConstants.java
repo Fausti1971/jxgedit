@@ -13,6 +13,8 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_SUB1024DIV10 = "sub1024div10",
 		TABLE_PANORAMA = "panorama",
 		TABLE_DEGREES = "degrees",
+		TABLE_FX_PARTS = "fx_parts",
+		TABLE_PARTMODE = "mp_partmode",
 		TABLE_NONE = "none",
 		DEF_TABLENAME = TABLE_NORMAL;
 

@@ -9,13 +9,9 @@ public interface XMLNodeConstants
 	static final String
 		XML_CONFIG = "config.xml",
 		XML_STRUCTURE = "structure.xml",
-//		XML_MODULE = "module.xml",
-//		XML_BULK = "bulk.xml",
-//		XML_OPCODE = "opcode.xml",
 		XML_PARAMETER = "parameter.xml",
 		XML_DEFAULTS = "defaults.xml",
-		XML_TABLES = "tables.xml",
-		XML_TEMPLATE = "template.xml";
+		XML_TABLES = "tables.xml";
 
 	static final String
 		TAG_WIN = "window",
@@ -33,8 +29,6 @@ public interface XMLNodeConstants
 
 		TAG_DEVICE = "device",
 		ATTR_SYSEXID = "sysexID",
-		ATTR_DEFAULTDUMPFILE = "defaultDumpFile",
-		ATTR_FILE = "file",
 
 		TAG_MIDI = "midi",
 		ATTR_MIDIINPUT = "input",
@@ -42,18 +36,9 @@ public interface XMLNodeConstants
 		ATTR_MIDITIMEOUT = "timeout",
 		ATTR_COLOR = "color",
 
-		TAG_MODULES = "modules",
-
 		TAG_MODULE = "module",
 
 		ATTR_ADDRESS = "address",
-		ATTR_ADDRESS_LO = "address_lo",
-		ATTR_ADDRESS_HI = "address_hi",
-
-		ATTR_START_X = "start_x",
-		ATTR_END_X = "end_x",
-		ATTR_DEPTH = "depth",
-		ATTR_OFFSET = "offset",
 
 		TAG_INFO = "info",
 		ATTR_REF = "ref",
@@ -61,26 +46,21 @@ public interface XMLNodeConstants
 		ATTR_NAME = "name",
 
 		TAG_BULK = "bulk",
-//		ATTR_HI = "hi",
-//		ATTR_MID = "mid",
-//		ATTR_LO = "lo",
 
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",
 
-//		TAG_PARAMETERTABLES = "parameterTables",
+		TAG_PARAMETERTABLES = "parameterTables",
 		TAG_PARAMETERTABLE = "parameterTable",
 		TAG_PARAMETER = "parameter",
 
-//		TAG_DEFAULTSTABLES = "defaultsTables",
+		TAG_DEFAULTSTABLES = "defaultsTables",
 		TAG_DEFAULTSTABLE = "defaultsTable",
-//		TAG_DEFAULT = "default",
 		TAG_ID = "id",
 
 		ATTR_TYPE = "type",
 		ATTR_PARAMETERSELECTOR ="parameterSelector",
 		ATTR_PARAMETERS = "parameters",
-//		ATTR_PARAMETER = "parameter",
 		ATTR_MIN = "min",
 		ATTR_MAX = "max",
 		ATTR_DEFAULTVALUE = "defaultValue",
@@ -97,49 +77,10 @@ public interface XMLNodeConstants
 		ATTR_ORIGIN = "origin",
 		ATTR_ACTIONS = "actions",
 
-//		TAG_TEMPLATES = "templates",
-//		TAG_TEMPLATE = "template",
-//		TAG_TABLES = "tables",
 		TAG_TABLE = "table",
 		TAG_ITEM = "item",
 		ATTR_VALUE = "value",
 		ATTR_SELECTORVALUE = "selectorValue",
-//		ATTR_MSB = "msb",
-//		ATTR_LSB = "lsb",
 
-//		TAG_FRAME = "frame",
-//		TAG_TABS = "tabs",
-//		TAG_KNOB = "knob",
-//		TAG_SLIDER = "slider",
-//		TAG_RANGE = "range",
-//		TAG_COMBO = "combo",
-//		TAG_RADIO = "radio",
-//		TAG_AEG = "aeg",
-//		TAG_PEG = "peg",
-//		TAG_MEQ = "meq",
-//		TAG_VEG = "veg",
-//		TAG_BUTTON = "button",
-//		TAG_SELECTOR = "selector",
-//		TAG_FLAGBOX = "flagbox",
-		TAG_FLAG = "flag",
-//		TAG_SCALE = "scale",
-//		TAG_KEYBOARD = "keyboard",
-//		TAG_AUTO = "auto",
-
-//		ATTR_BOUNDS = "bounds",
-		ATTR_GRID_X = "grid_x",
-		ATTR_GRID_Y = "grid_y",
-		ATTR_ORIGIN_X = "origin_x",
-		ATTR_ORIGIN_Y = "origin_y",
 		ATTR_ORIENTATION = "orientation";
-//		ATTR_GB_FILL = "grid_fill",
-//		ATTR_GB_WEIGHT_X = "grid_weight_x",
-//		ATTR_GB_WEIGHT_Y = "grid_weight_y",
-//		ATTR_GB_ANCHOR = "grid_anchor",
-//		ATTR_GB_PAD_X = "grid_pad_x",
-//		ATTR_GB_PAD_Y = "grid_pad_y",
-
-//		TAG_ENTRY = "entry",
-//
-//		TAG_SET = "set";
 }

@@ -26,7 +26,7 @@ public class XGRadio extends JPanel implements XGValueChangeListener, XGParamete
 	private final int orientation;
 
 	public XGRadio(XGValue val)
-	{	this(val, javax.swing.BoxLayout.Y_AXIS);
+	{	this(val, BoxLayout.Y_AXIS);
 	}
 
 	public XGRadio(XGValue val, int orientation)
