@@ -61,6 +61,17 @@ public interface XGStrings
 		return i;
 	}
 
+	static String valueToString(int v)
+	{	StringBuilder res = new StringBuilder();
+		while(true)
+		{	res.insert(0, v & 127);
+			v >>= 7;
+			if(v != 0) res.insert(0, ".");
+			else break;
+		}
+		return res.toString();
+	}
+
 /**
  * überprüft den übergebenen String lediglich auf null
  * @param s	übergebener String, kann null sein
@@ -147,5 +158,13 @@ public interface XGStrings
 			s.append(", ");
 		}
 		return s.toString();
+	}
+
+	static int toNumber(String s)
+	{	return Integer.parseInt(s.replaceAll("\\D", ""));
+	}
+
+	static String toAlpha(String s)
+	{	return s.replaceAll("[-+]\\d", "");
 	}
 }

@@ -39,8 +39,8 @@ public class XGRadio extends JPanel implements XGValueChangeListener, XGParamete
 		}
 		this.setMinimumSize(MINDIM);
 		this.setPreferredSize(MINDIM);
-		this.value.addValueListener(this);
-		this.value.addParameterListener(this);
+		this.value.getValueListeners().add(this);
+		this.value.getValueListeners().add(this);
 		this.parameterChanged(this.value.getParameter());
 	}
 

@@ -1,6 +1,6 @@
 package gui;
 
-public class XGChorusEditWindow extends XGEditWindow
+import javax.swing.*;public class XGChorusEditWindow extends XGEditWindow
 {
 	public XGChorusEditWindow(module.XGModule mod)
 	{	super(XGMainWindow.window, mod, mod.toString());
@@ -9,7 +9,7 @@ public class XGChorusEditWindow extends XGEditWindow
 		this.setVisible(true);
 	}
 
-	private javax.swing.JComponent createContent()
+	JComponent createContent()
 	{	javax.swing.JPanel root = new javax.swing.JPanel();
 		XGFrame main = new XGFrame(null, GRID * 3, GRID * 2),
 			parms = new XGFrame(null, GRID * 3, GRID * 4);

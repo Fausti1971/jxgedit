@@ -42,8 +42,8 @@ public class XGRange extends JPanel implements XGParameterConstants, XGValueChan
 			this.label = null;
 			return;
 		}
-		this.loValue.addValueListener(this);
-		this.hiValue.addValueListener(this);
+		this.loValue.getValueListeners().add(this);
+		this.hiValue.getValueListeners().add(this);
 
 		this.setName(XGStrings.commonString(this.loValue.getParameter().getName(), this.hiValue.getParameter().getName()));
 		this.borderize();
@@ -131,8 +131,8 @@ public class XGRange extends JPanel implements XGParameterConstants, XGValueChan
 			this.loValue = lo;
 			this.hiValue = hi;
 			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.loValue.addValueListener(this);
-			this.hiValue.addValueListener(this);
+			this.loValue.getValueListeners().add(this);
+			this.hiValue.getValueListeners().add(this);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			this.addMouseWheelListener(this);

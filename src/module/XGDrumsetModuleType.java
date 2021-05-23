@@ -2,8 +2,8 @@ package module;
 
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import static parm.XGParameterConstants.TABLE_PARTMODE;import parm.XGRealTable;
-import parm.XGTableEntry;import xml.XMLNode;
+import static parm.XGDefaultsTable.DEF_DRUMSETPROGRAM;import static parm.XGParameterConstants.TABLE_PARTMODE;import parm.XGRealTable;
+import parm.XGTableEntry;import value.XGProgramBuffer;import xml.XMLNode;
 
 public class XGDrumsetModuleType extends XGModuleType
 {
@@ -21,5 +21,19 @@ public class XGDrumsetModuleType extends XGModuleType
 		catch(InvalidXGAddressException e)
 		{	LOG.severe(e.getMessage());
 		}
+	}
+
+	public int getPartmode()
+	{	try
+		{	return this.getAddress().getHi().getValue() - 46;
+		}
+		catch(InvalidXGAddressException e)
+		{	e.printStackTrace();
+			return 2;
+		}
+	}
+
+	public int getProgram()
+	{	return XGProgramBuffer.drumsetPrograms.getOrDefault(this.getPartmode(), DEF_DRUMSETPROGRAM);
 	}
 }

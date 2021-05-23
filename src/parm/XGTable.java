@@ -10,7 +10,6 @@ public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameter
 {
 	XGTagableSet<XGTable> TABLES = new XGTagableSet<>();
 	int DEF_FALLBACKMASK = 127;
-	enum Preference{BELOW, EQUAL, ABOVE, CLOSEST, FALLBACK};
 
 	static void init()
 	{	try
@@ -23,16 +22,13 @@ public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameter
 		{	LOG.severe(e.getMessage());
 		}
 		XGRealTable t = new XGRealTable(XGParameterConstants.TABLE_FX_PARTS);
-		t.add(new XGTableEntry(127, "Off"));//TODO: zum Zeitpunkt der Parameter-Instanziierung ist die Size der Table 1 (minIndex=0, maxIndex=0); vielleicht muss doch bei fehlendem XML-Attribut "min" und "max" die min- und max-Values (-Indizes) der TranslationTable herhalten (DEF_MIN und DEF_MAX löschen)
+		t.add(new XGTableEntry(127, "Off"));
 		TABLES.add(t);
-System.out.println(t);
 
 		t = new XGRealTable(XGParameterConstants.TABLE_PARTMODE);//wird bei XGDrumsetModuleType.init() um die Drumsets erweitert
 		t.add(new XGTableEntry(0, "Normal"));
 		t.add(new XGTableEntry(1, "Drum"));
 		TABLES.add(t);
-System.out.println(t);
-
 
 		XGVirtualTable.init();
 		}
@@ -42,8 +38,13 @@ System.out.println(t);
 	XGTableEntry getByIndex(int i);
 	XGTableEntry getByValue(int v);
 	XGTableEntry getByName(String name);
-	int getIndex(int v, Preference pref);
+/**
+* returniert den index des gesuchten values v, im Falle eines Fehlschlags noch einmal mit fallbackmask, ansonsten def
+*/
+	int getIndex(int v, int def);
 	int getIndex(String name);
+	int getMinIndex();
+	int getMaxIndex();
 	XGTable categorize(String cat);
 	Set<String> getCategories();
 	XGTable filter(XMLNode n);
@@ -64,14 +65,6 @@ System.out.println(t);
 	}
 
 	default String getInfo()
-	{	return this.getClass().getSimpleName() + ": " + this.getName() + "(" + this.size() + "): " + this.getMinEntry().getInfo() + "..." + this.getMaxEntry().getInfo();
-	}
-
-	default int getMinIndex()
-	{	return 0;
-	}
-
-	default int getMaxIndex()
-	{	return this.size() - 1;
+	{	return this.getClass().getSimpleName() + " (" + this.getName() + "(" + this.size() + "): " + this.getMinEntry().getInfo() + "..." + this.getMaxEntry().getInfo() + ")";
 	}
 }

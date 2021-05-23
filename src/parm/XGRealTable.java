@@ -1,7 +1,7 @@
 package parm;
 
 import java.util.*;
-import xml.XMLNode;
+import application.XGStrings;import xml.XMLNode;
 
 public class XGRealTable implements XGTable
 {	private static final String ALL_CATEGORIES = "All";
@@ -12,7 +12,13 @@ public class XGRealTable implements XGTable
 	private final String unit;
 	private final int fallbackMask;
 	private final List<XGTableEntry> entries = new ArrayList<>();//entry
+/**
+* key=(int)value; value=(int)index (in entries)
+*/
 	private final NavigableMap<Integer, Integer> indexes = new TreeMap<>();//value, index
+/**
+* key=(String)name; value=(int)index (in entries);
+*/
 	private final Map<String, Integer> names = new HashMap<>();//name, index
 	private final Map<String, XGRealTable> categories = new LinkedHashMap<>();
 //	private final Set<String> categoryNames = new LinkedHashSet<>();
@@ -39,37 +45,45 @@ public class XGRealTable implements XGTable
 	}
 
 /**
-* Die Indizierung der Entrys erfolgt aufsteigend nach e.value
+* Die Indizierung der Entries erfolgt aufsteigend nach e.value
 **/
 	public void add(XGTableEntry e)
 	{	this.entries.add(e);
+		this.indexes.clear();
+		this.names.clear();
 		this.entries.sort(null);
-		int i = this.entries.indexOf(e);
-		this.indexes.put(e.getValue(), i);
-		this.names.put(e.getName(), i);
+		for(XGTableEntry n : this.entries)
+		{	int i = this.entries.indexOf(n);
+			this.indexes.put(n.getValue(), i);
+			this.names.put(n.getName(), i);
+		}
 		for(String s : e.getCategories()) this.categories.put(s, new XGRealTable(this.name, this.unit, this.fallbackMask));
 	}
 
-	private int findValue(int v, Preference pref)
-	{	if(this.indexes.containsKey(v)) return v;
-		v = Math.max(this.indexes.firstKey(), Math.min(v, this.indexes.lastKey()));
-		int above = this.indexes.ceilingKey(v);
-		int below = this.indexes.floorKey(v);
-		switch(pref)
-		{	case CLOSEST:	return (v - below > above - v ? above : below);
-			case EQUAL:		return v;
-			case FALLBACK:	return this.getFallbackValue(v);
-			case ABOVE:		return above;
-			case BELOW:		return below;
-			default:		return v;
-		}
+	private void reinit()
+	{	
 	}
 
-	private int getFallbackValue(int v)
-	{	v &= this.fallbackMask;
-		if(this.indexes.containsKey(v)) return v;
-		else return this.entries.get(this.getMinIndex()).getValue();
-	}
+	//private int findValue(int v, Preference pref)
+	//{	if(this.indexes.containsKey(v)) return v;
+	//	v = Math.max(this.indexes.firstKey(), Math.min(v, this.indexes.lastKey()));
+	//	int above = this.indexes.ceilingKey(v);
+	//	int below = this.indexes.floorKey(v);
+	//	switch(pref)
+	//	{	case CLOSEST:	return (v - below > above - v ? above : below);
+	//		case EQUAL:		return v;
+	//		case FALLBACK:	return this.getFallbackValue(v);
+	//		case ABOVE:		return above;
+	//		case BELOW:		return below;
+	//		default:		return v;
+	//	}
+	//}
+
+	//private int getFallbackValue(int v)
+	//{	v &= this.fallbackMask;
+	//	if(this.indexes.containsKey(v)) return v;
+	//	else return this.entries.get(this.getMinIndex()).getValue();
+	//}
 
 	@Override public XGTableEntry getByIndex(int i)
 	{	if(this.entries.isEmpty()) throw new IndexOutOfBoundsException("index " + i + " out of bounds in " + this.getName());
@@ -84,20 +98,25 @@ public class XGRealTable implements XGTable
 	{	return this.entries.get(this.names.get(name));
 	}
 
-	@Override public int getIndex(int v, Preference pref)
-	{	int i = this.findValue(v, pref);
-		try
-		{	return this.indexes.get(i);
-		}
-		catch(NullPointerException e)
-		{	LOG.warning("neither value " + v + " nor " + pref.name() + " value " + i  + " doesn´t exist in " + this);
-		}
-		return this.getMinIndex();
+	@Override public int getIndex(int v, int defIndex)
+	{	if(this.indexes.containsKey(v)) return this.indexes.get(v);
+		int f = v & this.fallbackMask;
+		if(this.indexes.containsKey(f)) return this.indexes.get(f);
+		LOG.warning("neither value " + XGStrings.valueToString( v) + " nor fallback " + XGStrings.valueToString(f) + " found in " + this + "; using index " + defIndex);
+		return defIndex;
 	}
 
 	@Override public int getIndex(String name)
 	{	if(!(this.names.containsKey(name))) return this.getMinIndex();
 		return this.names.get(name);
+	}
+
+	@Override public int getMinIndex()
+	{	return 0;
+	}
+
+	@Override public int getMaxIndex()
+	{	return this.size() - 1;
 	}
 
 	@Override public Set<String> getCategories()

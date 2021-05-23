@@ -10,7 +10,7 @@ public class XGReverbEditWindow extends XGEditWindow
 		this.setVisible(true);
 	}
 
-	private JComponent createContent()
+	JComponent createContent()
 	{	JPanel root = new javax.swing.JPanel();
 		XGFrame main = new XGFrame(null, GRID * 3, GRID * 2),
 			parms = new XGFrame(null, GRID * 3, GRID * 4);

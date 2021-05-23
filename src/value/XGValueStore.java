@@ -4,7 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
 import application.*;
 import static application.ConfigurationConstants.APPNAME;
-import static application.ConfigurationConstants.XMLPATH;import module.*;
+import module.*;
 import static module.XGModuleType.TYPES;
 import msg.XGMessage;
 import msg.XGMessenger;
@@ -12,9 +12,6 @@ import msg.XGMessengerException;
 import msg.XGRequest;
 import msg.XGResponse;
 import parm.*;
-import xml.*;
-import static xml.XMLNodeConstants.*;
-import java.io.*;
 
 public class XGValueStore extends XGAddressableSet<XGValue> implements XGMessenger, XGLoggable
 {
@@ -33,7 +30,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 					for(XGOpcode opc : mt.getOpcodes())
 					{	if(opc.getModuleType().equals(mt)) STORE.add(new XGValue(opc, mod));
 					}
-					for(XGValue val : mod.getValues()) val.initValueDepencies();
+					for(XGValue val : mod.getValues()) val.initDepencies();
 				}
 				catch(InvalidXGAddressException e)
 				{	LOG.warning(e.getMessage());
@@ -51,6 +48,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	}
 
 /************************************************************************************************************/
+
 	@Override public synchronized XGValue get(XGAddress adr)
 	{	if(adr.isFixed()) return super.get(adr);
 		else throw new RuntimeException(adr + " is not a valid value-address!");

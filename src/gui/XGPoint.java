@@ -63,8 +63,8 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 		{	this.previous = this.panel.getPoints().get(this.index - 1);
 			this.previous.next = this;
 		}
-		this.valueX.addValueListener((XGValue v)->{this.panel.setSelectedValue(v);});
-		this.valueY.addValueListener((XGValue v)->{this.panel.setSelectedValue(v);});
+		this.valueX.getValueListeners().add((XGValue v)->{this.panel.setSelectedValue(v);});
+		this.valueY.getValueListeners().add((XGValue v)->{this.panel.setSelectedValue(v);});
 		this.setLocation();
 	}
 
@@ -72,7 +72,7 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 	{	this.valueY = v;
 		if(this.isMovable())
 		{	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.valueY.addValueListener((XGValue)->{this.panel.setSelectedValue(v);});
+			this.valueY.getValueListeners().add((XGValue)->{this.panel.setSelectedValue(v);});
 			this.setVisible(true);
 		}
 		else this.setVisible(false);

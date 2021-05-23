@@ -30,7 +30,7 @@ public class XGButton2 extends JButton implements value.XGValueChangeListener
 		}
 //		this.setHorizontalAlignment(javax.swing.JButton.CENTER);
 		this.setText(this.createText());
-		this.value.addValueListener(this);
+		this.value.getValueListeners().add(this);
 	}
 
 	private String createText()

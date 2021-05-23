@@ -49,6 +49,12 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 	{	return this.adrSet.getAllIncluding(adr);
 	}
 
+	public T getOrDefault(String s, T def)
+	{	T res = this.tagSet.get(s);
+		if(res == null) res = def;
+		return res;
+	}
+
 	public T getOrDefault(XGAddress adr, T def)
 	{	T v = this.adrSet.getFirstIncluding(adr);
 		if(v == null)

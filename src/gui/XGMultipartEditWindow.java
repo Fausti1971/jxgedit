@@ -8,11 +8,10 @@ public class XGMultipartEditWindow extends XGEditWindow
 	{	super(XGMainWindow.window, mod, mod.toString());
 		this.setContentPane(this.createContent());
 		this.pack();
-		this.setResizable(false);
 		this.setVisible(true);
 	}
 
-	private javax.swing.JComponent createContent()
+	javax.swing.JComponent createContent()
 	{	javax.swing.JPanel root = new javax.swing.JPanel();
 		root.setLayout(new javax.swing.BoxLayout(root, javax.swing.BoxLayout.Y_AXIS));
 
@@ -201,12 +200,16 @@ public class XGMultipartEditWindow extends XGEditWindow
 		tab.add(new XGKnob(values.get("mp_vl_absorp")), "b0b0");
 		tabs.addTab("Abs", null, tab, "VL Absorption Control");
 
-		control.add(tabs, "a0n2");
+		control.add(tabs, "a0k2");
 
 		XGFrame vl = new XGFrame("VL", GRID * 3, GRID * 2);
 		vl.add(new XGCheckbox(values.get("mp_vl_noteassign")), "b0c0");
 		vl.add(new XGCombo(values.get("mp_vl_notefilter")), "b1c1");
-		control.add(vl, "o0r2");
+		//vl.add(new XGKnob(values.get("mp_vl_amp_break")), "c0c1");
+		//vl.add(new XGKnob(values.get("mp_vl_amp_depth")), "d0d1");
+		//vl.add(new XGKnob(values.get("mp_vl_lpf_break")), "e0e1");
+		//vl.add(new XGKnob(values.get("mp_vl_lpf_depth")), "f0f1");
+		control.add(vl, "l0r2");
 
 		root.add(midi);
 		root.add(voice);

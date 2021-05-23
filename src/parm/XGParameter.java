@@ -1,7 +1,6 @@
 package parm;
 import java.io.*;
 import application.*;
-import parm.XGTable.Preference;
 import static parm.XGTable.TABLES;import xml.XMLNode;
 
 public class XGParameter implements XGLoggable, XGParameterConstants
@@ -21,29 +20,24 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 
 	private final String name, shortName;
 	private final XGTable translationTable;
-	private final int minIndex, maxIndex, originIndex;
+	private final int minValue, maxValue, originIndex;
 	private final String unit;
 	private final boolean isValid;//TODO: keine Ahnung, wofür das gut ist...
 
 	public XGParameter(XMLNode n)
-	{	this.translationTable = TABLES.getOrDefault(n.getStringAttribute(ATTR_TRANSLATOR), XGVirtualTable.DEF_TABLE).filter(n);
+	{	this.translationTable = TABLES.getOrDefault(n.getStringAttribute(ATTR_TABLE), XGVirtualTable.DEF_TABLE).filter(n);
 
-		int minValue = n.getValueAttribute(ATTR_MIN, DEF_MIN);
-		int maxValue = n.getValueAttribute(ATTR_MAX, DEF_MAX);
-		int originValue = n.getValueAttribute(ATTR_ORIGIN, minValue);
-		this.minIndex = this.translationTable.getIndex(minValue, Preference.ABOVE);
-		this.maxIndex = this.translationTable.getIndex(maxValue, Preference.BELOW);
-		this.originIndex = this.validate(this.translationTable.getIndex(originValue, Preference.CLOSEST));
+		this.minValue = n.getValueAttribute(ATTR_MIN, UNLIMITED);
+		this.maxValue = n.getValueAttribute(ATTR_MAX, UNLIMITED);
+		int originValue = n.getValueAttribute(ATTR_ORIGIN, n.getValueAttribute(ATTR_DEFAULT, this.minValue));
+		if(originValue == UNLIMITED) originValue = 0;
+		this.originIndex = this.translationTable.getIndex(originValue, this.translationTable.getMinIndex());
 
 		this.name = n.getStringAttribute(ATTR_NAME);
 		this.shortName = n.getStringAttributeOrDefault(ATTR_SHORTNAME, this.name);
 		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, this.translationTable.getUnit());
 		this.isValid = true;
 //System.out.println("par:" + this.name + " tab:" + this.translationTable + " min:" + this.minIndex + " max:" + this.maxIndex);
-//TODO Überlege, ob das machbar ist: bei fehlenden min- und max-Attributen werden (von getMinIndex() und getMaxIndex()) die min- und max-Values (bzw. -Inizes) der Table zurückgeliefert, da manche table sich zur Laufzeit ändern kann
-
-// if(this.minIndex != UNLIMITED) return this.table.getFirstIndex();
-// else return Math.max(this.minIndex, this.table.getFirstIndex());
 	}
 
 	public XGParameter(String name, int v)//Dummy-Parameter für Festwerte
@@ -51,9 +45,9 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 		this.shortName = name;
 		this.translationTable = XGVirtualTable.DEF_TABLE;
 
-		this.minIndex = this.translationTable.getIndex(v, Preference.CLOSEST);
-		this.maxIndex = this.translationTable.getIndex(v, Preference.CLOSEST);
-		this.originIndex = this.translationTable.getIndex(v, Preference.CLOSEST);
+		this.minValue = v;
+		this.maxValue = v;
+		this.originIndex = v;
 
 		this.unit = "";
 		this.isValid = v != NO_PARAMETERVALUE;
@@ -68,29 +62,29 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	}
 
 	public int getMinIndex()
-	{	return this.minIndex;
+	{	if(this.minValue == UNLIMITED) return this.translationTable.getMinIndex();
+		else return this.translationTable.getIndex(this.minValue, this.translationTable.getMinIndex());
 	}
 
 	public int getMaxIndex()
-	{	return this.maxIndex;
+	{	if(this.maxValue == UNLIMITED) return this.translationTable.getMaxIndex();
+		else return this.translationTable.getIndex(this.maxValue, this.translationTable.getMaxIndex());
 	}
 
 	public int getMinValue()
-	{	return this.translationTable.getMinEntry().getValue();
+	{	return this.minValue;
 	}
 
 	public int getMaxValue()
-	{	return this.translationTable.getMaxEntry().getValue();
+	{	return this.maxValue;
 	}
 
 	public int getOriginIndex()
 	{	return this.originIndex;
 	}
 
-	public int validate(int i)
-	{
-//System.out.println("p=" + this + " i=" + i + " max=" + this.getMaxIndex() + " min=" + this.getMinIndex() + " table=" + this.translationTable);
-		return Math.max(Math.min(i, this.getMaxIndex()), this.getMinIndex());
+	public int limitize(int i)
+	{	return Math.max(Math.min(i, this.getMaxIndex()), this.getMinIndex());
 	}
 
 	public String getShortName()

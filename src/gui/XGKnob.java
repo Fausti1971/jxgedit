@@ -35,8 +35,8 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 			this.label = null;
 			return;
 		}
-		if(this.value.getOpcode().isMutable()) this.value.addParameterListener(this);
-		this.value.addValueListener(this);
+		if(this.value.getOpcode().isMutable()) this.value.getValueListeners().add(this);
+		this.value.getValueListeners().add(this);
 
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);

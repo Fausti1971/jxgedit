@@ -35,6 +35,7 @@ public class JXG implements XGLoggable, XGUI
 		}
 
 		XGTable.init();
+		XGDrumNames.init();
 		XGDefaultsTable.init();
 		XGParameterTable.init();
 		XGSysexFile.init();

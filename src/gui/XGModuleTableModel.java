@@ -51,7 +51,7 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 	{	if(c == 0) return this.rows.get(r).getTranslatedID();
 		String s = this.cols.get(c);
 		XGValue v = this.rows.get(r).getValues().get(s);
-		v.addValueListener(this);
+		v.getValueListeners().add(this);
 		return v;
 	}
 

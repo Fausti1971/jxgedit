@@ -6,7 +6,7 @@ import application.ConfigurationConstants;
 import application.XGStrings;
 import xml.XMLNode;
 
-public class XGTableEntry implements ConfigurationConstants, Comparable
+public class XGTableEntry implements ConfigurationConstants, Comparable<XGTableEntry>
 {
 
 /**********************************************************************************************************/
@@ -59,16 +59,20 @@ public class XGTableEntry implements ConfigurationConstants, Comparable
 		return false;
 	}
 
+	@Override public boolean equals(Object e)
+	{	if(e instanceof XGTableEntry) return ((XGTableEntry) e).value == this.value;
+		return false;
+	}
+	
 	@Override public String toString()
 	{	return this.name;
 	}
 
 	public String getInfo()
-	{	return this.value + "(" + this.name + ")";
+	{	return XGStrings.valueToString(this.value) + "=" + this.name;
 	}
 
-	public int compareTo(Object o)
-	{	if(o instanceof XGTableEntry) return this.value.compareTo(((XGTableEntry)o).value);
-		else throw new RuntimeException(this + " is not comparable to " + o);
+	@Override public int compareTo(XGTableEntry entry)
+	{	return this.value.compareTo(entry.value);
 	}
 }

@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
-	<xs:element name="parameterTables">
+	<xs:element name="drums">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="parameterTable" maxOccurs="unbounded"/>
+				<xs:element ref="key" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="parameterTable">
+	<xs:element name="key">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="item" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
-		<xs:attribute name="name" use="required" type="xs:string"/>
+		<xs:attribute name="value" use="required" type="keyNumbers"/>
 		</xs:complexType>
 	</xs:element>
 
-	<xs:element name="parameter">
+	<xs:element name="item">
 		<xs:complexType>
 			<xs:attribute name="selectorValue" type="valueType" use="required"/>
 			<xs:attribute name="name" type="xs:string" use="required"/>
-			<xs:attribute name="shortName" type="xs:string" use="optional"/>
-			<xs:attribute name="min" type="valueType" use="required"/>
-			<xs:attribute name="max" type="valueType" use="required"/>
-			<xs:attribute name="translator" type="xs:string" use="optional"/>
-			<xs:attribute name="unit" type="xs:string" use="optional"/>
 		</xs:complexType>
 	</xs:element>
+
+   <xs:simpleType name="keyNumbers">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="13"/>
+			<xs:maxInclusive value="91"/>
+		</xs:restriction>
+	</xs:simpleType>
 
 	<xs:simpleType name="valueType">
 		<xs:restriction base="xs:string">

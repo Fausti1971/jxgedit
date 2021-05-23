@@ -2,7 +2,7 @@ package gui;
 
 import static javax.swing.SwingConstants.CENTER;import static module.XGModuleType.TYPES;
 import static msg.XGMessageConstants.*;
-import static value.XGValueStore.STORE;
+import static value.XGValueStore.STORE;import javax.swing.*;
 
 public class XGMasterEditWindow extends XGEditWindow 
 {	private static final byte[] MSG = {(byte)SOX, VENDOR, MSG_PC, MODEL, 0, 0, 0x7D, 0, (byte)EOX};
@@ -16,7 +16,7 @@ public class XGMasterEditWindow extends XGEditWindow
 		this.setVisible(true);
 	}
 
-	private javax.swing.JComponent createContent()
+	JComponent createContent()
 	{	javax.swing.JPanel root = new javax.swing.JPanel();
 		XGFrame parms = new XGFrame(null, GRID * 3, GRID * 4);
 		XGFrame reset = new XGFrame("Reset", GRID * 12,  GRID * 2);

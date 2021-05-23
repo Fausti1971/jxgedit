@@ -11,6 +11,7 @@ public interface XMLNodeConstants
 		XML_STRUCTURE = "structure.xml",
 		XML_PARAMETER = "parameter.xml",
 		XML_DEFAULTS = "defaults.xml",
+		XML_DRUMS = "drums.xml",
 		XML_TABLES = "tables.xml";
 
 	static final String
@@ -56,6 +57,8 @@ public interface XMLNodeConstants
 
 		TAG_DEFAULTSTABLES = "defaultsTables",
 		TAG_DEFAULTSTABLE = "defaultsTable",
+		TAG_DRUMS = "drums",
+		TAG_KEY = "key",
 		TAG_ID = "id",
 
 		ATTR_TYPE = "type",
@@ -63,11 +66,10 @@ public interface XMLNodeConstants
 		ATTR_PARAMETERS = "parameters",
 		ATTR_MIN = "min",
 		ATTR_MAX = "max",
-		ATTR_DEFAULTVALUE = "defaultValue",
 		ATTR_DEFAULT = "default",
 		ATTR_DEFAULTS = "defaults",
 		ATTR_DEFAULTSELECTOR = "defaultSelector",
-		ATTR_TRANSLATOR = "translator",
+		ATTR_TABLE = "table",
 		ATTR_TABLEFILTER = "tableFilter",
 		ATTR_TABLECATEGORIES = "categories",
 		ATTR_FALLBACKMASK = "fallbackMask",

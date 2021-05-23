@@ -13,6 +13,8 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_SUB1024DIV10 = "sub1024div10",
 		TABLE_PANORAMA = "panorama",
 		TABLE_DEGREES = "degrees",
+		TABLE_PERCENT = "percent",
+		TABLE_KEYS = "keys",
 		TABLE_FX_PARTS = "fx_parts",
 		TABLE_PARTMODE = "mp_partmode",
 		TABLE_NONE = "none",
@@ -23,7 +25,7 @@ public interface XGParameterConstants extends XMLNodeConstants
 	String MUTABLE = "mutable", IMMUTABLE = "immutable";
 	String DEF_PARAMETERNAME = "unknown parameter: ";
 	String NO_PARAMETERNAME = "no parameter";
-	int  DEF_MIN = 0, DEF_MAX = 127, DEF_ORIGIN = 0;
+	int  UNLIMITED = -1;
 /**
  * ein Pseudo Selector-Value, damit auch der Parameter eines immutable-Opcodes im Set gespeichert werden kann (ebenso defaults)
  */

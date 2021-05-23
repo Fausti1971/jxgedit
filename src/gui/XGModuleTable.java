@@ -1,5 +1,5 @@
 package gui;
-import adress.*;import module.*;import javax.swing.*;import javax.swing.event.*;import javax.swing.table.*;import java.awt.*;
+import adress.*;import module.*;import javax.swing.*;import javax.swing.event.*;import javax.swing.table.*;import java.awt.*;import java.util.Vector;
 
 public class XGModuleTable extends JTable implements java.awt.event.MouseListener
 {
@@ -26,7 +26,7 @@ public class XGModuleTable extends JTable implements java.awt.event.MouseListene
 	}
 
 	private void openEditWindow()
-	{	java.util.Vector<module.XGModule> vec = ((XGModuleTableModel)this.getModel()).getRows();
+	{	Vector<XGModule> vec = ((XGModuleTableModel)this.getModel()).getRows();
 		for(int r : this.getSelectedRows())
 		{	XGEditWindow.getEditWindow(vec.get(r)).setVisible(true);
 		}

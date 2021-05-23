@@ -9,6 +9,7 @@ import module.XGModule;import xml.XMLNode;
 
 public class XGVirtualTable implements XGTable
 {	private static final int MIN = 0, MAX = Integer.MAX_VALUE & 0x0000FFFF;
+	private static final String[] KEY = {"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
 	public static final XGTable DEF_TABLE = new XGVirtualTable(MIN, MAX & 0x0000FFFF, DEF_TABLENAME, Object::toString, Integer::parseInt);
 
 	public static void init()
@@ -42,20 +43,26 @@ public class XGVirtualTable implements XGTable
 				if(i > 64) return "R" + Math.abs(i - 64);
 				else return "C";
 			},
-			Integer::parseInt));
+			XGStrings::toNumber));
 
 		TABLES.add(new XGVirtualTable(4, 124, TABLE_DEGREES,
-			(Integer i)->{	return Integer.toString(XGMath.linearIO(i, 4, 124, -180, 180));},
-			Integer::parseInt));
+			(Integer i)->{	return Integer.toString(XGMath.linearIO(i, 4, 124, -180, 180)) + "°";},
+			XGStrings::toNumber));
 
-		//TABLES.add(new XGVirtualTable(0, 127, TABLE_FX_PARTS,
-		//	(Integer i)->
-		//	{	if(FX_PARTS.containsKey(i)) return FX_PARTS.get(i).toString();
-		//		else return ("Off");
-		//	},
-		//	(String s)->
-		//	{	return 127;
-		//	}));
+		TABLES.add(new XGVirtualTable(0, 127, TABLE_PERCENT,
+			(Integer i)->{	return Integer.toString(XGMath.linearIO(i, 0, 127, 0, 100)) + "%";},
+			(String s)->{	return XGMath.linearIO(XGStrings.toNumber(s), 0, 100, 0, 127);}));
+
+		TABLES.add(new XGVirtualTable(0,127, TABLE_KEYS,
+			(Integer i)->
+			{	String s = KEY[i % 12] + (i/12 - 2);
+				return s;
+			},
+			(String s)->
+			{	int o = (XGStrings.toNumber(s) + 2) * 12;
+				int k = Arrays.binarySearch(KEY, XGStrings.toAlpha(s));
+				return o + k;
+			}));
 
 		TABLES.add(new XGVirtualTable(0, 0, TABLE_NONE,
 			(Integer i)->{return "";},
@@ -99,12 +106,20 @@ public class XGVirtualTable implements XGTable
 		return new XGTableEntry(v, this.translate.apply(v));
 	}
 
-	@Override public int getIndex(int v, Preference pref)
+	@Override public int getIndex(int v, int def)
 	{	return v - this.minValue;
 	}
 
 	@Override public int getIndex(String name)
 	{	return this.retranslate.apply(name) - this.minValue;
+	}
+
+	@Override public int getMinIndex()
+	{	return 0;
+	}
+
+	@Override public int getMaxIndex()
+	{	return this.size() - 1;
 	}
 
 	@Override public Iterator<XGTableEntry> iterator()

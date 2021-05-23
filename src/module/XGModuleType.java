@@ -23,7 +23,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 /**
-* instanziiert Moduletypen, Bulktypen und Valuetypen (XGOpcode)
+* instanziiert Moduletypen, Bulktypen und Valuetypen (=XGOpcodes)
 */
 	public static void init()
 	{	XMLNode xml;
@@ -75,7 +75,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		this.address = adr;
 		this.name = new StringBuffer(name);
 		this.id = cfg.getStringAttribute(ATTR_ID);
-		this.idTranslator = TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TRANSLATOR), DEF_TABLE);
+		this.idTranslator = TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TABLE), DEF_TABLE);
 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))
 		{	XGAddress a = new XGAddress(x.getStringAttribute(ATTR_ADDRESS), this.address);

@@ -83,8 +83,8 @@ public class XGMEQ extends javax.swing.JPanel
 		this.panel.add(new XGPoint(5, this.f5, this.g5, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 		this.panel.add(new XGPoint(6, new XGFixedValue("fixed", this.maxX), this.g5, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 
-		this.s1.addValueListener((XGValue s)->{this.setShape(s.getValue(), 0, this.g1);});
-		this.s5.addValueListener((XGValue s)->{this.setShape(s.getValue(), 6, this.g5);});
+		this.s1.getValueListeners().add((XGValue s)->{this.setShape(s.getValue(), 0, this.g1);});
+		this.s5.getValueListeners().add((XGValue s)->{this.setShape(s.getValue(), 6, this.g5);});
 	}
 
 	private void setShape(int s, int i, XGValue g)

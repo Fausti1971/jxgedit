@@ -59,9 +59,9 @@ public class XGKeyboard extends XGFrame implements XGUI
 		this.minKeyValue = STORE.get(MINKEYADDRESS.complement(mod.getAddress()));
 		this.maxKeyValue = STORE.get(MAXKEYADDRESS.complement(mod.getAddress()));
 
-		this.partmodeValue.addValueListener((XGValue)->{this.partmodeChanged();});
-		this.minKeyValue.addValueListener((XGValue)->{this.minKeyChanged();});
-		this.maxKeyValue.addValueListener((XGValue)->{this.maxKeyChanged();});
+		this.partmodeValue.getValueListeners().add((XGValue)->{this.partmodeChanged();});
+		this.minKeyValue.getValueListeners().add((XGValue)->{this.minKeyChanged();});
+		this.maxKeyValue.getValueListeners().add((XGValue)->{this.maxKeyChanged();});
 
 		int h = this.getContentArea().height;
 		for(int i = 0, p = 0; i < 128; i++)

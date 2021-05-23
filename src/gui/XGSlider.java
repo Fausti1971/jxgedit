@@ -111,7 +111,7 @@ public class XGSlider extends JPanel implements KeyListener, XGParameterConstant
 			//this.setBorder(null);	buggy: getX() liefert IMMER inset.left; getY() IMMER inset.top; (5, 15)! Bug?; deshalb beim malen diese koordinaten ignorieren...
 			this.value = v;
 			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.value.addValueListener(this);
+			this.value.getValueListeners().add(this);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			this.addMouseWheelListener(this);

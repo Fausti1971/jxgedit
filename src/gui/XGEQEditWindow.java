@@ -8,10 +8,11 @@ import static gui.XGMEQ.*;public class XGEQEditWindow extends XGEditWindow
 	{	super(XGMainWindow.window, mod, mod.toString());
 		this.setContentPane(this.createContent());
 		this.pack();
+		this.setResizable(true);
 		this.setVisible(true);
 	}
 
-	private javax.swing.JComponent createContent()
+	javax.swing.JComponent createContent()
 	{	javax.swing.JPanel root = new javax.swing.JPanel();
 		root.setLayout(new java.awt.GridBagLayout());
 		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();

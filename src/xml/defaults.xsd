@@ -10,17 +10,28 @@
 
 	<xs:element name="defaultsTable">
 		<xs:complexType>
+			<xs:choice>
+				<xs:element ref="item" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="id" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:choice>
+		<xs:attribute name="name" use="required" type="xs:NCName"/>
+		<xs:attribute name="range" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="id">
+		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="item" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
-		<xs:attribute name="name" use="required" type="xs:NCName"/>
+		<xs:attribute name="value" use="required" type="valueType"/>
 		</xs:complexType>
 	</xs:element>
 
 	<xs:element name="item">
 		<xs:complexType>
 			<xs:attribute name="selectorValue" type="valueType" use="required"/>
-			<xs:attribute name="defaultValue" type="valueType" use="optional"/>
+			<xs:attribute name="value" type="valueType" use="required"/>
 		</xs:complexType>
 	</xs:element>
 

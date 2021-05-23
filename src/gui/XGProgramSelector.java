@@ -1,9 +1,8 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import javax.swing.JButton;
-import javax.swing.JTree;
+import java.awt.event.ActionEvent;import java.awt.event.MouseEvent;
+import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
@@ -25,6 +24,7 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 
 	private final XGValue value;
 	private final JButton next = new JButton(icon_next), prev = new JButton(icon_prev), select = new JButton();
+	private JDialog dialog = null;
 
 	public XGProgramSelector(XGValue val)
 	{	this.setLayout(new BorderLayout());
@@ -37,8 +37,8 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 			this.setEnabled(false);
 			return;
 		}
-		this.value.addParameterListener(this);
-		this.value.addValueListener(this);
+		this.value.getParameterListeners().add(this);
+		this.value.getValueListeners().add(this);
 		this.setName(this.value.getParameter().getName());
 
 		this.borderize();
@@ -73,11 +73,11 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 	}
 
 	private void openDialog()
-	{	javax.swing.JDialog d = new javax.swing.JDialog();
+	{	this.dialog = new javax.swing.JDialog();
 //		d.setLocationRelativeTo(this);
-		d.setLocation(this.getLocationOnScreen());
-		d.setModal(true);
-		d.setTitle("select " + this.value.getParameter().getName());
+		this.dialog.setLocation(this.getLocationOnScreen());
+		this.dialog.setModal(true);
+		this.dialog.setTitle("select " + this.value.getParameter().getName());
 
 		JTree t = new JTree(new XGTableTreeModel(this.value.getParameter().getTranslationTable()));
 
@@ -93,14 +93,21 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 		t.setExpandsSelectedPaths(true);
 		t.setScrollsOnExpand(true);
 		t.addTreeSelectionListener(this);
-//		this.inc.addActionListener((ActionEvent)->{t.setSelectionPath(path);};);
+		t.addMouseListener(this);
 		t.setShowsRootHandles(true);
 		t.setRootVisible(false);
-		d.setContentPane(new javax.swing.JScrollPane(t));
-		d.pack();
-		d.setMinimumSize(new java.awt.Dimension(this.getWidth(), 400));
-		d.setVisible(true);
-		d.dispose();
+		this.dialog.setContentPane(new javax.swing.JScrollPane(t));
+		this.dialog.pack();
+		this.dialog.setMinimumSize(new java.awt.Dimension(this.getWidth(), 400));
+		this.dialog.setVisible(true);
+		this.dialog.dispose();
+	}
+
+	@Override public void mouseClicked(MouseEvent e)
+	{	if(e.getClickCount() == 2)
+		{	if(this.dialog.isVisible()) this.dialog.dispose();
+			e.consume();
+		}
 	}
 
 	@Override public void valueChanged(TreeSelectionEvent e)

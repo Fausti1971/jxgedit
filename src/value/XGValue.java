@@ -1,6 +1,5 @@
 package value;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.LinkedHashSet;import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -18,7 +17,6 @@ import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
 import parm.XGParameterTable;
 import static parm.XGParameterTable.PARAMETERTABLES;import parm.XGTable;
-import parm.XGTable.Preference;
 import parm.XGTableEntry;
 import tag.*;import static value.XGValueStore.STORE;
 /**
@@ -28,7 +26,7 @@ import tag.*;import static value.XGValueStore.STORE;
  */
 public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable, XGCategorizeable, XGTagable
 {
-	private static final XGValue DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
+	private static final XGValue DEF_DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
 
 /***********************************************************************************************/
 
@@ -42,14 +40,14 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	private XGValue parameterSelector = null, defaultSelector = null;
 	private final XGParameterTable parameters;
 	private final XGDefaultsTable defaults;
-	private final Set<XGValueChangeListener> valueListeners = new HashSet<>();
-	private final Set<XGParameterChangeListener> parameterListeners = new HashSet<>();
+	private final Set<XGValueChangeListener> valueListeners = new LinkedHashSet<>();
+	private final Set<XGParameterChangeListener> parameterListeners = new LinkedHashSet<>();
 
 	XGValue(String name, int v)
 	{	this.address = XGALLADDRESS;
 		this.index = v;
-		this.parameterSelector = DEFAULTSELECTOR;
-		this.defaultSelector = DEFAULTSELECTOR;
+		this.parameterSelector = DEF_DEFAULTSELECTOR;
+		this.defaultSelector = DEF_DEFAULTSELECTOR;
 		this.parameters = null;
 		this.defaults = null;
 		this.opcode = null;
@@ -81,50 +79,47 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.module.getValues().add(this);
 	}
 
-	public void initValueDepencies() throws InvalidXGAddressException
-	{	if(this.opcode.isMutable())
+	public void initDepencies() throws InvalidXGAddressException
+	{	if("mp_program".equals(this.opcode.getTag())) this.valueListeners.add(XGProgramBuffer::changeProgram);
+		if("mp_partmode".equals(this.opcode.getTag())) this.valueListeners.add(XGProgramBuffer::changePartmode);
+
+		if(this.opcode.isMutable())
 		{	XGValue psv = this.module.getValues().get(this.opcode.getParameterSelectorTag());
 			if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + this.opcode.getParameterSelectorTag() + " not found for value " + this.getTag());
 			this.parameterSelector = psv;
-			this.parameterSelector.addValueListener((XGValue val)->{this.notifyParameterListeners();});
+			this.parameterSelector.valueListeners.add((XGValue val)->{this.notifyParameterListeners();});
 		}
-		else this.parameterSelector = DEFAULTSELECTOR;
+		else this.parameterSelector = DEF_DEFAULTSELECTOR;
 
 		if(this.opcode.hasMutableDefaults())
-		{	XGValue dsv = this.module.getValues().get(this.opcode.getDefaultSelectorTag());
+		{	String dst = this.opcode.getDefaultSelectorTag();
+			XGValue dsv = this.module.getValues().getOrDefault(dst, XGProgramBuffer.getDrumsetProgramListener(this));
 			if(dsv != null)
 			{	this.defaultSelector = dsv;
-				this.defaultSelector.addValueListener((XGValue)->{this.setDefaultValue();});
+				this.defaultSelector.valueListeners.add((XGValue)->{this.setDefaultValue();});
 			}
+			//else if("mp_program".equals(dst))
+			//{	this.defaultSelector = new XGDefaultSelector(this);
+			//	this.defaultSelector.addValueListener((XGValue)->{this.setDefaultValue();});
+			//}
 			else
-			{	LOG.warning(ATTR_DEFAULTSELECTOR + " " + this.opcode.getDefaultSelectorTag() + " not found for value " + this.getTag());//TODO: drumset hat zwar mutableDefaults aber kann keinen festen defaultSelector (multipartProgram) haben
-				this.defaultSelector = DEFAULTSELECTOR;
+			{	LOG.warning(ATTR_DEFAULTSELECTOR + " " + dst + " not found for value " + this.getTag());
+				this.defaultSelector = DEF_DEFAULTSELECTOR;
 			}
 		}
-		else this.defaultSelector = DEFAULTSELECTOR;
-
-		//if(this.getTag().equals("mp_program")) this.addValueListener(XGProgramBuffer::bufferProgram);
-		//if(this.getTag().equals("mp_partmode")) this.addValueListener(XGProgramBuffer::restoreProgram);
+		else this.defaultSelector = DEF_DEFAULTSELECTOR;
 	}
 
-	public void addValueListener(XGValueChangeListener l)
-	{	this.valueListeners.add(l);
+	public Set<XGValueChangeListener> getValueListeners()
+	{	return this.valueListeners;
 	}
 
-	public void removeValueListener(XGValueChangeListener l)
-	{	this.valueListeners.remove(l);
+	public Set<XGParameterChangeListener> getParameterListeners()
+	{	return this.parameterListeners;
 	}
 
-	public void addParameterListener(XGParameterChangeListener l)
-	{	this.parameterListeners.add(l);
-	}
-
-	public void removeParameterListener(XGParameterChangeListener l)
-	{	this.parameterListeners.remove(l);
-	}
-
-	public void notifyValueListeners()
-	{	if(this.hasChanged()) for(XGValueChangeListener l : this.valueListeners) l.contentChanged(this);
+	public void notifyValueListeners(XGValue v)
+	{	for(XGValueChangeListener l : this.valueListeners) l.contentChanged(v);
 	}
 
 	public void notifyParameterListeners()
@@ -204,8 +199,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public void setIndex(Integer i)
 	{	this.oldIndex = this.index;
 		XGParameter p = this.getParameter();
-		if(p != null) this.index = p.validate(i);
-		this.notifyValueListeners();
+		if(p != null) this.index = p.limitize(i);
+		if(this.hasChanged()) this.notifyValueListeners(this);
 	}
 
 /**
@@ -240,7 +235,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public void setValue(int v)
 	{	XGParameter p = this.getParameter();
 		if(p == null) return;
-		this.setIndex(p.getTranslationTable().getIndex(v, Preference.FALLBACK));
+		XGTable t = p.getTranslationTable();
+		this.setIndex(t.getIndex(v, t.getMinIndex()));
 	}
 
 /**
@@ -249,7 +245,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
  */
 	public void editEntry(XGTableEntry e)
 	{	this.setEntry(e);
-		this.actions();
+		if(this.hasChanged()) this.actions();
 	}
 
 /**
@@ -258,7 +254,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
  */
 	public void editIndex(int i)
 	{	this.setIndex(i);
-		this.actions();
+		if(this.hasChanged()) this.actions();
 	}
 
 /**
@@ -317,8 +313,6 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 			{	case change: 			this.sendAction(); break;	//send via XGMessageParameterChange (normal)
 				case dump:				this.bulkAction(); break;	//bulk via XGMessageBulkDump (voice-programs)
 				case none:				break;
-				case buffer_program:	XGProgramBuffer.bufferProgram(this); break;
-				case restore_program:	XGProgramBuffer.restoreProgram(this); break;
 				default:				LOG.info("unknown action: " + a.name() + " for value: " + this.getInfo());
 			}
 		}
@@ -337,7 +331,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	@Override public void contentChanged(XGValue v)
-	{	this.notifyValueListeners();
+	{	if(v.hasChanged()) this.notifyValueListeners(v);
 	}
 
 	@Override public String getCategory()

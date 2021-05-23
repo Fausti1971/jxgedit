@@ -108,6 +108,82 @@
 		<item value="1" name="Line"/>
 	</table>
 
+	<table name="input_categories" fallbackMask="0.0.0">
+		<item value="0.0.0" name="Off"/>
+		<item value="1.0.0" name="USB"/>
+		<item value="2.0.0" name="Analog"/>
+		<item value="3.0.0" name="mLAN"/>
+		<item value="4.0.0" name="Y2(MEL)"/>
+		<item value="5.0.0" name="S/PDIF"/>
+		<item value="6.0.0" name="AES/EBU"/>
+		<item value="7.0.0" name="ADAT"/>
+		<item value="8.0.0" name="TASCAM"/>
+		<item value="64.0.0" name="PCI1"/>
+		<item value="65.0.0" name="PCI2"/>
+		<item value="66.0.0" name="PCI3"/>
+		<item value="67.0.0" name="PCI4"/>
+		<item value="68.0.0" name="PCI5"/>
+		<item value="69.0.0" name="PCI6"/>
+		<item value="70.0.0" name="PCI7"/>
+		<item value="71.0.0" name="PCI8"/>
+		<item value="72.0.0" name="PCI9"/>
+		<item value="73.0.0" name="PCI10"/>
+		<item value="74.0.0" name="PCI11"/>
+		<item value="75.0.0" name="PCI12"/>
+		<item value="76.0.0" name="PCI13"/>
+		<item value="77.0.0" name="PCI14"/>
+		<item value="78.0.0" name="PCI15"/>
+		<item value="79.0.0" name="PCI16"/>
+		<item value="80.0.0" name="PCI17"/>
+		<item value="81.0.0" name="PCI18"/>
+		<item value="82.0.0" name="PCI19"/>
+		<item value="83.0.0" name="PCI20"/>
+		<item value="84.0.0" name="PCI21"/>
+		<item value="85.0.0" name="PCI22"/>
+		<item value="86.0.0" name="PCI23"/>
+		<item value="87.0.0" name="PCI24"/>
+		<item value="88.0.0" name="PCI25"/>
+		<item value="89.0.0" name="PCI26"/>
+		<item value="90.0.0" name="PCI27"/>
+		<item value="91.0.0" name="PCI28"/>
+		<item value="92.0.0" name="PCI29"/>
+		<item value="93.0.0" name="PCI30"/>
+		<item value="94.0.0" name="PCI31"/>
+		<item value="95.0.0" name="PCI32"/>
+		<item value="96.0.0" name="PCI33"/>
+		<item value="97.0.0" name="PCI34"/>
+		<item value="98.0.0" name="PCI35"/>
+		<item value="99.0.0" name="PCI36"/>
+		<item value="100.0.0" name="PCI37"/>
+		<item value="101.0.0" name="PCI38"/>
+		<item value="102.0.0" name="PCI39"/>
+		<item value="103.0.0" name="PCI40"/>
+		<item value="104.0.0" name="PCI41"/>
+		<item value="105.0.0" name="PCI42"/>
+		<item value="106.0.0" name="PCI43"/>
+		<item value="107.0.0" name="PCI44"/>
+		<item value="108.0.0" name="PCI45"/>
+		<item value="109.0.0" name="PCI46"/>
+		<item value="110.0.0" name="PCI47"/>
+		<item value="111.0.0" name="PCI48"/>
+		<item value="112.0.0" name="PCI49"/>
+		<item value="113.0.0" name="PCI50"/>
+		<item value="114.0.0" name="PCI51"/>
+		<item value="115.0.0" name="PCI52"/>
+		<item value="116.0.0" name="PCI53"/>
+		<item value="117.0.0" name="PCI54"/>
+		<item value="118.0.0" name="PCI55"/>
+		<item value="119.0.0" name="PCI56"/>
+		<item value="120.0.0" name="PCI57"/>
+		<item value="121.0.0" name="PCI58"/>
+		<item value="122.0.0" name="PCI59"/>
+		<item value="123.0.0" name="PCI60"/>
+		<item value="124.0.0" name="PCI61"/>
+		<item value="125.0.0" name="PCI62"/>
+		<item value="126.0.0" name="PCI63"/>
+		<item value="127.0.0" name="Ext. Device"/>
+	</table>
+
 	<table name="ad_presets">
 		<item value="0.0" name="Off"/>
 		<item value="0.1" name="Mic"/>
@@ -406,137 +482,6 @@
 		<item value="127" name="Off"/>
 	</table>
 
-	<table name="tones">
-		<item value="0" name="C-2"/>
-		<item value="1" name="C#-2"/>
-		<item value="2" name="D-2"/>
-		<item value="3" name="D#-2"/>
-		<item value="4" name="E-2"/>
-		<item value="5" name="F-2"/>
-		<item value="6" name="F#-2"/>
-		<item value="7" name="G-2"/>
-		<item value="8" name="G#-2"/>
-		<item value="9" name="A-2"/>
-		<item value="10" name="A#-2"/>
-		<item value="11" name="B-2"/>
-		<item value="12" name="C-1"/>
-		<item value="13" name="C#-1"/>
-		<item value="14" name="D-1"/>
-		<item value="15" name="D#-1"/>
-		<item value="16" name="E-1"/>
-		<item value="17" name="F-1"/>
-		<item value="18" name="F#-1"/>
-		<item value="19" name="G-1"/>
-		<item value="20" name="G#-1"/>
-		<item value="21" name="A-1"/>
-		<item value="22" name="A#-1"/>
-		<item value="23" name="B-1"/>
-		<item value="24" name="C0"/>
-		<item value="25" name="C#0"/>
-		<item value="26" name="D0"/>
-		<item value="27" name="D#0"/>
-		<item value="28" name="E0"/>
-		<item value="29" name="F0"/>
-		<item value="30" name="F#0"/>
-		<item value="31" name="G0"/>
-		<item value="32" name="G#0"/>
-		<item value="33" name="A0"/>
-		<item value="34" name="A#0"/>
-		<item value="35" name="B0"/>
-		<item value="36" name="C1"/>
-		<item value="37" name="C#1"/>
-		<item value="38" name="D1"/>
-		<item value="39" name="D#1"/>
-		<item value="40" name="E1"/>
-		<item value="41" name="F1"/>
-		<item value="42" name="F#1"/>
-		<item value="43" name="G1"/>
-		<item value="44" name="G#1"/>
-		<item value="45" name="A1"/>
-		<item value="46" name="A#1"/>
-		<item value="47" name="B1"/>
-		<item value="48" name="C2"/>
-		<item value="49" name="C#2"/>
-		<item value="50" name="D2"/>
-		<item value="51" name="D#2"/>
-		<item value="52" name="E2"/>
-		<item value="53" name="F2"/>
-		<item value="54" name="F#2"/>
-		<item value="55" name="G2"/>
-		<item value="56" name="G#2"/>
-		<item value="57" name="A2"/>
-		<item value="58" name="A#2"/>
-		<item value="59" name="B2"/>
-		<item value="60" name="C3"/>
-		<item value="61" name="C#3"/>
-		<item value="62" name="D3"/>
-		<item value="63" name="D#3"/>
-		<item value="64" name="E3"/>
-		<item value="65" name="F3"/>
-		<item value="66" name="F#3"/>
-		<item value="67" name="G3"/>
-		<item value="68" name="G#3"/>
-		<item value="69" name="A3"/>
-		<item value="70" name="A#3"/>
-		<item value="71" name="B3"/>
-		<item value="72" name="C4"/>
-		<item value="73" name="C#4"/>
-		<item value="74" name="D4"/>
-		<item value="75" name="D#4"/>
-		<item value="76" name="E4"/>
-		<item value="77" name="F4"/>
-		<item value="78" name="F#4"/>
-		<item value="79" name="G4"/>
-		<item value="80" name="G#4"/>
-		<item value="81" name="A4"/>
-		<item value="82" name="A#4"/>
-		<item value="83" name="B4"/>
-		<item value="84" name="C5"/>
-		<item value="85" name="C#5"/>
-		<item value="86" name="D5"/>
-		<item value="87" name="D#5"/>
-		<item value="88" name="E5"/>
-		<item value="89" name="F5"/>
-		<item value="90" name="F#5"/>
-		<item value="91" name="G5"/>
-		<item value="92" name="G#5"/>
-		<item value="93" name="A5"/>
-		<item value="94" name="A#5"/>
-		<item value="95" name="B5"/>
-		<item value="96" name="C6"/>
-		<item value="97" name="C#6"/>
-		<item value="98" name="D6"/>
-		<item value="99" name="D#6"/>
-		<item value="100" name="E6"/>
-		<item value="101" name="F6"/>
-		<item value="102" name="F#6"/>
-		<item value="103" name="G6"/>
-		<item value="104" name="G#6"/>
-		<item value="105" name="A6"/>
-		<item value="106" name="A#6"/>
-		<item value="107" name="B6"/>
-		<item value="108" name="C7"/>
-		<item value="109" name="C#7"/>
-		<item value="110" name="D7"/>
-		<item value="111" name="D#7"/>
-		<item value="112" name="E7"/>
-		<item value="113" name="F7"/>
-		<item value="114" name="F#7"/>
-		<item value="115" name="G7"/>
-		<item value="116" name="G#7"/>
-		<item value="117" name="A7"/>
-		<item value="118" name="A#7"/>
-		<item value="119" name="B7"/>
-		<item value="120" name="C8"/>
-		<item value="121" name="C#8"/>
-		<item value="122" name="D8"/>
-		<item value="123" name="D#8"/>
-		<item value="124" name="E8"/>
-		<item value="125" name="F8"/>
-		<item value="126" name="F#8"/>
-		<item value="127" name="G8"/>
-	</table>
-
 	<table name="voice_bank_msb">
 		<item value="0" name="XG PCM"/>
 		<item value="8" name="XG PCM"/>
@@ -699,7 +644,7 @@
 		<item value="101" name="Other Instruments"/>
 	</table>
 
-	<table name="xg_voices" fallbackMask="127.0.127">
+	<table name="xg_voices" fallbackMask="0.0.127">
 		<item value="0.0.0" name="Grand Piano" categories="Piano"/>
 		<item value="0.1.0" name="Grand Piano KSP" categories="Piano"/>
 		<item value="0.18.0" name="Mellow Grand Piano" categories="Piano"/>
@@ -1863,7 +1808,7 @@
 		<item value="64.0.127" name="No Sound" categories="SFX"/>
 	</table>
 
-	<table name="xg_kits">
+	<table name="xg_kits" fallbackMask="127.0.0">
 		<item value="126.0.0" name="SFX Kit 1" categories="XG SFX Kits"/>
 		<item value="126.0.1" name="SFX Kit 2" categories="XG SFX Kits"/>
 		<item value="126.0.16" name="Techno Kit K.S" categories="XG SFX Kits"/>

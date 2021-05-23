@@ -11,7 +11,7 @@ public class XGInsertionEditWindow extends XGEditWindow
 		this.setVisible(true);
 	}
 
-	private javax.swing.JComponent createContent()
+	javax.swing.JComponent createContent()
 	{	JPanel root = new JPanel();
 		XGFrame main = new XGFrame(null, GRID * 3, GRID * 2),
 			parms = new XGFrame(null, GRID * 3, GRID * 4),

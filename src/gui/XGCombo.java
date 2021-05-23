@@ -37,7 +37,9 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGParameterChang
 		XGParameter p = this.value.getParameter();
 		if(p != null)
 		{	XGTable t = p.getTranslationTable();
-			for(XGTableEntry e : t) this.addItem(e);
+			for(XGTableEntry e : t)
+			{	this.addItem(e);
+			}
 			this.setSelectedItem(t.getByIndex(this.value.getIndex()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
 			this.addActionListener((ActionEvent)->{this.entrySelected();});
 		}
@@ -45,8 +47,8 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGParameterChang
 		this.setAutoscrolls(true);
 
 //		this.addFocusListener(this);
-		this.value.addValueListener((XGValue v)->{this.setSelectedItem(this.value.getEntry());});
-		this.value.addParameterListener(this);
+		this.value.getValueListeners().add((XGValue v)->{this.setSelectedItem(this.value.getEntry());});
+		this.value.getParameterListeners().add(this);
 		this.parameterChanged(this.value.getParameter());
 	}
 
