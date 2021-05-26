@@ -18,12 +18,16 @@ public class XGFixedValue extends XGValue
 		this.parameter = new XGParameter(name, v);
 	}
 
+	@Override public void setValue(int v)
+	{	throw new RuntimeException("Trying to set FixedValue " + this.getTag() + " to " + v);
+	}
+
 	@Override public XGParameter getParameter()
 	{	return this.parameter;
 	}
 
 	@Override public void editIndex(int i)
-	{	return;
+	{	throw new RuntimeException("Trying to edit FixedValue " + this.getTag() + " to " + i);
 	}
 
 }

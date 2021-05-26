@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="tables.xsd">
-
 	<table name="controller">
 		<item value="0" name="Off"/>
 		<item value="1" name="1"/>

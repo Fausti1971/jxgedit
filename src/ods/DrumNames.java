@@ -1,12 +1,12 @@
 package ods;
 
-import application.XGStrings;import com.github.miachm.sods.Sheet;import parm.XGDrumNames;import parm.XGRealTable;
+import application.XGStrings;import com.github.miachm.sods.Sheet;import parm.XGDrumNames;import static parm.XGDrumNames.DRUMNAMES;import parm.XGRealTable;import parm.XGTableEntry;
 import java.util.*;
 
 public interface DrumNames
 {	Map<String, Integer> PRGNAMES = new HashMap<>();
 
-	XGDrumNames NAMES = new XGDrumNames();
+//	XGDrumNames NAMES = new XGDrumNames();
 	int KEY_COL = 0;
 	int MSB_ROW = 0;
 	int LSB_ROW = 1;
@@ -36,7 +36,7 @@ public interface DrumNames
 							n = s.getRange(row, col).getCell(0,0).getValue();
 //							System.out.println("s=" + s.getName() + ", k="+ key + " " + row + "/" + col + " (" + n + ")");
 							if(n instanceof String)
-							{	NAMES.put(key, sum, (String)n);
+							{	DRUMNAMES.get(key).add(new XGTableEntry(sum, (String)n));
 								DONE.add(sum);
 							}
 						}

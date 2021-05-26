@@ -54,15 +54,15 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	{	return this.values;
 	}
 
-	public String getTranslatedID()
-	{	try
-		{	return this.type.idTranslator.getByIndex(this.address.getMid().getValue()).getName();
-		}
-		catch(InvalidXGAddressException e)
-		{	return this.address.getMid().toString();
-		}
-	}
-
+	//public String getTranslatedID()
+	//{	try
+	//	{	return this.type.idTranslator.getByIndex(this.address.getMid().getValue()).getName();
+	//	}
+	//	catch(InvalidXGAddressException e)
+	//	{	return this.address.getMid().toString();
+	//	}
+	//}
+	//
 	public void resetValues()
 	{	for(XGValue v : this.getValues()) v.setDefaultValue();
 	}
@@ -79,7 +79,25 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 	//}
 
 	@Override public String toString()
-	{	return this.type.getName() + " " + this.getTranslatedID();
+	{	int id = 0;
+		String text = this.type.getName();
+		try
+		{	id = this.address.getMid().getValue();
+		}
+		catch(InvalidXGAddressException e)
+		{	id = this.address.getMid().getMin();
+		}
+		switch(this.type.getTag())
+		{	case "master":
+			case "rev":
+			case "cho":
+			case "var":
+			case "eq":	return text;
+			case "ins":
+			case "mp":
+			case "ad":	return text + " " + (id + 1);
+			default:	return ((XGDrumsetModuleType)this.type).getDrumname(id);
+		}
 	}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()

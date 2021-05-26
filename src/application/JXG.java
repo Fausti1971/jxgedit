@@ -16,11 +16,10 @@ public class JXG implements XGLoggable, XGUI
 	private static File configFile;
 
 /**
-* returniert das angegebene File aus dem Applikationspfad; falls dieses nicht vorhanden ist, wird versucht, es aus dem internen Pfad (*.jar) dorthin zu kopieren
+* returniert das angegebene File aus dem internen Pfad (*.jar)
 */
 	public static InputStream getResourceStream(String fName) throws IOException //Merke: SAX scheint mit mac-Aliases nicht zurecht zu kommen, daher bei Bedarf Softlinks erzeugen (ln -s Quelle Ziel)
-	{	
-		return JXG.class.getResourceAsStream(fName);
+	{	return JXG.class.getResourceAsStream(fName);
 	}
 
 	public static void main(String[] args)

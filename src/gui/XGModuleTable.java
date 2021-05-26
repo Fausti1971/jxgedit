@@ -11,8 +11,8 @@ public class XGModuleTable extends JTable implements java.awt.event.MouseListene
 		this.addMouseListener(this);
 		this.setAutoCreateRowSorter(true);
 		this.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-		this.setIntercellSpacing(new java.awt.Dimension(GAP, GAP));
-		this.setRowHeight(this.getRowHeight() + GAP);
+//		this.setIntercellSpacing(new java.awt.Dimension(GAP, GAP));
+//		this.setRowHeight(this.getRowHeight() + GAP);
 //		this.setGridColor(java.awt.Color.lightGray);//wird vom L&F wieder überschrieben
 //		this.setShowGrid(false);
 		this.setAutoscrolls(true);

@@ -310,14 +310,14 @@
 		<bulk address="8//112-115">
 			<opcode xsi:type="immutable" id="mp_pb_lo" address="//112" name="Pitchbend Wheel Low Control" shortName="PBLC" min="40" max="88" table="sub64" origin="64" unit="st" default="62" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eg_lpf" address="//113" name="Filters Envelope Generator Depth" shortName="FEGD" table="sub64" min="0" max="127" origin="64" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_bass" address="//114" name="EQ Bass" shortName="EQB" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_treble" address="//115" name="EQ Treble" shortName="EQT" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_eq_bass" address="//114" name="EQ Bass Gain" shortName="EQBG" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_eq_treble" address="//115" name="EQ Treble Gain" shortName="EQTG" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
 		</bulk>
 		<bulk address="8//116-127">
 			<opcode xsi:type="immutable" id="mp_eq_midbass" address="//116" name="EQ Mid Bass" shortName="EQMB" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_midtreble" address="//117" name="EQ Mid Treble" shortName="EQMT" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_bass_freq" address="//118" name="EQ Bass Frequency" shortName="EQBF" table="table3" min="4" max="40" default="12" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_treble_freq" address="//119" name="EQ Treble Frequency" shortName="EQTF" table="table3" min="28" max="58" default="54" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_eq_bass_freq" address="//118" name="EQ Bass Frequency" shortName="EQBF" table="table3" min="4" max="40" default="12" origin="4" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_eq_treble_freq" address="//119" name="EQ Treble Frequency" shortName="EQTF" table="table3" min="28" max="58" default="54" origin="28" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_midbass_freq" address="//120" name="EQ Mid Bass Frequency" shortName="EQMBF" table="table3" min="14" max="54" default="34" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_midtrebel_freq" address="//121" name="EQ Mid Treble Frequency" shortName="EQMTF" table="table3" min="14" max="54" default="46" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_bass_q" address="//122" name="EQ Bass Q" shortName="EQBQ" table="div10" min="1" max="120" default="7" actions="change"/>

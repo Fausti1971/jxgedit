@@ -83,7 +83,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	{	return this.originIndex;
 	}
 
-	public int limitize(int i)
+	public int getLimitizedIndex(int i)
 	{	return Math.max(Math.min(i, this.getMaxIndex()), this.getMinIndex());
 	}
 

@@ -38,7 +38,12 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS));
 			if(adr.getHi().getMin() >= 48)//falls Drumset
 			{	for(int h : adr.getHi())//erzeuge für jedes Drumset ein ModuleType
-				{	TYPES.add(new XGDrumsetModuleType(n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo())));
+				{	try
+					{	TYPES.add(new XGDrumsetModuleType(n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo())));
+					}
+					catch(InvalidXGAddressException e)
+					{	LOG.severe(e.getMessage());
+					}
 				}
 				continue;
 			}
@@ -61,9 +66,9 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<>();
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();
 	protected final StringBuffer name;
-	protected String id;
+	protected String tag;
 	protected final XGAddress address;
-	protected final XGTable idTranslator;
+	protected XGTable idTranslator;
 	private final XMLNode config;
 	private final XGAddressableSet<XGAddress> bulks = new XGAddressableSet<>();
 
@@ -74,7 +79,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	this.config = cfg;
 		this.address = adr;
 		this.name = new StringBuffer(name);
-		this.id = cfg.getStringAttribute(ATTR_ID);
+		this.tag = cfg.getStringAttribute(ATTR_ID);
 		this.idTranslator = TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TABLE), DEF_TABLE);
 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))
@@ -147,6 +152,6 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	}
 
 	public String getTag()
-	{	return this.id.toString();
+	{	return this.tag.toString();
 	}
 }

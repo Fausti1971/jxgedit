@@ -6,7 +6,7 @@ import adress.XGAddress;
 import adress.XGAddressable;
 import application.XGLoggable;
 import device.*;
-import module.XGModule;import msg.XGMessageBulkDump;
+import module.XGDrumsetModuleType;import module.XGModule;import module.XGModuleType;import msg.XGMessageBulkDump;
 import msg.XGMessageParameterChange;
 import msg.XGMessengerException;
 import msg.XGResponse;
@@ -15,7 +15,7 @@ import static parm.XGDefaultsTable.DEFAULTSTABLE;import parm.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
-import parm.XGParameterTable;
+import static parm.XGParameterConstants.XACTION.change_partmode;import static parm.XGParameterConstants.XACTION.change_program;import parm.XGParameterTable;
 import static parm.XGParameterTable.PARAMETERTABLES;import parm.XGTable;
 import parm.XGTableEntry;
 import tag.*;import static value.XGValueStore.STORE;
@@ -27,6 +27,7 @@ import tag.*;import static value.XGValueStore.STORE;
 public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable, XGCategorizeable, XGTagable
 {
 	private static final XGValue DEF_DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
+	private static int count = 0;
 
 /***********************************************************************************************/
 
@@ -59,6 +60,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		this.module = mod;
 		this.address = new XGAddress(opc.getAddress().getHi().getValue(), mod.getAddress().getMid().getValue(), opc.getAddress().getLo().getMin());
 		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
+
 		if(opc.isMutable())
 		{	this.parameters = PARAMETERTABLES.get(opc.getParameterTableName());
 			if(this.parameters == null) throw new RuntimeException(ATTR_PARAMETERS + opc.getParameterTableName() + " not found for value " + this.getTag());
@@ -80,12 +82,15 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	public void initDepencies() throws InvalidXGAddressException
-	{	if("mp_program".equals(this.opcode.getTag())) this.valueListeners.add(XGProgramBuffer::changeProgram);
-		if("mp_partmode".equals(this.opcode.getTag())) this.valueListeners.add(XGProgramBuffer::changePartmode);
+	{
+	//	if("mp_program".equals(this.opcode.getTag())) this.valueListeners.add(XGProgramBuffer::changeProgram);
+	//	if("mp_partmode".equals(this.opcode.getTag())) this.valueListeners.add(XGProgramBuffer::changePartmode);
+		if("mp_program".equals(this.opcode.getTag())) this.opcode.getActions().add(change_program);
+		if("mp_partmode".equals(this.opcode.getTag())) this.opcode.getActions().add(change_partmode);
 
 		if(this.opcode.isMutable())
 		{	XGValue psv = this.module.getValues().get(this.opcode.getParameterSelectorTag());
-			if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + this.opcode.getParameterSelectorTag() + " not found for value " + this.getTag());
+			if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + " " + this.opcode.getParameterSelectorTag() + " not found for value " + this.getTag());
 			this.parameterSelector = psv;
 			this.parameterSelector.valueListeners.add((XGValue val)->{this.notifyParameterListeners();});
 		}
@@ -93,15 +98,18 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 
 		if(this.opcode.hasMutableDefaults())
 		{	String dst = this.opcode.getDefaultSelectorTag();
-			XGValue dsv = this.module.getValues().getOrDefault(dst, XGProgramBuffer.getDrumsetProgramListener(this));
+			XGValue dsv = this.module.getValues().get(dst);
 			if(dsv != null)
 			{	this.defaultSelector = dsv;
 				this.defaultSelector.valueListeners.add((XGValue)->{this.setDefaultValue();});
 			}
-			//else if("mp_program".equals(dst))
-			//{	this.defaultSelector = new XGDefaultSelector(this);
-			//	this.defaultSelector.addValueListener((XGValue)->{this.setDefaultValue();});
-			//}
+			else if("ds_program".equals(dst))
+			{	XGModuleType t = this.getModule().getType();
+				if(t instanceof XGDrumsetModuleType)
+				{	this.defaultSelector = ((XGDrumsetModuleType)t).getProgramListener();
+					this.defaultSelector.valueListeners.add((XGValue)->{this.setDefaultValue();});
+				}
+			}
 			else
 			{	LOG.warning(ATTR_DEFAULTSELECTOR + " " + dst + " not found for value " + this.getTag());
 				this.defaultSelector = DEF_DEFAULTSELECTOR;
@@ -151,7 +159,13 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	public XGParameter getParameter()
-	{	return this.parameters.getOrDefault(this.parameterSelector.getValue(), NO_PARAMETER);
+	{	try
+		{	return this.parameters.getOrDefault(this.parameterSelector.getValue(), NO_PARAMETER);
+		}
+		catch(NullPointerException e)
+		{	System.out.println(this.getTag());
+			return NO_PARAMETER;
+		}
 	}
 
 	@Override public XGAddress getAddress()
@@ -199,7 +213,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public void setIndex(Integer i)
 	{	this.oldIndex = this.index;
 		XGParameter p = this.getParameter();
-		if(p != null) this.index = p.limitize(i);
+		if(p != null) this.index = p.getLimitizedIndex(i);
 		if(this.hasChanged()) this.notifyValueListeners(this);
 	}
 
@@ -209,7 +223,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public XGTableEntry getEntry()
 	{	XGParameter p = this.getParameter();
 		if(p == null) return null;
-		return p.getTranslationTable().getByIndex(this.getIndex());
+		return p.getTranslationTable().getByIndex(this.index);
 	}
 
 /**
@@ -226,6 +240,13 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public int getValue()
 	{	if(this.getEntry() == null) return 0;
 		return this.getEntry().getValue();
+	}
+
+/**
+* returniert den Value des zuvor gewählten XGTable-Eintrags
+*/
+	public int getOldValue()
+	{	return this.getParameter().getTranslationTable().getByIndex(this.oldIndex).getValue();
 	}
 
 /**
@@ -258,7 +279,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 /**
- * addiert nach Validierung/Limitierung den übergebenen Wert zum Index und durchläuft die Action-Kette
+ * addiert den übergebenen Wert zum Index und durchläuft die Action-Kette
  * @param diff Differenz
  */
 	public void addIndex(int diff)
@@ -312,6 +333,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 		{	switch(a)
 			{	case change: 			this.sendAction(); break;	//send via XGMessageParameterChange (normal)
 				case dump:				this.bulkAction(); break;	//bulk via XGMessageBulkDump (voice-programs)
+				case change_program:	XGProgramBuffer.changeProgram(this); break;
+				case change_partmode:	XGProgramBuffer.changePartmode(this); break;
 				case none:				break;
 				default:				LOG.info("unknown action: " + a.name() + " for value: " + this.getInfo());
 			}

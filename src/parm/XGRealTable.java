@@ -21,7 +21,7 @@ public class XGRealTable implements XGTable
 */
 	private final Map<String, Integer> names = new HashMap<>();//name, index
 	private final Map<String, XGRealTable> categories = new LinkedHashMap<>();
-//	private final Set<String> categoryNames = new LinkedHashSet<>();
+
 /**
  * lediglich eine indizierte Map von Integerwerten und dazugehörigen XMLNodes
  * @param n
@@ -58,32 +58,13 @@ public class XGRealTable implements XGTable
 			this.names.put(n.getName(), i);
 		}
 		for(String s : e.getCategories()) this.categories.put(s, new XGRealTable(this.name, this.unit, this.fallbackMask));
+		int is = this.indexes.size();
+		int es = this.entries.size();
+		int ns = this.names.size();
+		if(es != is || es != ns)
+		{	throw new RuntimeException("error on adding " + e.getInfo()  + " to " + this.getInfo() + ": entries=" + es + ", indexes=" + is + ", names=" + ns);
+		}
 	}
-
-	private void reinit()
-	{	
-	}
-
-	//private int findValue(int v, Preference pref)
-	//{	if(this.indexes.containsKey(v)) return v;
-	//	v = Math.max(this.indexes.firstKey(), Math.min(v, this.indexes.lastKey()));
-	//	int above = this.indexes.ceilingKey(v);
-	//	int below = this.indexes.floorKey(v);
-	//	switch(pref)
-	//	{	case CLOSEST:	return (v - below > above - v ? above : below);
-	//		case EQUAL:		return v;
-	//		case FALLBACK:	return this.getFallbackValue(v);
-	//		case ABOVE:		return above;
-	//		case BELOW:		return below;
-	//		default:		return v;
-	//	}
-	//}
-
-	//private int getFallbackValue(int v)
-	//{	v &= this.fallbackMask;
-	//	if(this.indexes.containsKey(v)) return v;
-	//	else return this.entries.get(this.getMinIndex()).getValue();
-	//}
 
 	@Override public XGTableEntry getByIndex(int i)
 	{	if(this.entries.isEmpty()) throw new IndexOutOfBoundsException("index " + i + " out of bounds in " + this.getName());
