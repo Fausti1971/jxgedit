@@ -48,7 +48,17 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 	}
 
 	public Object getValueAt(int r,int c)
-	{	if(c == 0) return this.rows.get(r);
+	{	if(c == 0)
+		{	XGModule m = this.rows.get(r);
+			if(m.getType() instanceof XGDrumsetModuleType)
+			{	XGDrumsetModuleType drm = (XGDrumsetModuleType)m.getType();
+				drm.getProgramListener().getValueListeners().add((XGValue->
+				{	TableModelEvent e = new TableModelEvent(this, r, r, c, TableModelEvent.UPDATE);
+					for(TableModelListener l : this.listeners) l.tableChanged(e);
+				}));
+			}
+			return m;
+		}
 		String s = this.cols.get(c);
 		XGValue v = this.rows.get(r).getValues().get(s);
 		v.getValueListeners().add(this);

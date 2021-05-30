@@ -90,11 +90,12 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 		COL_BAR_BACK = Color.white,
 		COL_SHAPE = new Color(COL_BAR_FORE.getRed(), COL_BAR_FORE.getGreen(), COL_BAR_FORE.getBlue(), 20);
 
-	int FONTSIZE = 14;
-	Font SMALL_FONT = new Font(Font.decode(null).getName(), Font.PLAIN, FONTSIZE);
-	Font MEDIUM_FONT = new Font(Font.decode(null).getName(), Font.PLAIN, FONTSIZE + 4);
+	int SMALL_FONTSIZE = 14, MEDIUM_FONTSIZE = 18, LARGE_FONTSIZE = 24;
+	Font SMALL_FONT = new Font(Font.decode(null).getName(), Font.PLAIN, SMALL_FONTSIZE);
+	Font MEDIUM_FONT = new Font(Font.decode(null).getName(), Font.PLAIN, MEDIUM_FONTSIZE);
+	Font LARGE_FONT = new Font(Font.decode(null).getName(), Font.PLAIN, LARGE_FONTSIZE);
 
-	int GRID = FONTSIZE * 2,
+	int GRID = SMALL_FONTSIZE * 2,
 		//COL_STEP = 16,
 		//GAP = 5,
 		DEF_STROKEWIDTH = 4,

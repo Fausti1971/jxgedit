@@ -23,7 +23,8 @@ public class JXG implements XGLoggable, XGUI
 	}
 
 	public static void main(String[] args)
-	{
+	{	XGSplashScreen splash = new XGSplashScreen();
+
 		configFile = new File(APPPATH + FILESEPERATOR + XML_CONFIG);
 		try
 		{	config = XMLNode.parse(new FileInputStream(configFile));
@@ -44,6 +45,8 @@ public class JXG implements XGLoggable, XGUI
 		XGValueStore.init();
 		XGUI.init();
 		XGMainWindow.init();
+
+		splash.dispose();
 
 		LOG.info(APPNAME + " initialized from " + configFile);
 	}
