@@ -54,6 +54,7 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 		this.prev.setMinimumSize(ARROWSIZE);
 		this.add(this.prev, BorderLayout.WEST);
 
+		this.select.setFont(MEDIUM_FONT);
 		this.select.setText(this.value.toString());
 		this.select.addActionListener((ActionEvent e)->{this.openDialog();});
 		this.add(this.select, BorderLayout.CENTER);
@@ -72,7 +73,7 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 		this.repaint();
 	}
 
-	private void openDialog()
+	private void openDialog()//TODO: vielleicht doch eher ein PopupMenu?
 	{	this.dialog = new javax.swing.JDialog();
 //		d.setLocationRelativeTo(this);
 		this.dialog.setLocation(this.getLocationOnScreen());
@@ -87,6 +88,7 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 		else o = new Object[]{t.getModel().getRoot(), e.getCategories().iterator().next(), e};
 		TreePath p = new TreePath(o);
 
+		t.setFont(MEDIUM_FONT);
 		t.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		t.setSelectionPath(p);
 		t.scrollPathToVisible(p);

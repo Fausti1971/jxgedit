@@ -45,6 +45,7 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGParameterChang
 		}
 		else this.setEnabled(false);
 		this.setAutoscrolls(true);
+		this.setFont(MEDIUM_FONT);
 
 //		this.addFocusListener(this);
 		this.value.getValueListeners().add((XGValue v)->{this.setSelectedItem(this.value.getEntry());});

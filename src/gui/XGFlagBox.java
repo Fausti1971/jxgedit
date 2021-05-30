@@ -30,12 +30,14 @@ public class XGFlagBox extends JPanel implements XGComponent
 			return;
 		}
 		this.setName(name);
+		this.setFont(MEDIUM_FONT);
 		this.borderize();
 
 		for(XGValue v : vals)
 		{	if(v != null) this.values.add(v);
 		}
 		this.button.addActionListener((ActionEvent)->{new XGPopup(this, this.values);});
+		this.button.setFont(MEDIUM_FONT);
 		this.button.setText("select...");
 		this.addFocusListener(this);
 

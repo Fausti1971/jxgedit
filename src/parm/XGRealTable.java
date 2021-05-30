@@ -11,6 +11,7 @@ public class XGRealTable implements XGTable
 	protected final String name;
 	private final String unit;
 	private final int fallbackMask;
+	private final boolean sort;
 	private final List<XGTableEntry> entries = new ArrayList<>();//entry
 /**
 * key=(int)value; value=(int)index (in entries)
@@ -20,28 +21,29 @@ public class XGRealTable implements XGTable
 * key=(String)name; value=(int)index (in entries);
 */
 	private final Map<String, Integer> names = new HashMap<>();//name, index
-	private final Map<String, XGRealTable> categories = new LinkedHashMap<>();
+	private final Set<String> categories = new LinkedHashSet<>();
 
 /**
  * lediglich eine indizierte Map von Integerwerten und dazugehörigen XMLNodes
  * @param n
  */
 	XGRealTable(XMLNode n)
-	{	this(n.getStringAttribute(ATTR_NAME), n.getStringAttributeOrDefault(ATTR_UNIT, ""), n.getValueAttribute(ATTR_FALLBACKMASK, DEF_FALLBACKMASK));
+	{	this(n.getStringAttribute(ATTR_NAME), n.getStringAttributeOrDefault(ATTR_UNIT, ""), n.getValueAttribute(ATTR_FALLBACKMASK, DEF_FALLBACKMASK), false);
 		n.traverse(TAG_ITEM, (XMLNode x)->{this.add(new XGTableEntry(x));});
-//		LOG.info(this.getInfo());
+		LOG.info(this.getInfo());
 	}
 
-	XGRealTable(String name, String unit, int fbm)
+	XGRealTable(String name, String unit, int fbm, boolean sortByValue)
 	{	this.name = name;
 		this.unit = unit;
 		this.fallbackMask = fbm;
-		this.categories.put(ALL_CATEGORIES, this);
+		this.sort = sortByValue;
+		this.categories.add(ALL_CATEGORIES);
 //		LOG.info(this.name);
 	}
 
 	public XGRealTable(String name)
-	{	this(name, "", DEF_FALLBACKMASK);
+	{	this(name, "", DEF_FALLBACKMASK, true);
 	}
 
 /**
@@ -49,20 +51,31 @@ public class XGRealTable implements XGTable
 **/
 	public void add(XGTableEntry e)
 	{	this.entries.add(e);
-		this.indexes.clear();
+		int i = this.entries.indexOf(e);
+		this.indexes.put(e.getValue(), i);
+		this.names.put(e.getName(), i);
+
+		if(this.sort) this.sortByValue();
+
+		this.categories.addAll(e.getCategories());
+		int is = this.indexes.size();
+		int es = this.entries.size();
+		int ns = this.names.size();
+		if(es != is)
+		{	System.out.println(this.entries);
+			System.out.println(this.indexes);
+			throw new RuntimeException("error on adding " + e.getInfo() + " to " + this.getInfo() + ": entries=" + es + ", indexes=" + is + ", names=" + ns);
+		}
+	}
+
+	private void sortByValue()
+	{	this.indexes.clear();
 		this.names.clear();
 		this.entries.sort(null);
 		for(XGTableEntry n : this.entries)
 		{	int i = this.entries.indexOf(n);
 			this.indexes.put(n.getValue(), i);
 			this.names.put(n.getName(), i);
-		}
-		for(String s : e.getCategories()) this.categories.put(s, new XGRealTable(this.name, this.unit, this.fallbackMask));
-		int is = this.indexes.size();
-		int es = this.entries.size();
-		int ns = this.names.size();
-		if(es != is || es != ns)
-		{	throw new RuntimeException("error on adding " + e.getInfo()  + " to " + this.getInfo() + ": entries=" + es + ", indexes=" + is + ", names=" + ns);
 		}
 	}
 
@@ -72,7 +85,8 @@ public class XGRealTable implements XGTable
 	}
 
 	@Override public XGTableEntry getByValue(int v)
-	{	return this.entries.get(this.indexes.get(v));
+	{	if(this.indexes.containsKey(v)) return this.entries.get(this.indexes.get(v));
+		return new XGTableEntry(v, "No Entry");
 	}
 
 	@Override public XGTableEntry getByName(String name)
@@ -101,16 +115,12 @@ public class XGRealTable implements XGTable
 	}
 
 	@Override public Set<String> getCategories()
-	{	return this.categories.keySet();
+	{	return this.categories;
 	}
 
 	@Override public XGTable categorize(String cat)
-	{	XGRealTable table = this.categories.get(cat);
-		if(table == null)
-		{	table = new XGRealTable(this.name + "-" + cat, this.unit, this.fallbackMask);
-			this.categories.put(cat, table);
-		}
-		if(table.size() != 0) return table;
+	{	if(ALL_CATEGORIES.equals(cat)) return this;
+		XGRealTable table = new XGRealTable(this.name + "-" + cat, this.unit, this.fallbackMask, this.sort);
 		for(XGTableEntry e : this) if(e.hasCategory(cat)) table.add(e);
 		return table;
 	}
@@ -118,7 +128,7 @@ public class XGRealTable implements XGTable
 	@Override public XGRealTable filter(XMLNode n)
 	{	if(!n.hasAttribute(ATTR_TABLEFILTER)) return this;
 		String f = n.getStringAttribute(ATTR_TABLEFILTER);
-		XGRealTable table = new XGRealTable(this.name + "-" + f, this.unit, this.fallbackMask);
+		XGRealTable table = new XGRealTable(this.name + "-" + f, this.unit, this.fallbackMask, this.sort);
 		for(XGTableEntry e : this) if(e.hasFilter(f)) table.add(e);
 		return table;
 	}

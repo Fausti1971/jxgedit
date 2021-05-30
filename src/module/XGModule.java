@@ -17,7 +17,7 @@ import tag.*;
 import value.*;
 import static value.XGValueStore.STORE;
 
-public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper
+public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper
 {
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
@@ -115,5 +115,9 @@ public class XGModule implements XGAddressable, XGModuleConstants, XGLoggable, X
 
 	@Override public XGAddress getAddress()
 	{	return this.address;
+	}
+
+	public int compareTo(XGModule module)
+	{	return this.address.compareTo(module.address);
 	}
 }

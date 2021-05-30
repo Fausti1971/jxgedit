@@ -67,6 +67,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 		voice.add(new XGPEG(values.get("mp_peg_init_level"), values.get("mp_peg_attack_time"), values.get("mp_peg_release_level"), values.get("mp_peg_release_time")), "m4r7");
 
 		JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
+		tabs.setFont(SMALL_FONT);
 		XGFrame tab = new XGFrame(null, 3 * GRID, 4 * GRID);
 		tab.add(new XGKnob(values.get("mp_mw_pitch")), "b0b0");
 		tab.add(new XGKnob(values.get("mp_mw_lpf")), "c0c0");

@@ -10,7 +10,7 @@ public class XGDrumNames
 		{	XMLNode n = XMLNode.parse(JXG.getResourceStream(XMLPATH + XML_DRUMS));
 			for(XMLNode k : n.getChildNodes(TAG_KEY))
 			{	int key = k.getValueAttribute(ATTR_VALUE, -1);
-				XGRealTable t = DRUMNAMES.getOrDefault(key, new XGRealTable(Integer.toString(key), "", FALLBACKMASK));
+				XGRealTable t = DRUMNAMES.getOrDefault(key, new XGRealTable(Integer.toString(key), "", FALLBACKMASK, false));
 				for(XMLNode i : k.getChildNodes(TAG_ITEM))
 				{	t.add(new XGTableEntry(i.getValueAttribute(ATTR_SELECTORVALUE, -1), i.getStringAttribute(ATTR_NAME)));
 					DRUMNAMES.putIfAbsent(key, t);

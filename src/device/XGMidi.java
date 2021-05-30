@@ -24,9 +24,10 @@ import static value.XGValueStore.STORE;
 import xml.*;
 
 public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable, XMLNodeConstants
-{	private static final int DEF_TIMEOUT = 100;
+{	private static final int DEF_TIMEOUT = 300;
 	private static XGMidi MIDI = null;
 	private static XMLNode config = null;
+	private static final Object Lock = new Object();
 
 	public static XGMidi getMidi()
 	{	if(MIDI == null) XGMidi.init();
@@ -42,10 +43,10 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	public static Set<Info> OUTPUTS = new LinkedHashSet<>();
 
 	static
-	{	synchronized(INPUTS)
+	{	synchronized(Lock)
 		{	initInputs();
 		}
-		synchronized(OUTPUTS)
+		synchronized(Lock)
 		{	initOutputs();
 		}
 	}
@@ -89,37 +90,6 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	}
 
 /******************************************************************************************************************/
-
-	//public final ChangeableContent<Info> input = new ChangeableContent<Info>()
-	//	{	@Override public Info getContent()
-	//		{	if(getInput() != null) return getInput().getDeviceInfo();
-	//			else return null;
-	//		}
-	//		@Override public boolean setContent(Info s)
-	//		{	setInput(s);
-	//			return true;
-	//		}
-	//	};
-	//public final ChangeableContent<Info> output = new ChangeableContent<Info>()
-	//	{	@Override public Info getContent()
-	//		{	if(getOutput() != null) return getOutput().getDeviceInfo();
-	//			else return null;
-	//		}
-	//		@Override public boolean setContent(Info s)
-	//		{	setOutput(s);
-	//			return true;
-	//		}
-	//	};
-	//public final ChangeableContent<Integer> timeout = new ChangeableContent<Integer>()
-	//	{	@Override public Integer getContent()
-	//		{	return timeoutValue;
-	//		}
-	//		@Override public boolean setContent(Integer s)
-	//		{	int old = getContent();
-	//			setTimeout(s);
-	//			return old != getContent();
-	//		}
-	//	};
 
 	private Receiver transmitter;
 	private MidiDevice midiOutput = null;

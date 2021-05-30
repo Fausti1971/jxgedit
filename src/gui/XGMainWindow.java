@@ -108,6 +108,7 @@ public class XGMainWindow extends XGWindow implements ComponentListener
 
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.1, 0.1, GridBagConstraints.WEST, GridBagConstraints.BOTH, new Insets(2,2,2,2), 2, 2);
 		JButton mb = new JButton("<html><center><b>" + "Master" + "</b></center></html>");
+		mb.setFont(MEDIUM_FONT);
 		mb.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(master).setVisible(true);});
 		sysPane.add(mb, gbc);
 
@@ -132,6 +133,7 @@ public class XGMainWindow extends XGWindow implements ComponentListener
 		sysPane.add(eb, gbc);
 
 		JTabbedPane tabPane = new JTabbedPane();
+		tabPane.setFont(MEDIUM_FONT);
 		java.util.Set<String> adr = new java.util.LinkedHashSet<>();
 		adr.add("mp");
 		adr.add("ad");
@@ -139,8 +141,7 @@ public class XGMainWindow extends XGWindow implements ComponentListener
 		adr.add("plugin");
 		for(XGModuleType mt : TYPES) if(mt instanceof XGDrumsetModuleType) adr.add(mt.getTag());
 		for(String s : adr)
-		{	XGModuleType t = null;
-			t = TYPES.get(s);
+		{	XGModuleType t = TYPES.get(s);
 			if(t != null) tabPane.addTab(t.getName(), new JScrollPane(new XGModuleTable(t)));//TODO: hier müssen evtl. (?) noch die unbenutzten Drumsets ausgeblendet werden;
 		}
 

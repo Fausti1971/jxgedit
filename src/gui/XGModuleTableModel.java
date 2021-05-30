@@ -1,6 +1,6 @@
 package gui;
 
-import adress.*;import static application.XGLoggable.LOG;import module.*;import parm.*;import tag.*;import value.*;import xml.*;import javax.swing.event.*;import javax.swing.table.*;import java.util.*;
+import adress.*;import static application.XGLoggable.LOG;import module.*;import parm.*;import tag.*;import value.*;import xml.*;import javax.swing.*;import javax.swing.event.*;import javax.swing.table.*;import java.util.*;
 
 public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 {
@@ -13,16 +13,15 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 	{	this.type = t;
 		this.rows = new Vector<>(this.type.getModules());
 		this.cols = new Vector<>(this.type.getInfoOpcodes());
-		this.cols.add(0, null);
+		this.cols.add(0, "id");
 	}
 
-	public java.util.Vector<module.XGModule> getRows()
+	public Vector<XGModule> getRows()
 	{	return this.rows;
 	}
 
 	private int getColumn(String tag)
-	{	for(int i = 1; i < this.cols.size(); i++)
-			if(this.cols.get(i).equals(tag)) return i;
+	{	for(String s : this.cols) if(s.equals(tag)) return this.cols.indexOf(s);
 		return -1;
 	}
 
@@ -40,7 +39,8 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 	}
 
 	public Class<?> getColumnClass(int i)
-	{	return XGOpcode.class;
+	{	if(i == 0) return XGModule.class;
+		return XGValue.class;
 	}
 
 	public boolean isCellEditable(int r,int c)
@@ -48,7 +48,7 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 	}
 
 	public Object getValueAt(int r,int c)
-	{	if(c == 0) return this.rows.get(r).toString();
+	{	if(c == 0) return this.rows.get(r);
 		String s = this.cols.get(c);
 		XGValue v = this.rows.get(r).getValues().get(s);
 		v.getValueListeners().add(this);
@@ -73,7 +73,7 @@ public class XGModuleTableModel  implements TableModel, XGValueChangeListener
 		try
 		{	col = this.getColumn(v.getTag());
 			row = v.getAddress().getMid().getValue();
-			if(col != 0)
+			if(col > 0)
 			{	TableModelEvent e = new TableModelEvent(this, row, row, col, TableModelEvent.UPDATE);
 				for(TableModelListener l : this.listeners) l.tableChanged(e);
 			}

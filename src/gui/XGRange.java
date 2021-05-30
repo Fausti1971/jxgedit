@@ -170,7 +170,7 @@ public class XGRange extends JPanel implements XGParameterConstants, XGValueChan
 			this.loParameter = this.loValue.getParameter();
 			this.hiParameter = this.hiValue.getParameter();
 // draw background
-			this.g2.setColor(new XGColor(this.getBackground()).brighter());
+			this.g2.setColor(this.getBackground().brighter());
 			this.g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 // draw foreground
 			this.loX = XGMath.linearIO(this.loValue.getIndex(), this.loParameter.getMinIndex(), this.loParameter.getMaxIndex(), 0, this.getWidth());

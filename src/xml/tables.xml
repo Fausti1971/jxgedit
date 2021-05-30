@@ -20,7 +20,7 @@
 		<item value="16" name="16"/>
 		<item value="17" name="17"/>
 		<item value="18" name="18"/>
-		<item value="19" name="29"/>
+		<item value="19" name="19"/>
 		<item value="20" name="20"/>
 		<item value="21" name="21"/>
 		<item value="22" name="22"/>
@@ -579,12 +579,14 @@
 		<item value="20" name="Resonant"/>
 		<item value="21" name="LFO - Cutoff Freq"/>
 		<item value="22" name="Vel - Cutoff Freq"/>
+
 		<item value="24" name="Attack Transient"/>
 		<item value="25" name="Release Transient"/>
 		<item value="26" name="Sweep"/>
 		<item value="27" name="Rezo Sweep"/>
 		<item value="28" name="Muted"/>
 		<item value="29" name="Complex - FEG"/>
+
 		<item value="32" name="Detune"/>
 		<item value="33" name="Detune"/>
 		<item value="34" name="Detune"/>
@@ -602,9 +604,11 @@
 		<item value="46" name="Velocity X-fade"/>
 		<item value="47" name="Breathy WW"/>
 		<item value="48" name="Detune"/>
+
 		<item value="52" name="Tutti"/>
 		<item value="53" name="Tutti"/>
 		<item value="54" name="Tutti"/>
+
 		<item value="64" name="Other Waves"/>
 		<item value="65" name="Other Waves"/>
 		<item value="66" name="Other Waves"/>
@@ -631,7 +635,7 @@
 		<item value="87" name="Other Waves"/>
 		<item value="88" name="Other Waves"/>
 		<item value="89" name="Other Waves"/>
-		<item value="80" name="Other Waves"/>
+		<item value="90" name="Other Waves"/>
 		<item value="91" name="Other Waves"/>
 		<item value="92" name="Other Waves"/>
 		<item value="93" name="Other Waves"/>
@@ -2249,7 +2253,7 @@
 		<item value="101.0" name="Compressor + Distortion + Tempo Delay" tableFilter="variation,insertion" categories="Compressor,Distortion,Delay,Tempo"/>
 		<item value="101.1" name="Compressor + Overdrive + Tempo Delay" tableFilter="variation,insertion" categories="Compressor,Distortion,Delay,Tempo"/>
 		<item value="102.0" name="Wah + Distortion + Tempo Delay" tableFilter="variation,insertion" categories="Wah,Distortion,Delay,Tempo"/>
-		<item value="102.0" name="Wah + Overdrive + Tempo Delay" tableFilter="variation,insertion" categories="Wah,Distortion,Delay,Tempo"/>
+		<item value="102.1" name="Wah + Overdrive + Tempo Delay" tableFilter="variation,insertion" categories="Wah,Distortion,Delay,Tempo"/>
 		<item value="103.0" name="V Distortion Hard + Tempo Delay" tableFilter="variation,insertion" categories="Distortion,Delay,Tempo"/>
 		<item value="103.1" name="V Distortion Soft + Tempo Delay" tableFilter="variation,insertion" categories="Distortion,Delay,Tempo"/>
 		<item value="104.0" name="V Flanger" tableFilter="variation,insertion" categories="Flanger"/>

@@ -26,6 +26,7 @@ public class XGCheckbox extends JCheckBox implements XGComponent, XGParameterCha
 		}
 		if(this.value.getOpcode().isMutable()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
+		this.setFont(MEDIUM_FONT);
 		this.addActionListener((ActionEvent e)->{this.value.toggleIndex();});
 		this.parameterChanged(this.value.getParameter());
 		this.contentChanged(this.value);

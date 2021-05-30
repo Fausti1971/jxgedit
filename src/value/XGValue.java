@@ -1,5 +1,5 @@
 package value;
-import java.util.LinkedHashSet;import java.util.Set;
+import java.util.Comparator;import java.util.LinkedHashSet;import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
@@ -24,7 +24,7 @@ import tag.*;import static value.XGValueStore.STORE;
  * @author thomas
  *
  */
-public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAddressable, XGValueChangeListener, XGLoggable, XGCategorizeable, XGTagable
+public class XGValue implements XGParameterConstants, XGAddressable, Comparable<XGValue>, XGValueChangeListener, XGLoggable, XGCategorizeable, XGTagable
 {
 	private static final XGValue DEF_DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
 	private static int count = 0;
@@ -350,7 +350,7 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	}
 
 	@Override public int compareTo(XGValue o)
-	{	return this.address.compareTo(o.address);
+	{	return this.index.compareTo(o.index);
 	}
 
 	@Override public void contentChanged(XGValue v)
@@ -364,4 +364,8 @@ public class XGValue implements XGParameterConstants, Comparable<XGValue>, XGAdd
 	public String getTag()
 	{	return this.opcode.getTag();
 	}
+
+	//@Override public int compare(XGValue value,XGValue t1)
+	//{	return value.compareTo(t1);
+	//}
 }

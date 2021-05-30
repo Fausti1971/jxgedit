@@ -81,6 +81,7 @@ public class XGRadio extends JPanel implements XGValueChangeListener, XGParamete
 
 		XGRadioButton(XGValue v, XGTableEntry e)
 		{	super(e.getName());
+			this.setFont(MEDIUM_FONT);
 			this.setRolloverEnabled(true);
 			this.setToolTipText(e.toString());
 			this.entry = e;
