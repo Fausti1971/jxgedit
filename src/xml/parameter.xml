@@ -1504,11 +1504,11 @@
 	</parameterTable>
 
 	<parameterTable name="mp_partmode">
-		<parameter selectorValue="0" name="Voice/SFX" shortName="Voice" min="0" max="64.127.127" table="xg_voices"/>
-		<parameter selectorValue="1" name="Drum-/SFX-Kit" shortName="Kit" min="126.0.0" table="xg_kits"/>
-		<parameter selectorValue="2" name="Drum-/SFX-Kit" shortName="Kit" min="126.0.0" table="xg_kits"/>
-		<parameter selectorValue="3" name="Drum-/SFX-Kit" shortName="Kit" min="126.0.0" table="xg_kits"/>
-		<parameter selectorValue="4" name="Drum-/SFX-Kit" shortName="Kit" min="126.0.0" table="xg_kits"/>
-		<parameter selectorValue="5" name="Drum-/SFX-Kit" shortName="Kit" min="126.0.0" table="xg_kits"/>
+		<parameter selectorValue="0" name="Voice/SFX" shortName="Voice" table="xg_voices"/>
+		<parameter selectorValue="1" name="Drum-/SFX-Kit" shortName="Kit" table="xg_kits"/>
+		<parameter selectorValue="2" name="Drum-/SFX-Kit" shortName="Kit" table="xg_kits"/>
+		<parameter selectorValue="3" name="Drum-/SFX-Kit" shortName="Kit" table="xg_kits"/>
+		<parameter selectorValue="4" name="Drum-/SFX-Kit" shortName="Kit" table="xg_kits"/>
+		<parameter selectorValue="5" name="Drum-/SFX-Kit" shortName="Kit" table="xg_kits"/>
 	</parameterTable>
 </parameterTables>

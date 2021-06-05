@@ -21,15 +21,16 @@ public class XGDrumsetModuleType extends XGModuleType
 		this.tag += this.partmode - 1;
 		this.name.append(" ").append(this.partmode - 1);
 		((XGRealTable)parm.XGTable.TABLES.get(TABLE_PARTMODE)).add(new XGTableEntry(this.partmode, this.name.toString()));
-		this.idTranslator = new XGVirtualTable(this.partmode, this.partmode, this.tag, (Integer i)->this.getDrumname(i), (String s)->0);
+		this.idTranslator = new XGVirtualTable(this.partmode, this.partmode, this.tag, this::getDrumname, (String s)->13);
 		this.programListener = new XGDrumsetProgramValue(this);
 		DRUMSETS.put(this.partmode, this);
 	}
 
 	public String getDrumname(int key)
 	{	XGRealTable t = XGDrumNames.DRUMNAMES.get(key);
-		if(t != null) return t.getByValue(this.program).getName();
-		else return "No Sound";
+		String s = "No Sound";
+		if(t != null && t.getByValue(this.program) != null) s = t.getByValue(this.program).getName();
+		return s;
 	}
 
 	public int getPartmode()
@@ -37,7 +38,8 @@ public class XGDrumsetModuleType extends XGModuleType
 	}
 
 	public XGDrumsetProgramValue getProgramListener()
-	{	return this.programListener;
+	{	//System.out.println(this + " programListeners: " + this.programListener.getValueListeners().size());
+		return this.programListener;
 	}
 
 	public int getProgram()

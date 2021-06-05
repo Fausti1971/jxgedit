@@ -35,7 +35,7 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 			this.label = null;
 			return;
 		}
-		if(this.value.getOpcode().isMutable()) this.value.getValueListeners().add(this);
+		if(this.value.getOpcode().isMutable()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
 
 		this.setLayout(new GridBagLayout());
@@ -165,18 +165,23 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 	}
 	public void focusGained(FocusEvent event)
 	{
-	}public void focusLost(FocusEvent event)
+	}
+	public void focusLost(FocusEvent event)
 	{
 	}
 	public void mouseClicked(MouseEvent event)
 	{
-	}public void mousePressed(MouseEvent event)
+	}
+	public void mousePressed(MouseEvent event)
 	{
-	}public void mouseReleased(MouseEvent event)
+	}
+	public void mouseReleased(MouseEvent event)
 	{
-	}public void mouseEntered(MouseEvent event)
+	}
+	public void mouseEntered(MouseEvent event)
 	{
-	}public void mouseExited(MouseEvent event)
+	}
+	public void mouseExited(MouseEvent event)
 	{
 	}
 }

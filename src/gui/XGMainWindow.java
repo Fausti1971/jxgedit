@@ -1,22 +1,23 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.*;import java.beans.PropertyChangeEvent;
 import javax.swing.*;
 import application.*;
 import static application.JXG.*;
-import device.*;
+import config.Configurable;import device.*;
 import static java.awt.BorderLayout.*;
 import module.*;
 import static module.XGModuleType.TYPES;
 import static value.XGValueStore.STORE;
 import xml.*;
 
-public class XGMainWindow extends XGWindow implements ComponentListener
+public class XGMainWindow extends XGWindow implements ComponentListener, Configurable
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
+	int MIN_W = 300, MIN_H = 400, MIN_X = 20, MIN_Y = 20;
 
 	private static XMLNode config = null;
 	public static XGMainWindow window = null;
@@ -31,18 +32,19 @@ public class XGMainWindow extends XGWindow implements ComponentListener
 	private final XGStatusBar status = new XGStatusBar();
 
 	public XGMainWindow()
-	{	super(null, APPNAME + " - " + XGDevice.getDevice());
+	{	super(null, JXG.APPNAME + " - " + XGDevice.getDevice());
 		this.setJMenuBar(this.createMenu());
 		this.setContentPane(this.createContent());
 
 		this.addComponentListener(this);
 
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
-		this.setBounds(
-			config.getIntegerAttribute(ATTR_X, MIN_X),
+		this.setBounds
+		(	config.getIntegerAttribute(ATTR_X, MIN_X),
 			config.getIntegerAttribute(ATTR_Y, MIN_Y),
 			config.getIntegerAttribute(ATTR_W, MIN_W),
-			config.getIntegerAttribute(ATTR_H, MIN_H));
+			config.getIntegerAttribute(ATTR_H, MIN_H)
+		);
 //		this.pack();
 		this.setVisible(true);
 	}
@@ -74,7 +76,7 @@ public class XGMainWindow extends XGWindow implements ComponentListener
 		file.addSeparator();
 
 		JMenuItem quit = new JMenuItem("Quit");
-		quit.addActionListener((ActioEvent)->{quit();});
+		quit.addActionListener((ActioEvent)->{JXG.quit();});
 		file.add(quit);
 
 		bar.add(file);
@@ -157,13 +159,15 @@ public class XGMainWindow extends XGWindow implements ComponentListener
 	}
 
 	@Override public void componentResized(ComponentEvent e)
-	{	config.setIntegerAttribute(ATTR_W, e.getComponent().getWidth());
-		config.setIntegerAttribute(ATTR_H, e.getComponent().getHeight());
+	{	Component c = e.getComponent();
+		config.setIntegerAttribute(ATTR_W, c.getWidth());
+		config.setIntegerAttribute(ATTR_H, c.getHeight());
 	}
 
 	@Override public void componentMoved(ComponentEvent e)
-	{	config.setIntegerAttribute(ATTR_X, e.getComponent().getX());
-		config.setIntegerAttribute(ATTR_Y, e.getComponent().getY());
+	{	Component c = e.getComponent();
+		config.setIntegerAttribute(ATTR_X, c.getX());
+		config.setIntegerAttribute(ATTR_Y, c.getY());
 	}
 
 	@Override public void componentShown(ComponentEvent e)
@@ -171,6 +175,14 @@ public class XGMainWindow extends XGWindow implements ComponentListener
 	}
 
 	@Override public void componentHidden(ComponentEvent e)
+	{
+	}
+
+	@Override public XMLNode getConfig()
+	{	return null;
+	}
+
+	public void configurationChanged(XMLNode node)
 	{
 	}
 }

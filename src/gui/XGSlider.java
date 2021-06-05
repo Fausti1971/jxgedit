@@ -18,7 +18,7 @@ import value.XGValue;
 import value.XGValueChangeListener;
 import static value.XGValueStore.STORE;import xml.XMLNode;
 
-public class XGSlider extends JPanel implements KeyListener, XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener
+public class XGSlider extends JPanel implements XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener, XGComponent
 {	/**
 	 * 
 	 */
@@ -26,20 +26,24 @@ public class XGSlider extends JPanel implements KeyListener, XGParameterConstant
 
 /*****************************************************************************************************************************/
 
-	private final XGAddress address;
 	private final XGValue value;
 	private final XGSliderBar bar;
 	private final XGValueLabel label;
 
-	public XGSlider(XMLNode n, XGModule mod) throws XGMemberNotFoundException
-	{
-		this.setLayout(new GridBagLayout());
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS), mod.getAddress());
-		this.value = STORE.getFirstIncluded(this.address);
-
-		if(this.isEnabled())
-		{	this.setToolTipText(null);
-			this.setFocusable(true);
+	public XGSlider(XGValue v)
+	{	this.value = v;
+		if(v == null)
+		{	this.setEnabled(false);
+			this.setVisible(false);
+			this.setToolTipText(null);
+			this.bar = null;
+			this.label = null;
+			return;
+		}
+		if(this.value.getParameter() != null)
+		{	this.setEnabled(true);
+			this.setVisible(true);
+			this.borderize();
 		}
 //		this.setName(this.value.getParameter().getShortName());
 		this.addMouseListener(this);
@@ -55,24 +59,10 @@ public class XGSlider extends JPanel implements KeyListener, XGParameterConstant
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.SOUTH;
 		this.add(this.label, gbc);
-
-//		this.logInitSuccess();
-	}
-
-	@Override public void paint(Graphics g)
-	{	if(this.isEnabled()) super.paint(g);
 	}
 
 	@Override public String getName()
 	{	return this.value.getParameter().getShortName();
-	}
-
-	@Override public String getToolTipText()
-		{	return this.value.getParameter().getName();
-		}
-
-	@Override public boolean isEnabled()
-	{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
 	}
 
 	@Override public void contentChanged(XGValue v)
@@ -80,17 +70,6 @@ public class XGSlider extends JPanel implements KeyListener, XGParameterConstant
 		this.label.setText(v.toString());
 	}
 
-	@Override public void keyTyped(KeyEvent e)
-	{
-	}
-
-	@Override public void keyPressed(KeyEvent e)
-	{
-	}
-
-	@Override public void keyReleased(KeyEvent e)
-	{
-	}
 
 	private class XGSliderBar extends JComponent implements XGValueChangeListener, MouseMotionListener, MouseWheelListener, MouseListener
 	{	/**
@@ -107,9 +86,7 @@ public class XGSlider extends JPanel implements KeyListener, XGParameterConstant
 //		private Cursor lastCursor;
 
 		private XGSliderBar(XGValue v)
-		{	//super();
-			//this.setBorder(null);	buggy: getX() liefert IMMER inset.left; getY() IMMER inset.top; (5, 15)! Bug?; deshalb beim malen diese koordinaten ignorieren...
-			this.value = v;
+		{	this.value = v;
 			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			this.value.getValueListeners().add(this);
 			this.addMouseListener(this);
@@ -133,7 +110,7 @@ public class XGSlider extends JPanel implements KeyListener, XGParameterConstant
 			this.originWidth = XGMath.linearIO(this.parameter.getOriginIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth());
 			this.barWidth = XGMath.linearIO(this.value.getIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, this.getWidth()) - this.originWidth;
 			this.g2.setColor(COL_BAR_FORE);
-			this.g2.fillRoundRect(0 + Math.min(this.originWidth, this.originWidth + this.barWidth), 0, Math.abs(this.barWidth), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
+			this.g2.fillRoundRect(Math.min(this.originWidth, this.originWidth + this.barWidth), 0, Math.abs(this.barWidth), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			this.g2.dispose();
 		}
 

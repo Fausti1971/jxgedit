@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import application.*;
-import static application.ConfigurationConstants.XMLPATH;import tag.*;
+import static application.JXG.XMLPATH;import tag.*;
 import xml.XGProperties;import xml.XMLNode;
 /**
  * simple taggable HashMap<Integer, HashMap<Integer, Integer>>, deren erster int der Wert des Selektors, der zweite int der Wert des zugehörigen Defaults ist
@@ -13,7 +13,7 @@ import xml.XGProperties;import xml.XMLNode;
  */
 public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTagable
 {
-	public static final int DEF_DRUMSETPROGRAM = 127 << 14;
+	public static final int DEF_DRUMSETPROGRAM = XGStrings.parseValue("127.0.0", 127 << 14);
 	public static final int NO_ID = DEF_SELECTORVALUE;
 	public static final XGTagableSet<XGDefaultsTable> DEFAULTSTABLE = new XGTagableSet<>();
 
@@ -36,20 +36,28 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 			}
 		);
 
-		DEFAULTSTABLE.add(new XGDefaultsTable("mp_partmode")
+		DEFAULTSTABLE.add(new XGDefaultsTable(TABLE_PARTMODE)
 			{	@Override public int get(int id, int sel)
-				{	if(id == 9) return 2;
-					if(id == 25) return 4;
-					if(id == 41 || id == 57) return(1);
-					return 0;
+				{	switch(id)
+					{	case 9:		return 2;
+						case 25:	return 4;
+						case 41:
+						case 57:	return 1;
+						default:	return 0;
+					}
 				}
 			}
 		);
 
 		DEFAULTSTABLE.add(new XGDefaultsTable("mp_program")
 			{	@Override public int get(int id, int sel)
-				{	if(id == 9 || id == 25 || id == 41 || id == 57) return DEF_DRUMSETPROGRAM;
-					return 0;
+				{	switch(id)
+					{	case 9:
+						case 25:
+						case 41:
+						case 57:	return DEF_DRUMSETPROGRAM;
+						default:	return 0;
+					}
 				}
 			}
 		);

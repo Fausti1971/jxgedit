@@ -1,6 +1,8 @@
 package gui;
 
-import javax.swing.*;public abstract class XGEditWindow extends gui.XGWindow implements adress.XGAddressable
+import adress.XGAddressable;import javax.swing.*;
+
+public abstract class XGEditWindow extends XGWindow implements XGAddressable
 {
 	protected static final int GAP = 0;
 	static final adress.XGAddressableSet<XGEditWindow> EDITWINDOWS = new adress.XGAddressableSet<>();
@@ -35,7 +37,7 @@ import javax.swing.*;public abstract class XGEditWindow extends gui.XGWindow imp
 				case "ds13":
 				case "ds14":
 				case "ds15":
-				case "ds16":		win = new XGDrumEditWindow(mod); break;
+				case "ds16":	win = new XGDrumEditWindow(mod); break;
 				default:		return win;
 			}
 			EDITWINDOWS.add(win);
@@ -50,7 +52,7 @@ import javax.swing.*;public abstract class XGEditWindow extends gui.XGWindow imp
 	final module.XGModule module;
 
 	public XGEditWindow(XGWindow own, module.XGModule mod, String name)
-	{	super(own, name);
+	{	super(own, own.getTitle() + " - " + name);
 		this.setResizable(false);
 		this.module = mod;
 	}

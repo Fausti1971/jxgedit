@@ -1,5 +1,5 @@
 package parm;
-import static application.ConfigurationConstants.XMLPATH;import application.JXG;import static application.XGLoggable.LOG;import application.XGStrings;import xml.XMLNode;import static xml.XMLNodeConstants.*;import java.io.IOException;import java.util.HashMap;import java.util.Map;
+import static application.JXG.XMLPATH;import application.JXG;import static application.XGLoggable.LOG;import xml.XMLNode;import static xml.XMLNodeConstants.*;import java.io.IOException;import java.util.HashMap;import java.util.Map;
 
 public class XGDrumNames
 {	public static Map<Integer, XGRealTable> DRUMNAMES = new HashMap<>();//key, prg, name

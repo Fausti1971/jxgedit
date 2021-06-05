@@ -37,7 +37,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	private Integer index = 0, oldIndex = 0;
 	private final XGAddress address;
 	private final XGOpcode opcode;
-	private final module.XGModule module;
+	private final XGModule module;
 	private XGValue parameterSelector = null, defaultSelector = null;
 	private final XGParameterTable parameters;
 	private final XGDefaultsTable defaults;
@@ -66,7 +66,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 			if(this.parameters == null) throw new RuntimeException(ATTR_PARAMETERS + opc.getParameterTableName() + " not found for value " + this.getTag());
 		}
 		else
-		{	this.parameters = new XGParameterTable();
+		{	this.parameters = new XGParameterTable(this.getTag());
 			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getConfig()));
 		}
 
@@ -83,8 +83,6 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 
 	public void initDepencies() throws InvalidXGAddressException
 	{
-	//	if("mp_program".equals(this.opcode.getTag())) this.valueListeners.add(XGProgramBuffer::changeProgram);
-	//	if("mp_partmode".equals(this.opcode.getTag())) this.valueListeners.add(XGProgramBuffer::changePartmode);
 		if("mp_program".equals(this.opcode.getTag())) this.opcode.getActions().add(change_program);
 		if("mp_partmode".equals(this.opcode.getTag())) this.opcode.getActions().add(change_partmode);
 

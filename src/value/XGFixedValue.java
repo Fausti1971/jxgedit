@@ -27,7 +27,10 @@ public class XGFixedValue extends XGValue
 	}
 
 	@Override public void editIndex(int i)
-	{	throw new RuntimeException("Trying to edit FixedValue " + this.getTag() + " to " + i);
+	{	//throw new RuntimeException("Trying to edit FixedValue " + this.getTag() + " to " + i);
 	}
 
+	public String getTag()
+	{	return "fix";
+	}
 }

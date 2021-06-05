@@ -2,11 +2,10 @@ package parm;
 
 import java.util.HashSet;
 import java.util.Set;
-import application.ConfigurationConstants;
 import application.XGStrings;
-import xml.XMLNode;
+import xml.XMLNode;import static xml.XMLNodeConstants.*;
 
-public class XGTableEntry implements ConfigurationConstants, Comparable<XGTableEntry>
+public class XGTableEntry implements Comparable<XGTableEntry>
 {
 
 /**********************************************************************************************************/

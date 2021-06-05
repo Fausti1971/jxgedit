@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
@@ -14,15 +13,14 @@ import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalTheme;
 import javax.swing.plaf.metal.OceanTheme;
 import application.*;
-import xml.XMLNode;
+import static xml.XMLNodeConstants.ATTR_LOOKANDFEEL;
 
-public interface XGUI extends ConfigurationConstants, XGLoggable
+public interface XGUI extends XGLoggable
 {
 	class Globals
 	{	public MouseEvent dragEvent = null;
-		public Cursor lastCursor = null;
 		public boolean mousePressed = false;
-		public XMLNode config = null;
+//		public XMLNode config = null;
 	}
 	Globals VARIABLES = new Globals();
 
@@ -31,17 +29,17 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 	RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	GridBagConstraints DEF_GBC = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
 
-	String
-		LAF_SYSTEM = UIManager.getSystemLookAndFeelClassName(),
-		LAF_CROSS = UIManager.getCrossPlatformLookAndFeelClassName(),
-		LAF_MOTIF = "com.sun.java.swing.plaf.motif.MotifLookAndFeel",
-		LAF_NIMBUS = "javax.swing.plaf.nimbus.NimbusLookAndFeel",
-		LAF_GTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel",
-		LAF_METAL = "javax.swing.plaf.metal.MetalLookAndFeel";
-
-	MetalTheme
-		LAF_METAL_DEFAULT = new DefaultMetalTheme(),
-		LAF_METAL_OCEAN = new OceanTheme();
+	//String
+	//	LAF_SYSTEM = UIManager.getSystemLookAndFeelClassName(),
+	//	LAF_CROSS = UIManager.getCrossPlatformLookAndFeelClassName(),
+	//	LAF_MOTIF = "com.sun.java.swing.plaf.motif.MotifLookAndFeel",
+	//	LAF_NIMBUS = "javax.swing.plaf.nimbus.NimbusLookAndFeel",
+	//	LAF_GTK = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel",
+	//	LAF_METAL = "javax.swing.plaf.metal.MetalLookAndFeel";
+	//
+	//MetalTheme
+	//	LAF_METAL_DEFAULT = new DefaultMetalTheme(),
+	//	LAF_METAL_OCEAN = new OceanTheme();
 //		LAF_METAL_TEST = new TestTheme();
 
 	static java.awt.Image loadImage(String name)
@@ -59,7 +57,7 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 		{	if(s.equals(name))
 			{	try
 				{	UIManager.setLookAndFeel(LOOKANDFEELS.get(s));
-					VARIABLES.config.setStringAttribute(ATTR_LOOKANDFEEL, name);
+					JXG.config.setStringAttribute(ATTR_LOOKANDFEEL, name);
 					LOG.info(name);
 					if(XGMainWindow.window != null) XGMainWindow.window.updateUI();
 				}
@@ -72,13 +70,13 @@ public interface XGUI extends ConfigurationConstants, XGLoggable
 	}
 
 	static void init()
-	{	VARIABLES.config = JXG.config.getChildNodeOrNew(TAG_UI);
+	{	JDialog.setDefaultLookAndFeelDecorated(true);
 
 //		LOOKANDFEELS.put("System", UIManager.getSystemLookAndFeelClassName());
 //		LOOKANDFEELS.put("Crossplatform", UIManager.getCrossPlatformLookAndFeelClassName());
 		for(LookAndFeelInfo i : UIManager.getInstalledLookAndFeels()) LOOKANDFEELS.put(i.getName(), i.getClassName());
 
-		XGUI.setLookAndFeel(VARIABLES.config.getStringAttribute(ATTR_LOOKANDFEEL));
+		XGUI.setLookAndFeel(JXG.config.getStringAttribute(ATTR_LOOKANDFEEL));
 	}
 
 		

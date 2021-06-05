@@ -21,7 +21,7 @@ import device.XGDevice;
 import device.XGMidi;
 import module.XGModule;
 import static parm.XGTable.TABLES;import value.XGValue;
-import static value.XGValueStore.STORE;import xml.XMLNode;
+import static value.XGValueStore.STORE;import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_NAME;
 
 public class XGKeyboard extends XGFrame implements XGUI
 {

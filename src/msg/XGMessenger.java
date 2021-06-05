@@ -1,7 +1,6 @@
 package msg;
 
 import adress.InvalidXGAddressException;
-import device.TimeoutException;
 import device.XGDevice;
 
 /**

@@ -19,12 +19,11 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.stream.StreamSource;
-import application.ConfigurationConstants;
 import application.XGLoggable;
 import application.XGStrings;
-import tag.XGTagable;
+import tag.XGTagable;import static xml.XMLNodeConstants.ATTR_NAME;
 
-public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, XGStrings
+public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 {
 	private static final String ERRORSTRING = " contains invalid character";
 
@@ -141,12 +140,6 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 		return null;
 	}
 
-	public XMLNode getChildNodeWithName(String tag, String name)
-	{	for(XMLNode x : this.getChildNodes(tag))
-			if(name.equals(x.getStringAttribute(ATTR_NAME)))
-				return x;
-		return null;
-	}
 /**
  * liefert ein Set von (ausschließlich direkten) Kindern mit zutreffendem Tag
  * @param tag	zu findender Tag
@@ -193,54 +186,12 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	{	return this.content;
 	}
 
-	public final StringBuffer getChildNodeTextContent(String tag, String def)
-	{	XMLNode n = this.getChildNode(tag);
-		if(n == null) return new StringBuffer(def);
-		return n.content;
-	}
-
-	public int parseChildNodeIntegerContent(String tag, int def)
-	{	XMLNode n = this.getChildNode(tag);
-		if(n == null) return def;
-		return XGStrings.parseIntOrDefault(n.content.toString(), def);
-	}
-
-	public int parseChildNodeIntegerContentOrNew(String tag, int def)
-	{	XMLNode n = this.getChildNode(tag);
-		if(n == null)
-		{	n = new XMLNode(tag);
-			n.setTextContent(def);
-			this.addChildNode(n);
-		}
-		return XGStrings.parseIntOrDefault(n.content.toString(), def);
-	}
-
 	public final XGProperties getAttributes()
 	{	return this.attributes;
 	}
 
 	public boolean hasAttribute(String name)
 	{	return this.attributes.containsKey(name);
-	}
-
-	public List<XMLNode> getParents()
-	{	List<XMLNode> set = new ArrayList<>();
-		XMLNode x = this;
-		while(x != null)
-		{	set.add(0, x);
-			x = x.parent;
-		}
-		return set;
-	}
-
-	public List<XMLNode> getParents(String tag)
-	{	List<XMLNode> set = new ArrayList<>();
-		XMLNode x = this;
-		while(x != null && x.tag.equals(tag))
-		{	set.add(0, x);
-			x = x.parent;
-		}
-		return set;
 	}
 
 /**
@@ -288,10 +239,6 @@ public class XMLNode implements XGTagable, ConfigurationConstants, XGLoggable, X
 	{	StringBuffer s = this.attributes.get(a);
 		if(s == null) return def;
 		return Integer.parseInt(s.toString());
-	}
-
-	public final int getIntegerAttribute(String a) throws NumberFormatException
-	{	return Integer.parseInt(this.attributes.get(a).toString());
 	}
 
 	public void setIntegerAttribute(String attr, final int t)

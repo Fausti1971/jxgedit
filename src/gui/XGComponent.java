@@ -1,7 +1,6 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
@@ -10,15 +9,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
-import adress.InvalidXGAddressException;
 import adress.XGAddressConstants;
-import adress.XGMemberNotFoundException;
-import application.Configurable;
 import application.XGLoggable;
-import module.XGModule;
-import xml.XMLNode;
 
 public interface XGComponent extends XGAddressConstants, XGUI, MouseListener, FocusListener, XGLoggable
 {

@@ -36,6 +36,10 @@ public class XGVirtualTable implements XGTable
 			(Integer i)->{float f = (i.floatValue() - 128) / 10; return Float.toString(f);},
 			(String s)->{float f = Float.parseFloat(s) * 10 + 128; return (int)f;}));
 
+		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_SUB8k,
+			(Integer i)->{return Integer.toString(i - 0x2040);},
+			(String s)->{return Integer.parseInt(s) + 0x2040;}));
+
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_PANORAMA,
 			(Integer i)->
 			{	if(i == 0) return "Rnd";

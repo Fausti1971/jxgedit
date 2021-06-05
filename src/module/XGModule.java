@@ -8,7 +8,7 @@ import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.*;
-import msg.XGBulkDumper;
+import static module.XGModuleType.TYPES;import msg.XGBulkDumper;
 import static parm.XGParameterConstants.TABLE_FX_PARTS;
 import static parm.XGTable.TABLES;
 import parm.XGTableEntry;
@@ -28,6 +28,21 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 		ACTIONS.add(ACTION_LOADFILE);
 		ACTIONS.add(ACTION_SAVEFILE);
 		ACTIONS.add(ACTION_RESET);
+	}
+
+	public static void init()
+	{	for(XGModuleType mt : TYPES)
+		{	for(int id : mt.getAddress().getMid())
+			{	try
+				{	XGModule mod = new XGModule(mt, id);
+					mt.getModules().add(mod);
+				}
+				catch(InvalidXGAddressException e)
+				{	LOG.warning(e.getMessage());
+				}
+			}
+			LOG.info(mt.getModules().size() + " " + mt + "-Modules initialized");
+		}
 	}
 
 /***************************************************************************************************************/
@@ -87,24 +102,16 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 		catch(InvalidXGAddressException e)
 		{	id = this.address.getMid().getMin();
 		}
-		switch(this.type.getTag())
-		{	case "master":
-			case "rev":
-			case "cho":
-			case "var":
-			case "eq":	return text;
-			case "ins":
-			case "mp":
-			case "ad":	return text + " " + (id + 1);
-			default:	return ((XGDrumsetModuleType)this.type).getDrumname(id);
-		}
+		if(this.type instanceof XGDrumsetModuleType) return ((XGDrumsetModuleType)this.type).getDrumname(id);
+		if(this.type.getModules().size() > 1) return text + " " + (id + 1);
+		else return text;
 	}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()
 	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
 		for(XGAddress bd : this.type.getBulkAdresses())
 		{	try
-			{	set.add(bd.getAddress().complement(this.address));
+			{	set.add(bd.complement(this.address));
 			}
 			catch(InvalidXGAddressException e)
 			{	LOG.warning(e.getMessage());

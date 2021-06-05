@@ -195,7 +195,7 @@
 		<info ref="mp_var"/>
 		<info ref="mp_transpose"/>
 		<bulk address="8//0-40">
-			<opcode xsi:type="immutable" id="mp_reserve" address="//0" name="Element Reserve" shortName="ElRes" default="2" min="0" max="32" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_reserve" address="//0" name="Element Reserve" shortName="ElRes" default="2" min="0" max="32" origin="0" actions="change"/>
 			<opcode xsi:type="mutable" id="mp_program" address="//1-3" parameterSelector="mp_partmode" parameters="mp_partmode" defaults="mp_program"  actions="dump"/>
 			<opcode xsi:type="immutable" id="mp_midi_channel" address="//4" name="Midi Channel" shortName="Ch" defaults="id" table="midi_channels" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_poly" address="//5" name="Ployphony" shortName="Poly" table="mp_monopoly" default="1" actions="change"/>
@@ -209,10 +209,10 @@
 			<opcode xsi:type="immutable" id="mp_pan" address="//14" name="Panorama" shortName="Pan" min="0" max="127" default="64" table="panorama" origin="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_note_lo" address="//15" name="Note Limit Low" shortName="LimLo" min="0" max="127" table="keys" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_note_hi" address="//16" name="Note Limit High" shortName="LimHi" min="0" max="127" default="127" table="keys" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_dry" address="//17" name="Dry Level" shortName="Dry" min="0" max="127" default="127" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_cho" address="//18" name="Chorus Send" shortName="Cho" min="0" max="127" default="0" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_rev" address="//19" name="Reverb Send" shortName="Rev" min="0" max="127" default="40" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_var" address="//20" name="Variation Send" shortName="Var" min="0" max="127" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_dry" address="//17" name="Dry Level" shortName="Dry" min="0" max="127" default="127" origin="0" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_cho" address="//18" name="Chorus Send" shortName="Cho" min="0" max="127" default="0" origin="0" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_rev" address="//19" name="Reverb Send" shortName="Rev" min="0" max="127" default="40" origin="0" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_var" address="//20" name="Variation Send" shortName="Var" min="0" max="127" default="0" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vib_rate" address="//21" name="Vibrato Rate" shortName="Vib" min="0" max="127" origin="0" table="table1" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vib_depth" address="//22" name="Vibrato Depth" shortName="Depth" min="0" max="127" origin="64" table="table19" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vib_delay" address="//23" name="Vibrato Delay" shortName="Delay" min="0" max="127" origin="0" table="table2" default="64" actions="change"/>
@@ -224,7 +224,7 @@
 			<opcode xsi:type="immutable" id="mp_mw_pitch" address="//29" name="Modulation Wheel Pitch Control" shortName="MWPC" min="40" max="88" origin="64" table="sub64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_mw_lpf" address="//30" name="Modulation Wheel Filter Control" shortName="MWFC" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/><!-- -9600...9450 table? -->
 			<opcode xsi:type="immutable" id="mp_mw_amp" address="//31" name="Modulation Wheel Amplitude Control" shortName="MWAC" origin="64" table="table16" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_mw_lfo_pitch" address="//32" name="Modulation Wheel LFO Pitch Modulation Depth" shortName="MWPMD" min="0" max="127" default="10" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_mw_lfo_pitch" address="//32" name="Modulation Wheel LFO Pitch Modulation Depth" shortName="MWPMD" min="0" max="127" default="10" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_mw_lfo_lpf" address="//33" name="Modulation Wheel LFO Filter Modulation Depth" shortName="MWFMD" min="0" max="127" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_mw_lfo_amp" address="//34" name="Modulation Wheel LFO Amplitude Modulation Depth" shortName="MWAMD" min="0" max="127" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_pb_pitch" address="//35" name="Pitchbend Wheel Pitch Control" shortName="PBPC" min="40" max="88" origin="64" table="sub64" default="66" unit="st" actions="change"/>
@@ -280,7 +280,7 @@
 			<opcode xsi:type="immutable" id="mp_pat_lfo_lpf" address="//87" name="Poly Aftrertouch LFO Filter Modulation Depth" shortName="PATFD" min="0" max="127" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_pat_lfo_amp" address="//88" name="Poly Aftrertouch LFO Amplitude Modulation Depth" shortName="PATAD" min="0" max="127" default="0" actions="change"/>
 
-			<opcode xsi:type="immutable" id="mp_ac1_nr" address="//89" name="Assignable Controller 1 Number" shortName="AC1NR" max="95" default="16" table="controller" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_ac1_nr" address="//89" name="Assignable Controller 1 Number" shortName="AC1NR" max="95" default="16" table="controller" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_ac1_pitch" address="//90" name="Assignable Controller 1 Pitch Control" shortName="AC1PC" min="40" max="88" origin="64" table="sub64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_ac1_lpf" address="//91" name="Assignable Controller 1 Filter Control" shortName="AC1FC" origin="64" table="sub64" min="0" max="127" default="64" actions="change"/><!-- -9600...9450 table? -->
 			<opcode xsi:type="immutable" id="mp_ac1_amp" address="//92" name="Assignable Controller 1 Amplitude Control" shortName="AC1AC" origin="64" table="table16" default="64" actions="change"/>
@@ -288,7 +288,7 @@
 			<opcode xsi:type="immutable" id="mp_ac1_lfo_lpf" address="//94" name="Assignable Controller 1 LFO Filter Modulation Depth" shortName="AC1FD" min="0" max="127" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_ac1_lfo_amp" address="//95" name="Assignable Controller 1 LFO Amplitude Modulation Depth" shortName="AC1AD" min="0" max="127" default="0" actions="change"/>
 
-			<opcode xsi:type="immutable" id="mp_ac2_nr" address="//96" name="Assignable Controller 2 Number" shortName="AC2NR" max="95" default="17" table="controller" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_ac2_nr" address="//96" name="Assignable Controller 2 Number" shortName="AC2NR" max="95" default="17" table="controller" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_ac2_pitch" address="//97" name="Assignable Controller 2 Pitch Control" shortName="AC2PC" min="40" max="88" origin="64" table="sub64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_ac2_lpf" address="//98" name="Assignable Controller 2 Filter Control" shortName="AC2FC" origin="64" table="sub64" min="0" max="127" default="64" actions="change"/><!-- -9600...9450 table? -->
 			<opcode xsi:type="immutable" id="mp_ac2_amp" address="//99" name="Assignable Controller 2 Amplitude Control" shortName="AC2AC" origin="64" table="table16" default="64" actions="change"/>
@@ -376,7 +376,7 @@
 			<opcode xsi:type="immutable" id="mp_ac2_hpf" address="//39" name="Assignable Controller 2 HPF Control Depth" shortName="AC2FD" min="0" max="127" default="64" actions="change"/>
 		</bulk>
 		<bulk address="10//48-54">
-			<opcode xsi:type="immutable" id="mp_cbc1_nr" address="//48" name="CBC 1 Control Number" shortName="C1CNR" min="0" max="95" default="18" table="controller" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_cbc1_nr" address="//48" name="CBC 1 Control Number" shortName="C1CNR" min="0" max="95" default="18" table="controller" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cbc1_pitch" address="//49" name="CBC 1 Pitch Control" shortName="C1PC" min="40" max="88" table="sub64" origin="64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cbc1_lpf" address="//50" name="CBC 1 Filter Control" shortName="C1FC" min="0" max="127" default="64" table="sub64" origin="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cbc1_amp" address="//51" name="CBC 1 Amplitude Control" shortName="C1AC" default="64" table="table16" origin="64" actions="change"/>
@@ -385,7 +385,7 @@
 			<opcode xsi:type="immutable" id="mp_cbc1_lfo_amp" address="//54" name="CBC 1 LFO Amplitude Modulation Control Depth" shortName="C1AMD" min="0" max="127" default="0" actions="change"/>
 		</bulk>
 		<bulk address="10//56-62">
-			<opcode xsi:type="immutable" id="mp_cbc2_nr" address="//56" name="CBC 2 Control Number" shortName="C2CNR" min="0" max="95" default="19" table="controller" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_cbc2_nr" address="//56" name="CBC 2 Control Number" shortName="C2CNR" min="0" max="95" default="19" table="controller" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cbc2_pitch" address="//57" name="CBC 2 Pitch Control" shortName="C2PC" min="40" max="88" table="sub64" origin="64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cbc2_lpf" address="//58" name="CBC 2 Filter Control" shortName="C2FC" min="0" max="127" default="64" table="sub64" origin="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cbc2_amp" address="//59" name="CBC 2 Amplitude Control" shortName="C2AC" default="64" table="table16" origin="64" actions="change"/>
@@ -394,12 +394,12 @@
 			<opcode xsi:type="immutable" id="mp_cbc2_lfo_amp" address="//62" name="CBC 2 LFO Amplitude Modulation Control Depth" shortName="C2AMD" min="0" max="127" default="0" actions="change"/>
 		</bulk>
 		<bulk address="10//64-69">
-			<opcode xsi:type="immutable" id="mp_mw_offset" address="//64" name="Modulation Wheel Offest Level Control" shortName="MWOL" min="0" max="127" origin="64" default="64" table="percent" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_pb_offset" address="//65" name="Pitchbend Wheel Offest Level Control" shortName="PBOL" min="0" max="127" origin="64" default="64" table="percent" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_cat_offset" address="//66" name="Channel Aftertouch Offest Level Control" shortName="CATOL" min="0" max="127" origin="64" default="64" table="percent" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_pat_offset" address="//67" name="Poly Aftertouch Offest Level Control" shortName="PATOL" min="0" max="127" origin="64" default="64" table="percent" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_ac1_offset" address="//68" name="Assignable Controller 1 Offest Level Control" shortName="AC1OL" min="0" max="127" origin="64" default="64" table="percent" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_ac2_offset" address="//69" name="Assignable Controller 2 Offest Level Control" shortName="AC2OL" min="0" max="127" origin="64" default="64" table="percent" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_mw_offset" address="//64" name="Modulation Wheel Offest Level Control" shortName="MWOL" min="0" max="127" origin="0" default="64" table="percent" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_pb_offset" address="//65" name="Pitchbend Wheel Offest Level Control" shortName="PBOL" min="0" max="127" origin="0" default="64" table="percent" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_cat_offset" address="//66" name="Channel Aftertouch Offest Level Control" shortName="CATOL" min="0" max="127" origin="0" default="64" table="percent" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_pat_offset" address="//67" name="Poly Aftertouch Offest Level Control" shortName="PATOL" min="0" max="127" origin="0" default="64" table="percent" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_ac1_offset" address="//68" name="Assignable Controller 1 Offest Level Control" shortName="AC1OL" min="0" max="127" origin="0" default="64" table="percent" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_ac2_offset" address="//69" name="Assignable Controller 2 Offest Level Control" shortName="AC2OL" min="0" max="127" origin="0" default="64" table="percent" actions="change"/>
 		</bulk>
 	</module>
 
@@ -463,9 +463,10 @@
 		<info ref="ds_cho"/>
 		<info ref="ds_var"/>
 		<bulk address="//0-15">
-			<opcode xsi:type="immutable" id="ds_coarse" address="//0" name="Pitch Coarse" shortName="Coars" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_pitch" address="//0-1" name="Pitch" shortName="Pitch" min="0" max="127.127" origin="8196" default="64.64" table="sub8k" unit="ct" actions="dump"/>
+<!--		<opcode xsi:type="immutable" id="ds_coarse" address="//0" name="Pitch Coarse" shortName="Coars" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_fine" address="//1" name="Pitch Fine" shortName="Fine" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_vol" address="//2" name="Volume" shortName="Vol" min="0" max="127" defaultSelector="ds_program" defaults="ds_vol_def" actions="change"/>
+-->			<opcode xsi:type="immutable" id="ds_vol" address="//2" name="Volume" shortName="Vol" min="0" max="127" defaultSelector="ds_program" defaults="ds_vol_def" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_group" address="//3" name="Alternate Group" shortName="Group" min="0" max="127" defaultSelector="ds_program" defaults="ds_group_def" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_pan" address="//4" name="Panorama" shortName="Pan" table="panorama" min="0" max="127" origin="64" defaultSelector="ds_program" defaults="ds_pan_def" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_rev" address="//5" name="Send To Reverb" shortName="Rev" min="0" max="127" defaults="ds_rev_def" defaultSelector="ds_program" actions="change"/>
@@ -485,8 +486,8 @@
 			<opcode xsi:type="immutable" id="ds_eq_treble" address="//33" name="EQ Treble" shortName="EQT" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midbass" address="//34" name="EQ Mid Bass" shortName="EQMB" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midtreble" address="//35" name="EQ Mid Treble" shortName="EQMT" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_bass_freq" address="//36" name="EQ Bass Frequency" shortName="EQBF" table="table3" min="4" max="40" default="12" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_treble_freq" address="//37" name="EQ Treble Frequency" shortName="EQTF" table="table3" min="28" max="58" default="54" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_eq_bass_freq" address="//36" name="EQ Bass Frequency" shortName="EQBF" table="table3" min="4" max="40" default="12" origin="4" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_eq_treble_freq" address="//37" name="EQ Treble Frequency" shortName="EQTF" table="table3" min="28" max="58" default="54" origin="28" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midbass_freq" address="//38" name="EQ Mid Bass Frequency" shortName="EQMBF" table="table3" min="14" max="54" default="34" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midtreble_freq" address="//39" name="EQ Mid Treble Frequency" shortName="EQMTF" table="table3" min="14" max="54" default="46" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_bass_q" address="//40" name="EQ Bass Q" shortName="EQBQ" table="div10" min="1" max="120" default="7" actions="change"/>
@@ -500,8 +501,8 @@
 			<opcode xsi:type="immutable" id="ds_audio_output" address="//64" name="Output Select" table="audio_outputs" min="0" max="103" default="0" actions="change"/>
 		</bulk>
 		<bulk address="//80-81">
-			<opcode xsi:type="immutable" id="ds_hpf_cut" address="//80" name="Highpass Filter Cutoff Frequency" min="0" max="127" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_hpf_reso" address="//81" name="Highpass Filter Resonance" min="0" max="127" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_hpf_cut" address="//80" name="Highpass Filter Cutoff Frequency" shortName="HPFC" min="0" max="127" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_hpf_reso" address="//81" name="Highpass Filter Resonance" shortName="HPFR" min="0" max="127" default="64" actions="change"/>
 		</bulk>
 		<bulk address="//96-97">
 			<opcode xsi:type="immutable" id="ds_velo_pitch" address="//96" name="Velocity Pitch Sense" min="48" max="80" table="sub64" origin="64" defaults="ds_velo_pitch_def" defaultSelector="ds_program" actions="change"/>

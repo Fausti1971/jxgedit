@@ -3,10 +3,10 @@ package parm;
 import java.io.*;
 import java.util.Set;
 import application.*;
-import tag.*;
+import static application.JXG.XMLPATH;import tag.*;
 import xml.XMLNode;
 
-public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameterConstants, XGTagable, Iterable<XGTableEntry>
+public interface XGTable extends  XGLoggable, XGParameterConstants, XGTagable, Iterable<XGTableEntry>
 {
 	XGTagableSet<XGTable> TABLES = new XGTagableSet<>();
 	int DEF_FALLBACKMASK = 127;
@@ -21,7 +21,7 @@ public interface XGTable extends ConfigurationConstants, XGLoggable, XGParameter
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());
 		}
-		XGRealTable t = new XGRealTable(XGParameterConstants.TABLE_FX_PARTS);
+		XGRealTable t = new XGRealTable(XGParameterConstants.TABLE_FX_PARTS);//wird zur Laufzeit um die Multipart- und ADPart-Instanzen erweitert
 		t.add(new XGTableEntry(127, "Off"));
 		TABLES.add(t);
 

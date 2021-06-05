@@ -1,12 +1,19 @@
 package application;
 
-import java.awt.*;import java.io.*;import java.nio.file.*;
-import javax.swing.*;import javax.xml.stream.XMLStreamException;
+import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import javax.xml.stream.XMLStreamException;
 import device.*;
-import file.*;import gui.*;
-import static java.lang.ClassLoader.getSystemResourceAsStream;import module.XGModuleType;import parm.*;import value.*;import xml.*;
+import file.*;
+import gui.*;
+import module.XGModule;
+import module.XGModuleType;
+import parm.*;
+import value.*;
+import xml.*;
 
-public class JXG implements XGLoggable, XGUI
+public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 {
 	static
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
@@ -14,6 +21,32 @@ public class JXG implements XGLoggable, XGUI
 	}
 	public static XMLNode config;
 	private static File configFile;
+	public static final String
+		APPNAME = "JXG",
+//		FILESEPERATOR = System.getProperty("file.separator"),
+		XMLPATH = "/xml/";
+//		CWD = System.getProperties().getProperty("user.dir"),
+//		USERHOMEPATH = System.getProperties().getProperty("user.home");
+
+	public static void init()
+	{	try
+		{	URI uri = JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+			configFile = new File(uri.resolve(XML_CONFIG));
+			config = XMLNode.parse(new FileInputStream(configFile));
+		}
+		catch(URISyntaxException | IOException e)
+		{	LOG.info(e.getMessage());
+			config = new XMLNode(TAG_CONFIG);
+		}
+	}
+
+	//private static String getApplicationPath()
+	//{	
+	//	String s[] = System.getProperty("java.class.path").split(":");
+	//	File f = new File(s[0]);
+	//	if(f.isDirectory()) return s[0];
+	//	else return f.getParent();
+	//}
 
 /**
 * returniert das angegebene File aus dem internen Pfad (*.jar)
@@ -25,15 +58,7 @@ public class JXG implements XGLoggable, XGUI
 	public static void main(String[] args)
 	{	XGSplashScreen splash = new XGSplashScreen();
 
-		configFile = new File(APPPATH + FILESEPERATOR + XML_CONFIG);
-		try
-		{	config = XMLNode.parse(new FileInputStream(configFile));
-		}
-		catch(IOException e)
-		{	LOG.info(e.getMessage());
-			config = new XMLNode(TAG_CONFIG);
-		}
-
+		JXG.init();
 		XGTable.init();
 		XGDrumNames.init();
 		XGDefaultsTable.init();
@@ -42,6 +67,7 @@ public class JXG implements XGLoggable, XGUI
 		XGMidi.init();
 		XGDevice.init();
 		XGModuleType.init();
+		XGModule.init();
 		XGValueStore.init();
 		XGUI.init();
 		XGMainWindow.init();

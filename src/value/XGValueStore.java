@@ -3,7 +3,6 @@ package value;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
 import application.*;
-import static application.ConfigurationConstants.APPNAME;
 import module.*;
 import static module.XGModuleType.TYPES;
 import msg.XGMessage;
@@ -15,34 +14,37 @@ import parm.*;
 
 public class XGValueStore extends XGAddressableSet<XGValue> implements XGMessenger, XGLoggable
 {
-	public static XGValueStore STORE = null;
+	public static XGValueStore STORE = new XGValueStore();
 
 /**
 * initialisiert zu jedem Moduletype die angegebene Anzahl Instanzen (XGModule) inkl. der Bulk-Instanzen (XGAddress) und Opcode-Instanzen (XGValues inkl. Abhängigkeiten)
 */
 	public static void init()
-	{	STORE = new XGValueStore();
-		for(XGModuleType mt : TYPES)
-		{	for(int id : mt.getAddress().getMid())
-			{	try
-				{	XGModule mod = new XGModule(mt, id);
-					mt.getModules().add(mod);
-					for(XGOpcode opc : mt.getOpcodes())
-					{	if(opc.getModuleType().equals(mt)) STORE.add(new XGValue(opc, mod));
+	{	for(XGModuleType mt : TYPES)
+		{	for(XGModule mod : mt.getModules())
+			{	for(XGOpcode opc : mt.getOpcodes())
+				{	try
+					{	STORE.add(new XGValue(opc, mod));
 					}
-					for(XGValue val : mod.getValues()) val.initDepencies();
-				}
-				catch(InvalidXGAddressException e)
-				{	LOG.warning(e.getMessage());
+					catch(InvalidXGAddressException e)
+					{	LOG.warning(e.getMessage());
+					}
 				}
 			}
-			LOG.info(mt.getModules().size() + " " + mt + "-Modules initialized");
 		}
 //export opcodes
 		//for(XGModuleType mt : TYPES)
 		//{	System.out.println(mt.getTag());
 		//	for(XGOpcode o : mt.getOpcodes()) System.out.println(o.getTag());
 		//}
+		for(XGValue v : STORE)
+		{	try
+			{	v.initDepencies();
+			}
+			catch(InvalidXGAddressException e)
+			{	LOG.warning(e.getMessage());
+			}
+		}
 		for(XGValue v : STORE) v.setDefaultValue();
 		LOG.info(STORE.size() + " Values initialized");
 	}
@@ -55,7 +57,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	}
 
 	@Override public String getMessengerName()
-	{	return APPNAME + " (Memory)";
+	{	return JXG.APPNAME + " (Memory)";
 	}
 
 	@Override public void submit(XGMessage message) throws InvalidXGAddressException, XGMessengerException

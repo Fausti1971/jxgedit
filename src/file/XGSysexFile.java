@@ -9,13 +9,12 @@ import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;
 import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.*;
-import device.XGDevice;
 import gui.*;import msg.XGMessage;
 import msg.XGMessenger;
 import msg.XGRequest;
-import msg.XGResponse;import xml.*;
+import msg.XGResponse;import xml.*;import static xml.XMLNodeConstants.TAG_ITEM;
 
-public class XGSysexFile extends File implements XGSysexFileConstants, ConfigurationConstants, XGMessenger, XGLoggable
+public class XGSysexFile extends File implements XGSysexFileConstants,  XGMessenger, XGLoggable
 {	private static final long serialVersionUID=870648549558099401L;
 
 	public static XMLNode config;

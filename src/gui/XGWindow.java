@@ -6,13 +6,11 @@ import java.awt.event.WindowListener;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.JFrame;
-import application.ConfigurationConstants;
 
-public class XGWindow extends JFrame implements XGUI, ConfigurationConstants, WindowListener
+public class XGWindow extends JFrame implements XGUI, WindowListener
 {	static
 	{	JFrame.setDefaultLookAndFeelDecorated(true);
 	}
-
 	private static final String LOGO_NAME = "XGLogo32.gif";
 
 /*************************************************************************************************************/

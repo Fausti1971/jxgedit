@@ -87,7 +87,8 @@ public class XGRealTable implements XGTable
 	@Override public XGTableEntry getByValue(int v)
 	{	if(this.indexes.containsKey(v)) return this.entries.get(this.indexes.get(v));
 		v &= this.fallbackMask;
-		return this.entries.get(this.indexes.get(v));
+		if(this.indexes.containsKey(v)) return this.entries.get(this.indexes.get(v));
+		else return null;
 	}
 
 	@Override public XGTableEntry getByName(String name)

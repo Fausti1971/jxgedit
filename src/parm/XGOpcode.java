@@ -1,11 +1,9 @@
 package parm;
 
-import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.Map;
 import java.util.Set;
 import adress.*;
-import application.Configurable;
+import config.Configurable;
 import application.XGLoggable;
 import application.XGStrings;
 import module.XGModuleType;
@@ -77,6 +75,10 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 	@Override public XMLNode getConfig()
 	{	return this.config;
+	}
+
+	@Override public void configurationChanged(XMLNode n)
+	{
 	}
 
 	public ValueDataType getDataType()

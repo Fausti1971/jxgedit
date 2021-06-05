@@ -3,7 +3,7 @@ package module;
 import java.io.IOException;import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.*;
-import application.Configurable;
+import static application.JXG.XMLPATH;import config.Configurable;
 import application.JXG;import application.XGLoggable;
 import msg.XGBulkDumper;
 import parm.XGOpcode;
@@ -119,6 +119,10 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 	@Override public XMLNode getConfig()
 	{	return this.config;
+	}
+
+	@Override public void configurationChanged(XMLNode n)
+	{
 	}
 
 	public String getName()

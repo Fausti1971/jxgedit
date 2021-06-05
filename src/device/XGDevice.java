@@ -41,7 +41,6 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 /***************************************************************************************************************************/
 
 	private final StringBuffer name;
-	private boolean isSelected = false;
 
 	private int info1, info2;
 	private XGSysexFile defaultFile;
