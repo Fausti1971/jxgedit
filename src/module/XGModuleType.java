@@ -10,7 +10,7 @@ import parm.XGOpcode;
 import parm.XGTable;
 import static parm.XGTable.TABLES;
 import static parm.XGVirtualTable.DEF_TABLE;import tag.*;
-import xml.XMLNode;
+import xml.XGProperty;import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen
@@ -121,7 +121,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	return this.config;
 	}
 
-	@Override public void configurationChanged(XMLNode n)
+	@Override public void propertyChanged(XGProperty n)
 	{
 	}
 

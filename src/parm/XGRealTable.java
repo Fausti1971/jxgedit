@@ -58,13 +58,14 @@ public class XGRealTable implements XGTable
 		if(this.sort) this.sortByValue();
 
 		this.categories.addAll(e.getCategories());
+
 		int is = this.indexes.size();
 		int es = this.entries.size();
 		int ns = this.names.size();
 		if(es != is)
 		{	System.out.println(this.entries);
 			System.out.println(this.indexes);
-			throw new RuntimeException("error on adding " + e.getInfo() + " to " + this.getInfo() + ": entries=" + es + ", indexes=" + is + ", names=" + ns);
+			throw new RuntimeException("sizes mismatch on adding " + e.getInfo() + " to " + this.getInfo() + ": entries=" + es + ", indexes=" + is + ", names=" + ns);
 		}
 	}
 
@@ -128,7 +129,7 @@ public class XGRealTable implements XGTable
 	}
 
 	@Override public XGRealTable filter(XMLNode n)
-	{	if(!n.hasAttribute(ATTR_TABLEFILTER)) return this;
+	{	if(!n.getAttributes().containsKey(ATTR_TABLEFILTER)) return this;
 		String f = n.getStringAttribute(ATTR_TABLEFILTER);
 		XGRealTable table = new XGRealTable(this.name + "-" + f, this.unit, this.fallbackMask, this.sort);
 		for(XGTableEntry e : this) if(e.hasFilter(f)) table.add(e);

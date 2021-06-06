@@ -1,6 +1,6 @@
 package gui;
 
-import adress.XGAddressable;import javax.swing.*;
+import adress.XGAddressable;import xml.XGProperty;import static xml.XMLNodeConstants.ATTR_NAME;import javax.swing.*;
 
 public abstract class XGEditWindow extends XGWindow implements XGAddressable
 {
@@ -18,7 +18,7 @@ public abstract class XGEditWindow extends XGWindow implements XGAddressable
 				case "cho":		win = new XGChorusEditWindow(mod); break;
 				case "var":		win = new XGVariationEditWindow(mod); break;
 				case "ins":		win = new XGInsertionEditWindow(mod); break;
-				case "master":	win = new gui.XGMasterEditWindow(mod); break;
+				case "master":	win = new XGMasterEditWindow(mod); break;
 				case "eq":		win = new XGEQEditWindow(mod); break;
 				case "mp":		win = new XGMultipartEditWindow(mod); break;
 				case "ad":		win = new XGADPartEditWindow(mod); break;
@@ -51,10 +51,19 @@ public abstract class XGEditWindow extends XGWindow implements XGAddressable
 
 	final module.XGModule module;
 
-	public XGEditWindow(XGWindow own, module.XGModule mod, String name)
-	{	super(own, own.getTitle() + " - " + name);
+	public XGEditWindow(XGWindow own, module.XGModule mod)
+	{	super(own, own.config);
+//		own.config.getAttributes().get(ATTR_NAME).getListeners().add((XGProperty p)->{this.setTitle(own.getTitle() + " - " + p.getValue().toString());});
 		this.setResizable(false);
 		this.module = mod;
+	}
+
+	@Override public void propertyChanged(XGProperty p)
+	{	this.setTitle(this.getTitle());
+	}
+
+	@Override public String getTitle()
+	{	return XGMainWindow.window.getTitle() + " - " + this.module;
 	}
 
 	@Override public adress.XGAddress getAddress()

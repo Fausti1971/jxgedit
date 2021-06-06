@@ -10,7 +10,7 @@ import adress.XGAddress;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
-import file.XGSysexFile;
+import config.Configurable;import file.XGSysexFile;
 import file.XGSysexFileConstants;
 import gui.XGFileSelector;
 import gui.XGWindow;
@@ -20,37 +20,34 @@ import static module.XGModuleType.TYPES;
 import msg.*;
 import value.XGProgramBuffer;
 import static value.XGValueStore.STORE;
-import xml.XMLNode;
+import xml.XGProperty;import xml.XMLNode;
 
-public class XGDevice implements XGDeviceConstants, XGBulkDumper
+public class XGDevice implements XGDeviceConstants, XGBulkDumper, Configurable
 {
-	private static XGDevice device = null;
-	public static XMLNode config = null;
+	public static XGDevice device = null;
+//	public static XMLNode config = null;
 	private String WARNSTRING = "This will reset all parameters!";
 
-	public static XGDevice getDevice()
-	{	if(device == null) XGDevice.init();
-		return device;
-	}
-
 	public static void init()
-	{	config = JXG.config.getChildNodeOrNew(TAG_DEVICE);
-		device = new XGDevice(config);
+	{	device = new XGDevice(JXG.config.getChildNodeOrNew(TAG_DEVICE));
 	}
 
 /***************************************************************************************************************************/
 
-	private final StringBuffer name;
-
+//	private final StringBuffer name;
+	private final XMLNode config;
 	private int info1, info2;
 	private XGSysexFile defaultFile;
 	private int sysexID = 0;
 	private XGWindow childWindow;
 
 	public XGDevice(XMLNode cfg)
-	{	this.name = cfg.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
+	{	
+//		this.name = cfg.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
 //		this.defaultFileName = XGSysexFile.config.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, Paths.get(APPPATH).resolve(DEF_SYXFILENAME).toString());
+		
 		this.sysexID = cfg.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID);
+		this.config = cfg;
 
 //		try
 //		{	this.defaultFile = new XGSysexFile(this, this.defaultFileName.toString());
@@ -87,7 +84,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 				{	XGResponse r = m.getResponse();
 					int offs = r.getBaseOffset();
 					String s = r.getString(offs, offs + 14);
-					this.name.replace(0, this.name.length(), s.trim());
+					this.config.setStringAttribute(ATTR_NAME, s.trim());
 					this.info1 = r.decodeLSB(offs + 14);
 					this.info2 = r.decodeLSB(offs + 15);
 				}
@@ -196,7 +193,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 	}
 
 	@Override public String toString()
-	{	return this.name.toString();
+	{	return this.config.getStringAttribute(ATTR_NAME);
 	}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()
@@ -205,5 +202,13 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper
 			for(XGModule mi : mt.getModules())
 				set.addAll(mi.getBulks());
 		return set;
+	}
+
+	public XMLNode getConfig()
+	{	return this.config;
+	}
+
+	public void propertyChanged(XGProperty attr)
+	{
 	}
 }

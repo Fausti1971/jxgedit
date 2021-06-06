@@ -1,11 +1,11 @@
 package gui;
 
-import javax.swing.*;
+import xml.XGProperty;import static xml.XMLNodeConstants.ATTR_NAME;import javax.swing.*;
 
 public class XGADPartEditWindow extends XGEditWindow
-{	
+{
 	public XGADPartEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.window, mod, mod.toString());
+	{	super(XGMainWindow.window, mod);
 		this.setContentPane(this.createContent());
 		this.pack();
 		this.setVisible(true);
@@ -43,5 +43,9 @@ public class XGADPartEditWindow extends XGEditWindow
 		root.add(midi);
 
 		return root;
+	}
+
+	public void propertyChanged(XGProperty p)
+	{	if(ATTR_NAME.equals(p.getTag())) this.setTitle(this.getTitle());
 	}
 }

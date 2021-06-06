@@ -5,7 +5,7 @@ import javax.swing.*;
 public class XGMultipartEditWindow extends XGEditWindow
 {	
 	public XGMultipartEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.window, mod, mod.toString());
+	{	super(XGMainWindow.window, mod);
 		this.setContentPane(this.createContent());
 		this.pack();
 		this.setVisible(true);

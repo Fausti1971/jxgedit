@@ -5,7 +5,7 @@ import static gui.XGMEQ.*;public class XGEQEditWindow extends XGEditWindow
 
 
 	public XGEQEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.window, mod, mod.toString());
+	{	super(XGMainWindow.window, mod);
 		this.setContentPane(this.createContent());
 		this.pack();
 		this.setResizable(true);

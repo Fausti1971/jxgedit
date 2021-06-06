@@ -19,20 +19,22 @@ public class XGMainWindow extends XGWindow implements ComponentListener, Configu
 	private static final long serialVersionUID=1L;
 	int MIN_W = 300, MIN_H = 400, MIN_X = 20, MIN_Y = 20;
 
-	private static XMLNode config = null;
+//	private static XMLNode config = null;
 	public static XGMainWindow window = null;
 
 	public static void init()
-	{	config = JXG.config.getChildNodeOrNew(XMLNodeConstants.TAG_WIN);
-		window = new XGMainWindow();
+	{	window = new XGMainWindow(JXG.config.getChildNodeOrNew(XMLNodeConstants.TAG_WIN));
 	}
 
 /**********************************************************************************************************************/
 
 	private final XGStatusBar status = new XGStatusBar();
+//	private final XGProperty nameProperty;
 
-	public XGMainWindow()
-	{	super(null, JXG.APPNAME + " - " + XGDevice.getDevice());
+	public XGMainWindow(XMLNode cfg)
+	{	super(null, cfg);
+//		this.nameProperty = XGDevice.device.getConfig().getAttributes().get(ATTR_NAME);
+//		this.nameProperty.getListeners().add((XGProperty p)->{this.setTitle(p.getValue().toString());});
 		this.setJMenuBar(this.createMenu());
 		this.setContentPane(this.createContent());
 
@@ -54,17 +56,16 @@ public class XGMainWindow extends XGWindow implements ComponentListener, Configu
 	}
 
 	private JMenuBar createMenu()
-	{	XGDevice dev = XGDevice.getDevice();
-		JMenuBar bar = new JMenuBar();
+	{	JMenuBar bar = new JMenuBar();
 
 		JMenu file = new JMenu("File");
 
 		JMenuItem load = new JMenuItem("Load Dump...");
-		load.addActionListener((ActioEvent)->{dev.load();});
+		load.addActionListener((ActioEvent)->{XGDevice.device.load();});
 		file.add(load);
 
 		JMenuItem save = new JMenuItem("Save Dump...");
-		save.addActionListener((ActioEvent)->{dev.save();});
+		save.addActionListener((ActioEvent)->{XGDevice.device.save();});
 		file.add(save);
 
 		file.addSeparator();
@@ -84,11 +85,11 @@ public class XGMainWindow extends XGWindow implements ComponentListener, Configu
 		JMenu midi = new JMenu("Midi");
 
 		JMenuItem requestAll = new JMenuItem("Request All");
-		requestAll.addActionListener((ActionEvent)->{new Thread(() -> {dev.transmitAll(XGMidi.getMidi(), STORE);}).start();});
+		requestAll.addActionListener((ActionEvent)->{new Thread(() -> {XGDevice.device.transmitAll(XGMidi.getMidi(), STORE);}).start();});
 		midi.add(requestAll);
 
 		JMenuItem transmitAll = new JMenuItem("Transmit All");
-		transmitAll.addActionListener((ActionEvent)->{new Thread(() -> {dev.transmitAll(STORE, XGMidi.getMidi());}).start();});
+		transmitAll.addActionListener((ActionEvent)->{new Thread(() -> {XGDevice.device.transmitAll(STORE, XGMidi.getMidi());}).start();});
 		midi.add(transmitAll);
 
 		bar.add(midi);
@@ -160,14 +161,14 @@ public class XGMainWindow extends XGWindow implements ComponentListener, Configu
 
 	@Override public void componentResized(ComponentEvent e)
 	{	Component c = e.getComponent();
-		config.setIntegerAttribute(ATTR_W, c.getWidth());
-		config.setIntegerAttribute(ATTR_H, c.getHeight());
+		this.config.setIntegerAttribute(ATTR_W, c.getWidth());
+		this.config.setIntegerAttribute(ATTR_H, c.getHeight());
 	}
 
 	@Override public void componentMoved(ComponentEvent e)
 	{	Component c = e.getComponent();
-		config.setIntegerAttribute(ATTR_X, c.getX());
-		config.setIntegerAttribute(ATTR_Y, c.getY());
+		this.config.setIntegerAttribute(ATTR_X, c.getX());
+		this.config.setIntegerAttribute(ATTR_Y, c.getY());
 	}
 
 	@Override public void componentShown(ComponentEvent e)
@@ -178,11 +179,11 @@ public class XGMainWindow extends XGWindow implements ComponentListener, Configu
 	{
 	}
 
-	@Override public XMLNode getConfig()
-	{	return null;
+	public XMLNode getConfig()
+	{	return this.config;
 	}
 
-	public void configurationChanged(XMLNode node)
-	{
+	public void propertyChanged(XGProperty attr)
+	{	System.out.println("property changed: " + attr);
 	}
 }

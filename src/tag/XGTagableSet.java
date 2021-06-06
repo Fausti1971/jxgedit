@@ -23,8 +23,13 @@ public class XGTagableSet<T extends XGTagable> implements Iterable<T>, Set<T>
 	}
 
 	public T getOrDefault(String tag, T def)
-	{	if(!this.containsKey(tag)) return def;
-		else return this.get(tag);
+	{	if(this.containsKey(tag)) return this.get(tag);
+		else return def;
+	}
+
+	public T getOrNew(String tag, T newT)
+	{	if(!this.containsKey(tag)) this.add(newT);
+		return this.get(tag);
 	}
 
 	@Override public int size()

@@ -1,6 +1,6 @@
 package gui;
 
-import application.*;import static application.JXG.*;import device.*;import static device.XGDeviceConstants.DEF_DEVNAME;import static device.XGMidi.*;import javax.sound.midi.*;import javax.swing.*;import javax.swing.event.*;
+import application.*;import static application.JXG.*;import device.*;import static device.XGDeviceConstants.DEF_DEVNAME;import static device.XGMidi.*;import xml.XGProperty;import javax.sound.midi.*;import javax.swing.*;import javax.swing.event.*;
 import java.awt.*;import java.awt.event.*;import java.util.*;
 
 public class XGSettingsWindow extends JDialog
@@ -55,7 +55,7 @@ public class XGSettingsWindow extends JDialog
 
 		gbcl.gridy = gbcr.gridy = 3;
 		root.add(new JLabel("Device Name:", JLabel.LEADING), gbcl);
-		root.add(new XGDeviceDetector(XGDevice.config.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME)), gbcr);
+		root.add(new XGDeviceDetector(XGDevice.device.getConfig().getAttributes().getOrNew(ATTR_NAME, new XGProperty(ATTR_NAME, DEF_DEVNAME))), gbcr);
 
 		gbcl.gridy = gbcr.gridy = 4;
 		root.add(new JSeparator(), gbcl);

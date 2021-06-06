@@ -4,7 +4,7 @@ import static java.awt.BorderLayout.CENTER;import static java.awt.BorderLayout.E
 public class XGReverbEditWindow extends XGEditWindow
 {
 	public XGReverbEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.window, mod, mod.toString());
+	{	super(XGMainWindow.window, mod);
 		this.setContentPane(this.createContent());
 		this.pack();
 		this.setVisible(true);

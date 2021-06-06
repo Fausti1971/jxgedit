@@ -5,10 +5,14 @@ import module.XGModule;import javax.swing.*;
 public class XGDrumEditWindow extends XGEditWindow
 {
 	public XGDrumEditWindow(XGModule mod)
-	{	super(XGMainWindow.window, mod, mod.getType() + " - " + mod.toString());
+	{	super(XGMainWindow.window, mod);
 		this.setContentPane(this.createContent());
 		this.pack();
 		this.setVisible(true);
+	}
+
+	public String getTitle()
+	{	return XGMainWindow.window.getTitle() + " - " + this.module.getType() + " - " + this.module.toString();
 	}
 
 	JComponent createContent()

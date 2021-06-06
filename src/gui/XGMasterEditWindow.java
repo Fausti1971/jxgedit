@@ -1,6 +1,6 @@
 package gui;
 
-import static javax.swing.SwingConstants.CENTER;import static module.XGModuleType.TYPES;
+import device.XGDevice;import static javax.swing.SwingConstants.CENTER;import static module.XGModuleType.TYPES;
 import static msg.XGMessageConstants.*;
 import static value.XGValueStore.STORE;import javax.swing.*;
 
@@ -10,7 +10,7 @@ public class XGMasterEditWindow extends XGEditWindow
 /**********************************************************************************************************/
 
 	public XGMasterEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.window, mod, mod.toString());
+	{	super(XGMainWindow.window, mod);
 		this.setContentPane(this.createContent());
 		this.pack();
 		this.setVisible(true);
@@ -42,14 +42,13 @@ public class XGMasterEditWindow extends XGEditWindow
 				reset.add(rb, c);
 			}
 		}
-		device.XGDevice dev = device.XGDevice.getDevice();
 		javax.swing.JButton rx = new javax.swing.JButton("XG System On");
-		rx.addActionListener((java.awt.event.ActionEvent e)->{dev.resetXG(true, true);});
+		rx.addActionListener((java.awt.event.ActionEvent e)->{XGDevice.device.resetXG(true, true);});
 		c = "" + x + y + x + y++;
 		reset.add(rx, c);
 
 		javax.swing.JButton ra = new javax.swing.JButton("Reset All Parameters");
-		ra.addActionListener((java.awt.event.ActionEvent e)->{dev.resetAll(true, true);});
+		ra.addActionListener((java.awt.event.ActionEvent e)->{XGDevice.device.resetAll(true, true);});
 		c = "" + x + y + x + y++;
 		reset.add(ra, c);
 

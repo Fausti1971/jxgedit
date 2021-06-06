@@ -86,7 +86,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		{	LOG.warning(e.getMessage());
 		}
 
-		XGDevice.getDevice().exit();
+		XGDevice.device.exit();
 		System.exit(0);
 	}
 }

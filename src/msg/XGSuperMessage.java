@@ -59,7 +59,7 @@ public abstract class XGSuperMessage extends SysexMessage implements XGMessage, 
 	}
 
 	@Override public void setSysexID()
-	{	this.setSysexID(XGDevice.getDevice().getSysexID());
+	{	this.setSysexID(XGDevice.device.getSysexID());
 	}
 
 	@Override public byte[] getByteArray()

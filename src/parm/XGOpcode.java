@@ -8,7 +8,7 @@ import application.XGLoggable;
 import application.XGStrings;
 import module.XGModuleType;
 import tag.*;
-import xml.XMLNode;
+import xml.XGProperty;import xml.XMLNode;
 
 public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants, XGCategorizeable, Configurable, XGTagable
 {
@@ -37,8 +37,8 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 
 		this.isMutable = MUTABLE.equals(n.getStringAttribute(ATTR_TYPE));
 		if(this.isMutable)
-		{	if(!n.hasAttribute(ATTR_PARAMETERSELECTOR)) throw new RuntimeException("opcode " + this.address + " is " + n.getStringAttribute(ATTR_TYPE) + " but has not declared " + ATTR_PARAMETERSELECTOR);
-			if(!n.hasAttribute(ATTR_PARAMETERS)) throw new RuntimeException("opcode " + this.address + " is " + n.getStringAttribute(ATTR_TYPE) + " but has not declared " + ATTR_PARAMETERS);
+		{	if(!n.getAttributes().containsKey(ATTR_PARAMETERSELECTOR)) throw new RuntimeException("opcode " + this.address + " is " + n.getStringAttribute(ATTR_TYPE) + " but has not declared " + ATTR_PARAMETERSELECTOR);
+			if(!n.getAttributes().containsKey(ATTR_PARAMETERS)) throw new RuntimeException("opcode " + this.address + " is " + n.getStringAttribute(ATTR_TYPE) + " but has not declared " + ATTR_PARAMETERS);
 
 			this.parameterSelectorTag = n.getStringAttribute(ATTR_PARAMETERSELECTOR);
 			this.parameterTableName = n.getStringAttribute(ATTR_PARAMETERS);
@@ -48,7 +48,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 			this.parameterTableName = null;
 		}
 
-		this.hasMutableDefaults = n.hasAttribute(ATTR_DEFAULTS);// && n.hasAttribute(ATTR_DEFAULTSELECTOR);
+		this.hasMutableDefaults = n.getAttributes().containsKey(ATTR_DEFAULTS);// && n.hasAttribute(ATTR_DEFAULTSELECTOR);
 		if(this.hasMutableDefaults)
 		{	this.defaultSelectorTag = n.getStringAttribute(ATTR_DEFAULTSELECTOR);
 			this.defaultsTableName = n.getStringAttribute(ATTR_DEFAULTS);
@@ -77,7 +77,7 @@ public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants
 	{	return this.config;
 	}
 
-	@Override public void configurationChanged(XMLNode n)
+	@Override public void propertyChanged(XGProperty n)
 	{
 	}
 

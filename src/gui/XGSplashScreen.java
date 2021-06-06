@@ -7,7 +7,7 @@ public class XGSplashScreen extends JFrame
 
 	public XGSplashScreen()
 	{	this.setTitle("initializing JXG, please wait...");
-
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		JLabel status = new JLabel();
 		status.setFont(MEDIUM_FONT);
 		this.handler = new Handler()
