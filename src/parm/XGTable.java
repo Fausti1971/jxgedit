@@ -13,7 +13,7 @@ public interface XGTable extends  XGLoggable, XGParameterConstants, XGTagable, I
 
 	static void init()
 	{	try
-		{	XMLNode xml = XMLNode.parse(JXG.getResourceStream(XMLPATH + XML_TABLES));
+		{	XMLNode xml = XMLNode.parse(JXG.class.getResourceAsStream(XMLPATH + XML_TABLES));
 			for(XMLNode x : xml.getChildNodes(TAG_TABLE))
 			{	TABLES.add(new XGRealTable(x));
 			}

@@ -1,6 +1,6 @@
 package xml;
 
-import config.Configurable;import config.XGPropertyChangeListener;import tag.XGTagable;import java.util.LinkedHashSet;import java.util.Set;
+import config.XGPropertyChangeListener;import tag.XGTagable;import java.util.LinkedHashSet;import java.util.Set;
 
 public class XGProperty implements XGTagable
 {	private final String key;

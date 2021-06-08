@@ -48,13 +48,6 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	//	else return f.getParent();
 	//}
 
-/**
-* returniert das angegebene File aus dem internen Pfad (*.jar)
-*/
-	public static InputStream getResourceStream(String fName) throws IOException //Merke: SAX scheint mit mac-Aliases nicht zurecht zu kommen, daher bei Bedarf Softlinks erzeugen (ln -s Quelle Ziel)
-	{	return JXG.class.getResourceAsStream(fName);
-	}
-
 	public static void main(String[] args)
 	{	XGSplashScreen splash = new XGSplashScreen();
 
@@ -81,12 +74,11 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	{	LOG.info("exiting application");
 		try
 		{	config.save(configFile);
+			XGDevice.device.exit();
+			System.exit(0);
 		}
 		catch(IOException | XMLStreamException e)
-		{	LOG.warning(e.getMessage());
+		{	LOG.severe(e.getMessage());
 		}
-
-		XGDevice.device.exit();
-		System.exit(0);
 	}
 }

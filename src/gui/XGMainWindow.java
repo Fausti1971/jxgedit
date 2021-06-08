@@ -1,25 +1,25 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.*;import java.beans.PropertyChangeEvent;
+import java.awt.event.*;
 import javax.swing.*;
 import application.*;
 import static application.JXG.*;
-import config.Configurable;import device.*;
+import config.XGConfigurable;
+import device.*;
 import static java.awt.BorderLayout.*;
 import module.*;
 import static module.XGModuleType.TYPES;
 import static value.XGValueStore.STORE;
 import xml.*;
 
-public class XGMainWindow extends XGWindow implements ComponentListener, Configurable
+public class XGMainWindow extends XGWindow implements ComponentListener, XGConfigurable
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
-	int MIN_W = 300, MIN_H = 400, MIN_X = 20, MIN_Y = 20;
+	int MIN_W = 640, MIN_H = 480, MIN_X = 20, MIN_Y = 20;
 
-//	private static XMLNode config = null;
 	public static XGMainWindow window = null;
 
 	public static void init()
@@ -29,12 +29,9 @@ public class XGMainWindow extends XGWindow implements ComponentListener, Configu
 /**********************************************************************************************************************/
 
 	private final XGStatusBar status = new XGStatusBar();
-//	private final XGProperty nameProperty;
 
 	public XGMainWindow(XMLNode cfg)
 	{	super(null, cfg);
-//		this.nameProperty = XGDevice.device.getConfig().getAttributes().get(ATTR_NAME);
-//		this.nameProperty.getListeners().add((XGProperty p)->{this.setTitle(p.getValue().toString());});
 		this.setJMenuBar(this.createMenu());
 		this.setContentPane(this.createContent());
 
@@ -47,7 +44,6 @@ public class XGMainWindow extends XGWindow implements ComponentListener, Configu
 			config.getIntegerAttribute(ATTR_W, MIN_W),
 			config.getIntegerAttribute(ATTR_H, MIN_H)
 		);
-//		this.pack();
 		this.setVisible(true);
 	}
 

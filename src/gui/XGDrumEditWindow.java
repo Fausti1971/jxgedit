@@ -11,11 +11,11 @@ public class XGDrumEditWindow extends XGEditWindow
 		this.setVisible(true);
 	}
 
-	public String getTitle()
+	@Override public String getTitle()
 	{	return XGMainWindow.window.getTitle() + " - " + this.module.getType() + " - " + this.module.toString();
 	}
 
-	JComponent createContent()
+	@Override JComponent createContent()
 	{	javax.swing.JPanel root = new javax.swing.JPanel();
 		root.setLayout(new javax.swing.BoxLayout(root, javax.swing.BoxLayout.X_AXIS));
 

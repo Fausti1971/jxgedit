@@ -3,14 +3,14 @@ package parm;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.*;
-import config.Configurable;
+import config.XGConfigurable;
 import application.XGLoggable;
 import application.XGStrings;
 import module.XGModuleType;
 import tag.*;
 import xml.XGProperty;import xml.XMLNode;
 
-public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants, XGCategorizeable, Configurable, XGTagable
+public class XGOpcode implements XGLoggable, XGAddressable, XGParameterConstants, XGCategorizeable, XGConfigurable, XGTagable
 {
 
 //	public static final XGTagableAddressableSet<XGOpcode> OPCODES = new XGTagableAddressableSet<XGOpcode>();//Prototypen

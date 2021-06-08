@@ -8,7 +8,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	public static XMLNode init()
 	{
 		try
-		{	return XMLNode.parse(JXG.getResourceStream(XML_PARAMETER));
+		{	return XMLNode.parse(JXG.class.getResourceAsStream(XML_PARAMETER));
 		}
 		catch(IOException e)
 		{	LOG.info(e.getMessage());

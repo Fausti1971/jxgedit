@@ -20,7 +20,7 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 	public static void init()
 	{
 		try
-		{	XMLNode n = XMLNode.parse(JXG.getResourceStream(XMLPATH + XML_DEFAULTS));
+		{	XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(XMLPATH + XML_DEFAULTS));
 			for(XMLNode t : n.getChildNodes(TAG_DEFAULTSTABLE))
 			{	DEFAULTSTABLE.add(new XGDefaultsTable(t));
 			}
@@ -95,16 +95,12 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 		LOG.info(this.getClass().getSimpleName() + " " + this.tag + " initialized");
 	}
 
-	
-
 	public void put(int id, int sel, int def)
-	{	if(this.idMap.containsKey(id))
-			this.idMap.get(id).put(sel, def);
-		else
-		{	Map<Integer, Integer> defMap = new HashMap<>();
-			defMap.put(sel, def);
-			this.idMap.put(id, defMap);
-		}
+	{	Map<Integer, Integer> defMap;
+		if(this.idMap.containsKey(id)) defMap = this.idMap.get(id);
+		else defMap = new HashMap<>();
+		defMap.put(sel, def);
+		this.idMap.putIfAbsent(id, defMap);
 	}
 
 	public int get(int id, int sel)

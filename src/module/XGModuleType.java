@@ -3,7 +3,7 @@ package module;
 import java.io.IOException;import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.*;
-import static application.JXG.XMLPATH;import config.Configurable;
+import static application.JXG.XMLPATH;import config.XGConfigurable;
 import application.JXG;import application.XGLoggable;
 import msg.XGBulkDumper;
 import parm.XGOpcode;
@@ -17,7 +17,7 @@ import xml.XGProperty;import xml.XMLNode;
  * @author thomas
  *
  */
-public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper, Configurable, XGTagable
+public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper, XGConfigurable, XGTagable
 {
 	public static final XGTagableAddressableSet<XGModuleType> TYPES = new XGTagableAddressableSet<>();//Prototypen (inkl. XGAddress bulks); initialisiert auch XGOpcodes
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
@@ -28,7 +28,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	public static void init()
 	{	XMLNode xml;
 		try
-		{	xml = XMLNode.parse(JXG.getResourceStream(XMLPATH + XML_STRUCTURE));
+		{	xml = XMLNode.parse(JXG.class.getResourceAsStream(XMLPATH + XML_STRUCTURE));
 		}
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());

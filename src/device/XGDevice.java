@@ -10,7 +10,7 @@ import adress.XGAddress;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
-import config.Configurable;import file.XGSysexFile;
+import config.XGConfigurable;import file.XGSysexFile;
 import file.XGSysexFileConstants;
 import gui.XGFileSelector;
 import gui.XGWindow;
@@ -22,7 +22,7 @@ import value.XGProgramBuffer;
 import static value.XGValueStore.STORE;
 import xml.XGProperty;import xml.XMLNode;
 
-public class XGDevice implements XGDeviceConstants, XGBulkDumper, Configurable
+public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 {
 	public static XGDevice device = null;
 //	public static XMLNode config = null;
@@ -160,7 +160,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, Configurable
 			}
 			case JFileChooser.CANCEL_OPTION:
 			{	last.removeNode();
-				LOG.severe("fileselection aborted");
+				LOG.info("fileselection aborted");
 				break;
 			}
 		}
@@ -204,11 +204,11 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, Configurable
 		return set;
 	}
 
-	public XMLNode getConfig()
+	@Override public XMLNode getConfig()
 	{	return this.config;
 	}
 
-	public void propertyChanged(XGProperty attr)
+	@Override public void propertyChanged(XGProperty attr)
 	{
 	}
 }

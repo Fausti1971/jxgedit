@@ -2,6 +2,7 @@
 <!--TODO: jetzt ganz neu: fehlende min- und max-Attribute werden durch UNLIMITED (-1) ersetzt, d.h. durch die Limits der Table;
 -->
 <structure xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="structure.xsd">
+	<virtual id="ds_program"/>
 	<module id="master" name="Master" address="0/0/0-6">
 		<bulk address="//0-6">
 			<opcode xsi:type="immutable" id="master_tune" address="//0-3" byteType="LSN" name="Master Tune" shortName="Tune" min="0" max="2047" default="1024" origin="1024" table="sub1024div10" unit="cnt" actions="change"/>
@@ -196,7 +197,7 @@
 		<info ref="mp_transpose"/>
 		<bulk address="8//0-40">
 			<opcode xsi:type="immutable" id="mp_reserve" address="//0" name="Element Reserve" shortName="ElRes" default="2" min="0" max="32" origin="0" actions="change"/>
-			<opcode xsi:type="mutable" id="mp_program" address="//1-3" parameterSelector="mp_partmode" parameters="mp_partmode" defaults="mp_program"  actions="dump"/>
+			<opcode xsi:type="mutable" id="mp_program" address="//1-3" parameterSelector="mp_partmode" parameters="mp_partmode" defaultSelector="mp_partmode" defaults="mp_program"  actions="dump"/>
 			<opcode xsi:type="immutable" id="mp_midi_channel" address="//4" name="Midi Channel" shortName="Ch" defaults="id" table="midi_channels" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_poly" address="//5" name="Ployphony" shortName="Poly" table="mp_monopoly" default="1" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_key_on_assign" address="//6" name="Same Note Number Key On Assign" shortName="KeyOn" default="1" table="key_on_assign" actions="change"/>
@@ -463,7 +464,7 @@
 		<info ref="ds_cho"/>
 		<info ref="ds_var"/>
 		<bulk address="//0-15">
-			<opcode xsi:type="immutable" id="ds_pitch" address="//0-1" name="Pitch" shortName="Pitch" min="0" max="127.127" origin="8196" default="64.64" table="sub8k" unit="ct" actions="dump"/>
+			<opcode xsi:type="immutable" id="ds_pitch" address="//0-1" name="Pitch" shortName="Pitch" min="0" max="127.127" origin="64.64" default="64.64" table="sub8k" unit="ct" actions="dump"/>
 <!--		<opcode xsi:type="immutable" id="ds_coarse" address="//0" name="Pitch Coarse" shortName="Coars" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_fine" address="//1" name="Pitch Fine" shortName="Fine" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
 -->			<opcode xsi:type="immutable" id="ds_vol" address="//2" name="Volume" shortName="Vol" min="0" max="127" defaultSelector="ds_program" defaults="ds_vol_def" actions="change"/>
