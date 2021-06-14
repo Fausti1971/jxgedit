@@ -20,7 +20,8 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 	public static void init()
 	{
 		try
-		{	XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(XMLPATH + XML_DEFAULTS));
+		{	String s = XMLPATH + XML_DEFAULTS;
+			XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(s), s);
 			for(XMLNode t : n.getChildNodes(TAG_DEFAULTSTABLE))
 			{	DEFAULTSTABLE.add(new XGDefaultsTable(t));
 			}

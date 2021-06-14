@@ -15,7 +15,8 @@ public class XGParameterTable extends HashMap<Integer, XGParameter> implements X
 
 	public static void init()
 	{	try
-		{	XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(XMLPATH + XML_PARAMETER));
+		{	String s = XMLPATH + XML_PARAMETER;
+			XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(s), s);
 			for(XMLNode t : n.getChildNodes(TAG_PARAMETERTABLE))
 			{	PARAMETERTABLES.add(new XGParameterTable(t));
 			}

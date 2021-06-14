@@ -1,24 +1,33 @@
 package value;
-import java.util.Comparator;import java.util.LinkedHashSet;import java.util.Set;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
 import application.XGLoggable;
 import device.*;
-import module.XGDrumsetModuleType;import module.XGModule;import module.XGModuleType;import msg.XGMessageBulkDump;
+import module.XGDrumsetModuleType;import module.XGModule;
+import module.XGModuleType;
+import msg.XGMessageBulkDump;
 import msg.XGMessageParameterChange;
 import msg.XGMessengerException;
 import msg.XGResponse;
 import parm.XGDefaultsTable;
-import static parm.XGDefaultsTable.DEFAULTSTABLE;import parm.XGOpcode;
+import static parm.XGDefaultsTable.DEFAULTSTABLE;
+import parm.XGOpcode;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
-import static parm.XGParameterConstants.XACTION.change_partmode;import static parm.XGParameterConstants.XACTION.change_program;import parm.XGParameterTable;
-import static parm.XGParameterTable.PARAMETERTABLES;import parm.XGTable;
+import static parm.XGParameterConstants.XACTION.change_partmode;
+import static parm.XGParameterConstants.XACTION.change_program;
+import parm.XGParameterTable;
+import static parm.XGParameterTable.PARAMETERTABLES;
+import parm.XGTable;
 import parm.XGTableEntry;
-import tag.*;import static value.XGValueStore.STORE;
+import tag.*;
+import static value.XGValueStore.STORE;
+
 /**
  * 
  * @author thomas
@@ -85,7 +94,8 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	{
 		if("mp_program".equals(this.opcode.getTag())) this.opcode.getActions().add(change_program);
 		if("mp_partmode".equals(this.opcode.getTag())) this.opcode.getActions().add(change_partmode);
-
+//TODO: Designfehler (beim Laden oder Empfangen eines Dumps wird zuerst (1) das Program am falschen ProgramBuffer gesetzt, da der Partmode erst danach (7) gesetzt wird);
+//Lösung: Umbau auf XGBulkdump als Datenhalter
 		if(this.opcode.isMutable())
 		{	XGValue psv = this.module.getValues().get(this.opcode.getParameterSelectorTag());
 			if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + " " + this.opcode.getParameterSelectorTag() + " not found for value " + this.getTag());

@@ -5,22 +5,23 @@ import static parm.XGTable.TABLES;import xml.XMLNode;
 
 public class XGParameter implements XGLoggable, XGParameterConstants
 {
-	public static XMLNode init()
-	{
-		try
-		{	return XMLNode.parse(JXG.class.getResourceAsStream(XML_PARAMETER));
-		}
-		catch(IOException e)
-		{	LOG.info(e.getMessage());
-			return new XMLNode(TAG_PARAMETERTABLES);
-		}
-	}
+//	public static XMLNode init()
+//	{
+//		try
+//		{	return XMLNode.parse(JXG.class.getResourceAsStream(XML_PARAMETER));
+//		}
+//		catch(IOException e)
+//		{	LOG.severe(e.getMessage());
+////			return new XMLNode(TAG_PARAMETERTABLES);
+//			return null;
+//		}
+//	}
 
 /******************************************************************************************************************/
 
 	private final String name, shortName;
 	private final XGTable translationTable;
-	private final int minValue, maxValue, originIndex;
+	private final int minValue, maxValue, originIndex, defaultValue;
 	private final String unit;
 	private final boolean isValid;//TODO: keine Ahnung, wofür das gut ist...
 
@@ -29,6 +30,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 
 		this.minValue = n.getValueAttribute(ATTR_MIN, UNLIMITED);
 		this.maxValue = n.getValueAttribute(ATTR_MAX, UNLIMITED);
+		this.defaultValue = n.getValueAttribute(ATTR_DEFAULT, 0);
 		int originValue = n.getValueAttribute(ATTR_ORIGIN, n.getValueAttribute(ATTR_DEFAULT, this.minValue));
 		if(originValue == UNLIMITED) originValue = 0;
 		this.originIndex = this.translationTable.getIndex(originValue, this.translationTable.getMinIndex());
@@ -48,6 +50,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 		this.minValue = v;
 		this.maxValue = v;
 		this.originIndex = v;
+		this.defaultValue = v;
 
 		this.unit = "";
 		this.isValid = v != NO_PARAMETERVALUE;
@@ -84,7 +87,10 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	}
 
 	public int getLimitizedIndex(int i)
-	{	return Math.max(Math.min(i, this.getMaxIndex()), this.getMinIndex());
+	{	int min = this.getMinIndex(), max = this.getMaxIndex();
+		int v = Math.max(Math.min(i, max), min);
+		if(i != v) LOG.warning("index " + i + " of parameter " + this + " is out of range " + min + " and " + max);
+		return v;
 	}
 
 	public String getShortName()

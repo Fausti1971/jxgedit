@@ -103,7 +103,7 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 		{	id = this.address.getMid().getMin();
 		}
 		if(this.type instanceof XGDrumsetModuleType) return ((XGDrumsetModuleType)this.type).getDrumname(id);
-		if(this.type.getModules().size() > 1) return text + " " + (id + 1);
+		if(this.type.getAddress().getMid().isRange()) return text + " " + (id + 1);
 		else return text;
 	}
 

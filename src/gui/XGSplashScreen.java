@@ -1,6 +1,10 @@
 package gui;
 
-import static application.XGLoggable.LOG;import static gui.XGUI.LARGE_FONT;import static gui.XGUI.MEDIUM_FONT;import javax.swing.*;import java.awt.*;import java.util.logging.Handler;import java.util.logging.LogRecord;
+import static application.XGLoggable.LOG;
+import static gui.XGUI.MEDIUM_FONT;
+import javax.swing.*;
+import java.util.logging.Handler;
+import java.util.logging.LogRecord;
 
 public class XGSplashScreen extends JFrame 
 {	private final Handler handler;

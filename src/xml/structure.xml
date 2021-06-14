@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<!--TODO: jetzt ganz neu: fehlende min- und max-Attribute werden durch UNLIMITED (-1) ersetzt, d.h. durch die Limits der Table;
+<!--jetzt ganz neu: fehlende min- und max-Attribute werden durch UNLIMITED (-1) ersetzt, d.h. durch die Limits der Table;
 -->
 <structure xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="structure.xsd">
 	<virtual id="ds_program"/>
@@ -16,26 +16,26 @@
 		<info ref="rev_program"/>
 		<bulk address="//0-13">
 			<opcode xsi:type="immutable" id="rev_program" address="//0-1" name="Reverb Program" shortName="Prog" default="1.0" table="fx_programs" tableFilter="reverb" actions="change"/>
-			<opcode xsi:type="mutable" id="rev_p1" address="//2" parameterSelector="rev_program" parameters="fx_parameter_1" defaultSelector="rev_program" defaults="fx_parameter_1" actions="change"/><!-- rev01 -->
-			<opcode xsi:type="mutable" id="rev_p2" address="//3" parameterSelector="rev_program" parameters="fx_parameter_2" defaultSelector="rev_program" defaults="fx_parameter_2" actions="change"/><!-- rev02 -->
-			<opcode xsi:type="mutable" id="rev_p3" address="//4" parameterSelector="rev_program" parameters="fx_parameter_3" defaultSelector="rev_program" defaults="fx_parameter_3" actions="change"/><!-- rev03 -->
-			<opcode xsi:type="mutable" id="rev_p4" address="//5" parameterSelector="rev_program" parameters="fx_parameter_4" defaultSelector="rev_program" defaults="fx_parameter_4" actions="change"/><!-- rev04 -->
-			<opcode xsi:type="mutable" id="rev_p5" address="//6" parameterSelector="rev_program" parameters="fx_parameter_5" defaultSelector="rev_program" defaults="fx_parameter_5" actions="change"/><!-- rev05 -->
-			<opcode xsi:type="mutable" id="rev_p6" address="//7" parameterSelector="rev_program" parameters="fx_parameter_6" defaultSelector="rev_program" defaults="fx_parameter_6" actions="change"/><!-- rev06 -->
-			<opcode xsi:type="mutable" id="rev_p7" address="//8" parameterSelector="rev_program" parameters="fx_parameter_7" defaultSelector="rev_program" defaults="fx_parameter_7" actions="change"/><!-- rev07 -->
-			<opcode xsi:type="mutable" id="rev_p8" address="//9" parameterSelector="rev_program" parameters="fx_parameter_8" defaultSelector="rev_program" defaults="fx_parameter_8" actions="change"/><!-- rev08 -->
-			<opcode xsi:type="mutable" id="rev_p9" address="//10" parameterSelector="rev_program" parameters="fx_parameter_9" defaultSelector="rev_program" defaults="fx_parameter_9" actions="change"/><!-- rev09 -->
-			<opcode xsi:type="mutable" id="rev_p10" address="//11" parameterSelector="rev_program" parameters="fx_parameter_10" defaultSelector="rev_program" defaults="fx_parameter_10" actions="change"/><!-- rev10 -->
+			<opcode xsi:type="mutable" id="rev_p1" address="//2" parameterSelector="rev_program" parameters="fx_parameter_1" defaultSelector="rev_program" defaults="fx_parameter_1" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p2" address="//3" parameterSelector="rev_program" parameters="fx_parameter_2" defaultSelector="rev_program" defaults="fx_parameter_2" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p3" address="//4" parameterSelector="rev_program" parameters="fx_parameter_3" defaultSelector="rev_program" defaults="fx_parameter_3" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p4" address="//5" parameterSelector="rev_program" parameters="fx_parameter_4" defaultSelector="rev_program" defaults="fx_parameter_4" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p5" address="//6" parameterSelector="rev_program" parameters="fx_parameter_5" defaultSelector="rev_program" defaults="fx_parameter_5" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p6" address="//7" parameterSelector="rev_program" parameters="fx_parameter_6" defaultSelector="rev_program" defaults="fx_parameter_6" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p7" address="//8" parameterSelector="rev_program" parameters="fx_parameter_7" defaultSelector="rev_program" defaults="fx_parameter_7" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p8" address="//9" parameterSelector="rev_program" parameters="fx_parameter_8" defaultSelector="rev_program" defaults="fx_parameter_8" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p9" address="//10" parameterSelector="rev_program" parameters="fx_parameter_9" defaultSelector="rev_program" defaults="fx_parameter_9" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p10" address="//11" parameterSelector="rev_program" parameters="fx_parameter_10" defaultSelector="rev_program" defaults="fx_parameter_10" actions="change"/>
 			<opcode xsi:type="immutable" id="rev_return" address="//12" name="Reverb Return" default="64" min="0" max="127" shortName="FXRet" actions="change"/>
 			<opcode xsi:type="immutable" id="rev_pan" address="//13" name="Reverb Panorama" shortName="FXPan" min="1" max="127" default="64" table="panorama" origin="64" actions="change"/>
 		</bulk>
 		<bulk address="//16-21">
-			<opcode xsi:type="mutable" id="rev_p11" address="//16" parameterSelector="rev_program" parameters="fx_parameter_11" defaultSelector="rev_program" defaults="fx_parameter_11" actions="change"/><!-- rev11 -->
-			<opcode xsi:type="mutable" id="rev_p12" address="//17" parameterSelector="rev_program" parameters="fx_parameter_12" defaultSelector="rev_program" defaults="fx_parameter_12" actions="change"/><!-- rev12 -->
-			<opcode xsi:type="mutable" id="rev_p13" address="//18" parameterSelector="rev_program" parameters="fx_parameter_13" defaultSelector="rev_program" defaults="fx_parameter_13" actions="change"/><!-- rev13 -->
-			<opcode xsi:type="mutable" id="rev_p14" address="//19" parameterSelector="rev_program" parameters="fx_parameter_14" defaultSelector="rev_program" defaults="fx_parameter_14" actions="change"/><!-- rev14 -->
-			<opcode xsi:type="mutable" id="rev_p15" address="//20" parameterSelector="rev_program" parameters="fx_parameter_15" defaultSelector="rev_program" defaults="fx_parameter_15" actions="change"/><!-- rev15 -->
-			<opcode xsi:type="mutable" id="rev_p16" address="//21" parameterSelector="rev_program" parameters="fx_parameter_16" defaultSelector="rev_program" defaults="fx_parameter_16" actions="change"/><!-- rev16 not used -->
+			<opcode xsi:type="mutable" id="rev_p11" address="//16" parameterSelector="rev_program" parameters="fx_parameter_11" defaultSelector="rev_program" defaults="fx_parameter_11" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p12" address="//17" parameterSelector="rev_program" parameters="fx_parameter_12" defaultSelector="rev_program" defaults="fx_parameter_12" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p13" address="//18" parameterSelector="rev_program" parameters="fx_parameter_13" defaultSelector="rev_program" defaults="fx_parameter_13" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p14" address="//19" parameterSelector="rev_program" parameters="fx_parameter_14" defaultSelector="rev_program" defaults="fx_parameter_14" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p15" address="//20" parameterSelector="rev_program" parameters="fx_parameter_15" defaultSelector="rev_program" defaults="fx_parameter_15" actions="change"/>
+			<opcode xsi:type="mutable" id="rev_p16" address="//21" parameterSelector="rev_program" parameters="fx_parameter_16" defaultSelector="rev_program" defaults="fx_parameter_16" actions="change"/>
 		</bulk>
 	</module>
 
@@ -43,27 +43,27 @@
 		<info ref="cho_program"/>
 		<bulk address="//32-46">
 			<opcode xsi:type="immutable" id="cho_program" address="//32-33" name="Chorus Program" shortName="Prog" default="65.0" table="fx_programs" tableFilter="chorus" actions="change"/>
-			<opcode xsi:type="mutable" id="cho_p1" address="//34" parameterSelector="cho_program" parameters="fx_parameter_1" defaultSelector="cho_program" defaults="fx_parameter_1" actions="change"/><!-- cho01 -->
-			<opcode xsi:type="mutable" id="cho_p2" address="//35" parameterSelector="cho_program" parameters="fx_parameter_2" defaultSelector="cho_program" defaults="fx_parameter_2" actions="change"/><!-- cho02 -->
-			<opcode xsi:type="mutable" id="cho_p3" address="//36" parameterSelector="cho_program" parameters="fx_parameter_3" defaultSelector="cho_program" defaults="fx_parameter_3" actions="change"/><!-- cho03 -->
-			<opcode xsi:type="mutable" id="cho_p4" address="//37" parameterSelector="cho_program" parameters="fx_parameter_4" defaultSelector="cho_program" defaults="fx_parameter_4" actions="change"/><!-- cho04 -->
-			<opcode xsi:type="mutable" id="cho_p5" address="//38" parameterSelector="cho_program" parameters="fx_parameter_5" defaultSelector="cho_program" defaults="fx_parameter_5" actions="change"/><!-- cho05 -->
-			<opcode xsi:type="mutable" id="cho_p6" address="//39" parameterSelector="cho_program" parameters="fx_parameter_6" defaultSelector="cho_program" defaults="fx_parameter_6" actions="change"/><!-- cho06 -->
-			<opcode xsi:type="mutable" id="cho_p7" address="//40" parameterSelector="cho_program" parameters="fx_parameter_7" defaultSelector="cho_program" defaults="fx_parameter_7" actions="change"/><!-- cho07 -->
-			<opcode xsi:type="mutable" id="cho_p8" address="//41" parameterSelector="cho_program" parameters="fx_parameter_8" defaultSelector="cho_program" defaults="fx_parameter_8" actions="change"/><!-- cho08 -->
-			<opcode xsi:type="mutable" id="cho_p9" address="//42" parameterSelector="cho_program" parameters="fx_parameter_9" defaultSelector="cho_program" defaults="fx_parameter_9" actions="change"/><!-- cho09 -->
-			<opcode xsi:type="mutable" id="cho_p10" address="//43" parameterSelector="cho_program" parameters="fx_parameter_10" defaultSelector="cho_program" defaults="fx_parameter_10" actions="change"/><!-- cho10 -->
+			<opcode xsi:type="mutable" id="cho_p1" address="//34" parameterSelector="cho_program" parameters="fx_parameter_1" defaultSelector="cho_program" defaults="fx_parameter_1" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p2" address="//35" parameterSelector="cho_program" parameters="fx_parameter_2" defaultSelector="cho_program" defaults="fx_parameter_2" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p3" address="//36" parameterSelector="cho_program" parameters="fx_parameter_3" defaultSelector="cho_program" defaults="fx_parameter_3" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p4" address="//37" parameterSelector="cho_program" parameters="fx_parameter_4" defaultSelector="cho_program" defaults="fx_parameter_4" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p5" address="//38" parameterSelector="cho_program" parameters="fx_parameter_5" defaultSelector="cho_program" defaults="fx_parameter_5" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p6" address="//39" parameterSelector="cho_program" parameters="fx_parameter_6" defaultSelector="cho_program" defaults="fx_parameter_6" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p7" address="//40" parameterSelector="cho_program" parameters="fx_parameter_7" defaultSelector="cho_program" defaults="fx_parameter_7" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p8" address="//41" parameterSelector="cho_program" parameters="fx_parameter_8" defaultSelector="cho_program" defaults="fx_parameter_8" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p9" address="//42" parameterSelector="cho_program" parameters="fx_parameter_9" defaultSelector="cho_program" defaults="fx_parameter_9" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p10" address="//43" parameterSelector="cho_program" parameters="fx_parameter_10" defaultSelector="cho_program" defaults="fx_parameter_10" actions="change"/>
 			<opcode xsi:type="immutable" id="cho_return" address="//44" name="Chorus Return" min="0" max="127" shortName="FXRet" actions="change"/>
 			<opcode xsi:type="immutable" id="cho_pan" address="//45" name="Effect Panorama" shortName="FXPan" min="1" max="127" default="64" table="panorama" origin="64" actions="change"/>
 			<opcode xsi:type="immutable" id="cho_to_rev" address="//46" name="Send To Reverb" shortName="FXRev" min="0" max="127" actions="change"/>
 		</bulk>
 		<bulk address="//48-53">
-			<opcode xsi:type="mutable" id="cho_p11" address="//48" parameterSelector="cho_program" parameters="fx_parameter_11" defaultSelector="cho_program" defaults="fx_parameter_11" actions="change"/><!-- cho11 -->
-			<opcode xsi:type="mutable" id="cho_p12" address="//49" parameterSelector="cho_program" parameters="fx_parameter_12" defaultSelector="cho_program" defaults="fx_parameter_12" actions="change"/><!-- cho12 -->
-			<opcode xsi:type="mutable" id="cho_p13" address="//50" parameterSelector="cho_program" parameters="fx_parameter_13" defaultSelector="cho_program" defaults="fx_parameter_13" actions="change"/><!-- cho13 -->
-			<opcode xsi:type="mutable" id="cho_p14" address="//51" parameterSelector="cho_program" parameters="fx_parameter_14" defaultSelector="cho_program" defaults="fx_parameter_14" actions="change"/><!-- cho14 -->
-			<opcode xsi:type="mutable" id="cho_p15" address="//52" parameterSelector="cho_program" parameters="fx_parameter_15" defaultSelector="cho_program" defaults="fx_parameter_15" actions="change"/><!-- cho15 -->
-			<opcode xsi:type="mutable" id="cho_p16" address="//53" parameterSelector="cho_program" parameters="fx_parameter_16" defaultSelector="cho_program" defaults="fx_parameter_16" actions="change"/><!-- cho16 -->
+			<opcode xsi:type="mutable" id="cho_p11" address="//48" parameterSelector="cho_program" parameters="fx_parameter_11" defaultSelector="cho_program" defaults="fx_parameter_11" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p12" address="//49" parameterSelector="cho_program" parameters="fx_parameter_12" defaultSelector="cho_program" defaults="fx_parameter_12" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p13" address="//50" parameterSelector="cho_program" parameters="fx_parameter_13" defaultSelector="cho_program" defaults="fx_parameter_13" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p14" address="//51" parameterSelector="cho_program" parameters="fx_parameter_14" defaultSelector="cho_program" defaults="fx_parameter_14" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p15" address="//52" parameterSelector="cho_program" parameters="fx_parameter_15" defaultSelector="cho_program" defaults="fx_parameter_15" actions="change"/>
+			<opcode xsi:type="mutable" id="cho_p16" address="//53" parameterSelector="cho_program" parameters="fx_parameter_16" defaultSelector="cho_program" defaults="fx_parameter_16" actions="change"/>
 		</bulk>
 	</module>
 
@@ -71,16 +71,16 @@
 		<info ref="var_program"/>
 		<bulk address="//64-96">
 			<opcode xsi:type="immutable" id="var_program" address="//64-65" name="Variation Program" shortName="Prog" default="5.0" table="fx_programs" tableFilter="variation" actions="change"/>
-			<opcode xsi:type="mutable" id="var_p1" address="//66-67" parameterSelector="var_program" parameters="fx_parameter_1" defaultSelector="var_program" defaults="fx_parameter_1" actions="change"/><!-- var01 -->
-			<opcode xsi:type="mutable" id="var_p2" address="//68-69" parameterSelector="var_program" parameters="fx_parameter_2" defaultSelector="var_program" defaults="fx_parameter_2" actions="change"/><!-- var02 -->
-			<opcode xsi:type="mutable" id="var_p3" address="//70-71" parameterSelector="var_program" parameters="fx_parameter_3" defaultSelector="var_program" defaults="fx_parameter_3" actions="change"/><!-- var03 -->
-			<opcode xsi:type="mutable" id="var_p4" address="//72-73" parameterSelector="var_program" parameters="fx_parameter_4" defaultSelector="var_program" defaults="fx_parameter_4" actions="change"/><!-- var04 -->
-			<opcode xsi:type="mutable" id="var_p5" address="//74-75" parameterSelector="var_program" parameters="fx_parameter_5" defaultSelector="var_program" defaults="fx_parameter_5" actions="change"/><!-- var05 -->
-			<opcode xsi:type="mutable" id="var_p6" address="//76-77" parameterSelector="var_program" parameters="fx_parameter_6" defaultSelector="var_program" defaults="fx_parameter_6" actions="change"/><!-- var06 -->
-			<opcode xsi:type="mutable" id="var_p7" address="//78-79" parameterSelector="var_program" parameters="fx_parameter_7" defaultSelector="var_program" defaults="fx_parameter_7" actions="change"/><!-- var07 -->
-			<opcode xsi:type="mutable" id="var_p8" address="//80-81" parameterSelector="var_program" parameters="fx_parameter_8" defaultSelector="var_program" defaults="fx_parameter_8" actions="change"/><!-- var08 -->
-			<opcode xsi:type="mutable" id="var_p9" address="//82-83" parameterSelector="var_program" parameters="fx_parameter_9" defaultSelector="var_program" defaults="fx_parameter_9" actions="change"/><!-- var09 -->
-			<opcode xsi:type="mutable" id="var_p10" address="//84-85" parameterSelector="var_program" parameters="fx_parameter_10" defaultSelector="var_program" defaults="fx_parameter_10" actions="change"/><!-- var10 -->
+			<opcode xsi:type="mutable" id="var_p1" address="//66-67" parameterSelector="var_program" parameters="fx_parameter_1" defaultSelector="var_program" defaults="fx_parameter_1" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p2" address="//68-69" parameterSelector="var_program" parameters="fx_parameter_2" defaultSelector="var_program" defaults="fx_parameter_2" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p3" address="//70-71" parameterSelector="var_program" parameters="fx_parameter_3" defaultSelector="var_program" defaults="fx_parameter_3" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p4" address="//72-73" parameterSelector="var_program" parameters="fx_parameter_4" defaultSelector="var_program" defaults="fx_parameter_4" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p5" address="//74-75" parameterSelector="var_program" parameters="fx_parameter_5" defaultSelector="var_program" defaults="fx_parameter_5" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p6" address="//76-77" parameterSelector="var_program" parameters="fx_parameter_6" defaultSelector="var_program" defaults="fx_parameter_6" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p7" address="//78-79" parameterSelector="var_program" parameters="fx_parameter_7" defaultSelector="var_program" defaults="fx_parameter_7" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p8" address="//80-81" parameterSelector="var_program" parameters="fx_parameter_8" defaultSelector="var_program" defaults="fx_parameter_8" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p9" address="//82-83" parameterSelector="var_program" parameters="fx_parameter_9" defaultSelector="var_program" defaults="fx_parameter_9" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p10" address="//84-85" parameterSelector="var_program" parameters="fx_parameter_10" defaultSelector="var_program" defaults="fx_parameter_10" actions="change"/>
 			<opcode xsi:type="immutable" id="var_return" address="//86" name="Variation Return" shortName="FXRet" min="0" max="127" actions="change"/>
 			<opcode xsi:type="immutable" id="var_pan" address="//87" name="Variation Panorama" shortName="FXPan" min="1" max="127" default="64" table="panorama" origin="64" actions="change"/>
 			<opcode xsi:type="immutable" id="var_to_rev" address="//88" name="Send To Reverb" shortName="FXRev" min="0" max="127" actions="change"/>
@@ -100,12 +100,12 @@
 			<opcode xsi:type="immutable" id="var_cbc2" address="//98" name="CBC2 Control Depth" shortName="CBC2" min="0" max="127" table="sub64" origin="64" actions="change"/>
 		</bulk>
 			<bulk address="//112-117">
-			<opcode xsi:type="mutable" id="var_p11" address="//112" parameterSelector="var_program" parameters="fx_parameter_11" defaultSelector="var_program" defaults="fx_parameter_11" actions="change"/><!-- var11 -->
-			<opcode xsi:type="mutable" id="var_p12" address="//113" parameterSelector="var_program" parameters="fx_parameter_12" defaultSelector="var_program" defaults="fx_parameter_12" actions="change"/><!-- var12 -->
-			<opcode xsi:type="mutable" id="var_p13" address="//114" parameterSelector="var_program" parameters="fx_parameter_13" defaultSelector="var_program" defaults="fx_parameter_13" actions="change"/><!-- var13 -->
-			<opcode xsi:type="mutable" id="var_p14" address="//115" parameterSelector="var_program" parameters="fx_parameter_14" defaultSelector="var_program" defaults="fx_parameter_14" actions="change"/><!-- var14 -->
-			<opcode xsi:type="mutable" id="var_p15" address="//116" parameterSelector="var_program" parameters="fx_parameter_15" defaultSelector="var_program" defaults="fx_parameter_15" actions="change"/><!-- var15 -->
-			<opcode xsi:type="mutable" id="var_p16" address="//117" parameterSelector="var_program" parameters="fx_parameter_16" defaultSelector="var_program" defaults="fx_parameter_16" actions="change"/><!-- var16 -->
+			<opcode xsi:type="mutable" id="var_p11" address="//112" parameterSelector="var_program" parameters="fx_parameter_11" defaultSelector="var_program" defaults="fx_parameter_11" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p12" address="//113" parameterSelector="var_program" parameters="fx_parameter_12" defaultSelector="var_program" defaults="fx_parameter_12" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p13" address="//114" parameterSelector="var_program" parameters="fx_parameter_13" defaultSelector="var_program" defaults="fx_parameter_13" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p14" address="//115" parameterSelector="var_program" parameters="fx_parameter_14" defaultSelector="var_program" defaults="fx_parameter_14" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p15" address="//116" parameterSelector="var_program" parameters="fx_parameter_15" defaultSelector="var_program" defaults="fx_parameter_15" actions="change"/>
+			<opcode xsi:type="mutable" id="var_p16" address="//117" parameterSelector="var_program" parameters="fx_parameter_16" defaultSelector="var_program" defaults="fx_parameter_16" actions="change"/>
 		</bulk>
 	</module>
 
@@ -141,16 +141,16 @@
 		<info ref="ins_part"/>
 		<bulk address="//0-17">
 			<opcode xsi:type="immutable" id="ins_program" address="//0-1" name="Insertion Program" shortName="Prog" table="fx_programs" tableFilter="insertion" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p1" address="//2" parameterSelector="ins_program" parameters="fx_parameter_1" defaultSelector="ins_program" defaults="fx_parameter_1" actions="change"/><!-- ins01 -->
-			<opcode xsi:type="mutable" id="ins_p2" address="//3" parameterSelector="ins_program" parameters="fx_parameter_2" defaultSelector="ins_program" defaults="fx_parameter_2" actions="change"/><!-- ins02 -->
-			<opcode xsi:type="mutable" id="ins_p3" address="//4" parameterSelector="ins_program" parameters="fx_parameter_3" defaultSelector="ins_program" defaults="fx_parameter_3" actions="change"/><!-- ins03 -->
-			<opcode xsi:type="mutable" id="ins_p4" address="//5" parameterSelector="ins_program" parameters="fx_parameter_4" defaultSelector="ins_program" defaults="fx_parameter_4" actions="change"/><!-- ins04 -->
-			<opcode xsi:type="mutable" id="ins_p5" address="//6" parameterSelector="ins_program" parameters="fx_parameter_5" defaultSelector="ins_program" defaults="fx_parameter_5" actions="change"/><!-- ins05 -->
-			<opcode xsi:type="mutable" id="ins_p6" address="//7" parameterSelector="ins_program" parameters="fx_parameter_6" defaultSelector="ins_program" defaults="fx_parameter_6" actions="change"/><!-- ins06 -->
-			<opcode xsi:type="mutable" id="ins_p7" address="//8" parameterSelector="ins_program" parameters="fx_parameter_7" defaultSelector="ins_program" defaults="fx_parameter_7" actions="change"/><!-- ins07 -->
-			<opcode xsi:type="mutable" id="ins_p8" address="//9" parameterSelector="ins_program" parameters="fx_parameter_8" defaultSelector="ins_program" defaults="fx_parameter_8" actions="change"/><!-- ins08 -->
-			<opcode xsi:type="mutable" id="ins_p9" address="//10" parameterSelector="ins_program" parameters="fx_parameter_9" defaultSelector="ins_program" defaults="fx_parameter_9" actions="change"/><!-- ins09 -->
-			<opcode xsi:type="mutable" id="ins_p10" address="//11" parameterSelector="ins_program" parameters="fx_parameter_10" defaultSelector="ins_program" defaults="fx_parameter_10" actions="change"/><!-- ins10 -->
+			<opcode xsi:type="mutable" id="ins_p1" address="//2" parameterSelector="ins_program" parameters="fx_parameter_1" defaultSelector="ins_program" defaults="fx_parameter_1" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p2" address="//3" parameterSelector="ins_program" parameters="fx_parameter_2" defaultSelector="ins_program" defaults="fx_parameter_2" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p3" address="//4" parameterSelector="ins_program" parameters="fx_parameter_3" defaultSelector="ins_program" defaults="fx_parameter_3" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p4" address="//5" parameterSelector="ins_program" parameters="fx_parameter_4" defaultSelector="ins_program" defaults="fx_parameter_4" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p5" address="//6" parameterSelector="ins_program" parameters="fx_parameter_5" defaultSelector="ins_program" defaults="fx_parameter_5" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p6" address="//7" parameterSelector="ins_program" parameters="fx_parameter_6" defaultSelector="ins_program" defaults="fx_parameter_6" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p7" address="//8" parameterSelector="ins_program" parameters="fx_parameter_7" defaultSelector="ins_program" defaults="fx_parameter_7" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p8" address="//9" parameterSelector="ins_program" parameters="fx_parameter_8" defaultSelector="ins_program" defaults="fx_parameter_8" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p9" address="//10" parameterSelector="ins_program" parameters="fx_parameter_9" defaultSelector="ins_program" defaults="fx_parameter_9" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p10" address="//11" parameterSelector="ins_program" parameters="fx_parameter_10" defaultSelector="ins_program" defaults="fx_parameter_10" actions="change"/>
 			<opcode xsi:type="immutable" id="ins_part" address="//12" name="Effect Part" shortName="Part" table="fx_parts" default="127" actions="change"/>
 			<opcode xsi:type="immutable" id="ins_mw" address="//13" name="Modulation Wheel Control Depth" shortName="MW" min="0" max="127" table="sub64" origin="64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ins_pb" address="//14" name="Pitchbend Wheel Control Depth" shortName="PB" min="0" max="127" table="sub64" origin="64" default="64" actions="change"/>
@@ -165,25 +165,27 @@
 			<opcode xsi:type="immutable" id="ins_cbc2" address="//19" name="CBC2 Control Depth" shortName="CBC2" min="0" max="127" table="sub64" default="64" origin="64" actions="change"/>
 		</bulk>
 		<bulk address="//32-37">
-			<opcode xsi:type="mutable" id="ins_p11" address="//32" parameterSelector="ins_program" parameters="fx_parameter_11" defaultSelector="ins_program" defaults="fx_parameter_11" actions="change"/><!-- ins11 -->
-			<opcode xsi:type="mutable" id="ins_p12" address="//33" parameterSelector="ins_program" parameters="fx_parameter_12" defaultSelector="ins_program" defaults="fx_parameter_12" actions="change"/><!-- ins12 -->
-			<opcode xsi:type="mutable" id="ins_p13" address="//34" parameterSelector="ins_program" parameters="fx_parameter_13" defaultSelector="ins_program" defaults="fx_parameter_13" actions="change"/><!-- ins13 -->
-			<opcode xsi:type="mutable" id="ins_p14" address="//35" parameterSelector="ins_program" parameters="fx_parameter_14" defaultSelector="ins_program" defaults="fx_parameter_14" actions="change"/><!-- ins14 -->
-			<opcode xsi:type="mutable" id="ins_p15" address="//36" parameterSelector="ins_program" parameters="fx_parameter_15" defaultSelector="ins_program" defaults="fx_parameter_15" actions="change"/><!-- ins15 -->
-			<opcode xsi:type="mutable" id="ins_p16" address="//37" parameterSelector="ins_program" parameters="fx_parameter_16" defaultSelector="ins_program" defaults="fx_parameter_16" actions="change"/><!-- ins16 -->
+			<opcode xsi:type="mutable" id="ins_p11" address="//32" parameterSelector="ins_program" parameters="fx_parameter_11" defaultSelector="ins_program" defaults="fx_parameter_11" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p12" address="//33" parameterSelector="ins_program" parameters="fx_parameter_12" defaultSelector="ins_program" defaults="fx_parameter_12" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p13" address="//34" parameterSelector="ins_program" parameters="fx_parameter_13" defaultSelector="ins_program" defaults="fx_parameter_13" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p14" address="//35" parameterSelector="ins_program" parameters="fx_parameter_14" defaultSelector="ins_program" defaults="fx_parameter_14" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p15" address="//36" parameterSelector="ins_program" parameters="fx_parameter_15" defaultSelector="ins_program" defaults="fx_parameter_15" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p16" address="//37" parameterSelector="ins_program" parameters="fx_parameter_16" defaultSelector="ins_program" defaults="fx_parameter_16" actions="change"/>
 		</bulk>
-		<bulk address="//48-67"><!-- TODO: alternative word-Adressen für Insertion -->
-			<opcode xsi:type="mutable" id="ins_p1w" address="//48-49" parameterSelector="ins_program" parameters="fx_parameter_1" defaultSelector="ins_program" defaults="fx_parameter_1" actions="change"/><!-- ins01 -->
-			<opcode xsi:type="mutable" id="ins_p2w" address="//50-51" parameterSelector="ins_program" parameters="fx_parameter_2" defaultSelector="ins_program" defaults="fx_parameter_2" actions="change"/><!-- ins02 -->
-			<opcode xsi:type="mutable" id="ins_p3w" address="//52-53" parameterSelector="ins_program" parameters="fx_parameter_3" defaultSelector="ins_program" defaults="fx_parameter_3" actions="change"/><!-- ins03 -->
-			<opcode xsi:type="mutable" id="ins_p4w" address="//54-55" parameterSelector="ins_program" parameters="fx_parameter_4" defaultSelector="ins_program" defaults="fx_parameter_4" actions="change"/><!-- ins04 -->
-			<opcode xsi:type="mutable" id="ins_p5w" address="//56-57" parameterSelector="ins_program" parameters="fx_parameter_5" defaultSelector="ins_program" defaults="fx_parameter_5" actions="change"/><!-- ins05 -->
-			<opcode xsi:type="mutable" id="ins_p6w" address="//58-59" parameterSelector="ins_program" parameters="fx_parameter_6" defaultSelector="ins_program" defaults="fx_parameter_6" actions="change"/><!-- ins06 -->
-			<opcode xsi:type="mutable" id="ins_p7w" address="//60-61" parameterSelector="ins_program" parameters="fx_parameter_7" defaultSelector="ins_program" defaults="fx_parameter_7" actions="change"/><!-- ins07 -->
-			<opcode xsi:type="mutable" id="ins_p8w" address="//62-63" parameterSelector="ins_program" parameters="fx_parameter_8" defaultSelector="ins_program" defaults="fx_parameter_8" actions="change"/><!-- ins08 -->
-			<opcode xsi:type="mutable" id="ins_p9w" address="//64-65" parameterSelector="ins_program" parameters="fx_parameter_9" defaultSelector="ins_program" defaults="fx_parameter_9" actions="change"/><!-- ins09 -->
-			<opcode xsi:type="mutable" id="ins_p10w" address="//66-67" parameterSelector="ins_program" parameters="fx_parameter_10" defaultSelector="ins_program" defaults="fx_parameter_10" actions="change"/><!-- ins10 -->
+<!--NO IDEA: alternative word-Adressen für Insertion
+		<bulk address="//48-67">
+			<opcode xsi:type="mutable" id="ins_p1w" address="//48-49" parameterSelector="ins_program" parameters="fx_parameter_1" defaultSelector="ins_program" defaults="fx_parameter_1" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p2w" address="//50-51" parameterSelector="ins_program" parameters="fx_parameter_2" defaultSelector="ins_program" defaults="fx_parameter_2" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p3w" address="//52-53" parameterSelector="ins_program" parameters="fx_parameter_3" defaultSelector="ins_program" defaults="fx_parameter_3" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p4w" address="//54-55" parameterSelector="ins_program" parameters="fx_parameter_4" defaultSelector="ins_program" defaults="fx_parameter_4" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p5w" address="//56-57" parameterSelector="ins_program" parameters="fx_parameter_5" defaultSelector="ins_program" defaults="fx_parameter_5" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p6w" address="//58-59" parameterSelector="ins_program" parameters="fx_parameter_6" defaultSelector="ins_program" defaults="fx_parameter_6" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p7w" address="//60-61" parameterSelector="ins_program" parameters="fx_parameter_7" defaultSelector="ins_program" defaults="fx_parameter_7" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p8w" address="//62-63" parameterSelector="ins_program" parameters="fx_parameter_8" defaultSelector="ins_program" defaults="fx_parameter_8" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p9w" address="//64-65" parameterSelector="ins_program" parameters="fx_parameter_9" defaultSelector="ins_program" defaults="fx_parameter_9" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p10w" address="//66-67" parameterSelector="ins_program" parameters="fx_parameter_10" defaultSelector="ins_program" defaults="fx_parameter_10" actions="change"/>
 		</bulk>
+-->
 	</module>
 	<module id="mp" name="Multipart" address="8-10/0-63/" table="add1">
 		<info ref="mp_partmode"/>
@@ -353,7 +355,7 @@
 			<opcode xsi:type="immutable" id="mp_vl_absorp_nr" address="//21" name="Absorption Control Number" min="0" max="98" default="0" table="controller" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vl_absorp" address="//22" name="Absorption Control Depth" table="sub64" min="0" max="127" default="64" actions="change"/>
 		</bulk>
-<!--
+<!--NOT USED
 		<bulk address="9//23-28">
 			<opcode xsi:type="immutable" id="mp_vl_amp_break" address="//23" name="Amp Level Scale Breakpoint" table="tones" min="0" max="127" default="60" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vl_amp_depth" address="//24" name="Depth" table="sub64" min="0" max="127" origin="64" default="64" actions="change"/>
@@ -368,6 +370,7 @@
 			<opcode xsi:type="immutable" id="mp_hpf_cut" address="//32" name="Highpass Filter Cutoff Frequency" shortName="HPFCF" min="0" max="127" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_hpf_reso" address="//33" name="Highpass Filter Resonance" shortName="HPFR" min="0" max="127" default="64" actions="change"/>
 		</bulk>
+<!--NOT USED
 		<bulk address="10//34-39">
 			<opcode xsi:type="immutable" id="mp_mw_hpf" address="//34" name="Modulation Wheel HPF Control Depth" shortName="MWFD" min="0" max="127" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_pb_hpf" address="//35" name="Pitchbend Wheel HPF Control Depth" shortName="PBFD" min="0" max="127" default="64" actions="change"/>
@@ -376,6 +379,7 @@
 			<opcode xsi:type="immutable" id="mp_ac1_hpf" address="//38" name="Assignable Controller 1 HPF Control Depth" shortName="AC1FD" min="0" max="127" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_ac2_hpf" address="//39" name="Assignable Controller 2 HPF Control Depth" shortName="AC2FD" min="0" max="127" default="64" actions="change"/>
 		</bulk>
+-->
 		<bulk address="10//48-54">
 			<opcode xsi:type="immutable" id="mp_cbc1_nr" address="//48" name="CBC 1 Control Number" shortName="C1CNR" min="0" max="95" default="18" table="controller" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cbc1_pitch" address="//49" name="CBC 1 Pitch Control" shortName="C1PC" min="40" max="88" table="sub64" origin="64" default="64" actions="change"/>
@@ -465,9 +469,11 @@
 		<info ref="ds_var"/>
 		<bulk address="//0-15">
 			<opcode xsi:type="immutable" id="ds_pitch" address="//0-1" name="Pitch" shortName="Pitch" min="0" max="127.127" origin="64.64" default="64.64" table="sub8k" unit="ct" actions="dump"/>
-<!--		<opcode xsi:type="immutable" id="ds_coarse" address="//0" name="Pitch Coarse" shortName="Coars" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
+<!--REPLACED BY ds_pitch
+			<opcode xsi:type="immutable" id="ds_coarse" address="//0" name="Pitch Coarse" shortName="Coars" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_fine" address="//1" name="Pitch Fine" shortName="Fine" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
--->			<opcode xsi:type="immutable" id="ds_vol" address="//2" name="Volume" shortName="Vol" min="0" max="127" defaultSelector="ds_program" defaults="ds_vol_def" actions="change"/>
+-->
+			<opcode xsi:type="immutable" id="ds_vol" address="//2" name="Volume" shortName="Vol" min="0" max="127" defaultSelector="ds_program" defaults="ds_vol_def" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_group" address="//3" name="Alternate Group" shortName="Group" min="0" max="127" defaultSelector="ds_program" defaults="ds_group_def" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_pan" address="//4" name="Panorama" shortName="Pan" table="panorama" min="0" max="127" origin="64" defaultSelector="ds_program" defaults="ds_pan_def" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_rev" address="//5" name="Send To Reverb" shortName="Rev" min="0" max="127" defaults="ds_rev_def" defaultSelector="ds_program" actions="change"/>
@@ -509,11 +515,13 @@
 			<opcode xsi:type="immutable" id="ds_velo_pitch" address="//96" name="Velocity Pitch Sense" min="48" max="80" table="sub64" origin="64" defaults="ds_velo_pitch_def" defaultSelector="ds_program" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_velo_lpf" address="//97" name="Velocity LPF Cutoff Sense" min="48" max="80" table="sub64" origin="64" defaults="ds_velo_lpf_def" defaultSelector="ds_program" actions="change"/>
 		</bulk>
+<!--NOT USED
 		<bulk address="//112-115">
 			<opcode xsi:type="immutable" id="ds_src_msb" address="//112" name="Source Drumkit Bank Select MSB" min="126" max="127" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_src_lsb" address="//113" name="Source Drumkit Bank Select LSB" min="0" max="0" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_src_prg" address="//114" name="Source Drumkit Program" min="0" max="127" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_src_note" address="//115" name="Source Drumkit Note Number" min="13" max="91" actions="change"/>
 		</bulk>
+-->
 	</module>
 </structure>

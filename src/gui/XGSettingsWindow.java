@@ -62,11 +62,11 @@ public class XGSettingsWindow extends JDialog
 
 		gbcl.gridy = gbcr.gridy = 5;
 		root.add(new JLabel("Look & Feel:", JLabel.LEADING), gbcl);
-		JComboBox<String> laf = new JComboBox<String>(new Vector<String>(XGUI.LOOKANDFEELS.keySet()));
-		laf.setSelectedItem(UIManager.getLookAndFeel().getName());//TODO: gibt für GTK+ immer Nimbus zurücK?!
+		JComboBox<String> laf = new JComboBox<>(new Vector<>(XGUI.LOOKANDFEELS.keySet()));
+//		laf.setSelectedItem(UIManager.getLookAndFeel().getName());//gibt für "GTK+" immer "GTK Look And Feel" zurücK und wird somit nicht gefunden?!
+		laf.setSelectedItem(XGUI.VARIABLES.config.getStringAttribute(ATTR_LOOKANDFEEL));
 		laf.addItemListener((ItemEvent e)->{XGUI.setLookAndFeel((String)e.getItem());});
 		root.add(laf, gbcr);
-
 
 		return root;
 	}

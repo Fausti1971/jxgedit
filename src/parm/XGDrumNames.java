@@ -7,7 +7,8 @@ public class XGDrumNames
 
 	public static void init()
 	{	try
-		{	XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(XMLPATH + XML_DRUMS));
+		{	String s = XMLPATH + XML_DRUMS;
+			XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(s), s);
 			for(XMLNode k : n.getChildNodes(TAG_KEY))
 			{	int key = k.getValueAttribute(ATTR_VALUE, -1);
 				XGRealTable t = DRUMNAMES.getOrDefault(key, new XGRealTable(Integer.toString(key), "", FALLBACKMASK, false));

@@ -32,7 +32,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	{	try
 		{	URI uri = JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI();
 			configFile = new File(uri.resolve(XML_CONFIG));
-			config = XMLNode.parse(new FileInputStream(configFile));
+			config = XMLNode.parse(configFile);
 		}
 		catch(URISyntaxException | IOException e)
 		{	LOG.info(e.getMessage());
@@ -49,7 +49,8 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	//}
 
 	public static void main(String[] args)
-	{	XGSplashScreen splash = new XGSplashScreen();
+	{
+		XGSplashScreen splash = new XGSplashScreen();
 
 		JXG.init();
 		XGTable.init();
@@ -64,7 +65,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		XGValueStore.init();
 		XGUI.init();
 		XGMainWindow.init();
-
+		System.gc();
 		splash.dispose();
 
 		LOG.info(APPNAME + " initialized from " + configFile);

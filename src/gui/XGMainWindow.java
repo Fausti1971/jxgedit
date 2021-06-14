@@ -141,7 +141,7 @@ public class XGMainWindow extends XGWindow implements ComponentListener, XGConfi
 		for(XGModuleType mt : TYPES) if(mt instanceof XGDrumsetModuleType) adr.add(mt.getTag());
 		for(String s : adr)
 		{	XGModuleType t = TYPES.get(s);
-			if(t != null) tabPane.addTab(t.getName(), new JScrollPane(new XGModuleTable(t)));//TODO: hier müssen evtl. (?) noch die unbenutzten Drumsets ausgeblendet werden;
+			if(t != null) tabPane.addTab(t.getName(), new JScrollPane(new XGModuleTable(t)));
 		}
 
 		content.add(tabPane, CENTER);

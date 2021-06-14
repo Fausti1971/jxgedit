@@ -28,7 +28,8 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	public static void init()
 	{	XMLNode xml;
 		try
-		{	xml = XMLNode.parse(JXG.class.getResourceAsStream(XMLPATH + XML_STRUCTURE));
+		{	String n = XMLPATH + XML_STRUCTURE;
+			xml = XMLNode.parse(JXG.class.getResourceAsStream(n), n);
 		}
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());

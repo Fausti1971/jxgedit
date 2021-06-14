@@ -8,7 +8,8 @@ public class XGProperty implements XGTagable
 	private final Set<XGPropertyChangeListener> listeners = new LinkedHashSet<>();
 
 	public XGProperty(String k, String v)
-	{	this.key = k;
+	{	if(v == null) v = "";
+		this.key = k;
 		this.value = new StringBuffer(v);
 	}
 
@@ -17,8 +18,10 @@ public class XGProperty implements XGTagable
 	}
 
 	public void setValue(String s)
-	{	this.value.replace(0, this.value.length(), s);
-		this.notifyListeners();
+	{	if(s != null)
+		{	this.value.replace(0, this.value.length(), s);
+			this.notifyListeners();
+		}
 	}
 
 	public StringBuffer getValue()

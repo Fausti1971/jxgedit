@@ -65,6 +65,10 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	{	XGMidi.getMidi().close();
 	}
 
+	public XGProperty getName()
+	{	return this.config.getAttributes().getOrNew(ATTR_NAME, new XGProperty(ATTR_NAME, DEF_DEVNAME));
+	}
+
 	public int getSysexID()
 	{	return this.sysexID;
 	}
@@ -193,7 +197,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	}
 
 	@Override public String toString()
-	{	return this.config.getStringAttribute(ATTR_NAME);
+	{	return this.getName().getValue().toString();
 	}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()

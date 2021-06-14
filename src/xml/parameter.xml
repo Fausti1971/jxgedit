@@ -1500,7 +1500,7 @@
 	</parameterTable>
 
 	<parameterTable name="fx_part">
-		<parameter selectorValue="0" name="Effect Part" shortName="Part" table="fx_parts"/>
+		<parameter selectorValue="0" name="Effect Part" shortName="Part" default="127" table="fx_parts"/>
 	</parameterTable>
 
 	<parameterTable name="mp_partmode">

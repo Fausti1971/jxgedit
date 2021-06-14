@@ -1,8 +1,6 @@
 package xml;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
@@ -25,7 +23,11 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 {
 	private static final String ERRORSTRING = " contains invalid character";
 
-	public static XMLNode parse(java.io.InputStream xml)throws IOException
+	public static XMLNode parse(File f)throws IOException
+	{	return parse(new FileInputStream(f), f.toString());
+	}
+
+	public static XMLNode parse(java.io.InputStream xml, String name)throws IOException
 	{	if(xml == null) throw new IOException();
 		XMLNode current_node = null, parent_node = null, root_node = null;
 
@@ -36,7 +38,7 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 		{	XMLEventReader rd = inputFactory.createXMLEventReader(new StreamSource(xml));
 			while(rd.hasNext())
 			{	XMLEvent ev = rd.nextEvent();
-				if(ev.isStartDocument()) LOG.info("parsing started: " + xml);
+				if(ev.isStartDocument()) LOG.info("parsing started: " + name);
 				if(ev.isStartElement())
 				{	parent_node = current_node;
 					current_node = new XMLNode(ev.asStartElement().getName().getLocalPart(), XMLNode.createProperties(ev.asStartElement().getAttributes()));
@@ -45,7 +47,7 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 				}
 				if(ev.isCharacters()) if(current_node != null) current_node.setTextContent(ev.asCharacters().getData().trim());
 				if(ev.isEndElement()) if(current_node != null) current_node = current_node.parent;
-				if(ev.isEndDocument()) LOG.info("parsing finished: " + xml);
+				if(ev.isEndDocument()) LOG.info("parsing finished: " + name);
 			}
 			rd.close();
 		}

@@ -1,6 +1,6 @@
 package gui;
 
-import static application.JXG.APPNAME;import config.XGPropertyChangeListener;import device.XGDevice;import xml.XGProperty;import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_NAME;import java.awt.Toolkit;
+import static application.JXG.APPNAME;import config.XGPropertyChangeListener;import device.XGDevice;import xml.XGProperty;import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_NAME;import static xml.XMLNodeConstants.TAG_DEVICE;import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.LinkedHashSet;
@@ -24,7 +24,7 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 		this.config = cfg;
 		this.owner = own;
 		if(this.owner != null) own.childWindows.add(this);
-		XGDevice.device.getConfig().getAttributes().get(ATTR_NAME).getListeners().add((XGProperty p)->{this.setTitle(this.getTitle());});
+		XGDevice.device.getName().getListeners().add((XGProperty p)->{this.setTitle(this.getTitle());});
 		this.setIconImage(gui.XGUI.loadImage(LOGO_NAME));
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
 		this.setDefaultCloseOperation(javax.swing.JDialog.HIDE_ON_CLOSE);
