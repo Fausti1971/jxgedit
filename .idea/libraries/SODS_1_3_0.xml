@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="SODS-1.3.0">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../SODS-1.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/../SODS-1.3.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES />
+  </library>
+</component>
