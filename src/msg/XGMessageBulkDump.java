@@ -29,7 +29,7 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	}
 
 	@Override public int getMid()
-	{return decodeLSB(MID_OFFS);
+	{	return decodeLSB(MID_OFFS);
 	}
 
 	@Override public int getLo()
@@ -70,7 +70,7 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	{	int size = this.getBulkSize();
 		int pos = DATA_OFFS + size;//checksum-offset
 		int sum = this.calcChecksum(SIZE_OFFS, pos - 1);//Berechnung erstmal ohne checksum-offset, da diese erst errechnet und gesetzt werden muss
-		this.encodeLSB(pos, (0 - sum) & LSB);
+		this.encodeLSB(pos, (- sum) & LSB);
 	}
 
 	@Override public int getBaseOffset()

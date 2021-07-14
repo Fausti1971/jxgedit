@@ -33,6 +33,12 @@ public class XGSysexFile extends File implements XGSysexFileConstants,  XGMessen
 			}
 		}
 	}
+
+	private static String appendSuffix(String s)
+	{	if(!s.endsWith(".syx")) return s.concat(".syx");
+		else return s;
+	}
+
 /******************************************************************************************************************************************/
 
 //	private final XGDevice device;
@@ -40,17 +46,13 @@ public class XGSysexFile extends File implements XGSysexFileConstants,  XGMessen
 	private final XGAddressableSet<XGMessage> buffer = new XGAddressableSet<>();
 	private boolean changed = false;
 
-	public XGSysexFile(final String path) throws IOException
-	{	super(path);
+	public XGSysexFile(final String path)
+	{	super(XGSysexFile.appendSuffix(path));
 //		if(!this.canRead()) this.createNewFile();
 //		this.device = dev;
 //		this.parse();
 	}
 
-/**
- * lädt und parst ein SysexFile in den internen Puffer
- * @throws IOException 
- */
 	public void parse() throws IOException, FileNotFoundException
 	{	LOG.info("start parsing: " + this.getAbsolutePath());
 

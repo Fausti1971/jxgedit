@@ -3,8 +3,7 @@ package device;
 import java.io.*;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressConstants;
@@ -13,7 +12,7 @@ import application.JXG;
 import config.XGConfigurable;import file.XGSysexFile;
 import file.XGSysexFileConstants;
 import gui.XGFileSelector;
-import gui.XGWindow;
+import gui.XGMainWindow;import gui.XGWindow;
 import module.XGModule;
 import module.XGModuleType;
 import static module.XGModuleType.TYPES;
@@ -39,7 +38,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	private int info1, info2;
 	private XGSysexFile defaultFile;
 	private int sysexID = 0;
-	private XGWindow childWindow;
+//	private XGWindow childWindow;
 
 	public XGDevice(XMLNode cfg)
 	{	
@@ -148,7 +147,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	public void load()
 	{	XMLNode last = XGSysexFile.config.getLastChildOrNew(TAG_ITEM);
 		XGFileSelector fs = new XGFileSelector(last.getTextContent(), "open sysex file...", "open", XGSysexFileConstants.SYX_FILEFILTER);
-		switch(fs.select(this.childWindow))
+		switch(fs.select(XGMainWindow.window))
 		{	case JFileChooser.APPROVE_OPTION:
 			{	XGSysexFile f;
 				try
@@ -173,11 +172,15 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	public void save()
 	{	XMLNode last = XGSysexFile.config.getLastChildOrNew(TAG_ITEM);
 		XGFileSelector fs = new XGFileSelector(last.getTextContent(), "save sysex file...", "save", XGSysexFileConstants.SYX_FILEFILTER);
-		switch(fs.select(this.childWindow))
+		switch(fs.select(XGMainWindow.window))
 		{	case JFileChooser.APPROVE_OPTION:
-			{	XGSysexFile f;
+			{	XGSysexFile f = new XGSysexFile(last.getTextContent().toString());
 				try
-				{	f = new XGSysexFile(last.getTextContent().toString());
+				{	if(f.exists())
+					{	int res = JOptionPane.showConfirmDialog(XGMainWindow.window, " Overwrite " + f + "?");
+						if(res == JOptionPane.CANCEL_OPTION || res == JOptionPane.NO_OPTION) return;
+					}
+					else f.createNewFile();
 					f.parse();// damit die in einer Datei enthaltenen (aber vom ValueStore nicht unterstützen) Messages erhalten bleiben
 					this.transmitAll(STORE, f);
 					f.save();
@@ -190,7 +193,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 			}
 			case JFileChooser.CANCEL_OPTION:
 			{	last.removeNode();
-				LOG.warning("fileselection aborted");
+				LOG.info("fileselection aborted");
 				break;
 			}
 		}

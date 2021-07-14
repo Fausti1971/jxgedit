@@ -13,7 +13,7 @@ public interface XGRequest extends XGMessage
  * @return true, wenn dieser XGRequest mit der übergebenen XGResponse beantwortet ist;
  */
 	default boolean setResponsed(XGResponse msg)
-	{	boolean is = msg instanceof XGResponse && this.getResponse().isEqual(msg);
+	{	boolean is = msg!=null && this.getResponse().isEqual(msg);
 		this.setResponsed(is);
 		if(is)
 		{	msg.setDestination(this.getResponse().getDestination());
