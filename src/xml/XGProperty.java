@@ -13,9 +13,7 @@ public class XGProperty implements XGTagable
 		this.value = new StringBuffer(v);
 	}
 
-	@Override public String getTag()
-	{	return this.key;
-	}
+	@Override public String getTag(){ return this.key;}
 
 	public void setValue(String s)
 	{	if(s != null)
@@ -24,19 +22,11 @@ public class XGProperty implements XGTagable
 		}
 	}
 
-	public StringBuffer getValue()
-	{	return this.value;
-	}
+	public StringBuffer getValue(){ return this.value;}
 
-	public Set<XGPropertyChangeListener> getListeners()
-	{	return this.listeners;
-	}
+	public Set<XGPropertyChangeListener> getListeners(){ return this.listeners;}
 
-	@Override public String toString()
-	{	return this.key + "=" + this.value;
-	}
+	@Override public String toString(){ return this.key + "=" + this.value;}
 
-	private void notifyListeners()
-	{	for(XGPropertyChangeListener l : this.listeners) l.propertyChanged(this);
-	}
+	private void notifyListeners(){ for(XGPropertyChangeListener l : this.listeners) l.propertyChanged(this);}
 }

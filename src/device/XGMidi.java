@@ -27,7 +27,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 {	private static final int DEF_TIMEOUT = 300;
 	private static XGMidi MIDI = null;
 	private static XMLNode config = null;
-	private static final Object Lock = new Object();
+	private static final Object lock = new Object();
 
 	public static XGMidi getMidi()
 	{	if(MIDI == null) XGMidi.init();
@@ -43,10 +43,10 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	public static Set<Info> OUTPUTS = new LinkedHashSet<>();
 
 	static
-	{	synchronized(Lock)
+	{	synchronized(lock)
 		{	initInputs();
 		}
-		synchronized(Lock)
+		synchronized(lock)
 		{	initOutputs();
 		}
 	}
@@ -204,23 +204,22 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	try
 		{	XGMessage m = XGMessage.newMessage(this, STORE, mmsg);
-			if(this.request != null && this.request.setResponsed((XGResponse)m))
+			if(this.request != null && this.request.setResponsedBy((XGResponse)m))
 			{	synchronized(this.request)
 				{	this.request.notify();
 				}
-				return;
 			}
-			else STORE.submit(m);
+//			else STORE.submit(m);
 		}
-		catch(InvalidMidiDataException | InvalidXGAddressException | XGMessengerException e)
+		catch(InvalidMidiDataException | InvalidXGAddressException e)
 		{	LOG.info(e.getMessage());
 		}
 	}
 
-	@Override public void request(XGRequest msg) throws XGMessengerException
-	{	this.submit(msg);
+	@Override public void request(XGRequest req) throws XGMessengerException
+	{	this.submit(req);
 		{	try
-			{	this.request = msg;
+			{	this.request = req;
 				synchronized(this.request)
 				{	this.request.wait(this.timeoutValue);
 				}

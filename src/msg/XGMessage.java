@@ -13,7 +13,7 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 {
 	public static XGMessage newMessage(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
 	{	checkMessage(array);
-		switch(array[MSG_OFFS] << 4)
+		switch(array[MSG_OFFS] & 0xF0)
 		{	case MSG_BD:	return new XGMessageBulkDump(src, dest, array, init);
 			case MSG_PC:	return new XGMessageParameterChange(src, dest, array, init);
 			case MSG_DR:	return new XGMessageBulkRequest(src, dest, array, init);
@@ -35,49 +35,27 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 
 /***************************************************************************************************/
 
-	default void setSOX()
-	{	this.encodeLSB(SOX_OFFS, SOX);
-	}
+	default void setSOX(){ this.encodeLSB(SOX_OFFS, SOX);}
 
-	default void setEOX(int index)
-	{	this.encodeLSB(index, EOX);
-	}
+	default void setEOX(int index){ this.encodeLSB(index, EOX);}
 
-	default int getSysexID()
-	{	return this.decodeLSN(SYSEX_OFFS);
-	}
+	default int getSysexID(){ return this.decodeLSN(SYSEX_OFFS);}
 
-	default void setSysexID(int id)
-	{	this.encodeLSN(SYSEX_OFFS, id);
-	}
+	default void setSysexID(int id){ this.encodeLSN(SYSEX_OFFS, id);}
 
-	default int getMessageID()
-	{	return decodeMSN(MSG_OFFS);
-	}
+	default int getMessageID(){ return decodeMSN(MSG_OFFS);}
 
-	default void setMessageID(int id)
-	{	this.encodeMSN(MSG_OFFS, id);
-	}
+	default void setMessageID(int id){ this.encodeMSN(MSG_OFFS, id);}
 
-	default int getVendorID()
-	{	return this.decodeLSB(VENDOR_OFFS);
-	}
+	default int getVendorID(){ return this.decodeLSB(VENDOR_OFFS);}
 
-	default void setVendorID()
-	{	this.encodeLSB(VENDOR_OFFS, VENDOR);
-	}
+	default void setVendorID(){ this.encodeLSB(VENDOR_OFFS, VENDOR);}
 
-	default int getModelID()
-	{	return decodeLSB(MODEL_OFFS);
-	}
+	default int getModelID(){ return decodeLSB(MODEL_OFFS);}
 
-	default void setModelID()
-	{	this.encodeLSB(MODEL_OFFS, MODEL);
-	}
+	default void setModelID(){ this.encodeLSB(MODEL_OFFS, MODEL);}
 
-	default public void setTimeStamp()
-	{	this.setTimeStamp(System.currentTimeMillis());
-	}
+	default public void setTimeStamp(){ this.setTimeStamp(System.currentTimeMillis());}
 
 	default void setAddress(XGAddress adr) throws InvalidXGAddressException
 	{	this.setHi(adr.getHi().getValue());
@@ -85,9 +63,7 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 		this.setLo(adr.getLo().getValue());
 	}
 
-	@Override public default XGAddress getAddress()
-	{	return new XGAddress(this.getHi(), this.getMid(), this.getLo());
-	}
+	@Override public default XGAddress getAddress(){ return new XGAddress(this.getHi(), this.getMid(), this.getLo());}
 
 /**
  * überprüft anhand vendorID und modelID, ob es sich um eine XG-Message handelt und wirft bei Fehlschlag eine Exception

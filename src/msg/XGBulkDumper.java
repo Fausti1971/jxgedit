@@ -19,9 +19,9 @@ public interface XGBulkDumper extends XGLoggable
 	XGAddressableSet<XGAddress> getBulks();
 
 /**
- * erfragt alle im BulkDumper konfigurierten (in bulks.xml deklarierten) Bulks von bei der src und übermittelt die jeweilige Response zum dest
- * @param src
- * @param dest
+ * erfragt alle im BulkDumper konfigurierten (in structure.xml deklarierten) Bulks von der src und übermittelt die jeweilige Response zum dest
+ * @param src Datenquelle
+ * @param dest Datenziel
  */
 	default void transmitAll(XGMessenger src, XGMessenger dest)
 	{	if(src == null || dest == null) return;
@@ -37,15 +37,16 @@ public interface XGBulkDumper extends XGLoggable
 		for(XGAddress b : set)
 		{	try
 			{	r = new XGMessageBulkRequest(dest, src, b);
-				r.request();
+				src.request(r);
 				++requested;
 				if(r.isResponsed())
 				{	dest.submit(r.getResponse());
 					pm.setNote(r.toString());
 					pm.setProgress(++responsed);
+					LOG.info("response for " + r + " within " + (r.getResponse().getTimeStamp() - r.getTimeStamp()) + "ms");
 				}
 				else
-				{	LOG.severe("no response for " + r);
+				{	LOG.severe("no response for " + r + " within " + (System.currentTimeMillis() - r.getTimeStamp()) + "ms");
 					pm.setNote(r.toString());
 					missed.add(r);
 				}

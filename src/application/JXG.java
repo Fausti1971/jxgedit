@@ -9,7 +9,7 @@ import file.*;
 import gui.*;
 import module.XGModule;
 import module.XGModuleType;
-import parm.*;
+import msg.XGMessageParameterRequest;import parm.*;
 import value.*;
 import xml.*;
 

@@ -9,10 +9,7 @@ import application.XGLoggable;
 import device.*;
 import module.XGDrumsetModuleType;import module.XGModule;
 import module.XGModuleType;
-import msg.XGMessageBulkDump;
-import msg.XGMessageParameterChange;
-import msg.XGMessengerException;
-import msg.XGResponse;
+import msg.*;
 import parm.XGDefaultsTable;
 import static parm.XGDefaultsTable.DEFAULTSTABLE;
 import parm.XGOpcode;
@@ -327,6 +324,20 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		}
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
+		}
+	}
+
+/**
+* erfragt den Value mittels XGMessageParameterRequest von MIDI
+*/
+	public void requestAction()
+	{	try
+		{	XGMessageParameterRequest req = new XGMessageParameterRequest(STORE, XGMidi.getMidi(), this);
+			req.getDestination().request(req);
+			if(req.isResponsed()) STORE.submit(req.getResponse());
+		}
+		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e)
+		{	e.printStackTrace();
 		}
 	}
 

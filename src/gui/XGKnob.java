@@ -7,7 +7,7 @@ import adress.XGAddress;
 import adress.XGMemberNotFoundException;
 import application.XGMath;
 import module.XGModule;
-import parm.XGParameter;
+import msg.XGMessageParameterRequest;import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import value.XGValue;
 import value.XGValueChangeListener;
@@ -126,7 +126,7 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 		}
 
 		@Override public void mouseClicked(MouseEvent e)
-		{
+		{	if(e.getClickCount() == 2) this.value.requestAction();
 		}
 
 		@Override public void mousePressed(MouseEvent e)
@@ -169,9 +169,7 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 	public void focusLost(FocusEvent event)
 	{
 	}
-	public void mouseClicked(MouseEvent event)
-	{
-	}
+
 	public void mousePressed(MouseEvent event)
 	{
 	}

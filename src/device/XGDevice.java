@@ -82,7 +82,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		try
 		{	m = new XGMessageBulkRequest(STORE, XGMidi.getMidi(), XGAddressConstants.XGMODELNAMEADRESS);
 			try
-			{	m.request();
+			{	m.getDestination().request(m);
 				if(m.isResponsed())
 				{	XGResponse r = m.getResponse();
 					int offs = r.getBaseOffset();
@@ -179,9 +179,9 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 				{	if(f.exists())
 					{	int res = JOptionPane.showConfirmDialog(XGMainWindow.window, " Overwrite " + f + "?");
 						if(res == JOptionPane.CANCEL_OPTION || res == JOptionPane.NO_OPTION) return;
+						f.parse();// damit die in einer Datei enthaltenen (aber vom ValueStore nicht unterstützen) Messages erhalten bleiben
 					}
 					else f.createNewFile();
-					f.parse();// damit die in einer Datei enthaltenen (aber vom ValueStore nicht unterstützen) Messages erhalten bleiben
 					this.transmitAll(STORE, f);
 					f.save();
 					f.close();

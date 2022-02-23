@@ -49,38 +49,26 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 
 	private final XGAddress address;
 	private final XGModuleType type;
+	private final XGAddressableSet<XGAddress> bulks = new XGAddressableSet<>();
 	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
 
 	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
 		this.values.addAll(STORE.getAllIncluded(this.address));
+		for(XGAddress bd : this.type.getBulkAdresses()){ this.bulks.add(bd.complement(this.address));}
+
 		XGRealTable tab = (XGRealTable)TABLES.get(TABLE_FX_PARTS);
 		String tag = mt.getTag();
 		if("mp".equals(tag)) tab.add(new XGTableEntry(id, this.toString()));
 		if("ad".equals(tag)) tab.add(new XGTableEntry(id + 64, this.toString()));
 	}
 
-	public XGModuleType getType()
-	{	return this.type;
-	}
+	public XGModuleType getType(){ return this.type;}
 
-	public XGTagableAddressableSet<XGValue> getValues()
-	{	return this.values;
-	}
+	public XGTagableAddressableSet<XGValue> getValues(){ return this.values;}
 
-	//public String getTranslatedID()
-	//{	try
-	//	{	return this.type.idTranslator.getByIndex(this.address.getMid().getValue()).getName();
-	//	}
-	//	catch(InvalidXGAddressException e)
-	//	{	return this.address.getMid().toString();
-	//	}
-	//}
-	//
-	public void resetValues()
-	{	for(XGValue v : this.getValues()) v.setDefaultValue();
-	}
+	public void resetValues(){ for(XGValue v : this.getValues()) v.setDefaultValue();}
 
 	//@Override public void actionPerformed(ActionEvent e)
 	//{	XGDevice dev = this.type.getDevice();
@@ -94,7 +82,7 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 	//}
 
 	@Override public String toString()
-	{	int id = 0;
+	{	int id;
 		String text = this.type.getName();
 		try
 		{	id = this.address.getMid().getValue();
@@ -107,24 +95,9 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 		else return text;
 	}
 
-	@Override public XGAddressableSet<XGAddress> getBulks()
-	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
-		for(XGAddress bd : this.type.getBulkAdresses())
-		{	try
-			{	set.add(bd.complement(this.address));
-			}
-			catch(InvalidXGAddressException e)
-			{	LOG.warning(e.getMessage());
-			}
-		}
-		return set;
-	}
+	@Override public XGAddressableSet<XGAddress> getBulks(){ return this.bulks;}
 
-	@Override public XGAddress getAddress()
-	{	return this.address;
-	}
+	@Override public XGAddress getAddress(){ return this.address;}
 
-	public int compareTo(XGModule module)
-	{	return this.address.compareTo(module.address);
-	}
+	public int compareTo(XGModule module){ return this.address.compareTo(module.address);}
 }

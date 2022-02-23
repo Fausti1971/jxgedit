@@ -115,23 +115,23 @@
 			<opcode xsi:type="immutable" id="eq_program" address="//0" name="EQ Type" shortName="Type" table="eq_program" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_gain1" address="//1" name="EQ Gain 1" shortName="Gain1" min="52" max="76" table="sub64" origin="64" unit="dB" defaultSelector="eq_program" defaults="eq_gain1" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_freq1" address="//2" name="EQ Frequency 1" shortName="Freq1" min="4" max="40" table="table3" defaultSelector="eq_program" defaults="eq_freq1" actions="change"/>
-			<opcode xsi:type="immutable" id="eq_q1" address="//3" name="EQ Q1" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q1" actions="change"/>
+			<opcode xsi:type="immutable" id="eq_q1" address="//3" name="Q1" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q1" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_shape1" address="//4" name="EQ Shape 1" shortName="Shp1" table="eq_shape" defaultSelector="eq_program" defaults="eq_shape1" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_gain2" address="//5" name="EQ Gain 2" shortName="Gain2" min="52" max="76" table="sub64" origin="64" unit="dB" defaultSelector="eq_program" defaults="eq_gain2" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_freq2" address="//6" name="EQ Frequency 2" shortName="Freq2" min="14" max="54" table="table3" defaultSelector="eq_program" defaults="eq_freq2" actions="change"/>
-			<opcode xsi:type="immutable" id="eq_q2" address="//7" name="EQ Q2" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q2" actions="change"/>
+			<opcode xsi:type="immutable" id="eq_q2" address="//7" name="Q2" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q2" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_not_used1" address="//8" name="not_used" actions="change"/>
-			<opcode xsi:type="immutable" id="eq_gain3" address="//9" name="EQ Gain 3" shortName="Gain" min="52" max="76" table="sub64" origin="64" unit="dB" defaultSelector="eq_program" defaults="eq_gain3" actions="change"/>
+			<opcode xsi:type="immutable" id="eq_gain3" address="//9" name="EQ Gain 3" shortName="Gain3" min="52" max="76" table="sub64" origin="64" unit="dB" defaultSelector="eq_program" defaults="eq_gain3" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_freq3" address="//10" name="EQ Frequency 3" shortName="Freq3" min="14" max="54" table="table3" defaultSelector="eq_program" defaults="eq_freq3" actions="change"/>
-			<opcode xsi:type="immutable" id="eq_q3" address="//11" name="EQ Q3" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q3" actions="change"/>
+			<opcode xsi:type="immutable" id="eq_q3" address="//11" name="Q3" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q3" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_not_used2" address="//12" name="not_used" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_gain4" address="//13" name="EQ Gain 4" shortName="Gain4" min="52" max="76" table="sub64" origin="64" unit="dB" defaultSelector="eq_program" defaults="eq_gain4" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_freq4" address="//14" name="EQ Frequency 4" shortName="Freq4" min="14" max="54" table="table3" defaultSelector="eq_program" defaults="eq_freq4" actions="change"/>
-			<opcode xsi:type="immutable" id="eq_q4" address="//15" name="EQ Q4" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q4" actions="change"/>
+			<opcode xsi:type="immutable" id="eq_q4" address="//15" name="Q4" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q4" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_not_used3" address="//16" name="not_used" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_gain5" address="//17" name="EQ Gain 5" shortName="Gain5" min="52" max="76" table="sub64" origin="64" unit="dB" defaultSelector="eq_program" defaults="eq_gain5" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_freq5" address="//18" name="EQ Frequency 5" shortName="Freq5" min="28" max="58" table="table3" defaultSelector="eq_program" defaults="eq_freq5" actions="change"/>
-			<opcode xsi:type="immutable" id="eq_q5" address="//19" name="EQ Q5" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q5" actions="change"/>
+			<opcode xsi:type="immutable" id="eq_q5" address="//19" name="Q5" min="1" max="120" table="div10" defaultSelector="eq_program" defaults="eq_q5" actions="change"/>
 			<opcode xsi:type="immutable" id="eq_shape5" address="//20" name="EQ Shape 5" shortName="Shp5" table="eq_shape" defaultSelector="eq_program" defaults="eq_shape5" actions="change"/>
 		</bulk>
 	</module>
@@ -172,7 +172,12 @@
 			<opcode xsi:type="mutable" id="ins_p15" address="//36" parameterSelector="ins_program" parameters="fx_parameter_15" defaultSelector="ins_program" defaults="fx_parameter_15" actions="change"/>
 			<opcode xsi:type="mutable" id="ins_p16" address="//37" parameterSelector="ins_program" parameters="fx_parameter_16" defaultSelector="ins_program" defaults="fx_parameter_16" actions="change"/>
 		</bulk>
-<!--NO IDEA: alternative word-Adressen für Insertion
+<!--	If effect type does not require MSB, accept parameters with addresses 02 to 0B, and ignore parameters with addresses from 30 to 42.
+		If effect type requires MSB, accept parameters with addresses 30 to 42 and ignore parameters with addresses 02 to 0B.
+		Bulk transmissions that include effect-type information will always send parameters at addresses 02 to 0B, but
+		if the effect type requires the MSB, the bulk receiving side shall ignore parameters at addresses 02 to 0B.
+		At present, the folloiwng four effect types require MSBs. Delay L,C,R? Delay L,R? Echo? Cross Delay
+			*Data range varies according to effect-type value.
 		<bulk address="//48-67">
 			<opcode xsi:type="mutable" id="ins_p1w" address="//48-49" parameterSelector="ins_program" parameters="fx_parameter_1" defaultSelector="ins_program" defaults="fx_parameter_1" actions="change"/>
 			<opcode xsi:type="mutable" id="ins_p2w" address="//50-51" parameterSelector="ins_program" parameters="fx_parameter_2" defaultSelector="ins_program" defaults="fx_parameter_2" actions="change"/>

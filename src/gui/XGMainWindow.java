@@ -7,7 +7,7 @@ import application.*;
 import static application.JXG.*;
 import config.XGConfigurable;
 import device.*;
-import static java.awt.BorderLayout.*;
+import file.XGSysexFile;import static java.awt.BorderLayout.*;
 import module.*;
 import static module.XGModuleType.TYPES;
 import static value.XGValueStore.STORE;
@@ -53,7 +53,7 @@ public class XGMainWindow extends XGWindow implements ComponentListener, XGConfi
 
 	private JMenuBar createMenu()
 	{	JMenuBar bar = new JMenuBar();
-
+//		bar.setFont(MEDIUM_FONT);
 		JMenu file = new JMenu("File");
 
 		JMenuItem load = new JMenuItem("Load Dump...");
@@ -73,7 +73,7 @@ public class XGMainWindow extends XGWindow implements ComponentListener, XGConfi
 		file.addSeparator();
 
 		JMenuItem quit = new JMenuItem("Quit");
-		quit.addActionListener((ActioEvent)->{JXG.quit();});
+		quit.addActionListener((ActioEvent)->{this.windowClosing(null);});
 		file.add(quit);
 
 		bar.add(file);
@@ -151,7 +151,10 @@ public class XGMainWindow extends XGWindow implements ComponentListener, XGConfi
 	}
 
 	@Override public void windowClosing(WindowEvent e)
-	{	this.dispose();
+	{	LOG.info("window closing");
+//TODO:		if(currentFile.hasChanged()) int res = JOptionPane(null, currentFile + " has unsaved edits! Quit nevertheless?");
+// 			if(res == JOptionPane.CANCEL_OPTION) return;
+		this.dispose();
 		JXG.quit();
 	}
 

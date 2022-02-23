@@ -1,39 +1,38 @@
 package msg;
 
-import adress.InvalidXGAddressException;
+import javax.sound.midi.InvalidMidiDataException;
 
-public interface XGRequest extends XGMessage
-{
-	default void request() throws InvalidXGAddressException, XGMessengerException
-	{	this.getDestination().request(this);
+public abstract class XGRequest extends XGSuperMessage
+{	XGResponse response;
+	boolean responsed;
+
+	protected XGRequest(XGMessenger src,XGMessenger dest,byte[] array,boolean init) throws InvalidMidiDataException
+	{	super(src,dest,array,init);
 	}
+
 /**
  * überprüft, ob die übergebene Message eine Antwort auf diesen XGRequest ist, setzt und returniert das Ergebnis;
  * @param msg
  * @return true, wenn dieser XGRequest mit der übergebenen XGResponse beantwortet ist;
  */
-	default boolean setResponsed(XGResponse msg)
-	{	boolean is = msg!=null && this.getResponse().isEqual(msg);
-		this.setResponsed(is);
-		if(is)
+	public boolean setResponsedBy(XGResponse msg)
+	{	this.responsed = msg!=null && this.getResponse().isEqual(msg);
+		if(this.responsed)
 		{	msg.setDestination(this.getResponse().getDestination());
-			this.setResponse(msg);
+			this.response = msg;
 		}
-		return is;
+		return this.responsed;
 	}
-
-	void setResponsed(boolean r);
 
 /**
  * wurde dieser XGRequest schon beantwortet?
  * @return true, falls ja;
  */
-	boolean isResponsed();
+	public boolean isResponsed(){	return this.responsed;}
 
 /**
- * returniert den Prototyp einer erwarteten Antwort (MessageID, SysexID und XGAddress) auf diesen XGRequest;
+ * returniert den Prototyp einer auf diesen XGRequest erwarteten oder erfolgten XGResponse (MessageID, SysexID und XGAddress);
  * @return s.o.
  */
-	XGResponse getResponse();
-	void setResponse(XGResponse m);
+	public XGResponse getResponse(){	return this.response;}
 }

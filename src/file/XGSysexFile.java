@@ -9,10 +9,8 @@ import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;
 import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.*;
-import gui.*;import msg.XGMessage;
-import msg.XGMessenger;
-import msg.XGRequest;
-import msg.XGResponse;import xml.*;import static xml.XMLNodeConstants.TAG_ITEM;
+import gui.*;import msg.*;
+import xml.*;import static xml.XMLNodeConstants.TAG_ITEM;
 
 public class XGSysexFile extends File implements XGSysexFileConstants,  XGMessenger, XGLoggable
 {	private static final long serialVersionUID=870648549558099401L;
@@ -35,15 +33,15 @@ public class XGSysexFile extends File implements XGSysexFileConstants,  XGMessen
 	}
 
 	private static String appendSuffix(String s)
-	{	if(!s.endsWith(".syx")) return s.concat(".syx");
-		else return s;
+	{	if(SYX_SUFFIX.equalsIgnoreCase(s.substring(s.length() - 4))) return s;
+		else return s.concat(SYX_SUFFIX);
 	}
 
 /******************************************************************************************************************************************/
 
 //	private final XGDevice device;
 //	private XGMessageBuffer buffer = new XGMessageBuffer(this);
-	private final XGAddressableSet<XGMessage> buffer = new XGAddressableSet<>();
+	private final XGAddressableSet<XGResponse> buffer = new XGAddressableSet<>();
 	private boolean changed = false;
 
 	public XGSysexFile(final String path)
@@ -109,13 +107,15 @@ public class XGSysexFile extends File implements XGSysexFileConstants,  XGMessen
 	}
 
 	@Override public void submit(XGMessage msg)
-	{	this.buffer.add(msg);
-		this.changed = true;
+	{	if(msg instanceof  XGResponse)
+		{	this.buffer.add((XGResponse)msg);
+			this.changed = true;
+		}
 	}
 
-	@Override public void request(XGRequest req) throws InvalidXGAddressException
-	{	XGMessage response = this.buffer.get(req.getAddress());
-		req.setResponsed((XGResponse)response);
+	@Override public void request(XGRequest req) throws InvalidXGAddressException, XGMessengerException
+	{	XGResponse response = this.buffer.get(req.getAddress());
+		if(req.setResponsedBy(response));// response.transmit();
 	}
 
 	@Override public void close()

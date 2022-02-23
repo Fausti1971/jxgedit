@@ -33,18 +33,14 @@ public class XGDrumsetModuleType extends XGModuleType
 		return s;
 	}
 
-	public int getPartmode()
-	{	return this.partmode;
-	}
+	public int getPartmode(){ return this.partmode;}
 
 	public XGDrumsetProgramValue getProgramListener()
 	{	//System.out.println(this + " programListeners: " + this.programListener.getValueListeners().size());
 		return this.programListener;
 	}
 
-	public int getProgram()
-	{	return this.program;
-	}
+	public int getProgram()	{ return this.program;}
 
 	public void setProgram(int prg)
 	{	this.program = prg;
@@ -56,6 +52,4 @@ public class XGDrumsetModuleType extends XGModuleType
 		}
 		this.programListener.notifyValueListeners(this.programListener);
 	}
-
-	
 }

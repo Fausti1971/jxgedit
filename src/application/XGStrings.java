@@ -120,6 +120,7 @@ public interface XGStrings
 		for(String c : n)
 			if(XGStrings.isNumber(c))
 				p[i++].y = Integer.parseInt(c);
+
 		r.x = Math.min(p[0].x, p[1].x);
 		r.y = Math.min(p[0].y, p[1].y);
 		r.width = abs(p[0].x - p[1].x) + 1;

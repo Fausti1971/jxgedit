@@ -8,88 +8,38 @@ import static gui.XGMEQ.*;public class XGEQEditWindow extends XGEditWindow
 	{	super(XGMainWindow.window, mod);
 		this.setContentPane(this.createContent());
 		this.pack();
-		this.setResizable(true);
 		this.setVisible(true);
 	}
 
 	javax.swing.JComponent createContent()
-	{	javax.swing.JPanel root = new javax.swing.JPanel();
-		root.setLayout(new java.awt.GridBagLayout());
+	{	XGFrame root = new XGFrame("MasterEQ", GRID * 3, GRID * 2);
 		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();
 
-		java.awt.GridBagConstraints gbc = new java.awt.GridBagConstraints(1, 1, 5, 1, 0.5, 0.0, java.awt.GridBagConstraints.WEST, java.awt.GridBagConstraints.HORIZONTAL, new java.awt.Insets(2,2,2,2), 2, 2);
+		root.add(new gui.XGRadio(values.get("eq_program"), javax.swing.BoxLayout.X_AXIS), "a0j0");
 
-		root.add(new gui.XGRadio(values.get("eq_program"), javax.swing.BoxLayout.X_AXIS), gbc);
+		root.add(new XGMEQ(this.module), "a1j6");
 
-		gbc.gridy = 2;
-		gbc.gridheight = 5;
-		gbc.weighty = 1.0;
-		gbc.fill = java.awt.GridBagConstraints.BOTH;
-		root.add(new XGMEQ(this.module), gbc);
+		root.add(new gui.XGKnob(values.get(G1)), "a7a8");
+		root.add(new gui.XGKnob(values.get(G2)), "c7c8");
+		root.add(new gui.XGKnob(values.get(G3)), "e7e8");
+		root.add(new gui.XGKnob(values.get(G4)), "g7g8");
+		root.add(new gui.XGKnob(values.get(G5)), "i7i8");
 
-		gbc.gridwidth = 1;
-		gbc.gridheight = 1;
-		gbc.weighty = 0.0;
+		root.add(new gui.XGKnob(values.get(F1)), "a9a10");
+		root.add(new gui.XGKnob(values.get(F2)), "c9c10");
+		root.add(new gui.XGKnob(values.get(F3)), "e9e10");
+		root.add(new gui.XGKnob(values.get(F4)), "g9g10");
+		root.add(new gui.XGKnob(values.get(F5)), "i9i10");
 
-		gbc.gridy = 7;
-		root.add(new gui.XGKnob(values.get(G1)), gbc);
+		root.add(new gui.XGKnob(values.get(Q1)), "b9b10");
+		root.add(new gui.XGKnob(values.get(Q2)), "d9d10");
+		root.add(new gui.XGKnob(values.get(Q3)), "f9f10");
+		root.add(new gui.XGKnob(values.get(Q4)), "h9h10");
+		root.add(new gui.XGKnob(values.get(Q5)), "j9j10");
 
-		gbc.gridx = 2;
-		root.add(new gui.XGKnob(values.get(G2)), gbc);
-
-		gbc.gridx = 3;
-		root.add(new gui.XGKnob(values.get(G3)), gbc);
-
-		gbc.gridx = 4;
-		root.add(new gui.XGKnob(values.get(G4)), gbc);
-
-		gbc.gridx = 5;
-		root.add(new gui.XGKnob(values.get(G5)), gbc);
-
-		gbc.gridy = 8;
-
-		gbc.gridx = 1;
-		root.add(new gui.XGKnob(values.get(F1)), gbc);
-
-		gbc.gridx = 2;
-		root.add(new gui.XGKnob(values.get(F2)), gbc);
-
-		gbc.gridx = 3;
-		root.add(new gui.XGKnob(values.get(F3)), gbc);
-
-		gbc.gridx = 4;
-		root.add(new gui.XGKnob(values.get(F4)), gbc);
-
-		gbc.gridx = 5;
-		root.add(new gui.XGKnob(values.get(F5)), gbc);
-
-		gbc.gridy = 9;
-
-		gbc.gridx = 1;
-		root.add(new gui.XGKnob(values.get(Q1)), gbc);
-
-		gbc.gridx = 2;
-		root.add(new gui.XGKnob(values.get(Q2)), gbc);
-
-		gbc.gridx = 3;
-		root.add(new gui.XGKnob(values.get(Q3)), gbc);
-
-		gbc.gridx = 4;
-		root.add(new gui.XGKnob(values.get(Q4)), gbc);
-
-		gbc.gridx = 5;
-		root.add(new gui.XGKnob(values.get(Q5)), gbc);
-
-		gbc.gridy = 10;
-
-		gbc.gridx = 1;
-		gbc.gridwidth = 2;
-		root.add(new gui.XGRadio(values.get(S1)), gbc);
-
-		gbc.gridx = 4;
-		root.add(new gui.XGRadio(values.get(S5)), gbc);
+		root.add(new gui.XGRadio(values.get(S1)), "b7b8");
+		root.add(new gui.XGRadio(values.get(S5)), "j7j8");
 
 		return root;
 	}
-
 }

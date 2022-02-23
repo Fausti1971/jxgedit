@@ -2407,6 +2407,7 @@
 		<item value="126" name="37.00"/>
 		<item value="127" name="39.70"/>
 	</table>
+
 	<table name="table2">
 		<item value="0" name="0.0"/>
 		<item value="1" name="0.1"/>
@@ -2573,33 +2574,33 @@
 		<item value="31" name="700"/>
 		<item value="32" name="800"/>
 		<item value="33" name="900"/>
-		<item value="34" name="1000"/>
-		<item value="35" name="1100"/>
-		<item value="36" name="1200"/>
-		<item value="37" name="1400"/>
-		<item value="38" name="1600"/>
-		<item value="39" name="1800"/>
-		<item value="40" name="2000"/>
-		<item value="41" name="2200"/>
-		<item value="42" name="2500"/>
-		<item value="43" name="2800"/>
-		<item value="44" name="3200"/>
-		<item value="45" name="3600"/>
-		<item value="46" name="4000"/>
-		<item value="47" name="4500"/>
-		<item value="48" name="5000"/>
-		<item value="49" name="5600"/>
-		<item value="50" name="6300"/>
-		<item value="51" name="7000"/>
-		<item value="52" name="8000"/>
-		<item value="53" name="9000"/>
-		<item value="54" name="10000"/>
-		<item value="55" name="11000"/>
-		<item value="56" name="12000"/>
-		<item value="57" name="14000"/>
-		<item value="58" name="16000"/>
-		<item value="59" name="18000"/>
-		<item value="60" name="20000"/>
+		<item value="34" name="1.0k"/>
+		<item value="35" name="1.1k"/>
+		<item value="36" name="1.2k"/>
+		<item value="37" name="1.4k"/>
+		<item value="38" name="1.6k"/>
+		<item value="39" name="1.8k"/>
+		<item value="40" name="2.0k"/>
+		<item value="41" name="2.2k"/>
+		<item value="42" name="2.5k"/>
+		<item value="43" name="2.8k"/>
+		<item value="44" name="3.2k"/>
+		<item value="45" name="3.6k"/>
+		<item value="46" name="4.0k"/>
+		<item value="47" name="4.5k"/>
+		<item value="48" name="5.0k"/>
+		<item value="49" name="5.6k"/>
+		<item value="50" name="6.3k"/>
+		<item value="51" name="7.0k"/>
+		<item value="52" name="8.0k"/>
+		<item value="53" name="9.0k"/>
+		<item value="54" name="10.0k"/>
+		<item value="55" name="11.0k"/>
+		<item value="56" name="12.0k"/>
+		<item value="57" name="14.0k"/>
+		<item value="58" name="16.0k"/>
+		<item value="59" name="18.0k"/>
+		<item value="60" name="20.0k"/>
 	</table>
 
 	<table name="table4" unit="s">
@@ -3166,50 +3167,50 @@
 	</table>
 
 	<table name="table13" unit="Hz">
-		<item value="0" name="44100"/>
-		<item value="1" name="22100"/>
-		<item value="2" name="14700"/>
-		<item value="3" name="11000"/>
-		<item value="4" name="8800"/>
-		<item value="5" name="7400"/>
-		<item value="6" name="6300"/>
-		<item value="7" name="5500"/>
-		<item value="8" name="4900"/>
-		<item value="9" name="4400"/>
-		<item value="10" name="4000"/>
-		<item value="11" name="3700"/>
-		<item value="12" name="3400"/>
-		<item value="13" name="3200"/>
-		<item value="14" name="2900"/>
-		<item value="15" name="2800"/>
-		<item value="16" name="2600"/>
-		<item value="17" name="2500"/>
-		<item value="18" name="2300"/>
-		<item value="19" name="2200"/>
-		<item value="20" name="2100"/>
-		<item value="21" name="2000"/>
-		<item value="22" name="1920"/>
-		<item value="23" name="1840"/>
-		<item value="24" name="1760"/>
-		<item value="25" name="1700"/>
-		<item value="26" name="1630"/>
-		<item value="27" name="1580"/>
-		<item value="28" name="1520"/>
-		<item value="29" name="1470"/>
-		<item value="30" name="1420"/>
-		<item value="31" name="1380"/>
-		<item value="32" name="1340"/>
-		<item value="33" name="1300"/>
-		<item value="34" name="1260"/>
-		<item value="35" name="1230"/>
-		<item value="36" name="1190"/>
-		<item value="37" name="1160"/>
-		<item value="38" name="1130"/>
-		<item value="39" name="1100"/>
-		<item value="40" name="1080"/>
-		<item value="41" name="1050"/>
-		<item value="42" name="1030"/>
-		<item value="43" name="1000"/>
+		<item value="0" name="44.1k"/>
+		<item value="1" name="22.1k"/>
+		<item value="2" name="14.7k"/>
+		<item value="3" name="11.0k"/>
+		<item value="4" name="8.8k"/>
+		<item value="5" name="7.4k"/>
+		<item value="6" name="6.3k"/>
+		<item value="7" name="5.5k"/>
+		<item value="8" name="4.9k"/>
+		<item value="9" name="4.4k"/>
+		<item value="10" name="4.0k"/>
+		<item value="11" name="3.7k"/>
+		<item value="12" name="3.4k"/>
+		<item value="13" name="3.2k"/>
+		<item value="14" name="2.9k"/>
+		<item value="15" name="2.8k"/>
+		<item value="16" name="2.6k"/>
+		<item value="17" name="2.5k"/>
+		<item value="18" name="2.3k"/>
+		<item value="19" name="2.2k"/>
+		<item value="20" name="2.1k"/>
+		<item value="21" name="2.0k"/>
+		<item value="22" name="1.92k"/>
+		<item value="23" name="1.84k"/>
+		<item value="24" name="1.76k"/>
+		<item value="25" name="1.7k"/>
+		<item value="26" name="1.63k"/>
+		<item value="27" name="1.58k"/>
+		<item value="28" name="1.52k"/>
+		<item value="29" name="1.47k"/>
+		<item value="30" name="1.42k"/>
+		<item value="31" name="1.38k"/>
+		<item value="32" name="1.34k"/>
+		<item value="33" name="1.3k"/>
+		<item value="34" name="1.26k"/>
+		<item value="35" name="1.23k"/>
+		<item value="36" name="1.19k"/>
+		<item value="37" name="1.16k"/>
+		<item value="38" name="1.13k"/>
+		<item value="39" name="1.1k"/>
+		<item value="40" name="1.08k"/>
+		<item value="41" name="1.05k"/>
+		<item value="42" name="1.03k"/>
+		<item value="43" name="1.0k"/>
 		<item value="44" name="980"/>
 		<item value="45" name="959"/>
 		<item value="46" name="938"/>

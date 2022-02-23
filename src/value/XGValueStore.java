@@ -38,12 +38,8 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 		//	for(XGOpcode o : mt.getOpcodes()) System.out.println(o.getTag());
 		//}
 		for(XGValue v : STORE)
-		{	try
-			{	v.initDepencies();
-			}
-			catch(InvalidXGAddressException e)
-			{	LOG.warning(e.getMessage());
-			}
+		{	try	{	v.initDepencies();}
+			catch(InvalidXGAddressException e)	{	LOG.warning(e.getMessage());}
 		}
 		for(XGValue v : STORE) v.setDefaultValue();
 		LOG.info(STORE.size() + " Values initialized");
@@ -56,9 +52,7 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 		else throw new RuntimeException(adr + " is not a valid value-address!");
 	}
 
-	@Override public String getMessengerName()
-	{	return JXG.APPNAME + " (Memory)";
-	}
+	@Override public String getMessengerName()	{	return JXG.APPNAME + " (Memory)";}
 
 	@Override public void submit(XGMessage message) throws InvalidXGAddressException, XGMessengerException
 	{	if(!(message instanceof XGResponse)) throw new XGMessengerException(message + " is not of type XGResponse");
@@ -115,12 +109,11 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 		res.setChecksum();
 		try
 		{	res.checkSum();
+			req.setResponsedBy(res);
 		}
 		catch(InvalidMidiDataException e)
 		{	LOG.severe(e.getMessage());
-			req.setResponsed(false);
 		}
-		req.setResponsed(true);
 //		res.getDestination().submit(res);
 	}
 

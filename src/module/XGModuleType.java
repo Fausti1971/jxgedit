@@ -106,49 +106,29 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	this(cfg, new XGAddress(cfg.getStringAttribute(ATTR_ADDRESS)), cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
 	}
 
-	public XGAddressableSet<XGModule> getModules()
-	{	return this.modules;
-	}
+	public XGAddressableSet<XGModule> getModules(){ return this.modules;}
 
-	public XGTagableAddressableSet<XGOpcode> getOpcodes()
-	{	return this.opcodes;
-	}
+	public XGTagableAddressableSet<XGOpcode> getOpcodes(){ return this.opcodes;}
 
-	public Set<String> getInfoOpcodes()
-	{	return this.infoOpcodes;
-	}
+	public Set<String> getInfoOpcodes(){ return this.infoOpcodes;}
 
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
+	@Override public XMLNode getConfig(){ return this.config;}
 
-	@Override public void propertyChanged(XGProperty n)
-	{
-	}
+	@Override public void propertyChanged(XGProperty n){}
 
-	public String getName()
-	{	return this.name.toString();
-	}
+	public String getName(){ return this.name.toString();}
 
 	//public XGAddressableSet<XGOpcode> getOpcodes()
 	//{	return XGOpcode.OPCODES.getAllIncluded(this.address);
 	//}
 
-	public XGAddressableSet<XGAddress> getBulkAdresses()
-	{	return this.bulks;
-	}
+	public XGAddressableSet<XGAddress> getBulkAdresses(){ return this.bulks;}
 
-	public void resetValues()
-	{	for(XGModule m : this.getModules()) m.resetValues();
-	}
+	public void resetValues(){ for(XGModule m : this.getModules()) m.resetValues();}
 
-	@Override public String toString()
-	{	return this.name.toString();
-	}
+	@Override public String toString(){ return this.name.toString();}
 
-	@Override public XGAddress getAddress()
-	{	return this.address;
-	}
+	@Override public XGAddress getAddress(){ return this.address;}
 
 	@Override public XGAddressableSet<XGAddress> getBulks()
 	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
@@ -156,7 +136,5 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		return set;
 	}
 
-	public String getTag()
-	{	return this.tag.toString();
-	}
+	public String getTag(){ return this.tag.toString();}
 }

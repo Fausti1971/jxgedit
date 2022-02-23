@@ -38,8 +38,9 @@ public interface XGComponent extends XGAddressConstants, XGUI, MouseListener, Fo
 	{	JComponent j = this.getJComponent();
 		String name = j.getName();
 		if(j.isEnabled() && name != null)
-		{	Color c = j.getBackground().darker();
-			j.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), j.getName(), TitledBorder.CENTER, TitledBorder.TOP, SMALL_FONT, c));
+		{
+//			Color c = j.getBackground().darker();
+			j.setBorder(new TitledBorder(null, j.getName(), TitledBorder.CENTER, TitledBorder.TOP, SMALL_FONT, j.getForeground()));
 		}
 		else j.setBorder(null);
 	}
@@ -85,12 +86,10 @@ System.out.println("doubleclick detected");
 	}
 
 	@Override  default void focusLost(FocusEvent e)
-	{	this.borderize();
-		this.getJComponent().repaint();
+	{
 	}
 
 	@Override  default void focusGained(FocusEvent e)
-	{	this.borderize();
-		this.getJComponent().repaint();
+	{
 	}
 }
