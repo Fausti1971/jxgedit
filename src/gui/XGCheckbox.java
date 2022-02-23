@@ -38,7 +38,7 @@ public class XGCheckbox extends JCheckBox implements XGComponent, XGParameterCha
 		this.setToolTipText(p.getName());
 		this.setVisible(p != XGParameterConstants.NO_PARAMETER);
 		this.setEnabled(p.isValid());
-		this.borderize();//TODO: finde heraus, warum das nicht funktioniert...
+		this.borderize();//finde heraus, warum das nicht funktioniert. Antwort: liegt am L&F, das hier die Oberhand hat...
 	}
 
 	@Override public void contentChanged(XGValue v)

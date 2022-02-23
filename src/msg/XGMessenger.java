@@ -23,8 +23,7 @@ public interface XGMessenger
 	void submit(XGMessage msg) throws InvalidXGAddressException, XGMessengerException;
 
 /**
- * übermittelt den übergebenen XGRequest an req.getDestination(), lässt den aufrufenden XGMessenger für max. #timeout warten bzw. weckt ihn im Falle einer
- * empfangenen und validierten XGResponse, die dann mittels getResponse() abgefragt werden kann;
+ * übermittelt den übergebenen XGRequest an req.getDestination() und übermittelt die Response an die Source des Requests
  * @param req
  * @throws InvalidXGAddressException 
  */
