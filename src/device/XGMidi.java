@@ -15,11 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import adress.InvalidXGAddressException;
 import application.*;
-import msg.XGMessage;
-import msg.XGMessenger;
-import msg.XGMessengerException;
-import msg.XGRequest;
-import msg.XGResponse;
+import msg.*;
 import static value.XGValueStore.STORE;
 import xml.*;
 
@@ -28,6 +24,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	private static XGMidi MIDI = null;
 	private static XMLNode config = null;
 	private static final Object lock = new Object();
+	private static Thread reqThr;
 
 	public static XGMidi getMidi()
 	{	if(MIDI == null) XGMidi.init();
@@ -94,7 +91,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	private Receiver transmitter;
 	private MidiDevice midiOutput = null;
 	private MidiDevice midiInput = null;
-	private XGRequest request = null;
+	private volatile XGRequest request = null;
 	private int timeoutValue;
 //	private final XGMessageBuffer buffer;
 
@@ -183,8 +180,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	}
 
 	@Override public void close()
-	{//	if(this.queue.isAlive())this.queue.interrupt();
-		if(this.midiInput != null && this.midiInput.isOpen()) this.midiInput.close();
+	{	if(this.midiInput != null && this.midiInput.isOpen()) this.midiInput.close();
 		LOG.info("MidiInput closed: " + this.getInputName());
 		if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
 		LOG.info("MidiOutput closed: " + this.getOutputName());
@@ -195,40 +191,38 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	}
 
 	@Override public void submit(XGMessage m) throws XGMessengerException
-	{	if(this.transmitter == null) throw new XGMessengerException(this + ": no transmitter initialized!");
-		if(m == null)throw new XGMessengerException(this + ": message was null");
+	{	if(this.transmitter == null) throw new XGMessengerException("no transmitter initialized!");
+		if(m == null)throw new XGMessengerException("message was null");
 		m.setTimeStamp();
 		this.transmitter.send((MidiMessage)m, -1L);
+		if(m instanceof XGMessageBulkDump)
+		{	try{	Thread.sleep(((MidiMessage)m).getLength());}
+			catch(InterruptedException e){	e.printStackTrace();}
+		}
 	}
 
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	try
 		{	XGMessage m = XGMessage.newMessage(this, STORE, mmsg);
-			if(this.request != null && this.request.setResponsedBy((XGResponse)m))
-			{	synchronized(this.request)
-				{	this.request.notify();
-				}
-			}
-//			else STORE.submit(m);
+			if(this.request != null && this.request.setResponsedBy((XGResponse)m)) reqThr.interrupt();
+			else STORE.submit(m);
 		}
-		catch(InvalidMidiDataException | InvalidXGAddressException e)
+		catch(InvalidMidiDataException | InvalidXGAddressException | XGMessengerException e)
 		{	LOG.info(e.getMessage());
 		}
 	}
 
 	@Override public void request(XGRequest req) throws XGMessengerException
-	{	this.submit(req);
-		{	try
-			{	this.request = req;
-				synchronized(this.request)
-				{	this.request.wait(this.timeoutValue);
-				}
-			}
-			catch (InterruptedException e)
-			{	LOG.info(e.getMessage());
-			}
-		}
+	{	this.request = req;
+		reqThr = Thread.currentThread();
+
+		this.submit(req);
+
+		try	{	Thread.sleep(this.timeoutValue);}
+		catch(InterruptedException ignored){}
+
 		this.request = null;
+		reqThr = null;
 	}
 
 	@Override public boolean equals(Object o)

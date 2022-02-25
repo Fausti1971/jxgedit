@@ -43,10 +43,10 @@ public interface XGBulkDumper extends XGLoggable
 				{	dest.submit(r.getResponse());
 					pm.setNote(r.toString());
 					pm.setProgress(++responsed);
-					LOG.info("response for " + r + " within " + (r.getResponse().getTimeStamp() - r.getTimeStamp()) + "ms");
+					LOG.info("response for " + r + " within " + (r.getResponse().getTimeStamp() - r.getTimeStamp()) + " ms");
 				}
 				else
-				{	LOG.severe("no response for " + r + " within " + (System.currentTimeMillis() - r.getTimeStamp()) + "ms");
+				{	LOG.severe("no response for " + r + " within " + (System.currentTimeMillis() - r.getTimeStamp()) + " ms");
 					pm.setNote(r.toString());
 					missed.add(r);
 				}

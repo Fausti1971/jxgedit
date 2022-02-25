@@ -47,7 +47,7 @@ public class XGStatusBar extends JLabel implements XGLoggable
 		{	int level = record.getLevel().intValue();
 			String msg = record.getMessage();
 
-			if(level == Level.SEVERE.intValue()) color = Color.red;
+			if(level == Level.SEVERE.intValue()) color = Color.red.brighter();
 			if(level == Level.WARNING.intValue()) color = Color.yellow;
 			if(level == Level.INFO.intValue()) color = Color.green;
 
