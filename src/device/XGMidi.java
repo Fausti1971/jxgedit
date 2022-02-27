@@ -195,8 +195,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 		if(m == null)throw new XGMessengerException("message was null");
 		m.setTimeStamp();
 		this.transmitter.send((MidiMessage)m, -1L);
-		if(m instanceof XGMessageBulkDump)
-		{	try{	Thread.sleep(((MidiMessage)m).getLength());}
+		if(m instanceof XGMessageBulkDump)//Note to XG Data Writers: If sending consecutive bulk dumps, leave an interval of about 10ms between the F7 and the next F0.
+		{	try{	Thread.sleep(10);}
 			catch(InterruptedException e){	e.printStackTrace();}
 		}
 	}

@@ -33,14 +33,11 @@ import static value.XGValueStore.STORE;
 public class XGValue implements XGParameterConstants, XGAddressable, Comparable<XGValue>, XGValueChangeListener, XGLoggable, XGCategorizeable, XGTagable
 {
 	private static final XGValue DEF_DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
-	private static int count = 0;
+	private static final int count = 0;
 
 /***********************************************************************************************/
 
-/**
- * Index des XGTableEntry in der (im XGParameter anhängenden) XGTable
- */
-	private Integer index = 0, oldIndex = 0;
+	private Integer index = 0, oldIndex = 0;//Index des XGTableEntry in der (im XGParameter anhängenden) XGTable
 	private final XGAddress address;
 	private final XGOpcode opcode;
 	private final XGModule module;
@@ -91,7 +88,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	{
 		if("mp_program".equals(this.opcode.getTag())) this.opcode.getActions().add(change_program);
 		if("mp_partmode".equals(this.opcode.getTag())) this.opcode.getActions().add(change_partmode);
-//TODO: Designfehler (beim Laden oder Empfangen eines Dumps wird zuerst (1) das Program am falschen ProgramBuffer gesetzt, da der Partmode erst danach (7) gesetzt wird);
+//TODO: Designfehler (beim sequentiellen Laden oder Empfangen eines Dumps wird zuerst (1) das Program am falschen ProgramBuffer gesetzt, da der Partmode erst danach (7) gesetzt wird);
 //Lösung: Umbau auf XGBulkdump als Datenhalter
 		if(this.opcode.isMutable())
 		{	XGValue psv = this.module.getValues().get(this.opcode.getParameterSelectorTag());

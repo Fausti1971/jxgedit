@@ -55,7 +55,7 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
-		this.values.addAll(STORE.getAllIncluded(this.address));
+		this.values.addAll(STORE.getAllIncluded(this.address));//TODO: warum funktioniert dies? STORE ist noch nicht initialisiert....
 		for(XGAddress bd : this.type.getBulkAdresses()){ this.bulks.add(bd.complement(this.address));}
 
 		XGRealTable tab = (XGRealTable)TABLES.get(TABLE_FX_PARTS);
