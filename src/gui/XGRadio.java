@@ -1,19 +1,13 @@
 package gui;
 
 import java.awt.Graphics;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.*;
-import adress.XGAddress;
-import adress.XGMemberNotFoundException;
-import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGTable;
 import parm.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
-import static value.XGValueStore.STORE;import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_ADDRESS;import static xml.XMLNodeConstants.ATTR_ORIENTATION;
 
 public class XGRadio extends JPanel implements XGValueChangeListener, XGParameterChangeListener, XGComponent
 {

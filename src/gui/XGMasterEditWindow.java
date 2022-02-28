@@ -1,8 +1,9 @@
 package gui;
 
-import device.XGDevice;import static javax.swing.SwingConstants.CENTER;import static module.XGModuleType.TYPES;
+import device.XGDevice;
+import static module.XGModuleType.TYPES;
 import static msg.XGMessageConstants.*;
-import static value.XGValueStore.STORE;import javax.swing.*;
+import javax.swing.*;
 
 public class XGMasterEditWindow extends XGEditWindow 
 {	private static final byte[] MSG = {(byte)SOX, VENDOR, MSG_PC, MODEL, 0, 0, 0x7D, 0, (byte)EOX};
@@ -61,7 +62,7 @@ public class XGMasterEditWindow extends XGEditWindow
 	{	try
 		{	MSG[6] = 0x7D;
 			MSG[7] = (byte)(drumset.getAddress().getHi().getValue() - 0x30);
-			new msg.XGMessageParameterChange(STORE, device.XGMidi.getMidi(), MSG, true).transmit();
+			new msg.XGMessageParameterChange(null, device.XGMidi.getMidi(), MSG, true).transmit();
 			drumset.resetValues();
 		}
 		catch(adress.InvalidXGAddressException | msg.XGMessengerException | javax.sound.midi.InvalidMidiDataException e)

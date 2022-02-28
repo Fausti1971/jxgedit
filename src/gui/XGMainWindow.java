@@ -7,7 +7,7 @@ import application.*;
 import static application.JXG.*;
 import config.XGConfigurable;
 import device.*;
-import file.XGSysexFile;import static java.awt.BorderLayout.*;
+import static java.awt.BorderLayout.*;
 import module.*;
 import static module.XGModuleType.TYPES;
 import static value.XGValueStore.STORE;

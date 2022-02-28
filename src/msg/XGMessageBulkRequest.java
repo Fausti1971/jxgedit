@@ -2,7 +2,7 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
+import adress.XGAddress;import module.XGBulk;
 
 public class XGMessageBulkRequest extends XGRequest
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20, OVERHAED = 8;
@@ -22,6 +22,15 @@ public class XGMessageBulkRequest extends XGRequest
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getMin());
 		this.response = new XGMessageBulkDump(dest, src, adr);
+	}
+
+	public XGMessageBulkRequest(XGMessenger src, XGMessenger dest, XGBulk blk) throws InvalidXGAddressException, InvalidMidiDataException
+	{	super(src, dest, blk.getMessage().getMessage(), true);
+		XGAddress adr = blk.getAddress();
+		this.setHi(adr.getHi().getValue());
+		this.setMid(adr.getMid().getValue());
+		this.setLo(adr.getLo().getMin());
+		this.response = blk.getMessage();
 	}
 
 //	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException

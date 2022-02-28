@@ -2,15 +2,11 @@ package gui;
 
 import java.awt.*;
 import javax.swing.JComboBox;
-import adress.XGAddress;
-import adress.XGMemberNotFoundException;
-import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGTable;
 import parm.XGTableEntry;
 import value.XGValue;
-import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGCombo extends JComboBox<XGTableEntry> implements XGParameterChangeListener, XGComponent
 {

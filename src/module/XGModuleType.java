@@ -64,14 +64,14 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 /********************************************************************************************************************/
 
 	private final Set<String> infoOpcodes = new LinkedHashSet<>();
-	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<>();
+//	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<>();
+	private final XGTagableAddressableSet<XGBulkType> bulkTypes = new XGTagableAddressableSet<>();
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();
 	protected final StringBuffer name;
 	protected String tag;
 	protected final XGAddress address;
 	protected XGTable idTranslator;
 	private final XMLNode config;
-	private final XGAddressableSet<XGAddress> bulks = new XGAddressableSet<>();
 
 /**
 * instanziiert Moduletypen, Bulktypen und Valuetypen (XGOpcode)
@@ -84,16 +84,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		this.idTranslator = TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TABLE), DEF_TABLE);
 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))
-		{	XGAddress a = new XGAddress(x.getStringAttribute(ATTR_ADDRESS), this.address);
-			this.bulks.add(a);
-			for(XMLNode o : x.getChildNodes(TAG_OPCODE))
-			{	try
-				{	this.opcodes.add(new XGOpcode(this, a, o));
-				}
-				catch(InvalidXGAddressException e)
-				{	LOG.severe(e.getMessage());
-				}
-			}
+		{	this.bulkTypes.add(new XGBulkType(this, x));
 		}
 
 		for(XMLNode n : cfg.getChildNodes(TAG_INFO))
@@ -108,7 +99,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 	public XGAddressableSet<XGModule> getModules(){ return this.modules;}
 
-	public XGTagableAddressableSet<XGOpcode> getOpcodes(){ return this.opcodes;}
+//	public XGTagableAddressableSet<XGOpcode> getOpcodes(){ return this.opcodes;}
 
 	public Set<String> getInfoOpcodes(){ return this.infoOpcodes;}
 
@@ -122,7 +113,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	//{	return XGOpcode.OPCODES.getAllIncluded(this.address);
 	//}
 
-	public XGAddressableSet<XGAddress> getBulkAdresses(){ return this.bulks;}
+//	public XGAddressableSet<XGAddress> getBulkAdresses(){ return this.bulkTypes;}
 
 	public void resetValues(){ for(XGModule m : this.getModules()) m.resetValues();}
 
@@ -130,11 +121,13 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 	@Override public XGAddress getAddress(){ return this.address;}
 
-	@Override public XGAddressableSet<XGAddress> getBulks()
-	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
-		for(XGModule m : this.getModules()) set.addAll(m.getBulks());
+	public XGAddressableSet<XGBulk> getBulks()
+	{	XGAddressableSet<XGBulk> set = new XGAddressableSet<>();
+		for(XGModule m : this.modules) set.addAll(m.getBulks());
 		return set;
 	}
 
 	public String getTag(){ return this.tag.toString();}
+
+	public Set<XGBulkType> getBulkTypes(){	return this.bulkTypes;}
 }

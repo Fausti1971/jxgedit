@@ -3,7 +3,7 @@ package adress;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
-import application.XGLoggable;
+import application.XGLoggable;import module.XGModuleConstants;
 
 public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGAddress>, XGAddressable, Iterable<XGAddress>
 {
@@ -29,7 +29,7 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 /**
  * Erzeugt eine XGAddress aus den Slash-Tokens des übergebenen Strings mit der Option, die im String fehlenden Tokens durch die Felder der übergebenen XGAddress zu ersetzen.
  * @param adr	optionale XGAddresse aus der fehlende Attribute ersetzt werden 
- * @param n		XMLNode, aus deren Attributen hi, mid und lo eine neue XGAddress erzeugt wird
+ * @param s		Slash-getrennter Address-String
  */
 	public XGAddress(String s, XGAddress adr)
 	{	XGAddressField h = DEF_ADDRESSFILED, m = DEF_ADDRESSFILED, l = DEF_ADDRESSFILED;
@@ -65,7 +65,6 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 /**
  * extrahiert und returniert das Hi-Field der XGAdress this
  * @return Wert des Fields als int
- * @throws InvalidXGAddressException falls das Field variabel ist
  */
 	public XGAddressField getHi()
 	{	return this.hi;
@@ -74,7 +73,6 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 	/**
 	 * extrahiert und returniert das Mid-Field der XGAdress this
 	 * @return Wert des Fields als int
-	 * @throws InvalidXGAddressException falls das Field eine Range ist
 	 */
 	public XGAddressField getMid()
 	{	return this.mid;
@@ -83,7 +81,6 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 	/**
 	 * extrahiert und returniert das Lo-Field der XGAdress this
 	 * @return Wert des Fields als int
-	 * @throws InvalidXGAddressException falls das Field eine Range ist
 	 */
 	public XGAddressField getLo()
 	{	return this.lo;

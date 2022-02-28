@@ -14,8 +14,7 @@ import static parm.XGTable.TABLES;
 import parm.XGTableEntry;
 import parm.XGRealTable;
 import tag.*;
-import value.*;
-import static value.XGValueStore.STORE;
+import value.*;import javax.sound.midi.InvalidMidiDataException;
 
 public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper
 {
@@ -34,10 +33,9 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 	{	for(XGModuleType mt : TYPES)
 		{	for(int id : mt.getAddress().getMid())
 			{	try
-				{	XGModule mod = new XGModule(mt, id);
-					mt.getModules().add(mod);
+				{	mt.getModules().add(new XGModule(mt, id));
 				}
-				catch(InvalidXGAddressException e)
+				catch(InvalidXGAddressException | InvalidMidiDataException e)
 				{	LOG.warning(e.getMessage());
 				}
 			}
@@ -49,14 +47,13 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 
 	private final XGAddress address;
 	private final XGModuleType type;
-	private final XGAddressableSet<XGAddress> bulks = new XGAddressableSet<>();
-	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
+	private final XGAddressableSet<XGBulk> bulks = new XGAddressableSet<>();
+//	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
 
-	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException
+	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException, InvalidMidiDataException
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
-//		this.values.addAll(STORE.getAllIncluded(this.address));//TODO: warum funktioniert dies? STORE ist noch nicht initialisiert....
-		for(XGAddress bd : this.type.getBulkAdresses()){ this.bulks.add(bd.complement(this.address));}
+		for(XGBulkType bt : mt.getBulkTypes()){ this.bulks.add(new XGBulk(bt, this));}
 
 		XGRealTable tab = (XGRealTable)TABLES.get(TABLE_FX_PARTS);
 		String tag = mt.getTag();
@@ -66,7 +63,11 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 
 	public XGModuleType getType(){ return this.type;}
 
-	public XGTagableAddressableSet<XGValue> getValues(){ return this.values;}
+	public XGTagableAddressableSet<XGValue> getValues()
+	{	XGTagableAddressableSet<XGValue> set = new XGTagableAddressableSet<>();
+		for(XGBulk blk : this.bulks) set.addAll(blk.getValues());
+		return set;
+	}
 
 	public void resetValues(){ for(XGValue v : this.getValues()) v.setDefaultValue();}
 
@@ -95,7 +96,7 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 		else return text;
 	}
 
-	@Override public XGAddressableSet<XGAddress> getBulks(){ return this.bulks;}
+	@Override public XGAddressableSet<XGBulk> getBulks(){ return this.bulks;}
 
 	@Override public XGAddress getAddress(){ return this.address;}
 

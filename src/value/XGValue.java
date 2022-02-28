@@ -7,8 +7,7 @@ import adress.XGAddress;
 import adress.XGAddressable;
 import application.XGLoggable;
 import device.*;
-import module.XGDrumsetModuleType;import module.XGModule;
-import module.XGModuleType;
+import module.*;
 import msg.*;
 import parm.XGDefaultsTable;
 import static parm.XGDefaultsTable.DEFAULTSTABLE;
@@ -40,7 +39,8 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	private Integer index = 0, oldIndex = 0;//Index des XGTableEntry in der (im XGParameter anhängenden) XGTable
 	private final XGAddress address;
 	private final XGOpcode opcode;
-	private final XGModule module;
+	private final XGBulk bulk;
+//	private final XGModule module;
 	private XGValue parameterSelector = null, defaultSelector = null;
 	private final XGParameterTable parameters;
 	private final XGDefaultsTable defaults;
@@ -55,13 +55,13 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		this.parameters = null;
 		this.defaults = null;
 		this.opcode = null;
-		this.module = null;
+		this.bulk = null;
 	}
 
-	public XGValue(XGOpcode opc, module.XGModule mod) throws InvalidXGAddressException
+	public XGValue(XGOpcode opc, XGBulk blk) throws InvalidXGAddressException
 	{	this.opcode = opc;
-		this.module = mod;
-		this.address = new XGAddress(opc.getAddress().getHi().getValue(), mod.getAddress().getMid().getValue(), opc.getAddress().getLo().getMin());
+		this.bulk = blk;
+		this.address = new XGAddress(opc.getAddress().getHi().getValue(), blk.getAddress().getMid().getValue(), opc.getAddress().getLo().getMin());
 		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
 
 		if(opc.isMutable())
@@ -81,7 +81,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		{	this.defaults = new XGDefaultsTable(opc.getTag());
 			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, opc.getConfig().getValueAttribute(ATTR_DEFAULT, 0));
 		}
-		this.module.getValues().add(this);
+		this.bulk.getValues().add(this);
 	}
 
 	public void initDepencies() throws InvalidXGAddressException
@@ -91,7 +91,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 //TODO: Designfehler (beim sequentiellen Laden oder Empfangen eines Dumps wird zuerst (1) das Program am falschen ProgramBuffer gesetzt, da der Partmode erst danach (7) gesetzt wird);
 //Lösung: Umbau auf XGBulkdump als Datenhalter
 		if(this.opcode.isMutable())
-		{	XGValue psv = this.module.getValues().get(this.opcode.getParameterSelectorTag());
+		{	XGValue psv = this.bulk.getModule().getValues().get(this.opcode.getParameterSelectorTag());
 			if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + " " + this.opcode.getParameterSelectorTag() + " not found for value " + this.getTag());
 			this.parameterSelector = psv;
 			this.parameterSelector.valueListeners.add((XGValue val)->{this.notifyParameterListeners();});
@@ -100,7 +100,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 
 		if(this.opcode.hasMutableDefaults())
 		{	String dst = this.opcode.getDefaultSelectorTag();
-			XGValue dsv = this.module.getValues().get(dst);
+			XGValue dsv = this.bulk.getValues().get(dst);
 			if(dsv != null)
 			{	this.defaultSelector = dsv;
 				this.defaultSelector.valueListeners.add((XGValue)->{this.setDefaultValue();});
@@ -145,7 +145,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	}
 
 	public XGModule getModule()
-	{	return this.module;
+	{	return this.bulk.getModule();
 	}
 
 	public void setDefaultValue()

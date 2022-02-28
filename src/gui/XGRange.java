@@ -8,15 +8,12 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.*;
 import javax.swing.JPanel;
-import adress.XGAddress;
-import adress.XGMemberNotFoundException;
 import application.XGMath;
-import application.XGStrings;import static gui.XGUI.*;import module.XGModule;
+import application.XGStrings;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;
-import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGRange extends JPanel implements XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener, XGComponent
 {	/**

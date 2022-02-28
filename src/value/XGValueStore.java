@@ -22,9 +22,10 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	public static void init()
 	{	for(XGModuleType mt : TYPES)
 		{	for(XGModule mod : mt.getModules())
-			{	for(XGOpcode opc : mt.getOpcodes())
+			{	for(XGBulk blk : mod.getBulks())
+				for(XGOpcode opc : blk.getType().getOpcodes())
 				{	try
-					{	STORE.add(new XGValue(opc, mod));
+					{	STORE.add(new XGValue(opc, blk));
 					}
 					catch(InvalidXGAddressException e)
 					{	LOG.warning(e.getMessage());
@@ -51,8 +52,6 @@ public class XGValueStore extends XGAddressableSet<XGValue> implements XGMesseng
 	{	if(adr.isFixed()) return super.get(adr);
 		else throw new RuntimeException(adr + " is not a valid value-address!");
 	}
-
-	@Override public String getMessengerName()	{	return JXG.APPNAME + " (Memory)";}
 
 	@Override public void submit(XGMessage message) throws InvalidXGAddressException, XGMessengerException
 	{	if(!(message instanceof XGResponse)) throw new XGMessengerException(message + " is not of type XGResponse");

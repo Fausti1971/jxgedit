@@ -4,19 +4,14 @@ import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.*;
 import javax.swing.*;
-import adress.XGAddress;
-import adress.XGMemberNotFoundException;
 import application.XGMath;
-import static gui.XGUI.*;import module.XGModule;
 import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;
-import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGSlider extends JPanel implements XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener, XGComponent
 {	/**

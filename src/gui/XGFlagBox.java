@@ -6,11 +6,7 @@ import java.awt.Insets;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.*;
-import adress.XGAddress;
-import adress.XGMemberNotFoundException;
-import module.XGModule;
 import value.XGValue;
-import static value.XGValueStore.STORE;import xml.XMLNode;
 
 public class XGFlagBox extends JPanel implements XGComponent
 {

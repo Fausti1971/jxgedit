@@ -1,13 +1,8 @@
 package gui;
 
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import javax.swing.JButton;
-import adress.XGAddress;
-import adress.XGMemberNotFoundException;
-import static gui.XGUI.MEDIUM_FONT;import module.XGModule;
+import static gui.XGUI.MEDIUM_FONT;
 import value.XGValue;
-import static value.XGValueStore.STORE;import xml.XMLNode;
 
 /**
 * zweizeiliger JButton, erste Zeile Parametername, zweite Zeile Wert

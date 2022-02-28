@@ -23,6 +23,7 @@ public interface XGMessenger
 	void submit(XGMessage msg) throws InvalidXGAddressException, XGMessengerException;
 
 /**
+ * @deprecated kann mittels submit() implementiert werden
  * übermittelt den übergebenen XGRequest an req.getDestination() und übermittelt die Response an die Source des Requests
  * @param req
  * @throws InvalidXGAddressException 

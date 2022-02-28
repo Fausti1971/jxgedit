@@ -7,7 +7,7 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
 import application.*;
-import gui.*;
+import gui.*;import module.XGBulk;
 
 /**
  * qualifiziert die implementierende Klasse als Sammler aller enthaltenen BuklDumps (getBulks()) und Transmitter derselben (transmitAll())
@@ -16,7 +16,7 @@ import gui.*;
  */
 public interface XGBulkDumper extends XGLoggable
 {
-	XGAddressableSet<XGAddress> getBulks();
+	XGAddressableSet<XGBulk> getBulks();
 
 /**
  * erfragt alle im BulkDumper konfigurierten (in structure.xml deklarierten) Bulks von der src und übermittelt die jeweilige Response zum dest
@@ -29,12 +29,12 @@ public interface XGBulkDumper extends XGLoggable
 		int requested = 0, responsed = 0;
 		long time = System.currentTimeMillis();
 		XGRequest r = null;
-		XGAddressableSet<XGAddress> set = this.getBulks();
+		XGAddressableSet<XGBulk> set = this.getBulks();
 		XGAddressableSet<XGRequest> missed = new XGAddressableSet<>();
 		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.window, src + " to " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
-		for(XGAddress b : set)
+		for(XGBulk b : set)
 		{	try
 			{	r = new XGMessageBulkRequest(dest, src, b);
 				src.request(r);

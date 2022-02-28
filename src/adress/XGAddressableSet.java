@@ -72,15 +72,14 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	@Override public int size()
 	{	return this.map.size();
 	}
-
-	public boolean contains(XGAddress adr)
-	{	return this.map.containsKey(adr);
-	}
-
-	public T getOrDefault(XGAddress adr, T def)
-	{	if(this.map.containsKey(adr)) return this.map.get(adr);
-		else return def;
-	}
+	//
+	//public boolean contains(XGAddress adr)
+	//{	return this.map.containsKey(adr);
+	//}
+	//
+	//public T getOrDefault(XGAddress adr, T def)
+	//{	return this.map.getOrDefault(adr, def);
+	//}
 
 	public T getFirstValidOrDefault(XGAddress adr, T def)
 	{	T res = getFirstIncluding(adr);

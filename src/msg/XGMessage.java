@@ -7,7 +7,7 @@ import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressable;
-import application.XGLoggable;
+import adress.XGAddressableSet;import application.XGLoggable;
 
 public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 {

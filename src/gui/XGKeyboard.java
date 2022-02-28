@@ -16,22 +16,16 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
-import device.XGDevice;
 import device.XGMidi;
 import module.XGModule;
 import static parm.XGTable.TABLES;import value.XGValue;
-import static value.XGValueStore.STORE;import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_NAME;
+import xml.XMLNode;
+import static xml.XMLNodeConstants.ATTR_NAME;
 
 public class XGKeyboard extends XGFrame implements XGUI
 {
 
 	private static final long serialVersionUID = 1L;
-	private static final XGAddress
-		PARTMODEADDRESS = new XGAddress("8//7"),
-		MIDICHANNELADDRESS = new XGAddress("8//4"),
-		MINKEYADDRESS = new XGAddress("8//15"),
-		MAXKEYADDRESS = new XGAddress("8//16");
 	private static final int
 		WHITEWIDTH = 20,
 		BLACKWIDTH = WHITEWIDTH / 2,
@@ -54,10 +48,10 @@ public class XGKeyboard extends XGFrame implements XGUI
 
 	protected XGKeyboard(XMLNode n, XGModule mod) throws InvalidXGAddressException
 	{	super(n.getStringAttribute(ATTR_NAME));
-		this.partmodeValue = STORE.get(PARTMODEADDRESS.complement(mod.getAddress()));
-		this.midiChannelValue = STORE.get(MIDICHANNELADDRESS.complement(mod.getAddress()));
-		this.minKeyValue = STORE.get(MINKEYADDRESS.complement(mod.getAddress()));
-		this.maxKeyValue = STORE.get(MAXKEYADDRESS.complement(mod.getAddress()));
+		this.partmodeValue = mod.getValues().get("mp_partmode");
+		this.midiChannelValue = mod.getValues().get("mp_midi_channel");
+		this.minKeyValue = mod.getValues().get("mp_note_lo");
+		this.maxKeyValue = mod.getValues().get("mp_note_hi");
 
 		this.partmodeValue.getValueListeners().add((XGValue)->{this.partmodeChanged();});
 		this.minKeyValue.getValueListeners().add((XGValue)->{this.minKeyChanged();});

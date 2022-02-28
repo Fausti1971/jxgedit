@@ -13,7 +13,7 @@ import config.XGConfigurable;import file.XGSysexFile;
 import file.XGSysexFileConstants;
 import gui.XGFileSelector;
 import gui.XGMainWindow;import gui.XGWindow;
-import module.XGModule;
+import module.XGBulk;import module.XGModule;
 import module.XGModuleType;
 import static module.XGModuleType.TYPES;
 import msg.*;
@@ -203,8 +203,8 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	{	return this.getName().getValue().toString();
 	}
 
-	@Override public XGAddressableSet<XGAddress> getBulks()
-	{	XGAddressableSet<XGAddress> set = new XGAddressableSet<>();
+	@Override public XGAddressableSet<XGBulk> getBulks()
+	{	XGAddressableSet<XGBulk> set = new XGAddressableSet<>();
 		for(XGModuleType mt : TYPES)
 			for(XGModule mi : mt.getModules())
 				set.addAll(mi.getBulks());
