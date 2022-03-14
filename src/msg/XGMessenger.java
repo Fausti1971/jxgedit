@@ -11,24 +11,23 @@ public interface XGMessenger
 /**
  * @return returniert den Namen des XGMessengers
  */
-	public default String getMessengerName()
+	default String getMessengerName()
 	{	return this.getClass().getSimpleName();
 	}
 
 /**
- * übergibt dem XGMessenger (file, mem, midi) eine XGMessage zur weiteren Be- oder Verarbeitung
- * @param msg XGResponse
+ * übergibt dem XGMessenger (file, module, bulk, value, device, midi) eine XGMessage zur weiteren Be- oder Verarbeitung, im Falle eines Requests auch die übermittlung request.getSource().submit(request.getResponse());
+ * @param msg XGMessage
  * @throws InvalidXGAddressException
  */
-	void submit(XGMessage msg) throws InvalidXGAddressException, XGMessengerException;
+	default void submit(XGMessage msg) throws InvalidXGAddressException, XGMessengerException
+	{	if(msg instanceof XGResponse) this.submit((XGResponse)msg);
+		if(msg instanceof XGRequest) this.submit((XGRequest)msg);
+	}
 
-/**
- * @deprecated kann mittels submit() implementiert werden
- * übermittelt den übergebenen XGRequest an req.getDestination() und übermittelt die Response an die Source des Requests
- * @param req
- * @throws InvalidXGAddressException 
- */
-	void request(XGRequest req) throws InvalidXGAddressException, XGMessengerException;
+	void submit(XGResponse res) throws InvalidXGAddressException, XGMessengerException;
+
+	void submit(XGRequest req) throws InvalidXGAddressException, XGMessengerException;
 
 	@Override String toString();
 

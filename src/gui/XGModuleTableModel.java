@@ -4,16 +4,13 @@ import adress.*;import static application.XGLoggable.LOG;import module.*;import 
 
 public class XGModuleTableModel  implements TableModel
 {
-	private final XGModuleType type;
 	private final Vector<XGModule> rows;
 	private final Vector<String> cols;
-	private final Map<XGAddressable, Point> cells = new HashMap<>();
-	private Set<TableModelListener> listeners = new HashSet<>();
+	private final Set<TableModelListener> listeners = new HashSet<>();
 
 	XGModuleTableModel(XGModuleType t)
-	{	this.type = t;
-		this.rows = new Vector<>(this.type.getModules());
-		this.cols = new Vector<>(this.type.getInfoOpcodes());
+	{	this.rows = new Vector<>(t.getModules());
+		this.cols = new Vector<>(t.getInfoOpcodes());
 		this.cols.add(0, ATTR_ID);
 		for(XGModule m : this.rows)
 			for(String tag : this.cols)

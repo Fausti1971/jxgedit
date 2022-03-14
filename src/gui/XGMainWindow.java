@@ -7,10 +7,9 @@ import application.*;
 import static application.JXG.*;
 import config.XGConfigurable;
 import device.*;
-import static java.awt.BorderLayout.*;
+import file.XGSysexFile;import static java.awt.BorderLayout.*;
 import module.*;
 import static module.XGModuleType.TYPES;
-import static value.XGValueStore.STORE;
 import xml.*;
 
 public class XGMainWindow extends XGWindow implements ComponentListener, XGConfigurable
@@ -57,11 +56,11 @@ public class XGMainWindow extends XGWindow implements ComponentListener, XGConfi
 		JMenu file = new JMenu("File");
 
 		JMenuItem load = new JMenuItem("Load Dump...");
-		load.addActionListener((ActioEvent)->{XGDevice.device.load();});
+		load.addActionListener((ActioEvent)->{XGSysexFile.load(XGDevice.device);});
 		file.add(load);
 
 		JMenuItem save = new JMenuItem("Save Dump...");
-		save.addActionListener((ActioEvent)->{XGDevice.device.save();});
+		save.addActionListener((ActioEvent)->{XGSysexFile.save(XGDevice.device);});
 		file.add(save);
 
 		file.addSeparator();
@@ -81,11 +80,11 @@ public class XGMainWindow extends XGWindow implements ComponentListener, XGConfi
 		JMenu midi = new JMenu("Midi");
 
 		JMenuItem requestAll = new JMenuItem("Request All");
-		requestAll.addActionListener((ActionEvent)->{new Thread(() -> {XGDevice.device.transmitAll(XGMidi.getMidi(), STORE);}).start();});
+		requestAll.addActionListener((ActionEvent)->{new Thread(() -> {XGDevice.device.requestAll(XGMidi.getMidi());}).start();});
 		midi.add(requestAll);
 
 		JMenuItem transmitAll = new JMenuItem("Transmit All");
-		transmitAll.addActionListener((ActionEvent)->{new Thread(() -> {XGDevice.device.transmitAll(STORE, XGMidi.getMidi());}).start();});
+		transmitAll.addActionListener((ActionEvent)->{new Thread(() -> {XGDevice.device.transmitAll(XGMidi.getMidi());}).start();});
 		midi.add(transmitAll);
 
 		bar.add(midi);

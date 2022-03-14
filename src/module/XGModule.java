@@ -8,7 +8,7 @@ import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.*;
-import static module.XGModuleType.TYPES;import msg.XGBulkDumper;
+import static module.XGModuleType.TYPES;
 import static parm.XGParameterConstants.TABLE_FX_PARTS;
 import static parm.XGTable.TABLES;
 import parm.XGTableEntry;

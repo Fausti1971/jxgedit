@@ -181,23 +181,23 @@ public class XGRange extends JPanel implements XGParameterConstants, XGValueChan
 		@Override public void mouseClicked(MouseEvent e)
 		{	if(e.getButton() != MouseEvent.BUTTON1) return;
 			this.setCurrent(e.getX());
-			if(e.getX() > this.curX)this.currentValue.addIndex(1);
-			else this.currentValue.addIndex(-1);
+			if(e.getX() > this.curX)this.currentValue.addIndex(1, true);
+			else this.currentValue.addIndex(-1, true);
 			e.consume();
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
 		{	int r = e.getWheelRotation();
 			if(r < 0)
-			{	this.loValue.addIndex(r);
+			{	this.loValue.addIndex(r, true);
 				if(this.loValue.hasChanged())
-				{	this.hiValue.addIndex(r);
+				{	this.hiValue.addIndex(r, true);
 				}
 			}
 			else
-			{	this.hiValue.addIndex(r);
+			{	this.hiValue.addIndex(r, true);
 				if(this.hiValue.hasChanged())
-				{	this.loValue.addIndex(r);
+				{	this.loValue.addIndex(r, true);
 				}
 			}
 			e.consume();
@@ -205,9 +205,9 @@ public class XGRange extends JPanel implements XGParameterConstants, XGValueChan
 	
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGUI.VARIABLES.dragEvent.getX();
-			this.currentValue.addIndex(distance);
+			this.currentValue.addIndex(distance, true);
 			int range = this.hiValue.getIndex() - this.loValue.getIndex();
-			if(range < 0) this.otherValue.addIndex(distance); //TODO: suboptimal; bildet zwar das Device-Verhalten ab, sendet aber unnötig Werte
+			if(range < 0) this.otherValue.addIndex(distance, true); //TODO: suboptimal; bildet zwar das Device-Verhalten ab, sendet aber unnötig Werte
 			XGUI.VARIABLES.dragEvent = e;
 			e.consume();
 		}

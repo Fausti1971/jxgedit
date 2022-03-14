@@ -33,7 +33,7 @@ public class XGRadio extends JPanel implements XGValueChangeListener, XGParamete
 		}
 		this.setMinimumSize(MINDIM);
 		this.setPreferredSize(MINDIM);
-		this.value.getValueListeners().add(this);
+//		this.value.getValueListeners().add(this);
 		this.value.getValueListeners().add(this);
 		this.parameterChanged(this.value.getParameter());
 	}
@@ -80,11 +80,11 @@ public class XGRadio extends JPanel implements XGValueChangeListener, XGParamete
 			this.setToolTipText(e.toString());
 			this.entry = e;
 			this.value = v;
-			this.addActionListener((ActionEvent)->{this.value.editIndex(entry.getValue());});
+			this.addActionListener((ActionEvent)->{this.value.setEntry(entry, false, true);});
 		}
 
 		@Override public boolean isSelected()
-		{	return this.entry.getValue() == this.value.getIndex();
+		{	return this.entry.getValue() == this.value.getValue();
 		}
 
 		@Override public void paint(Graphics g)

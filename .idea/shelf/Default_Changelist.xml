@@ -1,0 +1,29 @@
+<changelist name="Default_Changelist" date="1626291414550" recycled="false">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Default_Changelist/shelved.patch" />
+  <option name="DESCRIPTION" value="Default Changelist" />
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JXG/device/XGDevice.class" />
+    <option name="AFTER_PATH" value="out/production/JXG/device/XGDevice.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Default_Changelist/XGDevice.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JXG/file/XGSysexFile.class" />
+    <option name="AFTER_PATH" value="out/production/JXG/file/XGSysexFile.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Default_Changelist/XGSysexFile.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JXG/gui/XGFileSelector.class" />
+    <option name="AFTER_PATH" value="out/production/JXG/gui/XGFileSelector.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Default_Changelist/XGFileSelector.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JXG/msg/XGMessageBulkDump.class" />
+    <option name="AFTER_PATH" value="out/production/JXG/msg/XGMessageBulkDump.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Default_Changelist/XGMessageBulkDump.class" />
+  </binary>
+  <binary>
+    <option name="BEFORE_PATH" value="out/production/JXG/msg/XGRequest.class" />
+    <option name="AFTER_PATH" value="out/production/JXG/msg/XGRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Default_Changelist/XGRequest.class" />
+  </binary>
+</changelist>

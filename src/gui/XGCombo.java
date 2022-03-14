@@ -50,7 +50,7 @@ public class XGCombo extends JComboBox<XGTableEntry> implements XGParameterChang
 	}
 
 	private void entrySelected()
-	{	this.value.editEntry((XGTableEntry)this.getSelectedItem());
+	{	this.value.setEntry((XGTableEntry)this.getSelectedItem(), false, true);
 	}
 
 	@Override public void parameterChanged(XGParameter p)

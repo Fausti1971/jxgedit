@@ -1,12 +1,11 @@
 package gui;
 
 import device.XGDevice;
-import static module.XGModuleType.TYPES;
-import static msg.XGMessageConstants.*;
+import module.XGDrumsetModuleType;import static module.XGModuleType.TYPES;
 import javax.swing.*;
 
 public class XGMasterEditWindow extends XGEditWindow 
-{	private static final byte[] MSG = {(byte)SOX, VENDOR, MSG_PC, MODEL, 0, 0, 0x7D, 0, (byte)EOX};
+{
 
 /**********************************************************************************************************/
 
@@ -38,7 +37,7 @@ public class XGMasterEditWindow extends XGEditWindow
 		for(module.XGModuleType mt : TYPES)
 		{	if(mt instanceof module.XGDrumsetModuleType)
 			{	javax.swing.JButton rb = new javax.swing.JButton("Reset " + mt.getName());
-				rb.addActionListener((java.awt.event.ActionEvent e)->{this.resetDrumset(mt);});
+				rb.addActionListener((java.awt.event.ActionEvent e)->{((XGDrumsetModuleType)mt).reset();});
 				c = "" + x + y + x + y++;
 				reset.add(rb, c);
 			}
@@ -57,16 +56,4 @@ public class XGMasterEditWindow extends XGEditWindow
 
 		return root;
 	};
-
-	private void resetDrumset(module.XGModuleType drumset)
-	{	try
-		{	MSG[6] = 0x7D;
-			MSG[7] = (byte)(drumset.getAddress().getHi().getValue() - 0x30);
-			new msg.XGMessageParameterChange(null, device.XGMidi.getMidi(), MSG, true).transmit();
-			drumset.resetValues();
-		}
-		catch(adress.InvalidXGAddressException | msg.XGMessengerException | javax.sound.midi.InvalidMidiDataException e)
-		{	LOG.severe(e.getMessage());
-		}
-	}
 }

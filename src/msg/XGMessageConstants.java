@@ -3,7 +3,7 @@ package msg;
 import javax.sound.midi.SysexMessage;
 
 public interface XGMessageConstants extends XGByteArray
-{	public static final int
+{	int
 		VENDOR = 0x43,
 		VENDOR_OFFS = 1,
 

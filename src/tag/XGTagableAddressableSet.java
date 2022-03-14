@@ -39,50 +39,40 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 	{	return this.adrSet.get(adr);
 	}
 
-	public T getValidOrDefault(XGAddress adr, T def)
-	{	for(T i : this.getAllValid(adr))
-			return i;
-		return def;
-	}
+	//public T getValidOrDefault(XGAddress adr, T def)
+	//{	for(T i : this.getAllValid(adr))
+	//		return i;
+	//	return def;
+	//}
 
-	public Set<T> getAllValid(XGAddress adr)
-	{	return this.adrSet.getAllIncluding(adr);
-	}
+	//public Set<T> getAllValid(XGAddress adr)
+	//{	return this.adrSet.getAllIncluding(adr);
+	//}
 
-	public T getOrDefault(String s, T def)
-	{	T res = this.tagSet.get(s);
-		if(res == null) res = def;
-		return res;
-	}
+	//public T getOrDefault(String s, T def)
+	//{	T res = this.tagSet.get(s);
+	//	if(res == null) res = def;
+	//	return res;
+	//}
 
-	public T getOrDefault(XGAddress adr, T def)
-	{	T v = this.adrSet.getFirstIncluding(adr);
-		if(v == null)
-		{	LOG.info(def.getClass().getSimpleName() + " " + adr + " not found, using " + def);
-			return def;
-		}
-		return v;
-	}
+	//public T getOrDefault(XGAddress adr, T def)
+	//{	T v = this.adrSet.getFirstIncluding(adr);
+	//	if(v == null)
+	//	{	LOG.info(def.getClass().getSimpleName() + " " + adr + " not found, using " + def);
+	//		return def;
+	//	}
+	//	return v;
+	//}
 
-	@Override public int size()
-	{	return adrSet.size();
-	}
+	@Override public int size(){	return adrSet.size();}
 
-	public boolean containsKey(XGAddress adr)
-	{	return this.adrSet.contains(adr);
-	}
+	//public boolean containsKey(XGAddress adr){	return this.adrSet.contains(adr);}
 
-	public boolean containsKey(String tag)
-	{	return this.tagSet.containsKey(tag);
-	}
+	//public boolean containsKey(String tag){	return this.tagSet.containsKey(tag);}
 
-	@Override public Iterator<T> iterator()
-	{	return this.adrSet.iterator();
-	}
+	@Override public Iterator<T> iterator(){	return this.adrSet.iterator();}
 
-	@Override public boolean isEmpty()
-	{	return this.adrSet.isEmpty() && this.tagSet.isEmpty();
-	}
+	@Override public boolean isEmpty(){	return this.adrSet.isEmpty() && this.tagSet.isEmpty();}
 
 	@Override public boolean contains(Object o)
 	{	if(o instanceof XGTagable) return this.tagSet.contains(o);
@@ -90,30 +80,16 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 		return false;
 	}
 
-	@Override public Object[] toArray()
-	{	return this.adrSet.toArray();
-	}
+	@Override public Object[] toArray(){	return this.adrSet.toArray();}
 
-	@Override public <T> T[] toArray(T[] a)
-	{	return this.adrSet.toArray(a);
-	}
+	@Override public <T> T[] toArray(T[] a){	return this.adrSet.toArray(a);}
 
-	@Override public boolean remove(Object o)
-	{	boolean res = this.adrSet.remove(o);
-		res = this.tagSet.remove(o);
-		return res;
-	}
+	@Override public boolean remove(Object o){	return this.adrSet.remove(o) && this.tagSet.remove(o);}
 
-	@Override public boolean containsAll(Collection<?> c)
-	{	boolean res = this.adrSet.containsAll(c);
-		res = this.tagSet.containsAll(c);
-		return res;
-	}
+	@Override public boolean containsAll(Collection<?> c){	return this.adrSet.containsAll(c) && this.tagSet.containsAll(c);}
 
 	@Override public boolean addAll(Collection<? extends T> c)
-	{	boolean res = false;
-		res = this.adrSet.addAll(c);
-		res = this.tagSet.addAll(c);
+	{	boolean res = this.adrSet.addAll(c) && this.tagSet.addAll(c);
 		try
 		{	this.checkConsistency();
 		}
@@ -125,8 +101,7 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 	}
 
 	@Override public boolean retainAll(Collection<?> c)
-	{	boolean res = this.adrSet.retainAll(c);
-		res = this.tagSet.retainAll(c);
+	{	boolean res = this.adrSet.retainAll(c) && this.tagSet.retainAll(c);
 		try
 		{	this.checkConsistency();
 		}
@@ -138,8 +113,7 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 	}
 
 	@Override public boolean removeAll(Collection<?> c)
-	{	boolean res = this.adrSet.removeAll(c);
-		res = this.tagSet.removeAll(c);
+	{	boolean res = this.adrSet.removeAll(c) && this.tagSet.removeAll(c);
 		try
 		{	this.checkConsistency();
 		}

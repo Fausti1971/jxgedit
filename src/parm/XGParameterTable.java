@@ -11,7 +11,6 @@ public class XGParameterTable extends HashMap<Integer, XGParameter> implements X
 {
 	public static final XGTagableSet<XGParameterTable> PARAMETERTABLES = new XGTagableSet<>();
 	private static final long serialVersionUID = 1L;
-	private static int count = 0;
 
 	public static void init()
 	{	try

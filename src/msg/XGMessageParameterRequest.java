@@ -10,9 +10,9 @@ public class XGMessageParameterRequest extends XGRequest
 
 /*******************************************************************************************/
 
-	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
-	{	super(src, dest, array, init);
-		if(init) this.response = new XGMessageParameterChange(dest, src, array.clone(), init);
+	public XGMessageParameterRequest(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
+	{	super(src, array, init);
+//		if(init) this.response = new XGMessageParameterChange(src, array.clone(), true);
 	}
 
 //	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException, TimeoutException
@@ -20,15 +20,14 @@ public class XGMessageParameterRequest extends XGRequest
 //		this.getSource().submit(this.getDestination().request(this));
 //	}
 
-	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGValue val) throws InvalidXGAddressException, InvalidMidiDataException
-	{	super(src, dest, new byte[8], true);
+	public XGMessageParameterRequest(XGMessenger src, XGValue val) throws InvalidXGAddressException, InvalidMidiDataException
+	{	super(src, new byte[8], true);
 		XGAddress adr = val.getAddress();
 		this.setMessageID(MSG);
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getValue());
 		this.setEOX();
-		this.response = new XGMessageParameterChange(dest, src, val);
 	}
 /*
 	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException

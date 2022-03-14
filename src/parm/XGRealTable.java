@@ -8,7 +8,7 @@ public class XGRealTable implements XGTable
 
 /********************************************************************************************************/
 
-	protected final String name;
+	private final String name;
 	private final String unit;
 	private final int fallbackMask;
 	private final boolean sort;
@@ -33,7 +33,7 @@ public class XGRealTable implements XGTable
 		LOG.info(this.getInfo());
 	}
 
-	XGRealTable(String name, String unit, int fbm, boolean sortByValue)
+	public XGRealTable(String name, String unit, int fbm, boolean sortByValue)
 	{	this.name = name;
 		this.unit = unit;
 		this.fallbackMask = fbm;
@@ -85,41 +85,47 @@ public class XGRealTable implements XGTable
 		return this.entries.get(Math.min(this.getMaxIndex(), Math.max(0, i)));
 	}
 
-	@Override public XGTableEntry getByValue(int v)
+	public XGTableEntry getByValue(int v, XGTableEntry def)
 	{	if(this.indexes.containsKey(v)) return this.entries.get(this.indexes.get(v));
 		v &= this.fallbackMask;
 		if(this.indexes.containsKey(v)) return this.entries.get(this.indexes.get(v));
-		else return null;
+		else return def;
+	}
+
+	@Override public XGTableEntry getByValue(int v)
+	{	return this.getByValue(v, new XGTableEntry(v, "**" + XGStrings.valueToString(v) + "**"));
 	}
 
 	@Override public XGTableEntry getByName(String name)
-	{	return this.entries.get(this.names.get(name));
+	{	if(this.names.containsKey(name)) return this.entries.get(this.names.get(name));
+		else
+		try
+		{	return this.getByValue(Integer.parseInt(name));
+		}
+		catch(NumberFormatException e)
+		{	LOG.warning(e.getMessage());
+			return new XGTableEntry(NO_PARAMETERVALUE, name);
+		}
 	}
 
-	@Override public int getIndex(int v, int defIndex)
+	@Override public int getIndex(int v)
 	{	if(this.indexes.containsKey(v)) return this.indexes.get(v);
 		int f = v & this.fallbackMask;
-		if(this.indexes.containsKey(f)) return this.indexes.get(f);
-		LOG.warning("neither value " + XGStrings.valueToString( v) + " nor fallback " + XGStrings.valueToString(f) + " found in " + this + "; using index " + defIndex);
-		return defIndex;
+		if(f != v && this.indexes.containsKey(f)) return this.indexes.get(f);
+		LOG.warning("neither value " + XGStrings.valueToString(v) + " nor fallback " + XGStrings.valueToString(f) + " found in " + this);
+		return this.getMinIndex();
 	}
 
 	@Override public int getIndex(String name)
-	{	if(!(this.names.containsKey(name))) return this.getMinIndex();
-		return this.names.get(name);
+	{	if(this.names.containsKey(name)) return this.names.get(name);
+		else return this.entries.indexOf(this.getByName(name));
 	}
 
-	@Override public int getMinIndex()
-	{	return 0;
-	}
+	@Override public int getMinIndex(){	return 0;}
 
-	@Override public int getMaxIndex()
-	{	return this.size() - 1;
-	}
+	@Override public int getMaxIndex(){	return this.size() - 1;}
 
-	@Override public Set<String> getCategories()
-	{	return this.categories;
-	}
+	@Override public Set<String> getCategories(){	return this.categories;}
 
 	@Override public XGTable categorize(String cat)
 	{	if(ALL_CATEGORIES.equals(cat)) return this;
@@ -136,23 +142,13 @@ public class XGRealTable implements XGTable
 		return table;
 	}
 
-	@Override public String getName()
-	{	return this.name;
-	}
+	@Override public String getName(){	return this.name;}
 
-	@Override public String getUnit()
-	{	return this.unit;
-	}
+	@Override public String getUnit(){	return this.unit;}
 
-	@Override public String toString()
-	{	return this.getInfo();
-	}
+	@Override public String toString(){	return this.getInfo();}
 
-	@Override public Iterator<XGTableEntry> iterator()
-	{	return this.entries.iterator();
-	}
+	@Override public Iterator<XGTableEntry> iterator(){	return this.entries.iterator();}
 
-	@Override public int size()
-	{	return this.entries.size();
-	}
+	@Override public int size(){	return this.entries.size();}
 }

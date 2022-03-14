@@ -1,27 +1,21 @@
 package device;
 
-import java.io.*;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
 import config.XGConfigurable;import file.XGSysexFile;
-import file.XGSysexFileConstants;
-import gui.XGFileSelector;
-import gui.XGMainWindow;import gui.XGWindow;
-import module.XGBulk;import module.XGModule;
+import module.XGBulk;import module.XGBulkDumper;import module.XGModule;
 import module.XGModuleType;
 import static module.XGModuleType.TYPES;
 import msg.*;
 import value.XGProgramBuffer;
-import static value.XGValueStore.STORE;
 import xml.XGProperty;import xml.XMLNode;
 
-public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
+public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable, XGMessenger
 {
 	public static XGDevice device = null;
 //	public static XMLNode config = null;
@@ -80,24 +74,19 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;
 	{	XGRequest m;
 		try
-		{	m = new XGMessageBulkRequest(STORE, XGMidi.getMidi(), XGAddressConstants.XGMODELNAMEADRESS);
-			try
-			{	m.getDestination().request(m);
-				if(m.isResponsed())
-				{	XGResponse r = m.getResponse();
-					int offs = r.getBaseOffset();
-					String s = r.getString(offs, offs + 14);
-					this.config.setStringAttribute(ATTR_NAME, s.trim());
-					this.info1 = r.decodeLSB(offs + 14);
-					this.info2 = r.decodeLSB(offs + 15);
-				}
-				else JOptionPane.showMessageDialog(null, "no response for " + m);
+		{	m = new XGMessageBulkRequest(this, XGAddressConstants.XGMODELNAMEADRESS);
+			XGMidi.getMidi().submit(m);
+			if(m.isResponsed())
+			{	XGResponse r = m.getResponse();
+				int offs = r.getBaseOffset();
+				String s = r.getString(offs, offs + 14);
+				this.config.setStringAttribute(ATTR_NAME, s.trim());
+				this.info1 = r.decodeLSB(offs + 14);
+				this.info2 = r.decodeLSB(offs + 15);
 			}
-			catch(InvalidXGAddressException | XGMessengerException e)
-			{	LOG.severe(e.getMessage());
-			}
+			else JOptionPane.showMessageDialog(null, "no response for " + m);
 		}
-		catch(InvalidXGAddressException | InvalidMidiDataException e)
+		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e)
 		{	LOG.severe(e.getMessage());
 		}
 	}
@@ -107,10 +96,10 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.window, WARNSTRING);
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
-		{	if(send)new XGMessageParameterChange(STORE, XGMidi.getMidi(), new byte[]{0,0,0,0,0,0,0x7E,0,0}, true).transmit();
+		{	if(send) XGMidi.getMidi().submit(new XGMessageParameterChange(this, new byte[]{0,0,0,0,0,0,0x7E,0,0}, true));
 			for(XGModuleType mt : TYPES) mt.resetValues();
 		}
-		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
+		catch(InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
 		}
 		XGProgramBuffer.reset();
@@ -135,72 +124,29 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.window, WARNSTRING);
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
-		{	if(send) new XGMessageParameterChange(STORE, XGMidi.getMidi(), new byte[]{0,0,0,0,0,0,0x7F,0,0}, true).transmit();
+		{	if(send) XGMidi.getMidi().submit(new XGMessageParameterChange(this, new byte[]{0,0,0,0,0,0,0x7F,0,0}, true));
 			for(XGModuleType mt : TYPES) mt.resetValues();
 		}
-		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1)
+		catch(InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
 		}
 		XGProgramBuffer.reset();
 	}
 
-	public void load()
-	{	XMLNode last = XGSysexFile.config.getLastChildOrNew(TAG_ITEM);
-		XGFileSelector fs = new XGFileSelector(last.getTextContent(), "open sysex file...", "open", XGSysexFileConstants.SYX_FILEFILTER);
-		switch(fs.select(XGMainWindow.window))
-		{	case JFileChooser.APPROVE_OPTION:
-			{	XGSysexFile f;
-				try
-				{	f = new XGSysexFile(last.getTextContent().toString());
-					f.parse();
-					this.transmitAll(f, STORE);
-					f.close();
-				}
-				catch(IOException e)
-				{	LOG.severe(e.getMessage());
-				}
-				break;
-			}
-			case JFileChooser.CANCEL_OPTION:
-			{	last.removeNode();
-				LOG.info("fileselection aborted");
-				break;
-			}
-		}
+	@Override public void submit(XGResponse msg) throws InvalidXGAddressException, XGMessengerException
+	{	LOG.info("not implemented yet...");
 	}
 
-	public void save()
-	{	XMLNode last = XGSysexFile.config.getLastChildOrNew(TAG_ITEM);
-		XGFileSelector fs = new XGFileSelector(last.getTextContent(), "save sysex file...", "save", XGSysexFileConstants.SYX_FILEFILTER);
-		switch(fs.select(XGMainWindow.window))
-		{	case JFileChooser.APPROVE_OPTION:
-			{	XGSysexFile f = new XGSysexFile(last.getTextContent().toString());
-				try
-				{	if(f.exists())
-					{	int res = JOptionPane.showConfirmDialog(XGMainWindow.window, " Overwrite " + f + "?");
-						if(res == JOptionPane.CANCEL_OPTION || res == JOptionPane.NO_OPTION) return;
-						f.parse();// damit die in einer Datei enthaltenen (aber vom ValueStore nicht unterstützen) Messages erhalten bleiben
-					}
-					else f.createNewFile();
-					this.transmitAll(STORE, f);
-					f.save();
-					f.close();
-				}
-				catch(IOException e)
-				{	LOG.severe(e.getMessage());
-				}
-				break;
-			}
-			case JFileChooser.CANCEL_OPTION:
-			{	last.removeNode();
-				LOG.info("fileselection aborted");
-				break;
-			}
-		}
+	public void submit(XGRequest req) throws InvalidXGAddressException, XGMessengerException
+	{	LOG.info("not implemented yet...");
 	}
 
 	@Override public String toString()
 	{	return this.getName().getValue().toString();
+	}
+
+	public void close()
+	{
 	}
 
 	@Override public XGAddressableSet<XGBulk> getBulks()

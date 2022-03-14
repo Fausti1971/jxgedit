@@ -162,8 +162,8 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 	}
 
 	@Override public void mouseDragged(MouseEvent e)
-	{	this.valueX.addIndex(e.getXOnScreen() - XGUI.VARIABLES.dragEvent.getXOnScreen());
-		this.valueY.addIndex(XGUI.VARIABLES.dragEvent.getYOnScreen() - e.getYOnScreen());
+	{	this.valueX.addIndex(e.getXOnScreen() - XGUI.VARIABLES.dragEvent.getXOnScreen(), true);
+		this.valueY.addIndex(XGUI.VARIABLES.dragEvent.getYOnScreen() - e.getYOnScreen(), true);
 		this.setLocation();
 		XGUI.VARIABLES.dragEvent = e;
 		e.consume();

@@ -46,11 +46,11 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 		this.addMouseListener(this);
 		this.addFocusListener(this);
 
-		this.next.addActionListener((ActionEvent e)->{this.value.addIndex(1);});
+		this.next.addActionListener((ActionEvent e)->{this.value.addIndex(1, true);});
 		this.next.setMinimumSize(ARROWSIZE);
 		this.add(this.next, BorderLayout.EAST);
 
-		this.prev.addActionListener((ActionEvent e)->{this.value.addIndex(-1);});
+		this.prev.addActionListener((ActionEvent e)->{this.value.addIndex(-1, true);});
 		this.prev.setMinimumSize(ARROWSIZE);
 		this.add(this.prev, BorderLayout.WEST);
 
@@ -106,8 +106,8 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 	}
 
 	@Override public void mouseClicked(MouseEvent e)
-	{	if(e.getClickCount() == 2)
-		{	if(this.dialog.isVisible()) this.dialog.dispose();
+	{	if(e.getClickCount() == 2 && this.dialog.isVisible())
+		{	this.dialog.dispose();
 			e.consume();
 		}
 	}
@@ -117,6 +117,6 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 		if(p == null) return;
 		Object o = p.getLastPathComponent();
 		if(o == null) return;
-		if(o instanceof XGTableEntry) this.value.editEntry((XGTableEntry)o);
+		if(o instanceof XGTableEntry) this.value.setEntry((XGTableEntry)o, true, true);
 	}
 }

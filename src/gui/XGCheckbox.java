@@ -4,9 +4,9 @@ import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;import value.XGValue;
 import value.XGValueChangeListener;
-import javax.swing.*;import javax.swing.border.LineBorder;import javax.swing.border.TitledBorder;
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;import java.awt.event.ItemEvent;
+import java.awt.event.ActionEvent;
 
 public class XGCheckbox extends JCheckBox implements XGComponent, XGParameterChangeListener, XGValueChangeListener
 {	private static final Dimension MIN_DIM = new Dimension(GRID * 3, GRID * 2);
@@ -24,10 +24,10 @@ public class XGCheckbox extends JCheckBox implements XGComponent, XGParameterCha
 			this.setEnabled(false);
 			return;
 		}
-		if(this.value.getOpcode().isMutable()) this.value.getParameterListeners().add(this);
+		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
 		this.setFont(MEDIUM_FONT);
-		this.addActionListener((ActionEvent e)->{this.value.toggleIndex();});
+		this.addActionListener((ActionEvent e)->{this.value.toggleIndex(true);});
 		this.parameterChanged(this.value.getParameter());
 		this.contentChanged(this.value);
 	}

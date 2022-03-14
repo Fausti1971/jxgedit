@@ -10,18 +10,14 @@ public interface XGByteArray
  * @param index Offset
  * @return Ergebnis
  */
-	default int decodeLSB(int index)
-	{	return (this.getByteArray()[index]) & 0x7F;
-	}
+	default int decodeLSB(int index){	return (this.getByteArray()[index]) & 0x7F;}
 
 /**
  * enkodiert das LSB des übergebenen i in das Array an Offset index 
  * @param index Offset
  * @param i Wert
  */
-	default void encodeLSB(int index, int i)
-	{	this.getByteArray()[index] = (byte)(i & 0xFF);
-	}
+	default void encodeLSB(int index, int i){	this.getByteArray()[index] = (byte)(i & 0xFF);}
 
 /**
  * dekodiert die size LSBs (7Bits) an Offset index zu int
@@ -63,9 +59,7 @@ public interface XGByteArray
 		this.encodeLSB(index, v);
 	}
 
-	default int decodeMSN(int index)
-	{	return this.getByteArray()[index] & 0xF0;
-	}
+	default int decodeMSN(int index){	return this.getByteArray()[index] & 0xF0;}
 
 	default void encodeMSN(int index, int value)
 	{	byte v = (byte)(decodeLSN(index) & 0x0F);
@@ -77,9 +71,7 @@ public interface XGByteArray
  * @param index Offset
  * @return	int
  */
-	default int decodeLSN(int index)
-	{	return this.getByteArray()[index] & 0xF;
-	}
+	default int decodeLSN(int index){	return this.getByteArray()[index] & 0xF;}
 
 	default int decodeLSN(int index, int size)
 	{	int res = 0;
@@ -98,6 +90,10 @@ public interface XGByteArray
 			value >>= 4;
 		}
 	}
+
+	default void encodeMSB(int offset, int value){	throw new RuntimeException("Encoding MSB not implemented yet...");}
+
+	default int decodeMSB(int offset){	throw new RuntimeException("Dencoding MSB not implemented yet...");}
 
 	default byte[] copyByteArray(int index, int size)
 	{	int to = Math.min(getByteArray().length, index + size);
@@ -132,7 +128,7 @@ public interface XGByteArray
 		return(sb.toString());
 	}
 
-	default void setString(int offset, int bc, String s)//TODO
+	default void setString(int offset, int bc, String s)
 	{
 	}
 

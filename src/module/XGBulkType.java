@@ -2,7 +2,7 @@ package module;
 
 import adress.InvalidXGAddressException;import adress.XGAddress;
 import adress.XGAddressable;
-import static application.XGLoggable.LOG;import config.XGConfigurable;import parm.XGOpcode;import tag.XGTagable;import tag.XGTagableAddressableSet;import xml.XGProperty;import xml.XMLNode;import static xml.XMLNodeConstants.*;
+import config.XGConfigurable;import value.XGValueType;import tag.XGTagable;import tag.XGTagableAddressableSet;import xml.XGProperty;import xml.XMLNode;import static xml.XMLNodeConstants.*;
 
 public class XGBulkType implements XGTagable, XGAddressable, XGConfigurable
 {
@@ -10,7 +10,7 @@ public class XGBulkType implements XGTagable, XGAddressable, XGConfigurable
 	public final String tag;
 	public final XGAddress address;
 	public final XGModuleType moduleType;
-	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<>();
+	private final XGTagableAddressableSet<XGValueType> opcodes = new XGTagableAddressableSet<>();
 
 
 	public XGBulkType(XGModuleType mt, XMLNode x)
@@ -20,16 +20,12 @@ public class XGBulkType implements XGTagable, XGAddressable, XGConfigurable
 		this.moduleType = mt;
 
 		for(XMLNode o : x.getChildNodes(TAG_OPCODE))
-		{	try
-			{	this.opcodes.add(new XGOpcode(mt, this.address, o));
-			}
-			catch(InvalidXGAddressException e)
-			{	LOG.severe(e.getMessage());
-			}
+		{	try{	this.opcodes.add(new XGValueType( this.address, o));}
+			catch(InvalidXGAddressException e){	e.printStackTrace();}
 		}
 	}
 
-	public XGTagableAddressableSet<XGOpcode> getOpcodes(){	return this.opcodes;}
+	public XGTagableAddressableSet<XGValueType> getOpcodes(){	return this.opcodes;}
 
 	public String getTag(){	return this.tag;}
 

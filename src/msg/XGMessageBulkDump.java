@@ -2,7 +2,7 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
+import adress.XGAddress;import module.XGBulk;import value.XGValue;
 
 public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 {
@@ -10,13 +10,17 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 
 /********************************************************************************************************************************************************/
 
-	XGMessageBulkDump(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException
-	{	super(src, dest, array, init);
+	XGMessageBulkDump(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
+	{	super(src, array, init);
 		this.checkSum();
 	}
 
-	public XGMessageBulkDump(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException //wird manuell angelegt und als response benötigt
-	{	super(src, dest, new byte[OVERHAED + adr.getLo().getSize()], true);
+	public XGMessageBulkDump(XGMessenger src, XGBulk blk) throws InvalidXGAddressException, InvalidMidiDataException //wird manuell angelegt und als response benötigt
+	{	this(src, blk.getAddress());
+	}
+
+	public XGMessageBulkDump(XGMessenger src, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException //wird manuell angelegt und als response benötigt
+	{	super(src, new byte[OVERHAED + adr.getLo().getSize()], true);
 		this.setBulkSize(adr.getLo().getSize());
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
@@ -24,38 +28,32 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 		this.setChecksum();
 	}
 
-	@Override public int getHi()
-	{	return decodeLSB(HI_OFFS);
+	public  XGMessageBulkDump(XGMessenger src, XGValue val)throws InvalidMidiDataException, InvalidXGAddressException// für "bulkende" Values
+	{	this(src, new XGAddress(val.getAddress().getHi(), val.getAddress().getMid(), val.getType().getAddress().getLo()));
+		val.getCodec().encode(this, this.getBaseOffset(), this.getBulkSize(), val.getValue());
+		this.setChecksum();
 	}
 
-	@Override public int getMid()
-	{	return decodeLSB(MID_OFFS);
-	}
+	@Override public int getHi(){	return decodeLSB(HI_OFFS);}
 
-	@Override public int getLo()
-	{	return decodeLSB(LO_OFFS);
-	}
+	@Override public int getMid(){	return decodeLSB(MID_OFFS);}
 
-	@Override public void setHi(int hi)
-	{	encodeLSB(HI_OFFS, hi);
-	}
+	@Override public int getLo(){	return decodeLSB(LO_OFFS);}
 
-	@Override public void setMid(int mid)
-	{	encodeLSB(MID_OFFS, mid);
-	}
+	@Override public void setHi(int hi){	encodeLSB(HI_OFFS, hi);}
 
-	@Override public void setLo(int lo)
-	{	encodeLSB(LO_OFFS, lo);
-	}
+	@Override public void setMid(int mid){	encodeLSB(MID_OFFS, mid);}
 
-	@Override public int getBulkSize()
-	{	return decodeLSB(SIZE_OFFS, SIZE_SIZE);
-	}
+	@Override public void setLo(int lo){	encodeLSB(LO_OFFS, lo);}
 
-	@Override public void setBulkSize(int size)
-	{	encodeLSB(SIZE_OFFS, SIZE_SIZE, size);
-	}
+	@Override public int getBulkSize(){	return decodeLSB(SIZE_OFFS, SIZE_SIZE);}
 
+	@Override public void setBulkSize(int size){	encodeLSB(SIZE_OFFS, SIZE_SIZE, size);}
+
+	@Override public void encodeLSB(int index, int size)
+	{	super.encodeLSB(index, size);
+		if(index >= SIZE_OFFS && index < DATA_OFFS + size) this.setChecksum();
+	}
 /*
  * The checksum shall be set such that the low-order 7 bits of the sum of the Byte Count, the Address, the Data, and the Checksum itself are 0.
  * For details about support for reception of block-unit bulk dumps, see Attached Chart 5.
@@ -70,14 +68,10 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	{	int size = this.getBulkSize();
 		int pos = DATA_OFFS + size;//checksum-offset
 		int sum = this.calcChecksum(SIZE_OFFS, pos - 1);//Berechnung erstmal ohne checksum-offset, da diese erst errechnet und gesetzt werden muss
-		this.encodeLSB(pos, (- sum) & LSB);
+		super.encodeLSB(pos, (- sum) & LSB);
 	}
 
-	@Override public int getBaseOffset()
-	{	return DATA_OFFS;
-	}
+	@Override public int getBaseOffset(){	return DATA_OFFS;}
 
-	@Override public void setMessageID()
-	{	this.setMessageID(MSG);
-	}
+	@Override public void setMessageID(){	this.setMessageID(MSG);}
 }

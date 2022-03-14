@@ -5,8 +5,6 @@ import java.util.Set;
 import adress.*;
 import static application.JXG.XMLPATH;import config.XGConfigurable;
 import application.JXG;import application.XGLoggable;
-import msg.XGBulkDumper;
-import parm.XGOpcode;
 import parm.XGTable;
 import static parm.XGTable.TABLES;
 import static parm.XGVirtualTable.DEF_TABLE;import tag.*;
@@ -27,6 +25,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 */
 	public static void init()
 	{	XMLNode xml;
+		XGDrumsetModuleType.init();
 		try
 		{	String n = XMLPATH + XML_STRUCTURE;
 			xml = XMLNode.parse(JXG.class.getResourceAsStream(n), n);
@@ -64,7 +63,6 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 /********************************************************************************************************************/
 
 	private final Set<String> infoOpcodes = new LinkedHashSet<>();
-//	private final XGTagableAddressableSet<XGOpcode> opcodes = new XGTagableAddressableSet<>();
 	private final XGTagableAddressableSet<XGBulkType> bulkTypes = new XGTagableAddressableSet<>();
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();
 	protected final StringBuffer name;
@@ -74,7 +72,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	private final XMLNode config;
 
 /**
-* instanziiert Moduletypen, Bulktypen und Valuetypen (XGOpcode)
+* instanziiert Moduletypen, Bulktypen und Valuetypen
 */
 	public XGModuleType(XMLNode cfg, XGAddress adr, String name)
 	{	this.config = cfg;
@@ -99,8 +97,6 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 	public XGAddressableSet<XGModule> getModules(){ return this.modules;}
 
-//	public XGTagableAddressableSet<XGOpcode> getOpcodes(){ return this.opcodes;}
-
 	public Set<String> getInfoOpcodes(){ return this.infoOpcodes;}
 
 	@Override public XMLNode getConfig(){ return this.config;}
@@ -109,13 +105,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 	public String getName(){ return this.name.toString();}
 
-	//public XGAddressableSet<XGOpcode> getOpcodes()
-	//{	return XGOpcode.OPCODES.getAllIncluded(this.address);
-	//}
-
-//	public XGAddressableSet<XGAddress> getBulkAdresses(){ return this.bulkTypes;}
-
-	public void resetValues(){ for(XGModule m : this.getModules()) m.resetValues();}
+	public void resetValues(){	for(XGModule m : this.getModules()) m.resetValues();}
 
 	@Override public String toString(){ return this.name.toString();}
 
@@ -127,7 +117,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		return set;
 	}
 
-	public String getTag(){ return this.tag.toString();}
+	public String getTag(){ return this.tag;}
 
 	public Set<XGBulkType> getBulkTypes(){	return this.bulkTypes;}
 }

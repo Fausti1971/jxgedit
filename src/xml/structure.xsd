@@ -4,7 +4,7 @@
 	<xs:element name="structure">
 		<xs:complexType>
 			<xs:sequence>
-				<xs:element ref="virtual" minOccurs="0"/>
+				<xs:element ref="virtual" maxOccurs="unbounded"/>
 				<xs:element ref="module" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
@@ -12,7 +12,8 @@
 
 	<xs:element name="virtual">
 		<xs:complexType>
-			<xs:attribute name="id" use="required" type="xs:ID"/>
+		<xs:attribute name="id" use="required" type="xs:ID"/>
+		<xs:attribute name="name" use="optional" type="xs:string"/>
 		</xs:complexType>
 	</xs:element>
 
@@ -51,7 +52,27 @@
 		<xs:complexContent mixed="false">
 			<xs:extension base="opcode">
 				<xs:attributeGroup ref="opcodeAttribute"/>
-				<xs:attribute name="actions" use="required" type="xs:string"/>
+				<xs:attributeGroup ref="parameterAttribute"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="mutablePar">
+		<xs:complexContent mixed="false">
+			<xs:extension base="opcode">
+				<xs:attribute name="parameterSelector" use="required" type="xs:IDREF"/>
+				<xs:attribute name="parameterTable" use="required" type="xs:NCName"/>
+				<xs:attributeGroup ref="opcodeAttribute"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
+	<xs:complexType name="mutableDef">
+		<xs:complexContent mixed="false">
+			<xs:extension base="opcode">
+				<xs:attribute name="defaultSelector" use="required" type="xs:IDREF"/>
+				<xs:attribute name="defaultsTable" use="required" type="xs:NCName"/>
+				<xs:attributeGroup ref="opcodeAttribute"/>
 				<xs:attributeGroup ref="parameterAttribute"/>
 			</xs:extension>
 		</xs:complexContent>
@@ -61,9 +82,10 @@
 		<xs:complexContent mixed="false">
 			<xs:extension base="opcode">
 				<xs:attribute name="parameterSelector" use="required" type="xs:IDREF"/>
-				<xs:attribute name="parameters" use="required" type="xs:NCName"/>
+				<xs:attribute name="parameterTable" use="required" type="xs:NCName"/>
+				<xs:attribute name="defaultSelector" use="required" type="xs:IDREF"/>
+				<xs:attribute name="defaultsTable" use="required" type="xs:NCName"/>
 				<xs:attributeGroup ref="opcodeAttribute"/>
-				<xs:attribute name="actions" use="required" type="xs:string"/>
 			</xs:extension>
 		</xs:complexContent>
 	</xs:complexType>
@@ -125,8 +147,7 @@
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="address" use="required" type="opcodeAddress"/>
 		<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
-		<xs:attribute name="defaultSelector" use="optional" type="xs:IDREF"/>
-		<xs:attribute name="defaults" use="optional" type="xs:NCName"/>
+		<xs:attribute name="actions" use="required" type="xs:string"/>
 	</xs:attributeGroup>
 
 	<xs:attributeGroup name="parameterAttribute">

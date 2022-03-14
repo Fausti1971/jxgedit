@@ -111,19 +111,19 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 
 		@Override public void mouseClicked(MouseEvent e)
 		{	if(e.getButton() != MouseEvent.BUTTON1) return;
-			if(this.getX() + this.barWidth < e.getX()) this.value.addIndex(1);
-			else this.value.addIndex(-1);
+			if(this.getX() + this.barWidth < e.getX()) this.value.addIndex(1, true);
+			else this.value.addIndex(-1, true);
 			e.consume();
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	this.value.addIndex(e.getWheelRotation());
+		{	this.value.addIndex(e.getWheelRotation(), true);
 			e.consume();
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGUI.VARIABLES.dragEvent.getX();
-			this.value.addIndex(distance);
+			this.value.addIndex(distance, true);
 			XGUI.VARIABLES.dragEvent = e;
 			e.consume();
 		}

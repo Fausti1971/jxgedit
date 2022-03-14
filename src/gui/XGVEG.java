@@ -5,13 +5,11 @@ import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import gui.XGPoint.PointRelation;
-import module.XGModule;
 import value.XGFixedValue;
 import value.XGValue;
-import xml.XMLNode;import javax.swing.*;
+import javax.swing.*;
 
 public class XGVEG extends JPanel implements MouseMotionListener, XGComponent
 {
@@ -72,8 +70,8 @@ public class XGVEG extends JPanel implements MouseMotionListener, XGComponent
 	}
 
 	@Override public void mouseDragged(MouseEvent e)
-	{	this.depth.addIndex(e.getXOnScreen() - VARIABLES.dragEvent.getXOnScreen());
-		this.offset.addIndex(VARIABLES.dragEvent.getYOnScreen() - e.getYOnScreen());
+	{	this.depth.addIndex(e.getXOnScreen() - VARIABLES.dragEvent.getXOnScreen(), true);
+		this.offset.addIndex(VARIABLES.dragEvent.getYOnScreen() - e.getYOnScreen(), true);
 		this.tooltip.setName(this.getInfo());
 		Point p = e.getLocationOnScreen();
 		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);

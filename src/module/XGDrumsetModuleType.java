@@ -2,16 +2,56 @@ package module;
 
 import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import static parm.XGDefaultsTable.DEF_DRUMSETPROGRAM;import parm.XGDrumNames;import static parm.XGParameterConstants.TABLE_PARTMODE;import parm.XGRealTable;
-import parm.XGTableEntry;import parm.XGVirtualTable;import tag.XGTagableAddressableSet;import value.XGDrumsetProgramValue;import value.XGValue;import xml.XMLNode;import java.util.HashMap;import java.util.Map;
+import adress.XGAddressableSet;
+import application.JXG;
+import static application.JXG.XMLPATH;
+import device.XGDevice;
+import device.XGMidi;
+import static msg.XGMessageConstants.*;
+import msg.XGMessageParameterChange;
+import msg.XGMessengerException;
+import static parm.XGParameterConstants.TABLE_PARTMODE;
+import parm.XGRealTable;
+import parm.XGTableEntry;
+import parm.XGVirtualTable;
+import value.XGDrumsetProgramValue;
+import static value.XGValueType.MP_PM_VALUE_TAG;
+import static value.XGValueType.MP_PRG_VALUE_TAG;
+import xml.XMLNode;
+import javax.sound.midi.InvalidMidiDataException;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class XGDrumsetModuleType extends XGModuleType
 {
-	public static Map<Integer, XGDrumsetModuleType> DRUMSETS = new HashMap<>();
+	private static final byte[] RESET_MSG = {(byte)SOX, VENDOR, MSG_PC, MODEL, 0, 0, 0x7D, 0, (byte)EOX};
+	public static final Map<Integer, XGDrumsetModuleType> DRUMSETS = new HashMap<>();//partmode, Drumset
+	private static final Map<Integer, XGRealTable> DRUMNAMES = new HashMap<>();//key, <drumprg, drumname>
+	private static final int DEF_DRUMSETPROGRAM = 127 << 14;
+	private static final int FALLBACKMASK = 127 << 14;
 
+	public static void init()
+	{	try
+		{	String s = XMLPATH + XML_DRUMS;
+			XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(s), s);
+			for(XMLNode k : n.getChildNodes(TAG_KEY))
+			{	int key = k.getValueAttribute(ATTR_VALUE, -1);
+				XGRealTable t = DRUMNAMES.getOrDefault(key, new XGRealTable(Integer.toString(key), "", FALLBACKMASK, false));
+				for(XMLNode i : k.getChildNodes(TAG_ITEM))
+				{	t.add(new XGTableEntry(i.getValueAttribute(ATTR_SELECTORVALUE, -1), i.getStringAttribute(ATTR_NAME)));
+					DRUMNAMES.putIfAbsent(key, t);
+				}
+				LOG.info(t + " initialized");
+			}
+		}
+		catch(IOException e)
+		{	LOG.severe(e.getMessage());
+		}
+	}
 /****************************************************************************************************************************/
 
-	private int program = DEF_DRUMSETPROGRAM;
+	private volatile int program = DEF_DRUMSETPROGRAM;
 	private final int partmode;
 	private final XGDrumsetProgramValue programListener;
 
@@ -27,29 +67,41 @@ public class XGDrumsetModuleType extends XGModuleType
 	}
 
 	public String getDrumname(int key)
-	{	XGRealTable t = XGDrumNames.DRUMNAMES.get(key);
-		String s = "No Sound";
-		if(t != null && t.getByValue(this.program) != null) s = t.getByValue(this.program).getName();
-		return s;
+	{	XGRealTable t = DRUMNAMES.get(key);
+		XGTableEntry def = new XGTableEntry(key, "Key " + key + " No Sound");
+		if(t == null) return def.getName();
+		return t.getByValue(this.getProgram(), def).getName();
 	}
 
 	public int getPartmode(){ return this.partmode;}
 
-	public XGDrumsetProgramValue getProgramListener()
-	{	//System.out.println(this + " programListeners: " + this.programListener.getValueListeners().size());
-		return this.programListener;
+	private XGAddressableSet<XGModule> getMultiparts()
+	{	XGAddressableSet<XGModule> mp = new XGAddressableSet<>();
+		for(XGModule mod : TYPES.get("mp").getModules())
+		{	if(mod.getValues().get(MP_PM_VALUE_TAG).getValue() == this.partmode) mp.add(mod);
+		}
+		return mp;
 	}
 
-	public int getProgram()	{ return this.program;}
+	public XGDrumsetProgramValue getProgramListener(){	return this.programListener;}
+
+	public int getProgram(){	return this.program;}
 
 	public void setProgram(int prg)
 	{	this.program = prg;
-		for(XGModule mod : TYPES.get("mp").getModules())
-		{	XGTagableAddressableSet<XGValue> vals = mod.getValues();
-			if(vals.get("mp_partmode").getValue() == this.partmode)
-			{	vals.get("mp_program").setValue(prg);
-			}
-		}
+		for(XGModule mod : this.getMultiparts()){	mod.getValues().get(MP_PRG_VALUE_TAG).setValue(prg, false, false);}
 		this.programListener.notifyValueListeners(this.programListener);
+LOG.info(this.partmode + "/" + prg);
+	}
+
+	public void reset()
+	{	try
+		{	RESET_MSG[7] = (byte)(this.partmode - 2);
+			XGMidi.getMidi().submit(new XGMessageParameterChange(XGDevice.device, RESET_MSG, true));
+			this.resetValues();
+		}
+		catch( XGMessengerException | InvalidMidiDataException e)
+		{	LOG.severe(e.getMessage());
+		}
 	}
 }

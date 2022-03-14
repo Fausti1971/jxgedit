@@ -9,33 +9,26 @@ public class XGMessageBulkRequest extends XGRequest
 
 /********************************************************************************/
 
-	public XGMessageBulkRequest(XGMessenger src, XGMessenger dest, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
-	{	super(src, dest, array, init);
+	public XGMessageBulkRequest(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
+	{	super(src, array, init);
 		XGAddress adr = new XGAddress(array[HI_OFFS], array[MID_OFFS], array[LO_OFFS]);
 		this.setAddress(adr);
-		this.response = new XGMessageBulkDump(dest, src, adr);
 	}
 
-	public XGMessageBulkRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
-	{	super(src, dest, new byte[OVERHAED], true);
+	public XGMessageBulkRequest(XGMessenger src, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
+	{	this(src, new byte[OVERHAED], true);
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getMin());
-		this.response = new XGMessageBulkDump(dest, src, adr);
 	}
 
-	public XGMessageBulkRequest(XGMessenger src, XGMessenger dest, XGBulk blk) throws InvalidXGAddressException, InvalidMidiDataException
-	{	super(src, dest, blk.getMessage().getMessage(), true);
+	public XGMessageBulkRequest(XGMessenger src, XGBulk blk) throws InvalidXGAddressException, InvalidMidiDataException
+	{	this(src, blk.getAddress());
 		XGAddress adr = blk.getAddress();
 		this.setHi(adr.getHi().getValue());
 		this.setMid(adr.getMid().getValue());
 		this.setLo(adr.getLo().getMin());
-		this.response = blk.getMessage();
 	}
-
-//	public XGMessageDumpRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException
-//	{	super(src, dest, msg);
-//	}
 
 	@Override public int getHi(){ return decodeLSB(HI_OFFS);}
 

@@ -71,9 +71,6 @@ public class XGVirtualTable implements XGTable
 		TABLES.add(new XGVirtualTable(0, 0, TABLE_NONE,
 			(Integer i)->{return "";},
 			(String s)->{return 0;}));
-
-//TODO: weiter so...
-
 	}
 
 /***********************************************************************************/
@@ -110,7 +107,7 @@ public class XGVirtualTable implements XGTable
 		return new XGTableEntry(v, this.translate.apply(v));
 	}
 
-	@Override public int getIndex(int v, int def)
+	@Override public int getIndex(int v)
 	{	return v - this.minValue;
 	}
 

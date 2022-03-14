@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import application.*;
 import static application.JXG.XMLPATH;import tag.*;
-import xml.XGProperty;import xml.XMLNode;
+import static value.XGValueType.MP_PRG_VALUE_TAG;import xml.XGProperty;import xml.XMLNode;
 /**
  * simple taggable HashMap<Integer, HashMap<Integer, Integer>>, deren erster int der Wert des Selektors, der zweite int der Wert des zugehörigen Defaults ist
  * @author thomas
@@ -18,8 +18,7 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 	public static final XGTagableSet<XGDefaultsTable> DEFAULTSTABLE = new XGTagableSet<>();
 
 	public static void init()
-	{
-		try
+	{	try
 		{	String s = XMLPATH + XML_DEFAULTS;
 			XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(s), s);
 			for(XMLNode t : n.getChildNodes(TAG_DEFAULTSTABLE))
@@ -30,13 +29,19 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 		{	LOG.info(e.getMessage());
 		}
 
-		DEFAULTSTABLE.add(new XGDefaultsTable("id")
+/**
+* eine Dummy-Defaultstable, die lediglich die id returniert;
+*/
+		DEFAULTSTABLE.add(new XGDefaultsTable(ATTR_ID)
 			{	@Override public int get(int id, int sel)
 				{	return (id);
 				}
 			}
 		);
 
+/**
+* eine Dummy-Defaultstable für die Programmdefaults der verschiedenen Partmodes
+*/
 		DEFAULTSTABLE.add(new XGDefaultsTable(TABLE_PARTMODE)
 			{	@Override public int get(int id, int sel)
 				{	switch(id)
@@ -50,7 +55,10 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 			}
 		);
 
-		DEFAULTSTABLE.add(new XGDefaultsTable("mp_program")
+/**
+* eine Dummy-Defaultstable für Defaultprogramme aller Multiparts
+*/
+		DEFAULTSTABLE.add(new XGDefaultsTable(TABLE_PROGRAM)
 			{	@Override public int get(int id, int sel)
 				{	switch(id)
 					{	case 9:
@@ -67,7 +75,7 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 /*************************************************************************************************************/
 
 	private final String tag;
-	private final Map<Integer, Map<Integer, Integer>> idMap = new HashMap<>();
+	private final Map<Integer, Map<Integer, Integer>> idMap = new HashMap<>();//id, selectorValue, defaultValue
 
 	public XGDefaultsTable(String tag)
 	{	this.tag = tag;
@@ -106,36 +114,31 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 
 	public int get(int id, int sel)
 	{	if(!this.idMap.containsKey(id)) id = NO_ID;
-		if(!this.idMap.get(id).containsKey(sel))
-		{	LOG.info(this.getClass().getSimpleName() + " (" + this.tag + ") contains no selector (" + XGStrings.valueToString(sel) + ") for id (" + id + "), using default (" + DEF_SELECTORVALUE + ")");
-			sel = DEF_SELECTORVALUE;
-		}
+		if(!this.idMap.get(id).containsKey(sel)) sel = DEF_SELECTORVALUE;
 		return this.idMap.get(id).get(sel);
 	}
 
-	@Override public String getTag()
-	{	return this.tag;
-	}
+	@Override public String getTag(){	return this.tag;}
 
-	public XMLNode toXMLNode()
-	{	int min = -1, max = -1;
-		XMLNode table = new XMLNode(TAG_DEFAULTSTABLE, new XGProperty(ATTR_NAME, this.tag));
-		for(int m : this.idMap.keySet())
-		{	XMLNode id = new XMLNode(TAG_ID, new XGProperty(ATTR_VALUE, XGStrings.valueToString(m)));
-			table.addChildNode(id);
-			for(int s : this.idMap.get(m).keySet())
-			{	XMLNode item = new XMLNode(TAG_ITEM, new XGProperty(ATTR_SELECTORVALUE, XGStrings.valueToString(s)));
-				int v = this.idMap.get(m).get(s);
-				if(min == -1) min = v;
-				min = Math.min(min, v);
-				if(max == -1) max = v;
-				max = Math.max(max, v);
-				item.getAttributes().getOrNew(ATTR_VALUE, new XGProperty(ATTR_VALUE, XGStrings.valueToString(v)));
-				id.addChildNode(item);
-			}
-		}
-		table.getAttributes().add(new XGProperty("range", min + "-" + max));
-//		System.out.println("table=" + this.tag + " range = " + min + "/" + max);
-		return table;
-	}
+//	public XMLNode toXMLNode()//Überbleibsel zum dekodieren der *.ods
+//	{	int min = -1, max = -1;
+//		XMLNode table = new XMLNode(TAG_DEFAULTSTABLE, new XGProperty(ATTR_NAME, this.tag));
+//		for(int m : this.idMap.keySet())
+//		{	XMLNode id = new XMLNode(TAG_ID, new XGProperty(ATTR_VALUE, XGStrings.valueToString(m)));
+//			table.addChildNode(id);
+//			for(int s : this.idMap.get(m).keySet())
+//			{	XMLNode item = new XMLNode(TAG_ITEM, new XGProperty(ATTR_SELECTORVALUE, XGStrings.valueToString(s)));
+//				int v = this.idMap.get(m).get(s);
+//				if(min == -1) min = v;
+//				min = Math.min(min, v);
+//				if(max == -1) max = v;
+//				max = Math.max(max, v);
+//				item.getAttributes().getOrNew(ATTR_VALUE, new XGProperty(ATTR_VALUE, XGStrings.valueToString(v)));
+//				id.addChildNode(item);
+//			}
+//		}
+//		table.getAttributes().add(new XGProperty("range", min + "-" + max));
+////		System.out.println("table=" + this.tag + " range = " + min + "/" + max);
+//		return table;
+//	}
 }

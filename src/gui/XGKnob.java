@@ -3,15 +3,11 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import adress.XGAddress;
-import adress.XGMemberNotFoundException;
 import application.XGMath;
-import module.XGModule;
-import msg.XGMessageParameterRequest;import parm.XGParameter;
+import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import value.XGValue;
 import value.XGValueChangeListener;
-import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_ADDRESS;
 
 public class XGKnob extends JPanel implements XGParameterChangeListener, XGValueChangeListener, MouseListener, FocusListener, XGComponent
 {
@@ -35,7 +31,7 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 			this.label = null;
 			return;
 		}
-		if(this.value.getOpcode().isMutable()) this.value.getParameterListeners().add(this);
+		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
 
 		this.setLayout(new GridBagLayout());
@@ -140,13 +136,13 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 		}
 
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	this.value.editIndex(this.value.getIndex() + e.getWheelRotation());
+		{	this.value.addIndex(e.getWheelRotation(), true);
 			e.consume();
 		}
 
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGUI.VARIABLES.dragEvent.getX();
-			this.value.addIndex(distance);
+			this.value.addIndex(distance, true);
 			XGUI.VARIABLES.dragEvent = e;
 			e.consume();
 		}

@@ -3,24 +3,23 @@ package msg;
 import javax.sound.midi.InvalidMidiDataException;
 
 public abstract class XGRequest extends XGSuperMessage
-{	XGResponse response;
-	boolean responsed;
+{	XGResponse response = null;
+	boolean responsed = false;
 
-	protected XGRequest(XGMessenger src,XGMessenger dest,byte[] array,boolean init) throws InvalidMidiDataException
-	{	super(src,dest,array,init);
+	protected XGRequest(XGMessenger src, byte[] array,boolean init) throws InvalidMidiDataException
+	{	super(src,array,init);
 	}
 
 /**
  * überprüft, ob die übergebene Message eine Antwort auf diesen XGRequest ist, setzt und returniert das Ergebnis;
- * @param msg
+ * @param res vermeintliche Antwort
  * @return true, wenn dieser XGRequest mit der übergebenen XGResponse beantwortet ist;
  */
-	public boolean setResponsedBy(XGResponse msg)
-	{	this.responsed = msg!=null && this.getResponse().isEqual(msg);
-		if(this.responsed)
-		{	msg.setDestination(this.getResponse().getDestination());
-			this.response = msg;
-		}
+	public boolean setResponsedBy(XGResponse res)
+	{	this.responsed = res != null && this.getAddress().equals(res.getAddress()) && this.getSysexID() == res.getSysexID();
+		if(this instanceof XGMessageBulkRequest) this.responsed &= res instanceof XGMessageBulkDump;
+		if(this instanceof XGMessageParameterRequest) this.responsed &= res instanceof XGMessageParameterChange;
+		if(this.responsed) this.response = res;
 		return this.responsed;
 	}
 

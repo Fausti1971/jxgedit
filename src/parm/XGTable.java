@@ -42,7 +42,7 @@ public interface XGTable extends  XGLoggable, XGParameterConstants, XGTagable, I
 /**
 * returniert den index des gesuchten values v, im Falle eines Fehlschlags noch einmal mit fallbackmask, ansonsten def
 */
-	int getIndex(int v, int def);
+	int getIndex(int value);
 	int getIndex(String name);
 	int getMinIndex();
 	int getMaxIndex();

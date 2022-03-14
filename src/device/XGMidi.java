@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import adress.InvalidXGAddressException;
 import application.*;
 import msg.*;
-import static value.XGValueStore.STORE;
 import xml.*;
 
 public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable, XMLNodeConstants
@@ -190,39 +189,43 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	{	this.transmitter.send(mm, -1L);
 	}
 
-	@Override public void submit(XGMessage m) throws XGMessengerException
+	@Override public void submit(XGResponse m) throws XGMessengerException
 	{	if(this.transmitter == null) throw new XGMessengerException("no transmitter initialized!");
 		if(m == null)throw new XGMessengerException("message was null");
+		int timeout = 0;
 		m.setTimeStamp();
+//Note to XG Data Writers: If sending consecutive bulk dumps, leave an interval of about 10ms between the F7 and the next F0.
+		if(m instanceof XGMessageBulkDump) timeout = 10;
 		this.transmitter.send((MidiMessage)m, -1L);
-		if(m instanceof XGMessageBulkDump)//Note to XG Data Writers: If sending consecutive bulk dumps, leave an interval of about 10ms between the F7 and the next F0.
-		{	try{	Thread.sleep(10);}
-			catch(InterruptedException e){	e.printStackTrace();}
-		}
+		try{	Thread.sleep(timeout);}
+		catch(InterruptedException ignored){}
+	}
+
+	@Override public void submit(XGRequest req) throws XGMessengerException
+	{	if(this.transmitter == null) throw new XGMessengerException("no transmitter initialized!");
+		if(req == null)throw new XGMessengerException("message was null");
+		req.setTimeStamp();
+		this.request = req;
+		reqThr = Thread.currentThread();
+		this.transmitter.send(req, -1L);
+		try{	Thread.sleep(this.timeoutValue);}
+		catch(InterruptedException ignored){}
+		this.request = null;
+		reqThr = null;
 	}
 
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	try
-		{	XGMessage m = XGMessage.newMessage(this, STORE, mmsg);
-			if(this.request != null && this.request.setResponsedBy((XGResponse)m)) reqThr.interrupt();
-			else STORE.submit(m);
+		{	XGMessage m = XGMessage.newMessage(this, mmsg);
+			if(this.request != null && m instanceof XGResponse && this.request.setResponsedBy((XGResponse)m))
+			{	this.request.getSource().submit((XGResponse)m);
+				reqThr.interrupt();
+			}
+//			else XGMessageStore.STORE.submit(m);
 		}
 		catch(InvalidMidiDataException | InvalidXGAddressException | XGMessengerException e)
 		{	LOG.info(e.getMessage());
 		}
-	}
-
-	@Override public void request(XGRequest req) throws XGMessengerException
-	{	this.request = req;
-		reqThr = Thread.currentThread();
-
-		this.submit(req);
-
-		try	{	Thread.sleep(this.timeoutValue);}
-		catch(InterruptedException ignored){}
-
-		this.request = null;
-		reqThr = null;
 	}
 
 	@Override public boolean equals(Object o)

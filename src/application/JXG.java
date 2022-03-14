@@ -54,7 +54,6 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 
 		JXG.init();
 		XGTable.init();
-		XGDrumNames.init();
 		XGDefaultsTable.init();
 		XGParameterTable.init();
 		XGSysexFile.init();
@@ -62,7 +61,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		XGDevice.init();
 		XGModuleType.init();
 		XGModule.init();
-		XGValueStore.init();
+		XGValue.init();
 		XGUI.init();
 		XGMainWindow.init();
 		System.gc();
