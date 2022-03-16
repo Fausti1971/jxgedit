@@ -79,16 +79,11 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 	private final StringBuffer content = new StringBuffer("");
 	private final XGTagableSet<XGProperty> attributes = new XGTagableSet<>();
 
+	public XMLNode(String tag){	this.tag = tag;}
 
-	public XMLNode(String tag)
-	{	this.tag = tag;
-	}
+	public XMLNode(String tag, XGProperty attr){	this(tag, attr, "");}
 
-	public XMLNode(String tag, XGProperty attr)
-	{	this(tag, attr, "");
-	}
-
-	private XMLNode(String tag, XGProperty attr, String txt)
+	public XMLNode(String tag, XGProperty attr, String txt)
 	{	//if(!XGStrings.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
 		this.tag = XGStrings.toAlNum(tag);
 		this.attributes.add(attr);
@@ -107,38 +102,30 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 		}
 	}
 
-	public XMLNode getParentNode()
-	{	return this.parent;
-	}
+	public XMLNode getParentNode(){	return this.parent;}
 
-	public void setTextContent(final String s)
-	{	this.content.replace(0, this.content.length(), s);
-	}
+	public void setTextContent(final String s){	this.content.replace(0, this.content.length(), s);}
 
-	public void setTextContent(int v)
-	{	this.content.replace(0, this.content.length(), String.valueOf(v));
-	}
+	public void setTextContent(int v){	this.content.replace(0, this.content.length(), String.valueOf(v));}
 
 	public void addChildNode(XMLNode child)
 	{	this.childNodes.add(child);
 		child.parent = this;
 	}
 
-	public void removeNode()
-	{	this.parent.removeChildNode(this);
+	public void removeNode(){	this.parent.removeChildNode(this);}
+
+	public void removeChildNode(XMLNode c){	this.childNodes.remove(c);}
+
+	public void removeChildNodesWithTextContent(String tag, String text)
+	{	synchronized(this.childNodes)
+		{	for(XMLNode n : this.getChildNodes(tag)){	if(n.getTextContent().toString().equals(text)) n.removeNode();}
+		}
 	}
 
-	public void removeChildNode(XMLNode c)
-	{	this.childNodes.remove(c);
-	}
+	public Set<XMLNode> getChildNodes(){	return this.childNodes;}
 
-	public Set<XMLNode> getChildNodes()
-	{	return this.childNodes;
-	}
-
-	public boolean hasChildNode(String tag)
-	{	return this.getChildNode(tag) != null;
-	}
+	public boolean hasChildNode(String tag){	return this.getChildNode(tag) != null;}
 
 	public final XMLNode getChildNode(String tag)
 	{	for(XMLNode n : this.childNodes) if(n.tag.equals(tag)) return n;
@@ -167,10 +154,10 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 		return n;
 	}
 
-	public final XMLNode getLastChild(String tag)
-	{	XMLNode x = null;
-		for(XMLNode node: this.getChildNodes(tag)) x = node;
-		return x;
+	private XMLNode getLastChild(String tag)
+	{	Set<XMLNode> set = this.getChildNodes(tag);
+		if(set.isEmpty()) return null;
+		return (XMLNode)set.toArray()[set.size() - 1];
 	}
 
 	public final XMLNode getLastChildOrNew(String tag)
@@ -182,17 +169,11 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 		return last;
 	}
 
-	@Override public String getTag()
-	{	return this.tag;
-	}
+	@Override public String getTag(){	return this.tag;}
 
-	public final StringBuffer getTextContent()
-	{	return this.content;
-	}
+	public final StringBuffer getTextContent(){	return this.content;}
 
-	public final XGTagableSet<XGProperty> getAttributes()
-	{	return this.attributes;
-	}
+	public final XGTagableSet<XGProperty> getAttributes(){	return this.attributes;}
 
 /**
  * returniert den StringBuffer des Attributes attr, legt dieses bei Abstinenz an
@@ -232,18 +213,14 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 		else this.attributes.add(new XGProperty(tag, attr));
 	}
 
-	public int getValueAttribute(String attr, int def)
-	{	return XGStrings.parseValue(this.getStringAttribute(attr), def);
-	}
+	public int getValueAttribute(String attr, int def){	return XGStrings.parseValue(this.getStringAttribute(attr), def);}
 
 	public final int getIntegerAttribute(String a, int def)
 	{	if(this.attributes.containsKey(a)) return Integer.parseInt(this.attributes.get(a).getValue().toString());
 		else return def;
 	}
 
-	public void setIntegerAttribute(String attr, final int t)
-	{	this.setStringAttribute(attr, String.valueOf(t));
-	}
+	public void setIntegerAttribute(String attr, final int t){	this.setStringAttribute(attr, String.valueOf(t));}
 
 	public final double getDoubleAttribute(String attr, double def)
 	{	if(this.attributes.containsKey(attr))
@@ -271,12 +248,8 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 			for(XMLNode n2 : n.childNodes) n2.writeNode(w, n2);
 			w.writeEndElement();
 		}
-		catch(XMLStreamException e1)
-		{	e1.printStackTrace();
-		}
+		catch(XMLStreamException e1){	e1.printStackTrace();}
 	}
 
-	@Override public String toString()
-	{	return this.tag;
-	}
+	@Override public String toString(){	return this.tag;}
 }

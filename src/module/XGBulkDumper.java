@@ -24,7 +24,7 @@ public interface XGBulkDumper extends XGLoggable
 		int transmitted = 0;
 		long time = System.currentTimeMillis();
 		XGAddressableSet<XGBulk> set = this.getBulks();
-		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.window, "transmitting...", "", 0, set.size());
+		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.window, "transmitting to " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
@@ -39,7 +39,7 @@ public interface XGBulkDumper extends XGLoggable
 			{	LOG.severe(e.getMessage());
 			}
 		}
-		LOG.info(transmitted + " messages transmitted within " + (System.currentTimeMillis() - time) + " ms");
+		LOG.info(transmitted + " messages transmitted to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
 /**
@@ -81,7 +81,7 @@ public interface XGBulkDumper extends XGLoggable
 		}
 		Level level;
 		if(requested - responsed == 0) level = Level.INFO;
-		else level = Level.SEVERE;
+		else level = Level.WARNING;
 		LOG.log(level, responsed + " (of " + requested + ") requests responsed by " + dest + " and transmitted within " + (System.currentTimeMillis() - time) + " ms");
 	}
 

@@ -1,13 +1,10 @@
 package gui;
 
 import java.awt.GridBagLayout;
-import adress.XGAddress;
-import adress.XGAddressableSet;
 import gui.XGPoint.PointRelation;
 import static gui.XGUI.DEF_GBC;import module.XGModule;
 import tag.*;import value.XGFixedValue;
 import value.XGValue;
-import xml.XMLNode;
 
 public class XGMEQ extends javax.swing.JPanel
 {

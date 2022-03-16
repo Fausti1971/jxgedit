@@ -13,7 +13,7 @@ public interface XGAddressConstants
 	public final XGAddressField DEF_ADDRESSFILED = new XGAddressField(0, 127, DEF_MASK);
 
 	static final XGAddress
-		XGALLADDRESS = new XGAddress(DEF_ADDRESSFILED, DEF_ADDRESSFILED, DEF_ADDRESSFILED),
+		XGALLADDRESS = new XGAddress(127, 127, 127),
 		XGMODELNAMEADRESS = new XGAddress(1, 0, 0),
 		XGMODELINFO1ADDRESS = new XGAddress(1, 0, 0x0E),
 		XGMODELINFO2ADDRESS = new XGAddress(1, 0, 0x0F);

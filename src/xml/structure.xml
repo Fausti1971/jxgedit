@@ -319,8 +319,8 @@
 		<bulk id="mp112" address="8//112-115">
 			<opcode xsi:type="immutable" id="mp_pb_lo" address="//112" name="Pitchbend Wheel Low Control" shortName="PBLC" min="40" max="88" table="sub64" origin="64" unit="st" default="62" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eg_lpf" address="//113" name="Filters Envelope Generator Depth" shortName="FEGD" table="sub64" min="0" max="127" origin="64" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_bass" address="//114" name="EQ Bass Gain" shortName="EQBG" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_treble" address="//115" name="EQ Treble Gain" shortName="EQTG" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_eq_bass" address="//114" name="EQ Bass Gain" shortName="EQBG" table="eq_gain" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_eq_treble" address="//115" name="EQ Treble Gain" shortName="EQTG" table="eq_gain" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
 		</bulk>
 		<bulk id="mp116" address="8//116-127">
 			<opcode xsi:type="immutable" id="mp_eq_midbass" address="//116" name="EQ Mid Bass" shortName="EQMB" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
@@ -497,8 +497,8 @@
 			<opcode xsi:type="immutable" id="ds_aeg_release" address="//15" name="Release Time" min="0" max="127" default="64" actions="change"/>
 		</bulk>
 		<bulk id="dsblk32" address="//32-45">
-			<opcode xsi:type="immutable" id="ds_eq_bass" address="//32" name="EQ Bass" shortName="EQB" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_treble" address="//33" name="EQ Treble" shortName="EQT" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_eq_bass" address="//32" name="EQ Bass Gain" shortName="EQB" min="0" max="127" table="eq_gain" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_eq_treble" address="//33" name="EQ Treble Gain" shortName="EQT" min="0" max="127" table="eq_gain" origin="64" unit="dB" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midbass" address="//34" name="EQ Mid Bass" shortName="EQMB" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midtreble" address="//35" name="EQ Mid Treble" shortName="EQMT" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_bass_freq" address="//36" name="EQ Bass Frequency" shortName="EQBF" table="table3" min="4" max="40" default="12" origin="4" actions="change"/>
@@ -509,8 +509,8 @@
 			<opcode xsi:type="immutable" id="ds_eq_treble_q" address="//41" name="EQ Treble Q" shortName="EQTQ" table="div10" min="1" max="120" default="7" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midbass_q" address="//42" name="EQ Mid Bass Q" shortName="EQMBQ" table="div10" min="1" max="120" default="7" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midTreble_q" address="//43" name="EQ Mid Treble Q" shortName="EQMTQ" table="div10" min="1" max="120" default="7" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_bass_shape" address="//44" name="EQ Bass Shape" shortName="EQBQ" table="eq_shape" max="1" default="0" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_treble_shape" address="//45" name="EQ Treble Shape" shortName="EQBQ" table="eq_shape" max="1" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_eq_bass_shape" address="//44" name="EQ Bass Shape" shortName="EQBS" table="eq_shape" max="1" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_eq_treble_shape" address="//45" name="EQ Treble Shape" shortName="EQTS" table="eq_shape" max="1" default="0" actions="change"/>
 		</bulk>
 		<bulk id="dsblk64" address="//64">
 			<opcode xsi:type="immutable" id="ds_audio_output" address="//64" name="Output Select" table="audio_outputs" min="0" max="103" default="0" actions="change"/>

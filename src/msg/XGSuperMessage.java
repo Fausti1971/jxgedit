@@ -21,7 +21,6 @@ public abstract class XGSuperMessage extends SysexMessage implements XGMessage, 
 	protected XGSuperMessage(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
 	{	super(array);
 		this.source = src;
-//		this.destination = dest;
 		this.setTimeStamp(System.currentTimeMillis());
 		if(init) this.init();
 		this.validate();

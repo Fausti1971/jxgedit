@@ -14,8 +14,11 @@ public class XGTagableSet<T extends XGTagable> implements Iterable<T>, Set<T>
 	private final Map<String, T> map = new LinkedHashMap<>();
 
 	@Override public boolean add(T t)
-	{	this.map.put(t.getTag(), t);
-		return true;
+	{	if(t != null)
+		{	this.map.put(t.getTag(), t);
+			return true;
+		}
+		else return false;
 	}
 
 	public T get(String tag)

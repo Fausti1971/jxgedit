@@ -20,15 +20,9 @@ public class XGFixedValue extends XGValue
 		this.parameter = new XGParameter(name, v);
 	}
 
-	@Override public Integer getValue()
-	{	return this.value;
-	}
+	@Override public Integer getValue()	{	return this.value;}
 
-	@Override public XGParameter getParameter()
-	{	return this.parameter;
-	}
+	@Override public XGParameter getParameter(){	return this.parameter;}
 
-	public String getTag()
-	{	return "fix";
-	}
+	public String getTag(){	return "fix";}
 }

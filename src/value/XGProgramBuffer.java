@@ -11,8 +11,6 @@ public interface XGProgramBuffer
 {
 	Map<Integer, Integer> normalPrograms = new HashMap<>();//mp-id (partmode = 0), prog
 	Map<Integer, Integer> drumkitPrograms = new HashMap<>();//mp-id (partmode = 1), prog
-//	Map<Integer, Integer> drumsetPrograms = new HashMap<>();//partmode (> 1), prog
-//	Map<Integer, XGDrumsetProgramListener> drumsetListeners = new HashMap<>();//partmode, listener
 
 /**
 * Puffert den Wert des Programms (prg.getValue()) in den internen Cache
@@ -30,7 +28,6 @@ public interface XGProgramBuffer
 			}
 		}
 		catch(InvalidXGAddressException e){	e.printStackTrace();}
-LOG.info(partmode.getInfo() + "/" + program.getInfo());
 	}
 
 /**
@@ -48,8 +45,6 @@ LOG.info(partmode.getInfo() + "/" + program.getInfo());
 			}
 		}
 		catch(InvalidXGAddressException e){	e.printStackTrace();}
-//LOG.info(partmode.getInfo() + "/" + prg.getInfo());
-
 	}
 
 	static void reset()

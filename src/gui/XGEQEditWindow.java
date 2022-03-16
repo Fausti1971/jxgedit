@@ -2,8 +2,6 @@ package gui;
 
 import static gui.XGMEQ.*;public class XGEQEditWindow extends XGEditWindow
 {
-
-
 	public XGEQEditWindow(module.XGModule mod)
 	{	super(XGMainWindow.window, mod);
 		this.setContentPane(this.createContent());

@@ -1,13 +1,10 @@
 package gui;
 import java.awt.GridBagLayout;
-import adress.InvalidXGAddressException;
 import adress.XGAddress;
-import adress.XGMemberNotFoundException;
 import gui.XGPoint.PointRelation;
-import module.XGModule;
 import value.XGFixedValue;
 import value.XGValue;
-import xml.XMLNode;import javax.swing.*;
+import javax.swing.*;
 
 public class XGPEG extends JPanel implements XGComponent
 {

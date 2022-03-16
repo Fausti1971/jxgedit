@@ -1,13 +1,10 @@
 package adress;
 
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import application.XGLoggable;import module.XGModuleConstants;
+import application.XGLoggable;
 
-public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGAddress>, XGAddressable, Iterable<XGAddress>
+public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGAddress>, XGAddressable
 {
-	private final XGAddressField hi, mid, lo;
+	final XGAddressField hi, mid, lo;
 
 	public XGAddress(String hi, String mid, String lo)
 	{	this.hi = new XGAddressField(hi, DEF_ADDRESSFILED);
@@ -49,7 +46,7 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 			int lastSlash = s.lastIndexOf("/");
 			this.hi = new XGAddressField(s.substring(0, firstSlash), h);
 			this.mid = new XGAddressField(s.substring(firstSlash + 1, lastSlash), m);
-			this.lo = new XGAddressField(s.substring(lastSlash + 1, s.length()), l);
+			this.lo = new XGAddressField(s.substring(lastSlash + 1 ), l);
 		}
 		else
 		{	this.hi = h;
@@ -58,41 +55,31 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 		}
 	}
 
-	public XGAddress(String string)
-	{	this(string, null);
-	}
+	public XGAddress(String string){	this(string, null);}
 
 /**
  * extrahiert und returniert das Hi-Field der XGAdress this
  * @return Wert des Fields als int
  */
-	public XGAddressField getHi()
-	{	return this.hi;
-	}
+	public XGAddressField getHi(){	return this.hi;}
 
 	/**
 	 * extrahiert und returniert das Mid-Field der XGAdress this
 	 * @return Wert des Fields als int
 	 */
-	public XGAddressField getMid()
-	{	return this.mid;
-	}
+	public XGAddressField getMid(){	return this.mid;}
 
 	/**
 	 * extrahiert und returniert das Lo-Field der XGAdress this
 	 * @return Wert des Fields als int
 	 */
-	public XGAddressField getLo()
-	{	return this.lo;
-	}
+	public XGAddressField getLo(){	return this.lo;}
 
 /**
  * testet, ob die Adresse vollständig ist, und somit einen XGValue adressieren kann
  * @return true, wenn alle Fields fix sind
  */
-	public boolean isFixed()
-	{	return this.hi.isFix() && this.mid.isFix() && this.lo.isFix();
-	}
+	public boolean isFixed(){	return this.hi.isFix() && this.mid.isFix() && this.lo.isFix();}
 
 /**
  * komplettiert this mittels adr, indem variable Fields durch diese aus adr möglichst konkretisiert werden 
@@ -103,12 +90,8 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 	public XGAddress complement(XGAddress adr) throws InvalidXGAddressException
 	{	//		if(this.isFixed()) return this;
 		//		if(adr.isFixed()) return adr;
-		try
-		{	return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));
-		}
-		catch(InvalidXGAddressException e)
-		{	throw new InvalidXGAddressException(e.getMessage() + " within address: " + this + " and " + adr);
-		}
+		try{	return new XGAddress(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));}
+		catch(InvalidXGAddressException e){	throw new InvalidXGAddressException(e.getMessage() + " within address: " + this + " and " + adr);}
 	}
 
 /**
@@ -116,18 +99,13 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
  * @param adr Adresse gegen deren Felder getestet wird
  * @return true, wenn alle Felder ineinander enthalten sind
  */
-	public boolean contains(XGAddress adr)
-	{	if(this.hi.contains(adr.hi) && this.mid.contains(adr.mid) && this.lo.contains(adr.lo)) return true;
-		return false;
-	}
+	public boolean contains(XGAddress adr){	return this.hi.contains(adr.hi) && this.mid.contains(adr.mid) && this.lo.contains(adr.lo);}
 
 /**
  * Erzeugt durch die Verwendung der min-Werte aller Felder aus der Adress eine valide ValueAddress, bei der alle Felder fix sind.
  * @return neue valide ValueAddress
  */
-	public XGAddress toValueAddress()
-	{	return new XGAddress(this.hi.getMin(), this.mid.getMin(), this.lo.getMin());
-	}
+	public XGAddress toAddress(){	return new XGAddress(this.hi.getMin(), this.mid.getMin(), this.lo.getMin());}
 
 
 /**
@@ -142,9 +120,7 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 /**
  * Stringrepresäntation einer Adresse
  */
-	@Override public String toString()
-	{	return "(" + this.hi + "/" + this.mid + "/" + this.lo + ")";
-	}
+	@Override public String toString(){	return "(" + this.hi + "/" + this.mid + "/" + this.lo + ")";}
 
 	@Override public int compareTo(XGAddress o)
 	{	int temp = this.hi.compareTo(o.hi);
@@ -153,16 +129,14 @@ public class XGAddress implements XGLoggable, XGAddressConstants, Comparable<XGA
 		return temp;
 	}
 
-	@Override public XGAddress getAddress()
-	{	return this;
-	}
+	@Override public XGAddress getAddress(){	return this;}
 
-	@Override public Iterator<XGAddress> iterator()
-	{	Set<XGAddress> set = new LinkedHashSet<>();
-		for(int hi : this.hi)
-			for(int mid : this.mid)
-				for(int lo : this.lo)
-					set.add(new XGAddress(hi, mid, lo));
-		return set.iterator();
-	}
+	//@Override public Iterator<XGAddressRange> iterator()
+	//{	Set<XGAddressRange> set = new LinkedHashSet<>();
+	//	for(int hi : this.hi)
+	//		for(int mid : this.mid)
+	//			for(int lo : this.lo)
+	//				set.add(new XGAddressRange(hi, mid, lo));
+	//	return set.iterator();
+	//}
 }

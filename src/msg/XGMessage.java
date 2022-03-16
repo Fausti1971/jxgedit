@@ -4,8 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
-import adress.XGAddressable;
+import adress.XGAddress;import adress.XGAddressable;
 import application.XGLoggable;
 
 public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
@@ -17,7 +16,7 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 			case MSG_PC:	return new XGMessageParameterChange(src, array, init);
 			case MSG_DR:	return new XGMessageBulkRequest(src, array, init);
 			case MSG_PR:	return new XGMessageParameterRequest(src, array, init);
-			default:		throw new InvalidMidiDataException("unknown xg message " + application.XGStrings.toHexString(array));
+			default:		throw new InvalidMidiDataException("unknown xg message: " + application.XGStrings.toHexString(array));
 		}
 	}
 

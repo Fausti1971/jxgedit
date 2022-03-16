@@ -50,27 +50,28 @@ public class XGVirtualTable implements XGTable
 			XGStrings::toNumber));
 
 		TABLES.add(new XGVirtualTable(4, 124, TABLE_DEGREES,
-			(Integer i)->{	return Integer.toString(XGMath.linearIO(i, 4, 124, -180, 180)) + "°";},
+			(Integer i)->XGMath.linearIO(i, 4, 124, -180, 180) + "°",
 			XGStrings::toNumber));
 
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_PERCENT,
-			(Integer i)->{	return Integer.toString(XGMath.linearIO(i, 0, 127, 0, 100)) + "%";},
-			(String s)->{	return XGMath.linearIO(XGStrings.toNumber(s), 0, 100, 0, 127);}));
+			(Integer i)->XGMath.linearIO(i, 0, 127, 0, 100) + "%",
+			(String s)->XGMath.linearIO(XGStrings.toNumber(s), 0, 100, 0, 127)));
 
 		TABLES.add(new XGVirtualTable(0,127, TABLE_KEYS,
-			(Integer i)->
-			{	String s = KEY[i % 12] + (i/12 - 2);
-				return s;
-			},
+			(Integer i)->KEY[i % 12] + (i/12 - 2),
 			(String s)->
 			{	int o = (XGStrings.toNumber(s) + 2) * 12;
 				int k = Arrays.binarySearch(KEY, XGStrings.toAlpha(s));
 				return o + k;
 			}));
 
+		TABLES.add(new XGVirtualTable(0, 127, TABLE_GAIN,
+			(Integer i)->String.valueOf(XGMath.linearIO(i, 0, 127, -12, 12)),
+			(String s)->XGMath.linearIO(XGStrings.toNumber(s), -12, 12, 0, 127)));
+
 		TABLES.add(new XGVirtualTable(0, 0, TABLE_NONE,
-			(Integer i)->{return "";},
-			(String s)->{return 0;}));
+			(Integer i)->"",
+			(String s)->0));
 	}
 
 /***********************************************************************************/
@@ -107,21 +108,13 @@ public class XGVirtualTable implements XGTable
 		return new XGTableEntry(v, this.translate.apply(v));
 	}
 
-	@Override public int getIndex(int v)
-	{	return v - this.minValue;
-	}
+	@Override public int getIndex(int v){	return v - this.minValue;}
 
-	@Override public int getIndex(String name)
-	{	return this.retranslate.apply(name) - this.minValue;
-	}
+	@Override public int getIndex(String name){	return this.retranslate.apply(name) - this.minValue;}
 
-	@Override public int getMinIndex()
-	{	return 0;
-	}
+	@Override public int getMinIndex(){	return 0;}
 
-	@Override public int getMaxIndex()
-	{	return this.size() - 1;
-	}
+	@Override public int getMaxIndex(){	return this.size() - 1;}
 
 	@Override public Iterator<XGTableEntry> iterator()
 	{	return new Iterator<>()
@@ -136,32 +129,17 @@ public class XGVirtualTable implements XGTable
 		};
 	}
 
-	@Override public XGTable filter(XMLNode n)
-	{	return this;
-	}
+	@Override public XGTable filter(XMLNode n){	return this;}
 
-	@Override public int size()
-	{	return (this.maxValue - this.minValue) + 1;
-	}
+	@Override public int size(){	return (this.maxValue - this.minValue) + 1;}
 
-	@Override public String getName()
-	{	return this.name;
-	}
+	@Override public String getName(){	return this.name;}
 
-	@Override public String getUnit()
-	{	return "";
-	}
+	@Override public String getUnit(){	return "";}
 
-	@Override public String toString()
-	{	return this.getInfo();
-	}
+	@Override public String toString(){	return this.getInfo();}
 
-	@Override public XGTable categorize(String cat)
-	{	return this;
-	}
+	@Override public XGTable categorize(String cat){	return this;}
 
-	@Override public Set<String> getCategories()
-	{	return new HashSet<>();
-	}
-
+	@Override public Set<String> getCategories(){	return new HashSet<>();}
 }

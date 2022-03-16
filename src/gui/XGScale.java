@@ -3,13 +3,10 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import adress.InvalidXGAddressException;
-import adress.XGAddress;
 import gui.XGPoint.PointRelation;
-import module.XGModule;
 import value.XGFixedValue;
 import value.XGValue;
-import xml.XMLNode;import javax.swing.*;
+import javax.swing.*;
 
 public class XGScale extends JPanel implements XGComponent
 {

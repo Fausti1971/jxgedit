@@ -134,11 +134,11 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	}
 
 	@Override public void submit(XGResponse msg) throws InvalidXGAddressException, XGMessengerException
-	{	LOG.info("not implemented yet...");
+	{	LOG.info("not implemented yet...");//TODO: finde bulk oder value anhand der adresse und übergebe msg
 	}
 
 	public void submit(XGRequest req) throws InvalidXGAddressException, XGMessengerException
-	{	LOG.info("not implemented yet...");
+	{	LOG.info("not implemented yet...");//TODO: finde bulk oder value anhand der adresse, erfrage und beantworte req
 	}
 
 	@Override public String toString()

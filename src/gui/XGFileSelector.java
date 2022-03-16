@@ -22,13 +22,12 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 
 /*****************************************************************************************/
 
-	private final StringBuffer path;
+	private String path;
 	private final JTextField text;
 	private final JButton button;
 
-	public XGFileSelector(final StringBuffer path, String title, String button, FileFilter filter)
-	{	if(path == null) this.path = new StringBuffer(XGSysexFile.config.getChildNode(XMLNodeConstants.TAG_ITEM).getStringAttribute(XMLNodeConstants.ATTR_NAME));
-		else this.path = path;
+	public XGFileSelector(final String path, String title, String button, FileFilter filter)
+	{	this.path = path;
 		this.text = new JTextField(this.path.toString());
 		this.button = new JButton(button);
 		this.button.addActionListener(this);
@@ -42,7 +41,8 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 	{	File f = new File(this.path.toString());
 		this.setSelectedFile(f);
 		int res = this.showDialog(par, this.getApproveButtonText());
-		this.path.replace(0, this.path.length(), this.getSelectedFile().getAbsolutePath());
+		this.path = this.getSelectedFile().getAbsolutePath();
+//		this.path.replace(0, this.path.length(), this.getSelectedFile().getAbsolutePath());
 		return res;
 	}
 
@@ -64,21 +64,13 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 		return root;
 	}
 
-	public StringBuffer getPath()
-	{	return this.path;
-	}
+	public String getPath(){	return this.path;}
 
-	@Override public void insertUpdate(DocumentEvent e)
-	{	this.path.replace(0, this.path.length(), this.text.getText());
-	}
+	@Override public void insertUpdate(DocumentEvent e){	this.path = this.text.getText();}
 
-	@Override public void removeUpdate(DocumentEvent e)
-	{	this.path.replace(0, this.path.length(), this.text.getText());
-	}
+	@Override public void removeUpdate(DocumentEvent e){	this.path = this.text.getText();}
 
-	@Override public void changedUpdate(DocumentEvent e)
-	{	this.path.replace(0, this.path.length(), this.text.getText());
-	}
+	@Override public void changedUpdate(DocumentEvent e){	this.path = this.text.getText();}
 
 	@Override public void actionPerformed(ActionEvent e)
 	{	this.select(this.button);

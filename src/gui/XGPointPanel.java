@@ -2,9 +2,7 @@ package gui;
 
 import java.awt.*;
 import java.awt.geom.GeneralPath;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import javax.swing.JPanel;
 import application.XGMath;
 import value.XGValue;
@@ -57,34 +55,22 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGCompon
 		this.repaint();
 	}
 
-	XGValue getSelectedValue()
-	{	return this.selectedValue;
-	}
+	XGValue getSelectedValue(){	return this.selectedValue;}
 
-	ArrayList<XGPoint> getPoints()
-	{	return this.points;
-	}
+	ArrayList<XGPoint> getPoints(){	return this.points;}
 
 	void setUnits(String xUnit, String yUnit)
 	{	this.xUnit = xUnit;
 		this.yUnit = yUnit;
 	}
 
-	int getMinXIndex()
-	{	return this.minXIndex;
-	}
+	int getMinXIndex(){	return this.minXIndex;}
 
-	int getMinYIndex()
-	{	return this.minYIndex;
-	}
+	int getMinYIndex(){	return this.minYIndex;}
 
-	int getMaxXIndex()
-	{	return this.maxXIndex;
-	}
+	int getMaxXIndex(){	return this.maxXIndex;}
 
-	int getMaxYIndex()
-	{	return this.maxYIndex;
-	}
+	int getMaxYIndex(){	return this.maxYIndex;}
 
 	@Override protected void paintComponent(Graphics g)
 	{	for(XGPoint p : this.points) p.setLocation();
@@ -107,16 +93,16 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGCompon
 		int x = this.origin_x;
 		int y = this.origin_y;
 		gp.moveTo(x, y);
-		for(XGPoint p : this.points)
+		Map<Integer, XGPoint> pnt = new TreeMap<>();
+		for(XGPoint p : this.points) pnt.put(p.getValueX().getIndex(), p);
+		for(XGPoint p : pnt.values())
 		{	x = p.getX() + p.getWidth()/2;
 			y = p.getY() + p.getHeight()/2;
 			gp.lineTo(x, y);
 		}
 		gp.lineTo(w, this.origin_y);
-//		gp.lineTo(this.origin_x, this.getHeight());
 		gp.closePath();
 		this.g2.fill(gp);
-//		this.g2.draw(gp);
 //units
 		this.g2.setFont(SMALL_FONT);
 		this.g2.setColor(this.getBackground().darker());

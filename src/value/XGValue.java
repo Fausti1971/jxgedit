@@ -2,10 +2,7 @@ package value;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
-import adress.InvalidXGAddressException;
-import adress.XGAddress;
-import adress.XGAddressable;
-import adress.XGAddressableSet;
+import adress.*;
 import application.XGLoggable;
 import device.*;
 import module.*;
@@ -18,7 +15,6 @@ import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
 import parm.XGParameterTable;
 import static parm.XGParameterTable.PARAMETERTABLES;
-import parm.XGTable;
 import parm.XGTableEntry;
 import tag.*;
 
@@ -29,9 +25,7 @@ import tag.*;
  */
 public class XGValue implements XGParameterConstants, XGAddressable, Comparable<XGValue>, XGValueChangeListener, XGLoggable, XGTagable, XGMessenger
 {
-//	private static final XGPartmodeListener XGPARTMODELISTENER = new XGPartmodeListener();
 	private static final XGValue DEF_DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
-	private static final int count = 0;
 
 /**
 * initialisiert zu jedem Moduletype die angegebene Anzahl Instanzen (XGModule) inkl. der Bulk-Instanzen (XGAddress) und Opcode-Instanzen (XGValues inkl. Abhängigkeiten)
@@ -104,7 +98,6 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		{	this.defaults = new XGDefaultsTable(opc.getTag());
 			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, opc.getConfig().getValueAttribute(ATTR_DEFAULT, 0));
 		}
-//		blk.getValues().add(this);
 	}
 
 	public void initDepencies() throws InvalidXGAddressException
@@ -133,6 +126,9 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 				{	this.defaultSelector = ((XGDrumsetModuleType)t).getProgramListener();
 					this.defaultSelector.valueListeners.add((XGValue)->{this.setDefaultValue();});
 				}
+			}
+			else if("id".equals(dst))
+			{	this.defaultSelector = new XGFixedValue(this.getTag(), this.getModule().getAddress().getMid().getValue());
 			}
 			else
 			{	LOG.warning(ATTR_DEFAULTSELECTOR + " " + dst + " not found for value " + this.getTag());
@@ -181,8 +177,6 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
  */
 	public int getIndex(){	return this.getParameter().getTranslationTable().getIndex(this.getValue());}
 
-	public int getOldValue(){	return this.oldValue;}
-
 	public boolean hasChanged(){	return !this.getValue().equals(this.oldValue);}
 
 /**
@@ -227,7 +221,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	}
 
 /**
- * setzt den Inhalt des XGValue auf den übergebenen value
+ * setzt den Inhalt des XGValue in der Message des Bulks auf den übergebenen value
  * @param v Value
  */
 	public void setValue(int v, boolean limitize, boolean action)
@@ -278,7 +272,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 /**
  * sendet den Value mittels XGMessageBulkDump
  */
-	public void bulkAction()
+	public void dumpAction()
 	{	try{	XGMidi.getMidi().submit(new XGMessageBulkDump(this, this));}
 		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1){	LOG.severe(e1.getMessage());}
 	}
@@ -301,7 +295,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	{	for(XACTION a : this.type.getActions())
 		{	switch(a)
 			{	case change: 			this.sendAction(); break;	//send via XGMessageParameterChange (normal)
-				case dump:				this.bulkAction(); break;	//bulk via XGMessageBulkDump (voice-programs)
+				case dump:				this.dumpAction(); break;	//bulk via XGMessageBulkDump (voice-programs)
 				case change_program:	XGProgramBuffer.changeProgram(this); break;
 				case change_partmode:	XGProgramBuffer.changePartmode(this); break;
 				case none:				break;

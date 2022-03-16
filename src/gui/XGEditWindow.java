@@ -1,6 +1,6 @@
 package gui;
 
-import adress.XGAddressable;import xml.XGProperty;import static xml.XMLNodeConstants.ATTR_NAME;import javax.swing.*;
+import adress.XGAddress;import adress.XGAddressable;import xml.XGProperty;import javax.swing.*;
 
 public abstract class XGEditWindow extends XGWindow implements XGAddressable
 {
@@ -8,7 +8,7 @@ public abstract class XGEditWindow extends XGWindow implements XGAddressable
 	static final adress.XGAddressableSet<XGEditWindow> EDITWINDOWS = new adress.XGAddressableSet<>();
 
 	public static XGEditWindow getEditWindow(module.XGModule mod)
-	{	adress.XGAddress adr = mod.getAddress();
+	{	XGAddress adr = mod.getAddress();
 		String tag = mod.getType().getTag();
 		XGEditWindow win = EDITWINDOWS.get(adr);
 		if(win != null) return win;
@@ -66,7 +66,7 @@ public abstract class XGEditWindow extends XGWindow implements XGAddressable
 	{	return XGMainWindow.window.getTitle() + " - " + this.module;
 	}
 
-	@Override public adress.XGAddress getAddress()
+	@Override public XGAddress getAddress()
 	{	return this.module.getAddress();
 	}
 }

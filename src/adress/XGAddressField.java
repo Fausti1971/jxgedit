@@ -47,32 +47,20 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
  * 
  * @return true, wenn sowohl min und max definiert als auch gleich sind
  */
-	public boolean isFix()
-	{	return this.getMin() == this.getMax();
-	}
+	public boolean isFix(){	return this.getMin() == this.getMax();}
 
 /**
  * negiertes isFix(); nur aus Lesbarkeitsgründen
  */
-	public boolean isRange()
-	{	return this.getMin() != this.getMax() ;
-	}
+	public boolean isRange(){	return this.getMin() != this.getMax();}
 
-	public int getMin()
-	{	return this.min & this.mask;
-	}
+	public int getMin(){	return this.min & this.mask;}
 
-	public int getMax()
-	{	return this.max & this.mask;
-	}
+	public int getMax(){	return this.max & this.mask;}
 
-	public int getMask()
-	{	return this.mask;
-	}
+	public int getMask(){	return this.mask;}
 
-	public int getSize()
-	{	return (this.max - this.min) + 1;
-	}
+	public int getSize(){	return (this.max - this.min) + 1;}
 
 /**
  * 
@@ -104,11 +92,7 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
  * @param f	Addressfeld
  * @return	true, wenn Field f eine Teilmenge von this ist
  */
-	public boolean contains(XGAddressField f)
-	{	boolean res = this.getMin() <= f.getMin() && this.getMax() >= f.getMax();
-//		System.out.println(this  + " contains " + f + " = " + res);
-		return res;
-	}
+	public boolean contains(XGAddressField f){	return this.getMin() <= f.getMin() && this.getMax() >= f.getMax();}
 
 /**
  * ermittelt und returniert eine eventuelle gemeinsame Teilmenge

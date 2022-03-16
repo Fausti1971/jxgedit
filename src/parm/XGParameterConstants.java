@@ -19,6 +19,7 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_FX_PARTS = "fx_parts",
 		TABLE_PARTMODE = "mp_partmode",
 		TABLE_PROGRAM = "mp_program",
+		TABLE_GAIN = "eq_gain",
 		TABLE_NONE = "none",
 		DEF_TABLENAME = TABLE_NORMAL;
 

@@ -6,7 +6,6 @@ import adress.*;
 import config.XGConfigurable;
 import application.XGLoggable;
 import application.XGStrings;
-import module.XGModuleType;
 import parm.XGParameterConstants;import tag.*;
 import xml.XGProperty;import xml.XMLNode;
 

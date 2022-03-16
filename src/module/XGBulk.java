@@ -1,8 +1,7 @@
 package module;
 
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
-import adress.XGAddressable;
+import adress.XGAddress;import adress.XGAddressable;
 import application.XGLoggable;import msg.*;
 import tag.XGTagable;
 import tag.XGTagableAddressableSet;
@@ -34,11 +33,14 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 
 	private void setMessage(XGMessageBulkDump m)
 	{	this.message = m;
-		for(XGValue v : this.values) v.contentChanged(v);//TODO: hier passiert was unerklärliches mit dem ProgramValue
+		for(XGValue v : this.values) v.contentChanged(v);
 	}
 
 	public XGMessageBulkDump getMessage(){	return this.message;}
 
+/**
+* returniert die Bulkadresse, d.h. lo ist nicht fixed! für fixed Adresse nimm bulk.getMessage().getAddress()
+*/
 	@Override public XGAddress getAddress(){	return this.address;}
 
 	@Override public void submit(XGResponse res) throws InvalidXGAddressException, XGMessengerException

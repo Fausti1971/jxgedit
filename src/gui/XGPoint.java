@@ -18,7 +18,7 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 	private static final long serialVersionUID = 1L;
 	private static final int POINT_RADIUS = 5;
 	static final int POINT_SIZE = POINT_RADIUS * 2;
-	public static enum PointRelation
+	public enum PointRelation
 	{	ABSOLUTE,
 		ADD_TO_PREVIOUS_COORDINATE,
 	};
