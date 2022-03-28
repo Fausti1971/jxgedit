@@ -1,7 +1,7 @@
 package gui;
 
-import java.awt.Dimension;
-import javax.swing.JPanel;
+import java.awt.*;
+import javax.swing.*;import javax.swing.border.BevelBorder;
 
 public class XGFrame extends JPanel implements XGComponent
 {	private static final long serialVersionUID=-2090844398565572567L;
@@ -9,15 +9,14 @@ public class XGFrame extends JPanel implements XGComponent
 /********************************************************************************************************************/
 
 /**
-* erzeugt ein JPanel mit einem XGLayout mit den übergebenen Grid-Dimensionen; Für text == null wird kein Rahmen erzeugt, ansonsten ein DefaultRahmen mit dem übergebenen Text
+* erzeugt ein JPanel mit einem XGLayout mit den übergebenen Grid-Dimensionen;
 */
-	public XGFrame(String text, int gx, int gy)
-	{	this.setLayout(new XGLayout(new Dimension(gx, gy)));
-		this.setName(text);
-		this.borderize();
+	public XGFrame(int columns, int rows)
+	{	this.setLayout(new XGLayout(new Dimension(columns, rows)));
+		this.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 	}
 
-	public XGFrame(String text)
-	{	this(text, GRID, GRID);
+	public XGFrame()
+	{	this(1, 1);
 	}
 }

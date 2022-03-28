@@ -2,7 +2,7 @@ package gui;
 
 import javax.swing.*;
 
-public class XGTooltip extends JPopupMenu implements XGUI
+public class XGTooltip extends JPopupMenu
 {
 	private static final long serialVersionUID = 1L;
 
@@ -13,7 +13,7 @@ public class XGTooltip extends JPopupMenu implements XGUI
 	public XGTooltip()
 	{	this.add(this.label);
 //		this.label.setFont(SMALL_FONT);
-		this.setFont(SMALL_FONT);
+//		this.setFont(SMALL_FONT);
 //		this.setUndecorated(true);
 		this.setFocusable(false);
 //		this.setAutoRequestFocus(false);

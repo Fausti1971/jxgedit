@@ -2,7 +2,7 @@
 <parameterTables xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xs:noNamespaceSchemaLocation="parameter.xsd">
 	<parameterTable name="fx_parameter_1">
 		<parameter selectorValue="118.0" name="Input Level" min="0" max="127"/>
-		<parameter selectorValue="7.0" name="Lch Delay1" min="1" max="3550" unit="ms"/>
+		<parameter selectorValue="7.0" name="Left Channel Delay1" min="1" max="3550" unit="ms"/>
 		<parameter selectorValue="102.0" name="Delay Time" min="0" max="19" table="table14"/>
 		<parameter selectorValue="88.0" name="Delay Time" min="0" max="127" table="table2" unit="ms"/>
 		<parameter selectorValue="127.2" name="Azimuth" min="4" max="124" unit="deg"/>
@@ -15,7 +15,7 @@
 		<parameter selectorValue="66.1" name="LFO Frequency" min="0" max="127" table="table1" unit="Hz"/>
 		<parameter selectorValue="2.7" name="Reverb Time" min="0" max="69" table="table4" unit="s"/>
 		<parameter selectorValue="67.7" name="LFO Frequency" min="0" max="127" table="table1" unit="Hz"/>
-		<parameter selectorValue="95.0" name="Lch Delay Time" min="1" max="16383" unit="ms"/>
+		<parameter selectorValue="95.0" name="Left Channel Delay Time" min="1" max="16383" unit="ms"/>
 		<parameter selectorValue="21.8" name="Delay Time" min="0" max="19" table="table14"/>
 		<parameter selectorValue="114.0" name="Divide Type" min="5" max="11" table="table14"/>
 		<parameter selectorValue="67.8" name="LFO Frequency" min="0" max="127" table="table1" unit="Hz"/>
@@ -23,7 +23,7 @@
 		<parameter selectorValue="4.7" name="Reverb Time" min="0" max="69" table="table4" unit="s"/>
 		<parameter selectorValue="82.0" name="Sensitivity" min="0" max="127"/>
 		<parameter selectorValue="65.3" name="LFO Frequency" min="0" max="127" table="table1" unit="Hz"/>
-		<parameter selectorValue="5.0" name="Lch Delay" min="1" max="7150" unit="ms"/>
+		<parameter selectorValue="5.0" name="Left Channel Delay" min="1" max="7150" unit="ms"/>
 		<parameter selectorValue="86.2" name="Rotor Speed" min="0" max="127" table="table1" unit="Hz"/>
 		<parameter selectorValue="9.0" name="Type" min="0" max="5"/>
 		<parameter selectorValue="105.0" name="Type" min="0" max="12"/>
@@ -63,7 +63,7 @@
 		<parameter selectorValue="82.1" name="Sensitivity" min="0" max="127"/>
 		<parameter selectorValue="109.0" name="Filter Type" min="0" max="5"/>
 		<parameter selectorValue="84.0" name="Attack" min="0" max="19" table="table8" unit="ms"/>
-		<parameter selectorValue="6.0" name="Lch Delay" min="1" max="7150" unit="ms"/>
+		<parameter selectorValue="6.0" name="Left Channel Delay" min="1" max="7150" unit="ms"/>
 		<parameter selectorValue="69.0" name="LFO Frequency" min="0" max="127" table="table1" unit="Hz"/>
 		<parameter selectorValue="77.0" name="EQ Low Frequency" min="8" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="82.2" name="Sensitivity" min="0" max="127"/>
@@ -93,7 +93,7 @@
 		<parameter selectorValue="4.0" name="Reverb Time" min="0" max="69" table="table4" unit="s"/>
 		<parameter selectorValue="78.0" name="LFO Frequency" min="0" max="127" table="table1" unit="Hz"/>
 		<parameter selectorValue="99.0" name="Rotor Speed Slow" min="0" max="63" table="table1" unit="Hz"/>
-		<parameter selectorValue="95.1" name="Lch Delay Time" min="1" max="16383" unit="ms"/>
+		<parameter selectorValue="95.1" name="Left Channel Delay Time" min="1" max="16383" unit="ms"/>
 		<parameter selectorValue="96.0" name="Delay Time" min="1" max="16383" unit="ms"/>
 		<parameter selectorValue="82.8" name="Sensitivity" min="0" max="127"/>
 		<parameter selectorValue="65.0" name="LFO Frequency" min="0" max="127" table="table1" unit="Hz"/>
@@ -148,7 +148,7 @@
 		<parameter selectorValue="65.5" name="LFO Depth" min="0" max="127" table="table19"/>
 		<parameter selectorValue="103.0" name="Device" min="0" max="4"/>
 		<parameter selectorValue="8.0" name="R->L Delay" min="1" max="3550" unit="ms"/>
-		<parameter selectorValue="6.0" name="Rch Delay" min="1" max="7150" unit="ms"/>
+		<parameter selectorValue="6.0" name="Right Channel Delay" min="1" max="7150" unit="ms"/>
 		<parameter selectorValue="9.1" name="Room Size" min="0" max="44" table="table6"/>
 		<parameter selectorValue="74.0" name="EQ Low Frequency" min="8" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="71.1" name="L/R Depth" min="0" max="127"/>
@@ -193,7 +193,7 @@
 		<parameter selectorValue="65.8" name="LFO Depth" min="0" max="127" table="table19"/>
 		<parameter selectorValue="103.1" name="Device" min="0" max="4"/>
 		<parameter selectorValue="75.0" name="AMP Type" min="0" max="3"/>
-		<parameter selectorValue="95.0" name="Rch Delay Time" min="1" max="16383" unit="ms"/>
+		<parameter selectorValue="95.0" name="Right Channel Delay Time" min="1" max="16383" unit="ms"/>
 		<parameter selectorValue="118.0" name="Initial Delay" min="1" max="4600" unit="ms"/>
 		<parameter selectorValue="99.0" name="Horn Speed Slow" min="0" max="63" table="table1" unit="Hz"/>
 		<parameter selectorValue="1.6" name="Diffusion" min="0" max="10"/>
@@ -209,14 +209,14 @@
 		<parameter selectorValue="21.8" name="Feedback Level" min="1" max="127" table="table16"/>
 		<parameter selectorValue="72.8" name="LFO Depth" min="0" max="127" table="table19"/>
 		<parameter selectorValue="74.8" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
-		<parameter selectorValue="87.0" name="Lch Init Delay" min="0" max="127" table="table2" unit="ms"/>
+		<parameter selectorValue="87.0" name="Left Channel Init Delay" min="0" max="127" table="table2" unit="ms"/>
 		<parameter selectorValue="67.1" name="LFO Depth" min="0" max="127" table="table19"/>
 		<parameter selectorValue="4.0" name="Diffusion" min="0" max="10"/>
 		<parameter selectorValue="4.7" name="Diffusion" min="0" max="10"/>
 		<parameter selectorValue="21.0" name="Feedback Level" min="1" max="127" table="table16"/>
 		<parameter selectorValue="2.4" name="Diffusion" min="0" max="10"/>
 		<parameter selectorValue="98.1" name="Device" min="0" max="4"/>
-		<parameter selectorValue="7.0" name="Lch Feedback Level" min="1" max="127" table="table16"/>
+		<parameter selectorValue="7.0" name="Left Channel Feedback Level" min="1" max="127" table="table16"/>
 		<parameter selectorValue="97.1" name="Delay Feedback Level" min="1" max="127" table="table16"/>
 		<parameter selectorValue="81.0" name="Drive" min="0" max="127"/>
 		<parameter selectorValue="127.1" name="Elevation" min="49" max="79" unit="deg"/>
@@ -251,11 +251,11 @@
 		<parameter selectorValue="3.1" name="Diffusion" min="0" max="10"/>
 		<parameter selectorValue="90.0" name="Harmony Gender Type" min="0" max="1"/>
 		<parameter selectorValue="101.1" name="Delay Feedback Level" min="1" max="127" table="table16"/>
-		<parameter selectorValue="95.1" name="Rch Delay Time" min="1" max="16383" unit="ms"/>
+		<parameter selectorValue="95.1" name="Right Channel Delay Time" min="1" max="16383" unit="ms"/>
 		<parameter selectorValue="77.0" name="EQ Low Gain" min="52" max="76" unit="dB" table="sub64" origin="64"/>
 		<parameter selectorValue="116.0" name="Mod Delay Offset" min="1" max="127"/>
 		<parameter selectorValue="1.1" name="Diffusion" min="0" max="10"/>
-		<parameter selectorValue="5.0" name="Rch Delay" min="1" max="7150" unit="ms"/>
+		<parameter selectorValue="5.0" name="Right Channel Delay" min="1" max="7150" unit="ms"/>
 		<parameter selectorValue="66.8" name="LFO Depth" min="0" max="127" table="table19"/>
 		<parameter selectorValue="82.0" name="Cutoff Frequency Offset" min="0" max="127"/>
 		<parameter selectorValue="127.2" name="Elevation" min="49" max="79" unit="deg"/>
@@ -287,7 +287,7 @@
 		<parameter selectorValue="97.0" name="Delay Mix" min="0" max="127"/>
 		<parameter selectorValue="115.0" name="Mid Level" min="0" max="127"/>
 		<parameter selectorValue="2.7" name="Initial Delay" min="0" max="63" table="table5" unit="ms"/>
-		<parameter selectorValue="87.0" name="Rch Init Delay" min="0" max="127" table="table2" unit="ms"/>
+		<parameter selectorValue="87.0" name="Right Channel Init Delay" min="0" max="127" table="table2" unit="ms"/>
 		<parameter selectorValue="73.8" name="EQ Low Gain" min="52" max="76" unit="dB" table="sub64" origin="64"/>
 		<parameter selectorValue="21.0" name="Feedback High Dump" min="1" max="10"/>
 		<parameter selectorValue="112.0" name="LPF Cutoff Frequency" min="34" max="60" table="table3" unit="Hz"/>
@@ -326,7 +326,7 @@
 		<parameter selectorValue="113.0" name="LFO Wave" min="0" max="1"/>
 		<parameter selectorValue="108.0" name="Phase Shift Offset" min="0" max="127"/>
 		<parameter selectorValue="22.0" name="Feedback Level" min="1" max="127" table="table16"/>
-		<parameter selectorValue="7.0" name="Rch Delay1" min="1" max="3550" unit="ms"/>
+		<parameter selectorValue="7.0" name="Right Channel Delay1" min="1" max="3550" unit="ms"/>
 		<parameter selectorValue="65.6" name="Feedback Level" min="1" max="127" table="table17"/>
 		<parameter selectorValue="103.1" name="Speaker" min="0" max="5"/>
 		<parameter selectorValue="66.8" name="Feedback Level" min="1" max="127" table="table17"/>
@@ -385,7 +385,7 @@
 		<parameter selectorValue="82.1" name="Resonance" min="10" max="120"/>
 		<parameter selectorValue="1.0" name="Initial Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="4.1" name="Initial Delay" min="0" max="63" table="table5" unit="ms"/>
-		<parameter selectorValue="5.0" name="Cch Delay" min="1" max="7150" unit="ms"/>
+		<parameter selectorValue="5.0" name="Center Channel Delay" min="1" max="7150" unit="ms"/>
 		<parameter selectorValue="9.0" name="Diffusion" min="0" max="10"/>
 		<parameter selectorValue="104.0" name="LFO Wave" min="0" max="2"/>
 		<parameter selectorValue="110.0" name="Feedback Level" min="1" max="127"/>
@@ -526,7 +526,7 @@
 		<parameter selectorValue="65.8" name="Delay Offset" min="0" max="127" table="table2" unit="ms"/>
 		<parameter selectorValue="103.0" name="Presence" min="0" max="20"/>
 		<parameter selectorValue="98.0" name="Presence" min="0" max="20"/>
-		<parameter selectorValue="7.0" name="Rch Feedback Level" min="1" max="127" table="table16"/>
+		<parameter selectorValue="7.0" name="Right Channel Feedback Level" min="1" max="127" table="table16"/>
 		<parameter selectorValue="9.0" name="Initial Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="97.0" name="Dist Drive" min="0" max="127"/>
 	</parameterTable>
@@ -633,7 +633,7 @@
 		<parameter selectorValue="69.0" name="EQ Low Frequency" min="8" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="71.1" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="66.2" name="EQ Low Frequency" min="8" max="40" table="table3" unit="Hz"/>
-		<parameter selectorValue="7.0" name="Lch Delay2" min="1" max="3550" unit="ms"/>
+		<parameter selectorValue="7.0" name="Left Channel Delay2" min="1" max="3550" unit="ms"/>
 		<parameter selectorValue="72.0" name="EQ Low Frequency" min="8" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="17.0" name="Width" min="0" max="37" table="table11" unit="m"/>
 		<parameter selectorValue="90.0" name="Auto Upper Gender Threshold" min="0" max="12"/>
@@ -665,7 +665,7 @@
 		<parameter selectorValue="67.7" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="65.5" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="11.0" name="HPF Cutoff" min="0" max="52" table="table3" unit="Hz"/>
-		<parameter selectorValue="5.0" name="Cch Level" min="0" max="127" table="table18"/>
+		<parameter selectorValue="5.0" name="Center Channel Level" min="0" max="127" table="table18"/>
 		<parameter selectorValue="96.1" name="Dist EQ Low Gain" min="52" max="76" unit="dB" table="sub64" origin="64"/>
 		<parameter selectorValue="9.1" name="HPF Cutoff" min="0" max="52" table="table3" unit="Hz"/>
 		<parameter selectorValue="82.2" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
@@ -739,7 +739,7 @@
 		<parameter selectorValue="109.0" name="Release Curve" min="0" max="127"/>
 		<parameter selectorValue="65.4" name="EQ Low Gain" min="52" max="76" unit="dB" table="sub64" origin="64"/>
 		<parameter selectorValue="82.2" name="EQ Low Gain" min="52" max="76" unit="dB" table="sub64" origin="64"/>
-		<parameter selectorValue="7.0" name="Rch Delay2" min="1" max="3550" unit="ms"/>
+		<parameter selectorValue="7.0" name="Right Channel Delay2" min="1" max="3550" unit="ms"/>
 		<parameter selectorValue="16.0" name="Height" min="0" max="73" table="table11" unit="m"/>
 		<parameter selectorValue="113.0" name="LPF Cutoff Frequency" min="34" max="60" table="table3" unit="Hz"/>
 		<parameter selectorValue="10.0" name="LPF Cutoff" min="34" max="60" table="table3" unit="Hz"/>
@@ -1085,7 +1085,7 @@
 		<parameter selectorValue="67.1" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="65.6" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="89.0" name="Vibrato depth" min="0" max="127"/>
-		<parameter selectorValue="18.0" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="18.0" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="65.4" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="67.7" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="80.1" name="Pan 1" min="1" max="127"/>
@@ -1094,11 +1094,11 @@
 		<parameter selectorValue="20.0" name="Density" min="0" max="3"/>
 		<parameter selectorValue="71.0" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="90.0" name="Vibrato depth" min="0" max="127"/>
-		<parameter selectorValue="3.0" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="3.0" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="73.8" name="Edge(Clip Curve)" min="0" max="127"/>
 		<parameter selectorValue="68.0" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="99.0" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
-		<parameter selectorValue="2.0" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="2.0" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="119.0" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="70.0" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="80.0" name="Pan 1" min="1" max="127"/>
@@ -1117,19 +1117,19 @@
 		<parameter selectorValue="96.0" name="Comp. Attack" min="0" max="19" table="table8" unit="ms"/>
 		<parameter selectorValue="118.0" name="HPF Frequency" min="0" max="52" table="table3" unit="Hz"/>
 		<parameter selectorValue="82.1" name="Drive" min="0" max="127"/>
-		<parameter selectorValue="4.0" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="4.0" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="2.6" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="117.0" name="Dry Level" min="0" max="127"/>
 		<parameter selectorValue="10.0" name="Liveness" min="0" max="10"/>
 		<parameter selectorValue="9.0" name="Liveness" min="0" max="10"/>
 		<parameter selectorValue="71.1" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="78.2" name="Drive" min="0" max="127"/>
-		<parameter selectorValue="19.0" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="19.0" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="82.2" name="Drive" min="0" max="127"/>
 		<parameter selectorValue="78.1" name="Drive" min="0" max="127"/>
 		<parameter selectorValue="73.1" name="Edge(Clip Curve)" min="0" max="127"/>
-		<parameter selectorValue="2.2" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
-		<parameter selectorValue="1.1" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="2.2" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="1.1" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="1.6" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="102.0" name="Wah Sensitivity" min="0" max="127"/>
 		<parameter selectorValue="75.0" name="Edge(Clip Curve)" min="0" max="127"/>
@@ -1151,24 +1151,24 @@
 		<parameter selectorValue="91.0" name="Vibrato depth" min="0" max="127"/>
 		<parameter selectorValue="104.0" name="EQ mid frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="72.8" name="Stage" min="3" max="11"/>
-		<parameter selectorValue="3.1" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="3.1" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="74.0" name="Edge(Clip Curve)" min="0" max="127"/>
 		<parameter selectorValue="97.1" name="Wah Sensitivity" min="0" max="127"/>
 		<parameter selectorValue="82.8" name="Drive" min="0" max="127"/>
-		<parameter selectorValue="17.0" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
-		<parameter selectorValue="1.0" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="17.0" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="1.0" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="86.0" name="Crossover Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="85.0" name="Low Adjust" min="0" max="26"/>
 		<parameter selectorValue="103.0" name="Delay Mix" min="0" max="127"/>
 		<parameter selectorValue="75.8" name="Edge" min="0" max="127"/>
-		<parameter selectorValue="16.0" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="16.0" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="108.0" name="Stage" min="3" max="6"/>
 		<parameter selectorValue="11.0" name="Liveness" min="0" max="10"/>
 		<parameter selectorValue="2.7" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="72.0" name="Stage" min="4" max="22"/>
 		<parameter selectorValue="86.2" name="Crossover Frequency" min="14" max="54" table="table3" unit="Hz"/>
 		<parameter selectorValue="67.8" name="EQ Mid Frequency" min="14" max="54" table="table3" unit="Hz"/>
-		<parameter selectorValue="2.1" name="Rev Delay" min="0" max="63" table="table5" unit="ms"/>
+		<parameter selectorValue="2.1" name="Reverb Delay" min="0" max="63" table="table5" unit="ms"/>
 		<parameter selectorValue="103.1" name="Delay Mix" min="0" max="127"/>
 	</parameterTable>
 	<parameterTable name="fx_parameter_12">
@@ -1266,20 +1266,20 @@
 		<parameter selectorValue="21.8" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="70.0" name="EQ Mid Width" min="10" max="120"/>
 		<parameter selectorValue="65.2" name="EQ Mid Width" min="10" max="120"/>
-		<parameter selectorValue="2.2" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="2.2" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="111.0" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="21.0" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="9.1" name="High Damp" min="1" max="10"/>
 		<parameter selectorValue="99.1" name="EQ High Frequency" min="28" max="58" table="table3" unit="Hz"/>
 		<parameter selectorValue="108.0" name="LFO phase difference" min="4" max="124" unit="deg"/>
 		<parameter selectorValue="65.0" name="EQ Mid Width" min="10" max="120"/>
-		<parameter selectorValue="4.7" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="4.7" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="82.2" name="Distortion EQ Mid Gain" min="52" max="76" unit="dB" table="sub64" origin="64"/>
 		<parameter selectorValue="71.0" name="EQ Mid Width" min="10" max="120"/>
 		<parameter selectorValue="92.0" name="Vibrato delay" min="0" max="127"/>
 		<parameter selectorValue="78.2" name="Distortion EQ Mid Gain" min="52" max="76" unit="dB" table="sub64" origin="64"/>
-		<parameter selectorValue="2.0" name="Er/Rev Balance" min="1" max="127"/>
-		<parameter selectorValue="1.1" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="2.0" name="Early/Reverb Balance" min="1" max="127"/>
+		<parameter selectorValue="1.1" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="68.0" name="EQ Mid Width" min="10" max="120"/>
 		<parameter selectorValue="82.8" name="Distortion EQ Mid Gain" min="52" max="76" unit="dB" table="sub64" origin="64"/>
 		<parameter selectorValue="5.0" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
@@ -1294,42 +1294,42 @@
 		<parameter selectorValue="65.5" name="EQ Mid Width" min="10" max="120"/>
 		<parameter selectorValue="102.0" name="Wah Resonance" min="10" max="120"/>
 		<parameter selectorValue="66.2" name="EQ Mid Width" min="10" max="120"/>
-		<parameter selectorValue="1.0" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="1.0" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="67.8" name="EQ Mid Width" min="10" max="120"/>
 		<parameter selectorValue="65.1" name="EQ Mid Width" min="10" max="120"/>
 		<parameter selectorValue="101.0" name="Comp. Threshold" min="79" max="121" unit="dB"/>
 		<parameter selectorValue="86.3" name="AMP Type" min="0" max="3"/>
 		<parameter selectorValue="80.0" name="Pan 2" min="1" max="127"/>
-		<parameter selectorValue="1.7" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="1.7" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="99.0" name="EQ High Frequency" min="28" max="58" table="table3" unit="Hz"/>
 		<parameter selectorValue="87.0" name="EQ High Frequency" min="28" max="58" table="table3" unit="Hz"/>
 		<parameter selectorValue="65.6" name="EQ Mid Width" min="10" max="120"/>
-		<parameter selectorValue="17.0" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="17.0" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="67.0" name="EQ Mid Width" min="10" max="120"/>
-		<parameter selectorValue="4.0" name="Er/Rev Balance" min="1" max="127"/>
-		<parameter selectorValue="2.6" name="Er/Rev Balance" min="1" max="127"/>
-		<parameter selectorValue="16.0" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="4.0" name="Early/Reverb Balance" min="1" max="127"/>
+		<parameter selectorValue="2.6" name="Early/Reverb Balancee" min="1" max="127"/>
+		<parameter selectorValue="16.0" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="89.0" name="Vibrato delay" min="0" max="127"/>
 		<parameter selectorValue="22.0" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
-		<parameter selectorValue="19.0" name="Er/Rev Balance" min="1" max="127"/>
-		<parameter selectorValue="18.0" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="19.0" name="Early/Reverb Balance" min="1" max="127"/>
+		<parameter selectorValue="18.0" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="90.0" name="Vibrato delay" min="0" max="127"/>
 		<parameter selectorValue="8.0" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
 		<parameter selectorValue="101.1" name="Comp. Threshold" min="79" max="121" unit="dB"/>
 		<parameter selectorValue="67.7" name="EQ Mid Width" min="10" max="120"/>
-		<parameter selectorValue="3.0" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="3.0" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="97.0" name="Wah Resonance" min="10" max="120"/>
 		<parameter selectorValue="9.0" name="High Damp" min="1" max="10"/>
-		<parameter selectorValue="2.1" name="Er/Rev Balance" min="1" max="127"/>
-		<parameter selectorValue="2.5" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="2.1" name="Early/Reverb Balance" min="1" max="127"/>
+		<parameter selectorValue="2.5" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="65.3" name="EQ Mid Width" min="10" max="120"/>
-		<parameter selectorValue="3.1" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="3.1" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="65.7" name="EQ Mid Width" min="10" max="120"/>
 		<parameter selectorValue="109.0" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>
-		<parameter selectorValue="1.6" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="1.6" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="102.1" name="Wah Resonance" min="10" max="120"/>
 		<parameter selectorValue="107.0" name="EQ mid width" min="10" max="120"/>
-		<parameter selectorValue="2.7" name="Er/Rev Balance" min="1" max="127"/>
+		<parameter selectorValue="2.7" name="Early/Reverb Balance" min="1" max="127"/>
 		<parameter selectorValue="11.0" name="High Damp" min="1" max="10"/>
 		<parameter selectorValue="78.1" name="Distortion EQ Mid Gain" min="52" max="76" unit="dB" table="sub64" origin="64"/>
 		<parameter selectorValue="7.0" name="EQ Low Frequency" min="4" max="40" table="table3" unit="Hz"/>

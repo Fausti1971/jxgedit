@@ -1,24 +1,27 @@
 package gui;
-import adress.*;import static gui.XGUI.*;import module.*;import value.XGValue;import javax.swing.*;import javax.swing.event.*;import javax.swing.table.*;import java.awt.*;import java.util.Comparator;import java.util.Vector;
+import static gui.XGUI.*;
+import module.*;
+import javax.swing.*;
+import javax.swing.table.*;
+import java.awt.*;
+import java.util.Vector;
 
 public class XGModuleTable extends JTable implements java.awt.event.MouseListener
 {
-	private final int GAP = 6;
+	private final int GAP = 12;
 
 	public XGModuleTable(XGModuleType type)
 	{	super(new XGModuleTableModel(type));
 		this.getModel().addTableModelListener(this);
 		this.addMouseListener(this);
 		this.setAutoCreateRowSorter(true);
-		//TableRowSorter<XGModuleTableModel> sorter = new TableRowSorter<XGModuleTableModel>((XGModuleTableModel)this.getModel());
-		//this.setRowSorter(sorter);
-		this.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
-		this.setIntercellSpacing(new java.awt.Dimension(GAP, GAP));
-		this.setRowHeight(GRID);
-		this.setFont(MEDIUM_FONT);
-		this.getTableHeader().setFont(SMALL_FONT);
+		this.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+//		this.setIntercellSpacing(new Dimension(GAP, GAP));
+		this.setRowHeight(this.getFont().getSize() + GAP);
+//		this.setFont(MEDIUM_FONT);
+//		this.getTableHeader().setFont(SMALL_FONT);
 //		this.setGridColor(java.awt.Color.lightGray);//wird vom L&F wieder überschrieben
-//		this.setShowGrid(false);
+		this.setShowGrid(true);//wird vom L&F wieder überschrieben
 		this.setAutoscrolls(true);
 		((DefaultTableCellRenderer)this.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);//wird von Nimbus und GTK+ überschrieben
 	}
@@ -39,23 +42,13 @@ public class XGModuleTable extends JTable implements java.awt.event.MouseListene
 		}
 	}
 
-	public void mouseClicked(java.awt.event.MouseEvent event)
-	{	if(event.getClickCount() == 2) this.openEditWindow();
-	}
+	public void mouseClicked(java.awt.event.MouseEvent event){	if(event.getClickCount() == 2) this.openEditWindow();}
 
-	public void mousePressed(java.awt.event.MouseEvent event)
-	{
-	}
+	public void mousePressed(java.awt.event.MouseEvent event){}
 
-	public void mouseReleased(java.awt.event.MouseEvent event)
-	{
-	}
+	public void mouseReleased(java.awt.event.MouseEvent event){}
 
-	public void mouseEntered(java.awt.event.MouseEvent event)
-	{
-	}
+	public void mouseEntered(java.awt.event.MouseEvent event){}
 
-	public void mouseExited(java.awt.event.MouseEvent event)
-	{
-	}
+	public void mouseExited(java.awt.event.MouseEvent event){}
 }

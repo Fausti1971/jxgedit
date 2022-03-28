@@ -1,51 +1,48 @@
 package gui;
 
-import xml.XGProperty;import static xml.XMLNodeConstants.ATTR_NAME;import javax.swing.*;
+import tag.XGTagableAddressableSet;import value.XGValue;import xml.XGProperty;import static xml.XMLNodeConstants.ATTR_NAME;import javax.swing.*;
 
 public class XGADPartEditWindow extends XGEditWindow
 {
 	public XGADPartEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.window, mod);
-		this.setContentPane(this.createContent());
-		this.pack();
+	{	super(XGMainWindow.MAINWINDOW, mod);
 		this.setVisible(true);
 	}
 
 	JComponent createContent()
-	{	javax.swing.JPanel root = new javax.swing.JPanel();
-		root.setLayout(new javax.swing.BoxLayout(root, javax.swing.BoxLayout.X_AXIS));
+	{	XGTagableAddressableSet<XGValue> values = this.module.getValues();
+		int x = 0, y = 0, w = 1, h = 1;
 
-		XGFrame midi = new gui.XGFrame("Midi", GRID * 3, GRID * 2);
-		XGFrame voice = new gui.XGFrame("Voice", GRID * 3, GRID * 2);
+		XGFrame root = new XGFrame();
+		XGFrame voice = new XGFrame();
+		XGFrame effect = new XGFrame();
+		XGFrame midi = new XGFrame();
 
-		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();
+		voice.add(new XGKnob(values.get("ad_volume")), "0,0,1,2");
+		voice.add(new XGKnob(values.get("ad_pan")), "1,0,1,2");
+		voice.add(new XGRadio(values.get("ad_gain")), "2,0,1,1");
+		voice.add(new XGRadio(values.get("ad_stereo")),"2,1,1,1");
+		voice.add(new XGCombo(values.get("ad_input_cat")), "3,0,3,1");
+		voice.add(new XGProgramSelector(values.get("ad_preset")), "3,1,3,1");
 
-		midi.add(new XGFlagBox("Receive", values.get("ad_rcv_prg"), values.get("ad_rcv_cc"), values.get("ad_rcv_vol"), values.get("ad_rcv_pan"), values.get("ad_rcv_exp"), values.get("ad_rcv_bank")), "a0e0");
-		midi.add(new XGKnob(values.get("ad_midi")), "a1a2");
-		midi.add(new XGKnob(values.get("ad_ac1_nr")), "b1b2");
-		midi.add(new XGKnob(values.get("ad_ac2_nr")), "c1c2");
-		midi.add(new XGKnob(values.get("ad_cbc1_nr")), "d1d2");
-		midi.add(new XGKnob(values.get("ad_cbc2_nr")), "e1e2");
+		effect.add(new XGKnob(values.get("ad_dry")), "0,0,1,2");
+		effect.add(new XGKnob(values.get("ad_rev")), "1,0,1,2");
+		effect.add(new XGKnob(values.get("ad_cho")), "2,0,1,2");
+		effect.add(new XGKnob(values.get("ad_var")), "3,0,1,2");
 
-		voice.add(new gui.XGCombo(values.get("ad_stereo")), "a0b0");
-		voice.add(new gui.XGCombo(values.get("ad_input_cat")), "c0d0");
-		voice.add(new gui.XGProgramSelector(values.get("ad_preset")), "e0i0");
+		midi.add(new XGFlagBox("Receive", values.get("ad_rcv_prg"), values.get("ad_rcv_cc"), values.get("ad_rcv_vol"), values.get("ad_rcv_pan"), values.get("ad_rcv_exp"), values.get("ad_rcv_bank")), "0,0,2,1");
+		midi.add(new XGKnob(values.get("ad_midi")), "2,0,1,2");
+		midi.add(new XGKnob(values.get("ad_ac1_nr")), "3,0,1,2");
+		midi.add(new XGKnob(values.get("ad_ac2_nr")),"4,0,1,2");
+		midi.add(new XGKnob(values.get("ad_cbc1_nr")), "5,0,1,2");
+		midi.add(new XGKnob(values.get("ad_cbc2_nr")), "6,0,1,2");
 
-		voice.add(new XGKnob(values.get("ad_volume")), "a1a2");
-		voice.add(new XGKnob(values.get("ad_pan")), "b1b2");
-		voice.add(new XGRadio(values.get("ad_gain")), "c1d2");
-		voice.add(new XGKnob(values.get("ad_dry")), "f1f2");
-		voice.add(new XGKnob(values.get("ad_rev")), "g1g2");
-		voice.add(new XGKnob(values.get("ad_cho")), "h1h2");
-		voice.add(new XGKnob(values.get("ad_var")), "i1i2");
-
-		root.add(voice);
-		root.add(midi);
+		root.add(voice, "0,0,6,1");
+		root.add(effect, "6,0,4,1");
+		root.add(midi, "10,0,7,1");
 
 		return root;
 	}
 
-	public void propertyChanged(XGProperty p)
-	{	if(ATTR_NAME.equals(p.getTag())) this.setTitle(this.getTitle());
-	}
+	public void propertyChanged(XGProperty p){	if(ATTR_NAME.equals(p.getTag())) this.setTitle(this.getTitle());}
 }

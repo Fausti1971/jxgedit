@@ -1,13 +1,12 @@
 package gui;
 
-import adress.XGAddress;import adress.XGAddressable;import xml.XGProperty;import javax.swing.*;
+import adress.XGAddress;import adress.XGAddressable;import adress.XGAddressableSet;import module.XGModule;import xml.XGProperty;import static xml.XMLNodeConstants.*;import javax.swing.*;import java.awt.*;import java.awt.event.ComponentEvent;
 
 public abstract class XGEditWindow extends XGWindow implements XGAddressable
 {
-	protected static final int GAP = 0;
-	static final adress.XGAddressableSet<XGEditWindow> EDITWINDOWS = new adress.XGAddressableSet<>();
+	static final XGAddressableSet<XGEditWindow> EDITWINDOWS = new XGAddressableSet<>();
 
-	public static XGEditWindow getEditWindow(module.XGModule mod)
+	public static XGEditWindow getEditWindow(XGModule mod)
 	{	XGAddress adr = mod.getAddress();
 		String tag = mod.getType().getTag();
 		XGEditWindow win = EDITWINDOWS.get(adr);
@@ -38,7 +37,7 @@ public abstract class XGEditWindow extends XGWindow implements XGAddressable
 				case "ds14":
 				case "ds15":
 				case "ds16":	win = new XGDrumEditWindow(mod); break;
-				default:		return win;
+				default:		return null;
 			}
 			EDITWINDOWS.add(win);
 		}
@@ -49,24 +48,20 @@ public abstract class XGEditWindow extends XGWindow implements XGAddressable
 
 	abstract JComponent createContent();
 
-	final module.XGModule module;
+	final XGModule module;
 
-	public XGEditWindow(XGWindow own, module.XGModule mod)
-	{	super(own, own.config);
-//		own.config.getAttributes().get(ATTR_NAME).getListeners().add((XGProperty p)->{this.setTitle(own.getTitle() + " - " + p.getValue().toString());});
-		this.setResizable(false);
+	public XGEditWindow(XGWindow own, XGModule mod)
+	{	super(own, mod.getType().getTag());
+		this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		this.module = mod;
+		this.setContentPane(this.createContent());
 	}
 
-	@Override public void propertyChanged(XGProperty p)
-	{	this.setTitle(this.getTitle());
-	}
+	@Override public String getTag(){	return this.module.getType().getTag();}
 
-	@Override public String getTitle()
-	{	return XGMainWindow.window.getTitle() + " - " + this.module;
-	}
+	@Override public void propertyChanged(XGProperty p){	this.setTitle(this.getTitle());}
 
-	@Override public XGAddress getAddress()
-	{	return this.module.getAddress();
-	}
+	@Override public String getTitle(){	return XGMainWindow.MAINWINDOW.getTitle() + " - " + this.module;}
+
+	@Override public XGAddress getAddress(){	return this.module.getAddress();}
 }

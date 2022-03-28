@@ -1,7 +1,6 @@
 package gui;
 
 import javax.swing.JButton;
-import static gui.XGUI.MEDIUM_FONT;
 import value.XGValue;
 
 /**
@@ -16,24 +15,21 @@ public class XGButton2 extends JButton implements value.XGValueChangeListener
 /*******************************************************************************/
 
 	private final XGValue value;
+	private final String firstRow;
 
-	public XGButton2(XGValue val)
+	public XGButton2(String firstRow, XGValue val)
 	{	this.value = val;
-		if(val == null)
-		{	this.setVisible(false);
-			return;
-		}
-//		this.setHorizontalAlignment(javax.swing.JButton.CENTER);
+		this.firstRow = firstRow;
 		this.setText(this.createText());
-		this.setFont(MEDIUM_FONT);
-		this.value.getValueListeners().add(this);
+//		this.setFont(MEDIUM_FONT);
+		if(val != null) this.value.getValueListeners().add(this);
 	}
 
 	private String createText()
-	{	return "<html><center><b>" + this.value.getParameter().getName() + "</b><br>" + this.value.toString() + "</center></html>";
+	{	String s = "*";
+		if(this.value != null) s = this.value.toString();
+		return "<html><center><b>" + this.firstRow + "</b><br>" + s + "</center></html>";
 	}
 
-	public void contentChanged(value.XGValue v)
-	{	this.setText(this.createText());
-	}
+	public void contentChanged(value.XGValue v){	this.setText(this.createText());}
 }

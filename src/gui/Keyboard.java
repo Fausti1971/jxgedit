@@ -37,7 +37,7 @@ public final class Keyboard extends JComponent {
     private final Set<Integer> litKeys = new HashSet<>();
 
     public Keyboard(XMLNode n, XGModule mod)
-    {	XGFrame f = new XGFrame("Keyboard");
+    {	XGFrame f = new XGFrame();
     	Insets i = f.getInsets();
     	int h = f.getHeight() - (i.top + i.bottom);
         setFirstNote('C');

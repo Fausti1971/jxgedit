@@ -4,7 +4,7 @@ import java.util.Set;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
-import static gui.XGUI.SMALL_FONT;import parm.XGParameter;
+import parm.XGParameter;
 import value.XGValue;
 
 public class XGPopup extends JPopupMenu
@@ -39,7 +39,7 @@ public class XGPopup extends JPopupMenu
 		for(XGValue v : values)
 		{	p = v.getParameter();
 			c = new JCheckBox(p.getName(), p.getMaxIndex() == v.getIndex());
-			c.setFont(SMALL_FONT);
+//			c.setFont(SMALL_FONT);
 			c.addActionListener((ActionEvent)->{v.toggleIndex(true);});
 			this.add(c);
 		}

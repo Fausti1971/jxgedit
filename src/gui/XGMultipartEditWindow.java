@@ -1,25 +1,26 @@
 package gui;
 
+import tag.XGTagableAddressableSet;
+import value.XGValue;
 import javax.swing.*;
 
 public class XGMultipartEditWindow extends XGEditWindow
-{	
+{
 	public XGMultipartEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.window, mod);
+	{	super(XGMainWindow.MAINWINDOW, mod);
 		this.setContentPane(this.createContent());
-		this.pack();
 		this.setVisible(true);
 	}
 
 	javax.swing.JComponent createContent()
-	{	javax.swing.JPanel root = new javax.swing.JPanel();
-		root.setLayout(new javax.swing.BoxLayout(root, javax.swing.BoxLayout.Y_AXIS));
+	{	JPanel root = new JPanel();
+		root.setLayout(new BoxLayout(root, BoxLayout.Y_AXIS));
 
-		XGFrame midi = new gui.XGFrame("Midi", GRID * 3, GRID * 2);
-		XGFrame voice = new gui.XGFrame("Voice", GRID * 3, GRID * 2);
-		XGFrame control = new gui.XGFrame("Control", GRID * 3, GRID * 2);
+		XGFrame midi = new XGFrame(3, 2);
+		XGFrame voice = new XGFrame(3, 2);
+		XGFrame control = new XGFrame(3, 2);
 
-		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();
+		XGTagableAddressableSet<XGValue> values = this.module.getValues();
 
 		midi.add(new XGKnob(values.get("mp_midi_channel")), "A0A1");
 		midi.add(new XGKnob(values.get("mp_reserve")), "b0b1");
@@ -67,8 +68,8 @@ public class XGMultipartEditWindow extends XGEditWindow
 		voice.add(new XGPEG(values.get("mp_peg_init_level"), values.get("mp_peg_attack_time"), values.get("mp_peg_release_level"), values.get("mp_peg_release_time")), "m4r7");
 
 		JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
-		tabs.setFont(SMALL_FONT);
-		XGFrame tab = new XGFrame(null, 3 * GRID, 4 * GRID);
+//		tabs.setFont(SMALL_FONT);
+		XGFrame tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_mw_pitch")), "b0b0");
 		tab.add(new XGKnob(values.get("mp_mw_lpf")), "c0c0");
 		tab.add(new XGKnob(values.get("mp_mw_amp")), "d0d0");
@@ -78,7 +79,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 		tab.add(new XGKnob(values.get("mp_mw_offset")), "h0h0");
 		tabs.addTab("MW", null, tab, "Modulation Wheel");
 
-		tab = new XGFrame(null, 3 * GRID, 4 * GRID);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_pb_pitch")), "b0b0");
 		tab.add(new XGKnob(values.get("mp_pb_lpf")), "c0c0");
 		tab.add(new XGKnob(values.get("mp_pb_amp")), "d0d0");
@@ -89,7 +90,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 		tab.add(new XGKnob(values.get("mp_pb_lo")), "i0i0");
 		tabs.addTab("PB", null, tab, "Pitchbend Wheel");
 
-		tab = new XGFrame(null, 3 * GRID, 4 * GRID);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_cat_pitch")), "b0b0");
 		tab.add(new XGKnob(values.get("mp_cat_lpf")), "c0c0");
 		tab.add(new XGKnob(values.get("mp_cat_amp")), "d0d0");
@@ -99,7 +100,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 		tab.add(new XGKnob(values.get("mp_cat_offset")), "h0h0");
 		tabs.addTab("CAT", null, tab, "Channel Aftertouch");
 
-		tab = new XGFrame(null, 3 * GRID, 4 * GRID);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_pat_pitch")), "b0b0");
 		tab.add(new XGKnob(values.get("mp_pat_lpf")), "c0c0");
 		tab.add(new XGKnob(values.get("mp_pat_amp")), "d0d0");
@@ -109,7 +110,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 		tab.add(new XGKnob(values.get("mp_pat_offset")), "h0h0");
 		tabs.addTab("PAT", null, tab, "Polyphonic Aftertouch");
 
-		tab = new XGFrame(null, 3 * GRID, 4 * GRID);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_ac1_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_ac1_pitch")), "b0b0");
 		tab.add(new XGKnob(values.get("mp_ac1_lpf")), "c0c0");
@@ -120,7 +121,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 		tab.add(new XGKnob(values.get("mp_ac1_offset")), "h0h0");
 		tabs.addTab("AC1", null, tab, "Assignable Controller 1");
 
-		tab = new XGFrame(null, 3 * GRID, 4 * GRID);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_ac2_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_ac2_pitch")), "b0b0");
 		tab.add(new XGKnob(values.get("mp_ac2_lpf")), "c0c0");
@@ -131,7 +132,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 		tab.add(new XGKnob(values.get("mp_ac2_offset")), "h0h0");
 		tabs.addTab("AC2", null, tab, "Assignable Controller 2");
 
-		tab = new XGFrame(null, 3 * GRID, 4 * GRID);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_cbc1_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_cbc1_pitch")), "b0b0");
 		tab.add(new XGKnob(values.get("mp_cbc1_lpf")), "c0c0");
@@ -141,7 +142,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 		tab.add(new XGKnob(values.get("mp_cbc1_lfo_amp")), "g0g0");
 		tabs.addTab("CBC1", null, tab, "CBC1");
 
-		tab = new XGFrame(null, 3 * GRID, 4 * GRID);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_cbc2_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_cbc2_pitch")), "b0b0");
 		tab.add(new XGKnob(values.get("mp_cbc2_lpf")), "c0c0");
@@ -151,59 +152,59 @@ public class XGMultipartEditWindow extends XGEditWindow
 		tab.add(new XGKnob(values.get("mp_cbc2_lfo_amp")), "g0g0");
 		tabs.addTab("CBC2", null, tab, "CBC2");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_press_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_press")), "b0b0");
 		tabs.addTab("Prs", null, tab, "VL Pressure Control");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_embr_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_embr")), "b0b0");
 		tabs.addTab("Emb", null, tab, "VL Embouchure Control");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_tongue_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_tongue")), "b0b0");
 		tabs.addTab("Tng", null, tab, "VL Tonguing Control");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_scream_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_scream")), "b0b0");
 		tabs.addTab("Scr", null, tab, "VL Scream Control");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_breath_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_breath")), "b0b0");
 		tabs.addTab("Brt", null, tab, "VL Breath Control");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_growl_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_growl")), "b0b0");
 		tabs.addTab("Grl", null, tab, "VL Growl Control");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_throat_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_throat")), "b0b0");
 		tabs.addTab("Thr", null, tab, "VL Throat Formant Control");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_harmonic_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_harmonic")), "b0b0");
 		tabs.addTab("Hrm", null, tab, "VL Harmonic Enhancer Control");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_damping_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_damping")), "b0b0");
 		tabs.addTab("Dmp", null, tab, "VL Damping Control");
 
-		tab = new XGFrame(null, GRID * 3, GRID * 4);
+		tab = new XGFrame(3, 4);
 		tab.add(new XGKnob(values.get("mp_vl_absorp_nr")), "a0a0");
 		tab.add(new XGKnob(values.get("mp_vl_absorp")), "b0b0");
 		tabs.addTab("Abs", null, tab, "VL Absorption Control");
 
 		control.add(tabs, "a0k2");
 
-		XGFrame vl = new XGFrame("VL", GRID * 3, GRID * 2);
+		XGFrame vl = new XGFrame(3, 2);
 		vl.add(new XGCheckbox(values.get("mp_vl_noteassign")), "b0c0");
 		vl.add(new XGCombo(values.get("mp_vl_notefilter")), "b1c1");
 		//vl.add(new XGKnob(values.get("mp_vl_amp_break")), "c0c1");

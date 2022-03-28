@@ -7,7 +7,7 @@ import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.*;
 import gui.*;
-import module.XGBulk;import msg.XGMessageBulkRequest;import msg.XGMessenger;import msg.XGMessengerException;import msg.XGRequest;
+import msg.XGMessageBulkRequest;import msg.XGMessenger;import msg.XGMessengerException;import msg.XGRequest;
 
 /**
  * qualifiziert die implementierende Klasse als Sammler aller enthaltenen BuklDumps (getBulks()) und Transmitter (transmitAll()) bzw. Requester (requestAll()); folglich können lediglich Instanzen, die XGBulks halten (Module, Moduletype, Device) als XGBulkDumper fungieren; vielleicht auch einst für Copy & Paset zu missbrauchen;
@@ -24,7 +24,7 @@ public interface XGBulkDumper extends XGLoggable
 		int transmitted = 0;
 		long time = System.currentTimeMillis();
 		XGAddressableSet<XGBulk> set = this.getBulks();
-		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.window, "transmitting to " + dest, "", 0, set.size());
+		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "transmitting to " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
@@ -54,7 +54,7 @@ public interface XGBulkDumper extends XGLoggable
 		XGRequest r;
 		XGAddressableSet<XGBulk> set = this.getBulks();
 		XGAddressableSet<XGRequest> missed = new XGAddressableSet<>();
-		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.window, "transmitting...", "", 0, set.size());
+		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "transmitting...", "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)

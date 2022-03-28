@@ -1,58 +1,41 @@
 package gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import value.XGValue;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import javax.swing.JTextField;
-import value.XGValue;
 
-public class XGValueLabel extends JTextField implements XGUI, ActionListener, MouseListener
-{	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-/*****************************************************************************************************/
+public class XGValueLabel extends XGLabel implements MouseListener
+{
+/**
+ * @param v***************************************************************************************************/
 
 	private final XGValue value;
 
 	public XGValueLabel(XGValue v)
-	{
+	{	super("");
 		this.value = v;
-		this.setOpaque(false);
-		this.setBackground(COL_TRANSPARENT);
-		this.setBorder(null);
-		this.setFont(SMALL_FONT);
-		this.setHorizontalAlignment(JTextField.CENTER);
+		this.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		this.addMouseListener(this);
-		this.addActionListener(this);
-	}
-
-	@Override public void actionPerformed(ActionEvent e)
-	{	String s = this.getText().trim();
-		this.value.setValue(s, true);
-		this.setText(this.value.toString());
-		this.repaint();
 	}
 
 	@Override public void mouseClicked(MouseEvent e)
-	{	this.selectAll();
+	{	int v = this.value.getValue();
+		String s = JOptionPane.showInputDialog(e.getComponent(), "Value:", this.getText());
+		try
+		{	this.value.setValue(s, true);
+		}
+		catch(NumberFormatException ex)
+		{	this.value.setValue(v, false, false);
+		}
 	}
 
-	@Override public void mousePressed(MouseEvent e)
-	{
-	}
+	@Override public void mousePressed(MouseEvent e){}
 
-	@Override public void mouseReleased(MouseEvent e)
-	{
-	}
+	@Override public void mouseReleased(MouseEvent e){}
 
-	@Override public void mouseEntered(MouseEvent e)
-	{
-	}
+	@Override public void mouseEntered(MouseEvent e){}
 
-	@Override public void mouseExited(MouseEvent e)
-	{
-	}
+	@Override public void mouseExited(MouseEvent e){}
 }

@@ -239,7 +239,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		}
 	}
 
-	public void setValue(String s, boolean action)
+	public void setValue(String s, boolean action) throws NumberFormatException
 	{	if(this.getParameter() != null) this.setEntry(this.getParameter().getTranslationTable().getByName(s), true, action);
 	}
 

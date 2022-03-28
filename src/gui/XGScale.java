@@ -39,7 +39,6 @@ public class XGScale extends JPanel implements XGComponent
 			return;
 		}
 		this.setName("Scaling");
-		this.borderize();
 		this.panel = new XGPointPanel(1, 0, 0, 64, 0, 11, 0, 127);
 		this.panel.setUnits("Note", "Pitch");
 		this.setLayout(new GridBagLayout());

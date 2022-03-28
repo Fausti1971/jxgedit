@@ -29,7 +29,6 @@ public class XGPEG extends JPanel implements XGComponent
 			return;
 		}
 		this.setName("Pitch Envelope Generator");
-		this.borderize();
 
 		this.panel = new XGPointPanel(1, 2, 0, 64, 0, 381, 0, 127);
 		this.panel.setUnits("Time", "Pitch");

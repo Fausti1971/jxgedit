@@ -28,7 +28,6 @@ public class XGAEG extends JPanel implements XGComponent
 			return;
 		}
 		this.setName("Amplifier Envelope Generator");
-		this.borderize();
 
 		int maxX = this.attack.getParameter().getMaxIndex() - this.attack.getParameter().getMinIndex();
 		maxX += this.decay.getParameter().getMaxIndex() - this.decay.getParameter().getMinIndex();

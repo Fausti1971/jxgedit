@@ -1,7 +1,12 @@
 package application;
 
-public interface XGMath
+import java.awt.*;public interface XGMath
 {
+	static Rectangle toRectangle(int[] array)
+	{	if(array.length != 4) throw new RuntimeException("array " + array + " has " + array.length + " values (4 values expected)");
+		return new Rectangle(array[0], array[1], array[2], array[3]);
+	}
+
 	static int linearIO(int i, int in_min, int in_max, int out_min, int out_max)
 	{	float
 			in = i - in_min,

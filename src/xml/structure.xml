@@ -138,8 +138,8 @@
 	</module>
 
 	<module id="ins" name="Insertion" address="3/0-1/">
-		<info ref="ins_program"/>
 		<info ref="ins_part"/>
+		<info ref="ins_program"/>
 		<bulk id="ins0" address="//0-17">
 			<opcode xsi:type="immutable" id="ins_program" address="//0-1" name="Insertion Program" shortName="Prog" table="fx_programs" tableFilter="insertion" actions="change"/>
 			<opcode xsi:type="mutable" id="ins_p1" address="//2" parameterSelector="ins_program" parameterTable="fx_parameter_1" defaultSelector="ins_program" defaultsTable="fx_parameter_1" actions="change"/>
@@ -426,18 +426,18 @@
 		<info ref="ad_cho"/>
 		<info ref="ad_var"/>
 		<bulk id="ad0" address="16//0-20">
-			<opcode xsi:type="immutable" id="ad_gain" address="//0" name="Input Gain" max="1" table="input_gain" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_gain" address="//0" name="Input Gain" shortName="Gain" max="1" table="input_gain" actions="change"/>
 			<opcode xsi:type="immutable" id="ad_preset" address="//1-3" name="Preset" min="0" default="0" table="ad_presets"  actions="dump"/>
-			<opcode xsi:type="immutable" id="ad_midi" address="//4" name="Midi Channel" min="0" max="127" table="midi_channels" default="127" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_midi" address="//4" name="Midi Channel" shortName="Ch" min="0" max="127" origin="0" table="midi_channels" default="127" actions="change"/>
 			<opcode xsi:type="immutable" id="ad_reserved1" address="//5-10" name="not used" actions="change"/>
-			<opcode xsi:type="immutable" id="ad_volume" address="//11" name="Volume" min="0" max="127" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_volume" address="//11" name="Volume" shortName="Vol" min="0" max="127" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="ad_reserved2" address="//12-13" name="not used" actions="change"/>
-			<opcode xsi:type="immutable" id="ad_pan" address="//14" name="Panorama" min="1" max="127" table="panorama" origin="64" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_pan" address="//14" name="Panorama" shortName="Pan" min="1" max="127" table="panorama" origin="64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ad_reserved3" address="//15-16" name="not used" actions="change"/>
-			<opcode xsi:type="immutable" id="ad_dry" address="//17" name="Dry Level" min="0" max="127" default="127" actions="change"/>
-			<opcode xsi:type="immutable" id="ad_cho" address="//18" name="Chorus Send" min="0" max="127" default="0" actions="change"/>
-			<opcode xsi:type="immutable" id="ad_rev" address="//19" name="Reverb Send" min="0" max="127" default="0" actions="change"/>
-			<opcode xsi:type="immutable" id="ad_var" address="//20" name="Variation Send" min="0" max="127" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_dry" address="//17" name="Dry Level" shortName="Dry" min="0" max="127" origin="0" default="127" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_cho" address="//18" name="Chorus Send" shortName="Cho" min="0" max="127" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_rev" address="//19" name="Reverb Send" shortName="Rev" min="0" max="127" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_var" address="//20" name="Variation Send" shortName="Var" min="0" max="127" default="0" actions="change"/>
 		</bulk>
 		<bulk id="ad48" address="16//48-96">
 			<opcode xsi:type="immutable" id="ad_reserved4" address="//48-49" name="not used" actions="change"/>
@@ -450,21 +450,21 @@
 			<opcode xsi:type="immutable" id="ad_reserved6" address="//60-63" name="not used" actions="change"/>
 			<opcode xsi:type="immutable" id="ad_rcv_bank" address="//64" name="Receive Bank Select" max="1" table="on_off" default="01" actions="change"/>
 			<opcode xsi:type="immutable" id="ad_reserved7" address="//65-88" name="not used" actions="change"/>
-			<opcode xsi:type="immutable" id="ad_ac1_nr" address="//89" name="Assignable Controller 1 Number" shortName="AC1NR" min="0" max="95" default="16" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_ac1_nr" address="//89" name="Assignable Controller 1 Number" shortName="AC1NR" min="0" max="95" origin="0" default="16" actions="change"/>
 			<opcode xsi:type="immutable" id="ad_reserved8" address="//90-95" name="not used" actions="change"/>
-			<opcode xsi:type="immutable" id="ad_ac2_nr" address="//96" name="Assignable Controller 2 Number" shortName="AC2NR" min="0" max="95" default="17" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_ac2_nr" address="//96" name="Assignable Controller 2 Number" shortName="AC2NR" min="0" max="95" origin="0" default="17" actions="change"/>
 		</bulk>
 		<bulk id="adpart0" address="17//0">
-			<opcode xsi:type="immutable" id="ad_stereo" address="//0" name="Mono/Stereo" max="1" table="mono_stereo" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_stereo" address="//0" name="Mono/Stereo" shortName="Mn/St" max="1" table="mono_stereo" default="0" actions="change"/>
 		</bulk>
 		<bulk id="adpart1" address="17//1-3">
-			<opcode xsi:type="immutable" id="ad_input_cat" address="//1-3" name="Input Category" table="input_categories" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_input_cat" address="//1-3" name="Input Category" shortName="InpCat" table="input_categories" actions="change"/>
 		</bulk>
 		<bulk id="adadd48" address="18//48">
-			<opcode xsi:type="immutable" id="ad_cbc1_nr" address="//48" name="CBC 1 Control Number" shortName="C1CNR" min="0" max="95" default="32" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_cbc1_nr" address="//48" name="CBC 1 Control Number" shortName="C1CNR" min="0" max="95" origin="0" default="32" actions="change"/>
 		</bulk>
 		<bulk id="adadd56" address="18//56">
-			<opcode xsi:type="immutable" id="ad_cbc2_nr" address="//56" name="CBC 2 Control Number" shortName="C2CNR" min="0" max="95" default="32" actions="change"/>
+			<opcode xsi:type="immutable" id="ad_cbc2_nr" address="//56" name="CBC 2 Control Number" shortName="C2CNR" min="0" max="95" origin="0" default="32" actions="change"/>
 		</bulk>
 	</module>
 

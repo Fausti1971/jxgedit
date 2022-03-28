@@ -50,7 +50,7 @@ public class XGFileSelector extends JFileChooser implements XGSysexFileConstants
 	{	JPanel root = new JPanel();
 		this.setName(this.getDialogTitle());
 		Color c = Color.gray;
-		root.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, SMALL_FONT, c));
+		root.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, this.getFont(), c));
 
 		root.setLayout(new BorderLayout());
 		root.setToolTipText(this.path.toString());

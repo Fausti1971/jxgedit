@@ -4,7 +4,7 @@ import application.*;
 import static parm.XGTable.TABLES;import xml.XMLNode;
 
 public class XGParameter implements XGLoggable, XGParameterConstants
-{
+{	private static final int MAX_SHORTNAME_LENGTH = 6;
 //	public static XMLNode init()
 //	{
 //		try
@@ -23,19 +23,18 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	private final XGTable translationTable;
 	private final int minValue, maxValue, originValue, defaultValue;
 	private final String unit;
-	private final boolean isValid;//TODO: keine Ahnung, wofür das gut ist...
+	private final boolean isValid;
 
 	public XGParameter(XMLNode n)
 	{	this.translationTable = TABLES.getOrDefault(n.getStringAttribute(ATTR_TABLE), XGVirtualTable.DEF_TABLE).filter(n);
-		this.minValue = n.getValueAttribute(ATTR_MIN, UNLIMITED);//falls keine ATTR_MIN angegeben wurde wird min auf UNLIMITED gesetzt, was bewirkt, dass die Range durch die Table bestimmt wird
-		this.maxValue = n.getValueAttribute(ATTR_MAX, UNLIMITED);//falls keine ATTR_MAX angegeben wurde wird max auf UNLIMITED gesetzt, was bewirkt, dass die Range durch die Table bestimmt wird
+		this.minValue = n.getValueAttribute(ATTR_MIN, UNLIMITED);//falls keine ATTR_MIN angegeben wurde wird min auf UNLIMITED gesetzt, d.h. dass die Range durch die Table bestimmt wird
+		this.maxValue = n.getValueAttribute(ATTR_MAX, UNLIMITED);//falls keine ATTR_MAX angegeben wurde wird max auf UNLIMITED gesetzt, d.h. dass die Range durch die Table bestimmt wird
 		this.defaultValue = n.getValueAttribute(ATTR_DEFAULT, this.getMinValue());
 		this.originValue = n.getValueAttribute(ATTR_ORIGIN, this.defaultValue);
-		this.name = n.getStringAttribute(ATTR_NAME);
-		this.shortName = n.getStringAttributeOrDefault(ATTR_SHORTNAME, this.name);
+		this.name = n.getStringAttributeOrDefault(ATTR_NAME, "noname");
+		this.shortName = n.getStringAttributeOrDefault(ATTR_SHORTNAME, XGStrings.toShortName(this.name, MAX_SHORTNAME_LENGTH));
 		this.unit = n.getStringAttributeOrDefault(ATTR_UNIT, this.translationTable.getUnit());
 		this.isValid = true;
-//System.out.println("par:" + this.name + " tab:" + this.translationTable + " min:" + this.minIndex + " max:" + this.maxIndex);
 	}
 
 	public XGParameter(String name, int v)//Dummy-Parameter für Festwerte

@@ -136,21 +136,21 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 	}
 
 	@Override public void mousePressed(MouseEvent e)
-	{	XGUI.VARIABLES.mousePressed = true;
-		XGUI.VARIABLES.dragEvent = e;
+	{	XGUI.ENVIRONMENT.mousePressed = true;
+		XGUI.ENVIRONMENT.dragEvent = e;
 		this.tooltip.setVisible(true);
 		e.consume();
 	}
 
 	@Override public void mouseReleased(MouseEvent e)
-	{	XGUI.VARIABLES.mousePressed = false;
-		XGUI.VARIABLES.dragEvent = e;
+	{	XGUI.ENVIRONMENT.mousePressed = false;
+		XGUI.ENVIRONMENT.dragEvent = e;
 		this.tooltip.setVisible(false);
 		e.consume();
 	}
 
 	@Override public void mouseEntered(MouseEvent e)
-	{	if(!XGUI.VARIABLES.mousePressed)
+	{	if(!XGUI.ENVIRONMENT.mousePressed)
 		{	Point p = e.getLocationOnScreen();
 			this.tooltip.setLocation(p.x + POINT_SIZE, p.y + POINT_SIZE);
 			this.tooltip.setVisible(true);
@@ -158,14 +158,14 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 	}
 
 	@Override public void mouseExited(MouseEvent e)
-	{	if(!XGUI.VARIABLES.mousePressed) this.tooltip.setVisible(false);
+	{	if(!XGUI.ENVIRONMENT.mousePressed) this.tooltip.setVisible(false);
 	}
 
 	@Override public void mouseDragged(MouseEvent e)
-	{	this.valueX.addIndex(e.getXOnScreen() - XGUI.VARIABLES.dragEvent.getXOnScreen(), true);
-		this.valueY.addIndex(XGUI.VARIABLES.dragEvent.getYOnScreen() - e.getYOnScreen(), true);
+	{	this.valueX.addIndex(e.getXOnScreen() - XGUI.ENVIRONMENT.dragEvent.getXOnScreen(), true);
+		this.valueY.addIndex(XGUI.ENVIRONMENT.dragEvent.getYOnScreen() - e.getYOnScreen(), true);
 		this.setLocation();
-		XGUI.VARIABLES.dragEvent = e;
+		XGUI.ENVIRONMENT.dragEvent = e;
 		e.consume();
 	}
 

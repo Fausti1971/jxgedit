@@ -9,46 +9,39 @@ import parm.XGParameterChangeListener;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGKnob extends JPanel implements XGParameterChangeListener, XGValueChangeListener, MouseListener, FocusListener, XGComponent
+public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
 {
 	private static final long serialVersionUID = 1L;
-	private static final Dimension SIZE = new Dimension(66,88);
 
 /*****************************************************************************************************************************/
 
 	private final XGKnobBar bar;
+	private final XGLabel name;
 	private final XGValueLabel label;
 	private final XGValue value;
 
 	public XGKnob(XGValue val)
-	{	this.setPreferredSize(SIZE);
-		this.setMinimumSize(SIZE);
-		this.value = val;
+	{	this.value = val;
 		if(this.value == null)
 		{	this.setVisible(false);
 			this.setEnabled(false);
 			this.bar = null;
+			this.name = null;
 			this.label = null;
 			return;
 		}
 		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
 
-		this.setLayout(new GridBagLayout());
-		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
+		this.name = new XGLabel(this.value.getParameter().getShortName());
+		this.add(this.name,"0,0,1,1");
 
-		this.bar = new XGKnobBar(this.value);
-		this.add(this.bar, gbc);
+		this.bar = new XGKnobBar(this);
+		this.add(this.bar, "0,1,1,4");
 
 		this.label = new XGValueLabel(this.value);
-		gbc.gridy = 1;
-		gbc.weighty = 0;
-		gbc.anchor = GridBagConstraints.SOUTH;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		this.add(this.label, gbc);
+		this.add(this.label, "0,5,1,1");
 
-		this.addMouseListener(this);
-		this.addFocusListener(this);
 		this.parameterChanged(this.value.getParameter());
 		}
 
@@ -58,12 +51,11 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	this.setName(p.getShortName());
+	{	this.name.setText(p.getShortName());
 		this.setToolTipText(p.getName());
 		this.label.setText(this.value.toString());
-		this.setVisible(p != XGParameter.NO_PARAMETER);
+		this.setVisible(p.isValid());
 		this.setEnabled(p.isValid());
-		this.borderize();
 	}
 
 /******************************************************************************************************************************************/
@@ -74,17 +66,11 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 
 /*****************************************************************************************/
 
-		private final XGValue value;
-		private XGParameter parameter;
-		private int size, radius, lengthArc, originArc;
+		private final XGKnob knob;
 		private final Point middle = new Point(), strokeStart = new Point(), strokeEnd = new Point();
-		private Graphics2D g2;
 
-		private XGKnobBar(XGValue v)
-		{	this.value = v;
-			this.setBorder(null);
-			this.size = Math.min(this.getWidth(), this.getHeight()) - 2 * DEF_STROKEWIDTH;
-			this.setSize(size, size);
+		private XGKnobBar(XGKnob knob)
+		{	this.knob = knob;
 			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
@@ -93,57 +79,54 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 
 		@Override public void paintComponent(Graphics g)
 		{
-			this.g2 = (Graphics2D)g.create();
-			this.g2.addRenderingHints(AALIAS);
-			this.size = Math.min(this.getWidth() - DEF_STROKEWIDTH, this.getHeight());
-			this.radius = this.size / 2;
-			this.middle.x = this.getWidth() / 2;
-			this.middle.y = 4 + this.radius;// getY() liefert IMMER 15! (sowohl mit als auch ohne Border), daher die "4"
-	
+			Graphics2D g2 = (Graphics2D)g.create();
+			g2.addRenderingHints(AALIAS);
+			int size = Math.min(this.getWidth(), this.getHeight());
+			int radius = size / 2 - DEF_STROKEWIDTH;
+			this.middle.x = this.getWidth() >> 1;
+			this.middle.y = (int)(this.getHeight() / 1.7854f);
+
 	// paint background arc
-			this.g2.setColor(COL_BAR_BACK);
-			//this.g2.setColor(new XGColor(this.getBackground()).brighter());
-			this.g2.setStroke(DEF_ARCSTROKE);
-			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, START_ARC, LENGTH_ARC);
+			g2.setColor(COL_BAR_BACK);
+			g2.setStroke(DEF_ARCSTROKE);
+			g2.drawArc(this.middle.x - radius, this.middle.y - radius, 2 * radius, 2 * radius, START_ARC, LENGTH_ARC);
 	// paint foreground arc
-			this.parameter = this.value.getParameter();
-			this.originArc = XGMath.linearIO(this.parameter.getOriginIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
-			this.lengthArc = XGMath.linearIO(this.value.getIndex(), this.parameter.getMinIndex(), this.parameter.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
-			this.g2.setColor(COL_BAR_FORE);
-			this.g2.drawArc(this.middle.x - this.radius, this.middle.y - this.radius, this.size, this.size, this.originArc + START_ARC, this.lengthArc - this.originArc);
+			XGParameter parameter = this.knob.value.getParameter();
+			int originArc = XGMath.linearIO(parameter.getOriginIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
+			int lengthArc = XGMath.linearIO(this.knob.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
+			g2.setColor(COL_BAR_FORE);
+			g2.drawArc(this.middle.x - radius, this.middle.y - radius, 2 * radius, 2 * radius, originArc + START_ARC, lengthArc - originArc);
 	// paint marker
-			double endRad = Math.toRadians(this.lengthArc + START_ARC);
-			this.strokeStart.x = (int)(this.middle.x + this.radius * Math.cos(endRad));
-			this.strokeStart.y = (int)(this.middle.y - this.radius * Math.sin(endRad));
-			this.strokeEnd.x = (int)(this.middle.x + this.radius/2 * Math.cos(endRad));
-			this.strokeEnd.y = (int)(this.middle.y - this.radius/2 * Math.sin(endRad));
-			this.g2.drawLine(this.strokeStart.x, this.strokeStart.y, this.strokeEnd.x, this.strokeEnd.y);
-			this.g2.dispose();
+			double endRad = Math.toRadians(lengthArc + START_ARC);
+			this.strokeStart.x = (int)(this.middle.x + radius * Math.cos(endRad));
+			this.strokeStart.y = (int)(this.middle.y - radius * Math.sin(endRad));
+			this.strokeEnd.x = (int)(this.middle.x + radius/2 * Math.cos(endRad));
+			this.strokeEnd.y = (int)(this.middle.y - radius/2 * Math.sin(endRad));
+			g2.drawLine(this.strokeStart.x, this.strokeStart.y, this.strokeEnd.x, this.strokeEnd.y);
+			g2.dispose();
 		}
 
-		@Override public void mouseClicked(MouseEvent e)
-		{	if(e.getClickCount() == 2) this.value.requestAction();
-		}
+		@Override public void mouseClicked(MouseEvent e){	if(e.getClickCount() == 2) this.knob.value.requestAction();}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGUI.VARIABLES.dragEvent = e;
+		{	XGUI.ENVIRONMENT.dragEvent = e;
 			e.consume();
 		}
 
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGUI.VARIABLES.dragEvent = e;
+		{	XGUI.ENVIRONMENT.dragEvent = e;
 			e.consume();
 		}
 
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	this.value.addIndex(e.getWheelRotation(), true);
+		{	this.knob.value.addIndex(e.getWheelRotation(), true);
 			e.consume();
 		}
 
 		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - XGUI.VARIABLES.dragEvent.getX();
-			this.value.addIndex(distance, true);
-			XGUI.VARIABLES.dragEvent = e;
+		{	int distance = e.getX() - XGUI.ENVIRONMENT.dragEvent.getX();
+			this.knob.value.addIndex(distance, true);
+			XGUI.ENVIRONMENT.dragEvent = e;
 			e.consume();
 		}
 
@@ -158,24 +141,5 @@ public class XGKnob extends JPanel implements XGParameterChangeListener, XGValue
 		@Override public void mouseExited(MouseEvent e)
 		{
 		}
-	}
-	public void focusGained(FocusEvent event)
-	{
-	}
-	public void focusLost(FocusEvent event)
-	{
-	}
-
-	public void mousePressed(MouseEvent event)
-	{
-	}
-	public void mouseReleased(MouseEvent event)
-	{
-	}
-	public void mouseEntered(MouseEvent event)
-	{
-	}
-	public void mouseExited(MouseEvent event)
-	{
 	}
 }

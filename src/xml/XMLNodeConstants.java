@@ -20,12 +20,17 @@ import static application.JXG.APPNAME;public interface XMLNodeConstants
 		ATTR_Y = "y",
 		ATTR_W = "w",
 		ATTR_H = "h",
+		ATTR_GRID_WIDTH = "grid_width",
+		ATTR_GRID_HEIGHT = "grid_height",
 
 		TAG_CONFIG = "config",
 		TAG_VERSION = "version",
 
 		TAG_UI = "ui",
 		ATTR_LOOKANDFEEL = "lookAndFeel",
+		ATTR_FONT_NAME = "fontname",
+		ATTR_FONT_STYLE = "fontstyle",
+		ATTR_FONT_SIZE = "fontsize",
 		TAG_FILES = "files",
 
 		TAG_DEVICE = "device",

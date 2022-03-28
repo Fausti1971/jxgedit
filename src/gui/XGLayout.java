@@ -1,81 +1,63 @@
 package gui;
 
-import static application.XGLoggable.LOG;import application.XGStrings;
-import java.awt.*;import java.util.HashMap;import java.util.Map;
+import application.XGMath;import application.XGStrings;
+import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class XGLayout implements LayoutManager2
 {
-	private final Dimension grid,//aktuelle Dimension eines Grids in Pixel
-		gridCount = new Dimension(1,1); //Dimension des gesamten Layouts in Faktoren
-		
-	private final Map<Component, Rectangle> map = new HashMap<>();//Rectangle = Faktoren für die Berechnung der Pixels (r.x * this.grid.width)
+	private final Dimension gridSize = new Dimension(1, 1);//aktuelle Dimension eines Grids in Pixel (ändert sich mit Größenänderung)
+	private final Dimension gridCount; //Dimension des gesamten Layouts in Faktoren (ändert sich evtl. durch hinzufügen von Elementen)
+	private final Map<Component, Rectangle> map = new HashMap<>();//Rectangle = Faktoren für die Berechnung der Pixels (r.x * this.gridSize.width)
 
-	public XGLayout(Dimension dim)
-	{	this.grid = dim;
+	public XGLayout(Dimension grid)
+	{	this.gridCount = grid;
 	}
+
+	private Dimension getGridSize(){	return new Dimension(this.gridSize.width * this.gridCount.width, this.gridSize.height * this.gridCount.height);}
+
 /**
-* Constraint o = String "LORU" X=alpha, Y= num ("A2B4" = X.links=0, Y.oben=2, X.rechts=1, Y.unten=4)
+* Constraint o = String "x,y,w,h" oder int[]{x,y,w,h} oder Rectangle
 */
 	public void addLayoutComponent(Component component, Object o)
-	{	if(!(o instanceof String))
-		{	LOG.severe("incorrect constraint (" + o + ") for component " + component.getName());
-			return;
-		};
-		Rectangle r = XGStrings.toGrid((String)o);
+	{	Rectangle r;
+		if(o instanceof String) r = XGStrings.toRectangle((String)o);
+		else if(o instanceof int[]) r = XGMath.toRectangle((int[])o);
+		else if(o instanceof Rectangle) r = (Rectangle)o;
+		else throw new RuntimeException("incorrect constraint (" + o.getClass().getSimpleName() + ") for component " + component.getName());
 		this.map.put(component, r);
 		this.gridCount.width = Math.max(this.gridCount.width, r.x + r.width);
 		this.gridCount.height = Math.max(this.gridCount.height, r.y + r.height);
 	}
 
-	public Dimension maximumLayoutSize(Container container)
-	{	return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
-	}
+	public Dimension maximumLayoutSize(Container container){	return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);}
 
-	public float getLayoutAlignmentX(Container container)
-	{	return 0;
-	}
+	public float getLayoutAlignmentX(Container container){	return 0.5f;}
 
-	public float getLayoutAlignmentY(Container container)
-	{	return 0;
-	}
+	public float getLayoutAlignmentY(Container container){	return 0.5f;}
 
-	public void invalidateLayout(Container container)
-	{	this.layoutContainer(container);
-	}
+	public void invalidateLayout(Container container){}
 
-	public void addLayoutComponent(String s,Component component)
-	{	System.out.println("addLayoutComponent: " + component.getName());
-	}
+	public void addLayoutComponent(String s, Component component){	System.out.println("addLayoutComponent: " + component.getName());}
 
-	public void removeLayoutComponent(Component component)
-	{	System.out.println("removeLayoutComponent: " + component.getName());
-	}
+	public void removeLayoutComponent(Component component){	System.out.println("removeLayoutComponent: " + component.getName());}
 
-	public Dimension preferredLayoutSize(Container container)
-	{	Insets ins = container.getInsets();
-		return new Dimension(this.gridCount.width * this.grid.width + ins.left + ins.right, this.gridCount.height * this.grid.height + ins.top + ins.bottom);
-	}
+	public Dimension preferredLayoutSize(Container container){	return this.getGridSize();}
 
-	public Dimension minimumLayoutSize(Container container)
-	{	return this.preferredLayoutSize(container);
-	}
+	public Dimension minimumLayoutSize(Container container){	return this.gridSize;}
 
 	public void layoutContainer(Container container)
-	{	Insets ins = container.getInsets();
-		//Dimension newSize = container.getSize();
-		//this.grid.width = newSize.width / this.gridCount.width;
-		//this.grid.height = newSize.height / this.gridCount.height;
+	{	this.gridSize.width = Math.round((float)(container.getWidth()  / this.gridCount.width));
+		this.gridSize.height = Math.round((float)(container.getHeight() / this.gridCount.height));
+		Insets ins = container.getInsets();
 		for(Component c : container.getComponents())
 		{	Rectangle r = new Rectangle(this.map.get(c));
-			r.x *= this.grid.width;
-			r.x += ins.left;
-			r.y *= this.grid.height;
-			r.y += ins.top;
-			r.width *= this.grid.width;
-			r.height *= this.grid.height;
+			r.x = r.x * this.gridSize.width + ins.left;
+			r.y = r.y * this.gridSize.height + ins.top;
+			r.width = r.width * this.gridSize.width - (ins.left + ins.right);
+			r.height = r.height * this.gridSize.height - (ins.top + ins.bottom);
 			c.setBounds(r); 
 		}
-		container.setPreferredSize(this.preferredLayoutSize(container));
-//		LOG.info("layoutContainer (" + container.getName() + ")");
 	}
 }

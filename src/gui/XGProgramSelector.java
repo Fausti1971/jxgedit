@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.BorderLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;import java.awt.event.MouseEvent;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
@@ -13,51 +13,56 @@ import parm.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGProgramSelector extends javax.swing.JPanel implements XGComponent, XGParameterChangeListener, XGValueChangeListener, TreeSelectionListener
+public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, TreeSelectionListener
 {
 	private static final long serialVersionUID = 1L;
-	private static final java.awt.Dimension DEF_MINDIM = new java.awt.Dimension(GRID * 18, GRID * 2);
-	private static javax.swing.ImageIcon icon_next = new javax.swing.ImageIcon(XGUI.loadImage("arrow_right.png")), icon_prev = new javax.swing.ImageIcon(XGUI.loadImage("arrow_left.png"));
-	private static java.awt.Dimension ARROWSIZE = new java.awt.Dimension(icon_next.getIconWidth(), icon_next.getIconHeight());
+//	private static final Dimension DIM = new Dimension(132, 44);
+	private static final ImageIcon icon_next = new ImageIcon(XGUI.loadImage("arrow_right.png"));
+	private static final ImageIcon icon_prev = new ImageIcon(XGUI.loadImage("arrow_left.png"));
+//	private static final Dimension ARROWSIZE = new Dimension(icon_next.getIconWidth(), icon_next.getIconHeight());
 
 /*********************************************************************************************/
 
+	private final XGLabel name;
 	private final XGValue value;
-	private final JButton next = new JButton(icon_next), prev = new JButton(icon_prev), select = new JButton();
+	private final JButton select = new JButton();
 	private JDialog dialog = null;
 
 	public XGProgramSelector(XGValue val)
-	{	this.setLayout(new BorderLayout());
-		this.setPreferredSize(DEF_MINDIM);
-		this.setMinimumSize(DEF_MINDIM);
+	{	super();
 
 		this.value = val;
 		if(val == null)
 		{	this.setVisible(false);
 			this.setEnabled(false);
+			this.name = null;
 			return;
 		}
 		this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
-		this.setName(this.value.getParameter().getName());
-
-		this.borderize();
+		this.name = new XGLabel(this.value.getParameter().getShortName());
+		this.add(this.name, "0,0,8,1");
 
 		this.addMouseListener(this);
-		this.addFocusListener(this);
+//		this.addFocusListener(this);
 
-		this.next.addActionListener((ActionEvent e)->{this.value.addIndex(1, true);});
-		this.next.setMinimumSize(ARROWSIZE);
-		this.add(this.next, BorderLayout.EAST);
+		JButton prev = new JButton(icon_prev);
+		prev.setHorizontalTextPosition(JButton.CENTER);
+		prev.setVerticalTextPosition(JButton.CENTER);
+		prev.addActionListener((ActionEvent e)->{this.value.addIndex(-1, true);});
+		this.add(prev, new int[]{0,1,1,2});
 
-		this.prev.addActionListener((ActionEvent e)->{this.value.addIndex(-1, true);});
-		this.prev.setMinimumSize(ARROWSIZE);
-		this.add(this.prev, BorderLayout.WEST);
-
-		this.select.setFont(MEDIUM_FONT);
 		this.select.setText(this.value.toString());
+		this.select.setHorizontalTextPosition(JButton.CENTER);
+		this.select.setVerticalTextPosition(JButton.CENTER);
 		this.select.addActionListener((ActionEvent e)->{this.openDialog();});
-		this.add(this.select, BorderLayout.CENTER);
+		this.add(this.select, new int[]{1,1,6,2});
+
+		JButton next = new JButton(icon_next);
+		next.setHorizontalTextPosition(JButton.CENTER);
+		next.setVerticalTextPosition(JButton.CENTER);
+		next.addActionListener((ActionEvent e)->{this.value.addIndex(1, true);});
+		this.add(next, new int[]{7,1,1,2});
 
 		this.parameterChanged(this.value.getParameter());
 	}
@@ -68,14 +73,12 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	this.setName(p.getName());
-		this.borderize();
+	{	this.name.setText(p.getName());
 		this.repaint();
 	}
 
 	private void openDialog()//TODO: vielleicht doch eher ein PopupMenu?
 	{	this.dialog = new javax.swing.JDialog();
-//		d.setLocationRelativeTo(this);
 		this.dialog.setLocation(this.getLocationOnScreen());
 		this.dialog.setModal(true);
 		this.dialog.setTitle("select " + this.value.getParameter().getName());
@@ -88,7 +91,6 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 		else o = new Object[]{t.getModel().getRoot(), e.getCategories().iterator().next(), e};
 		TreePath p = new TreePath(o);
 
-		t.setFont(MEDIUM_FONT);
 		t.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		t.setSelectionPath(p);
 		t.scrollPathToVisible(p);
@@ -98,9 +100,9 @@ public class XGProgramSelector extends javax.swing.JPanel implements XGComponent
 		t.addMouseListener(this);
 		t.setShowsRootHandles(true);
 		t.setRootVisible(false);
-		this.dialog.setContentPane(new javax.swing.JScrollPane(t));
+		this.dialog.setContentPane(new JScrollPane(t));
 		this.dialog.pack();
-		this.dialog.setMinimumSize(new java.awt.Dimension(this.getWidth(), 400));
+		this.dialog.setMinimumSize(new Dimension(this.getWidth(), 400));
 		this.dialog.setVisible(true);
 		this.dialog.dispose();
 	}

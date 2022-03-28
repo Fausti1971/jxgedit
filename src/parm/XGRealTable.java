@@ -96,16 +96,9 @@ public class XGRealTable implements XGTable
 	{	return this.getByValue(v, new XGTableEntry(v, "**" + XGStrings.valueToString(v) + "**"));
 	}
 
-	@Override public XGTableEntry getByName(String name)
+	@Override public XGTableEntry getByName(String name) throws NumberFormatException
 	{	if(this.names.containsKey(name)) return this.entries.get(this.names.get(name));
-		else
-		try
-		{	return this.getByValue(Integer.parseInt(name));
-		}
-		catch(NumberFormatException e)
-		{	LOG.warning(e.getMessage());
-			return new XGTableEntry(NO_PARAMETERVALUE, name);
-		}
+		else return this.getByValue(Integer.parseInt(name));
 	}
 
 	@Override public int getIndex(int v)

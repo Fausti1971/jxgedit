@@ -1,7 +1,6 @@
 package gui;
 
 import static application.XGLoggable.LOG;
-import static gui.XGUI.MEDIUM_FONT;
 import javax.swing.*;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
@@ -13,7 +12,7 @@ public class XGSplashScreen extends JFrame
 	{	this.setTitle("initializing JXG, please wait...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		JLabel status = new JLabel();
-		status.setFont(MEDIUM_FONT);
+//		status.setFont(MEDIUM_FONT);
 		this.handler = new Handler()
 		{	public void publish(LogRecord record)
 			{	status.setText(record.getMessage());

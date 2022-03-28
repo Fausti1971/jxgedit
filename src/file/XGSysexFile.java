@@ -36,7 +36,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 	public static void load(XGBulkDumper dumper)
 	{	String last = config.getLastChildOrNew(TAG_ITEM).getTextContent().toString();
 		XGFileSelector fs = new XGFileSelector(last, "load sysex file...", "load", XGSysexFileConstants.SYX_FILEFILTER);
-		switch(fs.select(XGMainWindow.window))
+		switch(fs.select(XGMainWindow.MAINWINDOW))
 		{	case JFileChooser.APPROVE_OPTION:
 			{	try
 				{	XGSysexFile f = new XGSysexFile(fs.getPath());
@@ -46,11 +46,11 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 						config.removeChildNodesWithTextContent(TAG_ITEM, f.getAbsolutePath());
 						config.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
 					}
-					else JOptionPane.showMessageDialog(XGMainWindow.window, f + " does not exist!");
+					else JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, f + " does not exist!");
 				}
 				catch(IOException e)
 				{	LOG.severe(e.getMessage());
-					JOptionPane.showMessageDialog(XGMainWindow.window, e.getMessage());
+					JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, e.getMessage());
 					return;
 				}
 				break;
@@ -65,12 +65,12 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 	public static void save(XGBulkDumper dumper)
 	{	String last = config.getLastChildOrNew(TAG_ITEM).getTextContent().toString();
 		XGFileSelector fs = new XGFileSelector(last, "save sysex file...", "save", XGSysexFileConstants.SYX_FILEFILTER);
-		switch(fs.select(XGMainWindow.window))
+		switch(fs.select(XGMainWindow.MAINWINDOW))
 		{	case JFileChooser.APPROVE_OPTION:
 			{	try
 				{	XGSysexFile f = new XGSysexFile(fs.getPath());
 					if(f.exists())
-					{	int res = JOptionPane.showConfirmDialog(XGMainWindow.window, " Overwrite " + f + "?");
+					{	int res = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, " Overwrite " + f + "?");
 						if(res == JOptionPane.CANCEL_OPTION || res == JOptionPane.NO_OPTION) return;
 					}
 					else if(!(f.createNewFile())) LOG.severe("filecreation failed: " + f.getPath());
@@ -82,7 +82,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 				}
 				catch(IOException e)
 				{	LOG.severe(e.getMessage());
-					JOptionPane.showMessageDialog(XGMainWindow.window, e.getMessage());
+					JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, e.getMessage());
 					return;
 				}
 				break;
@@ -145,12 +145,12 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 			}
 			catch(IOException e)
 			{	LOG.severe(e.getMessage());
-				JOptionPane.showMessageDialog(XGMainWindow.window, e.getMessage());
+				JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, e.getMessage());
 			}
 		}
 		else
 		{	LOG.info("cannot write: " + this);
-			JOptionPane.showMessageDialog(XGMainWindow.window, "cannot write: " + this);
+			JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "cannot write: " + this);
 		}
 
 	}

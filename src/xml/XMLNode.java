@@ -169,6 +169,13 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 		return last;
 	}
 
+	public XMLNode getChildNodeWithAttributeOrNew(String tag, String attrName, String attrContent)
+	{	for(XMLNode n : this.getChildNodes(tag)) if(attrContent.equals(n.getStringAttribute(attrName))) return n;
+		XMLNode n = new XMLNode(tag, new XGProperty(attrName, attrContent));
+		this.addChildNode(n);
+		return n;
+	}
+
 	@Override public String getTag(){	return this.tag;}
 
 	public final StringBuffer getTextContent(){	return this.content;}

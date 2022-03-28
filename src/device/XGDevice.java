@@ -93,7 +93,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 
 	public void resetXG(boolean send, boolean ask)
 	{	int answer = javax.swing.JOptionPane.CANCEL_OPTION;
-		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.window, WARNSTRING);
+		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.MAINWINDOW, WARNSTRING);
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().submit(new XGMessageParameterChange(this, new byte[]{0,0,0,0,0,0,0x7E,0,0}, true));
@@ -107,7 +107,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 
 	public void resetGM(boolean send, boolean ask)
 	{	int answer = javax.swing.JOptionPane.CANCEL_OPTION;
-		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.window, WARNSTRING);
+		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.MAINWINDOW, WARNSTRING);
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().transmit(new SysexMessage(new byte[]{(byte)0xF0,0x7E,0x7F,0x09,0x01,(byte)0xF7}, 6));
@@ -121,7 +121,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 
 	public void resetAll(boolean send, boolean ask)
 	{	int answer = javax.swing.JOptionPane.CANCEL_OPTION;
-		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.window, WARNSTRING);
+		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.MAINWINDOW, WARNSTRING);
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().submit(new XGMessageParameterChange(this, new byte[]{0,0,0,0,0,0,0x7F,0,0}, true));

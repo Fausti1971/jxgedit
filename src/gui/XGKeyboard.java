@@ -47,7 +47,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 //	private final JComponent column;
 
 	protected XGKeyboard(XMLNode n, XGModule mod) throws InvalidXGAddressException
-	{	super(n.getStringAttribute(ATTR_NAME));
+	{	super();
 		this.partmodeValue = mod.getValues().get("mp_partmode");
 		this.midiChannelValue = mod.getValues().get("mp_midi_channel");
 		this.minKeyValue = mod.getValues().get("mp_note_lo");
@@ -57,7 +57,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 		this.minKeyValue.getValueListeners().add((XGValue)->{this.minKeyChanged();});
 		this.maxKeyValue.getValueListeners().add((XGValue)->{this.maxKeyChanged();});
 
-		int h = this.getContentArea().height;
+		int h = this.getHeight() - (this.getInsets().top + this.getInsets().bottom);
 		for(int i = 0, p = 0; i < 128; i++)
 		{	XGKey k = new XGKey(this, i);
 			this.panel.add(k);
@@ -82,7 +82,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 		this.add(this.scrollpane);
 		this.scrollpane.setBorder(null);
 		this.scrollpane.setViewportBorder(null);
-		this.scrollpane.setBounds(this.getContentArea());
+//		this.scrollpane.setBounds(this.getContentArea());
 //		this.scrollpane.setColumnHeaderView(this.column);
 		this.scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 //		this.scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -152,7 +152,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 			this.setOpaque(true);
 			this.setVerticalAlignment(SwingConstants.TOP);
 			this.setHorizontalAlignment(SwingConstants.CENTER);
-			this.setFont(SMALL_FONT);
+//			this.setFont(SMALL_FONT);
 			this.setName(brd.getKeyText(this));
 			this.setText(this.getHTML("" + (this.getOctave() - 2)));
 			this.setToolTipText(brd.getKeyText(this));
@@ -194,7 +194,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGUI.VARIABLES.mousePressed = true;
+		{	XGUI.ENVIRONMENT.mousePressed = true;
 			if(!this.isEnabled() || e.getButton() != MouseEvent.BUTTON1) return;
 			if(this.keyboard.sendMessage(ShortMessage.NOTE_ON, this))
 			{	this.setBackground(this.pressedColor);
@@ -203,7 +203,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 		}
 
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGUI.VARIABLES.mousePressed = false;
+		{	XGUI.ENVIRONMENT.mousePressed = false;
 			if(!this.isEnabled() || e.getButton() != MouseEvent.BUTTON1) return;
 			if(this.keyboard.sendMessage(ShortMessage.NOTE_OFF, this))
 			{	this.setBackground(this.normalColor);
@@ -212,11 +212,11 @@ public class XGKeyboard extends XGFrame implements XGUI
 		}
 
 		@Override public void mouseEntered(MouseEvent e)
-		{	if(!XGUI.VARIABLES.mousePressed);
+		{	if(!XGUI.ENVIRONMENT.mousePressed);
 		}
 	
 		@Override public void mouseExited(MouseEvent e)
-		{	if(!XGUI.VARIABLES.mousePressed);
+		{	if(!XGUI.ENVIRONMENT.mousePressed);
 		}
 	}
 }

@@ -6,7 +6,6 @@ import java.util.*;
 import javax.swing.JPanel;
 import application.XGMath;
 import value.XGValue;
-import xml.XMLNode;
 
 public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGComponent
 {
@@ -104,7 +103,7 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGCompon
 		gp.closePath();
 		this.g2.fill(gp);
 //units
-		this.g2.setFont(SMALL_FONT);
+//		this.g2.setFont(SMALL_FONT);
 		this.g2.setColor(this.getBackground().darker());
 		this.g2.drawString(this.xUnit, w - this.g2.getFontMetrics().stringWidth(this.xUnit), h);
 		this.g2.drawString(this.yUnit, 0, this.g2.getFontMetrics().getHeight());

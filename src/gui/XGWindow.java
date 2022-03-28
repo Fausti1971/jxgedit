@@ -1,17 +1,22 @@
 package gui;
 
-import static application.JXG.APPNAME;import config.XGPropertyChangeListener;import device.XGDevice;import xml.XGProperty;import xml.XMLNode;import static xml.XMLNodeConstants.ATTR_NAME;import static xml.XMLNodeConstants.TAG_DEVICE;import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
+import application.JXG;import static application.JXG.APPNAME;import config.XGConfigurable;import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import static xml.XMLNodeConstants.*;import static xml.XMLNodeConstants.ATTR_Y;import java.awt.*;
+import java.awt.event.ComponentEvent;import java.awt.event.ComponentListener;import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.LinkedHashSet;
+import java.util.Collections;import java.util.LinkedHashSet;
 import java.util.Set;
-import javax.swing.JFrame;
+import javax.swing.*;
 
-public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener
-{	static
-	{	JFrame.setDefaultLookAndFeelDecorated(true);
-	}
-	private static final String LOGO_NAME = "XGLogo32.gif";
+public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable
+{
+	int MIN_W = 200, MIN_H = 200, MIN_X = 20, MIN_Y = 20;
+	private static final Image LOGO = XGUI.loadImage("XGLogo32.gif");
+	public static XGMainWindow MAINWINDOW = null;
+	private static XMLNode CONFIG;
+
+	public static void init()
+	{	CONFIG = JXG.config.getChildNodeOrNew(XMLNodeConstants.TAG_WIN);
+		MAINWINDOW = new XGMainWindow(CONFIG);}
 
 /*************************************************************************************************************/
 
@@ -19,27 +24,40 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 	private final XGWindow owner;
 	final XMLNode config;
 
-	public XGWindow(XGWindow own, XMLNode cfg)
+	public XGWindow(XGWindow own, String id)
 	{	super();
-		this.config = cfg;
+		this.config = CONFIG.getChildNodeWithAttributeOrNew(TAG_ITEM, ATTR_ID, id);
 		this.owner = own;
 		if(this.owner != null) own.childWindows.add(this);
 		XGDevice.device.getName().getListeners().add((XGProperty p)->{this.setTitle(this.getTitle());});
-		this.setIconImage(gui.XGUI.loadImage(LOGO_NAME));
+		this.setUndecorated(false);//um den Rahmen durch den WindowManager des Systems darstellen zu lassen
+		this.setIconImage(LOGO);
+		this.setResizable(true);
+		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
+		this.setBounds
+		(	this.config.getIntegerAttribute(ATTR_X, MIN_X),
+			this.config.getIntegerAttribute(ATTR_Y, MIN_Y),
+			this.config.getIntegerAttribute(ATTR_W, MIN_W),
+			this.config.getIntegerAttribute(ATTR_H, MIN_H)
+		);
 		this.setMaximumSize(Toolkit.getDefaultToolkit().getScreenSize());
-		this.setDefaultCloseOperation(javax.swing.JDialog.HIDE_ON_CLOSE);
-		this.setLocationRelativeTo(this.owner);
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		this.addComponentListener(this);
 		this.addWindowListener(this);
 	}
+
+	abstract JComponent createContent();
 
 	protected void updateUI()
 	{	javax.swing.SwingUtilities.updateComponentTreeUI(this);
 		for(XGWindow w : this.childWindows) javax.swing.SwingUtilities.updateComponentTreeUI(w);
 	}
 
-	@Override public String getTitle()
-	{	return APPNAME + " - " + XGDevice.device;
-	}
+	@Override public XGWindow getOwner(){	return this.owner;}
+
+//	@Override public Window[] getOwnedWindows(){	return this.childWindows.toArray(new Window[]{});}
+
+	@Override public String getTitle(){	return APPNAME + " - " + XGDevice.device;}
 
 	@Override public void dispose()
 	{	synchronized(this.childWindows)
@@ -52,12 +70,32 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 		}
 	}
 
+	@Override public void componentResized(ComponentEvent e)
+	{	Component c = e.getComponent();
+		this.config.setIntegerAttribute(ATTR_W, c.getWidth());
+		this.config.setIntegerAttribute(ATTR_H, c.getHeight());
+	}
+
+	@Override public void componentMoved(ComponentEvent e)
+	{	Component c = e.getComponent();
+		this.config.setIntegerAttribute(ATTR_X, c.getX());
+		this.config.setIntegerAttribute(ATTR_Y, c.getY());
+	}
+
+	@Override public void componentShown(ComponentEvent e)
+	{
+	}
+
+	@Override public void componentHidden(ComponentEvent e)
+	{
+	}
+
 	@Override public void windowOpened(WindowEvent e)
 	{
 	}
 
 	@Override public void windowClosing(WindowEvent e)
-	{
+	{	//this.owner.childWindows.remove(this);
 	}
 
 	@Override public void windowClosed(WindowEvent e)

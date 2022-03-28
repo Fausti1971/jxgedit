@@ -1,6 +1,6 @@
 package application;
 
-import static application.XGLoggable.LOG;import static java.lang.Math.abs;import java.awt.*;import java.util.HashSet;
+import static java.lang.Math.abs;import java.awt.*;import java.util.HashSet;
 import java.util.Scanner;import java.util.Set;
 import java.util.StringTokenizer;
 
@@ -103,30 +103,42 @@ public interface XGStrings
 	{	System.out.println("String:");
 		Scanner sc = new Scanner(System.in);
 		String s = sc.next();
-		toGrid(s);
+		toRectangle(s);
 	}
 
-	static Rectangle toGrid(String s)
+	static Rectangle toRectangle(String s)
 	{	Rectangle r = new Rectangle();
-		s = s.toUpperCase().trim();
-		String[] n = s.split("[A-Z]");
-		String[] a = s.split("\\d+");
-		int i = 0;
-		Point[] p = new Point[]{new Point(),new Point()};
-		for(String c : a)
-			if(XGStrings.isAlNum(c))
-				p[i++].x = c.charAt(0) - 'A';
-		i = 0;
-		for(String c : n)
-			if(XGStrings.isNumber(c))
-				p[i++].y = Integer.parseInt(c);
-
-		r.x = Math.min(p[0].x, p[1].x);
-		r.y = Math.min(p[0].y, p[1].y);
-		r.width = abs(p[0].x - p[1].x) + 1;
-		r.height = abs(p[0].y - p[1].y) + 1;
+		String[] n = s.split(",");
+		if(n.length != 4) throw new RuntimeException(s + " contains " + n.length + " tokens! (4 tokens expected)");
+		for(String c : n) if(!XGStrings.isNumber(c)) throw new RuntimeException("token " + c + " of string " + s + " is not a number!"); 
+		r.x = Integer.parseInt(n[0]);
+		r.y = Integer.parseInt(n[1]);
+		r.width = Integer.parseInt(n[2]);
+		r.height = Integer.parseInt(n[3]);
 		return r;
 	}
+
+	//static Rectangle toGrid(String s)
+	//{	Rectangle r = new Rectangle();
+	//	s = s.toUpperCase().trim();
+	//	String[] n = s.split("[A-Z]");
+	//	String[] a = s.split("\\d+");
+	//	int i = 0;
+	//	Point[] p = new Point[]{new Point(),new Point()};
+	//	for(String c : a)
+	//		if(XGStrings.isAlNum(c))
+	//			p[i++].x = c.charAt(0) - 'A';
+	//	i = 0;
+	//	for(String c : n)
+	//		if(XGStrings.isNumber(c))
+	//			p[i++].y = Integer.parseInt(c);
+	//
+	//	r.x = Math.min(p[0].x, p[1].x);
+	//	r.y = Math.min(p[0].y, p[1].y);
+	//	r.width = abs(p[0].x - p[1].x) + 1;
+	//	r.height = abs(p[0].y - p[1].y) + 1;
+	//	return r;
+	//}
 /*
 	static Rectangle toGrid(String s)
 	{	Rectangle r = new Rectangle(0, 0,0 ,0);
@@ -147,8 +159,15 @@ public interface XGStrings
 		return r;
 	}
 */
-	static String toShortName(String name)//TODO: das kannst Du besser!
-	{	return name.substring(0, Math.min(name.length(), 4));
+	static String toShortName(String name, int length)
+	{	if(name.length() <= length) return name;
+		String[] words = name.split(" |\\/");
+		int i = 0;
+		for(String s : words) words[i++] = s.replaceAll("a|e|i|o|u", "");
+		int lettersPerWord = length / words.length;
+		StringBuilder res = new StringBuilder();
+		for(String s : words){	res.append(s,0, Math.min(s.length(), lettersPerWord));}
+		return String.valueOf(res);
 	}
 
 	static String toHexString(byte[] array)

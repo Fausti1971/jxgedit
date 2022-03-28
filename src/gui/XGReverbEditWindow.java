@@ -1,45 +1,43 @@
 package gui;
-import static java.awt.BorderLayout.CENTER;import static java.awt.BorderLayout.EAST;import javax.swing.*;
+import module.XGModule;import javax.swing.*;
 
 public class XGReverbEditWindow extends XGEditWindow
 {
-	public XGReverbEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.window, mod);
+	public XGReverbEditWindow(XGModule mod)
+	{	super(XGMainWindow.MAINWINDOW, mod);
 		this.setContentPane(this.createContent());
-		this.pack();
 		this.setVisible(true);
 	}
 
 	JComponent createContent()
-	{	JPanel root = new javax.swing.JPanel();
-		XGFrame main = new XGFrame(null, GRID * 3, GRID * 2),
-			parms = new XGFrame(null, GRID * 3, GRID * 4);
-		root.setLayout(new javax.swing.BoxLayout(root, javax.swing.BoxLayout.Y_AXIS));
+	{	XGFrame root = new XGFrame();
+		XGFrame main = new XGFrame(15,2);
+		XGFrame parms = new XGFrame(15, 1);
 
 		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();
 
-		main.add(new gui.XGProgramSelector(values.get("rev_program")), "a0f0");
-		main.add(new gui.XGKnob(values.get("rev_return")), "g0g1");
-		main.add(new gui.XGKnob(values.get("rev_pan")), "h0h1");
-		root.add(main);
+		main.add(new gui.XGProgramSelector(values.get("rev_program")), "0,0,4,1");
+		main.add(new gui.XGKnob(values.get("rev_return")), "4,0,1,2");
+		main.add(new gui.XGKnob(values.get("rev_pan")), "5,0,1,2");
+		root.add(main, "0,0,1,1");
 
-		parms.add(new gui.XGKnob(values.get("rev_p1")), "a0a0");
-		parms.add(new gui.XGKnob(values.get("rev_p2")), "b0b0");
-		parms.add(new gui.XGKnob(values.get("rev_p3")), "c0c0");
-		parms.add(new gui.XGKnob(values.get("rev_p4")), "d0d0");
-		parms.add(new gui.XGKnob(values.get("rev_p5")), "e0e0");
-		parms.add(new gui.XGKnob(values.get("rev_p6")), "f0f0");
-		parms.add(new gui.XGKnob(values.get("rev_p7")), "g0g0");
-		parms.add(new gui.XGKnob(values.get("rev_p8")), "h0h0");
-		parms.add(new gui.XGKnob(values.get("rev_p9")), "i0i0");
-		parms.add(new gui.XGKnob(values.get("rev_p10")), "j0j0");
-		parms.add(new gui.XGKnob(values.get("rev_p11")), "k0k0");
-		parms.add(new gui.XGKnob(values.get("rev_p12")), "l0l0");
-		parms.add(new gui.XGKnob(values.get("rev_p13")), "m0m0");
-		parms.add(new gui.XGKnob(values.get("rev_p14")), "n0n0");
-		parms.add(new gui.XGKnob(values.get("rev_p15")), "o0o0");
-		parms.add(new gui.XGKnob(values.get("rev_p16")), "p0p0");
-		root.add(parms);
+		parms.add(new gui.XGKnob(values.get("rev_p1")), "0,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p2")), "1,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p3")), "2,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p4")), "3,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p5")), "4,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p6")), "5,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p7")), "6,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p8")), "7,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p9")), "8,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p10")), "9,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p11")), "10,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p12")), "11,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p13")), "12,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p14")), "13,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p15")), "14,0,1,1");
+		parms.add(new gui.XGKnob(values.get("rev_p16")), "15,0,1,1");
+		root.add(parms, "0,1,1,1");
 
 		return root;
 	}

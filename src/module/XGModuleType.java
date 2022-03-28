@@ -62,7 +62,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 /********************************************************************************************************************/
 
-	private final Set<String> infoOpcodes = new LinkedHashSet<>();
+	private final Set<String> infoTags = new LinkedHashSet<>();
 	private final XGTagableAddressableSet<XGBulkType> bulkTypes = new XGTagableAddressableSet<>();
 	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();
 	protected final StringBuffer name;
@@ -87,7 +87,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 		for(XMLNode n : cfg.getChildNodes(TAG_INFO))
 		{	String opc = n.getStringAttribute(ATTR_REF);
-			if(opc != null) this.infoOpcodes.add(opc);
+			if(opc != null) this.infoTags.add(opc);
 		}
 	}
 
@@ -97,7 +97,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 
 	public XGAddressableSet<XGModule> getModules(){ return this.modules;}
 
-	public Set<String> getInfoOpcodes(){ return this.infoOpcodes;}
+	public Set<String> getInfoTags(){ return this.infoTags;}
 
 	@Override public XMLNode getConfig(){ return this.config;}
 

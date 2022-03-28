@@ -11,13 +11,13 @@ public class XGVirtualTable implements XGTable
 {	private static final int MIN = 0, MAX = Integer.MAX_VALUE & 0x0000FFFF;
 	private static final String[] KEY = {"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
 	public static final XGTable DEF_TABLE = new XGVirtualTable(MIN, MAX & 0x0000FFFF, DEF_TABLENAME, Object::toString, Integer::parseInt);
-
+//TODO: eigene Klassen für translate ud retranslate um Exception werfen zu können
 	public static void init()
 	{	TABLES.add(DEF_TABLE);
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_ADD1,
-			(Integer i)->{return String.format("%02d", i + 1);},
-			(String s)->{return XGStrings.parseIntOrDefault(s, MIN + 1) - 1;}));
+			(Integer i)->String.format("%02d", i + 1),
+			(String s)->XGStrings.parseIntOrDefault(s, MIN + 1) - 1));
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_DIV10,
 			(Integer i)->{return Float.toString((float)i / 10);},
@@ -25,8 +25,8 @@ public class XGVirtualTable implements XGTable
 
 		TABLES.add
 		(	new XGVirtualTable(MIN, MAX, TABLE_SUB64,
-			(Integer i)->{return Integer.toString(i - 64);},
-			(String s)->{return Integer.parseInt(s) + 64;}));
+			(Integer i)->Integer.toString(i - 64),
+			(String s)->Integer.parseInt(s) + 64));
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_SUB1024DIV10,
 			(Integer i)->{float f = (i.floatValue() - 1024) / 10; return Float.toString(f);},
@@ -37,8 +37,8 @@ public class XGVirtualTable implements XGTable
 			(String s)->{float f = Float.parseFloat(s) * 10 + 128; return (int)f;}));
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_SUB8k,
-			(Integer i)->{return Integer.toString(i - 0x2040);},
-			(String s)->{return Integer.parseInt(s) + 0x2040;}));
+			(Integer i)->Integer.toString(i - 0x2040),
+			(String s)->Integer.parseInt(s) + 0x2040));
 
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_PANORAMA,
 			(Integer i)->
@@ -119,13 +119,8 @@ public class XGVirtualTable implements XGTable
 	@Override public Iterator<XGTableEntry> iterator()
 	{	return new Iterator<>()
 		{
-			@Override public boolean hasNext()
-			{	return iteratorCount < maxValue;
-			}
-
-			@Override public XGTableEntry next()
-			{	return getByIndex(iteratorCount++);
-			}
+			@Override public boolean hasNext(){	return iteratorCount < maxValue;}
+			@Override public XGTableEntry next(){	return getByIndex(iteratorCount++);}
 		};
 	}
 

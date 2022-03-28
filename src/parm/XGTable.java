@@ -38,12 +38,12 @@ public interface XGTable extends  XGLoggable, XGParameterConstants, XGTagable, I
 
 	XGTableEntry getByIndex(int i);
 	XGTableEntry getByValue(int v);
-	XGTableEntry getByName(String name);
+	XGTableEntry getByName(String name) throws NumberFormatException;
 /**
 * returniert den index des gesuchten values v, im Falle eines Fehlschlags noch einmal mit fallbackmask, ansonsten def
 */
 	int getIndex(int value);
-	int getIndex(String name);
+	int getIndex(String name) throws NumberFormatException;
 	int getMinIndex();
 	int getMaxIndex();
 	XGTable categorize(String cat);

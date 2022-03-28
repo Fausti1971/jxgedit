@@ -1,12 +1,11 @@
 package gui;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import javax.swing.JLabel;
-import application.XGLoggable;import static gui.XGUI.MEDIUM_FONT;
+import application.XGLoggable;
 
 public class XGStatusBar extends JLabel implements XGLoggable
 {	/**
@@ -19,7 +18,7 @@ public class XGStatusBar extends JLabel implements XGLoggable
 	public XGStatusBar()
 	{
 		this.setOpaque(true);
-		this.setFont(MEDIUM_FONT);
+//		this.setFont(MEDIUM_FONT);
 		LOG.addHandler(new BarLogger(this));
 //		this.logInitSuccess();
 	}

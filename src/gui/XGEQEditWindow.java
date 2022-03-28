@@ -1,42 +1,41 @@
 package gui;
 
-import static gui.XGMEQ.*;public class XGEQEditWindow extends XGEditWindow
+import static gui.XGMEQ.*;import tag.XGTagableAddressableSet;import value.XGValue;import javax.swing.*;public class XGEQEditWindow extends XGEditWindow
 {
 	public XGEQEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.window, mod);
+	{	super(XGMainWindow.MAINWINDOW, mod);
 		this.setContentPane(this.createContent());
-		this.pack();
 		this.setVisible(true);
 	}
 
 	javax.swing.JComponent createContent()
-	{	XGFrame root = new XGFrame("MasterEQ", GRID * 3, GRID * 2);
-		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();
+	{	XGFrame root = new XGFrame();
+		XGTagableAddressableSet<XGValue> values = this.module.getValues();
 
-		root.add(new gui.XGRadio(values.get("eq_program"), javax.swing.BoxLayout.X_AXIS), "a0j0");
+		root.add(new XGRadio(values.get("eq_program"), BoxLayout.X_AXIS), "0,0,5,1");
 
-		root.add(new XGMEQ(this.module), "a1j6");
+		root.add(new XGMEQ(this.module), "0,1,5,3");
 
-		root.add(new gui.XGKnob(values.get(G1)), "a7a8");
-		root.add(new gui.XGKnob(values.get(G2)), "c7c8");
-		root.add(new gui.XGKnob(values.get(G3)), "e7e8");
-		root.add(new gui.XGKnob(values.get(G4)), "g7g8");
-		root.add(new gui.XGKnob(values.get(G5)), "i7i8");
+		root.add(new XGKnob(values.get(G1)), "0,4,1,2");
+		root.add(new XGKnob(values.get(G2)), "1,4,1,2");
+		root.add(new XGKnob(values.get(G3)), "2,4,1,2");
+		root.add(new XGKnob(values.get(G4)), "3,4,1,2");
+		root.add(new XGKnob(values.get(G5)), "4,4,1,2");
 
-		root.add(new gui.XGKnob(values.get(F1)), "a9a10");
-		root.add(new gui.XGKnob(values.get(F2)), "c9c10");
-		root.add(new gui.XGKnob(values.get(F3)), "e9e10");
-		root.add(new gui.XGKnob(values.get(F4)), "g9g10");
-		root.add(new gui.XGKnob(values.get(F5)), "i9i10");
+		root.add(new XGKnob(values.get(F1)), "0,6,1,2");
+		root.add(new XGKnob(values.get(F2)), "1,6,1,2");
+		root.add(new XGKnob(values.get(F3)), "2,6,1,2");
+		root.add(new XGKnob(values.get(F4)), "3,6,1,2");
+		root.add(new XGKnob(values.get(F5)), "4,6,1,2");
 
-		root.add(new gui.XGKnob(values.get(Q1)), "b9b10");
-		root.add(new gui.XGKnob(values.get(Q2)), "d9d10");
-		root.add(new gui.XGKnob(values.get(Q3)), "f9f10");
-		root.add(new gui.XGKnob(values.get(Q4)), "h9h10");
-		root.add(new gui.XGKnob(values.get(Q5)), "j9j10");
+		root.add(new XGKnob(values.get(Q1)), "0,8,1,2");
+		root.add(new XGKnob(values.get(Q2)), "1,8,1,2");
+		root.add(new XGKnob(values.get(Q3)), "2,8,1,2");
+		root.add(new XGKnob(values.get(Q4)), "3,8,1,2");
+		root.add(new XGKnob(values.get(Q5)), "4,8,1,2");
 
-		root.add(new gui.XGRadio(values.get(S1)), "b7b8");
-		root.add(new gui.XGRadio(values.get(S5)), "j7j8");
+		root.add(new XGRadio(values.get(S1)), "0,10,1,1");
+		root.add(new XGRadio(values.get(S5)), "4,10,1,1");
 
 		return root;
 	}

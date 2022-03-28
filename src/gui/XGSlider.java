@@ -23,7 +23,7 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 
 	private final XGValue value;
 	private final XGSliderBar bar;
-	private final XGValueLabel label;
+	private final XGLabel label;
 
 	public XGSlider(XGValue v)
 	{	this.value = v;
@@ -38,7 +38,6 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 		if(this.value.getParameter() != null)
 		{	this.setEnabled(true);
 			this.setVisible(true);
-			this.borderize();
 		}
 //		this.setName(this.value.getParameter().getShortName());
 		this.addMouseListener(this);
@@ -122,9 +121,9 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 		}
 	
 		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - XGUI.VARIABLES.dragEvent.getX();
+		{	int distance = e.getX() - XGUI.ENVIRONMENT.dragEvent.getX();
 			this.value.addIndex(distance, true);
-			XGUI.VARIABLES.dragEvent = e;
+			XGUI.ENVIRONMENT.dragEvent = e;
 			e.consume();
 		}
 
@@ -137,12 +136,12 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 		}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGUI.VARIABLES.dragEvent = e;
+		{	XGUI.ENVIRONMENT.dragEvent = e;
 			e.consume();
 		}
 	
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGUI.VARIABLES.dragEvent = e;
+		{	XGUI.ENVIRONMENT.dragEvent = e;
 		}
 
 

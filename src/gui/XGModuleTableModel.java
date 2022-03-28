@@ -1,6 +1,6 @@
 package gui;
 
-import adress.*;import static application.XGLoggable.LOG;import module.*;import parm.*;import tag.*;import value.*;import xml.*;import static xml.XMLNodeConstants.ATTR_ID;import javax.swing.*;import javax.swing.event.*;import javax.swing.table.*;import java.awt.*;import java.util.*;
+import module.*;import value.*;import static xml.XMLNodeConstants.ATTR_ID;import javax.swing.event.*;import javax.swing.table.*;import java.util.*;
 
 public class XGModuleTableModel  implements TableModel
 {
@@ -10,7 +10,7 @@ public class XGModuleTableModel  implements TableModel
 
 	XGModuleTableModel(XGModuleType t)
 	{	this.rows = new Vector<>(t.getModules());
-		this.cols = new Vector<>(t.getInfoOpcodes());
+		this.cols = new Vector<>(t.getInfoTags());
 		this.cols.add(0, ATTR_ID);
 		for(XGModule m : this.rows)
 			for(String tag : this.cols)

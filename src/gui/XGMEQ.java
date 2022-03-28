@@ -67,7 +67,6 @@ public class XGMEQ extends javax.swing.JPanel
 		this.panel = new XGPointPanel(1, 5, 0, 0, this.minX, this.maxX, this.minY, this.maxY);
 		this.panel.setUnits("Hz", "dB");
 		this.panel.setName("");
-		this.panel.borderize();
 
 		this.setLayout(new GridBagLayout());
 		this.add(this.panel, DEF_GBC);

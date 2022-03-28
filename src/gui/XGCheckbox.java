@@ -8,16 +8,18 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class XGCheckbox extends JCheckBox implements XGComponent, XGParameterChangeListener, XGValueChangeListener
-{	private static final Dimension MIN_DIM = new Dimension(GRID * 3, GRID * 2);
+public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
+{	private static final Dimension MIN_DIM = new Dimension(3, 2);
 
 /*******************************************************************************************/
 
 	private final XGValue value;
+	private final JCheckBox checkbox = new JCheckBox();
 
 	public XGCheckbox(XGValue val)
-	{	this.setPreferredSize(MIN_DIM);
-		this.setMinimumSize(MIN_DIM);
+	{	super();
+		//this.setPreferredSize(MIN_DIM);
+		//this.setMinimumSize(MIN_DIM);
 		this.value = val;
 		if(this.value == null)
 		{	this.setVisible(false);
@@ -26,23 +28,23 @@ public class XGCheckbox extends JCheckBox implements XGComponent, XGParameterCha
 		}
 		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
-		this.setFont(MEDIUM_FONT);
-		this.addActionListener((ActionEvent e)->{this.value.toggleIndex(true);});
+//		this.setFont(MEDIUM_FONT);
+		this.add(this.checkbox);
+		this.checkbox.addActionListener((ActionEvent e)->{this.value.toggleIndex(true);});
 		this.parameterChanged(this.value.getParameter());
 		this.contentChanged(this.value);
 	}
 
 	@Override public void parameterChanged(XGParameter p)
 	{	this.setName(p.getShortName());
-		this.setText(p.getName());
+		this.checkbox.setText(p.getName());
 		this.setToolTipText(p.getName());
-		this.setVisible(p != XGParameterConstants.NO_PARAMETER);
+		this.setVisible(p.isValid());
 		this.setEnabled(p.isValid());
-		this.borderize();//finde heraus, warum das nicht funktioniert. Antwort: liegt am L&F, das hier die Oberhand hat...
 	}
 
 	@Override public void contentChanged(XGValue v)
-	{	this.setSelected(v.getParameter().getMaxIndex() == v.getIndex());
+	{	this.checkbox.setSelected(v.getParameter().getMaxIndex() == v.getIndex());
 		this.repaint();
 	}
 }
