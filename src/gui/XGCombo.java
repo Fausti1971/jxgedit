@@ -19,11 +19,10 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 /*****************************************************************************************************************/
 
 	private final XGValue value;
-	private final XGLabel name = new XGLabel("");
 	private final JComboBox<XGTableEntry> box = new JComboBox<>();
 
 	public XGCombo(XGValue val)
-	{	super();
+	{	super("");
 		this.value = val;
 		if(this.value == null)
 		{	this.setVisible(false);
@@ -41,8 +40,7 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 		else this.setEnabled(false);
 		this.setAutoscrolls(true);
 
-		this.add(this.name, "0,0,1,1");
-		this.add(this.box, "0,1,1,2");
+		this.add(this.box, "0,0,1,1");
 
 		this.value.getValueListeners().add((XGValue v)->{this.box.setSelectedItem(this.value.getEntry());});
 		this.value.getParameterListeners().add(this);
@@ -52,7 +50,7 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 	private void entrySelected(){	this.value.setEntry((XGTableEntry)this.box.getSelectedItem(), false, true);}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	this.name.setText(p.getShortName());
+	{	this.setName(p.getShortName());
 		this.setToolTipText(p.getName());
 		this.setEnabled(p.isValid());
 		this.setVisible(p != XGParameter.NO_PARAMETER);

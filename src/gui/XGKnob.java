@@ -16,31 +16,27 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 /*****************************************************************************************************************************/
 
 	private final XGKnobBar bar;
-	private final XGLabel name;
 	private final XGValueLabel label;
 	private final XGValue value;
 
 	public XGKnob(XGValue val)
-	{	this.value = val;
+	{	super("");
+		this.value = val;
 		if(this.value == null)
 		{	this.setVisible(false);
 			this.setEnabled(false);
 			this.bar = null;
-			this.name = null;
 			this.label = null;
 			return;
 		}
 		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
 
-		this.name = new XGLabel(this.value.getParameter().getShortName());
-		this.add(this.name,"0,0,1,1");
-
 		this.bar = new XGKnobBar(this);
-		this.add(this.bar, "0,1,1,4");
+		this.add(this.bar, "0,0,1,4");
 
 		this.label = new XGValueLabel(this.value);
-		this.add(this.label, "0,5,1,1");
+		this.add(this.label, "0,4,1,1");
 
 		this.parameterChanged(this.value.getParameter());
 		}
@@ -51,7 +47,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	this.name.setText(p.getShortName());
+	{	this.setName(p.getShortName());
 		this.setToolTipText(p.getName());
 		this.label.setText(this.value.toString());
 		this.setVisible(p.isValid());

@@ -3,14 +3,13 @@ package gui;
 import java.awt.*;
 import java.awt.geom.GeneralPath;
 import java.util.*;
-import javax.swing.JPanel;
+import javax.swing.*;
 import application.XGMath;
 import value.XGValue;
 
-public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGComponent
+public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
 {
 	private static final long serialVersionUID = 1L;
-	private static Dimension MIN_DIM = new java.awt.Dimension(5 * 66, 2 * 88);
 
 /***************************************************************************************/
 
@@ -25,9 +24,7 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGCompon
 	private Graphics2D g2;
 
 	public XGPointPanel(int gridX, int gridY, int oriX, int oriY, int minX, int maxX, int minY, int maxY)
-	{
-		this.setLayout(null);
-		this.minXIndex = minX;
+	{	this.minXIndex = minX;
 		this.maxXIndex = maxX;
 		this.minYIndex = minY;
 		this.maxYIndex = maxY;
@@ -35,8 +32,7 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGCompon
 		this.grid_y = gridY;
 		this.origin_x_index = oriX;
 		this.origin_y_index = oriY;
-		this.setPreferredSize(MIN_DIM);
-		this.setMinimumSize(MIN_DIM);
+		this.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 		this.addComponentListener(this);
 	}
 
@@ -75,26 +71,26 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGCompon
 	{	for(XGPoint p : this.points) p.setLocation();
 		super.paintComponent(g);
 		this.g2 = (Graphics2D)g.create();
+		Insets ins = this.getInsets();
 //background
-		int w = this.getWidth(), h = this.getHeight();
+		int w = this.getWidth() - (ins.left + ins.right), h = this.getHeight() - (ins.top + ins.bottom);
 		this.g2.setColor(COL_BAR_BACK);
-		this.g2.fillRect(0, 0, w, h);
+		this.g2.fillRect(ins.left, ins.top, w, h);
 
 //grid
 		this.g2.setColor(java.awt.Color.gray);
 		this.g2.setStroke(DEF_DOTTED_STROKE);
-		for(int i : this.vLines) g2.drawLine(i, 0, i, h);
-		for(int i : this.hLines) g2.drawLine(0, i, w, i);
+		for(int i : this.vLines) g2.drawLine(i, ins.top, i, h);
+		for(int i : this.hLines) g2.drawLine(ins.left, i, w, i);
 //polygon
 		this.g2.addRenderingHints(AALIAS);
-		this.g2.setColor(COL_SHAPE);
+		GradientPaint grp = new GradientPaint(ins.left, ins.top, COL_SHAPE, this.origin_x, this.origin_y, COL_BAR_BACK,false);
+		g2.setPaint(grp);
 		GeneralPath gp = new GeneralPath();
 		int x = this.origin_x;
 		int y = this.origin_y;
 		gp.moveTo(x, y);
-		Map<Integer, XGPoint> pnt = new TreeMap<>();
-		for(XGPoint p : this.points) pnt.put(p.getValueX().getIndex(), p);
-		for(XGPoint p : pnt.values())
+		for(XGPoint p : points)
 		{	x = p.getX() + p.getWidth()/2;
 			y = p.getY() + p.getHeight()/2;
 			gp.lineTo(x, y);
@@ -103,10 +99,9 @@ public class XGPointPanel extends JPanel implements XGUI, XGResizeable, XGCompon
 		gp.closePath();
 		this.g2.fill(gp);
 //units
-//		this.g2.setFont(SMALL_FONT);
 		this.g2.setColor(this.getBackground().darker());
 		this.g2.drawString(this.xUnit, w - this.g2.getFontMetrics().stringWidth(this.xUnit), h);
-		this.g2.drawString(this.yUnit, 0, this.g2.getFontMetrics().getHeight());
+		this.g2.drawString(this.yUnit, ins.left, this.g2.getFontMetrics().getHeight());
 		this.g2.dispose();
 	}
 

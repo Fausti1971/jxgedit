@@ -13,7 +13,7 @@ import application.XGMath;
 import parm.XGParameter;
 import value.XGValue;
 
-public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListener, MouseMotionListener
+public class XGPoint extends JComponent implements XGUI, XGLoggable
 {
 	private static final long serialVersionUID = 1L;
 	private static final int POINT_RADIUS = 5;
@@ -44,12 +44,7 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 		this.relationY = relY;
 		this.setSize(POINT_SIZE + 1, POINT_SIZE + 1);
 		this.setPreferredSize(this.getSize());
-		if(this.isMovable())
-		{	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		}
-		else this.setVisible(false);
-		this.addMouseListener(this);
-		this.addMouseMotionListener(this);
+		if(!(this.isMovable())) this.setVisible(false);
 	}
 
 	private boolean isMovable()
@@ -71,8 +66,7 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 	void setYValue(XGValue v)
 	{	this.valueY = v;
 		if(this.isMovable())
-		{	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.valueY.getValueListeners().add((XGValue)->{this.panel.setSelectedValue(v);});
+		{	this.valueY.getValueListeners().add((XGValue)->{this.panel.setSelectedValue(v);});
 			this.setVisible(true);
 		}
 		else this.setVisible(false);
@@ -123,60 +117,60 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable, MouseListen
 		}
 	}
 
-	XGValue getValueX()
-	{	return this.valueX;
-	}
-
-	XGValue getValueY()
-	{	return this.valueY;
-	}
+	//XGValue getValueX()
+	//{	return this.valueX;
+	//}
+	//
+	//XGValue getValueY()
+	//{	return this.valueY;
+	//}
 
 	@Override public String toString()
 	{	return this.valueX.getInfo() + "/" + this.valueY.getInfo();
 	}
 
-	@Override public void mousePressed(MouseEvent e)
-	{	XGUI.ENVIRONMENT.mousePressed = true;
-		XGUI.ENVIRONMENT.dragEvent = e;
-		this.tooltip.setVisible(true);
-		e.consume();
-	}
-
-	@Override public void mouseReleased(MouseEvent e)
-	{	XGUI.ENVIRONMENT.mousePressed = false;
-		XGUI.ENVIRONMENT.dragEvent = e;
-		this.tooltip.setVisible(false);
-		e.consume();
-	}
-
-	@Override public void mouseEntered(MouseEvent e)
-	{	if(!XGUI.ENVIRONMENT.mousePressed)
-		{	Point p = e.getLocationOnScreen();
-			this.tooltip.setLocation(p.x + POINT_SIZE, p.y + POINT_SIZE);
-			this.tooltip.setVisible(true);
-		}
-	}
-
-	@Override public void mouseExited(MouseEvent e)
-	{	if(!XGUI.ENVIRONMENT.mousePressed) this.tooltip.setVisible(false);
-	}
-
-	@Override public void mouseDragged(MouseEvent e)
-	{	this.valueX.addIndex(e.getXOnScreen() - XGUI.ENVIRONMENT.dragEvent.getXOnScreen(), true);
-		this.valueY.addIndex(XGUI.ENVIRONMENT.dragEvent.getYOnScreen() - e.getYOnScreen(), true);
-		this.setLocation();
-		XGUI.ENVIRONMENT.dragEvent = e;
-		e.consume();
-	}
-
-	@Override public void mouseClicked(MouseEvent e)
-	{	this.requestFocusInWindow();
-		this.repaint();
-	}
-
-	@Override public void mouseMoved(MouseEvent e)
-	{
-	}
+	//@Override public void mousePressed(MouseEvent e)
+	//{	XGUI.ENVIRONMENT.mousePressed = true;
+	//	XGUI.ENVIRONMENT.dragEvent = e;
+	//	this.tooltip.setVisible(true);
+	//	e.consume();
+	//}
+	//
+	//@Override public void mouseReleased(MouseEvent e)
+	//{	XGUI.ENVIRONMENT.mousePressed = false;
+	//	XGUI.ENVIRONMENT.dragEvent = e;
+	//	this.tooltip.setVisible(false);
+	//	e.consume();
+	//}
+	//
+	//@Override public void mouseEntered(MouseEvent e)
+	//{	if(!XGUI.ENVIRONMENT.mousePressed)
+	//	{	Point p = e.getLocationOnScreen();
+	//		this.tooltip.setLocation(p.x + POINT_SIZE, p.y + POINT_SIZE);
+	//		this.tooltip.setVisible(true);
+	//	}
+	//}
+	//
+	//@Override public void mouseExited(MouseEvent e)
+	//{	if(!XGUI.ENVIRONMENT.mousePressed) this.tooltip.setVisible(false);
+	//}
+	//
+	//@Override public void mouseDragged(MouseEvent e)
+	//{	this.valueX.addIndex(e.getXOnScreen() - XGUI.ENVIRONMENT.dragEvent.getXOnScreen(), true);
+	//	this.valueY.addIndex(XGUI.ENVIRONMENT.dragEvent.getYOnScreen() - e.getYOnScreen(), true);
+	//	this.setLocation();
+	//	XGUI.ENVIRONMENT.dragEvent = e;
+	//	e.consume();
+	//}
+	//
+	//@Override public void mouseClicked(MouseEvent e)
+	//{	this.requestFocusInWindow();
+	//	this.repaint();
+	//}
+	//
+	//@Override public void mouseMoved(MouseEvent e)
+	//{
+	//}
 
 	@Override protected void paintComponent(Graphics g)
 	{	super.paintComponent(g);

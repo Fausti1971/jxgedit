@@ -23,25 +23,20 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 
 /*********************************************************************************************/
 
-	private final XGLabel name;
 	private final XGValue value;
 	private final JButton select = new JButton();
 	private JDialog dialog = null;
 
 	public XGProgramSelector(XGValue val)
-	{	super();
-
+	{	super("");
 		this.value = val;
 		if(val == null)
 		{	this.setVisible(false);
 			this.setEnabled(false);
-			this.name = null;
 			return;
 		}
 		this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
-		this.name = new XGLabel(this.value.getParameter().getShortName());
-		this.add(this.name, "0,0,8,1");
 
 		this.addMouseListener(this);
 //		this.addFocusListener(this);
@@ -50,19 +45,19 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		prev.setHorizontalTextPosition(JButton.CENTER);
 		prev.setVerticalTextPosition(JButton.CENTER);
 		prev.addActionListener((ActionEvent e)->{this.value.addIndex(-1, true);});
-		this.add(prev, new int[]{0,1,1,2});
+		this.add(prev, "0,0,1,1");
 
 		this.select.setText(this.value.toString());
 		this.select.setHorizontalTextPosition(JButton.CENTER);
 		this.select.setVerticalTextPosition(JButton.CENTER);
 		this.select.addActionListener((ActionEvent e)->{this.openDialog();});
-		this.add(this.select, new int[]{1,1,6,2});
+		this.add(this.select, "1,0,6,1");
 
 		JButton next = new JButton(icon_next);
 		next.setHorizontalTextPosition(JButton.CENTER);
 		next.setVerticalTextPosition(JButton.CENTER);
 		next.addActionListener((ActionEvent e)->{this.value.addIndex(1, true);});
-		this.add(next, new int[]{7,1,1,2});
+		this.add(next, "7,0,1,1");
 
 		this.parameterChanged(this.value.getParameter());
 	}
@@ -73,14 +68,15 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	this.name.setText(p.getName());
+	{	this.setName(p.getName());
 		this.repaint();
 	}
 
 	private void openDialog()//TODO: vielleicht doch eher ein PopupMenu?
-	{	this.dialog = new javax.swing.JDialog();
+	{	this.dialog = new JDialog();
 		this.dialog.setLocation(this.getLocationOnScreen());
 		this.dialog.setModal(true);
+		this.dialog.setUndecorated(true);
 		this.dialog.setTitle("select " + this.value.getParameter().getName());
 
 		JTree t = new JTree(new XGTableTreeModel(this.value.getParameter().getTranslationTable()));

@@ -20,8 +20,7 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 	private final XGTooltip tooltip = new XGTooltip();
 
 	public XGVEG(XGValue dep, XGValue off, XGValue lo, XGValue hi)
-	{	super();
-		this.depth = dep;
+	{	this.depth = dep;
 		this.offset = off;
 
 		XGValue low;
@@ -40,7 +39,6 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 			this.setVisible(false);
 			return;
 		}
-		this.setName("Velocity");
 
 		panel = new XGPointPanel(1, 1, 0, 64, 1, 127, 64, 127);
 		panel.setUnits("Velocity", "Volume");
@@ -54,12 +52,7 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 		panel.addMouseListener(this);
 		panel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-//x1 = low
-//y1 = offset
-//x2 = high
-//y2 = offset + depth
-		this.setLayout(new GridBagLayout());
-		this.add(panel, DEF_GBC);
+		this.add(panel, "0,0,1,1");
 	}
 
 	private String getInfo(){	return this.depth.getInfo() + "/" + this.offset.getInfo();}

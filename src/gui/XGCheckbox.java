@@ -17,9 +17,7 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 	private final JCheckBox checkbox = new JCheckBox();
 
 	public XGCheckbox(XGValue val)
-	{	super();
-		//this.setPreferredSize(MIN_DIM);
-		//this.setMinimumSize(MIN_DIM);
+	{	super("");
 		this.value = val;
 		if(this.value == null)
 		{	this.setVisible(false);
@@ -28,8 +26,7 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 		}
 		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
-//		this.setFont(MEDIUM_FONT);
-		this.add(this.checkbox);
+		this.add(this.checkbox, "0,0,1,1");
 		this.checkbox.addActionListener((ActionEvent e)->{this.value.toggleIndex(true);});
 		this.parameterChanged(this.value.getParameter());
 		this.contentChanged(this.value);

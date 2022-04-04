@@ -23,7 +23,7 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 
 	private final XGValue value;
 	private final XGSliderBar bar;
-	private final XGLabel label;
+	private final XGValueLabel label;
 
 	public XGSlider(XGValue v)
 	{	this.value = v;

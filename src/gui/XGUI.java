@@ -15,7 +15,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		COL_BAR_BACK = Color.white,
 		COL_SHAPE = new Color(COL_BAR_FORE.getRed(), COL_BAR_FORE.getGreen(), COL_BAR_FORE.getBlue(), 20),
 		COL_BORDER = Color.gray,
-		COL_BORDER_TEXT = Color.white;
+		COL_BORDER_TEXT = Color.black;
 
 //	int SMALL_FONTSIZE = 14, MEDIUM_FONTSIZE = 18;
 //	Font SMALL_FONT = new Font(Font.decode(null).getName(), Font.PLAIN, SMALL_FONTSIZE);

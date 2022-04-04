@@ -222,7 +222,7 @@
 			<opcode xsi:type="immutable" id="mp_cho" address="//18" name="Chorus Send" shortName="Cho" min="0" max="127" default="0" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_rev" address="//19" name="Reverb Send" shortName="Rev" min="0" max="127" default="40" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_var" address="//20" name="Variation Send" shortName="Var" min="0" max="127" default="0" origin="0" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_vib_rate" address="//21" name="Vibrato Rate" shortName="Vib" min="0" max="127" origin="0" table="table1" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_vib_rate" address="//21" name="Vibrato Rate" shortName="Rate" min="0" max="127" origin="0" table="table1" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vib_depth" address="//22" name="Vibrato Depth" shortName="Depth" min="0" max="127" origin="64" table="table19" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vib_delay" address="//23" name="Vibrato Delay" shortName="Delay" min="0" max="127" origin="0" table="table2" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_lpf_cut" address="//24" name="Low Pass Filter Cutoff Frequency" shortName="LPF" min="0" max="127" origin="64" default="64" actions="change"/>
@@ -262,18 +262,18 @@
 			<opcode xsi:type="immutable" id="mp_rcv_softpedal" address="//63" name="Receive Soft Pedal" max="1" table="on_off" default="1" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_rcv_bank" address="//64" name="Receive Bank Select" max="1" table="on_off" default="1" actions="change"/>
 
-			<opcode xsi:type="immutable" id="mp_scale_c" address="//65" name="Scale Tuning C" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_cis" address="//66" name="Scale Tuning C#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_d" address="//67" name="Scale Tuning D" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_dis" address="//68" name="Scale Tuning D#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_e" address="//69" name="Scale Tuning E" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_f" address="//70" name="Scale Tuning F" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_fis" address="//71" name="Scale Tuning F#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_g" address="//72" name="Scale Tuning G" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_gis" address="//73" name="Scale Tuning G#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_a" address="//74" name="Scale Tuning A" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_ais" address="//75" name="Scale Tuning A#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_scale_b" address="//76" name="Scale Tuning B" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_c" address="//65" name="Scale Tuning C" shortName="C" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_cis" address="//66" name="Scale Tuning C#" shortName="C#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_d" address="//67" name="Scale Tuning D" shortName="D" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_dis" address="//68" name="Scale Tuning D#" shortName="D#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_e" address="//69" name="Scale Tuning E" shortName="E" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_f" address="//70" name="Scale Tuning F" shortName="F" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_fis" address="//71" name="Scale Tuning F#" shortName="F#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_g" address="//72" name="Scale Tuning G" shortName="G" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_gis" address="//73" name="Scale Tuning G#" shortName="G#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_a" address="//74" name="Scale Tuning A" shortName="A" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_ais" address="//75" name="Scale Tuning A#" shortName="A#" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_scale_b" address="//76" name="Scale Tuning B" shortName="B" min="0" max="127" table="sub64" unit="cnt" default="64" origin="64" actions="change"/>
 
 			<opcode xsi:type="immutable" id="mp_cat_pitch" address="//77" name="Channel Aftrertouch Pitch Control" shortName="CATPC" min="40" max="88" origin="64" table="sub64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cat_lpf" address="//78" name="Channel Aftrertouch Filter Control" shortName="CATFC" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/><!-- -9600...9450 table? -->

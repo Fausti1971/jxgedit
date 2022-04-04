@@ -9,7 +9,6 @@ import value.XGValue;
 public class XGFlagBox extends XGFrame
 {
 	private static final long serialVersionUID = 1L;
-	private static final Dimension DIM = new Dimension(132, 88);
 	private final Set<XGValue> values = new LinkedHashSet<>();
 
 	public XGFlagBox(String name, XGValue... vals)
@@ -27,6 +26,6 @@ public class XGFlagBox extends XGFrame
 		button.setAlignmentY(0.5f);
 		button.setAlignmentX(0.5f);
 
-		this.add(button, "0,1,1,2");
+		this.add(button, "0,0,1,1");
 	}
 }

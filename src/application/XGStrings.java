@@ -93,9 +93,7 @@ public interface XGStrings
 
 	static String commonString(String s1, String s2)
 	{	int i = 0, last = Math.min(s1.length(), s2.length());
-		for(; i < last; i++)
-		{	if(s1.charAt(i) != s2.charAt(i)) break;
-		}
+		for(; i < last; i++) if(s1.charAt(i) != s2.charAt(i)) break;
 		return s1.substring(0, i);
 	}
 
@@ -181,7 +179,8 @@ public interface XGStrings
 	}
 
 	static int toNumber(String s)
-	{	return Integer.parseInt(s.replaceAll("\\D", ""));
+	{	if(s == null) throw new NumberFormatException("Argument is " + s);
+		return Integer.parseInt(s.replaceAll("\\D", ""));
 	}
 
 	static String toAlpha(String s)

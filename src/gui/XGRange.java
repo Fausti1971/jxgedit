@@ -22,14 +22,12 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 	private static final long serialVersionUID = 1L;
 
 /*******************************************************************************************************/
-
 	private final XGRangeBar bar;
 	private final XGRangeLabel label;
 	private final XGValue loValue, hiValue;
 
 	public XGRange(XGValue lo, XGValue hi)
-	{	super();
-		this.setLayout(new GridBagLayout());
+	{	super("");
 		this.loValue = lo;
 		this.hiValue = hi;
 		if(this.loValue == null || this.hiValue == null)
@@ -43,20 +41,15 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 		this.hiValue.getValueListeners().add(this);
 
 		this.setName(XGStrings.commonString(this.loValue.getParameter().getName(), this.hiValue.getParameter().getName()));
-		this.addMouseListener(this);
-		this.addFocusListener(this);
 
-		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,2,0), 0, 0);
 		this.bar = new XGRangeBar(this);
-		this.add(this.bar, gbc);
+		this.add(this.bar, "0,0,1,2");
 
 		this.label = new XGRangeLabel(this.loValue, this.hiValue);
-		gbc.gridy = 1;
-		gbc.weighty = 0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.SOUTH;
-		this.add(this.label, gbc);
+		this.add(this.label, "0,2,1,1");
 
+		this.addMouseListener(this);
+//		this.addFocusListener(this);
 		boolean ena = this.isEnabled();
 		this.bar.setEnabled(ena);
 		this.label.setEnabled(ena);

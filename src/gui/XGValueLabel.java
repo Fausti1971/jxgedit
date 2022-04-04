@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class XGValueLabel extends XGLabel implements MouseListener
+public class XGValueLabel extends JLabel implements MouseListener
 {
 /**
  * @param v***************************************************************************************************/
@@ -14,20 +14,20 @@ public class XGValueLabel extends XGLabel implements MouseListener
 	private final XGValue value;
 
 	public XGValueLabel(XGValue v)
-	{	super("");
-		this.value = v;
+	{	this.value = v;
 		this.setCursor(new Cursor(Cursor.TEXT_CURSOR));
+		this.setHorizontalAlignment(JLabel.CENTER);
+		this.setVerticalAlignment(JLabel.CENTER);
 		this.addMouseListener(this);
 	}
 
 	@Override public void mouseClicked(MouseEvent e)
-	{	int v = this.value.getValue();
-		String s = JOptionPane.showInputDialog(e.getComponent(), "Value:", this.getText());
+	{	String s = JOptionPane.showInputDialog(e.getComponent(), this.value.getParameter(), this.getText());
 		try
 		{	this.value.setValue(s, true);
 		}
-		catch(NumberFormatException ex)
-		{	this.value.setValue(v, false, false);
+		catch(NumberFormatException ignored)
+		{
 		}
 	}
 
