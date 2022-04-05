@@ -14,7 +14,7 @@ public class XGAEG extends XGFrame implements XGComponent
 /**************************************************************************************/
 
 	public XGAEG(XGValue atk, XGValue dec, XGValue rel)
-	{
+	{	super(true);
 		XGPointPanel panel;
 		if(atk == null || dec == null || rel == null)
 		{	this.setEnabled(false);

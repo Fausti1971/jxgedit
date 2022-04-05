@@ -98,7 +98,7 @@ public class XGVirtualTable implements XGTable
 		return new XGTableEntry(i, s);
 	}
 
-	@Override public XGTableEntry getByName(String name)
+	@Override public XGTableEntry getByName(String name) throws NumberFormatException
 	{	int v = this.retranslate.apply(name);
 		return new XGTableEntry(v, name);
 	}

@@ -14,44 +14,36 @@
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="Default Changelist" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/application/XGStrings.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/application/XGStrings.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/Keyboard$KeyShape.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/Keyboard.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGAEG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGAEG.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGCombo.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGCombo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGComponent.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGComponent.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGFlagBox.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGFlagBox.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGFrame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGFrame.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGKnob$XGKnobBar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGKnob$XGKnobBar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGKnob.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGKnob.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGPoint$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGPoint$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGPoint.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGPoint.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGPointPanel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGPointPanel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGProgramSelector.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGProgramSelector.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGRange$XGRangeBar.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGRange$XGRangeBar.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGRange.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGRange.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGSlider.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGSlider.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGUI.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGUI.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGKeyboard.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGKeyboard.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGPopup.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGRadio.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGRadio.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGVEG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGVEG.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGValueLabel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGValueLabel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/XGStrings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/XGStrings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGVirtualTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGVirtualTable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/Keyboard.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGADPartEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGADPartEditWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGAEG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGAEG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGCheckbox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCheckbox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGCombo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCombo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGChorusEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGChorusEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGDrumEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGDrumEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGEQEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEQEditWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGFlagBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGFlagBox.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGKnob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKnob.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGLabel.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGInsertionEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGInsertionEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGKeyboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKeyboard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMasterEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMasterEditWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGMultipartEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMultipartEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGPointPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPointPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGRange.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRange.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSlider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGPopup.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGRadio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRadio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGReverbEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGReverbEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGVEG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVEG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGValueLabel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGValueLabel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGVariationEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVariationEditWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/parm/XGVirtualTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGVirtualTable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/xml/structure.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/structure.xml" afterDir="false" />
     </list>
@@ -413,7 +405,14 @@
       <option name="project" value="LOCAL" />
       <updated>1648505509304</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="XGFrame mit optionalem Namen (JLabel) versehen und automatisiert; XGLayout debugged;">
+      <created>1649040701392</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1649040701392</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -543,7 +542,8 @@
     <MESSAGE value="debugged (structure.xml) &quot;defaultSelector&quot; von &quot;mp_program&quot; ist &quot;id&quot;" />
     <MESSAGE value="XGSysexFile.load() und XGSysexFile.save() debugged; xml file history implemented;" />
     <MESSAGE value="Resizing, Fontselection, ValueInputDialog implemented;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Resizing, Fontselection, ValueInputDialog implemented;" />
+    <MESSAGE value="XGFrame mit optionalem Namen (JLabel) versehen und automatisiert; XGLayout debugged;" />
+    <option name="LAST_COMMIT_MESSAGE" value="XGFrame mit optionalem Namen (JLabel) versehen und automatisiert; XGLayout debugged;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

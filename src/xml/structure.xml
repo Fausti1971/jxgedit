@@ -319,15 +319,15 @@
 		<bulk id="mp112" address="8//112-115">
 			<opcode xsi:type="immutable" id="mp_pb_lo" address="//112" name="Pitchbend Wheel Low Control" shortName="PBLC" min="40" max="88" table="sub64" origin="64" unit="st" default="62" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eg_lpf" address="//113" name="Filters Envelope Generator Depth" shortName="FEGD" table="sub64" min="0" max="127" origin="64" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_bass" address="//114" name="EQ Bass Gain" shortName="EQBG" table="eq_gain" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_treble" address="//115" name="EQ Treble Gain" shortName="EQTG" table="eq_gain" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_eq_bass" address="//114" name="EQ Bass Gain" shortName="BassGn" table="eq_gain" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_eq_treble" address="//115" name="EQ Treble Gain" shortName="TrebGn" table="eq_gain" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
 		</bulk>
 		<bulk id="mp116" address="8//116-127">
-			<opcode xsi:type="immutable" id="mp_eq_midbass" address="//116" name="EQ Mid Bass" shortName="EQMB" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
+<!--		<opcode xsi:type="immutable" id="mp_eq_midbass" address="//116" name="EQ Mid Bass" shortName="EQMB" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_midtreble" address="//117" name="EQ Mid Treble" shortName="EQMT" table="sub64" min="0" max="127" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_bass_freq" address="//118" name="EQ Bass Frequency" shortName="EQBF" table="table3" min="4" max="40" default="12" origin="4" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_treble_freq" address="//119" name="EQ Treble Frequency" shortName="EQTF" table="table3" min="28" max="58" default="54" origin="28" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_eq_midbass_freq" address="//120" name="EQ Mid Bass Frequency" shortName="EQMBF" table="table3" min="14" max="54" default="34" actions="change"/>
+-->			<opcode xsi:type="immutable" id="mp_eq_bass_freq" address="//118" name="EQ Bass Frequency" shortName="BassFq" table="table3" min="4" max="40" default="12" origin="4" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_eq_treble_freq" address="//119" name="EQ Treble Frequency" shortName="TrebFq" table="table3" min="28" max="58" default="54" origin="28" actions="change"/>
+<!--		<opcode xsi:type="immutable" id="mp_eq_midbass_freq" address="//120" name="EQ Mid Bass Frequency" shortName="EQMBF" table="table3" min="14" max="54" default="34" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_midtrebel_freq" address="//121" name="EQ Mid Treble Frequency" shortName="EQMTF" table="table3" min="14" max="54" default="46" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_bass_q" address="//122" name="EQ Bass Q" shortName="EQBQ" table="div10" min="1" max="120" default="7" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_treble_q" address="//123" name="EQ Treble Q" shortName="EQTQ" table="div10" min="1" max="120" default="7" actions="change"/>
@@ -335,7 +335,7 @@
 			<opcode xsi:type="immutable" id="mp_eq_midtreble_q" address="//125" name="EQ Mid Treble Q" shortName="EQMTQ" table="div10" min="1" max="120" default="7" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_bass_shape" address="//126" name="EQ Bass Shape" shortName="EQBQ" table="eq_shape" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_eq_treble_shape" address="//127" name="EQ Treble Shape" shortName="EQBQ" table="eq_shape" default="0" actions="change"/>
-		</bulk>
+-->		</bulk>
 		<bulk id="mpvl0" address="9//0-22">
 			<opcode xsi:type="immutable" id="mp_vl_noteassign" address="//0" name="Note Assign" table="on_off" max="1" default="1" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vl_reserved" address="//1" name="reserved" actions="change"/>
@@ -361,8 +361,7 @@
 			<opcode xsi:type="immutable" id="mp_vl_absorp_nr" address="//21" name="Absorption Control Number" min="0" max="98" default="0" table="controller" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vl_absorp" address="//22" name="Absorption Control Depth" table="sub64" min="0" max="127" default="64" actions="change"/>
 		</bulk>
-<!--NOT USED
-		<bulk address="9//23-28">
+<!--	<bulk address="9//23-28">
 			<opcode xsi:type="immutable" id="mp_vl_amp_break" address="//23" name="Amp Level Scale Breakpoint" table="tones" min="0" max="127" default="60" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vl_amp_depth" address="//24" name="Depth" table="sub64" min="0" max="127" origin="64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vl_lpf_break" address="//25" name="Filter Cutoff Scale Breakpoint" table="tones" min="0" max="127" default="60" actions="change"/>
@@ -370,16 +369,14 @@
 		</bulk>
 -->
 		<bulk id="mpadd16" address="10//16">
-			<opcode xsi:type="immutable" id="mp_audio_output" address="//16" name="Output Select" table="audio_outputs" min="0" max="103" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_audio_output" address="//16" name="Output Select" shortName="Output" table="audio_outputs" min="0" max="103" default="0" actions="change"/>
 		</bulk>
 		<bulk id="mpadd32" address="10//32-33">
 			<opcode xsi:type="immutable" id="mp_hpf_cut" address="//32" name="Highpass Filter Cutoff Frequency" shortName="HPFCF" min="0" max="127" default="64" actions="change"/>
-<!--NOT USED
-			<opcode xsi:type="immutable" id="mp_hpf_reso" address="//33" name="Highpass Filter Resonance" shortName="HPFR" min="0" max="127" default="64" actions="change"/>
+<!--		<opcode xsi:type="immutable" id="mp_hpf_reso" address="//33" name="Highpass Filter Resonance" shortName="HPFR" min="0" max="127" default="64" actions="change"/>
 -->	
 		</bulk>
-<!--NOT USED
-		<bulk address="10//34-39">
+<!--	<bulk address="10//34-39">
 			<opcode xsi:type="immutable" id="mp_mw_hpf" address="//34" name="Modulation Wheel HPF Control Depth" shortName="MWFD" min="0" max="127" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_pb_hpf" address="//35" name="Pitchbend Wheel HPF Control Depth" shortName="PBFD" min="0" max="127" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_cat_hpf" address="//36" name="Channel Aftertouch HPF Control Depth" shortName="CATFD" min="0" max="127" default="64" actions="change"/>
@@ -497,13 +494,13 @@
 			<opcode xsi:type="immutable" id="ds_aeg_release" address="//15" name="Release Time" min="0" max="127" default="64" actions="change"/>
 		</bulk>
 		<bulk id="dsblk32" address="//32-45">
-			<opcode xsi:type="immutable" id="ds_eq_bass" address="//32" name="EQ Bass Gain" shortName="EQB" min="0" max="127" table="eq_gain" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_treble" address="//33" name="EQ Treble Gain" shortName="EQT" min="0" max="127" table="eq_gain" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_midbass" address="//34" name="EQ Mid Bass" shortName="EQMB" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_eq_bass" address="//32" name="EQ Bass Gain" shortName="BassGn" min="0" max="127" table="eq_gain" origin="64" unit="dB" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_eq_treble" address="//33" name="EQ Treble Gain" shortName="TrebGn" min="0" max="127" table="eq_gain" origin="64" unit="dB" default="64" actions="change"/>
+<!--		<opcode xsi:type="immutable" id="ds_eq_midbass" address="//34" name="EQ Mid Bass" shortName="EQMB" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midtreble" address="//35" name="EQ Mid Treble" shortName="EQMT" min="0" max="127" table="sub64" origin="64" unit="dB" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_bass_freq" address="//36" name="EQ Bass Frequency" shortName="EQBF" table="table3" min="4" max="40" default="12" origin="4" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_treble_freq" address="//37" name="EQ Treble Frequency" shortName="EQTF" table="table3" min="28" max="58" default="54" origin="28" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_eq_midbass_freq" address="//38" name="EQ Mid Bass Frequency" shortName="EQMBF" table="table3" min="14" max="54" default="34" actions="change"/>
+-->			<opcode xsi:type="immutable" id="ds_eq_bass_freq" address="//36" name="EQ Bass Frequency" shortName="BassFq" table="table3" min="4" max="40" default="12" origin="4" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_eq_treble_freq" address="//37" name="EQ Treble Frequency" shortName="TrebFq" table="table3" min="28" max="58" default="54" origin="28" actions="change"/>
+<!--		<opcode xsi:type="immutable" id="ds_eq_midbass_freq" address="//38" name="EQ Mid Bass Frequency" shortName="EQMBF" table="table3" min="14" max="54" default="34" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_midtreble_freq" address="//39" name="EQ Mid Treble Frequency" shortName="EQMTF" table="table3" min="14" max="54" default="46" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_bass_q" address="//40" name="EQ Bass Q" shortName="EQBQ" table="div10" min="1" max="120" default="7" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_treble_q" address="//41" name="EQ Treble Q" shortName="EQTQ" table="div10" min="1" max="120" default="7" actions="change"/>
@@ -511,25 +508,23 @@
 			<opcode xsi:type="immutable" id="ds_eq_midTreble_q" address="//43" name="EQ Mid Treble Q" shortName="EQMTQ" table="div10" min="1" max="120" default="7" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_bass_shape" address="//44" name="EQ Bass Shape" shortName="EQBS" table="eq_shape" max="1" default="0" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_eq_treble_shape" address="//45" name="EQ Treble Shape" shortName="EQTS" table="eq_shape" max="1" default="0" actions="change"/>
-		</bulk>
+-->		</bulk>
 		<bulk id="dsblk64" address="//64">
-			<opcode xsi:type="immutable" id="ds_audio_output" address="//64" name="Output Select" table="audio_outputs" min="0" max="103" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_audio_output" address="//64" name="Output Select" shortName="Output" table="audio_outputs" min="0" max="103" default="0" actions="change"/>
 		</bulk>
 		<bulk id="dsblk80" address="//80-81">
 			<opcode xsi:type="immutable" id="ds_hpf_cut" address="//80" name="Highpass Filter Cutoff Frequency" shortName="HPFC" min="0" max="127" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_hpf_reso" address="//81" name="Highpass Filter Resonance" shortName="HPFR" min="0" max="127" default="64" actions="change"/>
-		</bulk>
+<!--		<opcode xsi:type="immutable" id="ds_hpf_reso" address="//81" name="Highpass Filter Resonance" shortName="HPFR" min="0" max="127" default="64" actions="change"/>
+-->		</bulk>
 		<bulk id="dsblk96" address="//96-97">
 			<opcode xsi:type="mutableDef" id="ds_velo_pitch" address="//96" name="Velocity Pitch Sense" min="48" max="80" table="sub64" origin="64" defaultsTable="ds_velo_pitch_def" defaultSelector="ds_program" actions="change"/>
 			<opcode xsi:type="mutableDef" id="ds_velo_lpf" address="//97" name="Velocity LPF Cutoff Sense" min="48" max="80" table="sub64" origin="64" defaultsTable="ds_velo_lpf_def" defaultSelector="ds_program" actions="change"/>
 		</bulk>
-<!--NOT USED
-		<bulk address="//112-115">
+<!--	<bulk address="//112-115">
 			<opcode xsi:type="immutable" id="ds_src_msb" address="//112" name="Source Drumkit Bank Select MSB" min="126" max="127" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_src_lsb" address="//113" name="Source Drumkit Bank Select LSB" min="0" max="0" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_src_prg" address="//114" name="Source Drumkit Program" min="0" max="127" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_src_note" address="//115" name="Source Drumkit Note Number" min="13" max="91" actions="change"/>
 		</bulk>
--->
-	</module>
+-->	</module>
 </structure>

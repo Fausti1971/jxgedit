@@ -19,8 +19,7 @@ public class XGMasterEditWindow extends XGEditWindow
 	}
 
 	JComponent createContent()
-	{
-		JPanel root = new XGFrame();
+	{	XGFrame root = new XGFrame(false);
 
 		XGTagableAddressableSet<XGValue> values = this.module.getValues();
 

@@ -23,7 +23,7 @@ public class XGSettingsWindow extends XGWindow
 	}
 
 	JComponent createContent()
-	{	XGFrame root = new XGFrame();
+	{	XGFrame root = new XGFrame(false);
 
 		root.add(new JLabel("MIDI Input:", JLabel.LEADING), "0,0,1,1");
 		JComboBox<MidiDevice.Info> mi = new JComboBox<MidiDevice.Info>(new Vector<MidiDevice.Info>(INPUTS));

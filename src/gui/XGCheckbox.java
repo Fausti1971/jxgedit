@@ -17,7 +17,7 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 	private final JCheckBox checkbox = new JCheckBox();
 
 	public XGCheckbox(XGValue val)
-	{	super("");
+	{	super (true);
 		this.value = val;
 		if(this.value == null)
 		{	this.setVisible(false);
@@ -33,8 +33,7 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	this.setName(p.getShortName());
-		this.checkbox.setText(p.getName());
+	{	this.checkbox.setText(p.getName());
 		this.setToolTipText(p.getName());
 		this.setVisible(p.isValid());
 		this.setEnabled(p.isValid());

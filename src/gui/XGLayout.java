@@ -32,6 +32,7 @@ public class XGLayout implements LayoutManager2
 */
 	public void addLayoutComponent(Component component, Object o)
 	{	Rectangle r = constraintsObjectToRectangle(o);
+		for(Rectangle rect : this.map.values()) if(rect.intersects(r)) throw new RuntimeException(r + " hides the component at " + rect);
 		this.map.put(component, r);
 		this.columns = Math.max(this.columns, r.x + r.width);
 		this.rows = Math.max(this.rows, r.y + r.height);
@@ -47,7 +48,7 @@ public class XGLayout implements LayoutManager2
 
 	public void addLayoutComponent(String s, Component component){	System.out.println("addLayoutComponent: " + component.getName());}
 
-	public void removeLayoutComponent(Component component){	this.map.remove(component);LOG.info(component.toString());}
+	public void removeLayoutComponent(Component component){	this.map.remove(component);}
 
 	public Dimension preferredLayoutSize(Container container){	return new Dimension(this.columns, this.rows);}
 

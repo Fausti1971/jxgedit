@@ -20,7 +20,8 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 	private final XGTooltip tooltip = new XGTooltip();
 
 	public XGVEG(XGValue dep, XGValue off, XGValue lo, XGValue hi)
-	{	this.depth = dep;
+	{	super(true);
+		this.depth = dep;
 		this.offset = off;
 
 		XGValue low;

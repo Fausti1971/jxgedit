@@ -9,7 +9,7 @@ import static gui.XGMEQ.*;import tag.XGTagableAddressableSet;import value.XGValu
 	}
 
 	javax.swing.JComponent createContent()
-	{	XGFrame root = new XGFrame();
+	{	XGFrame root = new XGFrame(false);
 		XGTagableAddressableSet<XGValue> values = this.module.getValues();
 
 		root.add(new XGRadio(values.get("eq_program"), BoxLayout.X_AXIS), "0,0,5,1");

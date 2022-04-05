@@ -9,9 +9,9 @@ import tag.XGTagableAddressableSet;import value.XGValue;import javax.swing.*;pub
 	}
 
 	JComponent createContent()
-	{	XGFrame root = new XGFrame();
-		XGFrame main = new XGFrame(15, 2);
-		XGFrame parms = new XGFrame(15, 1);
+	{	XGFrame root = new XGFrame(false);
+		XGFrame main = new XGFrame(15, 2, false);
+		XGFrame parms = new XGFrame(15, 1, false);
 
 		XGTagableAddressableSet<XGValue> values = this.module.getValues();
 

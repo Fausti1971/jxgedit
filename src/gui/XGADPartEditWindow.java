@@ -13,10 +13,10 @@ public class XGADPartEditWindow extends XGEditWindow
 	{	XGTagableAddressableSet<XGValue> values = this.module.getValues();
 		int x = 0, y = 0, w = 1, h = 1;
 
-		XGFrame root = new XGFrame();
-		XGFrame voice = new XGFrame();
-		XGFrame effect = new XGFrame();
-		XGFrame midi = new XGFrame();
+		XGFrame root = new XGFrame(false);
+		XGFrame voice = new XGFrame(false);
+		XGFrame effect = new XGFrame(false);
+		XGFrame midi = new XGFrame(false);
 
 		voice.add(new XGKnob(values.get("ad_volume")), "0,0,1,2");
 		voice.add(new XGKnob(values.get("ad_pan")), "1,0,1,2");

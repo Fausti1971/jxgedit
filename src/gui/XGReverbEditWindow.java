@@ -10,9 +10,9 @@ public class XGReverbEditWindow extends XGEditWindow
 	}
 
 	JComponent createContent()
-	{	XGFrame root = new XGFrame();
-		XGFrame main = new XGFrame(15,2);
-		XGFrame parms = new XGFrame(15, 1);
+	{	XGFrame root = new XGFrame(false);
+		XGFrame main = new XGFrame(15,2, false);
+		XGFrame parms = new XGFrame(15, 1, false);
 
 		tag.XGTagableAddressableSet<value.XGValue> values = this.module.getValues();
 

@@ -24,7 +24,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 	}
 
 	public XGRadio(XGValue val, int orientation)
-	{	super();
+	{	super(true);
 		this.orientation = orientation;
 		this.value = val;
 		if(val == null)

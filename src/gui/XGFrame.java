@@ -13,22 +13,22 @@ public class XGFrame extends JPanel implements XGComponent
 /**
 * erzeugt ein JPanel mit einem XGLayout mit den übergebenen Grid-Dimensionen, optional mit Label an Position "0,0,w++,1"
 */
-	public XGFrame(int columns, int rows)
+	public XGFrame(int columns, int rows, boolean border)
 	{	this.setLayout(new XGLayout(new Dimension(columns, rows)));
-		this.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		if(border) this.setBorder(BorderFactory.createRaisedSoftBevelBorder());
 	//	this.setBorder(this);
 	}
 
 	public XGFrame(Dimension dim)
-	{	this(dim.width, dim.height);
+	{	this(dim.width, dim.height, false);
 	}
 
-	public XGFrame()
-	{	this(1, 1);
+	public XGFrame(boolean border)
+	{	this(1, 1, border);
 	}
 
 	public XGFrame(String text)
-	{	this();
+	{	this(true);
 		this.addNameLabel(text);
 	}
 

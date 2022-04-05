@@ -1,5 +1,6 @@
 package gui;
 
+import module.XGModule;
 import tag.XGTagableAddressableSet;
 import value.XGValue;
 import javax.swing.*;
@@ -7,18 +8,18 @@ import java.awt.*;
 
 public class XGMultipartEditWindow extends XGEditWindow
 {
-	public XGMultipartEditWindow(module.XGModule mod)
+	public XGMultipartEditWindow(XGModule mod)
 	{	super(XGMainWindow.MAINWINDOW, mod);
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
 	}
 
-	javax.swing.JComponent createContent()
-	{	XGFrame root = new XGFrame();
+	JComponent createContent()
+	{	XGFrame root = new XGFrame(false);
 
 		XGTagableAddressableSet<XGValue> values = this.module.getValues();
 
-		XGFrame midi = new XGFrame();
+		XGFrame midi = new XGFrame(false);
 		midi.add(new XGKnob(values.get("mp_midi_channel")), "0,0,1,2");
 		midi.add(new XGKnob(values.get("mp_reserve")), "1,0,1,2");
 		midi.add(new XGFlagBox("Receive", values.get("mp_rcv_pb"), values.get("mp_rcv_cat"), values.get("mp_rcv_prg"), values.get("mp_rcv_cc"), values.get("mp_rcv_pat"), values.get("mp_rcv_note"),
@@ -36,16 +37,16 @@ public class XGMultipartEditWindow extends XGEditWindow
 
 		root.add(midi, "0,0,1,4");
 
-		XGFrame voice = new XGFrame();
+		XGFrame voice = new XGFrame(false);
 		voice.add(new XGCombo(values.get("mp_partmode")), "0,0,2,1");
 		voice.add(new XGProgramSelector(values.get("mp_program")), "2,0,4,1");
-		voice.add(new XGCombo(values.get("mp_key_on_assign")), "6,0,2,1");
-		voice.add(new XGCombo(values.get("mp_poly")), "8,0,2,1");
+		voice.add(new XGRadio(values.get("mp_key_on_assign")), "6,0,2,2");
+		voice.add(new XGRadio(values.get("mp_poly")), "8,0,2,2");
 		voice.add(new XGCombo(values.get("mp_audio_output")), "10,0,2,1");
 		voice.add(new XGKnob(values.get("mp_volume")), "12,0,1,2");
 		voice.add(new XGKnob(values.get("mp_pan")), "13,0,1,2");
 
-		XGFrame tune = new XGFrame("Tuning");
+		XGFrame tune = new XGFrame("Pitch");
 		tune.add(new XGKnob(values.get("mp_transpose")), "0,0,1,4");
 		tune.add(new XGKnob(values.get("mp_detune")), "1,0,1,4");
 		tune.add(new XGKnob(values.get("mp_scale_c")), "2,0,1,4");
@@ -89,9 +90,6 @@ public class XGMultipartEditWindow extends XGEditWindow
 		vib.add(new XGKnob(values.get("mp_vib_delay")), "2,0,1,4");
 		voice.add(vib, "0,10,3,2");
 
-		voice.add(new XGCheckbox(values.get("mp_portamento")), "11,2,2,1");
-		voice.add(new XGKnob(values.get("mp_portamento_time")), "13,2,1,2");
-
 		XGFrame aeg = new XGFrame("Amplifier Envelope Generator");
 		aeg.add(new XGAEG(values.get("mp_aeg_attack"), values.get("mp_aeg_decay"), values.get("mp_aeg_release")), "0,0,3,5");
 		aeg.add(new XGKnob(values.get("mp_aeg_attack")), "0,5,1,4");
@@ -107,10 +105,15 @@ public class XGMultipartEditWindow extends XGEditWindow
 		peg.add(new XGKnob(values.get("mp_peg_release_level")), "3,5,1,4");
 		voice.add(peg, "9,4,5,4");
 
+		XGFrame port = new XGFrame("Portamento");
+		port.add(new XGCheckbox(values.get("mp_portamento")), "0,0,2,2");
+		port.add(new XGKnob(values.get("mp_portamento_time")), "2,0,1,4");
+		voice.add(port, "11,8,3,2");
+
 		root.add(voice, "0,4,1,12");
 
 		Dimension tabDim = new Dimension(9,1);
-		XGFrame control = new XGFrame();
+		XGFrame control = new XGFrame(false);
 		JTabbedPane tabs = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 		XGFrame tab = new XGFrame(tabDim);
 		tab.add(new XGKnob(values.get("mp_mw_pitch")), "1,0,1,1");			//1
@@ -247,7 +250,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 
 		control.add(tabs, "0,0,8,2");
 
-		XGFrame vl = new XGFrame();
+		XGFrame vl = new XGFrame(false);
 		vl.add(new XGCheckbox(values.get("mp_vl_noteassign")), "0,0,1,1");
 		vl.add(new XGCombo(values.get("mp_vl_notefilter")), "1,0,1,1");
 		//vl.add(new XGKnob(values.get("mp_vl_amp_break")), "c0c1");

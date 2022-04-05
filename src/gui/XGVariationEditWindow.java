@@ -14,10 +14,10 @@ public class XGVariationEditWindow extends XGEditWindow
 
 	javax.swing.JComponent createContent()
 	{	XGFrame
-			root = new XGFrame(),
-			main = new XGFrame(15,2),
-			parms = new XGFrame(15,1),
-			ctrl = new XGFrame(15,1);
+			root = new XGFrame(false),
+			main = new XGFrame(8,2, false),
+			parms = new XGFrame(16,1, false),
+			ctrl = new XGFrame(7,1, false);
 
 		XGTagableAddressableSet<XGValue> values = this.module.getValues();
 
@@ -28,7 +28,7 @@ public class XGVariationEditWindow extends XGEditWindow
 		main.add(new XGKnob(values.get("var_to_cho")), "7,0,1,2");
 		main.add(new XGRadio(values.get("var_connection"), BoxLayout.X_AXIS), "0,1,2,1");
 		main.add(new XGCombo(values.get("var_part")), "2,1,2,1");
-		root.add(main, "0,0,1,1");
+		root.add(main, "0,0,8,1");
 
 		parms.add(new XGKnob(values.get("var_p1")), "0,0,1,1");
 		parms.add(new XGKnob(values.get("var_p2")), "1,0,1,1");
@@ -46,14 +46,14 @@ public class XGVariationEditWindow extends XGEditWindow
 		parms.add(new XGKnob(values.get("var_p14")), "13,0,1,1");
 		parms.add(new XGKnob(values.get("var_p15")), "14,0,1,1");
 		parms.add(new XGKnob(values.get("var_p16")), "15,0,1,1");
-		root.add(parms, "0,1,1,1");
+		root.add(parms, "0,1,16,1");
 
 		ctrl.add(new XGKnob(values.get("var_mw")), "0,0,1,1");
 		ctrl.add(new XGKnob(values.get("var_pb")), "1,0,1,1");
 		ctrl.add(new XGKnob(values.get("var_cat")), "2,0,1,1");
 		ctrl.add(new XGKnob(values.get("var_ac1")), "3,0,1,1");
 		ctrl.add(new XGKnob(values.get("var_ac2")), "4,0,1,1");
-		root.add(ctrl, "0,2,1,1");
+		root.add(ctrl, "9,0,7,1");
 
 		return root;
 	}
