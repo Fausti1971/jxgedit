@@ -74,7 +74,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 			this.setToolTipText(e.toString());
 			this.entry = e;
 			this.value = v;
-			this.addActionListener((ActionEvent)->{this.value.setEntry(entry, false, true);});
+			this.addActionListener((ActionEvent)->this.value.setEntry(entry, false, true));
 		}
 
 		@Override public boolean isSelected(){	return this.entry.getValue() == this.value.getValue();}

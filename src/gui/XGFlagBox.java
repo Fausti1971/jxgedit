@@ -22,7 +22,7 @@ public class XGFlagBox extends XGFrame
 		for(XGValue v : vals){	if(v != null) this.values.add(v);}
 
 		JButton button = new JButton(name);
-		button.addActionListener((ActionEvent)->{new XGCheckboxPopup(this, this.values);});
+		button.addActionListener((ActionEvent)->new XGCheckboxPopup(this, this.values));
 		button.setAlignmentY(0.5f);
 		button.setAlignmentX(0.5f);
 
@@ -44,7 +44,7 @@ public class XGFlagBox extends XGFrame
 			for(XGValue v : values)
 			{	p = v.getParameter();
 				c = new JCheckBox(p.getName(), p.getMaxIndex() == v.getIndex());
-				c.addActionListener((ActionEvent)->{v.toggleIndex(true);});
+				c.addActionListener((ActionEvent)->v.toggleIndex(true));
 				this.add(c);
 			}
 			this.setVisible(true);

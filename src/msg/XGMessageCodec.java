@@ -1,6 +1,6 @@
 package msg;
 
-import parm.XGParameterConstants;import java.util.HashMap;import java.util.Map;public interface XGMessageCodec 
+import parm.XGParameterConstants;public interface XGMessageCodec 
 {	static XGMessageCodec getCodec(XGParameterConstants.ValueDataType type)
 	{	switch(type)
 		{	case LSB:	return LSB_CODEC;

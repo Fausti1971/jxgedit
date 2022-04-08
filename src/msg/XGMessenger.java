@@ -1,7 +1,6 @@
 package msg;
 
 import adress.InvalidXGAddressException;
-import device.XGDevice;
 
 /**
  * qualifiziert das implementierende Object als XGMessage-Source und -Destination und stellt damit die Schnittstelle zu einem Endpunkt der Außenwelt (midi, file, mem) dar
@@ -34,5 +33,5 @@ public interface XGMessenger
 /**
  * schließt den mit dem Konstruktor automatisch geöffneten Messenger und gibt Resourcen wieder frei
  */
-	public void close();
+	void close();
 }

@@ -132,7 +132,7 @@ public interface XGByteArray
 	{
 	}
 
-	public default String toHexString()
+	default String toHexString()
 	{	if(getByteArray() == null) return "no data";
 		StringBuilder s = new StringBuilder();
 		for(byte c : getByteArray())

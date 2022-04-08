@@ -1,16 +1,16 @@
 package application;
 
-import static java.lang.Math.abs;import java.awt.*;import java.util.HashSet;
+import java.awt.*;import java.util.HashSet;
 import java.util.Scanner;import java.util.Set;
 import java.util.StringTokenizer;
 
 public interface XGStrings
 {
-	static final String REGEX_ALNUM = "\\w+"; // alternativ: [a-zA-Z0-9_]+
-	static final String REGEX_NON_ALNUM = "\\W+"; //alternativ: [^a-zA-Z0-9_]
-	static final String REGEX_NUM = "\\d+";
-	static final String REGEX_ALL = "[\\s\\S]";
-	static final String TEXT_REPLACEMENT = "_";
+	String REGEX_ALNUM = "\\w+"; // alternativ: [a-zA-Z0-9_]+
+	String REGEX_NON_ALNUM = "\\W+"; //alternativ: [^a-zA-Z0-9_]
+	String REGEX_NUM = "\\d+";
+	String REGEX_ALL = "[\\s\\S]";
+	String TEXT_REPLACEMENT = "_";
 
 	static String toAlNum(String dirty)
 	{	return dirty.replaceAll(REGEX_NON_ALNUM, TEXT_REPLACEMENT);
@@ -72,24 +72,9 @@ public interface XGStrings
 		return res.toString();
 	}
 
-/**
- * überprüft den übergebenen String lediglich auf null
- * @param s	übergebener String, kann null sein
- * @param def	FallbackString, falls s null ist
- * @return String s oder def
- */
-	static String getStringOrDefault(String s, String def)
-	{	if(s == null) return def;
-		return s;
-	}
+	static boolean isNumber(String name){	return name.matches(REGEX_NUM);}
 
-	static boolean isNumber(String name)
-	{	return name.matches(REGEX_NUM);
-	}
-
-	static boolean isAlNum(String name)
-	{	return name.matches(REGEX_ALNUM);
-	}
+	static boolean isAlNum(String name){	return name.matches(REGEX_ALNUM);}
 
 	static String commonString(String s1, String s2)
 	{	int i = 0, last = Math.min(s1.length(), s2.length());

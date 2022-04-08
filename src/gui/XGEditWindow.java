@@ -1,6 +1,6 @@
 package gui;
 
-import adress.XGAddress;import adress.XGAddressable;import adress.XGAddressableSet;import module.XGModule;import xml.XGProperty;import static xml.XMLNodeConstants.*;import javax.swing.*;import java.awt.*;import java.awt.event.ComponentEvent;
+import adress.XGAddress;import adress.XGAddressable;import adress.XGAddressableSet;import module.XGModule;import xml.XGProperty;import javax.swing.*;
 
 public abstract class XGEditWindow extends XGWindow implements XGAddressable
 {
@@ -51,7 +51,7 @@ public abstract class XGEditWindow extends XGWindow implements XGAddressable
 	final XGModule module;
 
 	public XGEditWindow(XGWindow own, XGModule mod)
-	{	super(own, mod.getType().getTag());
+	{	super( mod.getType().getTag());
 		this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		this.module = mod;
 		this.setContentPane(this.createContent());

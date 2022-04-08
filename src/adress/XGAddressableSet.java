@@ -15,7 +15,6 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 
 	private String memberName = "";
 	private final SortedMap<XGAddress, T> map = new TreeMap<>();
-//	private final Set<XGAddressableSetListener> listeners = new HashSet<>();
 
 	@Override public synchronized boolean add(T obj)
 	{	synchronized(this.map)
@@ -23,22 +22,12 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 			if(this.memberName.equals("")) this.memberName = obj.getClass().getSimpleName();
 			XGAddress adr = obj.getAddress();
 			this.map.put(adr, obj);
-//			this.notifyListeners(adr);
 		}
 		return true;
 	}
 
-	//private synchronized void remove(XGAddress adr)
-	//{	synchronized(this.map)
-	//	{	this.map.remove(adr);
-	//		this.notifyListeners(adr);
-	//	}
-	//}
 
-	@Override public synchronized void clear()
-	{	this.map.clear();
-//		this.notifyListeners(XGALLADDRESS);
-	}
+	@Override public synchronized void clear(){	this.map.clear();}
 
 	public synchronized T get(XGAddress adr)
 	{	synchronized(this.map)
@@ -53,136 +42,31 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 		}
 	}
 
-	//public synchronized int indexOf(XGAddress adr)
-	//{	synchronized(this.map)
-	//	{	Vector<XGAddress> v = new Vector<>(this.adresses());
-	//		return v.indexOf(adr);
-	//	}
-	//}
+	@Override public int size(){	return this.map.size();}
 
-	@Override public int size()
-	{	return this.map.size();
-	}
-	//
-	//public boolean contains(XGAddress adr)
-	//{	return this.map.containsKey(adr);
-	//}
-	//
-	//public T getOrDefault(XGAddress adr, T def)
-	//{	return this.map.getOrDefault(adr, def);
-	//}
+	public synchronized Collection<T> values(){	return this.map.values();}
 
-	//public T getFirstValidOrDefault(XGAddress adr, T def)
-	//{	T res = getFirstIncluding(adr);
-	//	if(res == null) return def;
-	//	return res;
-	//}
-/**
- * 	returniert den ersten auffindbaren Member, der in adr eingeschlossen ist
- * @param adr	einschließende address (this ist eingeschlossene address)
- * @return	erstes auffindbares match
- * @throws XGMemberNotFoundException falls unter der angegebenen Address kein Member in diesem Set zu vorhanden ist
- */
-	//public synchronized T getFirstIncluded(XGAddress adr) throws XGMemberNotFoundException
-	//{	for(T a : this.map.values()) if(adr.contains(a.getAddress())) return a;
-	//	throw new XGMemberNotFoundException("no " + this.memberName + " found included in address: " + adr);
-	//}
-
-/**
- * returniert den ersten auffindbaren Member, dessen address adr einschließt
- * @param adr	die eingeschlossene address (this ist die einschließende address)
- * @return	erstes auffindbares match oder null
- */
-	//public synchronized T getFirstIncluding(XGAddress adr)
-	//{	for(T a : this.map.values()) if(a.getAddress().contains(adr)) return a;
-	//	LOG.info("no " + this.memberName + " found containing address: " + adr);
-	//	return null;
-	//}
-
-/**
- * returniert ein Set aller Members, deren address von adr eingeschlossen wird
- * @param adr die einschließende address (this ist die eingeschlossene address)
- * @return	Set aller auffindbaren matches
- */
-	//public synchronized XGAddressableSet<T> getAllIncluded(XGAddress adr)
-	//{	XGAddressableSet<T> set = new XGAddressableSet<>();
-	//	for(T i : this.values()) if(adr.contains(i.getAddress())) set.add(i);
-	//	this.addListener(set);
-	//	return set;
-	//}
-
-/**
- * returniert ein Set aller Members, deren address adr einschließt
- * @return	Set aller auffindbaren matches
- */
-	//public synchronized XGAddressableSet<T> getAllIncluding(XGAddress adr)
-	//{	XGAddressableSet<T> set = new XGAddressableSet<>();
-	//	for(T i : this.values()) if(i.getAddress().contains(adr)) set.add(i);
-	//	this.addListener(set);
-	//	return set;
-	//}
-
-	//public T[] toArray(T[] a)
-	//{	return this.map.values().toArray(a);
-	//}
-
-	public synchronized Collection<T> values()
-	{	return this.map.values();
-	}
-
-	//public synchronized Collection<XGAddress> adresses()
-	//{	return this.map.keySet();
-	//}
-
-	@Override public synchronized Iterator<T> iterator()
-	{	return this.map.values().iterator();
-	}
-
-	//public void addListener(XGAddressableSetListener l)
-	//{	listeners.add(l);
-	//}
-	//
-	//public void removeListener(XGAddressableSetListener l)
-	//{	listeners.remove(l);
-	//}
-
-	//private synchronized void notifyListeners(XGAddressable adr)
-	//{	if(adr != null) for(XGAddressableSetListener l : listeners) l.setChanged(adr);
-	//}
-
-	//@Override public void setChanged(XGAddressable adr)
-	//{	this.notifyListeners(adr);
-	//}
+	@Override public synchronized Iterator<T> iterator(){	return this.map.values().iterator();}
 
 	@Override public String toString()
 	{	if(this.map.isEmpty()) return "empty set";
 		return (this.memberName) + " (" + size() + ")";
 	}
 
-	@Override public boolean isEmpty()
-	{	return this.map.isEmpty();
-	}
+	@Override public boolean isEmpty(){	return this.map.isEmpty();}
 
-	@Override public boolean contains(Object o)
-	{	return this.map.containsValue(o);
-	}
+	@Override public boolean contains(Object o){	return this.map.containsValue(o);}
 
-	@Override public Object[] toArray()
-	{	return this.map.values().toArray();
-	}
+	@Override public Object[] toArray(){	return this.map.values().toArray();}
 
-	@Override public <A> A[] toArray(A[] a)
-	{	return this.map.values().toArray(a);
-	}
+	@Override public <A> A[] toArray(A[] a){	return this.map.values().toArray(a);}
 
 	@Override public synchronized boolean remove(Object o)
 	{	if(!(o instanceof XGAddressable)) return false;
 		synchronized(this.map){	return this.map.remove(((XGAddressable)o).getAddress(), o);}
 	}
 
-	@Override public boolean containsAll(Collection<?> c)
-	{	return this.map.values().containsAll(c);
-	}
+	@Override public boolean containsAll(Collection<?> c){	return this.map.values().containsAll(c);}
 
 	@Override public boolean addAll(Collection<? extends T> c)
 	{	for(T t: c) this.add(t);

@@ -11,7 +11,7 @@ import application.XGLoggable;
 public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implements Iterable<T>, Set<T>, XGLoggable
 {
 	private final XGAddressableSet<T> adrSet = new XGAddressableSet<>();
-	private final XGTagableSet<T> tagSet = new XGTagableSet<T>();
+	private final XGTagableSet<T> tagSet = new XGTagableSet<>();
 
 	@Override public boolean add(T obj)
 	{	boolean res;

@@ -29,7 +29,7 @@ public class XGRealTable implements XGTable
  */
 	XGRealTable(XMLNode n)
 	{	this(n.getStringAttribute(ATTR_NAME), n.getStringAttributeOrDefault(ATTR_UNIT, ""), n.getValueAttribute(ATTR_FALLBACKMASK, DEF_FALLBACKMASK), false);
-		n.traverse(TAG_ITEM, (XMLNode x)->{this.add(new XGTableEntry(x));});
+		n.traverse(TAG_ITEM, (XMLNode x)->this.add(new XGTableEntry(x)));
 		LOG.info(this.getInfo());
 	}
 

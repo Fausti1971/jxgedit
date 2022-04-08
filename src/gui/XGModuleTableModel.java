@@ -22,7 +22,7 @@ public class XGModuleTableModel  implements TableModel
 					else continue;//falls ID eines XGModule: weitergehen, hier gibt es nichts zu sehen...
 				}
 				else v = m.getValues().get(tag);
-				v.getValueListeners().add((XGValue)->{notifyListener(this.rows.indexOf(m), this.cols.indexOf(tag));});
+				v.getValueListeners().add((XGValue)->notifyListener(this.rows.indexOf(m), this.cols.indexOf(tag)));
 			}
 //		LOG.info(this.getClass().getSimpleName() + " " + this.type + " initialized with " + this.rows.size() + " rows");
 	}

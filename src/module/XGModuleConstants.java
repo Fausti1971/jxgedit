@@ -1,7 +1,7 @@
 package module;
 
 import javax.swing.ActionMap;
-import adress.*;import xml.XMLNodeConstants;
+import xml.XMLNodeConstants;
 
 public interface XGModuleConstants extends XMLNodeConstants
 {
@@ -9,7 +9,7 @@ public interface XGModuleConstants extends XMLNodeConstants
 	//{	SYSTEM, INFO, FX1REV, FX1CHO, FX1VAR, FX1EQ, FX2, DISPLAY_LETTER, DISPLAY_BITMAP, MULTIPART, ADPART, DRUMSET1, DRUMSET2, DRUMSET3, DRUMSET4, PLUGIN
 	//};
 
-	static final String
+	String
 		MT_SYSTEM = "master",
 		MT_INFO = "info",
 		MT_FX1REV = "rev",
@@ -24,10 +24,10 @@ public interface XGModuleConstants extends XMLNodeConstants
 		MT_DRUMSET3 = "ds3",
 		MT_DRUMSET4 = "ds4";
 
-	static final String DEF_MODULENAME = "nameless module";
+	String DEF_MODULENAME = "nameless module";
 	ActionMap MOD_ACTIONS = new ActionMap();
 
-	static final String
+	String
 		ACTION_EDIT = "edit...",
 		ACTION_LOADFILE = "load file...",
 		ACTION_SAVEFILE = "save file...",

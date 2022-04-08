@@ -11,7 +11,6 @@ public class XGADPartEditWindow extends XGEditWindow
 
 	JComponent createContent()
 	{	XGTagableAddressableSet<XGValue> values = this.module.getValues();
-		int x = 0, y = 0, w = 1, h = 1;
 
 		XGFrame root = new XGFrame(false);
 		XGFrame voice = new XGFrame(false);

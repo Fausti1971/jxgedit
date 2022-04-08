@@ -2,7 +2,7 @@ package value;
 
 import java.util.HashMap;
 import java.util.Map;
-import adress.InvalidXGAddressException;import module.XGDrumsetModuleType;import static module.XGDrumsetModuleType.*;import module.XGModule;import static parm.XGDefaultsTable.DEF_DRUMSETPROGRAM;import tag.XGTagableAddressableSet;import tag.XGTagableSet;import static value.XGValueType.MP_PM_VALUE_TAG;import static value.XGValueType.MP_PRG_VALUE_TAG;
+import adress.InvalidXGAddressException;import static module.XGDrumsetModuleType.*;import static parm.XGDefaultsTable.DEF_DRUMSETPROGRAM;import static value.XGValueType.MP_PM_VALUE_TAG;import static value.XGValueType.MP_PRG_VALUE_TAG;
 /**
 * Puffert je Multipart ein normal- und ein drumkit-Program und je Partmode ein drumsetProgram und synchronisiert diese bei Änderung
 */

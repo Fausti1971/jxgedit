@@ -2,7 +2,7 @@ package gui;
 
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
-import parm.XGParameterConstants;import value.XGValue;
+import value.XGValue;
 import value.XGValueChangeListener;
 import javax.swing.*;
 import java.awt.*;
@@ -27,13 +27,14 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
 		this.add(this.checkbox, "0,0,1,1");
-		this.checkbox.addActionListener((ActionEvent e)->{this.value.toggleIndex(true);});
+		this.checkbox.addActionListener((ActionEvent e)->this.value.toggleIndex(true));
 		this.parameterChanged(this.value.getParameter());
 		this.contentChanged(this.value);
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	this.checkbox.setText(p.getName());
+	{	this.checkbox.setText(p.getShortName());
+		this.checkbox.setToolTipText(p.getName());
 		this.setToolTipText(p.getName());
 		this.setVisible(p.isValid());
 		this.setEnabled(p.isValid());

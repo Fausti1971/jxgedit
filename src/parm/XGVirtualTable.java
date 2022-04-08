@@ -4,8 +4,7 @@ import java.util.*;
 import java.util.function.Function;
 import application.XGMath;
 import application.XGStrings;
-import device.XGDevice;
-import module.XGModule;import xml.XMLNode;
+import xml.XMLNode;
 
 public class XGVirtualTable implements XGTable
 {	private static final int MIN = 0, MAX = Integer.MAX_VALUE & 0x0000FFFF;
@@ -20,7 +19,7 @@ public class XGVirtualTable implements XGTable
 			(String s)->XGStrings.parseIntOrDefault(s, MIN + 1) - 1));
 
 		TABLES.add(new XGVirtualTable(MIN, MAX, TABLE_DIV10,
-			(Integer i)->{return Float.toString((float)i / 10);},
+			(Integer i)->Float.toString((float)i / 10),
 			(String s)->{float f = Float.parseFloat(s) * 10; return (int)f;}));
 
 		TABLES.add

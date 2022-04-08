@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import application.*;
 import static application.JXG.XMLPATH;import tag.*;
-import static value.XGValueType.MP_PRG_VALUE_TAG;import xml.XGProperty;import xml.XMLNode;
+import xml.XMLNode;
 /**
  * simple taggable HashMap<Integer, HashMap<Integer, Integer>>, deren erster int der Wert des Selektors, der zweite int der Wert des zugehörigen Defaults ist
  * @author thomas

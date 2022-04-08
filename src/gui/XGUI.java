@@ -112,7 +112,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		}
 	}
 
-	@Override public default XMLNode getConfig(){	return ENVIRONMENT.config;}
+	@Override  default XMLNode getConfig(){	return ENVIRONMENT.config;}
 
 	@Override default void propertyChanged(XGProperty p){	LOG.info(p.toString());}
 }

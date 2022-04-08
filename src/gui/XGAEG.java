@@ -1,11 +1,8 @@
 package gui;
 
-import java.awt.GridBagLayout;
-import adress.XGAddress;
 import gui.XGPoint.PointRelation;
 import value.XGFixedValue;
 import value.XGValue;
-import javax.swing.*;
 
 public class XGAEG extends XGFrame implements XGComponent
 {

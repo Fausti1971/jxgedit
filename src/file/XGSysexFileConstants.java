@@ -6,7 +6,7 @@ import javax.swing.filechooser.FileFilter;
 public interface XGSysexFileConstants
 {	String SYX_SUFFIX = ".syx";
 
-	static final FileFilter SYX_FILEFILTER = new FileFilter()
+	FileFilter SYX_FILEFILTER = new FileFilter()
 	{	@Override public String getDescription()
 		{	return "Raw SystemExlusive File";
 		}

@@ -19,8 +19,7 @@ public class XGDeviceDetector extends JPanel implements DocumentListener, Action
 /***********************************************************************************************************************************/
 
 	private final XGProperty property;
-	private JTextField text = new JTextField();
-	private JButton button = new JButton("detect");
+	private final JTextField text = new JTextField();
 
 	public XGDeviceDetector(XGProperty prop)
 	{	this.setLayout(new BorderLayout());
@@ -29,8 +28,8 @@ public class XGDeviceDetector extends JPanel implements DocumentListener, Action
 		this.text.setText(this.property.getValue().toString());
 		this.text.getDocument().addDocumentListener(this);
 		this.add(text, BorderLayout.CENTER);
-		this.add(button, BorderLayout.EAST);
-		this.button.addActionListener(this);
+		JButton button = new JButton("detect");this.add(button, BorderLayout.EAST);
+		button.addActionListener(this);
 	}
 
 	@Override public void insertUpdate(DocumentEvent e)

@@ -7,19 +7,19 @@ public interface XGResizeable extends ComponentListener
 {
 	void componentResized();
 
-	@Override public default void componentResized(ComponentEvent e)
+	@Override  default void componentResized(ComponentEvent e)
 	{	this.componentResized();
 	}
 
-	@Override public default void componentMoved(ComponentEvent e)
+	@Override  default void componentMoved(ComponentEvent e)
 	{
 	}
 
-	@Override public default void componentShown(ComponentEvent e)
+	@Override  default void componentShown(ComponentEvent e)
 	{
 	}
 
-	@Override public default void componentHidden(ComponentEvent e)
+	@Override  default void componentHidden(ComponentEvent e)
 	{
 	}
 

@@ -33,7 +33,7 @@ import java.awt.*;public interface XGMath
 		}
 	}
 
-	public static void main(String[] args)
+	static void main(String[] args)
 	{	int
 			minMSB = 126 << 14,
 			maxMSB = 127 << 14,

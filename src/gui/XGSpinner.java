@@ -19,7 +19,7 @@ public class XGSpinner extends JSpinner implements ChangeListener, XGUI
 
 /**************************************************************************************************/
 
-	private ChangeableContent<Integer> value;
+	private final ChangeableContent<Integer> value;
 
 	public XGSpinner(String name, ChangeableContent<Integer> v, int min, int max, int step)
 	{	super(new SpinnerNumberModel((int)v.getContent(), min, max, step));

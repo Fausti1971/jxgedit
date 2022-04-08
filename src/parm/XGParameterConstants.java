@@ -23,7 +23,7 @@ public interface XGParameterConstants extends XMLNodeConstants
 		TABLE_NONE = "none",
 		DEF_TABLENAME = TABLE_NORMAL;
 
-	enum XACTION{change,dump,none,change_program,change_partmode};
+	enum XACTION{change,dump,none,change_program,change_partmode}
 
 	String NO_PARAMETERNAME = "no parameter";
 	int  UNLIMITED = -1;

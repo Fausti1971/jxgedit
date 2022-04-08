@@ -17,41 +17,37 @@ public class XGMainWindow extends XGWindow
 	 */
 	private static final long serialVersionUID=1L;
 
-/**********************************************************************************************************************/
-
-	private XGStatusBar status;
+/***********************************************************************************************************************/
 
 	public XGMainWindow(XMLNode cfg)
-	{	super(null, "main");
+	{	super( "main");
 		this.setJMenuBar(this.createMenu());
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
 	}
-
-	public XGStatusBar getStatusBar(){	return this.status;}
 
 	private JMenuBar createMenu()
 	{	JMenuBar bar = new JMenuBar();
 		JMenu file = new JMenu("File");
 
 		JMenuItem load = new JMenuItem("Open Dump...");
-		load.addActionListener((ActioEvent)->{XGSysexFile.load(XGDevice.device);});
+		load.addActionListener((ActioEvent)->XGSysexFile.load(XGDevice.device));
 		file.add(load);
 
 		JMenuItem save = new JMenuItem("Save Dump...");
-		save.addActionListener((ActioEvent)->{XGSysexFile.save(XGDevice.device);});
+		save.addActionListener((ActioEvent)->XGSysexFile.save(XGDevice.device));
 		file.add(save);
 
 		file.addSeparator();
 
 		JMenuItem settings = new JMenuItem("Settings");
-		settings.addActionListener((ActionEvent)->{XGSettingsWindow.getWindow(APPNAME + " Settings").setVisible(true);});
+		settings.addActionListener((ActionEvent)->XGSettingsWindow.getWindow(APPNAME + " Settings").setVisible(true));
 		file.add(settings);
 
 		file.addSeparator();
 
 		JMenuItem quit = new JMenuItem("Quit");
-		quit.addActionListener((ActioEvent)->{this.windowClosing(null);});
+		quit.addActionListener((ActioEvent)->this.windowClosing(null));
 		file.add(quit);
 
 		bar.add(file);
@@ -59,11 +55,11 @@ public class XGMainWindow extends XGWindow
 		JMenu midi = new JMenu("Midi");
 
 		JMenuItem requestAll = new JMenuItem("Request All");
-		requestAll.addActionListener((ActionEvent)->{new Thread(() -> {XGDevice.device.requestAll(XGMidi.getMidi());}).start();});
+		requestAll.addActionListener((ActionEvent)->new Thread(() -> XGDevice.device.requestAll(XGMidi.getMidi())).start());
 		midi.add(requestAll);
 
 		JMenuItem transmitAll = new JMenuItem("Transmit All");
-		transmitAll.addActionListener((ActionEvent)->{new Thread(() -> {XGDevice.device.transmitAll(XGMidi.getMidi());}).start();});
+		transmitAll.addActionListener((ActionEvent)->new Thread(() -> XGDevice.device.transmitAll(XGMidi.getMidi())).start());
 		midi.add(transmitAll);
 
 		bar.add(midi);
@@ -93,7 +89,7 @@ public class XGMainWindow extends XGWindow
 				}
 				catch(NoSuchElementException e){	v = null;}
 				button = new XGButton2(mt.getName(), v);
-				button.addActionListener((ActionEvent e)->{XGEditWindow.getEditWindow(mod).setVisible(true);});
+				button.addActionListener((ActionEvent e)->XGEditWindow.getEditWindow(mod).setVisible(true));
 				sysPane.add(button);
 			}
 			if(set.size() > 1) tabPane.addTab(mt.getName(), new JScrollPane(new XGModuleTable(mt)));
@@ -101,7 +97,8 @@ public class XGMainWindow extends XGWindow
 
 		content.add(sysPane, NORTH);
 		content.add(tabPane, CENTER);
-		content.add(this.status = new XGStatusBar(), SOUTH);
+		/**********************************************************************************************************************/
+		XGStatusBar status;content.add(status = new XGStatusBar(), SOUTH);
 		return content; 
 	}
 

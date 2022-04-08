@@ -34,18 +34,18 @@ public class XGMasterEditWindow extends XGEditWindow
 		for(XGModuleType mt : TYPES)
 		{	if(mt instanceof XGDrumsetModuleType)
 			{	b = new JButton("Reset " + mt.getName());
-				b.addActionListener((ActionEvent e)->{((XGDrumsetModuleType)mt).reset();});
+				b.addActionListener((ActionEvent e)->((XGDrumsetModuleType)mt).reset());
 				root.add(b, new int[]{0,y++,4,1});
 			}
 		}
 		b = new JButton("XG System On");
-		b.addActionListener((ActionEvent e)->{XGDevice.device.resetXG(true, true);});
+		b.addActionListener((ActionEvent e)->XGDevice.device.resetXG(true, true));
 		root.add(b, new int[]{0,y++,4,1});
 
 		b = new JButton("Reset All Parameters");
-		b.addActionListener((ActionEvent e)->{XGDevice.device.resetAll(true, true);});
+		b.addActionListener((ActionEvent e)->XGDevice.device.resetAll(true, true));
 		root.add(b, new int[]{0,y++,4,1});
 
 		return root;
-	};
+	}
 }

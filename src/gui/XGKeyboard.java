@@ -20,7 +20,6 @@ import device.XGMidi;
 import module.XGModule;
 import static parm.XGTable.TABLES;import value.XGValue;
 import xml.XMLNode;
-import static xml.XMLNodeConstants.ATTR_NAME;
 
 public class XGKeyboard extends XGFrame implements XGUI
 {
@@ -31,7 +30,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 		BLACKWIDTH = WHITEWIDTH / 2,
 		DEF_VELOCITY = 100;
 
-	private static final boolean isBlackNote(int i)
+	private static boolean isBlackNote(int i)
 	{	int rest = i % 12;
 		return rest == 1 || rest == 3 || rest == 6 || rest == 8 || rest == 10;
 	}
@@ -42,7 +41,6 @@ public class XGKeyboard extends XGFrame implements XGUI
 	private final XGValue partmodeValue, minKeyValue, maxKeyValue, midiChannelValue;
 	private final Map<Integer, XGKey> keyMap = new HashMap<>();
 	private final JPanel panel = new JPanel(null);
-	private final JScrollPane scrollpane = new JScrollPane(this.panel);
 	private final ShortMessage message = new ShortMessage();
 //	private final JComponent column;
 
@@ -53,9 +51,9 @@ public class XGKeyboard extends XGFrame implements XGUI
 		this.minKeyValue = mod.getValues().get("mp_note_lo");
 		this.maxKeyValue = mod.getValues().get("mp_note_hi");
 
-		this.partmodeValue.getValueListeners().add((XGValue)->{this.partmodeChanged();});
-		this.minKeyValue.getValueListeners().add((XGValue)->{this.minKeyChanged();});
-		this.maxKeyValue.getValueListeners().add((XGValue)->{this.maxKeyChanged();});
+		this.partmodeValue.getValueListeners().add((XGValue)->this.partmodeChanged());
+		this.minKeyValue.getValueListeners().add((XGValue)->this.minKeyChanged());
+		this.maxKeyValue.getValueListeners().add((XGValue)->this.maxKeyChanged());
 
 		int h = this.getHeight() - (this.getInsets().top + this.getInsets().bottom);
 		for(int i = 0, p = 0; i < 128; i++)
@@ -79,12 +77,12 @@ public class XGKeyboard extends XGFrame implements XGUI
 
 //		this.column = new JLabel("Test");
 
-		this.add(this.scrollpane);
-		this.scrollpane.setBorder(null);
-		this.scrollpane.setViewportBorder(null);
+		JScrollPane scrollpane = new JScrollPane(this.panel);this.add(scrollpane);
+		scrollpane.setBorder(null);
+		scrollpane.setViewportBorder(null);
 //		this.scrollpane.setBounds(this.getContentArea());
 //		this.scrollpane.setColumnHeaderView(this.column);
-		this.scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+		scrollpane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 //		this.scrollpane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 	}
 
@@ -162,12 +160,12 @@ public class XGKeyboard extends XGFrame implements XGUI
 		}
 
 		private String getHTML(String text)
-		{	String tmp = new String("<html>");
+		{	StringBuilder tmp = new StringBuilder(new String("<html>"));
 			for(char c : text.toCharArray())
-			{	tmp += c + "<br>";
+			{	tmp.append(c).append("<br>");
 			}
-			tmp += "</html>";
-			return tmp;
+			tmp.append("</html>");
+			return tmp.toString();
 		}
 
 		private int getNumber()

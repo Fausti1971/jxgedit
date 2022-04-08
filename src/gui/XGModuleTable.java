@@ -1,5 +1,4 @@
 package gui;
-import static gui.XGUI.*;
 import module.*;
 import javax.swing.*;
 import javax.swing.table.*;

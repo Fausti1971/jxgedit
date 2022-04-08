@@ -35,14 +35,14 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 		{	XGTable t = p.getTranslationTable();
 			for(int i = p.getMinIndex(); i <= p.getMaxIndex(); i++) this.box.addItem(t.getByIndex(i));
 			this.box.setSelectedItem(t.getByIndex(this.value.getIndex()));//ruft angehängte ActionListener auf, deshalb vor addActionListener ausführen
-			this.box.addActionListener((ActionEvent)->{this.entrySelected();});
+			this.box.addActionListener((ActionEvent)->this.entrySelected());
 		}
 		else this.setEnabled(false);
 		this.setAutoscrolls(true);
 
 		this.add(this.box, "0,0,1,1");
 
-		this.value.getValueListeners().add((XGValue v)->{this.box.setSelectedItem(this.value.getEntry());});
+		this.value.getValueListeners().add((XGValue v)->this.box.setSelectedItem(this.value.getEntry()));
 		this.value.getParameterListeners().add(this);
 		this.parameterChanged(this.value.getParameter());
 	}

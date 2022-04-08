@@ -2,11 +2,11 @@ package xml;
 
 import static application.JXG.APPNAME;public interface XMLNodeConstants
 {
-	static final String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
-	static final String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
-	static final String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
+	String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
+	String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
+	String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
-	static final String
+	String
 		XML_CONFIG = APPNAME + ".xml",
 		XML_STRUCTURE = "structure.xml",
 		XML_PARAMETER = "parameter.xml",
@@ -14,7 +14,7 @@ import static application.JXG.APPNAME;public interface XMLNodeConstants
 		XML_DRUMS = "drums.xml",
 		XML_TABLES = "tables.xml";
 
-	static final String
+	String
 		TAG_WIN = "window",
 		ATTR_X = "x",
 		ATTR_Y = "y",

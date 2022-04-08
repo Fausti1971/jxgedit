@@ -1,12 +1,8 @@
 package gui;
 
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import javax.swing.JComponent;
 import application.XGLoggable;
 import application.XGMath;
@@ -21,14 +17,14 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable
 	public enum PointRelation
 	{	ABSOLUTE,
 		ADD_TO_PREVIOUS_COORDINATE,
-	};
+	}
 
 //TODO: vielleicht sollte man dem XGPoint eine Gradient-Variable zugestehen, die angibt,
 //		in welche Richtung (zum origin, zu nächsten XGPoint, zum min oder max) eine Linie strebt und wie schnell (wäre für EQ und Filterhüllkrve hilfreich)
 
 /******************************************************************************************************/
 
-	private XGValue valueX, valueY;
+	private final XGValue valueX; private XGValue valueY;
 	private XGPointPanel panel;
 	private final PointRelation relationX, relationY;
 	private final int index;
@@ -58,15 +54,15 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable
 		{	this.previous = this.panel.getPoints().get(this.index - 1);
 			this.previous.next = this;
 		}
-		this.valueX.getValueListeners().add((XGValue v)->{this.panel.setSelectedValue(v);});
-		this.valueY.getValueListeners().add((XGValue v)->{this.panel.setSelectedValue(v);});
+		this.valueX.getValueListeners().add((XGValue v)->this.panel.setSelectedValue(v));
+		this.valueY.getValueListeners().add((XGValue v)->this.panel.setSelectedValue(v));
 		this.setLocation();
 	}
 
 	void setYValue(XGValue v)
 	{	this.valueY = v;
 		if(this.isMovable())
-		{	this.valueY.getValueListeners().add((XGValue)->{this.panel.setSelectedValue(v);});
+		{	this.valueY.getValueListeners().add((XGValue)->this.panel.setSelectedValue(v));
 			this.setVisible(true);
 		}
 		else this.setVisible(false);

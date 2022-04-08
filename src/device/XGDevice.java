@@ -19,7 +19,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 {
 	public static XGDevice device = null;
 //	public static XMLNode config = null;
-	private String WARNSTRING = "This will reset all parameters!";
+	private final String WARNSTRING = "This will reset all parameters!";
 
 	public static void init()
 	{	device = new XGDevice(JXG.config.getChildNodeOrNew(TAG_DEVICE));

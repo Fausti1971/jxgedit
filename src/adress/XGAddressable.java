@@ -7,5 +7,5 @@ public interface XGAddressable extends XGAddressConstants
  * @return XGAddress
  * @throws InvalidXGAddressException 
  */
-	public XGAddress getAddress();
+	XGAddress getAddress();
 }

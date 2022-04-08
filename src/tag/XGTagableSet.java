@@ -77,24 +77,22 @@ public class XGTagableSet<T extends XGTagable> implements Iterable<T>, Set<T>
 	}
 
 	@Override public boolean addAll(Collection<? extends T> c)
-	{	Iterator<? extends T> i = c.iterator();
-		while(i.hasNext()) this.add(i.next());
+	{
+		for(T t: c)this.add(t);
 		return true;
 	}
 
 	@Override public boolean retainAll(Collection<?> c)
-	{	Iterator<?> i = c.iterator();
-		while(i.hasNext())
-		{	Object o = i.next();
-			if(this.map.containsValue(o)) continue;
+	{
+		for(Object o: c){	if(this.map.containsValue(o)) continue;
 			this.remove(o);
 		}
 		return true;
 	}
 
 	@Override public boolean removeAll(Collection<?> c)
-	{	Iterator<?> i = c.iterator();
-		while(i.hasNext()) this.remove(i.next());
+	{
+		for(Object o: c)this.remove(o);
 		return true;
 	}
 

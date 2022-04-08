@@ -13,7 +13,7 @@ import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGSlider extends JPanel implements XGParameterConstants, XGValueChangeListener, MouseListener, FocusListener, XGComponent
+public class XGSlider extends XGFrame implements XGValueChangeListener, MouseListener
 {	/**
 	 * 
 	 */
@@ -26,7 +26,8 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 	private final XGValueLabel label;
 
 	public XGSlider(XGValue v)
-	{	this.value = v;
+	{	super("");
+		this.value = v;
 		if(v == null)
 		{	this.setEnabled(false);
 			this.setVisible(false);
@@ -39,12 +40,11 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 		{	this.setEnabled(true);
 			this.setVisible(true);
 		}
-//		this.setName(this.value.getParameter().getShortName());
+		this.setName(this.value.getParameter().getShortName());
 		this.addMouseListener(this);
-		this.addFocusListener(this);
 
 		GridBagConstraints gbc = new GridBagConstraints(0, 0, 1, 1, 0.5, 0.5, GridBagConstraints.NORTH, GridBagConstraints.BOTH, new Insets(0,0,2,0), 0, 0);
-		this.bar = new XGSliderBar(this.value);
+		this.bar = new XGSliderBar(this);
 		this.add(this.bar, gbc);
 
 		this.label = new XGValueLabel(this.value);
@@ -55,9 +55,7 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 		this.add(this.label, gbc);
 	}
 
-	@Override public String getName()
-	{	return this.value.getParameter().getShortName();
-	}
+	@Override public String getName(){	return this.value.getParameter().getShortName();}
 
 	@Override public void contentChanged(XGValue v)
 	{	this.bar.repaint();
@@ -65,7 +63,7 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 	}
 
 
-	private class XGSliderBar extends JComponent implements XGValueChangeListener, MouseMotionListener, MouseWheelListener, MouseListener
+	private class XGSliderBar extends JComponent implements MouseMotionListener, MouseWheelListener, MouseListener
 	{	/**
 		 * 
 		 */
@@ -79,17 +77,16 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 		private Graphics2D g2;
 //		private Cursor lastCursor;
 
-		private XGSliderBar(XGValue v)
-		{	this.value = v;
+		private XGSliderBar(XGSlider s)
+		{	this.value = s.value;
 			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.value.getValueListeners().add(this);
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
 			this.addMouseWheelListener(this);
 		}
 
 		@Override public boolean isEnabled()
-		{	return super.isEnabled() && this.value != null && this.value.getParameter() != null;
+		{	return super.isEnabled();
 		}
 
 		@Override protected void paintComponent(Graphics g)
@@ -127,44 +124,18 @@ public class XGSlider extends JPanel implements XGParameterConstants, XGValueCha
 			e.consume();
 		}
 
-		@Override public void mouseMoved(MouseEvent e)
-		{
-		}
-
-		@Override public void contentChanged(XGValue v)
-		{	this.repaint();
-		}
+		@Override public void mouseMoved(MouseEvent e){}
 
 		@Override public void mousePressed(MouseEvent e)
 		{	XGUI.ENVIRONMENT.dragEvent = e;
 			e.consume();
 		}
-	
-		@Override public void mouseReleased(MouseEvent e)
-		{	XGUI.ENVIRONMENT.dragEvent = e;
-		}
+
+		@Override public void mouseReleased(MouseEvent e){	XGUI.ENVIRONMENT.dragEvent = e;}
 
 
-		@Override public void mouseEntered(MouseEvent e)
-		{
-		}
+		@Override public void mouseEntered(MouseEvent e){}
 
-		@Override public void mouseExited(MouseEvent e)
-		{	
-		}
+		@Override public void mouseExited(MouseEvent e){}
 	}
-public void focusGained(FocusEvent event)
-	{
-	}public void focusLost(FocusEvent event)
-	{
-	}public void mouseClicked(MouseEvent event)
-	{
-	}public void mousePressed(MouseEvent event)
-	{
-	}public void mouseReleased(MouseEvent event)
-	{
-	}public void mouseEntered(MouseEvent event)
-	{
-	}public void mouseExited(MouseEvent event)
-	{
-	}}
+}

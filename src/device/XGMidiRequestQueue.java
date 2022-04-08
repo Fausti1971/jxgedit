@@ -1,6 +1,6 @@
 package device;
 
-import adress.InvalidXGAddressException;import adress.XGAddressableSet;
+import adress.XGAddressableSet;
 import msg.XGMessengerException;
 import msg.XGRequest;
 

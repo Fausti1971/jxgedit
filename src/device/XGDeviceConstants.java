@@ -8,14 +8,14 @@ import xml.XMLNodeConstants;
 
 public interface XGDeviceConstants extends XMLNodeConstants
 {
-	static final int
+	int
 		DEF_SYSEXID = 0;
 
-	static final String
+	String
 		DEF_DEVNAME = "nameless device",
 		DEF_SYXFILENAME = "default.syx";
 
-	static final String
+	String
 		ACTION_CONFIGURE = "configure...",
 		ACTION_REMOVE = "remove",
 		ACTION_LOADFILE = "load file...",
@@ -26,5 +26,5 @@ public interface XGDeviceConstants extends XMLNodeConstants
 		ACTION_GMON = "switch gm",
 		ACTION_RESET = "reset all parameters";
 
-	static final Set<String> ACTIONS = new LinkedHashSet<>();
+	Set<String> ACTIONS = new LinkedHashSet<>();
 }

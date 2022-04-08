@@ -1,7 +1,7 @@
 package gui;
 
-import application.XGMath;import application.XGStrings;import java.awt.*;
-import javax.swing.*;import javax.swing.border.BevelBorder;import javax.swing.border.Border;import javax.swing.border.TitledBorder;
+import java.awt.*;
+import javax.swing.*;
 
 public class XGFrame extends JPanel implements XGComponent
 {	private static final long serialVersionUID=-2090844398565572567L;

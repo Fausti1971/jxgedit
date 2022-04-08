@@ -109,7 +109,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		{	XGValue psv = this.bulk.getModule().getValues().get(this.type.getParameterSelectorTag());
 			if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + " " + this.type.getParameterSelectorTag() + " not found for value " + this.getTag());
 			this.parameterSelector = psv;
-			this.parameterSelector.valueListeners.add((XGValue val)->{this.notifyParameterListeners();});
+			this.parameterSelector.valueListeners.add((XGValue val)->this.notifyParameterListeners());
 		}
 		else this.parameterSelector = DEF_DEFAULTSELECTOR;
 
@@ -118,13 +118,13 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 			XGValue dsv = this.bulk.getModule().getValues().get(dst);
 			if(dsv != null)
 			{	this.defaultSelector = dsv;
-				this.defaultSelector.valueListeners.add((XGValue)->{this.setDefaultValue();});
+				this.defaultSelector.valueListeners.add((XGValue)->this.setDefaultValue());
 			}
 			else if("ds_program".equals(dst))
 			{	XGModuleType t = this.getModule().getType();
 				if(t instanceof XGDrumsetModuleType)
 				{	this.defaultSelector = ((XGDrumsetModuleType)t).getProgramListener();
-					this.defaultSelector.valueListeners.add((XGValue)->{this.setDefaultValue();});
+					this.defaultSelector.valueListeners.add((XGValue)->this.setDefaultValue());
 				}
 			}
 			else if("id".equals(dst))

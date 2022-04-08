@@ -1,6 +1,6 @@
 package config;
 
-import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;
+import xml.XMLNode;import xml.XMLNodeConstants;
 /**
  * qualifiziert das implementierende Object als "konfigurierbar", d.h. es muss zwingend über eine eigene XML-Node verfügen (get.Config());
  */
