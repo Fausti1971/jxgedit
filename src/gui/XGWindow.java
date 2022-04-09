@@ -22,10 +22,12 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 /**************************************************************************************************/
 
 	final XMLNode config;
+	final String tag;
 
-	public XGWindow(String id)
+	public XGWindow(String tag)
 	{	super();
-		this.config = CONFIG.getChildNodeWithAttributeOrNew(TAG_ITEM, ATTR_ID, id);
+		this.tag = tag;
+		this.config = CONFIG.getChildNodeWithAttributeOrNew(TAG_ITEM, ATTR_ID, tag);
 		XGDevice.device.getName().getListeners().add((XGProperty p)->this.setTitle(this.getTitle()));
 		this.setUndecorated(false);//um den Rahmen durch den WindowManager des Systems darstellen zu lassen
 		this.setIconImage(LOGO);
@@ -49,6 +51,8 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 	{	javax.swing.SwingUtilities.updateComponentTreeUI(this);
 		for(Window w : this.getOwnedWindows()) javax.swing.SwingUtilities.updateComponentTreeUI(w);
 	}
+
+	@Override public String getTag(){	return this.tag;}
 
 	@Override public String getTitle(){	return APPNAME + " - " + XGDevice.device;}
 

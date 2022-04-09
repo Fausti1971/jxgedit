@@ -67,7 +67,7 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 
 /***************************************************************************************************/
 
-	private class XGRangeBar extends JPanel implements MouseMotionListener, MouseWheelListener, MouseListener
+	private class XGRangeBar extends JPanel implements MouseMotionListener, MouseWheelListener, XGComponent
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -125,18 +125,16 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 		}
 	
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	int r = e.getWheelRotation();
+		{	int r = XGUI.getWheelRotation(e);//e.getWheelRotation();
 			if(r < 0)
 			{	this.range.loValue.addIndex(r, true);
 				if(this.range.loValue.hasChanged())
-				{	this.range.hiValue.addIndex(r, true);
-				}
+					this.range.hiValue.addIndex(r, true);
 			}
 			else
 			{	this.range.hiValue.addIndex(r, true);
 				if(this.range.hiValue.hasChanged())
-				{	this.range.loValue.addIndex(r, true);
-				}
+					this.range.loValue.addIndex(r, true);
 			}
 			e.consume();
 		}

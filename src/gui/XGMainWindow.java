@@ -20,7 +20,7 @@ public class XGMainWindow extends XGWindow
 /***********************************************************************************************************************/
 
 	public XGMainWindow(XMLNode cfg)
-	{	super( "main");
+	{	super("main");
 		this.setJMenuBar(this.createMenu());
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
@@ -110,6 +110,4 @@ public class XGMainWindow extends XGWindow
 	}
 
 	public void propertyChanged(XGProperty attr){	System.out.println("property changed: " + attr);}
-
-	public String getTag(){	return "main";}
 }

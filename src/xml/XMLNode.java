@@ -214,10 +214,10 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 		else return def;
 	}
 
-	public void setStringAttribute(final String tag, final String attr)
-	{	if(!XGStrings.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
-		if(this.attributes.containsKey(tag)) this.attributes.get(tag).setValue(attr);
-		else this.attributes.add(new XGProperty(tag, attr));
+	public void setStringAttribute(final String attr, final String value)
+	{	if(!XGStrings.isAlNum(attr)) throw new RuntimeException(attr + ERRORSTRING);
+		if(this.attributes.containsKey(attr)) this.attributes.get(attr).setValue(value);
+		else this.attributes.add(new XGProperty(attr, value));
 	}
 
 	public int getValueAttribute(String attr, int def){	return XGStrings.parseValue(this.getStringAttribute(attr), def);}

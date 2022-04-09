@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JComponent;
 
-public interface XGComponent extends XGUI, MouseListener, FocusListener
+public interface XGComponent extends XGUI, MouseListener
 {
 	default JComponent getJComponent(){	return (JComponent)this;}
 
@@ -17,13 +17,13 @@ System.out.println("doubleclick detected");
 		}
 	}
 
-	@Override  default void mousePressed(MouseEvent e)
+	@Override default void mousePressed(MouseEvent e)
 	{	ENVIRONMENT.mousePressed = true;
 		ENVIRONMENT.dragEvent = e;
 		e.consume();
 	}
 
-	@Override  default void mouseReleased(MouseEvent e)
+	@Override default void mouseReleased(MouseEvent e)
 	{	ENVIRONMENT.mousePressed = false;
 		ENVIRONMENT.dragEvent = e;
 	}
@@ -32,15 +32,7 @@ System.out.println("doubleclick detected");
 	{	if(!ENVIRONMENT.mousePressed) this.getJComponent().requestFocusInWindow();
 	}
 
-	@Override  default void mouseExited(MouseEvent e)
-	{
-	}
-
-	@Override  default void focusLost(FocusEvent e)
-	{
-	}
-
-	@Override  default void focusGained(FocusEvent e)
+	@Override default void mouseExited(MouseEvent e)
 	{
 	}
 }

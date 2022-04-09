@@ -70,6 +70,12 @@ public class XGSettingsWindow extends XGWindow
 		sl.addChangeListener((ChangeEvent e)->XGUI.setFontSize((Integer)((JSpinner)e.getSource()).getValue()));
 		root.add(sl, "1,7,1,1");
 
+		root.add(new JLabel("invert Mousewheel", JLabel.LEADING), "0,8,1,1");
+		JCheckBox cb = new JCheckBox();
+		cb.setSelected(XGUI.ENVIRONMENT.mouseWheelInverted);
+		cb.addItemListener((ItemEvent ie)->XGUI.setMousewheelInverted(ie.getStateChange() == ItemEvent.SELECTED));
+		root.add(cb, "1,8,1,1");
+
 		return root;
 	}
 

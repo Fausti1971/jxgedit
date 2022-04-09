@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;import java.io.IOException;import java.util.*;
+import java.awt.event.MouseEvent;import java.awt.event.MouseWheelEvent;import java.io.IOException;import java.util.*;
 import javax.imageio.ImageIO;import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;import javax.swing.plaf.FontUIResource;
 import application.*;
@@ -35,7 +35,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 
 	class Environment
 	{	public MouseEvent dragEvent = null;
-		public boolean mousePressed = false;
+		public boolean mousePressed = false, mouseWheelInverted = false;
 		public XMLNode config;
 	}
 	Environment ENVIRONMENT = new Environment();
@@ -43,7 +43,6 @@ public interface XGUI extends XGLoggable, XGConfigurable
 	Map<String, String> LOOKANDFEELS = new HashMap<>();
 	String[] FONTS = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 	int DEF_FONTSIZE = 20;
-
 	RenderingHints AALIAS = new RenderingHints(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	GridBagConstraints DEF_GBC = new GridBagConstraints(0, 0, 0, 0, 1, 1, GridBagConstraints.CENTER, GridBagConstraints.BOTH, new Insets(0,0,0,0), 0, 0);
 
@@ -54,6 +53,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		{	LOOKANDFEELS.put(i.getName(), i.getClassName());
 		}
 		XGUI.setLookAndFeel(ENVIRONMENT.config.getStringAttribute(ATTR_LOOKANDFEEL));
+		XGUI.ENVIRONMENT.mouseWheelInverted = Boolean.getBoolean(ENVIRONMENT.config.getStringBufferAttributeOrNew(ATTR_MOUSEWHEEL_INVERTED, "false").toString());
 	}
 
 	static Image loadImage(String name)
@@ -64,6 +64,16 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		{	LOG.warning(e.getMessage());
 			return null;
 		}
+	}
+
+	static void setMousewheelInverted(boolean b)
+	{	XGUI.ENVIRONMENT.mouseWheelInverted = b;
+		XGUI.ENVIRONMENT.config.setStringAttribute(ATTR_MOUSEWHEEL_INVERTED, Boolean.toString(b));
+	}
+
+	static int getWheelRotation(MouseWheelEvent e)
+	{	if(XGUI.ENVIRONMENT.mouseWheelInverted) return e.getWheelRotation() * -1;
+		else return e.getWheelRotation();
 	}
 
 	static void setFont(String name)
@@ -92,7 +102,6 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		if(XGMainWindow.MAINWINDOW != null) XGMainWindow.MAINWINDOW.updateUI();
 		LOG.info(f.toString());
     } 
-
 
 	static void setLookAndFeel(String name)
 	{

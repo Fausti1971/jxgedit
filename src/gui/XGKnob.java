@@ -56,7 +56,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 
 /******************************************************************************************************************************************/
 
-	private class XGKnobBar extends JComponent implements XGUI, MouseListener, MouseMotionListener, MouseWheelListener
+	private class XGKnobBar extends JComponent implements XGComponent, MouseMotionListener, MouseWheelListener
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -102,20 +102,8 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			g2.dispose();
 		}
 
-		@Override public void mouseClicked(MouseEvent e){	if(e.getClickCount() == 2) this.knob.value.requestAction();}
-
-		@Override public void mousePressed(MouseEvent e)
-		{	XGUI.ENVIRONMENT.dragEvent = e;
-			e.consume();
-		}
-
-		@Override public void mouseReleased(MouseEvent e)
-		{	XGUI.ENVIRONMENT.dragEvent = e;
-			e.consume();
-		}
-
 		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	this.knob.value.addIndex(e.getWheelRotation(), true);
+		{	this.knob.value.addIndex(XGUI.getWheelRotation(e), true);
 			e.consume();
 		}
 
@@ -126,16 +114,10 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			e.consume();
 		}
 
-		@Override public void mouseMoved(MouseEvent e)
-		{
-		}
+		@Override public void mouseMoved(MouseEvent e){}
 
-		@Override public void mouseEntered(MouseEvent e)
-		{
-		}
+		@Override public void mouseEntered(MouseEvent e){}
 
-		@Override public void mouseExited(MouseEvent e)
-		{
-		}
+		@Override public void mouseExited(MouseEvent e){}
 	}
 }
