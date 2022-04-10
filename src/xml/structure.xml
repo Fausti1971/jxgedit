@@ -306,7 +306,7 @@
 			<opcode xsi:type="immutable" id="mp_ac2_lfo_amp" address="//102" name="Assignable Controller 2 LFO Amplitude Modulation Depth" shortName="AC2AD" min="0" max="127" default="0" actions="change"/>
 
 			<opcode xsi:type="immutable" id="mp_portamento" address="//103" name="Portamento Switch" shortName="On/Off" max="1" table="on_off" default="0" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_portamento_time" address="//104" name="Portamento Time" min="0" max="127" default="0" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_portamento_time" address="//104" name="Portamento Time" shortName="Time" min="0" max="127" default="0" actions="change"/>
 
 			<opcode xsi:type="immutable" id="mp_peg_init_level" address="//105" name="Pitch Envelope Generator Initial Level" shortName="PEGIL" table="sub64" min="0" max="127" default="64" origin="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_peg_attack_time" address="//106" name="Pitch Envelope Generator Attack Time" shortName="PEGAT" table="sub64" min="0" max="127" default="64" origin="64" actions="change"/>

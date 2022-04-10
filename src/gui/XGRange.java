@@ -46,19 +46,14 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 		this.add(this.label, "0,2,1,1");
 
 		this.addMouseListener(this);
-//		this.addFocusListener(this);
 		boolean ena = this.isEnabled();
 		this.bar.setEnabled(ena);
 		this.label.setEnabled(ena);
 	}
 
-	@Override public String getToolTipText()
-		{	return this.loValue.getValue() + "..." + this.hiValue.getValue();
-		}
+	@Override public String getToolTipText(){	return this.loValue.getValue() + "..." + this.hiValue.getValue();}
 
-	@Override public boolean isVisible()
-	{	return this.loValue != null && this.loValue.getParameter() != null  && this.hiValue != null && this.hiValue.getParameter() != null;
-	}
+	@Override public boolean isVisible(){	return this.loValue != null && this.loValue.getParameter().isValid()  && this.hiValue != null && this.hiValue.getParameter().isValid();}
 
 	@Override public void contentChanged(XGValue v)
 	{	this.bar.repaint();
@@ -110,7 +105,6 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 // draw foreground
 			this.loX = XGMath.linearIO(this.range.loValue.getIndex(), loParameter.getMinIndex(), loParameter.getMaxIndex(), 0, this.getWidth());
 			this.hiX = XGMath.linearIO(this.range.hiValue.getIndex(), hiParameter.getMinIndex(), hiParameter.getMaxIndex(), 0, this.getWidth());
-//			this.originWidth = XGMath.linearIO(this.loParameter.getOrigin(), this.loParameter.getMinIndex(), this.loParameter.getMaxIndex(), 0, this.getWidth());
 			g2.setColor(COL_BAR_FORE);
 			g2.fillRoundRect(this.loX, 0, this.hiX - this.loX, this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			g2.dispose();
@@ -167,4 +161,23 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 
 		@Override public void mouseExited(MouseEvent e){}
 	}
+
+/************************************************************************************************************/
+
+		private class XGRangeLabel extends XGValueLabel
+		{	/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+		/*****************************************************************************************************/
+
+			private final XGValue value2;
+
+			public XGRangeLabel(XGValue lo, XGValue hi)
+			{	super(lo);
+				this.value2 = hi;
+				this.setText(this.value + "..." + this.value2);
+			}
+		}
 }

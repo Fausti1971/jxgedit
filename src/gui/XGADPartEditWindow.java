@@ -29,7 +29,7 @@ public class XGADPartEditWindow extends XGEditWindow
 		effect.add(new XGKnob(values.get("ad_cho")), "2,0,1,2");
 		effect.add(new XGKnob(values.get("ad_var")), "3,0,1,2");
 
-		midi.add(new XGFlagBox("Receive", values.get("ad_rcv_prg"), values.get("ad_rcv_cc"), values.get("ad_rcv_vol"), values.get("ad_rcv_pan"), values.get("ad_rcv_exp"), values.get("ad_rcv_bank")), "0,0,2,1");
+		midi.add(new XGFlagBox("MIDI Filter", values.get("ad_rcv_prg"), values.get("ad_rcv_cc"), values.get("ad_rcv_vol"), values.get("ad_rcv_pan"), values.get("ad_rcv_exp"), values.get("ad_rcv_bank")), "0,0,2,1");
 		midi.add(new XGKnob(values.get("ad_midi")), "2,0,1,2");
 		midi.add(new XGKnob(values.get("ad_ac1_nr")), "3,0,1,2");
 		midi.add(new XGKnob(values.get("ad_ac2_nr")),"4,0,1,2");

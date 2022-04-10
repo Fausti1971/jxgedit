@@ -6,15 +6,16 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class XGValueLabel extends JLabel implements MouseListener
+public class XGValueLabel extends JLabel implements XGComponent
 {
 /**
  * @param v***************************************************************************************************/
 
-	private final XGValue value;
+	protected final XGValue value;
 
 	public XGValueLabel(XGValue v)
 	{	this.value = v;
+		this.setText(v.toString());
 		this.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		this.setHorizontalAlignment(JLabel.CENTER);
 		this.setVerticalAlignment(JLabel.CENTER);
@@ -30,12 +31,4 @@ public class XGValueLabel extends JLabel implements MouseListener
 		{
 		}
 	}
-
-	@Override public void mousePressed(MouseEvent e){}
-
-	@Override public void mouseReleased(MouseEvent e){}
-
-	@Override public void mouseEntered(MouseEvent e){}
-
-	@Override public void mouseExited(MouseEvent e){}
 }

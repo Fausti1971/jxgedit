@@ -32,7 +32,7 @@ public class XGMultipartEditWindow extends XGEditWindow
 		XGFrame midi = new XGFrame(false);
 			midi.add(new XGKnob(values.get("mp_midi_channel")), "0,0,1,2");
 			midi.add(new XGKnob(values.get("mp_reserve")), "1,0,1,2");
-			midi.add(new XGFlagBox("Receive", values.get("mp_rcv_pb"), values.get("mp_rcv_cat"), values.get("mp_rcv_prg"), values.get("mp_rcv_cc"), values.get("mp_rcv_pat"), values.get("mp_rcv_note"),
+			midi.add(new XGFlagBox("MIDI Filter", values.get("mp_rcv_pb"), values.get("mp_rcv_cat"), values.get("mp_rcv_prg"), values.get("mp_rcv_cc"), values.get("mp_rcv_pat"), values.get("mp_rcv_note"),
 				values.get("mp_rcv_rpn"), values.get("mp_rcv_nrpn"), values.get("mp_rcv_mw"), values.get("mp_rcv_vol"), values.get("mp_rcv_pan"), values.get("mp_rcv_exp"), values.get("mp_rcv_hold"), values.get("mp_rcv_portamento"),
 				values.get("mp_rcv_sostenuto"), values.get("mp_rcv_softpedal"), values.get("mp_rcv_bank")), "0,2,2,1");
 			midi.add(new XGRange(values.get("mp_note_lo"), values.get("mp_note_hi")), "0,3,2,1");
@@ -50,8 +50,8 @@ public class XGMultipartEditWindow extends XGEditWindow
 			tune.add(new XGKnob(values.get("mp_detune")), "1,0,1,4");
 
 			XGFrame port = new XGFrame("Portamento");
-				port.add(new XGCheckbox(values.get("mp_portamento")), "0,2,2,2");
-				port.add(new XGKnob(values.get("mp_portamento_time")), "2,0,1,4");
+				port.add(new XGCheckbox(values.get("mp_portamento")), "0,0,2,1");
+				port.add(new XGSlider(values.get("mp_portamento_time")), "0,1,2,2");
 			tune.add(port, "2,0,2,4");
 
 			XGFrame vib = new XGFrame("Vibrato");

@@ -183,7 +183,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
  * setzt nach eventueller Validierung (limitize) den XGTable-Index des XGValue auf den Wert i
  * @param i	Index
  */
-	private void setIndex(Integer i, boolean limitize, boolean action)
+	public void setIndex(Integer i, boolean limitize, boolean action)
 	{	XGParameter p = this.getParameter();
 		if(limitize) i = p.getLimitizedIndex(i);
 		this.setValue(p.getTranslationTable().getByIndex(i).getValue(), false, action);

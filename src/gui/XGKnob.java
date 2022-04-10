@@ -106,22 +106,19 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 		}
 
 		private int getMouseDistance(MouseEvent e)
-		{	int result = 0;
+		{	int result = this.knob.value.getIndex();
 			switch(ENVIRONMENT.knobBehavior)
 			{	case HORIZONTAL:
-					result = e.getX() - XGUI.ENVIRONMENT.dragEvent.getX();
+					result += e.getX() - XGUI.ENVIRONMENT.dragEvent.getX();
 					break;
 				case VERTICAL:
-					result = XGUI.ENVIRONMENT.dragEvent.getY() - e.getY();
+					result += XGUI.ENVIRONMENT.dragEvent.getY() - e.getY();
 					break;
 				case RADIAL:
-					double ang = Math.atan2(e.getX() - this.middle.x, e.getY() - this.middle.y) + Math.PI / 2.0;
-					double angle = Math.toDegrees(ang);
-					angle -= 90;
-					if (angle < 0) angle += 360;
-					angle = 360 - angle;
-					int v = XGMath.linearIO((int)angle, 45, 315, this.parm.getMinIndex(), parm.getMaxIndex());
-					this.knob.value.setValue(v, true,true);
+					double ang = Math.atan2(e.getX() - this.middle.x, e.getY() - this.middle.y);
+					ang = Math.toDegrees(ang);
+					if (ang < 0) ang += 360;
+					result = XGMath.linearIO(Math.round(Math.round(ang)), 315, 45, this.parm.getMinIndex(), parm.getMaxIndex());
 					break;
 			}
 			XGUI.ENVIRONMENT.dragEvent = e;
@@ -131,7 +128,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 
 		@Override public void mouseWheelMoved(MouseWheelEvent e){	this.knob.value.addIndex(XGUI.getWheelRotation(e), true);}
 
-		@Override public void mouseDragged(MouseEvent e){	this.knob.value.addIndex(this.getMouseDistance(e), true);}
+		@Override public void mouseDragged(MouseEvent e){	this.knob.value.setIndex(this.getMouseDistance(e), true, true);}
 
 		@Override public void mouseMoved(MouseEvent e){}
 

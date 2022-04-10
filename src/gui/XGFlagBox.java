@@ -11,17 +11,16 @@ public class XGFlagBox extends XGFrame
 	private final Set<XGValue> values = new LinkedHashSet<>();
 
 	public XGFlagBox(String name, XGValue... vals)
-	{	super(true);
+	{	super(name);
 		if(vals == null)
 		{	this.setEnabled(false);
 			this.setVisible(false);
 			return;
 		}
-//		this.setName(name);
 
 		for(XGValue v : vals){	if(v != null) this.values.add(v);}
 
-		JButton button = new JButton(name);
+		JButton button = new JButton("select");
 		button.addActionListener((ActionEvent)->new XGCheckboxPopup(this, this.values));
 		button.setAlignmentY(0.5f);
 		button.setAlignmentX(0.5f);
