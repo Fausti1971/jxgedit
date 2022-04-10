@@ -12,6 +12,7 @@ import value.XGValueChangeListener;
 public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
 {
 	private static final long serialVersionUID = 1L;
+	public enum KnobBehavior {HORIZONTAL, VERTICAL, RADIAL};
 
 /*****************************************************************************************************************************/
 
@@ -64,6 +65,8 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 
 		private final XGKnob knob;
 		private final Point middle = new Point(), strokeStart = new Point(), strokeEnd = new Point();
+		private XGParameter parm;
+		private double lastAng;
 
 		private XGKnobBar(XGKnob knob)
 		{	this.knob = knob;
@@ -87,9 +90,9 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			g2.setStroke(DEF_ARCSTROKE);
 			g2.drawArc(this.middle.x - radius, this.middle.y - radius, 2 * radius, 2 * radius, START_ARC, LENGTH_ARC);
 	// paint foreground arc
-			XGParameter parameter = this.knob.value.getParameter();
-			int originArc = XGMath.linearIO(parameter.getOriginIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
-			int lengthArc = XGMath.linearIO(this.knob.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
+			parm = this.knob.value.getParameter();
+			int originArc = XGMath.linearIO(parm.getOriginIndex(), parm.getMinIndex(), parm.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
+			int lengthArc = XGMath.linearIO(this.knob.value.getIndex(), parm.getMinIndex(), parm.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
 			g2.setColor(COL_BAR_FORE);
 			g2.drawArc(this.middle.x - radius, this.middle.y - radius, 2 * radius, 2 * radius, originArc + START_ARC, lengthArc - originArc);
 	// paint marker
@@ -102,17 +105,33 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			g2.dispose();
 		}
 
-		@Override public void mouseWheelMoved(MouseWheelEvent e)
-		{	this.knob.value.addIndex(XGUI.getWheelRotation(e), true);
-			e.consume();
-		}
-
-		@Override public void mouseDragged(MouseEvent e)
-		{	int distance = e.getX() - XGUI.ENVIRONMENT.dragEvent.getX();
-			this.knob.value.addIndex(distance, true);
+		private int getMouseDistance(MouseEvent e)
+		{	int result = 0;
+			switch(ENVIRONMENT.knobBehavior)
+			{	case HORIZONTAL:
+					result = e.getX() - XGUI.ENVIRONMENT.dragEvent.getX();
+					break;
+				case VERTICAL:
+					result = XGUI.ENVIRONMENT.dragEvent.getY() - e.getY();
+					break;
+				case RADIAL:
+					double ang = Math.atan2(e.getX() - this.middle.x, e.getY() - this.middle.y) + Math.PI / 2.0;
+					double angle = Math.toDegrees(ang);
+					angle -= 90;
+					if (angle < 0) angle += 360;
+					angle = 360 - angle;
+					int v = XGMath.linearIO((int)angle, 45, 315, this.parm.getMinIndex(), parm.getMaxIndex());
+					this.knob.value.setValue(v, true,true);
+					break;
+			}
 			XGUI.ENVIRONMENT.dragEvent = e;
 			e.consume();
+			return result;
 		}
+
+		@Override public void mouseWheelMoved(MouseWheelEvent e){	this.knob.value.addIndex(XGUI.getWheelRotation(e), true);}
+
+		@Override public void mouseDragged(MouseEvent e){	this.knob.value.addIndex(this.getMouseDistance(e), true);}
 
 		@Override public void mouseMoved(MouseEvent e){}
 

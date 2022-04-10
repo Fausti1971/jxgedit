@@ -9,7 +9,7 @@ import javax.swing.*;
 
 public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable
 {
-	int MIN_W = 200, MIN_H = 200, MIN_X = 20, MIN_Y = 20;
+	int MIN_W = 400, MIN_H = 200, MIN_X = 20, MIN_Y = 20;
 	private static final Image LOGO = XGUI.loadImage("XGLogo32.gif");
 	public static XGMainWindow MAINWINDOW = null;
 	private static XMLNode CONFIG;
@@ -78,39 +78,21 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 		this.config.setIntegerAttribute(ATTR_Y, c.getY());
 	}
 
-	@Override public void componentShown(ComponentEvent e)
-	{
-	}
+	@Override public void componentShown(ComponentEvent e){}
 
-	@Override public void componentHidden(ComponentEvent e)
-	{
-	}
+	@Override public void componentHidden(ComponentEvent e){}
 
-	@Override public void windowOpened(WindowEvent e)
-	{
-	}
+	@Override public void windowOpened(WindowEvent e){}
 
-	@Override public void windowClosing(WindowEvent e)
-	{
-	}
+	@Override public void windowClosing(WindowEvent e){}
 
-	@Override public void windowClosed(WindowEvent e)
-	{
-	}
+	@Override public void windowClosed(WindowEvent e){}
 
-	@Override public void windowIconified(WindowEvent e)
-	{
-	}
+	@Override public void windowIconified(WindowEvent e){}
 
-	@Override public void windowDeiconified(WindowEvent e)
-	{
-	}
+	@Override public void windowDeiconified(WindowEvent e){}
 
-	@Override public void windowActivated(WindowEvent e)
-	{
-	}
+	@Override public void windowActivated(WindowEvent e){}
 
-	@Override public void windowDeactivated(WindowEvent e)
-	{
-	}
+	@Override public void windowDeactivated(WindowEvent e){}
 }

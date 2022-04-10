@@ -36,6 +36,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 	class Environment
 	{	public MouseEvent dragEvent = null;
 		public boolean mousePressed = false, mouseWheelInverted = false;
+		public XGKnob.KnobBehavior knobBehavior = XGKnob.KnobBehavior.HORIZONTAL;
 		public XMLNode config;
 	}
 	Environment ENVIRONMENT = new Environment();
@@ -54,6 +55,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		}
 		XGUI.setLookAndFeel(ENVIRONMENT.config.getStringAttribute(ATTR_LOOKANDFEEL));
 		XGUI.ENVIRONMENT.mouseWheelInverted = Boolean.getBoolean(ENVIRONMENT.config.getStringBufferAttributeOrNew(ATTR_MOUSEWHEEL_INVERTED, "false").toString());
+		XGUI.ENVIRONMENT.knobBehavior = XGKnob.KnobBehavior.valueOf(ENVIRONMENT.config.getStringBufferAttributeOrNew(ATTR_KNOB_BEHAVIOR, XGKnob.KnobBehavior.HORIZONTAL.name()).toString());
 	}
 
 	static Image loadImage(String name)
@@ -66,14 +68,21 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		}
 	}
 
+	static void setKnobBehavior(XGKnob.KnobBehavior b)
+	{	ENVIRONMENT.knobBehavior = b;
+		ENVIRONMENT.config.setStringAttribute(ATTR_KNOB_BEHAVIOR, b.name());
+	}
+
 	static void setMousewheelInverted(boolean b)
 	{	XGUI.ENVIRONMENT.mouseWheelInverted = b;
 		XGUI.ENVIRONMENT.config.setStringAttribute(ATTR_MOUSEWHEEL_INVERTED, Boolean.toString(b));
 	}
 
 	static int getWheelRotation(MouseWheelEvent e)
-	{	if(XGUI.ENVIRONMENT.mouseWheelInverted) return e.getWheelRotation() * -1;
-		else return e.getWheelRotation();
+	{	int result = e.getWheelRotation();
+		if(XGUI.ENVIRONMENT.mouseWheelInverted) result = e.getWheelRotation() * -1;
+		e.consume();
+		return result;
 	}
 
 	static void setFont(String name)

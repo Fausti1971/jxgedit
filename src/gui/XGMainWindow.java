@@ -41,7 +41,7 @@ public class XGMainWindow extends XGWindow
 		file.addSeparator();
 
 		JMenuItem settings = new JMenuItem("Settings");
-		settings.addActionListener((ActionEvent)->XGSettingsWindow.getWindow(APPNAME + " Settings").setVisible(true));
+		settings.addActionListener((ActionEvent)->XGSettingsWindow.getWindow().setVisible(true));
 		file.add(settings);
 
 		file.addSeparator();
@@ -97,8 +97,7 @@ public class XGMainWindow extends XGWindow
 
 		content.add(sysPane, NORTH);
 		content.add(tabPane, CENTER);
-		/**********************************************************************************************************************/
-		XGStatusBar status;content.add(status = new XGStatusBar(), SOUTH);
+		content.add(new XGStatusBar(), SOUTH);
 		return content; 
 	}
 

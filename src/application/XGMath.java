@@ -23,6 +23,14 @@ import java.awt.*;public interface XGMath
 			out_range = out_max - out_min;
 		return in / in_range * out_range + out_min;
 	}
+
+	static int linearIO(double i, double in_min, double in_max, int out_min, int out_max)
+	{	double
+			in = i - in_min,
+			in_range = in_max - in_min,
+			out_range = out_max - out_min;
+		return Math.round(Math.round(in / in_range * out_range + out_min));
+	}
 //Test
 	static void createTable(String[] args)
 	{	int min = 0, max = 139, i;

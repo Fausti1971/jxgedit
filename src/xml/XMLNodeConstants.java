@@ -32,6 +32,7 @@ import static application.JXG.APPNAME;public interface XMLNodeConstants
 		ATTR_FONT_STYLE = "fontstyle",
 		ATTR_FONT_SIZE = "fontsize",
 		ATTR_MOUSEWHEEL_INVERTED = "mousewheel_inverted",
+		ATTR_KNOB_BEHAVIOR = "knob_behavior",
 		TAG_FILES = "files",
 
 		TAG_DEVICE = "device",

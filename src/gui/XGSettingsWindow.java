@@ -1,6 +1,6 @@
 package gui;
 
-import device.*;import static device.XGDeviceConstants.DEF_DEVNAME;import static device.XGMidi.*;import xml.XGProperty;import javax.sound.midi.*;import javax.swing.*;import javax.swing.event.*;
+import static application.JXG.APPNAME;import device.*;import static device.XGDeviceConstants.DEF_DEVNAME;import static device.XGMidi.*;import xml.XGProperty;import javax.sound.midi.*;import javax.swing.*;import javax.swing.event.*;
 import java.awt.event.*;import java.util.*;
 
 public class XGSettingsWindow extends XGWindow
@@ -8,16 +8,15 @@ public class XGSettingsWindow extends XGWindow
 	private static final String TAG = "settings";
 	private static XGSettingsWindow WINDOW;
 
-	public static XGSettingsWindow getWindow(String title)
+	public static XGSettingsWindow getWindow()
 	{	if(WINDOW == null) WINDOW = new XGSettingsWindow();
-		WINDOW.setTitle(title);
 		return WINDOW;
 	}
 
 /**************************************************************************************/
 
 	private XGSettingsWindow()
-	{	super( TAG);
+	{	super(TAG);
 		this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		this.setContentPane(this.createContent());
 	}
@@ -76,10 +75,16 @@ public class XGSettingsWindow extends XGWindow
 		cb.addItemListener((ItemEvent ie)->XGUI.setMousewheelInverted(ie.getStateChange() == ItemEvent.SELECTED));
 		root.add(cb, "1,8,1,1");
 
+		root.add(new JLabel("Knob Behavior:", JLabel.LEADING), "0,9,1,1");
+		JComboBox<XGKnob.KnobBehavior> kb = new JComboBox<>(XGKnob.KnobBehavior.values());
+		kb.setSelectedItem(XGUI.ENVIRONMENT.knobBehavior);
+		kb.addItemListener((ItemEvent e)->XGUI.setKnobBehavior((XGKnob.KnobBehavior)e.getItem()));
+		root.add(kb, "1,9,1,1");
+
 		return root;
 	}
 
-	public String getTag()
-	{	return TAG;
-	}
+	@Override public String getTitle(){	return XGMainWindow.MAINWINDOW.getTitle() + " - " + TAG;}
+
+	@Override public String getTag(){	return TAG;}
 }
