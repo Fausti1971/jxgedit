@@ -53,17 +53,11 @@ public interface XGTable extends  XGLoggable, XGParameterConstants, XGTagable, I
 	String getUnit();
 	int size();
 
-	default XGTableEntry getMinEntry()
-	{	return this.getByIndex(this.getMinIndex());
-	}
+	default XGTableEntry getMinEntry(){	return this.getByIndex(this.getMinIndex());}
 
-	default XGTableEntry getMaxEntry()
-	{	return this.getByIndex(this.getMaxIndex());
-	}
+	default XGTableEntry getMaxEntry(){	return this.getByIndex(this.getMaxIndex());}
 
-	@Override default String getTag()
-	{	return this.getName();
-	}
+	@Override default String getTag(){	return this.getName();}
 
 	default String getInfo()
 	{	return this.getClass().getSimpleName() + " (" + this.getName() + "(" + this.size() + "): " + this.getMinEntry().getInfo() + "..." + this.getMaxEntry().getInfo() + ")";

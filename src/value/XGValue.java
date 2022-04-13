@@ -87,7 +87,10 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		this.address = new XGAddress(opc.getAddress().getHi().getValue(), blk.getAddress().getMid().getValue(), opc.getAddress().getLo().getMin());
 		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
 
-		if(opc.hasMutableParameters()){	this.parameters = PARAMETERTABLES.get(opc.getParameterTableName());}
+		if(opc.hasMutableParameters())
+		{	this.parameters = PARAMETERTABLES.get(opc.getParameterTableName());
+			if(this.parameters == null) throw new RuntimeException("parameter-table \"" + opc.getParameterTableName() + "\" for " + opc.getTag() + " not found");
+		}
 		else
 		{	this.parameters = new XGParameterTable(this.getTag());
 			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getConfig()));
@@ -195,7 +198,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	public XGTableEntry getEntry()
 	{	XGParameter p = this.getParameter();
 		int v = this.getValue();
-		if(p == null) return new XGTableEntry(v, "**" + v + "**");
+		if(!p.isValid()) return new XGTableEntry(v, "**" + v + "**");
 		return p.getTranslationTable().getByValue(v);
 	}
 

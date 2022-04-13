@@ -73,7 +73,10 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 					{	int res = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, " Overwrite " + f + "?");
 						if(res == JOptionPane.CANCEL_OPTION || res == JOptionPane.NO_OPTION) return;
 					}
-					else if(!(f.createNewFile())) LOG.severe("filecreation failed: " + f.getPath());
+					else if(!(f.createNewFile()))
+					{	LOG.severe("filecreation failed: " + f.getPath());
+						return;
+					}
 					dumper.transmitAll(f);
 					f.save();
 					f.close();
@@ -93,7 +96,6 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 			}
 		}
 	}
-
 
 /******************************************************************************************************************************************/
 
@@ -123,7 +125,10 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 				{	XGMessage m = XGMessage.newMessage(this, Arrays.copyOfRange(tmp, first, i + 1), false);
 					if(m instanceof XGMessageBulkDump) this.buffer.add((XGMessageBulkDump)m);
 				}
-				catch (InvalidMidiDataException | InvalidXGAddressException e){	LOG.severe(e.getMessage());}
+				catch (InvalidMidiDataException | InvalidXGAddressException e)
+				{	LOG.severe(e.getMessage());
+					JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, e.getMessage());
+				}
 				start = false;
 			}
 			i++;
@@ -152,7 +157,6 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 		{	LOG.info("cannot write: " + this);
 			JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "cannot write: " + this);
 		}
-
 	}
 
 	@Override public String getMessengerName(){	return "File (" + this.getAbsolutePath() +")";}

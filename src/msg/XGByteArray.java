@@ -15,9 +15,9 @@ public interface XGByteArray
 /**
  * enkodiert das LSB des übergebenen i in das Array an Offset index 
  * @param index Offset
- * @param i Wert
+ * @param v Wert
  */
-	default void encodeLSB(int index, int i){	this.getByteArray()[index] = (byte)(i & 0xFF);}
+	default void encodeLSB(int index, int v){	this.getByteArray()[index] = (byte)(v & 0xFF);}
 
 /**
  * dekodiert die size LSBs (7Bits) an Offset index zu int

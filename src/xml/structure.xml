@@ -180,16 +180,16 @@
 		At present, the folloiwng four effect types require MSBs. Delay L,C,R? Delay L,R? Echo? Cross Delay
 			*Data range varies according to effect-type value.
 -->		<bulk id="ins48" address="//48-67">
-			<opcode xsi:type="mutable" id="ins_p1w" address="//48-49" parameterSelector="ins_program" parameterTable="fx_parameter_1" defaultSelector="ins_program" defaultsTable="fx_parameter_1" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p2w" address="//50-51" parameterSelector="ins_program" parameterTable="fx_parameter_2" defaultSelector="ins_program" defaultsTable="fx_parameter_2" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p3w" address="//52-53" parameterSelector="ins_program" parameterTable="fx_parameter_3" defaultSelector="ins_program" defaultsTable="fx_parameter_3" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p4w" address="//54-55" parameterSelector="ins_program" parameterTable="fx_parameter_4" defaultSelector="ins_program" defaultsTable="fx_parameter_4" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p5w" address="//56-57" parameterSelector="ins_program" parameterTable="fx_parameter_5" defaultSelector="ins_program" defaultsTable="fx_parameter_5" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p6w" address="//58-59" parameterSelector="ins_program" parameterTable="fx_parameter_6" defaultSelector="ins_program" defaultsTable="fx_parameter_6" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p7w" address="//60-61" parameterSelector="ins_program" parameterTable="fx_parameter_7" defaultSelector="ins_program" defaultsTable="fx_parameter_7" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p8w" address="//62-63" parameterSelector="ins_program" parameterTable="fx_parameter_8" defaultSelector="ins_program" defaultsTable="fx_parameter_8" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p9w" address="//64-65" parameterSelector="ins_program" parameterTable="fx_parameter_9" defaultSelector="ins_program" defaultsTable="fx_parameter_9" actions="change"/>
-			<opcode xsi:type="mutable" id="ins_p10w" address="//66-67" parameterSelector="ins_program" parameterTable="fx_parameter_10" defaultSelector="ins_program" defaultsTable="fx_parameter_10" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p1w" address="//48-49" parameterSelector="ins_program" parameterTable="fx_parameter_1w" defaultSelector="ins_program" defaultsTable="fx_parameter_1" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p2w" address="//50-51" parameterSelector="ins_program" parameterTable="fx_parameter_2w" defaultSelector="ins_program" defaultsTable="fx_parameter_2" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p3w" address="//52-53" parameterSelector="ins_program" parameterTable="fx_parameter_3w" defaultSelector="ins_program" defaultsTable="fx_parameter_3" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p4w" address="//54-55" parameterSelector="ins_program" parameterTable="fx_parameter_4w" defaultSelector="ins_program" defaultsTable="fx_parameter_4" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p5w" address="//56-57" parameterSelector="ins_program" parameterTable="fx_parameter_5w" defaultSelector="ins_program" defaultsTable="fx_parameter_5" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p6w" address="//58-59" parameterSelector="ins_program" parameterTable="fx_parameter_6w" defaultSelector="ins_program" defaultsTable="fx_parameter_6" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p7w" address="//60-61" parameterSelector="ins_program" parameterTable="fx_parameter_7w" defaultSelector="ins_program" defaultsTable="fx_parameter_7" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p8w" address="//62-63" parameterSelector="ins_program" parameterTable="fx_parameter_8w" defaultSelector="ins_program" defaultsTable="fx_parameter_8" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p9w" address="//64-65" parameterSelector="ins_program" parameterTable="fx_parameter_9w" defaultSelector="ins_program" defaultsTable="fx_parameter_9" actions="change"/>
+			<opcode xsi:type="mutable" id="ins_p10w" address="//66-67" parameterSelector="ins_program" parameterTable="fx_parameter_10w" defaultSelector="ins_program" defaultsTable="fx_parameter_10" actions="change"/>
 		</bulk>
 
 	</module>
@@ -485,8 +485,8 @@
 			<opcode xsi:type="mutableDef" id="ds_cho" address="//6" name="Send To Chorus" shortName="Cho" min="0" max="127" defaultsTable="ds_cho_def" defaultSelector="ds_program" actions="change"/>
 			<opcode xsi:type="mutableDef" id="ds_var" address="//7" name="Send To Variation" shortName="Var" min="0" max="127" defaultsTable="ds_var_def" defaultSelector="ds_program" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_assign" address="//8" name="Key Assign" max="1" table="key_on_assign" default="0" actions="change"/>
-			<opcode xsi:type="mutableDef" id="ds_off" address="//9" name="Receive Note Off" shortName="On" max="1" table="on_off" defaultsTable="ds_off_def" defaultSelector="ds_program" actions="change"/>
-			<opcode xsi:type="immutable" id="ds_on" address="//10" name="Receive Note On" shortName="Off" max="1" table="on_off" default="1" actions="change"/>
+			<opcode xsi:type="mutableDef" id="ds_off" address="//9" name="Receive Note Off" shortName="NoteOff" max="1" table="on_off" defaultsTable="ds_off_def" defaultSelector="ds_program" actions="change"/>
+			<opcode xsi:type="immutable" id="ds_on" address="//10" name="Receive Note On" shortName="NoteOn" max="1" table="on_off" default="1" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_lpf_cut" address="//11" name="Lowpass Filter Cutoff Frequency" shortName="LPFC" min="0" max="127" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_lpf_reso" address="//12" name="Lowpass Filter Resonance" shortName="LPFR" min="0" max="127" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="ds_aeg_attack" address="//13" name="Attack Time" min="0" max="127" default="64" actions="change"/>

@@ -54,7 +54,5 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 		}
 	}
 
-	@Override public void close()
-	{
-	}
+	@Override public void close(){}
 }

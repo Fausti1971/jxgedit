@@ -2,15 +2,15 @@ package module;
 
 import java.util.logging.Level;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.ProgressMonitor;
+import javax.swing.*;
 import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.*;
 import gui.*;
-import msg.XGMessageBulkRequest;import msg.XGMessenger;import msg.XGMessengerException;import msg.XGRequest;
+import msg.*;
 
 /**
- * qualifiziert die implementierende Klasse als Sammler aller enthaltenen BuklDumps (getBulks()) und Transmitter (transmitAll()) bzw. Requester (requestAll()); folglich können lediglich Instanzen, die XGBulks halten (Module, Moduletype, Device) als XGBulkDumper fungieren; vielleicht auch einst für Copy & Paset zu missbrauchen;
+ * qualifiziert die implementierende Klasse als Sammler aller enthaltenen BuklDumps (getBulks()) und Transmitter (transmitAll()) bzw. Requester (requestAll()); folglich können lediglich Instanzen, die XGBulks halten (Module, Moduletype, Device) als XGBulkDumper fungieren; vielleicht auch einst für Copy & Paste zu missbrauchen;
  * @author thomas
  *
  */
@@ -27,16 +27,20 @@ public interface XGBulkDumper extends XGLoggable
 		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "transmitting to " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
+		XGMessageBulkDump msg;
 		for(XGBulk b : set)
 		{	try
-			{	dest.submit(b.getMessage());
-				pm.setNote(b.getMessage().toString());
+			{	msg = b.getMessage();
+				msg.setChecksum();
+				dest.submit(msg);
+				pm.setNote(msg.toString());
 				pm.setProgress(++transmitted);
-				LOG.info(b.getMessage() + " transmitted");
+				LOG.info(msg + " transmitted");
 				if(pm.isCanceled()) break;
 			}
-			catch(InvalidXGAddressException |  XGMessengerException e)
+			catch(InvalidXGAddressException | XGMessengerException e)
 			{	LOG.severe(e.getMessage());
+				JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, e.getMessage());
 			}
 		}
 		LOG.info(transmitted + " messages transmitted to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");

@@ -42,9 +42,7 @@ public class XGRealTable implements XGTable
 //		LOG.info(this.name);
 	}
 
-	public XGRealTable(String name)
-	{	this(name, "", DEF_FALLBACKMASK, true);
-	}
+	public XGRealTable(String name){	this(name, "", DEF_FALLBACKMASK, true);}
 
 /**
 * Die Indizierung der Entries erfolgt aufsteigend nach e.value
@@ -92,9 +90,7 @@ public class XGRealTable implements XGTable
 		else return def;
 	}
 
-	@Override public XGTableEntry getByValue(int v)
-	{	return this.getByValue(v, new XGTableEntry(v, "**" + XGStrings.valueToString(v) + "**"));
-	}
+	@Override public XGTableEntry getByValue(int v){	return this.getByValue(v, new XGTableEntry(v, "**" + XGStrings.valueToString(v) + "**"));}
 
 	@Override public XGTableEntry getByName(String name) throws NumberFormatException
 	{	if(this.names.containsKey(name)) return this.entries.get(this.names.get(name));

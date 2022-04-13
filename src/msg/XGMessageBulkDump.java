@@ -1,8 +1,8 @@
 package msg;
 
-import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;import module.XGBulk;import value.XGValue;
+import adress.XGAddress;import gui.XGMainWindow;import module.XGBulk;import value.XGValue;
 
 public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 {
@@ -50,23 +50,25 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 
 	@Override public void setBulkSize(int size){	encodeLSB(SIZE_OFFS, SIZE_SIZE, size);}
 
-	@Override public void encodeLSB(int index, int size)
-	{	super.encodeLSB(index, size);
-		if(index >= SIZE_OFFS && index < DATA_OFFS + size) this.setChecksum();
-	}
-/*
+/**
  * The checksum shall be set such that the low-order 7 bits of the sum of the Byte Count, the Address, the Data, and the Checksum itself are 0.
  * For details about support for reception of block-unit bulk dumps, see Attached Chart 5.
  */
-
 	@Override public void checkSum() throws InvalidMidiDataException
 	{	int sum = this.calcChecksum(SIZE_OFFS, DATA_OFFS + this.getBulkSize());
-		if((sum & LSB) != 0) throw new InvalidMidiDataException("checksum error!");
+		if((sum & LSB) != 0)
+		{	JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "checksum error @ " + this.getAddress());
+			throw new InvalidMidiDataException("checksum error @ " + this.getAddress());
+		}
 	}
 
+/**
+* The checksum shall be set such that the low-order 7 bits of the sum of the Byte Count, the Address, the
+  * Data, and the Checksum itself are 0. For details about support for reception of block-unit bulk dumps,
+  * see Attached Chart 5.
+*/
 	@Override public void setChecksum()
-	{	int size = this.getBulkSize();
-		int pos = DATA_OFFS + size;//checksum-offset
+	{	int pos = DATA_OFFS + this.getBulkSize();//checksum-offset
 		int sum = this.calcChecksum(SIZE_OFFS, pos - 1);//Berechnung erstmal ohne checksum-offset, da diese erst errechnet und gesetzt werden muss
 		super.encodeLSB(pos, (- sum) & LSB);
 	}

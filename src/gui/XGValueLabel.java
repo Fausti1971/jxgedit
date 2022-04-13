@@ -1,6 +1,6 @@
 package gui;
 
-import value.XGValue;
+import parm.XGParameter;import value.XGValue;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;

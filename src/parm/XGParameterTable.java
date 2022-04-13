@@ -39,11 +39,7 @@ public class XGParameterTable extends HashMap<Integer, XGParameter> implements X
 		LOG.info(this.getClass().getSimpleName() + " " + this.name + " initialized");
 	}
 
-	public XGParameterTable(String name)//Dummy-Parameter-Table für immutable Opcodes
-	{	this.name = name;
-	}
+	public XGParameterTable(String name){	this.name = name;}//Dummy-Parameter-Table für immutable Opcodes
 
-	@Override public String getTag()
-	{	return name;
-	}
+	@Override public String getTag(){	return name;}
 }
