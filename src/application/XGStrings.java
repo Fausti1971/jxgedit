@@ -164,11 +164,9 @@ public interface XGStrings
 	}
 
 	static int toNumber(String s)
-	{	if(s == null) throw new NumberFormatException("Argument is " + s);
+	{	if(s == null) throw new NumberFormatException("Argument is null");
 		return Integer.parseInt(s.replaceAll("\\D", ""));
 	}
 
-	static String toAlpha(String s)
-	{	return s.replaceAll("[-+]\\d", "");
-	}
+	static String toAlpha(String s){	return s.replaceAll("[-+]\\d", "");}
 }

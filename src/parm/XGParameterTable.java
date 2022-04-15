@@ -3,7 +3,7 @@ package parm;
 import java.io.*;
 import java.util.HashMap;
 import application.*;
-import static application.JXG.XMLPATH;import tag.*;
+import tag.*;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
 
@@ -14,7 +14,7 @@ public class XGParameterTable extends HashMap<Integer, XGParameter> implements X
 
 	public static void init()
 	{	try
-		{	String s = XMLPATH + XML_PARAMETER;
+		{	String s = JXG.getDeviceXMLResourcePath(XML_PARAMETER);
 			XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(s), s);
 			for(XMLNode t : n.getChildNodes(TAG_PARAMETERTABLE))
 			{	PARAMETERTABLES.add(new XGParameterTable(t));

@@ -3,7 +3,7 @@ package parm;
 import java.io.*;
 import java.util.Set;
 import application.*;
-import static application.JXG.XMLPATH;import tag.*;
+import tag.*;
 import xml.XMLNode;
 
 public interface XGTable extends  XGLoggable, XGParameterConstants, XGTagable, Iterable<XGTableEntry>
@@ -12,9 +12,9 @@ public interface XGTable extends  XGLoggable, XGParameterConstants, XGTagable, I
 	int DEF_FALLBACKMASK = 127;
 
 	static void init()
-	{	try
-		{	String s = XMLPATH + XML_TABLES;
-			XMLNode xml = XMLNode.parse(JXG.class.getResourceAsStream(s), s);
+	{	String path = JXG.getDeviceXMLResourcePath(XML_TABLES);
+		try
+		{	XMLNode xml = XMLNode.parse(JXG.class.getResourceAsStream(path), path);
 			for(XMLNode x : xml.getChildNodes(TAG_TABLE))
 			{	TABLES.add(new XGRealTable(x));
 			}

@@ -54,17 +54,9 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		LOG.info("device initialized: " + this);
 	}
 
-	public void exit()
-	{	XGMidi.getMidi().close();
-	}
+	public XGProperty getName(){	return this.config.getAttributes().getOrNew(ATTR_NAME, new XGProperty(ATTR_NAME, DEF_DEVNAME));}
 
-	public XGProperty getName()
-	{	return this.config.getAttributes().getOrNew(ATTR_NAME, new XGProperty(ATTR_NAME, DEF_DEVNAME));
-	}
-
-	public int getSysexID()
-	{	return this.sysexID;
-	}
+	public int getSysexID(){	return this.sysexID;}
 
 	public void setSysexID(int id)
 	{	this.sysexID = id & 0xF;
@@ -141,13 +133,9 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	{	LOG.info("not implemented yet...");//TODO: finde bulk oder value anhand der adresse, erfrage und beantworte req
 	}
 
-	@Override public String toString()
-	{	return this.getName().getValue().toString();
-	}
+	@Override public String toString(){	return this.getName().getValue().toString();}
 
-	public void close()
-	{
-	}
+	public void close(){	XGMidi.getMidi().close();}
 
 	@Override public XGAddressableSet<XGBulk> getBulks()
 	{	XGAddressableSet<XGBulk> set = new XGAddressableSet<>();
@@ -157,11 +145,9 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		return set;
 	}
 
-	@Override public XMLNode getConfig()
-	{	return this.config;
-	}
+	@Override public XMLNode getConfig(){	return this.config;}
 
 	@Override public void propertyChanged(XGProperty attr)
-	{
+	{	LOG.info(attr.toString());
 	}
 }

@@ -4,7 +4,6 @@ import adress.InvalidXGAddressException;
 import adress.XGAddress;
 import adress.XGAddressableSet;
 import application.JXG;
-import static application.JXG.XMLPATH;
 import device.XGDevice;
 import device.XGMidi;
 import static msg.XGMessageConstants.*;
@@ -33,7 +32,7 @@ public class XGDrumsetModuleType extends XGModuleType
 
 	public static void init()
 	{	try
-		{	String s = XMLPATH + XML_DRUMS;
+		{	String s = JXG.getDeviceXMLResourcePath(XML_DRUMS);
 			XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(s), s);
 			for(XMLNode k : n.getChildNodes(TAG_KEY))
 			{	int key = k.getValueAttribute(ATTR_VALUE, -1);

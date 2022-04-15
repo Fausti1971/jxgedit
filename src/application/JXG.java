@@ -2,7 +2,7 @@ package application;
 
 import java.io.*;
 import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URISyntaxException;import java.nio.file.Files;import java.nio.file.Path;
 import javax.xml.stream.XMLStreamException;
 import device.*;
 import file.*;
@@ -23,8 +23,8 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	private static File configFile;
 	public static final String
 		APPNAME = "JXG",
-//		FILESEPERATOR = System.getProperty("file.separator"),
-		XMLPATH = "/xml/";
+		FILESEPERATOR = System.getProperty("file.separator");
+//		XMLPATH = "/xml/";
 //		CWD = System.getProperties().getProperty("user.dir"),
 //		USERHOMEPATH = System.getProperties().getProperty("user.home");
 
@@ -37,6 +37,15 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		catch(URISyntaxException | IOException e)
 		{	LOG.info(e.getMessage());
 			config = new XMLNode(TAG_CONFIG);
+		}
+	}
+
+	public static String getDeviceXMLResourcePath(String file)
+	{	String path = FILESEPERATOR + "rsc" + FILESEPERATOR + XGDevice.device + FILESEPERATOR + file;
+		if(Files.exists(Path.of(path))) return path;
+		else
+		{	String path2 = FILESEPERATOR + "rsc" + FILESEPERATOR + "XG" + FILESEPERATOR + file;
+			LOG.warning(path + " doesn't exist, trying " + path2); return path2;
 		}
 	}
 
@@ -53,12 +62,12 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		XGSplashScreen splash = new XGSplashScreen();
 
 		JXG.init();
+		XGMidi.init();
+		XGDevice.init();
 		XGTable.init();
 		XGDefaultsTable.init();
 		XGParameterTable.init();
 		XGSysexFile.init();
-		XGMidi.init();
-		XGDevice.init();
 		XGModuleType.init();
 		XGModule.init();
 		XGValue.init();
@@ -74,7 +83,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	{	LOG.info("exiting application");
 		try
 		{	config.save(configFile);
-			XGDevice.device.exit();
+			XGDevice.device.close();
 			System.exit(0);
 		}
 		catch(IOException | XMLStreamException e)

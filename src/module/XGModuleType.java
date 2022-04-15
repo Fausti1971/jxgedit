@@ -3,7 +3,7 @@ package module;
 import java.io.IOException;import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.*;
-import static application.JXG.XMLPATH;import config.XGConfigurable;
+import config.XGConfigurable;
 import application.JXG;import application.XGLoggable;
 import parm.XGTable;
 import static parm.XGTable.TABLES;
@@ -27,7 +27,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	XMLNode xml;
 		XGDrumsetModuleType.init();
 		try
-		{	String n = XMLPATH + XML_STRUCTURE;
+		{	String n = JXG.getDeviceXMLResourcePath(XML_STRUCTURE);
 			xml = XMLNode.parse(JXG.class.getResourceAsStream(n), n);
 		}
 		catch(IOException e)
