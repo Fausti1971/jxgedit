@@ -1,6 +1,6 @@
 package module;
 
-import java.io.IOException;import java.util.LinkedHashSet;
+import java.io.File;import java.io.IOException;import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.*;
 import config.XGConfigurable;
@@ -27,8 +27,8 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	XMLNode xml;
 		XGDrumsetModuleType.init();
 		try
-		{	String n = JXG.getDeviceXMLResourcePath(XML_STRUCTURE);
-			xml = XMLNode.parse(JXG.class.getResourceAsStream(n), n);
+		{	File f = JXG.getDeviceXMLResourceFile(XML_STRUCTURE);
+			xml = XMLNode.parse(f);
 		}
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());

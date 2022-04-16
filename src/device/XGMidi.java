@@ -14,7 +14,7 @@ import javax.sound.midi.Receiver;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import adress.InvalidXGAddressException;
-import application.*;
+import adress.XGAddressableSet;import application.*;
 import msg.*;
 import xml.*;
 
@@ -23,7 +23,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	private static XGMidi MIDI = null;
 	private static XMLNode config = null;
 	private static final Object lock = new Object();
-	private static Thread reqThr;
+	private static volatile XGRequest request = null;
+	private static volatile Thread requestThread = null;
 
 	public static XGMidi getMidi()
 	{	if(MIDI == null) XGMidi.init();
@@ -39,12 +40,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	public static Set<Info> OUTPUTS = new LinkedHashSet<>();
 
 	static
-	{	synchronized(lock)
-		{	initInputs();
-		}
-		synchronized(lock)
-		{	initOutputs();
-		}
+	{	synchronized(lock){	initInputs();}
+		synchronized(lock){	initOutputs();}
 	}
 
 	private static void initInputs()
@@ -90,9 +87,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	private Receiver transmitter;
 	private MidiDevice midiOutput = null;
 	private MidiDevice midiInput = null;
-	private volatile XGRequest request = null;
 	private int timeoutValue;
-//	private final XGMessageBuffer buffer;
+	private final XGAddressableSet<XGResponse> buffer = new XGAddressableSet<>();
 
 	public XGMidi(xml.XMLNode cfg)
 	{	this.setInput(cfg.getStringAttribute(ATTR_MIDIINPUT));
@@ -160,13 +156,9 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 		config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
 	}
 
-	public MidiDevice getInput()
-	{	return this.midiInput;
-	}
+	public MidiDevice getInput(){	return this.midiInput;}
 
-	public MidiDevice getOutput()
-	{	return this.midiOutput;
-	}
+	public MidiDevice getOutput(){	return this.midiOutput;}
 
 	private String getInputName()
 	{	if(this.midiInput == null) return "no input device";
@@ -185,9 +177,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 		LOG.info("MidiOutput closed: " + this.getOutputName());
 	}
 
-	public void transmit(MidiMessage mm)
-	{	this.transmitter.send(mm, -1L);
-	}
+	public void transmit(MidiMessage mm){	this.transmitter.send(mm, -1L);}
 
 	@Override public void submit(XGResponse m) throws XGMessengerException
 	{	if(this.transmitter == null) throw new XGMessengerException("no transmitter initialized!");
@@ -203,29 +193,34 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 
 	@Override public void submit(XGRequest req) throws XGMessengerException
 	{	if(this.transmitter == null) throw new XGMessengerException("no transmitter initialized!");
-		if(req == null)throw new XGMessengerException("message was null");
+		if(req == null) throw new XGMessengerException("message was null");
 		req.setTimeStamp();
-		this.request = req;
-		reqThr = Thread.currentThread();
+		request = req;
+		requestThread = Thread.currentThread();
 		this.transmitter.send(req, -1L);
 		try{	Thread.sleep(this.timeoutValue);}
 		catch(InterruptedException ignored){}
-		this.request = null;
-		reqThr = null;
+		request = null;
+		requestThread = null;
 	}
 
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	try
 		{	XGMessage m = XGMessage.newMessage(this, mmsg);
-			if(this.request != null && m instanceof XGResponse && this.request.setResponsedBy((XGResponse)m))
-			{	this.request.getSource().submit((XGResponse)m);
-				reqThr.interrupt();
+			if(m instanceof XGResponse)
+			{	XGResponse r = (XGResponse)m;
+				if(request != null && request.setResponsedBy(r))
+				{	request.getSource().submit(r);
+					requestThread.interrupt();
+				}
+				else
+				{	this.buffer.add(r);
+					LOG.info("unrequested message (" + this.buffer.size() + "): " + r);
+				}
 			}
-//			else XGMessageStore.STORE.submit(m);
+			else LOG.info("unexpected message :" + m.toHexString());
 		}
-		catch(InvalidMidiDataException | InvalidXGAddressException | XGMessengerException e)
-		{	LOG.info(e.getMessage());
-		}
+		catch(InvalidMidiDataException | InvalidXGAddressException | XGMessengerException e){	LOG.info(e.getMessage());}
 	}
 
 	@Override public boolean equals(Object o)
@@ -234,9 +229,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 		return this.hashCode() == o.hashCode();
 	}
 
-	public int getTimeout()
-	{	return this.timeoutValue;
-	}
+	public int getTimeout(){	return this.timeoutValue;}
 
 	public void setTimeout(int t)
 	{	this.timeoutValue = t;
@@ -244,26 +237,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 		LOG.info("" + t);
 	}
 
-	@Override public String toString()
-	{	return this.getMessengerName();
-	}
+	@Override public String toString(){	return this.getMessengerName();}
 
-	@Override public String getMessengerName()
-	{	return "MIDI" + " (" + this.getInputName() + ")";
-	}
-
-	public JComponent getConfigComponent()
-	{	GridBagConstraints gbc = new GridBagConstraints();
-		JPanel root = new JPanel();
-		root.setLayout(new GridBagLayout());
-
-//		c = new XGSpinner("timeout", this.timeout, 30, 1000, 10);
-//		gbc.gridx = 0;
-//		gbc.gridy = GridBagConstraints.RELATIVE;
-////		gbc.gridwidth = 1;
-//		gbc.fill = GridBagConstraints.HORIZONTAL;
-//		root.add(c, gbc);
-
-		return root;
-	}
+	@Override public String getMessengerName(){	return "MIDI" + " (" + this.getInputName() + ")";}
 }

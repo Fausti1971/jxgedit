@@ -12,7 +12,7 @@ public interface XGDeviceConstants extends XMLNodeConstants
 		DEF_SYSEXID = 0;
 
 	String
-		DEF_DEVNAME = "nameless device",
+		DEF_DEVNAME = "XG",
 		DEF_SYXFILENAME = "default.syx";
 
 	String

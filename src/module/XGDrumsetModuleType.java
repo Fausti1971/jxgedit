@@ -18,7 +18,7 @@ import static value.XGValueType.MP_PM_VALUE_TAG;
 import static value.XGValueType.MP_PRG_VALUE_TAG;
 import xml.XMLNode;
 import javax.sound.midi.InvalidMidiDataException;
-import java.io.IOException;
+import java.io.File;import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +32,8 @@ public class XGDrumsetModuleType extends XGModuleType
 
 	public static void init()
 	{	try
-		{	String s = JXG.getDeviceXMLResourcePath(XML_DRUMS);
-			XMLNode n = XMLNode.parse(JXG.class.getResourceAsStream(s), s);
+		{	File f = JXG.getDeviceXMLResourceFile(XML_DRUMS);
+			XMLNode n = XMLNode.parse(f);
 			for(XMLNode k : n.getChildNodes(TAG_KEY))
 			{	int key = k.getValueAttribute(ATTR_VALUE, -1);
 				XGRealTable t = DRUMNAMES.getOrDefault(key, new XGRealTable(Integer.toString(key), "", FALLBACKMASK, false));

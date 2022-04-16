@@ -6,15 +6,14 @@ import application.*;
 import tag.*;
 import xml.XMLNode;
 
-public interface XGTable extends  XGLoggable, XGParameterConstants, XGTagable, Iterable<XGTableEntry>
+public interface XGTable extends XGLoggable, XGParameterConstants, XGTagable, Iterable<XGTableEntry>
 {
 	XGTagableSet<XGTable> TABLES = new XGTagableSet<>();
 	int DEF_FALLBACKMASK = 127;
 
 	static void init()
-	{	String path = JXG.getDeviceXMLResourcePath(XML_TABLES);
-		try
-		{	XMLNode xml = XMLNode.parse(JXG.class.getResourceAsStream(path), path);
+	{	try
+		{	XMLNode xml = XMLNode.parse(JXG.getDeviceXMLResourceFile(XML_TABLES));
 			for(XMLNode x : xml.getChildNodes(TAG_TABLE))
 			{	TABLES.add(new XGRealTable(x));
 			}

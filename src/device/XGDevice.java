@@ -135,7 +135,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 
 	@Override public String toString(){	return this.getName().getValue().toString();}
 
-	public void close(){	XGMidi.getMidi().close();}
+	@Override public void close(){	XGMidi.getMidi().close();}
 
 	@Override public XGAddressableSet<XGBulk> getBulks()
 	{	XGAddressableSet<XGBulk> set = new XGAddressableSet<>();

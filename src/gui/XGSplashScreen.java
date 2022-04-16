@@ -2,20 +2,21 @@ package gui;
 
 import static application.XGLoggable.LOG;
 import javax.swing.*;
-import java.util.logging.Handler;
+import java.awt.*;import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 public class XGSplashScreen extends JFrame 
 {	private final Handler handler;
 
 	public XGSplashScreen()
-	{	this.setTitle("initializing JXG, please wait...");
+	{	Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+		this.setTitle("initializing JXG, please wait...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		JLabel status = new JLabel();
-//		status.setFont(MEDIUM_FONT);
+		JTextArea status = new JTextArea();
+		status.setFont(status.getFont().deriveFont((float)d.height / 100));
 		this.handler = new Handler()
 		{	public void publish(LogRecord record)
-			{	status.setText(record.getMessage());
+			{	status.append(record.getMessage() + "\n");
 			}
 			public void flush()
 			{
@@ -25,11 +26,10 @@ public class XGSplashScreen extends JFrame
 			}
 		};
 		LOG.addHandler(this.handler);
-		this.getContentPane().add(status);
+		this.getContentPane().add(new JScrollPane(status));
 
 		this.setResizable(false);
-//		this.setUndecorated(true);
-		this.setSize(600, 200);
+		this.setSize(d.width/5, d.height/5);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}

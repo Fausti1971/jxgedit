@@ -27,7 +27,7 @@ public class XMLNode implements XGTagable,  XGLoggable, XGStrings
 	{	return parse(new FileInputStream(f), f.toString());
 	}
 
-	public static XMLNode parse(InputStream xml, String name)throws IOException
+	private static XMLNode parse(InputStream xml, String name)throws IOException
 	{	if(xml == null) throw new IOException();
 		XMLNode current_node = null, parent_node = null, root_node = null;
 

@@ -1,8 +1,7 @@
 package application;
 
 import java.io.*;
-import java.net.URI;
-import java.net.URISyntaxException;import java.nio.file.Files;import java.nio.file.Path;
+import java.net.URISyntaxException;import java.nio.file.Files;import java.nio.file.Path;import java.nio.file.Paths;
 import javax.xml.stream.XMLStreamException;
 import device.*;
 import file.*;
@@ -28,24 +27,30 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 //		CWD = System.getProperties().getProperty("user.dir"),
 //		USERHOMEPATH = System.getProperties().getProperty("user.home");
 
+	private static Path getAppFilePath()throws URISyntaxException{	return Paths.get(JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI());}
+
+	private static Path getAppPath()throws URISyntaxException{	return getAppFilePath().getParent();}
+
 	public static void init()
 	{	try
-		{	URI uri = JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI();
-			configFile = new File(uri.resolve(XML_CONFIG));
+		{	configFile = new File(getAppPath().resolve(XML_CONFIG).toUri());
 			config = XMLNode.parse(configFile);
 		}
 		catch(URISyntaxException | IOException e)
-		{	LOG.info(e.getMessage());
+		{	LOG.severe(e.getMessage());
 			config = new XMLNode(TAG_CONFIG);
 		}
 	}
 
-	public static String getDeviceXMLResourcePath(String file)
-	{	String path = FILESEPERATOR + "rsc" + FILESEPERATOR + XGDevice.device + FILESEPERATOR + file;
-		if(Files.exists(Path.of(path))) return path;
-		else
-		{	String path2 = FILESEPERATOR + "rsc" + FILESEPERATOR + "XG" + FILESEPERATOR + file;
-			LOG.warning(path + " doesn't exist, trying " + path2); return path2;
+	public static File getDeviceXMLResourceFile(String file)
+	{	try
+		{	Path appPath = getAppPath();
+			String s = XGDevice.device.toString();
+			return new File(appPath.resolve(s).resolve(file).toUri());
+		}
+		catch(URISyntaxException e)
+		{	e.printStackTrace();
+			return null;
 		}
 	}
 
