@@ -8,7 +8,7 @@ import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
 import config.XGConfigurable;import file.XGSysexFile;
-import module.XGBulk;import module.XGBulkDumper;import module.XGModule;
+import bulk.XGBulk;import bulk.XGBulkDumper;import module.XGModule;
 import module.XGModuleType;
 import static module.XGModuleType.TYPES;
 import msg.*;
@@ -140,7 +140,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	@Override public XGAddressableSet<XGBulk> getBulks()
 	{	XGAddressableSet<XGBulk> set = new XGAddressableSet<>();
 		for(XGModuleType mt : TYPES)
-			for(XGModule mi : mt.getModules())
+			for(XGModule mi : mt.getModules().values())
 				set.addAll(mi.getBulks());
 		return set;
 	}

@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.*;import java.util.NoSuchElementException;
+import java.awt.event.*;import java.util.Collection;import java.util.NoSuchElementException;import java.util.Set;
 import javax.swing.*;
 import adress.XGAddressableSet;import application.*;
 import static application.JXG.*;
@@ -78,10 +78,10 @@ public class XGMainWindow extends XGWindow
 		JTabbedPane tabPane = new JTabbedPane();
 
 		for(XGModuleType mt : TYPES)
-		{	XGAddressableSet<XGModule> set = mt.getModules();
+		{	Collection<XGModule> set = mt.getModules().values();
 			XGButton2 button;
 			if(set.size() == 1)
-			{	XGModule mod = set.get(0);
+			{	XGModule mod = (XGModule)set.toArray()[0];
 				XGValue v;
 				try
 				{	String infoTag = mt.getInfoTags().iterator().next();

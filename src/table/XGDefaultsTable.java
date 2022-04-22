@@ -1,10 +1,10 @@
-package parm;
+package table;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import application.*;
-import tag.*;
+import parm.XGParameterConstants;import tag.*;
 import xml.XMLNode;
 /**
  * simple taggable HashMap<Integer, HashMap<Integer, Integer>>, deren erster int der Wert des Selektors, der zweite int der Wert des zugehörigen Defaults ist

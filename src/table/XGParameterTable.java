@@ -1,8 +1,10 @@
-package parm;
+package table;
 
 import java.io.*;
 import java.util.HashMap;
 import application.*;
+import parm.XGParameter;
+import parm.XGParameterConstants;
 import tag.*;
 import xml.XMLNode;
 import xml.XMLNodeConstants;
@@ -17,8 +19,8 @@ public class XGParameterTable extends HashMap<Integer, XGParameter> implements X
 		{	File f = JXG.getDeviceXMLResourceFile(XML_PARAMETER);
 			XMLNode n = XMLNode.parse(f);
 			for(XMLNode t : n.getChildNodes(TAG_PARAMETERTABLE))
-			{	PARAMETERTABLES.add(new XGParameterTable(t));
-			}
+				PARAMETERTABLES.add(new XGParameterTable(t));
+			
 		}
 		catch(IOException e)
 		{	LOG.info(e.getMessage());

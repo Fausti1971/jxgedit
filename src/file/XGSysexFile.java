@@ -8,7 +8,7 @@ import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;
 import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.*;
-import gui.*;import module.XGBulkDumper;import msg.*;
+import gui.*;import bulk.XGBulkDumper;import msg.*;
 import xml.*;import static xml.XMLNodeConstants.TAG_ITEM;
 
 public class XGSysexFile extends File implements XGSysexFileConstants, XGMessenger, XGLoggable

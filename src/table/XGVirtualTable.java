@@ -1,4 +1,4 @@
-package parm;
+package table;
 
 import java.util.*;
 import java.util.function.Function;

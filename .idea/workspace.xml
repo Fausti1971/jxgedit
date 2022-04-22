@@ -10,41 +10,41 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="Default Changelist" comment="backup single">
+      <change afterPath="$PROJECT_DIR$/src/bulk/XGInsertion48Bulk.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/JXG.iml" beforeDir="false" afterPath="$PROJECT_DIR$/JXG.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/device/XGDevice.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGDeviceConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/device/XGDeviceConstants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGDrumsetModuleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGDrumsetModuleType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGModuleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGModuleType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGDefaultsTable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGParameterTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGParameterTable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/parm/XGTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/parm/XGTable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/xml/XMLNode.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/xml/XMLNode.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGDeviceConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDeviceConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/file/XGSysexFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGSysexFile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGCombo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCombo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGKeyboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKeyboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGRadio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRadio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGSpinner.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGTableTreeModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGTableTreeModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGBulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGBulkDumper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGBulkType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parm/XGDefaultsTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGDefaultsTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parm/XGParameterTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGParameterTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/parm/XGTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/defaults.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/defaults.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/drums.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/drums.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/parameter.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/parameter.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/structure.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/structure.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/tables.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/tables.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/template.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rsc/XG/template.xsd" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/XMLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageBulkRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageBulkRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageCodec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageCodec.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGDefaultsTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGDefaultsTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGParameter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGParameter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGParameterConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/parm/XGParameterConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGParameterTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGParameterTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGRealTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGRealTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGTableEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGTableEntry.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/parm/XGVirtualTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGVirtualTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/ChangeableContent.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValueType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValueType.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="Backup Changelist" comment="backups" />
     <option name="SHOW_DIALOG" value="false" />
@@ -67,8 +67,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -78,7 +78,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="static_structure" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -162,10 +162,11 @@
     <property name="project.structure.side.proportion" value="0.25268817" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
-    <property name="settings.editor.selected.configurable" value="editor.preferences.fonts.default" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="bulk" />
       <recent name="gui" />
       <recent name="msg" />
     </key>
@@ -180,10 +181,11 @@
       <recent name="application.JXG" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="table" />
+      <recent name="bulk" />
       <recent name="module" />
       <recent name="value" />
       <recent name="msg" />
-      <recent name="obj" />
     </key>
   </component>
   <component name="RunManager" selected="JAR Application.JXG">

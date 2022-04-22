@@ -8,12 +8,9 @@ import adress.XGAddressField;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.*;
-import static module.XGModuleType.TYPES;
+import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import static module.XGModuleType.TYPES;
 import static parm.XGParameterConstants.TABLE_FX_PARTS;
-import static parm.XGTable.TABLES;
-import parm.XGTableEntry;
-import parm.XGRealTable;
-import tag.*;
+import table.XGRealTable;import static table.XGTable.TABLES;import table.XGTableEntry;import tag.*;
 import value.*;import javax.sound.midi.InvalidMidiDataException;
 
 public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper
@@ -53,7 +50,7 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException, InvalidMidiDataException
 	{	this.type = mt;
 		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
-		for(XGBulkType bt : mt.getBulkTypes()){ this.bulks.add(new XGBulk(bt, this));}
+		for(XGBulkType bt : mt.getBulkTypes()){ this.bulks.add(XGBulk.newBulk(bt, this));}
 
 		XGRealTable tab = (XGRealTable)TABLES.get(TABLE_FX_PARTS);
 		String tag = mt.getTag();

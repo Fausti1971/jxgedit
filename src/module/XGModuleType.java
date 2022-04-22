@@ -3,12 +3,9 @@ package module;
 import java.io.File;import java.io.IOException;import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.*;
-import config.XGConfigurable;
+import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import config.XGConfigurable;
 import application.JXG;import application.XGLoggable;
-import parm.XGTable;
-import static parm.XGTable.TABLES;
-import static parm.XGVirtualTable.DEF_TABLE;import tag.*;
-import xml.XGProperty;import xml.XMLNode;
+import table.XGTable;import static table.XGTable.TABLES;import static table.XGVirtualTable.DEF_TABLE;import tag.XGTagable;import tag.XGTagableAddressableSet;import xml.XGProperty;import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen

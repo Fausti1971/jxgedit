@@ -18,7 +18,7 @@ import javax.swing.border.LineBorder;
 import adress.InvalidXGAddressException;
 import device.XGMidi;
 import module.XGModule;
-import static parm.XGTable.TABLES;import value.XGValue;
+import static table.XGTable.TABLES;import value.XGValue;
 import xml.XMLNode;
 
 public class XGKeyboard extends XGFrame implements XGUI

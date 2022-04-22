@@ -1,6 +1,6 @@
 package parm;
 import application.*;
-import static parm.XGTable.TABLES;import xml.XMLNode;
+import table.XGTable;import static table.XGTable.TABLES;import table.XGVirtualTable;import xml.XMLNode;
 
 public class XGParameter implements XGLoggable, XGParameterConstants
 {	private static final int MAX_SHORTNAME_LENGTH = 6;

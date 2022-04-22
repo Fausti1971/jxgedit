@@ -1,4 +1,4 @@
-package parm;
+package table;
 
 import java.util.*;
 import application.XGStrings;import xml.XMLNode;

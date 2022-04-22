@@ -1,4 +1,4 @@
-package module;
+package bulk;
 
 import java.util.logging.Level;
 import javax.sound.midi.InvalidMidiDataException;
@@ -27,15 +27,12 @@ public interface XGBulkDumper extends XGLoggable
 		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "transmitting to " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
-		XGMessageBulkDump msg;
 		for(XGBulk b : set)
 		{	try
-			{	msg = b.getMessage();
-				msg.setChecksum();
-				dest.submit(msg);
-				pm.setNote(msg.toString());
+			{	b.transmit(dest);
+				pm.setNote(b.toString());
 				pm.setProgress(++transmitted);
-				LOG.info(msg + " transmitted");
+				LOG.info(b + " transmitted");
 				if(pm.isCanceled()) break;
 			}
 			catch(InvalidXGAddressException | XGMessengerException e)
@@ -54,28 +51,25 @@ public interface XGBulkDumper extends XGLoggable
 	{	if(dest == null) return;
 
 		int requested = 0, responsed = 0;
-		long time = System.currentTimeMillis();
+		long time = System.currentTimeMillis(), reqTime;
 		XGRequest r;
 		XGAddressableSet<XGBulk> set = this.getBulks();
-		XGAddressableSet<XGRequest> missed = new XGAddressableSet<>();
 		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "transmitting...", "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
 		{	try
-			{	r = new XGMessageBulkRequest(b, b);
-				dest.submit(r);
-				++requested;
-				if(r.isResponsed())
-				{	pm.setNote(r.toString());
+			{	reqTime = System.currentTimeMillis();
+				requested++;
+				if(b.request(dest))
+				{	pm.setNote(b.toString());
 					pm.setProgress(++responsed);
-					LOG.info("response for " + r + " within " + (r.getResponse().getTimeStamp() - r.getTimeStamp()) + " ms");
+					LOG.info("response for " + b + " within " + (b.getMessage().getTimeStamp() - reqTime) + " ms");
 //					LOG.info(r.getResponse().toHexString());
 				}
 				else
-				{	LOG.severe("no response for " + r + " within " + (System.currentTimeMillis() - r.getTimeStamp()) + " ms");
-					pm.setNote(r.toString());
-					missed.add(r);
+				{	LOG.severe("no response for " + b + " within " + (System.currentTimeMillis() - reqTime) + " ms");
+					pm.setNote(b.toString());
 				}
 				if(pm.isCanceled()) break;
 			}

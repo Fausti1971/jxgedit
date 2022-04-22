@@ -9,7 +9,7 @@ import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
-import parm.XGTableEntry;
+import table.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 

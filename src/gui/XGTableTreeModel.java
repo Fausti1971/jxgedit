@@ -4,8 +4,8 @@ import javax.swing.event.TreeModelListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
-import parm.XGTable;
-import parm.XGTableEntry;
+import table.XGTable;
+import table.XGTableEntry;
 
 public class XGTableTreeModel implements TreeModel
 {

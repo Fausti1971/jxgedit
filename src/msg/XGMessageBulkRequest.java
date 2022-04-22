@@ -2,7 +2,7 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;import module.XGBulk;
+import adress.XGAddress;import bulk.XGBulk;
 
 public class XGMessageBulkRequest extends XGRequest
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20, OVERHAED = 8;

@@ -1,7 +1,10 @@
 package msg;
 
-import parm.XGParameterConstants;public interface XGMessageCodec 
-{	static XGMessageCodec getCodec(XGParameterConstants.ValueDataType type)
+import value.XGValueType;
+
+public interface XGMessageCodec 
+{
+	static XGMessageCodec getCodec(XGValueType.ValueDataType type)
 	{	switch(type)
 		{	case LSB:	return LSB_CODEC;
 			case LSN:	return LSN_CODEC;

@@ -9,7 +9,7 @@ public class XGModuleTableModel  implements TableModel
 	private final Set<TableModelListener> listeners = new HashSet<>();
 
 	XGModuleTableModel(XGModuleType t)
-	{	this.rows = new Vector<>(t.getModules());
+	{	this.rows = new Vector<>(t.getModules().values());
 		this.cols = new Vector<>(t.getInfoTags());
 		this.cols.add(0, ATTR_ID);
 		for(XGModule m : this.rows)

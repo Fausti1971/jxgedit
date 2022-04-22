@@ -2,7 +2,7 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;import gui.XGMainWindow;import module.XGBulk;import value.XGValue;
+import adress.XGAddress;import gui.XGMainWindow;import bulk.XGBulk;import value.XGValue;
 
 public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 {

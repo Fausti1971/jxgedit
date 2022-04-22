@@ -4,8 +4,8 @@ import java.awt.*;
 import javax.swing.*;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
-import parm.XGTable;
-import parm.XGTableEntry;
+import table.XGTable;
+import table.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 

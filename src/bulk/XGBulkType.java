@@ -1,8 +1,8 @@
-package module;
+package bulk;
 
 import adress.InvalidXGAddressException;import adress.XGAddress;
 import adress.XGAddressable;
-import config.XGConfigurable;import value.XGValueType;import tag.XGTagable;import tag.XGTagableAddressableSet;import xml.XGProperty;import xml.XMLNode;import static xml.XMLNodeConstants.*;
+import config.XGConfigurable;import module.XGModuleType;import value.XGValueType;import tag.XGTagable;import tag.XGTagableAddressableSet;import xml.XGProperty;import xml.XMLNode;import static xml.XMLNodeConstants.*;
 
 public class XGBulkType implements XGTagable, XGAddressable, XGConfigurable
 {
@@ -12,7 +12,6 @@ public class XGBulkType implements XGTagable, XGAddressable, XGConfigurable
 	public final XGModuleType moduleType;
 	private final XGTagableAddressableSet<XGValueType> opcodes = new XGTagableAddressableSet<>();
 
-
 	public XGBulkType(XGModuleType mt, XMLNode x)
 	{	this.config = x;
 		this.tag = x.getStringAttribute(ATTR_ID);
@@ -20,7 +19,7 @@ public class XGBulkType implements XGTagable, XGAddressable, XGConfigurable
 		this.moduleType = mt;
 
 		for(XMLNode o : x.getChildNodes(TAG_OPCODE))
-		{	try{	this.opcodes.add(new XGValueType( this.address, o));}
+		{	try{	this.opcodes.add(new XGValueType(this.address, o));}
 			catch(InvalidXGAddressException e){	e.printStackTrace();}
 		}
 	}

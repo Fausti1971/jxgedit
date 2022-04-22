@@ -1,9 +1,9 @@
-package parm;
+package table;
 
 import java.io.*;
 import java.util.Set;
 import application.*;
-import tag.*;
+import parm.XGParameterConstants;import tag.*;
 import xml.XMLNode;
 
 public interface XGTable extends XGLoggable, XGParameterConstants, XGTagable, Iterable<XGTableEntry>

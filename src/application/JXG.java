@@ -1,15 +1,14 @@
 package application;
 
 import java.io.*;
-import java.net.URISyntaxException;import java.nio.file.Files;import java.nio.file.Path;import java.nio.file.Paths;
+import java.net.URISyntaxException;import java.nio.file.Path;import java.nio.file.Paths;
 import javax.xml.stream.XMLStreamException;
-import device.*;
+import static bulk.XGInsertion48Bulk.MSB_PROGRAMS;import device.*;
 import file.*;
 import gui.*;
 import module.XGModule;
 import module.XGModuleType;
-import parm.*;
-import value.*;
+import table.XGDefaultsTable;import table.XGParameterTable;import table.XGTable;import value.*;
 import xml.*;
 
 public class JXG implements XGLoggable, XGUI, XMLNodeConstants
@@ -21,8 +20,8 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	public static XMLNode config;
 	private static File configFile;
 	public static final String
-		APPNAME = "JXG",
-		FILESEPERATOR = System.getProperty("file.separator");
+		APPNAME = "JXG";
+//		FILESEPERATOR = System.getProperty("file.separator");
 //		XMLPATH = "/xml/";
 //		CWD = System.getProperties().getProperty("user.dir"),
 //		USERHOMEPATH = System.getProperties().getProperty("user.home");
@@ -67,17 +66,23 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		XGSplashScreen splash = new XGSplashScreen();
 
 		JXG.init();
+
 		XGMidi.init();
 		XGDevice.init();
+		XGSysexFile.init();
+
 		XGTable.init();
 		XGDefaultsTable.init();
 		XGParameterTable.init();
-		XGSysexFile.init();
+
 		XGModuleType.init();
+
 		XGModule.init();
 		XGValue.init();
+
 		XGUI.init();
 		XGWindow.init();
+
 		System.gc();
 		splash.dispose();
 

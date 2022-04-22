@@ -1,8 +1,8 @@
-package module;
+package bulk;
 
 import adress.InvalidXGAddressException;
 import adress.XGAddress;import adress.XGAddressable;
-import application.XGLoggable;import msg.*;
+import application.XGLoggable;import module.XGModule;import msg.*;
 import tag.XGTagable;
 import tag.XGTagableAddressableSet;
 import value.XGValue;
@@ -10,13 +10,20 @@ import javax.sound.midi.InvalidMidiDataException;
 
 public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 {
+	public static XGBulk newBulk(XGBulkType type, XGModule mod)throws InvalidMidiDataException, InvalidXGAddressException
+	{	if(type.tag.equals("ins48")) return new XGInsertion48Bulk(type, mod);
+		else return new XGBulk(type, mod);
+	}
+
+/**********************************************************************************************************************/
+
 	private final XGBulkType type;
-	private final XGModule module;
+	final XGModule module;
 	private final XGAddress address;
-	private volatile XGMessageBulkDump message;
+	volatile XGMessageBulkDump message;
 	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
 
-	public XGBulk(XGBulkType type, XGModule mod)throws InvalidXGAddressException, InvalidMidiDataException
+	protected XGBulk(XGBulkType type, XGModule mod)throws InvalidXGAddressException, InvalidMidiDataException
 	{	this.type = type;
 		this.module = mod;
 		this.address = type.getAddress().complement(mod.getAddress());
@@ -24,6 +31,17 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 	}
 
 	public XGBulkType getType(){	return this.type;}
+
+	public void transmit(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException
+	{	dest.submit(this.message);
+		this.message.setChecksum();
+		}
+
+	public boolean request(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException, InvalidMidiDataException
+	{	XGMessageBulkRequest request = new XGMessageBulkRequest(this, this);
+		dest.submit(request);
+		return request.isResponsed();
+	}
 
 	@Override public String getTag(){	return this.type.getTag();}
 
@@ -55,4 +73,6 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 	}
 
 	@Override public void close(){}
+
+	@Override public String toString(){	return this.getClass().getSimpleName() + " " + this.message.getAddress();}
 }

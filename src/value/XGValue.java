@@ -4,18 +4,18 @@ import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
 import application.XGLoggable;
-import device.*;
+import bulk.XGBulk;import device.*;
 import module.*;
 import static module.XGModuleType.TYPES;
 import msg.*;
-import parm.XGDefaultsTable;
-import static parm.XGDefaultsTable.DEFAULTSTABLE;
+import table.XGDefaultsTable;
+import static table.XGDefaultsTable.DEFAULTSTABLE;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
-import parm.XGParameterTable;
-import static parm.XGParameterTable.PARAMETERTABLES;
-import parm.XGTableEntry;
+import table.XGParameterTable;
+import static table.XGParameterTable.PARAMETERTABLES;
+import table.XGTableEntry;
 import tag.*;
 
 /**
@@ -34,7 +34,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	{	XGAddressableSet<XGValue> pool = new XGAddressableSet<>();
 	
 		for(XGModuleType mt : TYPES)
-		{	for(XGModule mod : mt.getModules())
+		{	for(XGModule mod : mt.getModules().values())
 			{	for(XGBulk blk : mod.getBulks())
 				{	for(XGValueType opc : blk.getType().getOpcodes())
 					{	try
@@ -63,7 +63,6 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	private final XGAddress address;
 	private final XGValueType type;
 	private volatile XGBulk bulk;
-	private final XGMessageCodec codec;
 	private XGValue parameterSelector = null, defaultSelector = null;
 	private final XGParameterTable parameters;
 	private final XGDefaultsTable defaults;
@@ -77,26 +76,24 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		this.parameters = null;
 		this.defaults = null;
 		this.type = null;
-		this.codec = XGMessageCodec.LSB_CODEC;
 	}
 
 	public XGValue(XGValueType opc, XGBulk blk) throws InvalidXGAddressException
 	{	this.type = opc;
 		this.bulk = blk;
-		this.codec = XGMessageCodec.getCodec(opc.getDataType());
 		this.address = new XGAddress(opc.getAddress().getHi().getValue(), blk.getAddress().getMid().getValue(), opc.getAddress().getLo().getMin());
 		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
 
 		if(opc.hasMutableParameters())
-		{	this.parameters = PARAMETERTABLES.get(opc.getParameterTableName());
-			if(this.parameters == null) throw new RuntimeException("parameter-table \"" + opc.getParameterTableName() + "\" for " + opc.getTag() + " not found");
+		{	this.parameters = PARAMETERTABLES.get(opc.parameterTableName);
+			if(this.parameters == null) throw new RuntimeException("parameter-table \"" + opc.parameterTableName + "\" for " + opc.getTag() + " not found");
 		}
 		else
 		{	this.parameters = new XGParameterTable(this.getTag());
 			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getConfig()));
 		}
 
-		if(opc.hasMutableDefaults()){	this.defaults = DEFAULTSTABLE.get(opc.getDefaultsTableName());}
+		if(opc.hasMutableDefaults()){	this.defaults = DEFAULTSTABLE.get(opc.defaultsTableName);}
 		else
 		{	this.defaults = new XGDefaultsTable(opc.getTag());
 			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, opc.getConfig().getValueAttribute(ATTR_DEFAULT, 0));
@@ -109,15 +106,15 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		if("mp_partmode".equals(this.getTag())) this.valueListeners.add(XGProgramBuffer::changePartmode);
 
 		if(this.type.hasMutableParameters())
-		{	XGValue psv = this.bulk.getModule().getValues().get(this.type.getParameterSelectorTag());
-			if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + " " + this.type.getParameterSelectorTag() + " not found for value " + this.getTag());
+		{	XGValue psv = this.bulk.getModule().getValues().get(this.type.parameterSelectorTag);
+			if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + " " + this.type.parameterSelectorTag + " not found for value " + this.getTag());
 			this.parameterSelector = psv;
 			this.parameterSelector.valueListeners.add((XGValue val)->this.notifyParameterListeners());
 		}
 		else this.parameterSelector = DEF_DEFAULTSELECTOR;
 
 		if(this.type.hasMutableDefaults())
-		{	String dst = this.type.getDefaultSelectorTag();
+		{	String dst = this.type.defaultSelectorTag;
 			XGValue dsv = this.bulk.getModule().getValues().get(dst);
 			if(dsv != null)
 			{	this.defaultSelector = dsv;
@@ -149,7 +146,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 
 	public void notifyParameterListeners(){	for(XGParameterChangeListener l : this.parameterListeners) l.parameterChanged(this.getParameter());}
 
-	public XGMessageCodec getCodec(){	return codec;}
+	public XGMessageCodec getCodec(){	return this.type.codec;}
 
 	public XGValueType getType(){	return this.type;}
 
@@ -215,7 +212,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	{	XGMessageBulkDump msg = this.bulk.getMessage();
 		try
 		{	int offset = msg.getBaseOffset() + this.address.getLo().getValue() - msg.getLo();
-			return this.codec.decode(msg, offset, this.getSize());
+			return this.type.codec.decode(msg, offset, this.getSize());
 		}
 		catch(InvalidXGAddressException e)
 		{	e.printStackTrace();
@@ -233,12 +230,12 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		try
 		{	int offset = msg.getBaseOffset() + this.address.getLo().getValue() - msg.getLo();
 			this.oldValue = this.getValue();
-			this.codec.encode(msg, offset, this.getSize(), v);
+			this.type.codec.encode(msg, offset, this.getSize(), v);
 		}
 		catch(InvalidXGAddressException e){	e.printStackTrace();}
 		if(this.hasChanged())
 		{	this.notifyValueListeners(this);
-			if(action) this.actions();
+			if(action) this.type.action.accept(this);
 		}
 	}
 
@@ -288,29 +285,20 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e){	e.printStackTrace();}
 	}
 
+	public void noneAction()
+	{
+	}
+
 	public String getInfo()
 	{	XGParameter p = this.getParameter();
 		if(p != null) return p.getName() + "=" + this;
 		else return "no parameter info";
 	}
 
-	private void actions()
-	{	for(XACTION a : this.type.getActions())
-		{	switch(a)
-			{	case change: 			this.sendAction(); break;	//send via XGMessageParameterChange (normal)
-				case dump:				this.dumpAction(); break;	//bulk via XGMessageBulkDump (voice-programs)
-				case change_program:	XGProgramBuffer.changeProgram(this); break;
-				case change_partmode:	XGProgramBuffer.changePartmode(this); break;
-				case none:				break;
-				default:				LOG.info("unknown action: " + a.name() + " for value: " + this.getInfo());
-			}
-		}
-	}
-
 	@Override public void submit(XGResponse res) throws InvalidXGAddressException, XGMessengerException
 	{	try
 		{	int offset = res.getBaseOffset() + this.address.getLo().getValue() - res.getLo();
-			this.setValue(this.codec.decode(res, offset, this.getSize()), false, false);
+			this.setValue(this.type.codec.decode(res, offset, this.getSize()), false, false);
 		}
 		catch(InvalidXGAddressException e){	e.printStackTrace();}
 	}
