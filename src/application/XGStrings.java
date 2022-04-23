@@ -1,8 +1,6 @@
 package application;
 
-import java.awt.*;import java.util.HashSet;
-import java.util.Scanner;import java.util.Set;
-import java.util.StringTokenizer;
+import static application.XGLoggable.LOG;import java.awt.*;import java.util.*;
 
 public interface XGStrings
 {
@@ -21,8 +19,8 @@ public interface XGStrings
  * @param s	Eingangsstring mit (oder ohne) Kommas
  * @return	Set der einzelnen Stringabschnitte
  */
-	static Set<String> splitCSV(String s)
-	{	Set<String> a = new HashSet<>();
+	static LinkedHashSet<String> splitCSV(String s)
+	{	LinkedHashSet<String> a = new LinkedHashSet<>();
 		if(s != null)
 		{	StringTokenizer t = new StringTokenizer(s, ",");
 			while(t.hasMoreElements()) a.add(t.nextToken().trim());
@@ -161,6 +159,20 @@ public interface XGStrings
 			s.append(", ");
 		}
 		return s.toString();
+	}
+
+	static byte[] fromHexString(String content) throws NumberFormatException
+	{	String[] sa =  content.split(",");
+		byte[] array = new byte[sa.length];
+		int i = 0;
+		try
+		{	for(String s : sa) array[i++] = (byte)(Integer.parseInt(s, 16));
+			return array;
+		}
+		catch(NumberFormatException e)
+		{	LOG.warning(e.getMessage());
+			throw e;
+		}
 	}
 
 	static int toNumber(String s)

@@ -25,6 +25,7 @@ import static application.JXG.APPNAME;public interface XMLNodeConstants
 
 		TAG_CONFIG = "config",
 		TAG_VERSION = "version",
+		TAG_INIT_MESSAGE = "init_message",
 
 		TAG_UI = "ui",
 		ATTR_LOOKANDFEEL = "lookAndFeel",

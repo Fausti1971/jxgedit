@@ -1,7 +1,7 @@
 package xml;
 
 import java.io.*;
-import java.util.Iterator;
+import java.net.URI;import java.net.URISyntaxException;import java.nio.file.Path;import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -15,13 +15,26 @@ import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.stream.StreamSource;
-import application.XGLoggable;
+import application.JXG;import application.XGLoggable;
 import application.XGStrings;
-import tag.XGTagable;import tag.XGTagableSet;
+import device.XGDevice;import tag.XGTagable;import tag.XGTagableSet;
 
-public class XMLNode implements XGTagable,  XGLoggable, XGStrings
+public class XMLNode implements XGTagable, XGLoggable, XGStrings
 {
 	private static final String ERRORSTRING = " contains invalid character";
+
+	public static XMLNode parse(String filename)throws IOException
+	{	try
+		{	Path appPath = JXG.getAppPath();
+			String s = XGDevice.device.toString();
+			URI uri = appPath.resolve(s).resolve(filename).toUri();
+			return parse(new File(uri));
+		}
+		catch(URISyntaxException | IOException e)
+		{	LOG.warning(e.getMessage() + " - using internal defaults");
+			return parse(XMLNode.class.getResourceAsStream(filename), filename);
+		}
+	}
 
 	public static XMLNode parse(File f)throws IOException
 	{	return parse(new FileInputStream(f), f.toString());

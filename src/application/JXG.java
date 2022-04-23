@@ -28,7 +28,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 
 	private static Path getAppFilePath()throws URISyntaxException{	return Paths.get(JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI());}
 
-	private static Path getAppPath()throws URISyntaxException{	return getAppFilePath().getParent();}
+	public static Path getAppPath()throws URISyntaxException{	return getAppFilePath().getParent();}
 
 	public static void init()
 	{	try
@@ -38,18 +38,6 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		catch(URISyntaxException | IOException e)
 		{	LOG.severe(e.getMessage());
 			config = new XMLNode(TAG_CONFIG);
-		}
-	}
-
-	public static File getDeviceXMLResourceFile(String file)
-	{	try
-		{	Path appPath = getAppPath();
-			String s = XGDevice.device.toString();
-			return new File(appPath.resolve(s).resolve(file).toUri());
-		}
-		catch(URISyntaxException e)
-		{	e.printStackTrace();
-			return null;
 		}
 	}
 

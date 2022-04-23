@@ -22,8 +22,7 @@ public class XGDefaultsTable implements XGLoggable, XGTagable, XGTableConstants
 
 	public static void init()
 	{	try
-		{	File f = JXG.getDeviceXMLResourceFile(XML_DEFAULTS);
-			XMLNode n = XMLNode.parse(f);
+		{	XMLNode n = XMLNode.parse(XML_DEFAULTS);
 			for(XMLNode t : n.getChildNodes(TAG_DEFAULTSTABLE))
 			{	DEFAULTSTABLES.add(new XGDefaultsTable(t));
 			}

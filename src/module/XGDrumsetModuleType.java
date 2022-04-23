@@ -28,8 +28,7 @@ public class XGDrumsetModuleType extends XGModuleType
 
 	public static void init()
 	{	try
-		{	File f = JXG.getDeviceXMLResourceFile(XML_DRUMS);
-			XMLNode n = XMLNode.parse(f);
+		{	XMLNode n = XMLNode.parse(XML_DRUMS);
 			for(XMLNode k : n.getChildNodes(TAG_KEY))
 			{	int key = k.getValueAttribute(ATTR_VALUE, -1);
 				XGRealTable t = DRUMNAMES.getOrDefault(key, new XGRealTable(Integer.toString(key), "", FALLBACKMASK, false));

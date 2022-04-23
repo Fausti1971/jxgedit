@@ -24,8 +24,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	XMLNode xml;
 		XGDrumsetModuleType.init();
 		try
-		{	File f = JXG.getDeviceXMLResourceFile(XML_STRUCTURE);
-			xml = XMLNode.parse(f);
+		{	xml = XMLNode.parse(XML_STRUCTURE);
 		}
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());

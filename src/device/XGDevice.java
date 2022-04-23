@@ -7,7 +7,7 @@ import adress.InvalidXGAddressException;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
-import config.XGConfigurable;import file.XGSysexFile;
+import application.XGStrings;import config.XGConfigurable;import file.XGSysexFile;
 import bulk.XGBulk;import bulk.XGBulkDumper;import module.XGModule;
 import module.XGModuleType;
 import static module.XGModuleType.TYPES;
@@ -22,7 +22,20 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	private final String WARNSTRING = "This will reset all parameters!";
 
 	public static void init()
-	{	device = new XGDevice(JXG.config.getChildNodeOrNew(TAG_DEVICE));
+	{	XMLNode xml = JXG.config.getChildNodeOrNew(TAG_DEVICE);
+		device = new XGDevice(xml);
+		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))
+		{	try
+			{	SysexMessage msg = new SysexMessage();
+				byte[] array = XGStrings.fromHexString(m.getTextContent().toString());
+				msg.setMessage(array, array.length);
+				XGMidi.getMidi().transmit(msg);
+				LOG.info("transmitting " + TAG_INIT_MESSAGE + ": " + XGStrings.toHexString(array));
+			}
+			catch(NumberFormatException | InvalidMidiDataException e)
+			{	LOG.severe(e.getMessage());
+			}
+		}
 	}
 
 /***************************************************************************************************************************/

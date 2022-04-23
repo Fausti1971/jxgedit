@@ -4,7 +4,6 @@ import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 import application.*;
-import parm.XGParameterConstants;
 import tag.*;
 import xml.XMLNode;import static xml.XMLNodeConstants.TAG_TABLE;import static xml.XMLNodeConstants.XML_TABLES;
 
@@ -16,7 +15,7 @@ public interface XGTable extends XGLoggable, XGTableConstants, XGTagable, Iterab
 
 	static void init()
 	{	try
-		{	XMLNode xml = XMLNode.parse(JXG.getDeviceXMLResourceFile(XML_TABLES));
+		{	XMLNode xml = XMLNode.parse(XML_TABLES);
 			for(XMLNode x : xml.getChildNodes(TAG_TABLE))
 			{	TABLES.add(new XGRealTable(x));
 			}
