@@ -24,13 +24,13 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	public static void init()
 	{	XMLNode xml = JXG.config.getChildNodeOrNew(TAG_DEVICE);
 		device = new XGDevice(xml);
-		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))
+		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))//TODO: evtl. besser in structure.xml (?)
 		{	try
 			{	SysexMessage msg = new SysexMessage();
 				byte[] array = XGStrings.fromHexString(m.getTextContent().toString());
+				LOG.info("transmitting " + TAG_INIT_MESSAGE + ": " + XGStrings.toHexString(array));
 				msg.setMessage(array, array.length);
 				XGMidi.getMidi().transmit(msg);
-				LOG.info("transmitting " + TAG_INIT_MESSAGE + ": " + XGStrings.toHexString(array));
 			}
 			catch(NumberFormatException | InvalidMidiDataException e)
 			{	LOG.severe(e.getMessage());

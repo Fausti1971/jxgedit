@@ -153,26 +153,21 @@ public interface XGStrings
 
 	static String toHexString(byte[] array)
 	{	if(array == null) return "no data";
+		String separator = ", ";
 		StringBuilder s = new StringBuilder();
 		for(byte c : array)
 		{	s.append(String.format("%02X", c & 0xFF));
-			s.append(", ");
+			s.append(separator);
 		}
-		return s.toString();
+		return s.deleteCharAt(s.lastIndexOf(separator)).toString();
 	}
 
 	static byte[] fromHexString(String content) throws NumberFormatException
 	{	String[] sa =  content.split(",");
 		byte[] array = new byte[sa.length];
 		int i = 0;
-		try
-		{	for(String s : sa) array[i++] = (byte)(Integer.parseInt(s, 16));
-			return array;
-		}
-		catch(NumberFormatException e)
-		{	LOG.warning(e.getMessage());
-			throw e;
-		}
+		for(String s : sa) array[i++] = (byte)(Integer.parseInt(s, 16));
+		return array;
 	}
 
 	static int toNumber(String s)
