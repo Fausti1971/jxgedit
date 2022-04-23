@@ -3,7 +3,9 @@ package table;
 import java.util.HashSet;
 import java.util.Set;
 import application.XGStrings;
-import bulk.XGInsertion48Bulk;import xml.XMLNode;import static xml.XMLNodeConstants.*;
+import static table.XGTable.FX_MSB_PROGRAMS;
+import xml.XMLNode;
+import static xml.XMLNodeConstants.*;
 
 public class XGTableEntry implements Comparable<XGTableEntry>
 {
@@ -21,7 +23,7 @@ public class XGTableEntry implements Comparable<XGTableEntry>
 		this.name = n.getStringAttributeOrDefault(ATTR_NAME, "no value");
 		this.filters = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLEFILTER));
 		this.categories = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLECATEGORIES));
-		if("word".equals(n.getStringAttribute(ATTR_ADDRESS))) XGInsertion48Bulk.MSB_PROGRAMS.add(this.value);
+		if("word".equals(n.getStringAttribute(ATTR_ADDRESS))) FX_MSB_PROGRAMS.add(this.value);
 	}
 
 	public XGTableEntry(int v, String translate)

@@ -1,9 +1,9 @@
 package table;
 
 import java.util.*;
-import application.XGStrings;import xml.XMLNode;
+import application.XGStrings;import xml.XMLNode;import xml.XMLNodeConstants;
 
-public class XGRealTable implements XGTable
+public class XGRealTable implements XGTable, XMLNodeConstants
 {	private static final String ALL_CATEGORIES = "All";
 
 /********************************************************************************************************/

@@ -9,7 +9,7 @@ import module.*;
 import static module.XGModuleType.TYPES;
 import msg.*;
 import table.XGDefaultsTable;
-import static table.XGDefaultsTable.DEFAULTSTABLE;
+import static table.XGDefaultsTable.DEFAULTSTABLES;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
@@ -93,7 +93,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getConfig()));
 		}
 
-		if(opc.hasMutableDefaults()){	this.defaults = DEFAULTSTABLE.get(opc.defaultsTableName);}
+		if(opc.hasMutableDefaults()){	this.defaults = DEFAULTSTABLES.get(opc.defaultsTableName);}
 		else
 		{	this.defaults = new XGDefaultsTable(opc.getTag());
 			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, opc.getConfig().getValueAttribute(ATTR_DEFAULT, 0));

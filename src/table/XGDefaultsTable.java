@@ -4,25 +4,28 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import application.*;
-import parm.XGParameterConstants;import tag.*;
+import static parm.XGParameterConstants.DEF_SELECTORVALUE;
+import tag.XGTagable;
+import tag.XGTagableSet;
 import xml.XMLNode;
+import static xml.XMLNodeConstants.*;
 /**
  * simple taggable HashMap<Integer, HashMap<Integer, Integer>>, deren erster int der Wert des Selektors, der zweite int der Wert des zugehörigen Defaults ist
  * @author thomas
  *
  */
-public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTagable
+public class XGDefaultsTable implements XGLoggable, XGTagable, XGTableConstants
 {
 	public static final int DEF_DRUMSETPROGRAM = XGStrings.parseValue("127.0.0", 127 << 14);
 	public static final int NO_ID = DEF_SELECTORVALUE;
-	public static final XGTagableSet<XGDefaultsTable> DEFAULTSTABLE = new XGTagableSet<>();
+	public static final XGTagableSet<XGDefaultsTable> DEFAULTSTABLES = new XGTagableSet<>();
 
 	public static void init()
 	{	try
 		{	File f = JXG.getDeviceXMLResourceFile(XML_DEFAULTS);
 			XMLNode n = XMLNode.parse(f);
 			for(XMLNode t : n.getChildNodes(TAG_DEFAULTSTABLE))
-			{	DEFAULTSTABLE.add(new XGDefaultsTable(t));
+			{	DEFAULTSTABLES.add(new XGDefaultsTable(t));
 			}
 		}
 		catch(IOException e)
@@ -32,7 +35,7 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 /**
 * eine Dummy-Defaultstable, die lediglich die id returniert;
 */
-		DEFAULTSTABLE.add(new XGDefaultsTable(ATTR_ID)
+		DEFAULTSTABLES.add(new XGDefaultsTable(ATTR_ID)
 			{	@Override public int get(int id, int sel)
 				{	return (id);
 				}
@@ -42,7 +45,7 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 /**
 * eine Dummy-Defaultstable für die Programmdefaults der verschiedenen Partmodes
 */
-		DEFAULTSTABLE.add(new XGDefaultsTable(TABLE_PARTMODE)
+		DEFAULTSTABLES.add(new XGDefaultsTable(TABLE_PARTMODE)
 			{	@Override public int get(int id, int sel)
 				{	switch(id)
 					{	case 9:		return 2;
@@ -58,7 +61,7 @@ public class XGDefaultsTable implements XGParameterConstants, XGLoggable, XGTaga
 /**
 * eine Dummy-Defaultstable für Defaultprogramme aller Multiparts
 */
-		DEFAULTSTABLE.add(new XGDefaultsTable(TABLE_PROGRAM)
+		DEFAULTSTABLES.add(new XGDefaultsTable(TABLE_PROGRAM)
 			{	@Override public int get(int id, int sel)
 				{	switch(id)
 					{	case 9:

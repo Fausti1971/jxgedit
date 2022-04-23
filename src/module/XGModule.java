@@ -9,8 +9,7 @@ import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.*;
 import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import static module.XGModuleType.TYPES;
-import static parm.XGParameterConstants.TABLE_FX_PARTS;
-import table.XGRealTable;import static table.XGTable.TABLES;import table.XGTableEntry;import tag.*;
+import table.XGRealTable;import static table.XGTable.TABLES;import static table.XGTableConstants.TABLE_FX_PARTS;import table.XGTableEntry;import tag.*;
 import value.*;import javax.sound.midi.InvalidMidiDataException;
 
 public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper

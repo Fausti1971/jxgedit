@@ -1,13 +1,16 @@
 package table;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.Set;
 import application.*;
-import parm.XGParameterConstants;import tag.*;
-import xml.XMLNode;
+import parm.XGParameterConstants;
+import tag.*;
+import xml.XMLNode;import static xml.XMLNodeConstants.TAG_TABLE;import static xml.XMLNodeConstants.XML_TABLES;
 
-public interface XGTable extends XGLoggable, XGParameterConstants, XGTagable, Iterable<XGTableEntry>
+public interface XGTable extends XGLoggable, XGTableConstants, XGTagable, Iterable<XGTableEntry>
 {
+	Set<Integer> FX_MSB_PROGRAMS = new HashSet<>();//wird während der XGRealTable-Initialisierung durch XGEntry (mit programmvalues, die das Attribut address="word" besitzen) befüllt;
 	XGTagableSet<XGTable> TABLES = new XGTagableSet<>();
 	int DEF_FALLBACKMASK = 127;
 
@@ -21,11 +24,11 @@ public interface XGTable extends XGLoggable, XGParameterConstants, XGTagable, It
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());
 		}
-		XGRealTable t = new XGRealTable(XGParameterConstants.TABLE_FX_PARTS);//wird zur Laufzeit um die Multipart- und ADPart-Instanzen erweitert
+		XGRealTable t = new XGRealTable(TABLE_FX_PARTS);//wird zur Laufzeit um die Multipart- und ADPart-Instanzen erweitert
 		t.add(new XGTableEntry(127, "Off"));
 		TABLES.add(t);
 
-		t = new XGRealTable(XGParameterConstants.TABLE_PARTMODE);//wird bei XGDrumsetModuleType.init() um die Drumsets erweitert
+		t = new XGRealTable(TABLE_PARTMODE);//wird bei XGDrumsetModuleType.init() um die Drumsets erweitert
 		t.add(new XGTableEntry(0, "Normal"));
 		t.add(new XGTableEntry(1, "Drum"));
 		TABLES.add(t);

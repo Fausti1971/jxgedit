@@ -3,7 +3,7 @@ package application;
 import java.io.*;
 import java.net.URISyntaxException;import java.nio.file.Path;import java.nio.file.Paths;
 import javax.xml.stream.XMLStreamException;
-import static bulk.XGInsertion48Bulk.MSB_PROGRAMS;import device.*;
+import device.*;
 import file.*;
 import gui.*;
 import module.XGModule;
