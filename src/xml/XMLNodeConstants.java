@@ -8,7 +8,7 @@ import static application.JXG.APPNAME;public interface XMLNodeConstants
 
 	String
 		XML_CONFIG = APPNAME + ".xml",
-		XML_STRUCTURE = "structure.xml",
+		XML_DEVICE = "device.xml",
 		XML_PARAMETER = "parameter.xml",
 		XML_DEFAULTS = "defaults.xml",
 		XML_DRUMS = "drums.xml",

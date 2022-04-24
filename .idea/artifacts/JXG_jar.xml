@@ -3,7 +3,6 @@
     <output-path>$PROJECT_DIR$/out/artifacts/JXG</output-path>
     <root id="archive" name="JXG.jar">
       <element id="module-output" name="JXG" />
-      <element id="extracted-dir" path="$PROJECT_DIR$/../coremidi4j-1.5.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>

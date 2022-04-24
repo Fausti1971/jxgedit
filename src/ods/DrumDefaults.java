@@ -1,11 +1,13 @@
 package ods;
 
-import application.XGStrings;
 import com.github.miachm.sods.Sheet;
 import static ods.DrumNames.PRGNAMES;
-import parm.XGDefaultsTable;
-import xml.XMLNode;import static xml.XMLNodeConstants.TAG_DEFAULTSTABLES;
-import javax.xml.stream.XMLStreamException;import java.io.File;import java.io.FileNotFoundException;import java.io.FileOutputStream;import java.io.IOException;import java.util.HashMap;
+import table.XGDefaultsTable;
+import xml.XMLNode;import static xml.XMLNodeConstants.TAG_DEFAULTSTABLE;
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -40,7 +42,7 @@ public interface DrumDefaults
 				}
 			}
 		}
-		XMLNode root = new XMLNode(TAG_DEFAULTSTABLES);
+		XMLNode root = new XMLNode(TAG_DEFAULTSTABLE);
 		for(XGDefaultsTable t : TAB.values()) root.addChildNode(t.toXMLNode());
 		try
 		{	root.save(new File("/home/thomas/Dokumente/Computer/XG/XML/drums.xml"));

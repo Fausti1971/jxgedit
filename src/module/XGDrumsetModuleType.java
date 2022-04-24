@@ -22,7 +22,7 @@ public class XGDrumsetModuleType extends XGModuleType
 {
 	private static final byte[] RESET_MSG = {(byte)SOX, VENDOR, MSG_PC, MODEL, 0, 0, 0x7D, 0, (byte)EOX};
 	public static final Map<Integer, XGDrumsetModuleType> DRUMSETS = new HashMap<>();//partmode, Drumset
-	private static final Map<Integer, XGRealTable> DRUMNAMES = new HashMap<>();//key, <drumprg, drumname>
+	public static final Map<Integer, XGRealTable> DRUMNAMES = new HashMap<>();//key, <drumprg, drumname>
 	private static final int DEF_DRUMSETPROGRAM = 127 << 14;
 	private static final int FALLBACKMASK = 127 << 14;
 

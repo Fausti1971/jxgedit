@@ -24,7 +24,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	public static void init()
 	{	XMLNode xml = JXG.config.getChildNodeOrNew(TAG_DEVICE);
 		device = new XGDevice(xml);
-		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))//TODO: evtl. besser in structure.xml (?)
+		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))//TODO: evtl. besser in device.xml (?)
 		{	try
 			{	SysexMessage msg = new SysexMessage();
 				byte[] array = XGStrings.fromHexString(m.getTextContent().toString());

@@ -1,6 +1,9 @@
 package ods;
 
-import application.XGStrings;import com.github.miachm.sods.Sheet;import parm.XGDrumNames;import static parm.XGDrumNames.DRUMNAMES;import parm.XGRealTable;import parm.XGTableEntry;
+import application.XGStrings;
+import com.github.miachm.sods.Sheet;
+import static module.XGDrumsetModuleType.DRUMNAMES;
+import table.XGTableEntry;
 import java.util.*;
 
 public interface DrumNames

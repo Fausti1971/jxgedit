@@ -1,10 +1,10 @@
 package module;
 
-import java.io.File;import java.io.IOException;import java.util.LinkedHashSet;
+import java.io.IOException;import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.*;
 import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import config.XGConfigurable;
-import application.JXG;import application.XGLoggable;
+import application.XGLoggable;
 import table.XGTable;import static table.XGTable.TABLES;import static table.XGVirtualTable.DEF_TABLE;import tag.XGTagable;import tag.XGTagableAddressableSet;import xml.XGProperty;import xml.XMLNode;
 
 /**
@@ -24,7 +24,7 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	{	XMLNode xml;
 		XGDrumsetModuleType.init();
 		try
-		{	xml = XMLNode.parse(XML_STRUCTURE);
+		{	xml = XMLNode.parse(XML_DEVICE);
 		}
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());

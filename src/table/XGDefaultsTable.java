@@ -7,7 +7,7 @@ import application.*;
 import static parm.XGParameterConstants.DEF_SELECTORVALUE;
 import tag.XGTagable;
 import tag.XGTagableSet;
-import xml.XMLNode;
+import xml.XGProperty;import xml.XMLNode;
 import static xml.XMLNodeConstants.*;
 /**
  * simple taggable HashMap<Integer, HashMap<Integer, Integer>>, deren erster int der Wert des Selektors, der zweite int der Wert des zugehörigen Defaults ist
@@ -122,25 +122,25 @@ public class XGDefaultsTable implements XGLoggable, XGTagable, XGTableConstants
 
 	@Override public String getTag(){	return this.tag;}
 
-//	public XMLNode toXMLNode()//Überbleibsel zum dekodieren der *.ods
-//	{	int min = -1, max = -1;
-//		XMLNode table = new XMLNode(TAG_DEFAULTSTABLE, new XGProperty(ATTR_NAME, this.tag));
-//		for(int m : this.idMap.keySet())
-//		{	XMLNode id = new XMLNode(TAG_ID, new XGProperty(ATTR_VALUE, XGStrings.valueToString(m)));
-//			table.addChildNode(id);
-//			for(int s : this.idMap.get(m).keySet())
-//			{	XMLNode item = new XMLNode(TAG_ITEM, new XGProperty(ATTR_SELECTORVALUE, XGStrings.valueToString(s)));
-//				int v = this.idMap.get(m).get(s);
-//				if(min == -1) min = v;
-//				min = Math.min(min, v);
-//				if(max == -1) max = v;
-//				max = Math.max(max, v);
-//				item.getAttributes().getOrNew(ATTR_VALUE, new XGProperty(ATTR_VALUE, XGStrings.valueToString(v)));
-//				id.addChildNode(item);
-//			}
-//		}
-//		table.getAttributes().add(new XGProperty("range", min + "-" + max));
-////		System.out.println("table=" + this.tag + " range = " + min + "/" + max);
-//		return table;
-//	}
+	public XMLNode toXMLNode()//Überbleibsel zum dekodieren der *.ods
+	{	int min = -1, max = -1;
+		XMLNode table = new XMLNode(TAG_DEFAULTSTABLE, new XGProperty(ATTR_NAME, this.tag));
+		for(int m : this.idMap.keySet())
+		{	XMLNode id = new XMLNode(TAG_ID, new XGProperty(ATTR_VALUE, XGStrings.valueToString(m)));
+			table.addChildNode(id);
+			for(int s : this.idMap.get(m).keySet())
+			{	XMLNode item = new XMLNode(TAG_ITEM, new XGProperty(ATTR_SELECTORVALUE, XGStrings.valueToString(s)));
+				int v = this.idMap.get(m).get(s);
+				if(min == -1) min = v;
+				min = Math.min(min, v);
+				if(max == -1) max = v;
+				max = Math.max(max, v);
+				item.getAttributes().getOrNew(ATTR_VALUE, new XGProperty(ATTR_VALUE, XGStrings.valueToString(v)));
+				id.addChildNode(item);
+			}
+		}
+		table.getAttributes().add(new XGProperty("range", min + "-" + max));
+//		System.out.println("table=" + this.tag + " range = " + min + "/" + max);
+		return table;
+	}
 }
