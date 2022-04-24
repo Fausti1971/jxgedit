@@ -1,14 +1,19 @@
 package application;
 
 import java.io.*;
-import java.net.URISyntaxException;import java.nio.file.Path;import java.nio.file.Paths;
+import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.xml.stream.XMLStreamException;
 import device.*;
 import file.*;
 import gui.*;
 import module.XGModule;
 import module.XGModuleType;
-import table.XGDefaultsTable;import table.XGParameterTable;import table.XGTable;import value.*;
+import table.XGDefaultsTable;
+import table.XGParameterTable;
+import table.XGTable;
+import value.*;
 import xml.*;
 
 public class JXG implements XGLoggable, XGUI, XMLNodeConstants

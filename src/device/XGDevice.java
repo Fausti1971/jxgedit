@@ -8,23 +8,22 @@ import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
 import application.XGStrings;import config.XGConfigurable;import file.XGSysexFile;
-import bulk.XGBulk;import bulk.XGBulkDumper;import module.XGModule;
+import bulk.XGBulk;import bulk.XGBulkDumper;import gui.XGMainWindow;import module.XGModule;
 import module.XGModuleType;
 import static module.XGModuleType.TYPES;
 import msg.*;
-import value.XGProgramBuffer;
+import static msg.XGMessageConstants.EOX;import static msg.XGMessageConstants.SOX;import value.XGProgramBuffer;
 import xml.XGProperty;import xml.XMLNode;
 
 public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable, XGMessenger
 {
 	public static XGDevice device = null;
-//	public static XMLNode config = null;
-	private final String WARNSTRING = "This will reset all parameters!";
+	private static final String WARNSTRING = "This will reset all parameters!";
 
 	public static void init()
 	{	XMLNode xml = JXG.config.getChildNodeOrNew(TAG_DEVICE);
 		device = new XGDevice(xml);
-		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))//TODO: evtl. besser in device.xml (?)
+		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))
 		{	try
 			{	SysexMessage msg = new SysexMessage();
 				byte[] array = XGStrings.fromHexString(m.getTextContent().toString());
@@ -48,22 +47,8 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 //	private XGWindow childWindow;
 
 	public XGDevice(XMLNode cfg)
-	{	
-//		this.name = cfg.getStringBufferAttributeOrNew(ATTR_NAME, DEF_DEVNAME);
-//		this.defaultFileName = XGSysexFile.config.getStringBufferAttributeOrNew(ATTR_DEFAULTDUMPFILE, Paths.get(APPPATH).resolve(DEF_SYXFILENAME).toString());
-		
-		this.sysexID = cfg.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID);
+	{	this.sysexID = cfg.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID);
 		this.config = cfg;
-
-//		try
-//		{	this.defaultFile = new XGSysexFile(this, this.defaultFileName.toString());
-//			this.defaultFile.parse();
-//			this.transmitAll(this.defaultFile, this.values);
-//		}
-//		catch(IOException e)
-//		{	LOG.severe(e.getMessage());
-//			for(XGModuleType mt : this.getModuleTypes()) mt.resetValues();
-//		}
 		LOG.info("device initialized: " + this);
 	}
 
@@ -76,10 +61,15 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		config.setIntegerAttribute(ATTR_SYSEXID, this.sysexID);
 	}
 
-	public void requestInfo()	//SystemInfo ignoriert parameterrequest?!;
-	{	XGRequest m;
-		try
-		{	m = new XGMessageBulkRequest(this, XGAddressConstants.XGMODELNAMEADRESS);
+	public void requestInfo()	//SystemInfo ignoriert parameterrequest!;
+	{	try
+		{	//USEM Idendity Request: SOX=F0, Non-Realtime=7E, DeviceID=7F, SubID1=06, SubID2=01, EOX=F7//anders als MU500 ignoriert MU80 diesen Request
+			//USEM Identity Reply: SubID2=02
+			//byte[] msg = new byte[]{(byte)SOX,0x7E,0x7F,0x06,0x01,(byte)EOX};
+			//m = new SysexMessage();
+			//m.setMessage(msg, msg.length);
+			//XGMidi.getMidi().transmit(m);
+			XGRequest m = new XGMessageBulkRequest(this, XGAddressConstants.XGMODELNAMEADRESS);
 			XGMidi.getMidi().submit(m);
 			if(m.isResponsed())
 			{	XGResponse r = m.getResponse();
@@ -89,9 +79,9 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 				this.info1 = r.decodeLSB(offs + 14);
 				this.info2 = r.decodeLSB(offs + 15);
 			}
-			else JOptionPane.showMessageDialog(null, "no response for " + m);
+			else JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "no response for " + m);
 		}
-		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e)
+		catch( InvalidMidiDataException | InvalidXGAddressException | XGMessengerException e)
 		{	LOG.severe(e.getMessage());
 		}
 	}
@@ -160,7 +150,5 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 
 	@Override public XMLNode getConfig(){	return this.config;}
 
-	@Override public void propertyChanged(XGProperty attr)
-	{	LOG.info(attr.toString());
-	}
+	@Override public void propertyChanged(XGProperty attr){	LOG.info(attr.toString());}
 }
