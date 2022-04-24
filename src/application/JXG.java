@@ -24,20 +24,39 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	}
 	public static XMLNode config;
 	private static File configFile;
-	public static final String
-		APPNAME = "JXG";
+	public static String appName;
+	public static Path appFilePath;
+	public static Path appPath;
+
+//		APPNAME = "JXG";
 //		FILESEPERATOR = System.getProperty("file.separator");
 //		XMLPATH = "/xml/";
 //		CWD = System.getProperties().getProperty("user.dir"),
 //		USERHOMEPATH = System.getProperties().getProperty("user.home");
 
-	private static Path getAppFilePath()throws URISyntaxException{	return Paths.get(JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI());}
+	private static void setAppFilePath()throws URISyntaxException
+	{	appFilePath = Paths.get(JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI());
+		LOG.info("application-file=" + appFilePath);
+	}
 
-	public static Path getAppPath()throws URISyntaxException{	return getAppFilePath().getParent();}
+	private static void setAppPath()
+	{	appPath = appFilePath.getParent();
+		LOG.info("application-path=" + appPath);
+	}
+
+	private static void setAppName()
+	{	String file =  appFilePath.getFileName().toString();
+		appName =  file.substring(0, file.lastIndexOf("."));
+		LOG.info("application-name=" + appName);
+	}
 
 	public static void init()
 	{	try
-		{	configFile = new File(getAppPath().resolve(XML_CONFIG).toUri());
+		{	setAppFilePath();
+			setAppPath();
+			setAppName();
+			configFile = new File(appPath.resolve(appName + ".xml").toUri());
+			LOG.info("application-configuration=" + configFile);
 			config = XMLNode.parse(configFile);
 		}
 		catch(URISyntaxException | IOException e)
@@ -79,7 +98,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		System.gc();
 		splash.dispose();
 
-		LOG.info(APPNAME + " initialized from " + configFile);
+		LOG.info(appName + " initialized from " + configFile);
 	}
 
 	public static void quit()

@@ -1,13 +1,13 @@
 package xml;
 
-import static application.JXG.APPNAME;public interface XMLNodeConstants
+public interface XMLNodeConstants
 {
 	String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
 	String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
 	String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
 	String
-		XML_CONFIG = APPNAME + ".xml",
+//		XML_CONFIG = APPNAME + ".xml",
 		XML_DEVICE = "device.xml",
 		XML_PARAMETER = "parameter.xml",
 		XML_DEFAULTS = "defaults.xml",

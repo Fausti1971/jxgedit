@@ -25,12 +25,12 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 
 	public static XMLNode parse(String filename)throws IOException
 	{	try
-		{	Path appPath = JXG.getAppPath();
+		{	Path appPath = JXG.appPath;
 			String s = XGDevice.device.toString();
 			URI uri = appPath.resolve(s).resolve(filename).toUri();
 			return parse(new File(uri));
 		}
-		catch(URISyntaxException | IOException e)
+		catch( IOException e)
 		{	LOG.warning(e.getMessage() + " - using internal defaults");
 			return parse(XMLNode.class.getResourceAsStream(filename), filename);
 		}

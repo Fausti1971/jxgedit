@@ -81,11 +81,6 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable
 				if(this.previous != null) x = this.previous.getX() + POINT_RADIUS;
 				x += XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, xe);
 				break;
-//			case SUB_FROM_NEXT_COORDINATE:
-//				if(this.next != null) x = this.next.getX() + POINT_RADIUS;
-//				else x = xe;
-//				x -= XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, xe);
-//				break;
 		}
 		switch(this.relationY)
 		{	default:
@@ -96,14 +91,7 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable
 				if(this.previous != null) y = this.previous.getY() + POINT_RADIUS;
 				y -= XGMath.linearIO(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, ye);
 				break;
-//			case SUB_FROM_NEXT_COORDINATE:
-//				if(this.next != null) y = this.next.getY() + POINT_RADIUS;
-//				else y = ye;
-//				y -= XGMath.linearIO(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, ye);
-//				break;
 		}
-//		x = XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, this.getWidth());
-//		y = XGMath.linearIO(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, this.getHeight());
 
 		this.setLocation(x - POINT_RADIUS, y - POINT_RADIUS);
 		this.tooltip.setName(this.toString());
@@ -113,60 +101,9 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable
 		}
 	}
 
-	//XGValue getValueX()
-	//{	return this.valueX;
-	//}
-	//
-	//XGValue getValueY()
-	//{	return this.valueY;
-	//}
-
 	@Override public String toString()
 	{	return this.valueX.getInfo() + "/" + this.valueY.getInfo();
 	}
-
-	//@Override public void mousePressed(MouseEvent e)
-	//{	XGUI.ENVIRONMENT.mousePressed = true;
-	//	XGUI.ENVIRONMENT.dragEvent = e;
-	//	this.tooltip.setVisible(true);
-	//	e.consume();
-	//}
-	//
-	//@Override public void mouseReleased(MouseEvent e)
-	//{	XGUI.ENVIRONMENT.mousePressed = false;
-	//	XGUI.ENVIRONMENT.dragEvent = e;
-	//	this.tooltip.setVisible(false);
-	//	e.consume();
-	//}
-	//
-	//@Override public void mouseEntered(MouseEvent e)
-	//{	if(!XGUI.ENVIRONMENT.mousePressed)
-	//	{	Point p = e.getLocationOnScreen();
-	//		this.tooltip.setLocation(p.x + POINT_SIZE, p.y + POINT_SIZE);
-	//		this.tooltip.setVisible(true);
-	//	}
-	//}
-	//
-	//@Override public void mouseExited(MouseEvent e)
-	//{	if(!XGUI.ENVIRONMENT.mousePressed) this.tooltip.setVisible(false);
-	//}
-	//
-	//@Override public void mouseDragged(MouseEvent e)
-	//{	this.valueX.addIndex(e.getXOnScreen() - XGUI.ENVIRONMENT.dragEvent.getXOnScreen(), true);
-	//	this.valueY.addIndex(XGUI.ENVIRONMENT.dragEvent.getYOnScreen() - e.getYOnScreen(), true);
-	//	this.setLocation();
-	//	XGUI.ENVIRONMENT.dragEvent = e;
-	//	e.consume();
-	//}
-	//
-	//@Override public void mouseClicked(MouseEvent e)
-	//{	this.requestFocusInWindow();
-	//	this.repaint();
-	//}
-	//
-	//@Override public void mouseMoved(MouseEvent e)
-	//{
-	//}
 
 	@Override protected void paintComponent(Graphics g)
 	{	super.paintComponent(g);

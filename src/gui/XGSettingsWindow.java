@@ -1,6 +1,6 @@
 package gui;
 
-import static application.JXG.APPNAME;import device.*;import static device.XGDeviceConstants.DEF_DEVNAME;import static device.XGMidi.*;import xml.XGProperty;import javax.sound.midi.*;import javax.swing.*;import javax.swing.event.*;
+import device.*;import static device.XGDeviceConstants.DEF_DEVNAME;import static device.XGMidi.*;import xml.XGProperty;import javax.sound.midi.*;import javax.swing.*;import javax.swing.event.*;
 import java.awt.event.*;import java.util.*;
 
 public class XGSettingsWindow extends XGWindow

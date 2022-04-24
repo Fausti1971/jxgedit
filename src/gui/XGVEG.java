@@ -43,10 +43,10 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 		panel = new XGPointPanel(1, 1, 0, 64, 1, 127, 64, 127);
 		panel.setUnits("Velocity", "Volume");
 
-		panel.add(new XGPoint(0, low, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		panel.add(new XGPoint(0, low, XGFixedValue.VALUE_0, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 		panel.add(new XGPoint(1, low, this.offset, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 		panel.add(new XGPoint(2, high, this.depth, PointRelation.ABSOLUTE, PointRelation.ADD_TO_PREVIOUS_COORDINATE));
-		panel.add(new XGPoint(3, high, new XGFixedValue("", 0), PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		panel.add(new XGPoint(3, high, XGFixedValue.VALUE_0, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 
 		panel.addMouseMotionListener(this);
 		panel.addMouseListener(this);

@@ -1,10 +1,9 @@
 package gui;
 
-import application.JXG;import static application.JXG.APPNAME;import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import static xml.XMLNodeConstants.*;import java.awt.*;
+import application.JXG;
+import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import static xml.XMLNodeConstants.*;import java.awt.*;
 import java.awt.event.ComponentEvent;import java.awt.event.ComponentListener;import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.ArrayList;import java.util.LinkedHashSet;
-import java.util.Set;
 import javax.swing.*;
 
 public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable
@@ -54,7 +53,7 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 
 	@Override public String getTag(){	return this.tag;}
 
-	@Override public String getTitle(){	return APPNAME + " - " + XGDevice.device;}
+	@Override public String getTitle(){	return JXG.appName + " - " + XGDevice.device;}
 
 	@Override public void dispose()
 	{	synchronized(this)
