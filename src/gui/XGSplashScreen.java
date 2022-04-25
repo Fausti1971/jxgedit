@@ -28,7 +28,7 @@ public class XGSplashScreen extends JFrame
 		LOG.addHandler(this.handler);
 		this.getContentPane().add(new JScrollPane(status));
 
-		this.setResizable(false);
+		this.setResizable(true);
 		this.setSize(d.width/5, d.height/5);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);

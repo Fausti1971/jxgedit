@@ -2,7 +2,7 @@ package gui;
 
 import device.XGDevice;
 import module.XGDrumsetModuleType;
-import module.XGModuleType;
+import module.XGModule;import module.XGModuleType;
 import static module.XGModuleType.TYPES;
 import tag.XGTagableAddressableSet;
 import value.XGValue;
@@ -13,7 +13,7 @@ public class XGMasterEditWindow extends XGEditWindow
 {
 /**********************************************************************************************************/
 
-	public XGMasterEditWindow(module.XGModule mod)
+	public XGMasterEditWindow(XGModule mod)
 	{	super(XGMainWindow.MAINWINDOW, mod);
 		this.setVisible(true);
 	}

@@ -30,7 +30,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 			URI uri = appPath.resolve(s).resolve(filename).toUri();
 			return parse(new File(uri));
 		}
-		catch( IOException e)
+		catch(IOException e)
 		{	LOG.warning(e.getMessage() + " - using internal defaults");
 			return parse(XMLNode.class.getResourceAsStream(filename), filename);
 		}

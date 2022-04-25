@@ -22,11 +22,11 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
 	}
-	public static XMLNode config;
-	private static File configFile;
-	public static String appName;
 	public static Path appFilePath;
 	public static Path appPath;
+	public static String appName;
+	private static File configFile;
+	public static XMLNode config;
 
 //		APPNAME = "JXG";
 //		FILESEPERATOR = System.getProperty("file.separator");
@@ -36,42 +36,42 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 
 	private static void setAppFilePath()throws URISyntaxException
 	{	appFilePath = Paths.get(JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-		LOG.info("application-file=" + appFilePath);
+		LOG.info(appFilePath.toString());
 	}
 
 	private static void setAppPath()
 	{	appPath = appFilePath.getParent();
-		LOG.info("application-path=" + appPath);
+		LOG.info(appPath.toString());
 	}
 
 	private static void setAppName()
 	{	String file =  appFilePath.getFileName().toString();
 		appName =  file.substring(0, file.lastIndexOf("."));
-		LOG.info("application-name=" + appName);
+		LOG.info(appName);
 	}
 
-	public static void init()
+	private static void setConfigFile()
+	{	configFile = new File(appPath.resolve(appName + ".xml").toUri());
+		LOG.info(configFile.toString());
+	}
+
+	private static void setConfig()throws IOException
+	{	config = XMLNode.parse(configFile);
+	}
+
+	private static void init()
 	{	try
 		{	setAppFilePath();
 			setAppPath();
 			setAppName();
-			configFile = new File(appPath.resolve(appName + ".xml").toUri());
-			LOG.info("application-configuration=" + configFile);
-			config = XMLNode.parse(configFile);
+			setConfigFile();
+			setConfig();
 		}
 		catch(URISyntaxException | IOException e)
 		{	LOG.severe(e.getMessage());
 			config = new XMLNode(TAG_CONFIG);
 		}
 	}
-
-	//private static String getApplicationPath()
-	//{	
-	//	String s[] = System.getProperty("java.class.path").split(":");
-	//	File f = new File(s[0]);
-	//	if(f.isDirectory()) return s[0];
-	//	else return f.getParent();
-	//}
 
 	public static void main(String[] args)
 	{

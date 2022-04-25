@@ -55,7 +55,7 @@ public class XGDrumsetModuleType extends XGModuleType
 		this.tag += this.partmode - 1;
 		this.name.append(" ").append(this.partmode - 1);
 		((XGRealTable)XGTable.TABLES.get(TABLE_PARTMODE)).add(new XGTableEntry(this.partmode, this.name.toString()));
-		this.idTranslator = new XGVirtualTable(this.partmode, this.partmode, this.tag, this::getDrumname, (String s)->13);
+		this.idTranslator = new XGVirtualTable(this.partmode, this.partmode, this.tag, this::getDrumname, (String s)->this.partmode);
 		this.programListener = new XGDrumsetProgramValue(this);
 		DRUMSETS.put(this.partmode, this);
 	}

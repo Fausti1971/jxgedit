@@ -11,19 +11,19 @@
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGPoint.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGPoint.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGVEG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGVEG.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGDrumsetModuleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGDrumsetModuleType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adress/XGMemberNotFoundException.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adress/XGVariable.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPoint.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGVEG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVEG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMasterEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMasterEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/xml/XMLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
     </list>
-    <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="backups" />
+    <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -492,7 +492,21 @@
       <option name="project" value="LOCAL" />
       <updated>1650801084500</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL-00035" summary="dynamisches Filenamen- und -pfadhandling;">
+      <created>1650836446981</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1650836446981</updated>
+    </task>
+    <task id="LOCAL-00036" summary="dynamisches Filenamen- und -pfadhandling;">
+      <created>1650836535419</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1650836535419</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -606,7 +620,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Table begonnen; Backup vor (Wieder-)Einführung von ID-Tags;" />
     <MESSAGE value="Backup vor Umbau Hierarchie;" />
     <MESSAGE value="backup single" />
     <MESSAGE value="alpha1" />
@@ -631,7 +644,8 @@
     <MESSAGE value="Test" />
     <MESSAGE value="structure.xml is now device.xml;" />
     <MESSAGE value="vergessenen SysexID selector nachgerüstet;" />
-    <option name="LAST_COMMIT_MESSAGE" value="vergessenen SysexID selector nachgerüstet;" />
+    <MESSAGE value="dynamisches Filenamen- und -pfadhandling;" />
+    <option name="LAST_COMMIT_MESSAGE" value="dynamisches Filenamen- und -pfadhandling;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
