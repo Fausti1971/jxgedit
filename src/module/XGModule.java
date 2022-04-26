@@ -3,16 +3,13 @@ package module;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
-import adress.XGAddressField;
-import adress.XGAddressable;
 import adress.XGAddressableSet;
-import application.*;
-import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import static module.XGModuleType.TYPES;
+import adress.XGIdentifiable;import application.*;
+import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import static module.XGModuleType.MODULE_TYPES;
 import table.XGRealTable;import static table.XGTable.TABLES;import static table.XGTableConstants.TABLE_FX_PARTS;import table.XGTableEntry;import tag.*;
 import value.*;import javax.sound.midi.InvalidMidiDataException;
 
-public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper
+public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper, XGIdentifiable, XGTagable
 {
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
@@ -26,12 +23,12 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 	}
 
 	public static void init()
-	{	for(XGModuleType mt : TYPES)
-		{	for(int id : mt.getAddress().getMid())
+	{	for(XGModuleType mt : MODULE_TYPES)
+		{	for(int id : mt.getAddressRange().getMid())
 			{	try
 				{	mt.getModules().add(new XGModule(mt, id));
 				}
-				catch(InvalidXGAddressException | InvalidMidiDataException e)
+				catch( InvalidMidiDataException | InvalidXGAddressException e)
 				{	LOG.warning(e.getMessage());
 				}
 			}
@@ -41,14 +38,13 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 
 /***************************************************************************************************************/
 
-	private final XGAddress address;
+	private final int id;
 	private final XGModuleType type;
 	private final XGAddressableSet<XGBulk> bulks = new XGAddressableSet<>();
-//	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
 
-	public XGModule(XGModuleType mt, int id) throws InvalidXGAddressException, InvalidMidiDataException
-	{	this.type = mt;
-		this.address = new XGAddress(mt.getAddress().getHi(), new XGAddressField(id), mt.getAddress().getLo());
+	public XGModule(XGModuleType mt, int id) throws InvalidMidiDataException, InvalidXGAddressException
+	{	this.id = id;
+		this.type = mt;
 		for(XGBulkType bt : mt.getBulkTypes()){ this.bulks.add(XGBulk.newBulk(bt, this));}
 
 		XGRealTable tab = (XGRealTable)TABLES.get(TABLE_FX_PARTS);
@@ -79,22 +75,15 @@ public class XGModule implements XGAddressable, Comparable<XGModule>, XGModuleCo
 	//}
 
 	@Override public String toString()
-	{	int id;
-		String text = this.type.getName();
-		try
-		{	id = this.address.getMid().getValue();
-		}
-		catch(InvalidXGAddressException e)
-		{	id = this.address.getMid().getMin();
-		}
-		if(this.type instanceof XGDrumsetModuleType) return ((XGDrumsetModuleType)this.type).getDrumname(id);
-		if(this.type.getAddress().getMid().isRange()) return text + " " + (id + 1);
-		else return text;
+	{	if(this.type instanceof XGDrumsetModuleType) return ((XGDrumsetModuleType)this.type).getDrumname(this.id);
+		else return this.type.getName() + " " + this.type.idTranslator.getByValue(this.getID());
 	}
 
 	@Override public XGAddressableSet<XGBulk> getBulks(){ return this.bulks;}
 
-	@Override public XGAddress getAddress(){ return this.address;}
+	public int compareTo(XGModule module){ return Integer.compare(this.id, module.id);}
 
-	public int compareTo(XGModule module){ return this.address.compareTo(module.address);}
+	public int getID(){	return this.id;}
+
+	public String getTag(){	return this.type.getTag();}
 }

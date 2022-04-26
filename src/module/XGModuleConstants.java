@@ -10,7 +10,7 @@ public interface XGModuleConstants extends XMLNodeConstants
 	//};
 
 	String
-		MT_SYSTEM = "master",
+		MT_SYSTEM = "sys",
 		MT_INFO = "info",
 		MT_FX1REV = "rev",
 		MT_FX1CHO = "cho",

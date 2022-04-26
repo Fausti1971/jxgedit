@@ -2,7 +2,6 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
 import value.XGValue;
 
 public class XGMessageParameterRequest extends XGRequest
@@ -12,34 +11,15 @@ public class XGMessageParameterRequest extends XGRequest
 
 	public XGMessageParameterRequest(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
 	{	super(src, array, init);
-//		if(init) this.response = new XGMessageParameterChange(src, array.clone(), true);
 	}
-
-//	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, SysexMessage msg) throws InvalidMidiDataException, InvalidXGAddressException, TimeoutException
-//	{	super(src, dest, msg);
-//		this.getSource().submit(this.getDestination().request(this));
-//	}
 
 	public XGMessageParameterRequest(XGMessenger src, XGValue val) throws InvalidXGAddressException, InvalidMidiDataException
 	{	super(src, new byte[8], true);
-		XGAddress adr = val.getAddress();
 		this.setMessageID(MSG);
-		this.setHi(adr.getHi().getValue());
-		this.setMid(adr.getMid().getValue());
-		this.setLo(adr.getLo().getValue());
+		this.setAddress(val.getAddress());
 		this.setEOX();
 	}
-/*
-	public XGMessageParameterRequest(XGMessenger src, XGMessenger dest, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
-	{	super(src, dest, new byte[8], true);
-		this.setMessageID(MSG);
-		this.setHi(adr.getHi().getValue());
-		this.setMid(adr.getMid().getValue());
-		this.setLo(adr.getLo().getValue());
-		this.setEOX(7);
-		this.response = new XGMessageParameterChange(dest, src, new XGValue(src, null, adr));
-	}
-*/
+
 	@Override public int getHi(){ return decodeLSB(HI_OFFS);}
 
 	@Override public int getMid(){ return decodeLSB(MID_OFFS);}

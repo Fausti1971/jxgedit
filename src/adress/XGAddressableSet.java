@@ -14,13 +14,13 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 /***********************************************************************************************************/
 
 	private String memberName = "";
-	private final SortedMap<XGAddress, T> map = new TreeMap<>();
+	private final SortedMap<XGAddressRange, T> map = new TreeMap<>();
 
 	@Override public synchronized boolean add(T obj)
 	{	synchronized(this.map)
 		{	if(obj == null) return false;
 			if(this.memberName.equals("")) this.memberName = obj.getClass().getSimpleName();
-			XGAddress adr = obj.getAddress();
+			XGAddressRange adr = obj.getAddress();
 			this.map.put(adr, obj);
 		}
 		return true;
@@ -29,7 +29,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 
 	@Override public synchronized void clear(){	this.map.clear();}
 
-	public synchronized T get(XGAddress adr)
+	public synchronized T get(XGAddressRange adr)
 	{	synchronized(this.map)
 		{	return this.map.get(adr);
 		}
@@ -74,7 +74,7 @@ public class XGAddressableSet<T extends XGAddressable> implements Set<T>, Iterab
 	}
 
 	@Override public boolean retainAll(Collection<?> c)
-	{	for(Object o: c)
+	{	for(Object o : c)
 		{	if(this.map.containsValue(o)) continue;
 			this.remove(o);
 		}

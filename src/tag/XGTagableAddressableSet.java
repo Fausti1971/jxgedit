@@ -3,7 +3,7 @@ package tag;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import adress.XGAddress;
+import adress.XGAddressRange;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.XGLoggable;
@@ -35,7 +35,7 @@ public class XGTagableAddressableSet<T extends XGAddressable & XGTagable> implem
 	{	return this.tagSet.get(tag);
 	}
 
-	public T get(XGAddress adr)
+	public T get(XGAddressRange adr)
 	{	return this.adrSet.get(adr);
 	}
 

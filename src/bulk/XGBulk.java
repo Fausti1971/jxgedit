@@ -1,7 +1,7 @@
 package bulk;
 
 import adress.InvalidXGAddressException;
-import adress.XGAddress;import adress.XGAddressable;
+import adress.XGAddress;import adress.XGAddressRange;import adress.XGAddressable;
 import application.XGLoggable;import module.XGModule;import msg.*;
 import tag.XGTagable;
 import tag.XGTagableAddressableSet;
@@ -23,14 +23,16 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 	volatile XGMessageBulkDump message;
 	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
 
-	protected XGBulk(XGBulkType type, XGModule mod)throws InvalidXGAddressException, InvalidMidiDataException
+	protected XGBulk(XGBulkType type, XGModule mod)throws InvalidMidiDataException, InvalidXGAddressException
 	{	this.type = type;
 		this.module = mod;
-		this.address = type.getAddress().complement(mod.getAddress());
+		this.address = new XGAddress(type.addressRange.getHi().getValue(), mod.getID(), type.addressRange.getLo().getMin());
 		this.message = new XGMessageBulkDump(this, this);
 	}
 
 	public XGBulkType getType(){	return this.type;}
+
+	public int getSize(){	return this.type.addressRange.getLo().getSize();}
 
 	public void transmit(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException
 	{	dest.submit(this.message);
@@ -61,11 +63,11 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 */
 	@Override public XGAddress getAddress(){	return this.address;}
 
-	@Override public void submit(XGResponse res) throws InvalidXGAddressException, XGMessengerException
+	@Override public void submit(XGResponse res)
 	{	if(res instanceof XGMessageBulkDump) this.setMessage((XGMessageBulkDump)res);
 	}
 
-	public void submit(XGRequest req) throws InvalidXGAddressException, XGMessengerException
+	public void submit(XGRequest req) throws XGMessengerException
 	{	if(req instanceof XGMessageBulkRequest)
 		{	XGMessageBulkRequest r = (XGMessageBulkRequest)req;
 			if(req.setResponsedBy(this.message)) req.getSource().submit(this.message);

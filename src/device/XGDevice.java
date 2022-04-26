@@ -3,16 +3,15 @@ package device;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
 import javax.swing.*;
-import adress.InvalidXGAddressException;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
 import application.XGStrings;import config.XGConfigurable;import file.XGSysexFile;
 import bulk.XGBulk;import bulk.XGBulkDumper;import gui.XGMainWindow;import module.XGModule;
 import module.XGModuleType;
-import static module.XGModuleType.TYPES;
+import static module.XGModuleType.MODULE_TYPES;
 import msg.*;
-import static msg.XGMessageConstants.EOX;import static msg.XGMessageConstants.SOX;import value.XGProgramBuffer;
+import value.XGProgramBuffer;
 import xml.XGProperty;import xml.XMLNode;
 
 public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable, XGMessenger
@@ -81,7 +80,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 			}
 			else JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "no response for " + m);
 		}
-		catch( InvalidMidiDataException | InvalidXGAddressException | XGMessengerException e)
+		catch( InvalidMidiDataException |  XGMessengerException e)
 		{	LOG.severe(e.getMessage());
 		}
 	}
@@ -92,7 +91,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().submit(new XGMessageParameterChange(this, new byte[]{0,0,0,0,0,0,0x7E,0,0}, true));
-			for(XGModuleType mt : TYPES) mt.resetValues();
+			for(XGModuleType mt : MODULE_TYPES) mt.resetValues();
 		}
 		catch(InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
@@ -106,7 +105,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().transmit(new SysexMessage(new byte[]{(byte)0xF0,0x7E,0x7F,0x09,0x01,(byte)0xF7}, 6));
-			for(XGModuleType mt : TYPES) mt.resetValues();
+			for(XGModuleType mt : MODULE_TYPES) mt.resetValues();
 		}
 		catch(InvalidMidiDataException e)
 		{	e.printStackTrace();
@@ -120,7 +119,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().submit(new XGMessageParameterChange(this, new byte[]{0,0,0,0,0,0,0x7F,0,0}, true));
-			for(XGModuleType mt : TYPES) mt.resetValues();
+			for(XGModuleType mt : MODULE_TYPES) mt.resetValues();
 		}
 		catch(InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
@@ -128,11 +127,11 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		XGProgramBuffer.reset();
 	}
 
-	@Override public void submit(XGResponse msg) throws InvalidXGAddressException, XGMessengerException
+	@Override public void submit(XGResponse msg)
 	{	LOG.info("not implemented yet...");//TODO: finde bulk oder value anhand der adresse und übergebe msg
 	}
 
-	public void submit(XGRequest req) throws InvalidXGAddressException, XGMessengerException
+	public void submit(XGRequest req)
 	{	LOG.info("not implemented yet...");//TODO: finde bulk oder value anhand der adresse, erfrage und beantworte req
 	}
 
@@ -142,8 +141,8 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 
 	@Override public XGAddressableSet<XGBulk> getBulks()
 	{	XGAddressableSet<XGBulk> set = new XGAddressableSet<>();
-		for(XGModuleType mt : TYPES)
-			for(XGModule mi : mt.getModules().values())
+		for(XGModuleType mt : MODULE_TYPES)
+			for(XGModule mi : mt.getModules())
 				set.addAll(mi.getBulks());
 		return set;
 	}

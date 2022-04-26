@@ -1,33 +1,27 @@
 package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
-import adress.InvalidXGAddressException;
-import adress.XGAddress;import bulk.XGBulk;
+import adress.XGAddress;
+import bulk.XGBulk;
 
 public class XGMessageBulkRequest extends XGRequest
 {	private static final int HI_OFFS = 4, MID_OFFS = 5, LO_OFFS = 6, MSG = 0x20, OVERHAED = 8;
 
 /********************************************************************************/
 
-	public XGMessageBulkRequest(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
+	public XGMessageBulkRequest(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
 	{	super(src, array, init);
 		XGAddress adr = new XGAddress(array[HI_OFFS], array[MID_OFFS], array[LO_OFFS]);
 		this.setAddress(adr);
 	}
 
-	public XGMessageBulkRequest(XGMessenger src, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException
+	public XGMessageBulkRequest(XGMessenger src, XGAddress adr) throws InvalidMidiDataException
 	{	this(src, new byte[OVERHAED], true);
-		this.setHi(adr.getHi().getValue());
-		this.setMid(adr.getMid().getValue());
-		this.setLo(adr.getLo().getMin());
+		this.setAddress(adr);
 	}
 
-	public XGMessageBulkRequest(XGMessenger src, XGBulk blk) throws InvalidXGAddressException, InvalidMidiDataException
+	public XGMessageBulkRequest(XGMessenger src, XGBulk blk) throws InvalidMidiDataException
 	{	this(src, blk.getAddress());
-		XGAddress adr = blk.getAddress();
-		this.setHi(adr.getHi().getValue());
-		this.setMid(adr.getMid().getValue());
-		this.setLo(adr.getLo().getMin());
 	}
 
 	@Override public int getHi(){ return decodeLSB(HI_OFFS);}

@@ -1,8 +1,10 @@
 package msg;
 
 import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;
-import adress.InvalidXGAddressException;
-import adress.XGAddress;import gui.XGMainWindow;import bulk.XGBulk;import value.XGValue;
+import adress.XGAddress;
+import gui.XGMainWindow;
+import bulk.XGBulk;
+import value.XGValue;
 
 public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 {
@@ -15,21 +17,19 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 		this.checkSum();
 	}
 
-	public XGMessageBulkDump(XGMessenger src, XGBulk blk) throws InvalidXGAddressException, InvalidMidiDataException //wird manuell angelegt und als response benötigt
-	{	this(src, blk.getAddress());
+	public XGMessageBulkDump(XGMessenger src, XGBulk blk) throws  InvalidMidiDataException //wird manuell angelegt und als response benötigt
+	{	this(src, blk.getAddress(), blk.getSize());
 	}
 
-	public XGMessageBulkDump(XGMessenger src, XGAddress adr) throws InvalidXGAddressException, InvalidMidiDataException //wird manuell angelegt und als response benötigt
-	{	super(src, new byte[OVERHAED + adr.getLo().getSize()], true);
-		this.setBulkSize(adr.getLo().getSize());
-		this.setHi(adr.getHi().getValue());
-		this.setMid(adr.getMid().getValue());
-		this.setLo(adr.getLo().getMin());
+	public XGMessageBulkDump(XGMessenger src, XGAddress adr, int size) throws InvalidMidiDataException //wird manuell angelegt und als response benötigt
+	{	super(src, new byte[OVERHAED + size], true);
+		this.setBulkSize(size);
+		this.setAddress(adr);
 		this.setChecksum();
 	}
 
-	public  XGMessageBulkDump(XGMessenger src, XGValue val)throws InvalidMidiDataException, InvalidXGAddressException// für "bulkende" Values
-	{	this(src, new XGAddress(val.getAddress().getHi(), val.getAddress().getMid(), val.getType().getAddress().getLo()));
+	public  XGMessageBulkDump(XGMessenger src, XGValue val)throws InvalidMidiDataException// für "bulkende" Values
+	{	this(src, val.getAddress(), val.getSize());
 		val.getCodec().encode(this, this.getBaseOffset(), this.getBulkSize(), val.getValue());
 		this.setChecksum();
 	}

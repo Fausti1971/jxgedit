@@ -125,7 +125,7 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 				{	XGMessage m = XGMessage.newMessage(this, Arrays.copyOfRange(tmp, first, i + 1), false);
 					if(m instanceof XGMessageBulkDump) this.buffer.add((XGMessageBulkDump)m);
 				}
-				catch (InvalidMidiDataException | InvalidXGAddressException e)
+				catch ( InvalidMidiDataException e)
 				{	LOG.severe(e.getMessage());
 					JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, e.getMessage());
 				}
@@ -161,11 +161,11 @@ public class XGSysexFile extends File implements XGSysexFileConstants, XGMesseng
 
 	@Override public String getMessengerName(){	return "File (" + this.getAbsolutePath() +")";}
 
-	@Override public void submit(XGResponse msg)throws XGMessengerException, InvalidXGAddressException
+	@Override public void submit(XGResponse msg)
 	{	if(msg instanceof XGMessageBulkDump) this.buffer.add((XGMessageBulkDump)msg);
 	}
 
-	@Override public void submit(XGRequest req)throws XGMessengerException, InvalidXGAddressException
+	@Override public void submit(XGRequest req)throws XGMessengerException
 	{	if(req instanceof XGMessageBulkRequest)
 		{	XGResponse response = this.buffer.get(req.getAddress());
 			if(req.setResponsedBy(response)) req.getSource().submit(response);

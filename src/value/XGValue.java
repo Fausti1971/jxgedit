@@ -6,7 +6,7 @@ import adress.*;
 import application.XGLoggable;
 import bulk.XGBulk;import device.*;
 import module.*;
-import static module.XGModuleType.TYPES;
+import static module.XGModuleType.MODULE_TYPES;
 import msg.*;
 import table.XGDefaultsTable;
 import static table.XGDefaultsTable.DEFAULTSTABLES;
@@ -33,19 +33,14 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	public static void init()
 	{	XGAddressableSet<XGValue> pool = new XGAddressableSet<>();
 	
-		for(XGModuleType mt : TYPES)
-		{	for(XGModule mod : mt.getModules().values())
+		for(XGModuleType mt : MODULE_TYPES)
+		{	for(XGModule mod : mt.getModules())
 			{	for(XGBulk blk : mod.getBulks())
-				{	for(XGValueType opc : blk.getType().getOpcodes())
-					{	try
-						{	XGValue v = new XGValue(opc, blk);
+				{	for(XGValueType opc : blk.getType().getValueTypes())
+					{		XGValue v = new XGValue(opc, blk);
 							blk.getValues().add(v);
 							pool.add(v);
 						}
-						catch(InvalidXGAddressException e)
-						{	LOG.warning(e.getMessage());
-						}
-					}
 				}
 			}
 		}
@@ -78,25 +73,24 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		this.type = null;
 	}
 
-	public XGValue(XGValueType opc, XGBulk blk) throws InvalidXGAddressException
-	{	this.type = opc;
+	public XGValue(XGValueType type, XGBulk blk)
+	{	this.type = type;
 		this.bulk = blk;
-		this.address = new XGAddress(opc.getAddress().getHi().getValue(), blk.getAddress().getMid().getValue(), opc.getAddress().getLo().getMin());
-		if(!this.address.isFixed()) throw new InvalidXGAddressException("no valid value-address: " + this.address);
+		this.address = new XGAddress(blk.getAddress().getHiValue(), blk.getID(), type.lo);
 
-		if(opc.hasMutableParameters())
-		{	this.parameters = PARAMETERTABLES.get(opc.parameterTableName);
-			if(this.parameters == null) throw new RuntimeException("parameter-table \"" + opc.parameterTableName + "\" for " + opc.getTag() + " not found");
+		if(type.hasMutableParameters())
+		{	this.parameters = PARAMETERTABLES.get(type.parameterTableName);
+			if(this.parameters == null) throw new RuntimeException("parameter-table \"" + type.parameterTableName + "\" for " + type.getTag() + " not found");
 		}
 		else
 		{	this.parameters = new XGParameterTable(this.getTag());
-			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(opc.getConfig()));
+			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(type.getConfig()));
 		}
 
-		if(opc.hasMutableDefaults()){	this.defaults = DEFAULTSTABLES.get(opc.defaultsTableName);}
+		if(type.hasMutableDefaults()){	this.defaults = DEFAULTSTABLES.get(type.defaultsTableName);}
 		else
-		{	this.defaults = new XGDefaultsTable(opc.getTag());
-			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, opc.getConfig().getValueAttribute(ATTR_DEFAULT, 0));
+		{	this.defaults = new XGDefaultsTable(type.getTag());
+			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, type.getConfig().getValueAttribute(ATTR_DEFAULT, 0));
 		}
 	}
 
@@ -128,7 +122,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 				}
 			}
 			else if("id".equals(dst))
-			{	this.defaultSelector = new XGFixedValue(this.getTag(), this.getModule().getAddress().getMid().getValue());
+			{	this.defaultSelector = new XGFixedValue(this.getTag(), this.getModule().getID());
 			}
 			else
 			{	LOG.warning(ATTR_DEFAULTSELECTOR + " " + dst + " not found for value " + this.getTag());
@@ -152,7 +146,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 
 	public XGBulk getBulk(){	return this.bulk;}
 
-	public int getSize(){	return this.type.getAddress().getLo().getSize();}
+	public int getSize(){	return this.type.getSize();}
 
 	public XGModule getModule(){	return this.bulk.getModule();}
 
@@ -264,7 +258,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	{	try
 		{	XGMidi.getMidi().submit(new XGMessageParameterChange(this, this));
 		}
-		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e1)
+		catch( InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
 		}
 	}
@@ -274,7 +268,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
  */
 	public void dumpAction()
 	{	try{	XGMidi.getMidi().submit(new XGMessageBulkDump(this, this));}
-		catch(InvalidXGAddressException|InvalidMidiDataException | XGMessengerException e1){	LOG.severe(e1.getMessage());}
+		catch(InvalidMidiDataException | XGMessengerException e1){	LOG.severe(e1.getMessage());}
 	}
 
 /**
@@ -295,7 +289,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		else return "no parameter info";
 	}
 
-	@Override public void submit(XGResponse res) throws InvalidXGAddressException, XGMessengerException
+	@Override public void submit(XGResponse res)
 	{	try
 		{	int offset = res.getBaseOffset() + this.address.getLo().getValue() - res.getLo();
 			this.setValue(this.type.codec.decode(res, offset, this.getSize()), false, false);
@@ -303,7 +297,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		catch(InvalidXGAddressException e){	e.printStackTrace();}
 	}
 
-	public void submit(XGRequest req) throws InvalidXGAddressException, XGMessengerException
+	public void submit(XGRequest req)
 	{	LOG.info("not implemented yet...");
 	}
 

@@ -2,9 +2,9 @@ package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.SysexMessage;
-import adress.XGAddressable;import device.*;
+import device.*;
 
-public abstract class XGSuperMessage extends SysexMessage implements XGMessage, XGAddressable
+public abstract class XGSuperMessage extends SysexMessage implements XGMessage
 {
 
 /****************************************************************************************************************************************/

@@ -1,11 +1,16 @@
 package adress;
 
-public interface XGAddressable extends XGAddressConstants
+public interface XGAddressable extends XGIdentifiable, XGAddressConstants
 {
-/**
- * zum Sortieren und Iterieren erforderliche XGAdress eines XGAdressable
- * @return XGAddress
- * @throws InvalidXGAddressException 
- */
-	XGAddress getAddress();
+	XGAddressRange getAddress();
+
+	default int getID()
+	{	try
+		{	return this.getAddress().getMid().getValue();
+		}
+		catch(InvalidXGAddressException e)
+		{	System.out.println(e.getMessage());
+			return this.getAddress().getMid().getMin();
+		}
+	}
 }

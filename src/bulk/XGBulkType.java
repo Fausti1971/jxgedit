@@ -1,34 +1,30 @@
 package bulk;
 
-import adress.InvalidXGAddressException;import adress.XGAddress;
-import adress.XGAddressable;
-import config.XGConfigurable;import module.XGModuleType;import value.XGValueType;import tag.XGTagable;import tag.XGTagableAddressableSet;import xml.XGProperty;import xml.XMLNode;import static xml.XMLNodeConstants.*;
+import adress.InvalidXGAddressException;import adress.XGAddressRange;
+import static application.XGLoggable.LOG;import config.XGConfigurable;import module.XGModuleType;import tag.XGTagableSet;import value.XGValueType;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;
 
-public class XGBulkType implements XGTagable, XGAddressable, XGConfigurable
+public class XGBulkType implements XGTagable, XGConfigurable
 {
-	public final XMLNode config;
-	public final String tag;
-	public final XGAddress address;
-	public final XGModuleType moduleType;
-	private final XGTagableAddressableSet<XGValueType> opcodes = new XGTagableAddressableSet<>();
+	final XMLNode config;
+	final XGAddressRange addressRange;
+	final String tag;
+	final XGModuleType moduleType;
+	final XGTagableSet<XGValueType> valueTypes = new XGTagableSet<>();
 
-	public XGBulkType(XGModuleType mt, XMLNode x)
+	public XGBulkType(XGModuleType mt, XMLNode x)throws InvalidXGAddressException
 	{	this.config = x;
 		this.tag = x.getStringAttribute(ATTR_ID);
-		this.address = new XGAddress(x.getStringAttribute(ATTR_ADDRESS), mt.getAddress());
+		this.addressRange = new XGAddressRange(x.getStringAttribute(ATTR_ADDRESS), mt.getAddressRange());
 		this.moduleType = mt;
 
 		for(XMLNode o : x.getChildNodes(TAG_OPCODE))
-		{	try{	this.opcodes.add(new XGValueType(this.address, o));}
-			catch(InvalidXGAddressException e){	e.printStackTrace();}
+		{		this.valueTypes.add(new XGValueType(this, o));
 		}
 	}
 
-	public XGTagableAddressableSet<XGValueType> getOpcodes(){	return this.opcodes;}
+	public XGTagableSet<XGValueType> getValueTypes(){	return this.valueTypes;}
 
 	public String getTag(){	return this.tag;}
-
-	public XGAddress getAddress(){	return this.address;}
 
 	public XMLNode getConfig(){	return this.config;}
 

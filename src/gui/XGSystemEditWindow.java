@@ -3,17 +3,17 @@ package gui;
 import device.XGDevice;
 import module.XGDrumsetModuleType;
 import module.XGModule;import module.XGModuleType;
-import static module.XGModuleType.TYPES;
+import static module.XGModuleType.MODULE_TYPES;
 import tag.XGTagableAddressableSet;
 import value.XGValue;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 
-public class XGMasterEditWindow extends XGEditWindow 
+public class XGSystemEditWindow extends XGEditWindow 
 {
 /**********************************************************************************************************/
 
-	public XGMasterEditWindow(XGModule mod)
+	public XGSystemEditWindow(XGModule mod)
 	{	super(XGMainWindow.MAINWINDOW, mod);
 		this.setVisible(true);
 	}
@@ -31,7 +31,7 @@ public class XGMasterEditWindow extends XGEditWindow
 
 		JButton b;
 		y = 2;
-		for(XGModuleType mt : TYPES)
+		for(XGModuleType mt : MODULE_TYPES)
 		{	if(mt instanceof XGDrumsetModuleType)
 			{	b = new JButton("Reset " + mt.getName());
 				b.addActionListener((ActionEvent e)->((XGDrumsetModuleType)mt).reset());

@@ -2,13 +2,13 @@ package value;
 
 import java.util.function.Consumer;
 import adress.*;
-import config.XGConfigurable;
+import bulk.XGBulkType;import config.XGConfigurable;
 import application.XGLoggable;
 import msg.XGMessageCodec;
 import tag.*;
 import xml.XGProperty;import xml.XMLNode;
 
-public class XGValueType implements XGLoggable, XGAddressable, XGConfigurable, XGTagable
+public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 {
 	enum SendAction{change,dump,none}
 //	static final SendAction DEF_ACTION = SendAction.none;
@@ -23,16 +23,22 @@ public class XGValueType implements XGLoggable, XGAddressable, XGConfigurable, X
 /*******************************************************************************************************************************/
 
 	final XMLNode config;
+	final XGBulkType bulkType;
+	final int lo, size;
 	final String tag, parameterSelectorTag, defaultSelectorTag;
-	final XGAddress address;
 	final String parameterTableName, defaultsTableName;
 	final Consumer<XGValue> action;
 	final XGMessageCodec codec;
 
 
-	public XGValueType(XGAddress blk, XMLNode n) throws InvalidXGAddressException
+	public XGValueType(XGBulkType blk, XMLNode n)
 	{	this.config = n;
-		this.address = new XGAddress(n.getStringAttribute(ATTR_ADDRESS)).complement(blk.getAddress());
+		this.bulkType = blk;
+
+		XGAddressField adr = new XGAddressRange(n.getStringAttribute(ATTR_ADDRESS)).getLo();
+		this.lo = adr.getMin();
+		this.size = adr.getSize();
+
 		this.codec = XGMessageCodec.getCodec(ValueDataType.valueOf(n.getStringAttributeOrDefault(ATTR_DATATYPE, DEF_DATATYPE.name())));
 		this.tag = n.getStringAttributeOrDefault(ATTR_ID, this.toString());
 		this.parameterSelectorTag = n.getStringAttribute(ATTR_PARAMETERSELECTOR);
@@ -47,6 +53,8 @@ public class XGValueType implements XGLoggable, XGAddressable, XGConfigurable, X
 		}
 	}
 
+	public int getSize(){	return this.size;}
+
 	public boolean hasMutableParameters(){	return this.parameterSelectorTag != null &&  this.parameterTableName != null;}
 
 	public boolean hasMutableDefaults(){	return this.defaultSelectorTag != null && this.defaultsTableName != null;}
@@ -55,9 +63,7 @@ public class XGValueType implements XGLoggable, XGAddressable, XGConfigurable, X
 
 	@Override public void propertyChanged(XGProperty n){}
 
-	@Override public XGAddress getAddress(){	return this.address;}
-
-	@Override public String toString(){	return this.getClass().getSimpleName() + this.address;}
+	@Override public String toString(){	return this.tag + " - " + this.lo;}
 
 	@Override public String getTag(){	return this.tag;}
 }

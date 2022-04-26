@@ -1,10 +1,8 @@
 package module;
 
 import adress.InvalidXGAddressException;
-import adress.XGAddress;
-import adress.XGAddressableSet;
-import application.JXG;
-import device.XGDevice;
+import adress.XGIdentifiableSet;
+import bulk.XGBulkType;import device.XGDevice;
 import device.XGMidi;
 import static msg.XGMessageConstants.*;
 import msg.XGMessageParameterChange;
@@ -14,7 +12,7 @@ import static value.XGValueType.MP_PM_VALUE_TAG;
 import static value.XGValueType.MP_PRG_VALUE_TAG;
 import xml.XMLNode;
 import javax.sound.midi.InvalidMidiDataException;
-import java.io.File;import java.io.IOException;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,11 +47,12 @@ public class XGDrumsetModuleType extends XGModuleType
 	private final int partmode;
 	private final XGDrumsetProgramValue programListener;
 
-	public XGDrumsetModuleType(XMLNode n, XGAddress adr) throws InvalidXGAddressException
-	{	super(n, adr, n.getStringAttributeOrDefault(ATTR_NAME, "Drumset"));
-		this.partmode = this.getAddress().getHi().getValue() - 46;
+	public XGDrumsetModuleType(XMLNode n, int hi) throws InvalidXGAddressException
+	{	super(n, n.getStringAttributeOrDefault(ATTR_NAME, "Drumset"), hi);
+		this.partmode = hi - 46;
 		this.tag += this.partmode - 1;
 		this.name.append(" ").append(this.partmode - 1);
+
 		((XGRealTable)XGTable.TABLES.get(TABLE_PARTMODE)).add(new XGTableEntry(this.partmode, this.name.toString()));
 		this.idTranslator = new XGVirtualTable(this.partmode, this.partmode, this.tag, this::getDrumname, (String s)->this.partmode);
 		this.programListener = new XGDrumsetProgramValue(this);
@@ -69,9 +68,9 @@ public class XGDrumsetModuleType extends XGModuleType
 
 	public int getPartmode(){ return this.partmode;}
 
-	private XGAddressableSet<XGModule> getMultiparts()
-	{	XGAddressableSet<XGModule> mp = new XGAddressableSet<>();
-		for(XGModule mod : TYPES.get("mp").getModules())
+	private XGIdentifiableSet<XGModule> getMultiparts()
+	{	XGIdentifiableSet<XGModule> mp = new XGIdentifiableSet<>();
+		for(XGModule mod : MODULE_TYPES.get("mp").getModules())
 		{	if(mod.getValues().get(MP_PM_VALUE_TAG).getValue() == this.partmode) mp.add(mod);
 		}
 		return mp;

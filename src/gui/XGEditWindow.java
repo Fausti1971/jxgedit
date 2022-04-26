@@ -1,23 +1,21 @@
 package gui;
 
-import adress.XGAddress;import adress.XGAddressable;import adress.XGAddressableSet;import config.XGConfigurable;import module.XGModule;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;
+import adress.XGIdentifiable;import config.XGConfigurable;import module.XGModule;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import xml.XGProperty;import javax.swing.*;
 
-public abstract class XGEditWindow extends XGWindow implements XGAddressable, XGConfigurable
+public abstract class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable, XGConfigurable
 {
-	static final XGAddressableSet<XGEditWindow> EDITWINDOWS = new XGAddressableSet<>();
+	static final XGTagableIdentifiableSet<XGEditWindow> EDITWINDOWS = new XGTagableIdentifiableSet<>();
 
 	public static XGEditWindow getEditWindow(XGModule mod)
-	{	XGAddress adr = mod.getAddress();
-		String tag = mod.getType().getTag();
-		XGEditWindow win = EDITWINDOWS.get(adr);
+	{	XGEditWindow win = EDITWINDOWS.get(mod.getTag(), mod.getID());
 		if(win != null) return win;
 		else
-		{	switch(tag)
+		{	switch(mod.getTag())
 			{	case "rev":		win = new XGReverbEditWindow(mod); break;
 				case "cho":		win = new XGChorusEditWindow(mod); break;
 				case "var":		win = new XGVariationEditWindow(mod); break;
 				case "ins":		win = new XGInsertionEditWindow(mod); break;
-				case "master":	win = new XGMasterEditWindow(mod); break;
+				case "sys":		win = new XGSystemEditWindow(mod); break;
 				case "eq":		win = new XGEQEditWindow(mod); break;
 				case "mp":		win = new XGMultipartEditWindow(mod); break;
 				case "ad":		win = new XGADPartEditWindow(mod); break;
@@ -46,7 +44,7 @@ public abstract class XGEditWindow extends XGWindow implements XGAddressable, XG
 
 /***********************************************************************************************************/
 
-	abstract JComponent createContent();
+//	JComponent createContent();
 
 	final XGModule module;
 
@@ -59,9 +57,9 @@ public abstract class XGEditWindow extends XGWindow implements XGAddressable, XG
 
 	@Override public String getTag(){	return this.module.getType().getTag();}
 
+	@Override public int getID(){	return this.module.getID();}
+
 	@Override public void propertyChanged(XGProperty p){	this.setTitle(this.getTitle());}
 
 	@Override public String getTitle(){	return XGMainWindow.MAINWINDOW.getTitle() + " - " + this.module;}
-
-	@Override public XGAddress getAddress(){	return this.module.getAddress();}
 }

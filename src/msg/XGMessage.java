@@ -4,12 +4,12 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 import adress.InvalidXGAddressException;
-import adress.XGAddress;import adress.XGAddressable;
+import adress.XGAddress;import adress.XGAddressRange;import adress.XGAddressable;
 import application.XGLoggable;
 
 public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 {
-	static XGMessage newMessage(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException, InvalidXGAddressException
+	static XGMessage newMessage(XGMessenger src, byte[] array, boolean init) throws InvalidMidiDataException
 	{	checkMessage(array);
 		switch(array[MSG_OFFS] & 0xF0)
 		{	case MSG_BD:	return new XGMessageBulkDump(src, array, init);
@@ -20,7 +20,7 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 		}
 	}
 
-	static XGMessage newMessage(XGMessenger src, MidiMessage msg) throws InvalidMidiDataException, InvalidXGAddressException
+	static XGMessage newMessage(XGMessenger src, MidiMessage msg) throws InvalidMidiDataException
 	{	if(msg instanceof SysexMessage) return newMessage(src, msg.getMessage(), false);
 		else throw new InvalidMidiDataException("no sysex message: " + application.XGStrings.toHexString(msg.getMessage()));
 	}
@@ -54,13 +54,14 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 
 	default void setTimeStamp(){ this.setTimeStamp(System.currentTimeMillis());}
 
-	default void setAddress(XGAddress adr) throws InvalidXGAddressException
-	{	this.setHi(adr.getHi().getValue());
-		this.setMid(adr.getMid().getValue());
-		this.setLo(adr.getLo().getValue());
+	default void setAddress(XGAddress adr)
+	{	this.setHi(adr.getHiValue());
+		this.setMid(adr.getMidValue());
+		this.setLo(adr.getLoValue());
 	}
 
-	@Override default XGAddress getAddress(){ return new XGAddress(this.getHi(), this.getMid(), this.getLo());}
+	@Override default XGAddress getAddress(){	return new XGAddress(this.getHi(), this.getMid(), this.getLo());}
+
 
 /**
  * überprüft anhand vendorID und modelID, ob es sich um eine XG-Message handelt und wirft bei Fehlschlag eine Exception

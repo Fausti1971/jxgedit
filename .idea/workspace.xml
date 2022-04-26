@@ -10,18 +10,59 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
+      <change afterPath="$PROJECT_DIR$/src/adress/XGAddressRange.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/adress/XGIdentifiable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/adress/XGIdentifiableSet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/tag/XGTagableIdentifiableSet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/adress/XGAddress.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/adress/XGAddress.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/adress/XGAddressable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/adress/XGAddressable.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/adress/XGAddressableSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/adress/XGAddressableSet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/device/XGDevice.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/device/XGMidi.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/device/XGMidi.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/file/XGSysexFile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/file/XGSysexFile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGPEG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/gui/XGPEG.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGDrumsetModuleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGDrumsetModuleType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adress/XGMemberNotFoundException.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/adress/XGVariable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGModule.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGModule.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGModuleConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGModuleConstants.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGModuleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGModuleType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGMessageBulkDump.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGMessageBulkDump.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGMessageBulkRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGMessageBulkRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGMessageParameterChange.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGMessageParameterChange.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGMessageParameterRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGMessageParameterRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGMessenger.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGMessenger.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/msg/XGSuperMessage.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/msg/XGSuperMessage.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/tag/XGTagableAddressableSet.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/tag/XGTagableAddressableSet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/value/XGValue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/value/XGValue.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adress/XGAddress.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adress/XGAddress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adress/XGAddressable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adress/XGAddressable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adress/XGAddressableSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adress/XGAddressableSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulkType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/file/XGSysexFile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGSysexFile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMasterEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMasterEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMasterEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSystemEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGPEG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPEG.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/XMLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModuleConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageBulkRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageBulkRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageParameterChange.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageParameterChange.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageParameterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageParameterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessenger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGSuperMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGSuperMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tag/XGTagableAddressableSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tag/XGTagableAddressableSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValueType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValueType.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -506,7 +547,14 @@
       <option name="project" value="LOCAL" />
       <updated>1650836535419</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary="Backup">
+      <created>1650908141229</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1650908141229</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -625,7 +673,6 @@
     <MESSAGE value="alpha1" />
     <MESSAGE value="Filesaving komplettiert, Overwrite-Rückfrage, Auto-append Suffix;" />
     <MESSAGE value="XGRequest and XGResponse is now an abstract class;" />
-    <MESSAGE value="Backup" />
     <MESSAGE value="Rebase" />
     <MESSAGE value="XGBulk und XGBulkType eingeführt;" />
     <MESSAGE value="debugged (structure.xml) &quot;defaultSelector&quot; von &quot;mp_program&quot; ist &quot;id&quot;" />
@@ -645,7 +692,8 @@
     <MESSAGE value="structure.xml is now device.xml;" />
     <MESSAGE value="vergessenen SysexID selector nachgerüstet;" />
     <MESSAGE value="dynamisches Filenamen- und -pfadhandling;" />
-    <option name="LAST_COMMIT_MESSAGE" value="dynamisches Filenamen- und -pfadhandling;" />
+    <MESSAGE value="Backup" />
+    <option name="LAST_COMMIT_MESSAGE" value="Backup" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

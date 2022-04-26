@@ -1,6 +1,6 @@
 package gui;
 import java.awt.GridBagLayout;
-import adress.XGAddress;
+import adress.XGAddressRange;
 import gui.XGPoint.PointRelation;
 import value.XGFixedValue;
 import value.XGValue;
@@ -9,7 +9,7 @@ import javax.swing.*;
 public class XGPEG extends JPanel implements XGComponent
 {
 	private static final long serialVersionUID = 1L;
-	private static final XGAddress A_TIME = new XGAddress("8//106"), A_LEVEL = new XGAddress("8//105"), R_TIME = new XGAddress("8//108"), R_LEVEL = new XGAddress("8//107");
+	private static final XGAddressRange A_TIME = new XGAddressRange("8//106"), A_LEVEL = new XGAddressRange("8//105"), R_TIME = new XGAddressRange("8//108"), R_LEVEL = new XGAddressRange("8//107");
 	private static final XGFixedValue VALUE_255 = new XGFixedValue("fix", 255), VALUE_381 = new XGFixedValue("fix", 381);
 
 /**************************************************************************************/

@@ -1,14 +1,13 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.*;import java.util.Collection;import java.util.NoSuchElementException;import java.util.Set;
+import java.awt.event.*;import java.util.Collection;import java.util.NoSuchElementException;
 import javax.swing.*;
-import adress.XGAddressableSet;import application.*;
-import static application.JXG.*;
+import application.*;
 import device.*;
 import file.XGSysexFile;import static java.awt.BorderLayout.*;
 import module.*;
-import static module.XGModuleType.TYPES;
+import static module.XGModuleType.MODULE_TYPES;
 import value.XGValue;import xml.*;
 
 public class XGMainWindow extends XGWindow
@@ -77,8 +76,8 @@ public class XGMainWindow extends XGWindow
 
 		JTabbedPane tabPane = new JTabbedPane();
 
-		for(XGModuleType mt : TYPES)
-		{	Collection<XGModule> set = mt.getModules().values();
+		for(XGModuleType mt : MODULE_TYPES)
+		{	Collection<XGModule> set = mt.getModules();
 			XGButton2 button;
 			if(set.size() == 1)
 			{	XGModule mod = (XGModule)set.toArray()[0];

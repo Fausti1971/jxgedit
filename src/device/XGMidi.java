@@ -220,7 +220,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 			}
 			else LOG.info("unexpected message :" + m.toHexString());
 		}
-		catch(InvalidMidiDataException | InvalidXGAddressException | XGMessengerException e){	LOG.info(e.getMessage());}
+		catch(InvalidMidiDataException |  XGMessengerException e){	LOG.info(e.getMessage());}
 	}
 
 	@Override public boolean equals(Object o)

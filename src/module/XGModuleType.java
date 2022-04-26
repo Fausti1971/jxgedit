@@ -5,16 +5,16 @@ import java.util.Set;
 import adress.*;
 import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import config.XGConfigurable;
 import application.XGLoggable;
-import table.XGTable;import static table.XGTable.TABLES;import static table.XGVirtualTable.DEF_TABLE;import tag.XGTagable;import tag.XGTagableAddressableSet;import xml.XGProperty;import xml.XMLNode;
+import table.XGTable;import static table.XGTable.TABLES;import static table.XGVirtualTable.DEF_TABLE;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen
  * @author thomas
  *
  */
-public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggable, XGBulkDumper, XGConfigurable, XGTagable
+public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper, XGConfigurable, XGTagable
 {
-	public static final XGTagableAddressableSet<XGModuleType> TYPES = new XGTagableAddressableSet<>();//Prototypen (inkl. XGAddress bulks); initialisiert auch XGOpcodes
+	public static final XGTagableSet<XGModuleType> MODULE_TYPES = new XGTagableSet<>();//Prototypen (inkl. XGAddress bulks); initialisiert auch XGOpcodes
 	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 /**
@@ -31,11 +31,11 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 			return;
 		}
 		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
-		{	XGAddress adr = new XGAddress(n.getStringAttribute(ATTR_ADDRESS));
+		{	XGAddressRange adr = new XGAddressRange(n.getStringAttribute(ATTR_ADDRESS));
 			if(adr.getHi().getMin() >= 48)//falls Drumset
 			{	for(int h : adr.getHi())//erzeuge für jedes Drumset ein ModuleType
 				{	try
-					{	TYPES.add(new XGDrumsetModuleType(n, new XGAddress(new XGAddressField(h), adr.getMid(), adr.getLo())));
+					{	MODULE_TYPES.add(new XGDrumsetModuleType(n, h));
 					}
 					catch(InvalidXGAddressException e)
 					{	LOG.severe(e.getMessage());
@@ -43,9 +43,12 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 				}
 				continue;
 			}
-			TYPES.add(new XGModuleType(n));
+			try
+			{	MODULE_TYPES.add(new XGModuleType(n));
+			}
+			catch(InvalidXGAddressException e){	e.printStackTrace();}
 		}
-		LOG.info(TYPES.size() + " Module-Types initialized");
+		LOG.info(MODULE_TYPES.size() + " Module-Types initialized");
 	}
 
 	static
@@ -59,23 +62,41 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 /********************************************************************************************************************/
 
 	private final Set<String> infoTags = new LinkedHashSet<>();
-	private final XGTagableAddressableSet<XGBulkType> bulkTypes = new XGTagableAddressableSet<>();
-	private final XGAddressableSet<XGModule> modules = new XGAddressableSet<>();
+	private final XGTagableSet<XGBulkType> bulkTypes = new XGTagableSet<>();
+	private final XGIdentifiableSet<XGModule> modules = new XGIdentifiableSet<>();
+	final XGAddressRange addressRange;
 	protected final StringBuffer name;
 	protected String tag;
-	protected final XGAddress address;
 	protected XGTable idTranslator;
-	private final XMLNode config;
+	protected final XMLNode config;
 
 /**
 * instanziiert Moduletypen, Bulktypen und Valuetypen
 */
-	public XGModuleType(XMLNode cfg, XGAddress adr, String name)
+	public XGModuleType(XMLNode cfg, String name)throws InvalidXGAddressException
 	{	this.config = cfg;
-		this.address = adr;
 		this.name = new StringBuffer(name);
 		this.tag = cfg.getStringAttribute(ATTR_ID);
 		this.idTranslator = TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TABLE), DEF_TABLE);
+		
+		this.addressRange = new XGAddressRange(cfg.getStringAttribute(ATTR_ADDRESS));
+
+		for(XMLNode x : cfg.getChildNodes(TAG_BULK)){	this.bulkTypes.add(new XGBulkType(this, x));}
+
+		for(XMLNode n : cfg.getChildNodes(TAG_INFO))
+		{	String opc = n.getStringAttribute(ATTR_REF);
+			if(opc != null) this.infoTags.add(opc);
+		}
+	}
+
+	public XGModuleType(XMLNode cfg, String name, int hi)throws InvalidXGAddressException
+	{	this.config = cfg;
+		this.name = new StringBuffer(name);
+		this.tag = cfg.getStringAttribute(ATTR_ID);
+		this.idTranslator = TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TABLE), DEF_TABLE);
+
+		XGAddressRange adr = new XGAddressRange(cfg.getStringAttribute(ATTR_ADDRESS));
+		this.addressRange = new XGAddressRange(new XGAddressField(hi), adr.getMid(), adr.getLo());
 
 		for(XMLNode x : cfg.getChildNodes(TAG_BULK))
 		{	this.bulkTypes.add(new XGBulkType(this, x));
@@ -87,11 +108,14 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 		}
 	}
 
-	public XGModuleType(XMLNode cfg)
-	{	this(cfg, new XGAddress(cfg.getStringAttribute(ATTR_ADDRESS)), cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
+
+	public XGModuleType(XMLNode cfg)throws InvalidXGAddressException
+	{	this(cfg, cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
 	}
 
-	public XGAddressableSet<XGModule> getModules(){ return this.modules;}
+	public XGAddressRange getAddressRange(){	return this.addressRange;}
+
+	public XGIdentifiableSet<XGModule> getModules(){ return this.modules;}
 
 	public Set<String> getInfoTags(){ return this.infoTags;}
 
@@ -104,8 +128,6 @@ public class XGModuleType implements XGAddressable, XGModuleConstants, XGLoggabl
 	public void resetValues(){	for(XGModule m : this.getModules()) m.resetValues();}
 
 	@Override public String toString(){ return this.name.toString();}
-
-	@Override public XGAddress getAddress(){ return this.address;}
 
 	public XGAddressableSet<XGBulk> getBulks()
 	{	XGAddressableSet<XGBulk> set = new XGAddressableSet<>();
