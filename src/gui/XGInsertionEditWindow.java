@@ -4,7 +4,7 @@ import module.XGModule;import tag.XGTagableAddressableSet;import value.XGValue;i
 public class XGInsertionEditWindow extends XGEditWindow
 {
 	public XGInsertionEditWindow(XGModule mod)
-	{	super(XGMainWindow.MAINWINDOW, mod);
+	{	super( mod);
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
 	}

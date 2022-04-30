@@ -4,7 +4,7 @@ import module.XGModule;import javax.swing.*;
 public class XGReverbEditWindow extends XGEditWindow
 {
 	public XGReverbEditWindow(XGModule mod)
-	{	super(XGMainWindow.MAINWINDOW, mod);
+	{	super( mod);
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
 	}

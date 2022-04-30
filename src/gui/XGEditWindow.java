@@ -1,10 +1,25 @@
 package gui;
 
-import adress.XGIdentifiable;import config.XGConfigurable;import module.XGModule;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import xml.XGProperty;import javax.swing.*;
+import adress.XGIdentifiable;import config.XGConfigurable;import module.XGModule;import table.XGRealTable;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.io.IOException;import java.util.HashMap;import java.util.Map;
 
 public abstract class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable, XGConfigurable
 {
 	static final XGTagableIdentifiableSet<XGEditWindow> EDITWINDOWS = new XGTagableIdentifiableSet<>();
+	static final Map<String, XMLNode> TEMPLATES = new HashMap<>();
+
+	static public void init()
+	{	try
+		{	XMLNode xml = XMLNode.parse(XML_TEMPLATES);
+			for(XMLNode n : xml.getChildNodes(TAG_TEMPLATE))
+			{	String tag = n.getStringAttribute(ATTR_ID);
+				TEMPLATES.put(tag, n);
+				LOG.info(tag);
+			}
+		}
+		catch(IOException e)
+		{	LOG.severe(e.getMessage());
+		}
+	}
 
 	public static XGEditWindow getEditWindow(XGModule mod)
 	{	XGEditWindow win = EDITWINDOWS.get(mod.getTag(), mod.getID());
@@ -48,7 +63,7 @@ public abstract class XGEditWindow extends XGWindow implements XGTagable, XGIden
 
 	final XGModule module;
 
-	public XGEditWindow(XGWindow own, XGModule mod)
+	public XGEditWindow(XGModule mod)
 	{	super(mod.getType().getTag());
 		this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		this.module = mod;

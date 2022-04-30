@@ -1,11 +1,11 @@
 package gui;
 
-import tag.XGTagableAddressableSet;import value.XGValue;import xml.XGProperty;import static xml.XMLNodeConstants.ATTR_NAME;import javax.swing.*;
+import tag.XGTagableAddressableSet;import value.XGValue;import xml.XGProperty;import javax.swing.*;
 
 public class XGADPartEditWindow extends XGEditWindow
 {
 	public XGADPartEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.MAINWINDOW, mod);
+	{	super( mod);
 		this.setVisible(true);
 	}
 

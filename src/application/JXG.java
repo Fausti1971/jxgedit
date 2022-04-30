@@ -94,6 +94,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 
 		XGUI.init();
 		XGWindow.init();
+		XGEditWindow.init();
 
 		System.gc();
 		splash.dispose();

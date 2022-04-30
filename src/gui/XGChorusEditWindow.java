@@ -3,7 +3,7 @@ package gui;
 import tag.XGTagableAddressableSet;import value.XGValue;import javax.swing.*;public class XGChorusEditWindow extends XGEditWindow
 {
 	public XGChorusEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.MAINWINDOW, mod);
+	{	super( mod);
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
 	}

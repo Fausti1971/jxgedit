@@ -5,7 +5,7 @@ import java.util.*;
 import adress.*;
 import application.XGLoggable;
 /**
-* zweidimensionale Map aus Tag und ID Map<Tag, XGIdentifiableSet<T>>
+* zweidimensionale Map aus Tag und ID Map<Tag,XGIdentifiableSet<T>>
 */
 public class XGTagableIdentifiableSet<T extends XGIdentifiable & XGTagable> implements XGLoggable
 {

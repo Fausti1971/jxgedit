@@ -9,7 +9,7 @@ import java.awt.*;
 public class XGMultipartEditWindow extends XGEditWindow
 {
 	public XGMultipartEditWindow(XGModule mod)
-	{	super(XGMainWindow.MAINWINDOW, mod);
+	{	super( mod);
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
 	}

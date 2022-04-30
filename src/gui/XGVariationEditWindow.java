@@ -7,7 +7,7 @@ import javax.swing.*;
 public class XGVariationEditWindow extends XGEditWindow
 {
 	public XGVariationEditWindow(XGModule mod)
-	{	super(XGMainWindow.MAINWINDOW, mod);
+	{	super( mod);
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
 	}

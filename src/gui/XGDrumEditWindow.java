@@ -5,7 +5,7 @@ import module.XGModule;import tag.XGTagableAddressableSet;import value.XGValue;i
 public class XGDrumEditWindow extends XGEditWindow
 {
 	public XGDrumEditWindow(XGModule mod)
-	{	super(XGMainWindow.MAINWINDOW, mod);
+	{	super( mod);
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
 	}

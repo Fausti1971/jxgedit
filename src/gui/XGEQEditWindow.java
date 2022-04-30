@@ -3,7 +3,7 @@ package gui;
 import static gui.XGMEQ.*;import tag.XGTagableAddressableSet;import value.XGValue;import javax.swing.*;public class XGEQEditWindow extends XGEditWindow
 {
 	public XGEQEditWindow(module.XGModule mod)
-	{	super(XGMainWindow.MAINWINDOW, mod);
+	{	super( mod);
 		this.setContentPane(this.createContent());
 		this.setVisible(true);
 	}

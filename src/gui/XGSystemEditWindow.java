@@ -14,7 +14,7 @@ public class XGSystemEditWindow extends XGEditWindow
 /**********************************************************************************************************/
 
 	public XGSystemEditWindow(XGModule mod)
-	{	super(XGMainWindow.MAINWINDOW, mod);
+	{	super( mod);
 		this.setVisible(true);
 	}
 

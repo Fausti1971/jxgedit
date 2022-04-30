@@ -7,12 +7,12 @@ public interface XMLNodeConstants
 	String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
 
 	String
-//		XML_CONFIG = APPNAME + ".xml",
 		XML_DEVICE = "device.xml",
 		XML_PARAMETER = "parameter.xml",
 		XML_DEFAULTS = "defaults.xml",
 		XML_DRUMS = "drums.xml",
-		XML_TABLES = "tables.xml";
+		XML_TABLES = "tables.xml",
+		XML_TEMPLATES = "templates.xml";
 
 	String
 		TAG_WIN = "window",
@@ -20,8 +20,6 @@ public interface XMLNodeConstants
 		ATTR_Y = "y",
 		ATTR_W = "w",
 		ATTR_H = "h",
-		ATTR_GRID_WIDTH = "grid_width",
-		ATTR_GRID_HEIGHT = "grid_height",
 
 		TAG_CONFIG = "config",
 		TAG_VERSION = "version",
@@ -94,5 +92,6 @@ public interface XMLNodeConstants
 		ATTR_VALUE = "value",
 		ATTR_SELECTORVALUE = "selectorValue",
 
+		TAG_TEMPLATE="template",
 		ATTR_ORIENTATION = "orientation";
 }

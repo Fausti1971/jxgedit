@@ -5,7 +5,7 @@ import java.awt.event.MouseEvent;import java.awt.event.MouseWheelEvent;import ja
 import javax.imageio.ImageIO;import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;import javax.swing.plaf.FontUIResource;
 import application.*;
-import config.XGConfigurable;import xml.XGProperty;import xml.XMLNode;
+import config.XGConfigurable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;
 
 public interface XGUI extends XGLoggable, XGConfigurable
 {
