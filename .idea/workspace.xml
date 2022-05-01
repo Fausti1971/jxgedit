@@ -12,21 +12,17 @@
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/JXG/value/XGValue.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/value/XGValue.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/application/JXG.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/JXG/xml/XMLNodeConstants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/xml/XMLNodeConstants.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGADPartEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGADPartEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGChorusEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGChorusEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGDrumEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGDrumEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGComponent.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGEQEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEQEditWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGInsertionEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGInsertionEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGLayout.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGMultipartEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMultipartEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGReverbEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGReverbEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSystemEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSystemEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGRadio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRadio.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGVariationEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVariationEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tag/XGTagableIdentifiableSet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tag/XGTagableIdentifiableSet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/XMLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNode.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
@@ -526,7 +522,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651003957057</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="Vorbereitung XML-Editwindows">
+      <created>1651349957276</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1651349957276</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -640,7 +643,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Backup vor Umbau Hierarchie;" />
     <MESSAGE value="backup single" />
     <MESSAGE value="alpha1" />
     <MESSAGE value="Filesaving komplettiert, Overwrite-Rückfrage, Auto-append Suffix;" />
@@ -665,7 +667,8 @@
     <MESSAGE value="vergessenen SysexID selector nachgerüstet;" />
     <MESSAGE value="dynamisches Filenamen- und -pfadhandling;" />
     <MESSAGE value="Backup" />
-    <option name="LAST_COMMIT_MESSAGE" value="Backup" />
+    <MESSAGE value="Vorbereitung XML-Editwindows" />
+    <option name="LAST_COMMIT_MESSAGE" value="Vorbereitung XML-Editwindows" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

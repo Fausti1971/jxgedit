@@ -26,7 +26,7 @@ public class XGVariationEditWindow extends XGEditWindow
 		main.add(new XGKnob(values.get("var_pan")), "5,0,1,2");
 		main.add(new XGKnob(values.get("var_to_rev")), "6,0,1,2");
 		main.add(new XGKnob(values.get("var_to_cho")), "7,0,1,2");
-		main.add(new XGRadio(values.get("var_connection"), BoxLayout.X_AXIS), "0,1,2,1");
+		main.add(new XGRadio(values.get("var_connection"), XGComponent.XGOrientation.horizontal), "0,1,2,1");
 		main.add(new XGCombo(values.get("var_part")), "2,1,2,1");
 		root.add(main, "0,0,8,1");
 

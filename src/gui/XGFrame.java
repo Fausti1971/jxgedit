@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.*;
+import application.XGStrings;import xml.XMLNode;import java.awt.*;
 import javax.swing.*;
 
 public class XGFrame extends JPanel implements XGComponent
@@ -30,6 +30,19 @@ public class XGFrame extends JPanel implements XGComponent
 	public XGFrame(String text)
 	{	this(true);
 		this.addNameLabel(text);
+	}
+
+	public XGFrame(XMLNode xml)
+	{	Rectangle r = new Rectangle(0,0,1,1);
+
+		if(xml.hasAttribute(ATTR_CONSTRAINT)) r = XGStrings.toRectangle(xml.getStringAttribute(ATTR_CONSTRAINT));
+		this.setLayout(new XGLayout(new Dimension(r.width, r.height)));
+
+		if(xml.hasAttribute(ATTR_BORDER))
+		{	if(Boolean.getBoolean(xml.getStringAttribute(ATTR_BORDER)))	this.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		}
+
+		if(xml.hasAttribute(ATTR_LABEL)) this.addNameLabel(xml.getStringAttribute(ATTR_LABEL));
 	}
 
 	private void addNameLabel(String text)

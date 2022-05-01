@@ -12,18 +12,17 @@ import value.XGValueChangeListener;
 public class XGRadio extends XGFrame implements XGValueChangeListener, XGParameterChangeListener
 {
 	private static final long serialVersionUID = 1L;
-	private static final java.awt.Dimension MINDIM = new Dimension(132, 44);
 
 /*********************************************************************************************************/
 
 	private final XGValue value;
-	private final int orientation;
+	private final XGOrientation orientation;
 
 	public XGRadio(XGValue val)
-	{	this(val, BoxLayout.Y_AXIS);//TODO: bringe dem XGFrame noch Orientierung bei...
+	{	this(val, XGOrientation.vertical);
 	}
 
-	public XGRadio(XGValue val, int orientation)
+	public XGRadio(XGValue val, XGOrientation orientation)
 	{	super(true);
 		this.orientation = orientation;
 		this.value = val;
@@ -45,8 +44,10 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 			this.setToolTipText(p.getName());
 			XGTable t = this.value.getParameter().getTranslationTable();
 			int x = 0, y = 0;
-			if(this.orientation == BoxLayout.X_AXIS) for(XGTableEntry e : t) this.add(new XGRadioButton(this.value, e), new int[]{x++,0,1,1});
-			if(this.orientation == BoxLayout.Y_AXIS) for(XGTableEntry e : t) this.add(new XGRadioButton(this.value, e), new int[]{0,y++,1,1});
+			switch(this.orientation)
+			{	case horizontal:	for(XGTableEntry e : t) this.add(new XGRadioButton(this.value, e), new int[]{x++,0,1,1}); break;
+				case vertical:		for(XGTableEntry e : t) this.add(new XGRadioButton(this.value, e), new int[]{0,y++,1,1}); break;
+			}
 		}
 		else
 		{	this.setEnabled(false);

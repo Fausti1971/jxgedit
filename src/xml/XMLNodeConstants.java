@@ -93,5 +93,15 @@ public interface XMLNodeConstants
 		ATTR_SELECTORVALUE = "selectorValue",
 
 		TAG_TEMPLATE="template",
+		ATTR_VALUE_TAG = "value_tag",
+		ATTR_FRAME = "frame",
+		ATTR_KNOB = "knob",
+		ATTR_RESET_BUTTONS = "reset_buttons",
+		ATTR_PROG_SELECT = "program_selector",
+		ATTR_COMBO = "combo",
+		ATTR_RADIO = "radio",
+		ATTR_CONSTRAINT = "constraint",
+		ATTR_LABEL = "label",
+		ATTR_BORDER = "border",
 		ATTR_ORIENTATION = "orientation";
 }

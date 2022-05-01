@@ -25,8 +25,8 @@ public class XGMultipartEditWindow extends XGEditWindow
 			main.add(new XGCombo(values.get("mp_partmode")), "0,4,2,2");
 			main.add(new XGCombo(values.get("mp_audio_output")), "2,4,2,2");
 			main.add(new XGProgramSelector(values.get("mp_program")), "0,6,4,2");
-			main.add(new XGRadio(values.get("mp_key_on_assign"), BoxLayout.X_AXIS), "2,0,2,2");
-			main.add(new XGRadio(values.get("mp_poly"), BoxLayout.X_AXIS), "2,2,2,2");
+			main.add(new XGRadio(values.get("mp_key_on_assign"), XGComponent.XGOrientation.horizontal), "2,0,2,2");
+			main.add(new XGRadio(values.get("mp_poly"), XGComponent.XGOrientation.horizontal), "2,2,2,2");
 		root.add(main, "0,0,6,2");
 
 		XGFrame midi = new XGFrame(false);

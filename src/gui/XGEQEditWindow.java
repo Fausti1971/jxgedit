@@ -12,7 +12,7 @@ import static gui.XGMEQ.*;import tag.XGTagableAddressableSet;import value.XGValu
 	{	XGFrame root = new XGFrame(false);
 		XGTagableAddressableSet<XGValue> values = this.module.getValues();
 
-		root.add(new XGRadio(values.get("eq_program"), BoxLayout.X_AXIS), "0,0,5,1");
+		root.add(new XGRadio(values.get("eq_program"), XGComponent.XGOrientation.horizontal), "0,0,5,1");
 
 		root.add(new XGMEQ(this.module), "0,1,5,3");
 

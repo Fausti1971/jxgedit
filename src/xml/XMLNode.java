@@ -140,6 +140,8 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 
 	public boolean hasChildNode(String tag){	return this.getChildNode(tag) != null;}
 
+	public boolean hasAttribute(String attr){	return this.attributes.containsKey(attr);}
+
 	public final XMLNode getChildNode(String tag)
 	{	for(XMLNode n : this.childNodes) if(n.tag.equals(tag)) return n;
 		return null;

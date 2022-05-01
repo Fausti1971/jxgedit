@@ -8,7 +8,8 @@ import java.util.Map;
 public class XGLayout implements LayoutManager2
 {
 	static Rectangle constraintsObjectToRectangle(Object o)
-	{	if(o instanceof String) return XGStrings.toRectangle((String)o);
+	{	if(o == null) throw new RuntimeException("constraint object is null!");
+		if(o instanceof String) return XGStrings.toRectangle((String)o);
 		else if(o instanceof int[]) return XGMath.toRectangle((int[])o);
 		else if(o instanceof Rectangle) return (Rectangle)o;
 		else throw new RuntimeException("incorrect constraint object (" + o.getClass().getSimpleName() + ")");
