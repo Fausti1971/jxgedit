@@ -84,6 +84,10 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 				component = XGPitchEnvelope.newPitchEnvelope(this.module, item); break;
 			case ATTR_AMP_ENV:
 				component = XGAmplifierEnvelope.newAmplifierEnvelope(this.module); break;
+			case ATTR_TABBED:
+				component = new XGTabbedFrame(item); break;
+			case ATTR_TAB:
+				component = new XGTab(item); break;
 			default:
 				return new XGFrame("unknown item type: " + type);
 		}

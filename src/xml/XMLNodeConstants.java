@@ -108,7 +108,10 @@ public interface XMLNodeConstants
 		ATTR_EQ_ENV = "eq_envelope",
 		ATTR_PITCH_ENV = "pitch_envelope",
 		ATTR_AMP_ENV = "amplifier_envelope",
+		ATTR_TABBED = "tab_frame",
+		ATTR_TAB = "tab",
 		ATTR_CONSTRAINT = "constraint",
 		ATTR_LABEL = "label",
+		ATTR_TITLE = "title",
 		ATTR_ORIENTATION = "orientation";
 }
