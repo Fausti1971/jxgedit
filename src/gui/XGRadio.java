@@ -23,7 +23,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 	}
 
 	public XGRadio(XGValue val, XGOrientation orientation)
-	{	super(true);
+	{	super("");
 		this.orientation = orientation;
 		this.value = val;
 		if(val == null)
@@ -40,13 +40,19 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 	@Override public void parameterChanged(XGParameter p)
 	{	if(p != null)
 		{	this.setEnabled(true);
-//			this.setName(p.getShortName());
+			this.setName(p.getShortName());
 			this.setToolTipText(p.getName());
 			XGTable t = this.value.getParameter().getTranslationTable();
 			int x = 0, y = 0;
 			switch(this.orientation)
-			{	case horizontal:	for(XGTableEntry e : t) this.add(new XGRadioButton(this.value, e), new int[]{x++,0,1,1}); break;
-				case vertical:		for(XGTableEntry e : t) this.add(new XGRadioButton(this.value, e), new int[]{0,y++,1,1}); break;
+			{	case horizontal:
+					for(XGTableEntry e : t) this.add(new XGRadioButton(this.value, e), new int[]{x++,0,1,2}); break;
+				case vertical:
+					for(XGTableEntry e : t)
+					{	this.add(new XGRadioButton(this.value, e), new int[]{0,y,1,2});
+						y+=2;
+					}
+					break;
 			}
 		}
 		else

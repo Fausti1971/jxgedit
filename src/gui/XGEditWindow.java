@@ -28,34 +28,6 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 		{	win = new XGEditWindow(mod);
 			EDITWINDOWS.add(win);
 		}
-
-		//{	switch(mod.getTag())
-		//	{	case "rev":		win = new XGReverbEditWindow(mod); break;
-		//		case "cho":		win = new XGChorusEditWindow(mod); break;
-		//		case "var":		win = new XGVariationEditWindow(mod); break;
-		//		case "ins":		win = new XGInsertionEditWindow(mod); break;
-		//		case "sys":		win = new XGSystemEditWindow(mod); break;
-		//		case "eq":		win = new XGEQEditWindow(mod); break;
-		//		case "mp":		win = new XGMultipartEditWindow(mod); break;
-		//		case "ad":		win = new XGADPartEditWindow(mod); break;
-		//		case "ds1":
-		//		case "ds2":
-		//		case "ds3":
-		//		case "ds4":
-		//		case "ds5":
-		//		case "ds6":
-		//		case "ds7":
-		//		case "ds8":
-		//		case "ds9":
-		//		case "ds10":
-		//		case "ds11":
-		//		case "ds12":
-		//		case "ds13":
-		//		case "ds14":
-		//		case "ds15":
-		//		case "ds16":	win = new XGDrumEditWindow(mod); break;
-		//		default:		return null;
-		//	}
 		return win;
 	}
 
@@ -80,26 +52,38 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	{	JComponent component;
 		String type = item.getStringAttribute(ATTR_TYPE);
 		if(TAG_TEMPLATE.equals(item.getTag())) type = ATTR_FRAME;
-		if(type == null) return new XGFrame("missing type for " + item);
+		if(type == null) return new XGFrame("missing type for item: " + item);
 		switch(type)
 		{	case ATTR_FRAME:
-				component = new XGFrame(item);
-				break;
+				component = XGFrame.newFrame(item); break;
 			case ATTR_KNOB:
-				component = new XGKnob(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)));
-				break;
+				component = new XGKnob(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
 			case ATTR_RESET_BUTTONS:
-				component = createResetButtons(item);
-				break;
+				component = createResetButtons(item); break;
 			case ATTR_PROG_SELECT:
 				component = new XGProgramSelector(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)));
 				break;
 			case ATTR_COMBO:
-				component = new XGCombo(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)));
-				break;
+				component = new XGCombo(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
 			case ATTR_RADIO:
 				component = new XGRadio(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)), XGComponent.XGOrientation.valueOf(item.getStringAttribute(ATTR_ORIENTATION)));
 				break;
+			case ATTR_FLAGBOX:
+				component = XGFlagBox.newFlagbox(this.module, item); break;
+			case ATTR_CHECKBOX:
+				component = new XGCheckbox(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
+			case ATTR_HSLIDER:
+				component = new XGSlider(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
+			case ATTR_RANGE:
+				component = XGRange.newRange(this.module, item); break;
+			case ATTR_VELO_ENV:
+				component = new XGVelocityEnvelope(this.module); break;
+			case ATTR_EQ_ENV:
+				component = new XGMEQ(this.module); break;
+			case ATTR_PITCH_ENV:
+				component = XGPitchEnvelope.newPitchEnvelope(this.module, item); break;
+			case ATTR_AMP_ENV:
+				component = XGAmplifierEnvelope.newAmplifierEnvelope(this.module); break;
 			default:
 				return new XGFrame("unknown item type: " + type);
 		}
@@ -112,7 +96,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	}
 
 	private JComponent createResetButtons(XMLNode item)
-	{	XGFrame root = new XGFrame(item);
+	{	XGFrame root = XGFrame.newFrame(item);
 
 		JButton b;
 		int y = 0;

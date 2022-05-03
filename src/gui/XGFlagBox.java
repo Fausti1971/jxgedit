@@ -3,11 +3,22 @@ package gui;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.swing.*;
-import parm.XGParameter;import value.XGValue;
+import application.XGStrings;import module.XGModule;import parm.XGParameter;import value.XGValue;import xml.XMLNode;
 
 public class XGFlagBox extends XGFrame
 {
 	private static final long serialVersionUID = 1L;
+
+	public static XGFlagBox newFlagbox(XGModule mod, XMLNode node)
+	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));
+		int i = 0;
+		XGValue[] vals = new XGValue[tags.size()];
+		for(String tag : tags) vals[i++] = mod.getValues().get(tag);
+		return new XGFlagBox(node.getStringAttribute(ATTR_LABEL), vals);
+	}
+
+/************************************************************************************************************************/
+
 	private final Set<XGValue> values = new LinkedHashSet<>();
 
 	public XGFlagBox(String name, XGValue... vals)
@@ -25,7 +36,7 @@ public class XGFlagBox extends XGFrame
 		button.setAlignmentY(0.5f);
 		button.setAlignmentX(0.5f);
 
-		this.add(button, "0,0,1,1");
+		this.add(button, "0,0,1,2");
 	}
 
 		private class XGCheckboxPopup extends JPopupMenu

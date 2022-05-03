@@ -55,7 +55,7 @@ public class XGDrumEditWindow extends XGEditWindow
 		root.add(eq, "7,2,4,2");
 
 		XGFrame aeg = new XGFrame("Amplifier Envelope Generator");
-		aeg.add(new XGAEG(values.get("ds_aeg_attack"), values.get("ds_aeg_decay"), values.get("ds_aeg_release")), "0,0,3,4");
+		aeg.add(new XGAmplifierEnvelope(values.get("ds_aeg_attack"), values.get("ds_aeg_decay"), values.get("ds_aeg_release")), "0,0,3,4");
 		aeg.add(new XGKnob(values.get("ds_aeg_attack")), "0,4,1,4");
 		aeg.add(new XGKnob(values.get("ds_aeg_decay")), "1,4,1,4");
 		aeg.add(new XGKnob(values.get("ds_aeg_release")), "2,4,1,4");

@@ -1,70 +1,62 @@
 package gui;
 
 import application.XGStrings;import xml.XMLNode;import java.awt.*;
-import javax.swing.*;
+import javax.swing.*;import javax.swing.border.Border;import javax.swing.border.TitledBorder;
 
 public class XGFrame extends JPanel implements XGComponent
 {	private static final long serialVersionUID=-2090844398565572567L;
 
+	private static Border NAMELESS_BORDER = BorderFactory.createRaisedSoftBevelBorder();
+
+	public static XGFrame newFrame(XMLNode xml)
+	{	Rectangle r = new Rectangle(0,0,1,1);
+		if(xml.hasAttribute(ATTR_CONSTRAINT)) r = XGStrings.toRectangle(xml.getStringAttribute(ATTR_CONSTRAINT));
+		return new XGFrame(xml.getStringAttribute(ATTR_LABEL), r.getSize());
+	}
+
 /********************************************************************************************************************/
 
-	private JLabel name = null;
-
 /**
-* erzeugt ein JPanel mit einem XGLayout mit den übergebenen Grid-Dimensionen, optional mit Label an Position "0,0,w++,1"
+* erzeugt ein JPanel mit einem XGLayout mit den übergebenen Grid-Dimensionen, optional mit Label: label==null -> no border, label=="" -> nameless border, label=="..." -> named border "..."
 */
-	public XGFrame(int columns, int rows, boolean border)
+	public XGFrame(String label, int columns, int rows)
 	{	this.setLayout(new XGLayout(new Dimension(columns, rows)));
-		if(border) this.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		this.setName(label);
+//		if(border) this.setBorder(NAMELESS_BORDER);
 	//	this.setBorder(this);
 	}
 
-	public XGFrame(Dimension dim)
-	{	this(dim.width, dim.height, false);
+	public XGFrame(String label, Dimension dim)
+	{	this(label, dim.width, dim.height);
 	}
 
-	public XGFrame(boolean border)
-	{	this(1, 1, border);
+	public XGFrame(String label)
+	{	this(label, 1, 1);
 	}
 
-	public XGFrame(String text)
-	{	this(true);
-		this.addNameLabel(text);
+//TODO: Konstruktoren ab hier wieder löschen wenn die XGEditWindows nicht mehr "gebraucht" werden
+	XGFrame(boolean temp)
+	{	this((String)null);
 	}
 
-	public XGFrame(XMLNode xml)
-	{	Rectangle r = new Rectangle(0,0,1,1);
-
-		if(xml.hasAttribute(ATTR_CONSTRAINT)) r = XGStrings.toRectangle(xml.getStringAttribute(ATTR_CONSTRAINT));
-		this.setLayout(new XGLayout(new Dimension(r.width, r.height)));
-
-		if(xml.hasAttribute(ATTR_BORDER))
-		{	if(Boolean.getBoolean(xml.getStringAttribute(ATTR_BORDER)))	this.setBorder(BorderFactory.createRaisedSoftBevelBorder());
-		}
-
-		if(xml.hasAttribute(ATTR_LABEL)) this.addNameLabel(xml.getStringAttribute(ATTR_LABEL));
+	XGFrame(Dimension temp)
+	{	this(null, temp);
 	}
 
-	private void addNameLabel(String text)
-	{	super.setName(text);
-		this.name = new JLabel(this.getName());
-		this.name.setHorizontalAlignment(JLabel.CENTER);
-		this.name.setVerticalAlignment(JLabel.CENTER);
-		super.add(this.name, "0,0,1,1");
+	XGFrame(int rows, int cols, boolean temp)
+	{	this("", new Dimension(cols, rows));
 	}
 
 	@Override public void setName(String name)
-	{	if(this.name == null) throw new RuntimeException(this + " has no name(label)");
-		else this.name.setText(name);
-	}
-
-	@Override public void add(Component comp, Object constraints)
-	{	Rectangle r = XGLayout.constraintsObjectToRectangle(constraints);
-		if(this.getName() != null)
-		{	r.y++;
-			super.remove(this.name);
-			super.add(this.name, new int[]{0,0,r.x + r.width,1});
-		} 
-		super.add(comp, r);
+	{	super.setName(name);
+		if(name == null)
+		{	this.setBorder(null);
+			return;
+		}
+		if(name.isEmpty())
+		{	this.setBorder(NAMELESS_BORDER);
+			return;
+		}
+		else this.setBorder(BorderFactory.createTitledBorder(NAMELESS_BORDER, name, TitledBorder.CENTER, TitledBorder.BELOW_TOP));
 	}
 }

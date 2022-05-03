@@ -5,12 +5,13 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import gui.XGPoint.PointRelation;
-import value.XGFixedValue;
+import module.XGModule;import value.XGFixedValue;
 import value.XGValue;
 
-public class XGVEG extends XGFrame implements MouseMotionListener
+public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener
 {
 	private static final long serialVersionUID = 1L;
+	private static final String LOLIM = "mp_velo_lo", SENSE = "mp_velo_depth", OFFSET = "mp_velo_offset", HILIM = "mp_velo_hi"; 
 
 /*********************************************************************************************************************/
 
@@ -18,23 +19,21 @@ public class XGVEG extends XGFrame implements MouseMotionListener
 	private final XGValue offset;
 	private final XGTooltip tooltip = new XGTooltip();
 
-	public XGVEG(XGValue dep, XGValue off, XGValue lo, XGValue hi)
+	public XGVelocityEnvelope(XGModule mod)
 	{	super(true);
-		this.depth = dep;
-		this.offset = off;
+		this.depth = mod.getValues().get(SENSE);
+		this.offset = mod.getValues().get(OFFSET);
 
-		XGValue low;
-		if(lo == null) low = new XGFixedValue("Limit low", 1);
-		else low = lo;
+		XGValue low = mod.getValues().get(LOLIM);
+		if(low == null) low = new XGFixedValue("Limit low", 1);
 
-		XGValue high;
-		if(hi == null) high = new XGFixedValue("Limit High", 127);
-		else high = hi;
+		XGValue high = mod.getValues().get(HILIM);
+		if(high == null) high = new XGFixedValue("Limit High", 127);
 
 	/***************************************************************************************/
 		//TODO: Mach neu! die Kurvensteilheit stimmt nicht mehr, wenn die Velocity-Limits geändert werden...
 		XGPointPanel panel;
-		if(dep == null || off == null)
+		if(this.depth == null || this.offset == null)
 		{	this.setEnabled(false);
 			this.setVisible(false);
 			return;

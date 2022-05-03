@@ -40,7 +40,7 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 		else this.setEnabled(false);
 		this.setAutoscrolls(true);
 
-		this.add(this.box, "0,0,1,1");
+		this.add(this.box, "0,0,1,2");
 
 		this.value.getValueListeners().add((XGValue v)->this.box.setSelectedItem(this.value.getEntry()));
 		this.value.getParameterListeners().add(this);

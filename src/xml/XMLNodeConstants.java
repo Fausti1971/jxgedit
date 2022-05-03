@@ -100,8 +100,15 @@ public interface XMLNodeConstants
 		ATTR_PROG_SELECT = "program_selector",
 		ATTR_COMBO = "combo",
 		ATTR_RADIO = "radio",
+		ATTR_FLAGBOX = "flag_box",
+		ATTR_CHECKBOX = "checkbox",
+		ATTR_HSLIDER = "horizontal_slider",
+		ATTR_RANGE = "range_slider",
+		ATTR_VELO_ENV = "velocity_envelope",
+		ATTR_EQ_ENV = "eq_envelope",
+		ATTR_PITCH_ENV = "pitch_envelope",
+		ATTR_AMP_ENV = "amplifier_envelope",
 		ATTR_CONSTRAINT = "constraint",
 		ATTR_LABEL = "label",
-		ATTR_BORDER = "border",
 		ATTR_ORIENTATION = "orientation";
 }

@@ -3,20 +3,28 @@ package gui;
 import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.*;
-import javax.swing.JPanel;
+import java.awt.event.*;import java.util.Set;
+import javax.swing.*;
 import application.XGMath;
 import application.XGStrings;
-import parm.XGParameter;
+import module.XGModule;import parm.XGParameter;
 import parm.XGParameterConstants;
 import value.XGValue;
-import value.XGValueChangeListener;
+import value.XGValueChangeListener;import xml.XMLNode;
 
 public class XGRange extends XGFrame implements XGParameterConstants, XGValueChangeListener
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
+	public static XGRange newRange(XGModule mod, XMLNode node)
+	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));
+		if(tags.size() != 2) LOG.warning("incorrect count of tags for " + ATTR_RANGE + tags);
+		XGValue lo = mod.getValues().get((String)tags.toArray()[0]);
+		XGValue hi = mod.getValues().get((String)tags.toArray()[1]);
+		return new XGRange(lo, hi); 
+	}
 
 /*******************************************************************************************************/
 	private final XGRangeBar bar;

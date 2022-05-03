@@ -1,7 +1,7 @@
 package gui;
 
 import application.XGMath;import application.XGStrings;
-import java.awt.*;
+import javax.swing.*;import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +33,7 @@ public class XGLayout implements LayoutManager2
 */
 	public void addLayoutComponent(Component component, Object o)
 	{	Rectangle r = constraintsObjectToRectangle(o);
-		for(Rectangle rect : this.map.values()) if(rect.intersects(r)) throw new RuntimeException(r + " hides the component at " + rect);
+		for(Rectangle rect : this.map.values()) if(rect.intersects(r)) JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, r + " hides the component at " + rect);
 		this.map.put(component, r);
 		this.columns = Math.max(this.columns, r.x + r.width);
 		this.rows = Math.max(this.rows, r.y + r.height);
@@ -66,9 +66,7 @@ public class XGLayout implements LayoutManager2
 			r.y *= rowHeight;
 			r.y += ins.top;
 			r.width *= colWidth;
-//			r.width -= ;
 			r.height *= rowHeight;
-//			r.height -= ;
 			c.setBounds(r);
 		}
 	}

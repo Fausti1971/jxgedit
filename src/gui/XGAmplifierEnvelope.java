@@ -1,16 +1,20 @@
 package gui;
 
 import gui.XGPoint.PointRelation;
-import value.XGFixedValue;
+import module.XGModule;import value.XGFixedValue;
 import value.XGValue;
 
-public class XGAEG extends XGFrame implements XGComponent
+public class XGAmplifierEnvelope extends XGFrame implements XGComponent
 {
 	private static final long serialVersionUID = 1L;
 
+	static XGAmplifierEnvelope newAmplifierEnvelope(XGModule mod)
+	{	return new XGAmplifierEnvelope(mod.getValues().get("mp_aeg_attack"), mod.getValues().get("mp_aeg_decay"), mod.getValues().get("mp_aeg_release"));
+	}
+
 /**************************************************************************************/
 
-	public XGAEG(XGValue atk, XGValue dec, XGValue rel)
+	public XGAmplifierEnvelope(XGValue atk, XGValue dec, XGValue rel)
 	{	super(true);
 		XGPointPanel panel;
 		if(atk == null || dec == null || rel == null)

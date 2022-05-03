@@ -45,19 +45,19 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		prev.setHorizontalTextPosition(JButton.CENTER);
 		prev.setVerticalTextPosition(JButton.CENTER);
 		prev.addActionListener((ActionEvent e)->this.value.addIndex(-1, true));
-		this.add(prev, "0,0,1,1");
+		this.add(prev, "0,0,1,2");
 
 		this.select.setText(this.value.toString());
 		this.select.setHorizontalTextPosition(JButton.CENTER);
 		this.select.setVerticalTextPosition(JButton.CENTER);
 		this.select.addActionListener((ActionEvent e)->this.openDialog());
-		this.add(this.select, "1,0,6,1");
+		this.add(this.select, "1,0,6,2");
 
 		JButton next = new JButton(icon_next);
 		next.setHorizontalTextPosition(JButton.CENTER);
 		next.setVerticalTextPosition(JButton.CENTER);
 		next.addActionListener((ActionEvent e)->this.value.addIndex(1, true));
-		this.add(next, "7,0,1,1");
+		this.add(next, "7,0,1,2");
 
 		this.parameterChanged(this.value.getParameter());
 	}

@@ -2,22 +2,25 @@ package gui;
 import java.awt.GridBagLayout;
 import adress.XGAddressRange;
 import gui.XGPoint.PointRelation;
-import value.XGFixedValue;
-import value.XGValue;
+import module.XGModule;import value.XGFixedValue;
+import value.XGValue;import xml.XMLNode;
 import javax.swing.*;
 
-public class XGPEG extends JPanel implements XGComponent
+public class XGPitchEnvelope extends JPanel implements XGComponent
 {
 	private static final long serialVersionUID = 1L;
-	private static final XGAddressRange A_TIME = new XGAddressRange("8//106"), A_LEVEL = new XGAddressRange("8//105"), R_TIME = new XGAddressRange("8//108"), R_LEVEL = new XGAddressRange("8//107");
 	private static final XGFixedValue VALUE_255 = new XGFixedValue("fix", 255), VALUE_381 = new XGFixedValue("fix", 381);
+
+	static XGPitchEnvelope newPitchEnvelope(XGModule mod, XMLNode node)
+	{	return new XGPitchEnvelope(mod.getValues().get("mp_peg_init_level"), mod.getValues().get("mp_peg_attack_time"), mod.getValues().get("mp_peg_release_level"), mod.getValues().get("mp_peg_release_time"));
+	}
 
 /**************************************************************************************/
 
 	private final XGPointPanel panel;
 	private final XGValue a_time, a_level, r_time, r_level;
 
-	public XGPEG(XGValue al, XGValue at, XGValue rl, XGValue rt)
+	public XGPitchEnvelope(XGValue al, XGValue at, XGValue rl, XGValue rt)
 	{	this.a_level = al;
 		this.a_time = at;
 		this.r_level = rl;
