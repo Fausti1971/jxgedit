@@ -1,15 +1,18 @@
 package gui;
 
-import gui.XGPoint.PointRelation;
+import application.XGStrings;import gui.XGPoint.PointRelation;
 import module.XGModule;import value.XGFixedValue;
-import value.XGValue;
+import value.XGValue;import xml.XMLNode;
 
 public class XGAmplifierEnvelope extends XGFrame implements XGComponent
 {
 	private static final long serialVersionUID = 1L;
 
-	static XGAmplifierEnvelope newAmplifierEnvelope(XGModule mod)
-	{	return new XGAmplifierEnvelope(mod.getValues().get("mp_aeg_attack"), mod.getValues().get("mp_aeg_decay"), mod.getValues().get("mp_aeg_release"));
+	static XGAmplifierEnvelope newAmplifierEnvelope(XGModule mod, XMLNode node)
+	{	String[] names = new String[3];
+		XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG)).toArray(names);
+		XGValue a = mod.getValues().get(names[0]), d = mod.getValues().get(names[1]), r = mod.getValues().get(names[2]);
+		return new XGAmplifierEnvelope(a, d, r);
 	}
 
 /**************************************************************************************/

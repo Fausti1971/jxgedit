@@ -1,6 +1,6 @@
 package gui;
 
-import adress.XGIdentifiable;import config.XGConfigurable;import device.XGDevice;import module.XGDrumsetModuleType;import module.XGModule;import module.XGModuleType;import static module.XGModuleType.MODULE_TYPES;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.awt.event.ActionEvent;import java.io.IOException;import java.util.HashMap;import java.util.Map;
+import adress.XGIdentifiable;import config.XGConfigurable;import device.XGDevice;import module.XGDrumsetModuleType;import module.XGModule;import module.XGModuleType;import static module.XGModuleType.MODULE_TYPES;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import value.XGValue;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.awt.event.ActionEvent;import java.io.IOException;import java.util.HashMap;import java.util.Map;
 
 public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable, XGConfigurable
 {
@@ -12,6 +12,13 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 		{	XMLNode xml = XMLNode.parse(XML_TEMPLATES);
 			for(XMLNode n : xml.getChildNodes(TAG_TEMPLATE))
 			{	String tag = n.getStringAttribute(ATTR_ID);
+				if("ds".equals(tag))
+				{	for(XGDrumsetModuleType dsmt: XGDrumsetModuleType.DRUMSETS.values())
+					{	TEMPLATES.put(dsmt.getTag(), n);
+						LOG.info(dsmt.getTag());
+					}
+					continue;
+				}
 				TEMPLATES.put(tag, n);
 				LOG.info(tag);
 			}
@@ -66,7 +73,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 			case ATTR_COMBO:
 				component = new XGCombo(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
 			case ATTR_RADIO:
-				component = new XGRadio(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)), XGComponent.XGOrientation.valueOf(item.getStringAttribute(ATTR_ORIENTATION)));
+				component = new XGRadio(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)), XGComponent.XGOrientation.valueOf(item.getStringAttributeOrDefault(ATTR_ORIENTATION, "vertical")));
 				break;
 			case ATTR_FLAGBOX:
 				component = XGFlagBox.newFlagbox(this.module, item); break;
@@ -83,7 +90,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 			case ATTR_PITCH_ENV:
 				component = XGPitchEnvelope.newPitchEnvelope(this.module, item); break;
 			case ATTR_AMP_ENV:
-				component = XGAmplifierEnvelope.newAmplifierEnvelope(this.module); break;
+				component = XGAmplifierEnvelope.newAmplifierEnvelope(this.module, item); break;
 			case ATTR_TABBED:
 				component = new XGTabbedFrame(item); break;
 			case ATTR_TAB:

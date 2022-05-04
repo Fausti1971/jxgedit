@@ -18,6 +18,7 @@ import xml.*;
 
 public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 {
+//	public static String FILESEPERATOR = System.getProperty("file.separator");
 	static
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
@@ -29,7 +30,6 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	public static XMLNode config;
 
 //		APPNAME = "JXG";
-//		FILESEPERATOR = System.getProperty("file.separator");
 //		XMLPATH = "/xml/";
 //		CWD = System.getProperties().getProperty("user.dir"),
 //		USERHOMEPATH = System.getProperties().getProperty("user.home");
@@ -93,8 +93,8 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		XGValue.init();
 
 		XGUI.init();
-		XGWindow.init();
 		XGEditWindow.init();
+		XGWindow.init();
 
 		System.gc();
 		splash.dispose();
