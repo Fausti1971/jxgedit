@@ -16,20 +16,26 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.sax.SAXSource;import javax.xml.transform.stream.StreamSource;import javax.xml.validation.Schema;import javax.xml.validation.SchemaFactory;import javax.xml.validation.Validator;
 import application.JXG;import application.XGLoggable;
 import application.XGStrings;
-import device.XGDevice;import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import tag.XGTagable;import tag.XGTagableSet;import static xml.XMLNodeConstants.JAXP_SCHEMA_LANGUAGE;import static xml.XMLNodeConstants.W3C_XML_SCHEMA;
+import device.XGDevice;import gui.XGMainWindow;import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import tag.XGTagable;import tag.XGTagableSet;import static xml.XMLNodeConstants.JAXP_SCHEMA_LANGUAGE;import static xml.XMLNodeConstants.W3C_XML_SCHEMA;
 
 public class XMLNode implements XGTagable, XGLoggable, XGStrings
 {
 	private static final String ERRORSTRING = " contains invalid character";
 
 	public static XMLNode parse(String filename) throws IOException
-	{	try
+	{	InputStream is;
+		try
 		{	Path appPath = JXG.appPath;
 			URI uri = appPath.resolve(XGDevice.device.toString()).resolve(filename).toUri();
-			return parse(new File(uri));
+			File f = new File(uri);
+			is = new FileInputStream(f);
+			validateXml(is, filename);
+			return parse(new FileInputStream(f),filename);
 		}
 		catch(IOException e)
 		{	LOG.warning(e.getMessage() + " - using internal defaults");
+			is = XMLNode.class.getResourceAsStream(filename);
+			validateXml(is, filename);
 			return parse(XMLNode.class.getResourceAsStream(filename), filename);
 		}
 	}
@@ -41,7 +47,6 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 	private static XMLNode parse(InputStream xml, String name) throws IOException
 	{	if(xml == null) throw new IOException();
 		XMLNode current_node = null, parent_node, root_node = null;
-
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 //		inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, true);//nur für DTDs
 //		inputFactory.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);//not supported
@@ -309,11 +314,23 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 	@Override public String toString(){	return this.tag;}
 
 	private static class XMLErrorHandler implements ErrorHandler
-	{
-		public void warning(SAXParseException arg0) throws SAXException {	LOG.warning(arg0.getMessage());}
+	{	private void showMessage(SAXParseException e)
+		{	JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "Line " + e.getLineNumber() + ": " + e.getMessage());
+		}
 
-		public void fatalError(SAXParseException arg0) throws SAXException {	LOG.severe(arg0.getMessage());}
+		public void warning(SAXParseException e) throws SAXException
+		{	LOG.warning(e.getMessage());
+			showMessage(e);
+		}
 
-		public void error(SAXParseException arg0) throws SAXException {	LOG.severe(arg0.getMessage());}
+		public void fatalError(SAXParseException e) throws SAXException
+		{	LOG.severe(e.getMessage());
+			showMessage(e);
+		}
+
+		public void error(SAXParseException e) throws SAXException
+		{	LOG.severe(e.getMessage());
+			showMessage(e);
+		}
 	}
 }

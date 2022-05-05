@@ -12,7 +12,8 @@
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/module/XGModuleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/JXG/module/XGModuleType.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/XMLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNode.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -546,7 +547,14 @@
       <option name="project" value="LOCAL" />
       <updated>1651693066133</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="debugging, Kosmetik;">
+      <created>1651701275965</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1651701275965</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -660,7 +668,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Filesaving komplettiert, Overwrite-Rückfrage, Auto-append Suffix;" />
     <MESSAGE value="XGRequest and XGResponse is now an abstract class;" />
     <MESSAGE value="Rebase" />
     <MESSAGE value="XGBulk und XGBulkType eingeführt;" />
@@ -685,7 +692,8 @@
     <MESSAGE value="Vorbereitung XML-Editwindows" />
     <MESSAGE value="Backup;" />
     <MESSAGE value="xml-templates für editwindows vollständig implementiert;" />
-    <option name="LAST_COMMIT_MESSAGE" value="xml-templates für editwindows vollständig implementiert;" />
+    <MESSAGE value="debugging, Kosmetik;" />
+    <option name="LAST_COMMIT_MESSAGE" value="debugging, Kosmetik;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
