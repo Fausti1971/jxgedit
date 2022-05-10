@@ -42,10 +42,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 		this.parameterChanged(this.value.getParameter());
 		}
 
-	@Override public void contentChanged(XGValue v)
-	{	this.bar.repaint();
-		this.label.setText(v.toString());
-	}
+	@Override public void contentChanged(XGValue v){	this.bar.repaint();}
 
 	@Override public void parameterChanged(XGParameter p)
 	{	this.setName(p.getShortName());
@@ -95,7 +92,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			int lengthArc = XGMath.linearIO(this.knob.value.getIndex(), parm.getMinIndex(), parm.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
 			g2.setColor(COL_BAR_FORE);
 			g2.drawArc(this.middle.x - radius, this.middle.y - radius, 2 * radius, 2 * radius, originArc + START_ARC, lengthArc - originArc);
-	// paint marker
+	// paint handle
 			double endRad = Math.toRadians(lengthArc + START_ARC);
 			this.strokeStart.x = (int)(this.middle.x + radius * Math.cos(endRad));
 			this.strokeStart.y = (int)(this.middle.y - radius * Math.sin(endRad));

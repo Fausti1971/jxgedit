@@ -20,7 +20,7 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener
 	private final XGTooltip tooltip = new XGTooltip();
 
 	public XGVelocityEnvelope(XGModule mod)
-	{	super(true);
+	{	super("");
 		this.depth = mod.getValues().get(SENSE);
 		this.offset = mod.getValues().get(OFFSET);
 

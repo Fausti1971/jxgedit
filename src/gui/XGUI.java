@@ -26,7 +26,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		ROUND_RADIUS = 6;
 
 	BasicStroke DEF_ARCSTROKE = new BasicStroke(DEF_STROKEWIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
-	BasicStroke DEF_STROKE = new BasicStroke(2f);
+	BasicStroke DEF_STROKE = new BasicStroke(DEF_STROKEWIDTH);
 	BasicStroke DEF_DOTTED_STROKE = new BasicStroke(0.0f, DEF_STROKE.getEndCap(), DEF_STROKE.getLineJoin(), DEF_STROKE.getMiterLimit(), new float[]{1f,2f}, DEF_STROKE.getDashPhase());
 
 	int START_ARC = 225;

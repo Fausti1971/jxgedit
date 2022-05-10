@@ -64,7 +64,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 	private final Set<XGValueChangeListener> valueListeners = new LinkedHashSet<>();
 	private final Set<XGParameterChangeListener> parameterListeners = new LinkedHashSet<>();
 
-	XGValue(String name, int v)
+	XGValue(int v)
 	{	this.address = XGALLADDRESS;
 		this.parameterSelector = DEF_DEFAULTSELECTOR;
 		this.defaultSelector = DEF_DEFAULTSELECTOR;
@@ -150,17 +150,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 
 	public XGModule getModule(){	return this.bulk.getModule();}
 
-	public void setDefaultValue()
-	{	int id;
-		try
-		{	id = this.address.getMid().getValue();
-		}
-		catch(InvalidXGAddressException e)
-		{	LOG.info(e.getMessage());
-			id = DEF_SELECTORVALUE;
-		}
-		this.setValue(this.defaults.get(id, this.defaultSelector.getValue()), false, false);
-	}
+	public void setDefaultValue(){	this.setValue(this.defaults.get(this.getID(), this.defaultSelector.getValue()), false, false);}
 
 	public XGParameter getParameter(){	return this.parameters.getOrDefault(this.parameterSelector.getValue(), NO_PARAMETER);}
 

@@ -8,7 +8,6 @@ import xml.XMLNode;
 
 public class XGVirtualTable implements XGTable
 {	private static final int MIN = 0, MAX = Integer.MAX_VALUE & 0x0000FFFF;
-	private static final String[] KEY = {"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
 	public static final XGTable DEF_TABLE = new XGVirtualTable(MIN, MAX & 0x0000FFFF, DEF_TABLENAME, Object::toString, Integer::parseInt);
 //TODO: eigene Klassen für translate ud retranslate um Exception werfen zu können
 	public static void init()
@@ -49,20 +48,13 @@ public class XGVirtualTable implements XGTable
 			XGStrings::toNumber));
 
 		TABLES.add(new XGVirtualTable(4, 124, TABLE_DEGREES,
-			(Integer i)->XGMath.linearIO(i, 4, 124, -180, 180) + "°",
-			XGStrings::toNumber));
+			(Integer i)->XGMath.linearIO(i, 4, 124, -180, 180) + "°", XGStrings::toNumber));
 
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_PERCENT,
 			(Integer i)->XGMath.linearIO(i, 0, 127, 0, 100) + "%",
 			(String s)->XGMath.linearIO(XGStrings.toNumber(s), 0, 100, 0, 127)));
 
-		TABLES.add(new XGVirtualTable(0,127, TABLE_KEYS,
-			(Integer i)->KEY[i % 12] + (i/12 - 2),
-			(String s)->
-			{	int o = (XGStrings.toNumber(s) + 2) * 12;
-				int k = Arrays.binarySearch(KEY, XGStrings.toAlpha(s));
-				return o + k;
-			}));
+		TABLES.add(new XGVirtualTable(0,127, TABLE_KEYS, XGStrings::encodeKey, XGStrings::decodeKey));
 
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_GAIN,
 			(Integer i)->String.valueOf(XGMath.linearIO(i, 0, 127, -12, 12)),

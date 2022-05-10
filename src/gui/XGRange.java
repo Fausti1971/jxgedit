@@ -1,8 +1,6 @@
 package gui;
 
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.*;import java.util.Set;
 import javax.swing.*;
 import application.XGMath;
@@ -28,7 +26,7 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 
 /*******************************************************************************************************/
 	private final XGRangeBar bar;
-	private final XGRangeLabel label;
+	private final XGValueLabel label;
 	private final XGValue loValue, hiValue;
 
 	public XGRange(XGValue lo, XGValue hi)
@@ -70,7 +68,7 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 
 /***************************************************************************************************/
 
-	private class XGRangeBar extends JPanel implements MouseMotionListener, MouseWheelListener, XGComponent
+	private static class XGRangeBar extends JPanel implements MouseMotionListener, MouseWheelListener, XGComponent
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -113,8 +111,11 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 // draw foreground
 			this.loX = XGMath.linearIO(this.range.loValue.getIndex(), loParameter.getMinIndex(), loParameter.getMaxIndex(), 0, this.getWidth());
 			this.hiX = XGMath.linearIO(this.range.hiValue.getIndex(), hiParameter.getMinIndex(), hiParameter.getMaxIndex(), 0, this.getWidth());
-			g2.setColor(COL_BAR_FORE);
-			g2.fillRoundRect(this.loX, 0, this.hiX - this.loX, this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
+		//	g2.setColor(COL_BAR_FORE);
+			float diff = this.hiX - this.loX;
+			GradientPaint gp = new GradientPaint(0,0,COL_BAR_BACK, 0, this.getHeight()/2, COL_BAR_FORE,true);
+			g2.setPaint(gp);
+			g2.fillRoundRect(this.loX, 0, (int)diff, this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			g2.dispose();
 		}
 
@@ -172,20 +173,34 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 
 /************************************************************************************************************/
 
-		private class XGRangeLabel extends XGValueLabel
-		{	/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
+	private class XGRangeLabel extends XGValueLabel
+	{	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
 
-		/*****************************************************************************************************/
+	/*****************************************************************************************************/
 
-			private final XGValue value2;
+		private final XGValue value2;
 
-			public XGRangeLabel(XGValue lo, XGValue hi)
-			{	super(lo);
-				this.value2 = hi;
-				this.setText(this.value + "..." + this.value2);
+		public XGRangeLabel(XGValue lo, XGValue hi)
+		{	super(lo);
+			this.value2 = hi;
+			this.value2.getValueListeners().add(this);
+			this.setText(this.value + "..." + this.value2);
+		}
+
+		@Override public void mouseClicked(MouseEvent e)
+		{	super.mouseClicked(e);
+			String s = JOptionPane.showInputDialog(e.getComponent(), this.value2.getParameter(), this.value2);
+			try
+			{	this.value2.setValue(s, true);
+			}
+			catch(NumberFormatException ignored)
+			{	LOG.warning(s);
 			}
 		}
+
+		@Override public void contentChanged(XGValue v){	this.setText(this.value + "..." + this.value2);}
+	}
 }

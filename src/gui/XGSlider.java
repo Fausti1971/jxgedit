@@ -1,9 +1,6 @@
 package gui;
 
-import java.awt.Cursor;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import application.XGMath;
@@ -53,11 +50,10 @@ public class XGSlider extends XGFrame implements XGValueChangeListener, MouseLis
 
 	@Override public void contentChanged(XGValue v)
 	{	this.bar.repaint();
-		this.label.setText(v.toString());
 	}
 
 
-	private class XGSliderBar extends JComponent implements MouseMotionListener, MouseWheelListener, XGComponent
+	private static class XGSliderBar extends JComponent implements MouseMotionListener, MouseWheelListener, XGComponent
 	{	/**
 		 * 
 		 */
@@ -83,17 +79,15 @@ public class XGSlider extends XGFrame implements XGValueChangeListener, MouseLis
 			Graphics2D g2 = (Graphics2D)g.create();
 			g2.addRenderingHints(AALIAS);
 			XGParameter parameter = this.slider.value.getParameter();
-			Insets ins = this.getInsets();
-			int w = this.getWidth() - (ins.left + ins.right);
-			int h = this.getHeight() - (ins.top + ins.bottom);
-	// draw background
+// draw background
 			g2.setColor(COL_BAR_BACK);
-			g2.fillRoundRect(ins.left, ins.top, w, h, ROUND_RADIUS, ROUND_RADIUS);
-	// draw foreground
-			int originX = XGMath.linearIO(parameter.getOriginIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), ins.left, w);
-			this.barWidth = XGMath.linearIO(this.slider.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), ins.left, w) - originX;
-			g2.setColor(COL_BAR_FORE);
-			g2.fillRoundRect(Math.min(originX, originX + this.barWidth), ins.top, Math.abs(this.barWidth), h, ROUND_RADIUS, ROUND_RADIUS);
+			g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
+// draw foreground
+			int originX = XGMath.linearIO(parameter.getOriginIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, this.getWidth());
+			this.barWidth = XGMath.linearIO(this.slider.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, this.getWidth()) - originX;
+			GradientPaint gp = new GradientPaint(0,0,COL_BAR_BACK, 0, this.getHeight() / 2, COL_BAR_FORE,true);
+			g2.setPaint(gp);
+			g2.fillRoundRect(Math.min(originX, originX + this.barWidth), 0, Math.abs(this.barWidth), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			g2.dispose();
 		}
 

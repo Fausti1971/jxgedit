@@ -108,7 +108,6 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 		}
 	}
 
-
 	public XGModuleType(XMLNode cfg)throws InvalidXGAddressException
 	{	this(cfg, cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
 	}

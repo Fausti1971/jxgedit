@@ -18,7 +18,7 @@ public class XGAmplifierEnvelope extends XGFrame implements XGComponent
 /**************************************************************************************/
 
 	public XGAmplifierEnvelope(XGValue atk, XGValue dec, XGValue rel)
-	{	super(true);
+	{	super("");
 		XGPointPanel panel;
 		if(atk == null || dec == null || rel == null)
 		{	this.setEnabled(false);

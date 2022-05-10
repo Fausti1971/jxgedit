@@ -17,7 +17,7 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 	private final JCheckBox checkbox = new JCheckBox();
 
 	public XGCheckbox(XGValue val)
-	{	super (true);
+	{	super ("");
 		this.value = val;
 		if(this.value == null)
 		{	this.setVisible(false);

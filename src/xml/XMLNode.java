@@ -23,19 +23,16 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 	private static final String ERRORSTRING = " contains invalid character";
 
 	public static XMLNode parse(String filename) throws IOException
-	{	InputStream is;
-		try
+	{	try
 		{	Path appPath = JXG.appPath;
 			URI uri = appPath.resolve(XGDevice.device.toString()).resolve(filename).toUri();
 			File f = new File(uri);
-			is = new FileInputStream(f);
-			validateXml(is, filename);
+			validateXml(new FileInputStream(f), filename);
 			return parse(new FileInputStream(f),filename);
 		}
 		catch(IOException e)
 		{	LOG.warning(e.getMessage() + " - using internal defaults");
-			is = XMLNode.class.getResourceAsStream(filename);
-			validateXml(is, filename);
+			validateXml(XMLNode.class.getResourceAsStream(filename), filename);
 			return parse(XMLNode.class.getResourceAsStream(filename), filename);
 		}
 	}
@@ -48,10 +45,6 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 	{	if(xml == null) throw new IOException();
 		XMLNode current_node = null, parent_node, root_node = null;
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
-//		inputFactory.setProperty(XMLInputFactory.IS_VALIDATING, true);//nur für DTDs
-//		inputFactory.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);//not supported
-//		validateXml(xml, name);//closes inputstream
-
 		try
 		{	XMLEventReader rd = inputFactory.createXMLEventReader(new StreamSource(xml));
 			while(rd.hasNext())
@@ -70,7 +63,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 			rd.close();
 		}
 		catch(XMLStreamException e)
-		{	e.printStackTrace();
+		{	LOG.severe(name + ": " + e.getMessage());
 //			new JOptionPane(e.getMessage() + xml);
 //			System.exit(1);
 		}
@@ -102,9 +95,9 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 			Validator validator = schema.newValidator();
 			validator.setErrorHandler(new XMLErrorHandler());
 			SAXSource source = new SAXSource(new InputSource(is));
-			LOG.info("Validation started: " + xmlName + " - " + schemafile);
+			LOG.info("validation started: " + xmlName + "; schema=" + schemafile);
 			validator.validate(source);
-			LOG.info("Validation passed: " + xmlName + " - " + schemafile);
+			LOG.info("validation passed: " + xmlName + "; schema=" + schemafile);
 		}
 		catch (Exception e){	LOG.severe(e.getMessage());}
 	}
@@ -318,10 +311,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 		{	JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "Line " + e.getLineNumber() + ": " + e.getMessage());
 		}
 
-		public void warning(SAXParseException e) throws SAXException
-		{	LOG.warning(e.getMessage());
-			showMessage(e);
-		}
+		public void warning(SAXParseException e) throws SAXException {	LOG.warning(e.getMessage());}
 
 		public void fatalError(SAXParseException e) throws SAXException
 		{	LOG.severe(e.getMessage());

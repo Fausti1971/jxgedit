@@ -9,6 +9,7 @@ public interface XGStrings
 	String REGEX_NUM = "\\d+";
 	String REGEX_ALL = "[\\s\\S]";
 	String TEXT_REPLACEMENT = "_";
+	String[] KEY = {"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
 
 	static String toAlNum(String dirty)
 	{	return dirty.replaceAll(REGEX_NON_ALNUM, TEXT_REPLACEMENT);
@@ -175,5 +176,14 @@ public interface XGStrings
 		return Integer.parseInt(s.replaceAll("\\D", ""));
 	}
 
-	static String toAlpha(String s){	return s.replaceAll("[-+]\\d", "");}
-}
+	static int decodeKey(String key)//TODO: falsch
+	{	String oct = key.replaceAll("[A-G,a-g]#?", "");
+		String note = key.replaceAll("-?[0-8]", "");
+
+		int o = (Integer.parseInt(oct) + 2) * 12;
+		for(int k = 0; k < KEY.length; k++) if(KEY[k].equalsIgnoreCase(note)) return o + k;
+		return o;
+	}
+
+	static String encodeKey(int key){	return KEY[key % 12] + (key/12 - 2);}
+	}

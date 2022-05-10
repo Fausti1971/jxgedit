@@ -74,6 +74,8 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 
 	public int getOriginIndex(){	return this.translationTable.getIndex(this.originValue);}
 
+	public int getOriginValue(){	return this.originValue;}
+
 	public int getLimitizedIndex(int i){	return Math.max(Math.min(i, this.getMaxIndex()), this.getMinIndex());}
 
 	public int getLimitizedValue(int v){	return Math.max(Math.min(v, this.getMaxValue()), this.getMinValue());}

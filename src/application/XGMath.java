@@ -13,7 +13,7 @@ import java.awt.*;public interface XGMath
 			in_range = in_max - in_min,
 			out_range = out_max - out_min;
 		return(int)(in / in_range * out_range + out_min);
-//		return((int)(((float)(i - in_min) / (float)(in_max - in_min) * (out_max - out_min)) + out_min)); original
+//		return((int)(((float)(i - in_min) / (float)(in_max - in_min) * (out_max - out_min)) + out_min));// original
 	}
 
 	static float linearIO(int i, int in_min, int in_max, float out_min, float out_max)
@@ -39,23 +39,5 @@ import java.awt.*;public interface XGMath
 		{	f = linearIO(i, min, max, 0.1f, 36.2f);
 			System.out.println("<item value=\"" + i + "\" name=\"" + String.format("%1$4.2f", f) + "\"/>");
 		}
-	}
-
-	static void main(String[] args)
-	{	int
-			minMSB = 126 << 14,
-			maxMSB = 127 << 14,
-			minLSB = 0 << 7,
-			maxLSB = 0 << 7,
-			minPRG = 0,
-			maxPRG = 127;
-		System.out.println("kit: " + (minMSB |= minLSB |= minPRG) + "..." + (maxMSB |= maxLSB |= maxPRG));
-		minMSB = 0 << 14;
-		maxMSB = 64 << 14;
-		minLSB = 0 << 14;
-		maxLSB = 127 << 7;
-		minPRG = 0 ;
-		maxPRG = 127;
-		System.out.println("voice: " + (minMSB |= minLSB |= minPRG) + "..." + (maxMSB |= maxLSB |= maxPRG));
 	}
 }

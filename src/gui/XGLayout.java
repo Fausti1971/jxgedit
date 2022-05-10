@@ -17,7 +17,6 @@ public class XGLayout implements LayoutManager2
 
 /***********************************************************************************************************************/
 
-//	private final Dimension gridSize = new Dimension(1, 1);//aktuelle Dimension eines Grids in Pixel (ändert sich mit Größenänderung)
 	private int rows, columns; //Dimension des gesamten Layouts in Faktoren von gridSize(ändert sich evtl. durch hinzufügen von Elementen)
 	private final Map<Component, Rectangle> map = new HashMap<>();//Rectangle = Faktoren für die Berechnung der Pixels (r.x * this.gridSize.width)
 
@@ -26,14 +25,14 @@ public class XGLayout implements LayoutManager2
 		this.columns = grid.width;
 	}
 
-//	private Dimension getGridSize(){	return new Dimension(this.gridSize.width * this.gridCount.width, this.gridSize.height * this.gridCount.height);}
-
 /**
 * Constraint o = String "x,y,w,h" oder int[]{x,y,w,h} oder Rectangle
 */
 	public void addLayoutComponent(Component component, Object o)
 	{	Rectangle r = constraintsObjectToRectangle(o);
-		for(Rectangle rect : this.map.values()) if(rect.intersects(r)) JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, r + " hides the component at " + rect);
+		for(Rectangle rect : this.map.values())
+			if(rect.intersects(r))
+				JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, r + " hides the component at " + rect);
 		this.map.put(component, r);
 		this.columns = Math.max(this.columns, r.x + r.width);
 		this.rows = Math.max(this.rows, r.y + r.height);
@@ -57,17 +56,12 @@ public class XGLayout implements LayoutManager2
 
 	public void layoutContainer(Container container)
 	{	Insets ins = container.getInsets();
-		int colWidth = Math.round((float)((container.getWidth() - (ins.left + ins.right))  / this.columns));
-		int rowHeight = Math.round((float)((container.getHeight() - (ins.top + ins.bottom)) / this.rows));
+		float colWidth = Math.round((float)((container.getWidth() - (ins.left + ins.right))  / this.columns));
+		float rowHeight = Math.round((float)((container.getHeight() - (ins.top + ins.bottom)) / this.rows));
+		Rectangle r;
 		for(Component c : container.getComponents())
-		{	Rectangle r = new Rectangle(this.map.get(c));
-			r.x *= colWidth;
-			r.x += ins.left;
-			r.y *= rowHeight;
-			r.y += ins.top;
-			r.width *= colWidth;
-			r.height *= rowHeight;
-			c.setBounds(r);
+		{	r = this.map.get(c);
+			c.setBounds(Math.round(r.x * colWidth + ins.left), Math.round(r.y * rowHeight + ins.top), Math.round(r.width * colWidth), Math.round(r.height * rowHeight));
 		}
 	}
 }

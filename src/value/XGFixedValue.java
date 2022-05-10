@@ -11,18 +11,25 @@ public class XGFixedValue extends XGValue
 
 /*************************************************************************************************/
 
-	private final XGParameter parameter;
+	private XGParameter parameter;
 	private final int value;
+	private final String name;
 
 	public XGFixedValue(String name, int v)
-	{	super(name, v);
+	{	super(v);
+		this.name = name;
 		this.value = v;
 		this.parameter = new XGParameter(name, v);
+	}
+
+	public XGFixedValue(XGParameter parm, int v)
+	{	this(parm.getName(), v);
+		this.parameter = parm;
 	}
 
 	@Override public Integer getValue()	{	return this.value;}
 
 	@Override public XGParameter getParameter(){	return this.parameter;}
 
-	public String getTag(){	return "fix";}
+	public String getTag(){	return this.name;}
 }

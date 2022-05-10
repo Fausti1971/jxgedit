@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JXG.iml" filepath="$PROJECT_DIR$/JXG.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jxgedit.iml" filepath="$PROJECT_DIR$/jxgedit.iml" />
     </modules>
   </component>
 </project>

@@ -74,7 +74,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	}
 
 	public static void main(String[] args)
-	{
+	{	long time = System.currentTimeMillis();
 		XGSplashScreen splash = new XGSplashScreen();
 
 		JXG.init();
@@ -99,7 +99,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		System.gc();
 		splash.dispose();
 
-		LOG.info(appName + " initialized from " + configFile);
+		LOG.info(appName + " initialized from " + configFile + " within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
 	public static void quit()

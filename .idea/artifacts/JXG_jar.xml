@@ -2,7 +2,7 @@
   <artifact type="jar" name="JXG:jar">
     <output-path>$PROJECT_DIR$/out/artifacts/JXG</output-path>
     <root id="archive" name="JXG.jar">
-      <element id="module-output" name="JXG" />
+      <element id="module-output" name="jxgedit" />
     </root>
   </artifact>
 </component>
