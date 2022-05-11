@@ -79,13 +79,17 @@ public class XGSlider extends XGFrame implements XGValueChangeListener, MouseLis
 			Graphics2D g2 = (Graphics2D)g.create();
 			g2.addRenderingHints(AALIAS);
 			XGParameter parameter = this.slider.value.getParameter();
+			float w2 = (float)this.getWidth()/2, h3 = (float)this.getHeight()/3;
 // draw background
-			g2.setColor(COL_BAR_BACK);
+			GradientPaint gp = new GradientPaint(w2,h3,COL_BAR_BACK_DARK, w2, this.getHeight(), COL_BAR_BACK,true);
+			g2.setPaint(gp);
+		//	g2.setColor(COL_BAR_BACK);
 			g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 // draw foreground
 			int originX = XGMath.linearIO(parameter.getOriginIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, this.getWidth());
-			this.barWidth = XGMath.linearIO(this.slider.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, this.getWidth()) - originX;
-			GradientPaint gp = new GradientPaint(0,0,COL_BAR_BACK, 0, this.getHeight() / 2, COL_BAR_FORE,true);
+			int endX = XGMath.linearIO(this.slider.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, this.getWidth());
+			this.barWidth = Math.max(DEF_STROKEWIDTH, endX - originX);
+			gp = new GradientPaint(w2,h3,COL_BAR_FORE_LIGHT, w2, this.getHeight(), COL_BAR_FORE,true);
 			g2.setPaint(gp);
 			g2.fillRoundRect(Math.min(originX, originX + this.barWidth), 0, Math.abs(this.barWidth), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			g2.dispose();
@@ -108,8 +112,6 @@ public class XGSlider extends XGFrame implements XGValueChangeListener, MouseLis
 		}
 
 		@Override public void mouseMoved(MouseEvent e){}
-
-		@Override public void mouseReleased(MouseEvent e){	XGUI.ENVIRONMENT.dragEvent = e;}
 
 		@Override public void mouseEntered(MouseEvent e){}
 

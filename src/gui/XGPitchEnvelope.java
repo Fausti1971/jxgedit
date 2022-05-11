@@ -15,34 +15,28 @@ public class XGPitchEnvelope extends JPanel implements XGComponent
 	{	return new XGPitchEnvelope(mod.getValues().get("mp_peg_init_level"), mod.getValues().get("mp_peg_attack_time"), mod.getValues().get("mp_peg_release_level"), mod.getValues().get("mp_peg_release_time"));
 	}
 
+	public XGPitchEnvelope(XGValue al, XGValue at, XGValue rl, XGValue rt)
+	{
 /**************************************************************************************/
 
-	private final XGPointPanel panel;
-	private final XGValue a_time, a_level, r_time, r_level;
-
-	public XGPitchEnvelope(XGValue al, XGValue at, XGValue rl, XGValue rt)
-	{	this.a_level = al;
-		this.a_time = at;
-		this.r_level = rl;
-		this.r_time = rt;
+		XGPointPanel panel;
 		if(al == null || at == null || rl == null || rt == null)
 		{	this.setEnabled(false);
 			this.setVisible(false);
-			this.panel = null;
 			return;
 		}
 		this.setName("Pitch Envelope Generator");
 
-		this.panel = new XGPointPanel(1, 2, 0, 64, 0, 381, 0, 127);
-		this.panel.setUnits("Time", "Pitch");
+		panel = new XGPointPanel(1, 2, 0, 64, 0, 381, 0, 127);
+		panel.setUnits("Time", "Pitch");
 
-		this.panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), this.a_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(1, this.a_time, XGFixedValue.VALUE_64, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(2, VALUE_255, XGFixedValue.VALUE_64, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(3, this.r_time, this.r_level, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(4, VALUE_381, this.r_level, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), al, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		panel.add(new XGPoint(1, at, XGFixedValue.VALUE_64, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		panel.add(new XGPoint(2, VALUE_255, XGFixedValue.VALUE_64, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		panel.add(new XGPoint(3, rt, rl, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		panel.add(new XGPoint(4, VALUE_381, rl, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 
 		this.setLayout(new GridBagLayout());
-		this.add(this.panel, DEF_GBC);
+		this.add(panel, DEF_GBC);
 	}
 }

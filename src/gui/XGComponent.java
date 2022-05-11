@@ -28,6 +28,7 @@ System.out.println("doubleclick detected");
 	@Override default void mouseReleased(MouseEvent e)
 	{	ENVIRONMENT.mousePressed = false;
 		ENVIRONMENT.dragEvent = e;
+		e.consume();
 	}
 
 	@Override  default void mouseEntered(MouseEvent e)

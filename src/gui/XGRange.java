@@ -105,17 +105,19 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 			g2.addRenderingHints(AALIAS);
 			XGParameter loParameter = this.range.loValue.getParameter();
 			XGParameter hiParameter = this.range.hiValue.getParameter();
+			float w2 = (float)this.getWidth()/2, h3 = (float)this.getHeight()/3;
 // draw background
-			g2.setColor(COL_BAR_BACK);
+			GradientPaint gp = new GradientPaint(w2,h3,COL_BAR_BACK_DARK, w2, this.getHeight(), COL_BAR_BACK,true);
+			g2.setPaint(gp);
+	//		g2.setColor(COL_BAR_BACK);
 			g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 // draw foreground
 			this.loX = XGMath.linearIO(this.range.loValue.getIndex(), loParameter.getMinIndex(), loParameter.getMaxIndex(), 0, this.getWidth());
 			this.hiX = XGMath.linearIO(this.range.hiValue.getIndex(), hiParameter.getMinIndex(), hiParameter.getMaxIndex(), 0, this.getWidth());
-		//	g2.setColor(COL_BAR_FORE);
-			float diff = this.hiX - this.loX;
-			GradientPaint gp = new GradientPaint(0,0,COL_BAR_BACK, 0, this.getHeight()/2, COL_BAR_FORE,true);
+			float diff = Math.max(DEF_STROKEWIDTH, this.hiX - this.loX);
+			gp = new GradientPaint(w2,h3,COL_BAR_FORE_LIGHT, w2, this.getHeight(), COL_BAR_FORE,true);
 			g2.setPaint(gp);
-			g2.fillRoundRect(this.loX, 0, (int)diff, this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
+			g2.fillRoundRect(Math.min(this.loX, this.getWidth() - DEF_STROKEWIDTH), 0, (int)diff, this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			g2.dispose();
 		}
 
@@ -145,6 +147,7 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 		@Override public void mouseDragged(MouseEvent e)
 		{	int distance = e.getX() - XGUI.ENVIRONMENT.dragEvent.getX();
 			this.currentValue.addIndex(distance, true);
+
 			int range = this.range.hiValue.getIndex() - this.range.loValue.getIndex();
 			if(range < 0) this.otherValue.addIndex(distance, true); //TODO: suboptimal; bildet zwar das Device-Verhalten ab, sendet aber unnötig Werte
 			XGUI.ENVIRONMENT.dragEvent = e;
@@ -154,15 +157,13 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 		@Override public void mouseMoved(MouseEvent e){}
 
 		@Override public void mousePressed(MouseEvent e)
-		{	XGUI.ENVIRONMENT.dragEvent = e;
-			XGUI.ENVIRONMENT.mousePressed = true;
+		{	XGComponent.super.mousePressed(e);
 			this.setCurrent(e.getX());
 			e.consume();
 		}
 	
 		@Override public void mouseReleased(MouseEvent e)
-		{	XGUI.ENVIRONMENT.dragEvent = e;
-			XGUI.ENVIRONMENT.mousePressed = false;
+		{	XGComponent.super.mouseReleased(e);
 			this.setCurrent(e.getX());
 		}
 
