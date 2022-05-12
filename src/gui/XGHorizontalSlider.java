@@ -4,23 +4,37 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import application.XGMath;
-import parm.XGParameter;
+import application.XGStrings;import module.XGModule;import parm.XGParameter;
 import value.XGValue;
-import value.XGValueChangeListener;
+import value.XGValueChangeListener;import xml.XMLNode;
 
-public class XGSlider extends XGFrame implements XGValueChangeListener, MouseListener
+public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener, MouseListener
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID=1L;
 
+	static XGFrame newSlider(XGModule mod, XMLNode node)
+	{	XGValue v = mod.getValues().get(node.getStringAttribute(ATTR_VALUE_TAG));
+		Rectangle r = XGStrings.toRectangle(node.getStringAttribute(ATTR_CONSTRAINT));
+		if(node.hasAttribute(ATTR_ORIENTATION))
+		{	switch(XGOrientation.valueOf(node.getStringAttribute(ATTR_ORIENTATION)))
+			{	case horizontal:	return new XGHorizontalSlider(v);
+				case vertical:		return new XGVerticalSlider(v);
+				default:			break;
+			}
+		}
+		if(r.width > r.height) return new XGHorizontalSlider(v);
+		else return new XGVerticalSlider(v);
+	}
+
 /*****************************************************************************************************************************/
 
 	private final XGValue value;
-	private final XGSliderBar bar;
+	private final XGHorizontalSliderBar bar;
 	private final XGValueLabel label;
 
-	public XGSlider(XGValue v)
+	public XGHorizontalSlider(XGValue v)
 	{	super("");
 		this.value = v;
 		if(v == null)
@@ -39,7 +53,7 @@ public class XGSlider extends XGFrame implements XGValueChangeListener, MouseLis
 		this.addMouseListener(this);
 		this.value.getValueListeners().add(this);
 
-		this.bar = new XGSliderBar(this);
+		this.bar = new XGHorizontalSliderBar(this);
 		this.add(this.bar, "0,0,1,1");
 
 		this.label = new XGValueLabel(this.value);
@@ -53,7 +67,7 @@ public class XGSlider extends XGFrame implements XGValueChangeListener, MouseLis
 	}
 
 
-	private static class XGSliderBar extends JComponent implements MouseMotionListener, MouseWheelListener, XGComponent
+	private static class XGHorizontalSliderBar extends JComponent implements MouseMotionListener, MouseWheelListener, XGComponent
 	{	/**
 		 * 
 		 */
@@ -61,10 +75,10 @@ public class XGSlider extends XGFrame implements XGValueChangeListener, MouseLis
 
 /**********************************************************************************************/
 
-		private final XGSlider slider;
+		private final XGHorizontalSlider slider;
 		private int barWidth;
 
-		private XGSliderBar(XGSlider s)
+		private XGHorizontalSliderBar(XGHorizontalSlider s)
 		{	this.slider = s;
 			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			this.addMouseListener(this);

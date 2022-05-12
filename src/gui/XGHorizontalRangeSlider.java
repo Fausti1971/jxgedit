@@ -10,26 +10,26 @@ import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;import xml.XMLNode;
 
-public class XGRange extends XGFrame implements XGParameterConstants, XGValueChangeListener
+public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConstants, XGValueChangeListener
 {	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public static XGRange newRange(XGModule mod, XMLNode node)
+	public static XGHorizontalRangeSlider newRange(XGModule mod, XMLNode node)
 	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));
 		if(tags.size() != 2) LOG.warning("incorrect count of tags for " + ATTR_RANGE + tags);
 		XGValue lo = mod.getValues().get((String)tags.toArray()[0]);
 		XGValue hi = mod.getValues().get((String)tags.toArray()[1]);
-		return new XGRange(lo, hi); 
+		return new XGHorizontalRangeSlider(lo, hi); 
 	}
 
 /*******************************************************************************************************/
-	private final XGRangeBar bar;
+	private final XGHorizontalRangeBar bar;
 	private final XGValueLabel label;
 	private final XGValue loValue, hiValue;
 
-	public XGRange(XGValue lo, XGValue hi)
+	public XGHorizontalRangeSlider(XGValue lo, XGValue hi)
 	{	super("");
 		this.loValue = lo;
 		this.hiValue = hi;
@@ -45,7 +45,7 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 
 		this.setName(XGStrings.commonString(this.loValue.getParameter().getName(), this.hiValue.getParameter().getName()));
 
-		this.bar = new XGRangeBar(this);
+		this.bar = new XGHorizontalRangeBar(this);
 		this.add(this.bar, "0,0,1,2");
 
 		this.label = new XGRangeLabel(this.loValue, this.hiValue);
@@ -68,7 +68,7 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 
 /***************************************************************************************************/
 
-	private static class XGRangeBar extends JPanel implements MouseMotionListener, MouseWheelListener, XGComponent
+	private static class XGHorizontalRangeBar extends JPanel implements MouseMotionListener, MouseWheelListener, XGComponent
 	{
 		private static final long serialVersionUID = 1L;
 
@@ -76,9 +76,9 @@ public class XGRange extends XGFrame implements XGParameterConstants, XGValueCha
 
 		private XGValue currentValue, otherValue;
 		private int loX, hiX, curX;
-		private final XGRange range;
+		private final XGHorizontalRangeSlider range;
 
-		XGRangeBar(XGRange range)
+		XGHorizontalRangeBar(XGHorizontalRangeSlider range)
 		{	this.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			this.range = range;
 			this.addMouseListener(this);

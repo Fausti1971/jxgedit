@@ -1,6 +1,6 @@
 package gui;
 
-import adress.XGIdentifiable;import config.XGConfigurable;import device.XGDevice;import static gui.XGRange.newRange;import module.XGDrumsetModuleType;import module.XGModule;import module.XGModuleType;import static module.XGModuleType.MODULE_TYPES;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import value.XGValue;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.awt.event.ActionEvent;import java.io.IOException;import java.util.HashMap;import java.util.Map;
+import adress.XGIdentifiable;import config.XGConfigurable;import device.XGDevice;import module.XGDrumsetModuleType;import module.XGModule;import module.XGModuleType;import static module.XGModuleType.MODULE_TYPES;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.awt.event.ActionEvent;import java.io.IOException;import java.util.HashMap;import java.util.Map;
 
 public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable, XGConfigurable
 {
@@ -79,10 +79,10 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 				component = XGFlagBox.newFlagbox(this.module, item); break;
 			case ATTR_CHECKBOX:
 				component = new XGCheckbox(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
-			case ATTR_HSLIDER:
-				component = new XGSlider(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
+			case ATTR_SLIDER:
+				component = XGHorizontalSlider.newSlider(this.module, item); break;
 			case ATTR_RANGE:
-				component = XGRange.newRange(this.module, item); break;
+				component = XGHorizontalRangeSlider.newRange(this.module, item); break;
 			case ATTR_VELO_ENV:
 				component = new XGVelocityEnvelope(this.module); break;
 			case ATTR_EQ_ENV:

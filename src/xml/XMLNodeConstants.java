@@ -102,7 +102,7 @@ public interface XMLNodeConstants
 		ATTR_RADIO = "radio",
 		ATTR_FLAGBOX = "flag_box",
 		ATTR_CHECKBOX = "checkbox",
-		ATTR_HSLIDER = "horizontal_slider",
+		ATTR_SLIDER = "slider",
 		ATTR_RANGE = "range_slider",
 		ATTR_VELO_ENV = "velocity_envelope",
 		ATTR_EQ_ENV = "eq_envelope",
