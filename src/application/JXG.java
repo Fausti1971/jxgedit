@@ -34,42 +34,38 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 //		CWD = System.getProperties().getProperty("user.dir"),
 //		USERHOMEPATH = System.getProperties().getProperty("user.home");
 
-	private static void setAppFilePath()throws URISyntaxException
+	private static void setPaths()throws URISyntaxException
 	{	appFilePath = Paths.get(JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-		LOG.info(appFilePath.toString());
-	}
+		LOG.info("appfile: " + appFilePath.toString());
 
-	private static void setAppPath()
-	{	appPath = appFilePath.getParent();
-		LOG.info(appPath.toString());
-	}
+		appPath = appFilePath.getParent();
+		LOG.info("filepath: " + appPath.toString());
 
-	private static void setAppName()
-	{	String file =  appFilePath.getFileName().toString();
+		String file =  appFilePath.getFileName().toString();
 		appName =  file.substring(0, file.lastIndexOf("."));
-		LOG.info(appName);
+		LOG.info("appname: " + appName);
+
+		configFile = new File(appPath.resolve(appName + ".xml").toUri());
+		LOG.info("configfile: " + configFile);
 	}
 
-	private static void setConfigFile()
-	{	configFile = new File(appPath.resolve(appName + ".xml").toUri());
-		LOG.info(configFile.toString());
-	}
-
-	private static void setConfig()throws IOException
-	{	config = XMLNode.parse(configFile);
+	private static void setConfig()
+	{	try
+		{	config = XMLNode.parse(configFile);
+		}
+		catch(IOException e)
+		{	LOG.info(e.getMessage() + ", create new configuration.");
+			config = new XMLNode(TAG_CONFIG);
+		}
 	}
 
 	private static void init()
 	{	try
-		{	setAppFilePath();
-			setAppPath();
-			setAppName();
-			setConfigFile();
+		{	setPaths();
 			setConfig();
 		}
-		catch(URISyntaxException | IOException e)
+		catch( URISyntaxException e)
 		{	LOG.severe(e.getMessage());
-			config = new XMLNode(TAG_CONFIG);
 		}
 	}
 

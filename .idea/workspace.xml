@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="JXG:jar" />
+      <artifact name="jxgedit.jar" />
     </artifacts-to-build>
   </component>
   <component name="AutoImportSettings">
@@ -10,13 +10,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/artifacts/JXG_jar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/artifacts/jxgedit_jar.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGRange.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGHorizontalRangeSlider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGHorizontalSlider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/application/XGStrings.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/XGStrings.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGPointPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPointPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGTableTreeModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGTableTreeModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGWindow.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -129,9 +131,9 @@
     <property name="kotlin.migration.detection.enabled" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/rsc" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/out/artifacts/JXG/MU500/structure.xml" />
-    <property name="project.structure.last.edited" value="Global Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.25268817" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.18858801" />
+    <property name="project.structure.side.proportion" value="0.23136553" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
@@ -201,7 +203,7 @@
       <module name="jxgedit" />
       <method v="2">
         <option name="BuildArtifacts" enabled="true">
-          <artifact name="JXG:jar" />
+          <artifact name="jxgedit.jar" />
         </option>
       </method>
     </configuration>
@@ -585,7 +587,14 @@
       <option name="project" value="LOCAL" />
       <updated>1652306902999</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="VertcalSlider added;">
+      <created>1652388952431</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1652388952431</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -699,7 +708,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="debugged (structure.xml) &quot;defaultSelector&quot; von &quot;mp_program&quot; ist &quot;id&quot;" />
     <MESSAGE value="XGSysexFile.load() und XGSysexFile.save() debugged; xml file history implemented;" />
     <MESSAGE value="Resizing, Fontselection, ValueInputDialog implemented;" />
     <MESSAGE value="XGFrame mit optionalem Namen (JLabel) versehen und automatisiert; XGLayout debugged;" />
@@ -724,7 +732,8 @@
     <MESSAGE value="XML-Validation prepared;" />
     <MESSAGE value="XML-Validation completed; XGRange debugged;" />
     <MESSAGE value="Kosmetik;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Kosmetik;" />
+    <MESSAGE value="VertcalSlider added;" />
+    <option name="LAST_COMMIT_MESSAGE" value="VertcalSlider added;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -78,7 +78,7 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
 		this.g2.fillRect(ins.left, ins.top, w, h);
 
 //grid
-		this.g2.setColor(java.awt.Color.gray);
+		this.g2.setColor(Color.gray);
 		this.g2.setStroke(DEF_DOTTED_STROKE);
 		for(int i : this.vLines) g2.drawLine(i, ins.top, i, h);
 		for(int i : this.hLines) g2.drawLine(ins.left, i, w, i);

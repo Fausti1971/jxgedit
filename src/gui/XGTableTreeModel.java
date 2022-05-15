@@ -18,9 +18,7 @@ public class XGTableTreeModel implements TreeModel
 	{	this.table = tab;
 	}
 
-	@Override public Object getRoot()
-	{	return this.root;
-	}
+	@Override public Object getRoot(){	return this.root;}
 
 	@Override public Object getChild(Object parent, int index)
 	{	if(parent == this.root) return this.table.getCategories().toArray()[index];
@@ -35,23 +33,13 @@ public class XGTableTreeModel implements TreeModel
 		return 0;
 	}
 
-	@Override public boolean isLeaf(Object node)
-	{	return this.getChildCount(node) == 0;
-	}
+	@Override public boolean isLeaf(Object node){	return this.getChildCount(node) == 0;}
 
-	@Override public void valueForPathChanged(TreePath path, Object newValue)
-	{
-	}
+	@Override public void valueForPathChanged(TreePath path, Object newValue){}
 
-	@Override public int getIndexOfChild(Object parent, Object child)
-	{	return -1;
-	}
+	@Override public int getIndexOfChild(Object parent, Object child){	return -1;}
 
-	@Override public void addTreeModelListener(TreeModelListener l)
-	{
-	}
+	@Override public void addTreeModelListener(TreeModelListener l){}
 
-	@Override public void removeTreeModelListener(TreeModelListener l)
-	{
-	}
+	@Override public void removeTreeModelListener(TreeModelListener l){}
 }

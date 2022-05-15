@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="JXG:jar">
+  <artifact type="jar" name="jxgedit.jar">
     <output-path>$PROJECT_DIR$/out/artifacts/JXG</output-path>
     <root id="archive" name="JXG.jar">
       <element id="module-output" name="jxgedit" />

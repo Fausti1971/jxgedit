@@ -176,7 +176,7 @@ public interface XGStrings
 		return Integer.parseInt(s.replaceAll("\\D", ""));
 	}
 
-	static int decodeKey(String key)//TODO: falsch
+	static int decodeKey(String key)
 	{	String oct = key.replaceAll("[A-G,a-g]#?", "");
 		String note = key.replaceAll("-?[0-8]", "");
 

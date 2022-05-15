@@ -53,7 +53,7 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 
 	@Override public String getTag(){	return this.tag;}
 
-	@Override public String getTitle(){	return JXG.appName + " - " + XGDevice.device;}
+	@Override public String getTitle(){	return JXG.appName;}
 
 	@Override public void dispose()
 	{	synchronized(this)

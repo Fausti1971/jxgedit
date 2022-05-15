@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -13,19 +13,17 @@ import table.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, TreeSelectionListener
+public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
 {
 	private static final long serialVersionUID = 1L;
-//	private static final Dimension DIM = new Dimension(132, 44);
 	private static final ImageIcon icon_next = new ImageIcon(XGUI.loadImage("arrow_right.png"));
 	private static final ImageIcon icon_prev = new ImageIcon(XGUI.loadImage("arrow_left.png"));
-//	private static final Dimension ARROWSIZE = new Dimension(icon_next.getIconWidth(), icon_next.getIconHeight());
 
 /*********************************************************************************************/
 
 	private final XGValue value;
 	private final JButton select = new JButton();
-	private JDialog dialog = null;
+	private XGWindow dialog = null;
 
 	public XGProgramSelector(XGValue val)
 	{	super("");
@@ -37,9 +35,6 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		}
 		this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
-
-		this.addMouseListener(this);
-//		this.addFocusListener(this);
 
 		JButton prev = new JButton(icon_prev);
 		prev.setHorizontalTextPosition(JButton.CENTER);
@@ -72,49 +67,65 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		this.repaint();
 	}
 
-	private void openDialog()//TODO: vielleicht doch eher ein PopupMenu?
-	{	this.dialog = new JDialog();
-		this.dialog.setLocation(this.getLocationOnScreen());
-		this.dialog.setModal(true);
-		this.dialog.setUndecorated(true);
-		this.dialog.setTitle("select " + this.value.getParameter().getName());
-
-		JTree t = new JTree(new XGTableTreeModel(this.value.getParameter().getTranslationTable()));
-
-		XGTableEntry e = this.value.getEntry();
-		Object[] o;
-		if(e.getCategories().isEmpty()) o = new Object[]{t.getModel().getRoot(), e};
-		else o = new Object[]{t.getModel().getRoot(), e.getCategories().iterator().next(), e};
-		TreePath p = new TreePath(o);
-
-		t.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		t.setSelectionPath(p);
-		t.scrollPathToVisible(p);
-		t.setExpandsSelectedPaths(true);
-		t.setScrollsOnExpand(true);
-		t.addTreeSelectionListener(this);
-		t.addMouseListener(this);
-		t.setShowsRootHandles(true);
-		t.setRootVisible(false);
-		this.dialog.setContentPane(new JScrollPane(t));
-		this.dialog.pack();
-		this.dialog.setMinimumSize(new Dimension(this.getWidth(), 400));
+	private void openDialog()
+	{	if(this.dialog == null) this.dialog = new XGProgramSelectorWindow(this);
 		this.dialog.setVisible(true);
-		this.dialog.dispose();
 	}
 
-	@Override public void mouseClicked(MouseEvent e)
-	{	if(e.getClickCount() == 2 && this.dialog.isVisible())
-		{	this.dialog.dispose();
-			e.consume();
+/************************************************************************************************************************/
+
+	private class XGProgramSelectorWindow extends XGWindow implements TreeSelectionListener
+	{	final XGProgramSelector selector;
+		private JTree tree;
+	
+		XGProgramSelectorWindow(XGProgramSelector selector)
+		{	super(selector.value.getTag());
+			this.selector = selector;
+			this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+			this.setContentPane(new JScrollPane(this.createContent()));
 		}
-	}
 
-	@Override public void valueChanged(TreeSelectionEvent e)
-	{	TreePath p = e.getNewLeadSelectionPath();
-		if(p == null) return;
-		Object o = p.getLastPathComponent();
-		if(o == null) return;
-		if(o instanceof XGTableEntry) this.value.setEntry((XGTableEntry)o, true, true);
+		JComponent createContent()
+		{	XGTableTreeModel model = new XGTableTreeModel(this.selector.value.getParameter().getTranslationTable());
+			this.tree = new JTree(model);
+
+			this.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+			this.tree.setExpandsSelectedPaths(true);
+			this.tree.setScrollsOnExpand(true);
+			this.tree.addTreeSelectionListener(this);
+			this.tree.setShowsRootHandles(true);
+			this.tree.setRootVisible(false);
+			return this.tree;
+		}
+
+		private void setTreePath()
+		{	XGTableEntry e = this.selector.value.getEntry();
+			Object[] o;
+			if(e.getCategories().isEmpty()) o = new Object[]{this.tree.getModel().getRoot(), e};
+			else o = new Object[]{this.tree.getModel().getRoot(), e.getCategories().iterator().next(), e};
+			TreePath p = new TreePath(o);
+			this.tree.setSelectionPath(p);
+			this.tree.scrollPathToVisible(p);
+		}
+
+		@Override public String getTitle(){	return this.selector.value.getParameter().getName();}
+
+		@Override public void valueChanged(TreeSelectionEvent e)
+		{	TreePath p = e.getNewLeadSelectionPath();
+			if(p == null) return;
+			Object o = p.getLastPathComponent();
+			if(o instanceof XGTableEntry) this.selector.value.setEntry((XGTableEntry)o, true, true);
+		}
+
+		@Override public void windowActivated(WindowEvent e)
+		{	super.windowActivated(e);
+			this.setLocation(this.selector.getLocationOnScreen());
+			this.setTreePath();
+		}
+
+		@Override public void windowDeactivated(WindowEvent e)
+		{	super.windowDeactivated(e);
+			this.setVisible(false);
+		}
 	}
 }
