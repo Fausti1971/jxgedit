@@ -84,8 +84,8 @@ public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, 
 		//	g2.setColor(COL_BAR_BACK);
 			g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 // draw foreground
-			int originY = XGMath.linearIO(parameter.getOriginIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), this.getHeight(), 0);
-			int endY = XGMath.linearIO(this.slider.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), this.getHeight(), 0);
+			int originY = XGMath.linearScale(parameter.getOriginIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), this.getHeight(), 0);
+			int endY = XGMath.linearScale(this.slider.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), this.getHeight(), 0);
 			this.barHeight = endY - originY;
 			gp = new GradientPaint(w3,h2,COL_BAR_FORE_LIGHT, this.getWidth(), h2, COL_BAR_FORE,true);
 			g2.setPaint(gp);

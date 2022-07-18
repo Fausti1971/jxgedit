@@ -48,17 +48,17 @@ public class XGVirtualTable implements XGTable
 			XGStrings::toNumber));
 
 		TABLES.add(new XGVirtualTable(4, 124, TABLE_DEGREES,
-			(Integer i)->XGMath.linearIO(i, 4, 124, -180, 180) + "°", XGStrings::toNumber));
+			(Integer i)->XGMath.linearScale(i, 4, 124, -180, 180) + "°", XGStrings::toNumber));
 
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_PERCENT,
-			(Integer i)->XGMath.linearIO(i, 0, 127, 0, 100) + "%",
-			(String s)->XGMath.linearIO(XGStrings.toNumber(s), 0, 100, 0, 127)));
+			(Integer i)->XGMath.linearScale(i, 0, 127, 0, 100) + "%",
+			(String s)->XGMath.linearScale(XGStrings.toNumber(s), 0, 100, 0, 127)));
 
 		TABLES.add(new XGVirtualTable(0,127, TABLE_KEYS, XGStrings::encodeKey, XGStrings::decodeKey));
 
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_GAIN,
-			(Integer i)->String.valueOf(XGMath.linearIO(i, 0, 127, -12, 12)),
-			(String s)->XGMath.linearIO(XGStrings.toNumber(s), -12, 12, 0, 127)));
+			(Integer i)->String.valueOf(XGMath.linearScale(i, 0, 127, -12, 12)),
+			(String s)->XGMath.linearScale(XGStrings.toNumber(s), -12, 12, 0, 127)));
 
 		TABLES.add(new XGVirtualTable(0, 0, TABLE_NONE,
 			(Integer i)->"",

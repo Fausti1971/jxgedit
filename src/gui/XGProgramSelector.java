@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.*;import java.util.Objects;
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -16,8 +16,8 @@ import value.XGValueChangeListener;
 public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
 {
 	private static final long serialVersionUID = 1L;
-	private static final ImageIcon icon_next = new ImageIcon(XGUI.loadImage("arrow_right.png"));
-	private static final ImageIcon icon_prev = new ImageIcon(XGUI.loadImage("arrow_left.png"));
+	private static final ImageIcon icon_next = new ImageIcon(Objects.requireNonNull(XGUI.loadImage("arrow_right.png")));
+	private static final ImageIcon icon_prev = new ImageIcon(Objects.requireNonNull(XGUI.loadImage("arrow_left.png")));
 
 /*********************************************************************************************/
 

@@ -100,8 +100,8 @@ public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener
 		//	g2.setColor(COL_BAR_BACK);
 			g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 // draw foreground
-			int originX = XGMath.linearIO(parameter.getOriginIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, this.getWidth());
-			int endX = XGMath.linearIO(this.slider.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, this.getWidth());
+			int originX = XGMath.linearScale(parameter.getOriginIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, this.getWidth());
+			int endX = XGMath.linearScale(this.slider.value.getIndex(), parameter.getMinIndex(), parameter.getMaxIndex(), 0, this.getWidth());
 			this.barWidth = Math.max(DEF_STROKEWIDTH, endX - originX);
 			gp = new GradientPaint(w2,h3,COL_BAR_FORE_LIGHT, w2, this.getHeight(), COL_BAR_FORE,true);
 			g2.setPaint(gp);

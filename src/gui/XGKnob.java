@@ -88,8 +88,8 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			g2.drawArc(this.middle.x - radius, this.middle.y - radius, 2 * radius, 2 * radius, START_ARC, LENGTH_ARC);
 	// paint foreground arc
 			parm = this.knob.value.getParameter();
-			int originArc = XGMath.linearIO(parm.getOriginIndex(), parm.getMinIndex(), parm.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
-			int lengthArc = XGMath.linearIO(this.knob.value.getIndex(), parm.getMinIndex(), parm.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
+			int originArc = XGMath.linearScale(parm.getOriginIndex(), parm.getMinIndex(), parm.getMaxIndex(), 0, LENGTH_ARC);//originArc(mitte (64)) = -135 => START_ARC + originArc = 90
+			int lengthArc = XGMath.linearScale(this.knob.value.getIndex(), parm.getMinIndex(), parm.getMaxIndex(), 0, LENGTH_ARC);//falscher winkel - aber richtige kreisbogenlänge (beim malen korrigieren)
 			g2.setColor(COL_BAR_FORE);
 			g2.drawArc(this.middle.x - radius, this.middle.y - radius, 2 * radius, 2 * radius, originArc + START_ARC, lengthArc - originArc);
 	// paint handle
@@ -115,7 +115,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 					double ang = Math.atan2(e.getX() - this.middle.x, e.getY() - this.middle.y);
 					ang = Math.toDegrees(ang);
 					if (ang < 0) ang += 360;
-					result = XGMath.linearIO(Math.round(Math.round(ang)), 315, 45, this.parm.getMinIndex(), parm.getMaxIndex());
+					result = XGMath.linearScale(Math.round(Math.round(ang)), 315, 45, this.parm.getMinIndex(), parm.getMaxIndex());
 					break;
 			}
 			XGUI.ENVIRONMENT.dragEvent = e;

@@ -112,8 +112,8 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 	//		g2.setColor(COL_BAR_BACK);
 			g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 // draw foreground
-			this.loX = XGMath.linearIO(this.range.loValue.getIndex(), loParameter.getMinIndex(), loParameter.getMaxIndex(), 0, this.getWidth());
-			this.hiX = XGMath.linearIO(this.range.hiValue.getIndex(), hiParameter.getMinIndex(), hiParameter.getMaxIndex(), 0, this.getWidth());
+			this.loX = XGMath.linearScale(this.range.loValue.getIndex(), loParameter.getMinIndex(), loParameter.getMaxIndex(), 0, this.getWidth());
+			this.hiX = XGMath.linearScale(this.range.hiValue.getIndex(), hiParameter.getMinIndex(), hiParameter.getMaxIndex(), 0, this.getWidth());
 			float diff = Math.max(DEF_STROKEWIDTH, this.hiX - this.loX);
 			gp = new GradientPaint(w2,h3,COL_BAR_FORE_LIGHT, w2, this.getHeight(), COL_BAR_FORE,true);
 			g2.setPaint(gp);

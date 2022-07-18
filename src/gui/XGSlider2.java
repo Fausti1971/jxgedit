@@ -165,7 +165,7 @@ public class XGSlider2 extends XGFrame
 
 		@Override public void contentChanged(XGValue v)
 		{	XGParameter p = this.value.getParameter();
-			this.setLocation(XGMath.linearIO(this.value.getIndex(), p.getMinIndex(), p.getMaxIndex(), 0, this.panel.getWidth()) - DEF_STROKEWIDTH/2, 0);
+			this.setLocation(XGMath.linearScale(this.value.getIndex(), p.getMinIndex(), p.getMaxIndex(), 0, this.panel.getWidth()) - DEF_STROKEWIDTH/2, 0);
 			this.panel.bar.resized();
 		}
 
@@ -186,7 +186,7 @@ public class XGSlider2 extends XGFrame
 		{	XGParameter p = this.value.getParameter();
 			int distance = e.getX() - XGUI.ENVIRONMENT.dragEvent.getX();
 	System.out.println(distance);
-			int diff = XGMath.linearIO(distance, 0, this.panel.getWidth(), p.getMinIndex(), p.getMaxIndex());
+			int diff = XGMath.linearScale(distance, 0, this.panel.getWidth(), p.getMinIndex(), p.getMaxIndex());
 			this.value.addIndex(diff, true);
 			XGUI.ENVIRONMENT.dragEvent = e;
 			e.consume();

@@ -17,7 +17,6 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener
 
 	private final XGValue depth;
 	private final XGValue offset;
-	private final XGTooltip tooltip = new XGTooltip();
 
 	public XGVelocityEnvelope(XGModule mod)
 	{	super("");
@@ -54,33 +53,16 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener
 		this.add(panel, "0,0,1,1");
 	}
 
-	private String getInfo(){	return this.depth.getInfo() + "/" + this.offset.getInfo();}
-
 	@Override public void mouseDragged(MouseEvent e)
 	{	this.depth.addIndex(e.getXOnScreen() - ENVIRONMENT.dragEvent.getXOnScreen(), true);
 		this.offset.addIndex(ENVIRONMENT.dragEvent.getYOnScreen() - e.getYOnScreen(), true);
-		this.tooltip.setName(this.getInfo());
-		Point p = e.getLocationOnScreen();
-		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
-		this.tooltip.setVisible(true);
 		ENVIRONMENT.dragEvent = e;
 		e.consume();
 	}
 
-	@Override public void mouseEntered(MouseEvent e)
-	{	this.tooltip.setName(this.getInfo());
-		Point p = e.getLocationOnScreen();
-		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
-		if(!ENVIRONMENT.mousePressed) this.tooltip.setVisible(true);
-	}
+	@Override public void mouseEntered(MouseEvent e){}
 
-	@Override public void mouseExited(MouseEvent e)
-	{	if(!ENVIRONMENT.mousePressed) this.tooltip.setVisible(false);
-	}
+	@Override public void mouseExited(MouseEvent e){}
 
-	@Override public void mouseMoved(MouseEvent e)
-	{	if(ENVIRONMENT.mousePressed) return;
-		Point p = e.getLocationOnScreen();
-		this.tooltip.setLocation(p.x + XGPoint.POINT_SIZE, p.y + XGPoint.POINT_SIZE);
-	}
+	@Override public void mouseMoved(MouseEvent e){}
 }

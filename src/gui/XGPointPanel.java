@@ -32,7 +32,7 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
 		this.grid_y = gridY;
 		this.origin_x_index = oriX;
 		this.origin_y_index = oriY;
-		this.setBorder(BorderFactory.createRaisedSoftBevelBorder());
+		this.setBorder(BorderFactory.createLoweredSoftBevelBorder());
 		this.addComponentListener(this);
 	}
 
@@ -68,23 +68,22 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
 	int getMaxYIndex(){	return this.maxYIndex;}
 
 	@Override protected void paintComponent(Graphics g)
-	{	for(XGPoint p : this.points) p.setLocation();
-		super.paintComponent(g);
+	{	super.paintComponent(g);
 		this.g2 = (Graphics2D)g.create();
+		for(XGPoint p : this.points) p.setLocation();
 		Insets ins = this.getInsets();
-//background
 		int w = this.getWidth() - (ins.left + ins.right), h = this.getHeight() - (ins.top + ins.bottom);
+//background
 		this.g2.setColor(COL_BAR_BACK);
 		this.g2.fillRect(ins.left, ins.top, w, h);
-
 //grid
 		this.g2.setColor(Color.gray);
 		this.g2.setStroke(DEF_DOTTED_STROKE);
 		for(int i : this.vLines) g2.drawLine(i, ins.top, i, h);
 		for(int i : this.hLines) g2.drawLine(ins.left, i, w, i);
 //polygon
-		this.g2.addRenderingHints(AALIAS);
-		GradientPaint grp = new GradientPaint(ins.left, ins.top, COL_SHAPE, this.origin_x, this.origin_y, COL_BAR_BACK,false);
+		this.g2.addRenderingHints(AALIAS);//keine dotted stroke mit Antialiasing
+		GradientPaint grp = new GradientPaint(ins.left, ins.top, COL_SHAPE, w, h, COL_BAR_BACK,false);
 		g2.setPaint(grp);
 		GeneralPath gp = new GeneralPath();
 		int x = this.origin_x;
@@ -114,8 +113,8 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
 		sect = this.getWidth() / (this.grid_y + 1);
 		for(int i = 1; i <= this.grid_y; i++) this.vLines.add(i * sect);
 
-		this.origin_x = XGMath.linearIO(this.origin_x_index, this.minXIndex, this.maxXIndex, 0, this.getWidth());
-		this.origin_y = XGMath.linearIO(this.origin_y_index, this.minYIndex, this.maxYIndex, this.getHeight(), 0);
+		this.origin_x = XGMath.linearScale(this.origin_x_index, this.minXIndex, this.maxXIndex, 0, this.getWidth());
+		this.origin_y = XGMath.linearScale(this.origin_y_index, this.minYIndex, this.maxYIndex, this.getHeight(), 0);
 
 		this.repaint();
 	}

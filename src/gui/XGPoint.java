@@ -29,7 +29,6 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable
 	private final PointRelation relationX, relationY;
 	private final int index;
 	private XGPoint previous = null, next = null;
-	private final XGTooltip tooltip = new XGTooltip();
 	private Graphics2D g2;
 
 	public XGPoint(int index, XGValue valX, XGValue valY, PointRelation relX, PointRelation relY)
@@ -75,30 +74,25 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable
 		switch(this.relationX)
 		{	default:
 			case ABSOLUTE:
-				x = XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, xe);
+				x = XGMath.linearScale(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, xe);
 				break;
 			case ADD_TO_PREVIOUS_COORDINATE:
 				if(this.previous != null) x = this.previous.getX() + POINT_RADIUS;
-				x += XGMath.linearIO(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, xe);
+				x += XGMath.linearScale(this.valueX.getIndex(), this.panel.getMinXIndex(), this.panel.getMaxXIndex(), 0, xe);
 				break;
 		}
 		switch(this.relationY)
 		{	default:
 			case ABSOLUTE:
-				y = XGMath.linearIO(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, ye);
+				y = XGMath.linearScale(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, ye);
 				break;
 			case ADD_TO_PREVIOUS_COORDINATE:
 				if(this.previous != null) y = this.previous.getY() + POINT_RADIUS;
-				y -= XGMath.linearIO(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, ye);
+				y -= XGMath.linearScale(this.valueY.getIndex(), this.panel.getMaxYIndex(), this.panel.getMinYIndex(), 0, ye);
 				break;
 		}
 
 		this.setLocation(x - POINT_RADIUS, y - POINT_RADIUS);
-		this.tooltip.setName(this.toString());
-		if(this.isShowing())
-		{	Point p = this.getLocationOnScreen();
-			this.tooltip.setLocation(p.x + POINT_SIZE, p.y + POINT_SIZE);
-		}
 	}
 
 	@Override public String toString()
