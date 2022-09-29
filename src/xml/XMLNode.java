@@ -16,7 +16,7 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.sax.SAXSource;import javax.xml.transform.stream.StreamSource;import javax.xml.validation.Schema;import javax.xml.validation.SchemaFactory;import javax.xml.validation.Validator;
 import application.JXG;import application.XGLoggable;
 import application.XGStrings;
-import device.XGDevice;import gui.XGMainWindow;import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import tag.XGTagable;import tag.XGTagableSet;import static xml.XMLNodeConstants.JAXP_SCHEMA_LANGUAGE;import static xml.XMLNodeConstants.W3C_XML_SCHEMA;
+import device.XGDevice;import gui.XGMainWindow;import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import tag.XGTagable;import tag.XGTagableSet;import static xml.XMLNodeConstants.W3C_XML_SCHEMA;
 
 public class XMLNode implements XGTagable, XGLoggable, XGStrings
 {
@@ -25,7 +25,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 	public static XMLNode parse(String filename) throws IOException
 	{	try
 		{	Path appPath = JXG.appPath;
-			URI uri = appPath.resolve(XGDevice.device.toString()).resolve(filename).toUri();
+			URI uri = appPath.resolve(XGDevice.DEVICE.toString()).resolve(filename).toUri();
 			File f = new File(uri);
 			validateXml(new FileInputStream(f), filename);
 			return parse(new FileInputStream(f),filename);

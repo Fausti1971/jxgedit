@@ -11,11 +11,7 @@ import value.XGValue;
 import value.XGValueChangeListener;import xml.XMLNode;
 
 public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConstants, XGValueChangeListener
-{	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+{
 	public static XGHorizontalRangeSlider newRange(XGModule mod, XMLNode node)
 	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));
 		if(tags.size() != 2) LOG.warning("incorrect count of tags for " + ATTR_RANGE + tags);
@@ -70,8 +66,6 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 
 	private static class XGHorizontalRangeBar extends JPanel implements MouseMotionListener, MouseWheelListener, XGComponent
 	{
-		private static final long serialVersionUID = 1L;
-
 /**********************************************************************************************/
 
 		private XGValue currentValue, otherValue;
@@ -175,11 +169,7 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 /************************************************************************************************************/
 
 	private class XGRangeLabel extends XGValueLabel
-	{	/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
+	{
 	/*****************************************************************************************************/
 
 		private final XGValue value2;

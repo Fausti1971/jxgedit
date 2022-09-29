@@ -11,7 +11,6 @@ import value.XGValueChangeListener;
 
 public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
 {
-	private static final long serialVersionUID = 1L;
 	public enum KnobBehavior {HORIZONTAL, VERTICAL, RADIAL};
 
 /*****************************************************************************************************************************/
@@ -56,8 +55,6 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 
 	private class XGKnobBar extends JComponent implements XGComponent, MouseMotionListener, MouseWheelListener
 	{
-		private static final long serialVersionUID = 1L;
-
 /*****************************************************************************************/
 
 		private final XGKnob knob;

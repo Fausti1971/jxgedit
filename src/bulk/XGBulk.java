@@ -34,16 +34,16 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 
 	public int getSize(){	return this.type.addressRange.getLo().getSize();}
 
-	public void transmit(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException
-	{	dest.submit(this.message);
-		this.message.setChecksum();
-		}
+	//public void transmit(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException
+	//{	dest.submit(this.message);
+	//	this.message.setChecksum();
+	//	}
 
-	public boolean request(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException, InvalidMidiDataException
-	{	XGMessageBulkRequest request = new XGMessageBulkRequest(this, this);
-		dest.submit(request);
-		return request.isResponsed();
-	}
+	//public boolean request(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException, InvalidMidiDataException
+	//{	XGMessageBulkRequest request = new XGMessageBulkRequest(this, this);
+	//	dest.submit(request);
+	//	return request.isResponsed();
+	//}
 
 	@Override public String getTag(){	return this.type.getTag();}
 
@@ -56,7 +56,10 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 		for(XGValue v : this.values) v.contentChanged(v);
 	}
 
-	public XGMessageBulkDump getMessage(){	return this.message;}
+	public XGMessageBulkDump getMessage()
+	{	this.message.setChecksum();	//TODO: wahrscheinlich zu häufig gerufen, zukünftig lieber auf XGByteArray basieren...
+		return this.message;
+	}
 
 /**
 * returniert die Bulkadresse, d.h. lo ist nicht fixed! für fixed Adresse nimm bulk.getMessage().getAddress()
@@ -65,13 +68,13 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 
 	@Override public void submit(XGResponse res)
 	{	if(res instanceof XGMessageBulkDump) this.setMessage((XGMessageBulkDump)res);
+		else LOG.warning(this + " can't handle " + res);
 	}
 
-	public void submit(XGRequest req) throws XGMessengerException
+	@Override public void submit(XGRequest req) throws XGMessengerException
 	{	if(req instanceof XGMessageBulkRequest)
-		{	XGMessageBulkRequest r = (XGMessageBulkRequest)req;
 			if(req.setResponsedBy(this.message)) req.getSource().submit(this.message);
-		}
+		else LOG.warning(this + " can't handle " + req);
 	}
 
 	@Override public void close(){}

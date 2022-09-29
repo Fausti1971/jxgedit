@@ -23,8 +23,6 @@ import xml.XMLNode;
 
 public class XGKeyboard extends XGFrame implements XGUI
 {
-
-	private static final long serialVersionUID = 1L;
 	private static final int
 		WHITEWIDTH = 20,
 		BLACKWIDTH = WHITEWIDTH / 2,
@@ -122,8 +120,6 @@ public class XGKeyboard extends XGFrame implements XGUI
 
 	private class XGKey extends JLabel implements MouseListener
 	{
-		private static final long serialVersionUID = 1L;
-
 	/************************************************************************/
 
 		private final int number;

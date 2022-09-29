@@ -25,7 +25,6 @@ public class DKnob extends JComponent
 {	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
 	private final static float START = 225;
 	private final static float LENGTH = 270;
 	private final static float PI = (float) 3.1415;

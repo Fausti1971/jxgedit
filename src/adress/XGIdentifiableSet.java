@@ -58,6 +58,6 @@ public class XGIdentifiableSet<T extends XGIdentifiable> implements Set<T>, Iter
 
 	@Override public String toString()
 	{	if(this.map.isEmpty()) return "empty set";
-		return (this.memberName) + " (" + size() + ")";
+		return (this.memberName) + " (" + this.size() + ")";
 	}
 }

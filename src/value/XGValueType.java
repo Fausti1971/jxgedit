@@ -13,6 +13,12 @@ public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 	enum SendAction{change,dump,none}
 //	static final SendAction DEF_ACTION = SendAction.none;
 
+/**
+* MSB=Most Significant Byte, 
+* LSB=Least Significant Byte,
+* MSN=Most Significant Nibble,
+* LSN=Least Significant Nibble,
+*/
 	public enum ValueDataType{MSB, LSB, MSN, LSN}
 	static final ValueDataType DEF_DATATYPE = ValueDataType.LSB;
 

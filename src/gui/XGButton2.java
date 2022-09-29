@@ -7,11 +7,7 @@ import value.XGValue;
 * zweizeiliger JButton, erste Zeile Parametername, zweite Zeile Wert
 */
 public class XGButton2 extends JButton implements value.XGValueChangeListener
-{	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+{
 /*******************************************************************************/
 
 	private final XGValue value;

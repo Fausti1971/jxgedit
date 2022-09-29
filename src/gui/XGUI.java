@@ -65,7 +65,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		{	LOOKANDFEELS.put(i.getName(), i.getClassName());
 		}
 		XGUI.setLookAndFeel(ENVIRONMENT.config.getStringAttribute(ATTR_LOOKANDFEEL));
-		XGUI.ENVIRONMENT.mouseWheelInverted = Boolean.getBoolean(ENVIRONMENT.config.getStringBufferAttributeOrNew(ATTR_MOUSEWHEEL_INVERTED, "false").toString());
+		XGUI.ENVIRONMENT.mouseWheelInverted = Boolean.parseBoolean(ENVIRONMENT.config.getStringBufferAttributeOrNew(ATTR_MOUSEWHEEL_INVERTED, "false").toString());
 		XGUI.ENVIRONMENT.knobBehavior = XGKnob.KnobBehavior.valueOf(ENVIRONMENT.config.getStringBufferAttributeOrNew(ATTR_KNOB_BEHAVIOR, XGKnob.KnobBehavior.HORIZONTAL.name()).toString());
 	}
 

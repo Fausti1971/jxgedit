@@ -9,11 +9,7 @@ import value.XGValue;
 import value.XGValueChangeListener;import xml.XMLNode;
 
 public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener, MouseListener
-{	/**
-	 * 
-	 */
-	private static final long serialVersionUID=1L;
-
+{
 	static XGFrame newSlider(XGModule mod, XMLNode node)
 	{	XGValue v = mod.getValues().get(node.getStringAttribute(ATTR_VALUE_TAG));
 		Rectangle r = XGStrings.toRectangle(node.getStringAttribute(ATTR_CONSTRAINT));
@@ -68,11 +64,7 @@ public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener
 
 
 	private static class XGHorizontalSliderBar extends JComponent implements MouseMotionListener, MouseWheelListener, XGComponent
-	{	/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
+	{
 /**********************************************************************************************/
 
 		private final XGHorizontalSlider slider;

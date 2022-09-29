@@ -10,11 +10,6 @@ import value.XGValue;
 
 public class XGCombo extends XGFrame implements XGParameterChangeListener
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private static final Dimension MIN_DIM = new Dimension(132, 44);
 
 /*****************************************************************************************************************/
 

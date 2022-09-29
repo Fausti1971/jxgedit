@@ -5,16 +5,13 @@ import java.awt.event.*;import java.util.Collection;import java.util.NoSuchEleme
 import javax.swing.*;
 import application.*;
 import device.*;
-import file.XGSysexFile;import static java.awt.BorderLayout.*;
+import file.XGDatafile;import static java.awt.BorderLayout.*;
 import module.*;
 import static module.XGModuleType.MODULE_TYPES;
 import value.XGValue;import xml.*;
 
 public class XGMainWindow extends XGWindow
-{	/**
-	 * 
-	 */
-	private static final long serialVersionUID=1L;
+{
 
 /***********************************************************************************************************************/
 
@@ -30,11 +27,11 @@ public class XGMainWindow extends XGWindow
 		JMenu file = new JMenu("File");
 
 		JMenuItem load = new JMenuItem("Open Dump...");
-		load.addActionListener((ActioEvent)->XGSysexFile.load(XGDevice.device));
+		load.addActionListener((ActioEvent)->XGDatafile.load(XGDevice.DEVICE));
 		file.add(load);
 
 		JMenuItem save = new JMenuItem("Save Dump...");
-		save.addActionListener((ActioEvent)->XGSysexFile.save(XGDevice.device));
+		save.addActionListener((ActioEvent)->XGDatafile.save(XGDevice.DEVICE));
 		file.add(save);
 
 		file.addSeparator();
@@ -54,11 +51,11 @@ public class XGMainWindow extends XGWindow
 		JMenu midi = new JMenu("Midi");
 
 		JMenuItem requestAll = new JMenuItem("Request All");
-		requestAll.addActionListener((ActionEvent)->new Thread(() -> XGDevice.device.requestAll(XGMidi.getMidi())).start());
+		requestAll.addActionListener((ActionEvent)->new Thread(() -> XGDevice.DEVICE.requestAll(XGMidi.getMidi())).start());
 		midi.add(requestAll);
 
 		JMenuItem transmitAll = new JMenuItem("Transmit All");
-		transmitAll.addActionListener((ActionEvent)->new Thread(() -> XGDevice.device.transmitAll(XGMidi.getMidi())).start());
+		transmitAll.addActionListener((ActionEvent)->new Thread(() -> XGDevice.DEVICE.transmitAll(XGMidi.getMidi())).start());
 		midi.add(transmitAll);
 
 		bar.add(midi);
@@ -106,6 +103,4 @@ public class XGMainWindow extends XGWindow
 			JXG.quit();
 		}
 	}
-
-	public void propertyChanged(XGProperty attr){	System.out.println("property changed: " + attr);}
 }

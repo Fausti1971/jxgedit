@@ -2,7 +2,7 @@ package bulk;
 import adress.InvalidXGAddressException;
 import module.XGModule;
 import msg.XGMessenger;
-import msg.XGMessengerException;import table.XGTable;
+import msg.XGMessengerException;import msg.XGRequest;import msg.XGResponse;import table.XGTable;
 import javax.sound.midi.InvalidMidiDataException;
 import java.util.HashSet;
 import java.util.Set;
@@ -13,13 +13,19 @@ public class XGInsertion48Bulk extends XGBulk
 	{	super(type, mod);
 	}
 
-	@Override public void transmit(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException
-	{	if(this.isRequired()) super.transmit(dest);
+	@Override public void submit(XGResponse res)
+	{	if(this.isRequired()) super.submit(res);
 	}
 
-	@Override public boolean request(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException, InvalidMidiDataException
-	{	if(this.isRequired()) return super.request(dest);
-		else return true;
+	@Override public void submit(XGRequest req)
+	{	if(this.isRequired())
+		{	try
+			{	super.submit(req);
+			}
+			catch(XGMessengerException e)
+			{	LOG.severe(e.getMessage());
+			}
+		}
 	}
 
 	private boolean isRequired()

@@ -37,16 +37,18 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		{	for(XGModule mod : mt.getModules())
 			{	for(XGBulk blk : mod.getBulks())
 				{	for(XGValueType opc : blk.getType().getValueTypes())
-					{		XGValue v = new XGValue(opc, blk);
-							blk.getValues().add(v);
-							pool.add(v);
-						}
+					{	XGValue v = new XGValue(opc, blk);
+						blk.getValues().add(v);
+						pool.add(v);
+					}
 				}
 			}
 		}
 		for(XGValue v : pool)
-		{	try	{	v.initDepencies();}
-			catch(InvalidXGAddressException e)	{	LOG.warning(e.getMessage());}
+		{	try
+			{	v.initDepencies();}
+			catch(InvalidXGAddressException e)
+			{	LOG.warning(e.getMessage());}
 		}
 		for(XGValue v : pool) v.setDefaultValue();
 		LOG.info(pool.size() + " values initialized");
@@ -257,16 +259,24 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
  * sendet den Value mittels XGMessageBulkDump
  */
 	public void dumpAction()
-	{	try{	XGMidi.getMidi().submit(new XGMessageBulkDump(this, this));}
-		catch(InvalidMidiDataException | XGMessengerException e1){	LOG.severe(e1.getMessage());}
+	{	try
+		{	XGMidi.getMidi().submit(new XGMessageBulkDump(this, this));
+		}
+		catch(InvalidMidiDataException | XGMessengerException e1)
+		{	LOG.severe(e1.getMessage());
+		}
 	}
 
 /**
 * erfragt den Value mittels XGMessageParameterRequest von MIDI
 */
 	public void requestAction()
-	{	try{	XGMidi.getMidi().submit(new XGMessageParameterRequest(this, this));}
-		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e){	e.printStackTrace();}
+	{	try
+		{	XGMidi.getMidi().submit(new XGMessageParameterRequest(this, this));
+		}
+		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e)
+		{	e.printStackTrace();
+		}
 	}
 
 	public void noneAction()

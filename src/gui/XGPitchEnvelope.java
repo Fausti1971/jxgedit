@@ -8,7 +8,6 @@ import javax.swing.*;
 
 public class XGPitchEnvelope extends JPanel implements XGComponent
 {
-	private static final long serialVersionUID = 1L;
 	private static final XGFixedValue VALUE_255 = new XGFixedValue("fix", 255), VALUE_381 = new XGFixedValue("fix", 381);
 
 	static XGPitchEnvelope newPitchEnvelope(XGModule mod, XMLNode node)

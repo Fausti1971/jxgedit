@@ -10,7 +10,6 @@ import value.XGValue;
 
 public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener
 {
-	private static final long serialVersionUID = 1L;
 	private static final String LOLIM = "mp_velo_lo", SENSE = "mp_velo_depth", OFFSET = "mp_velo_offset", HILIM = "mp_velo_hi"; 
 
 /*********************************************************************************************************************/

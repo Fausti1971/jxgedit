@@ -4,17 +4,6 @@ import table.XGTable;import static table.XGTable.TABLES;import table.XGVirtualTa
 
 public class XGParameter implements XGLoggable, XGParameterConstants
 {	private static final int MAX_SHORTNAME_LENGTH = 6;
-//	public static XMLNode init()
-//	{
-//		try
-//		{	return XMLNode.parse(JXG.class.getResourceAsStream(XML_PARAMETER));
-//		}
-//		catch(IOException e)
-//		{	LOG.severe(e.getMessage());
-////			return new XMLNode(TAG_PARAMETERTABLES);
-//			return null;
-//		}
-//	}
 
 /******************************************************************************************************************/
 

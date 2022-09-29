@@ -1,7 +1,7 @@
 package gui;
 
 import application.JXG;
-import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import static xml.XMLNodeConstants.*;import java.awt.*;
+import config.XGPropertyChangeListener;import device.XGDevice;import file.XGDatafile;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
 import java.awt.event.ComponentEvent;import java.awt.event.ComponentListener;import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import javax.swing.*;
@@ -27,7 +27,8 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 	{	super();
 		this.tag = tag;
 		this.config = CONFIG.getChildNodeWithAttributeOrNew(TAG_ITEM, ATTR_ID, tag);
-		XGDevice.device.getName().getListeners().add((XGProperty p)->this.setTitle(this.getTitle()));
+		XGDevice.DEVICE.getName().getListeners().add(this);
+		XGDatafile.CURRENT_FILE.getListeners().add(this);
 		this.setUndecorated(false);//um den Rahmen durch den WindowManager des Systems darstellen zu lassen
 		this.setIconImage(LOGO);
 		this.setResizable(true);
@@ -51,9 +52,11 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 		for(Window w : this.getOwnedWindows()) javax.swing.SwingUtilities.updateComponentTreeUI(w);
 	}
 
+	@Override public void propertyChanged(XGProperty p){	this.setTitle(this.getTitle());}
+
 	@Override public String getTag(){	return this.tag;}
 
-	@Override public String getTitle(){	return JXG.appName;}
+	@Override public String getTitle(){	return JXG.appName + " - " + XGDatafile.CURRENT_FILE.getValue();}
 
 	@Override public void dispose()
 	{	synchronized(this)

@@ -44,11 +44,11 @@ public class XGSettingsWindow extends XGWindow
 		root.add(mto, "1,2,1,1");
 
 		root.add(new JLabel("Device Name:", JLabel.LEADING), "0,3,1,1");
-		root.add(new XGDeviceDetector(XGDevice.device.getConfig().getAttributes().getOrNew(ATTR_NAME, new XGProperty(ATTR_NAME, DEF_DEVNAME))), "1,3,1,1");
+		root.add(new XGDeviceDetector(XGDevice.DEVICE.getConfig().getAttributes().getOrNew(ATTR_NAME, new XGProperty(ATTR_NAME, DEF_DEVNAME))), "1,3,1,1");
 
 		root.add(new JLabel("Device ID:", JLabel.LEADING), "0,4,1,1");
-		JSpinner syx = new JSpinner(new SpinnerNumberModel(XGDevice.device.getSysexID(), 0, 15, 1));
-		syx.addChangeListener((ChangeEvent e)->XGDevice.device.setSysexID((Integer)((JSpinner)e.getSource()).getValue()));
+		JSpinner syx = new JSpinner(new SpinnerNumberModel(XGDevice.DEVICE.getSysexID(), 0, 15, 1));
+		syx.addChangeListener((ChangeEvent e)->XGDevice.DEVICE.setSysexID((Integer)((JSpinner)e.getSource()).getValue()));
 		root.add(syx, "1,4,1,1");
 
 		root.add(new JSeparator(), "0,5,2,1");

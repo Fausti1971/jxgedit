@@ -27,7 +27,7 @@ public interface XGTable extends XGLoggable, XGTableConstants, XGTagable, Iterab
 		t.add(new XGTableEntry(127, "Off"));
 		TABLES.add(t);
 
-		t = new XGRealTable(TABLE_PARTMODE);//wird bei XGDrumsetModuleType.init() um die Drumsets erweitert
+		t = new XGRealTable(TABLE_PARTMODE);//wird bei XGDrumsetModuleType.init() um die vorhandenen Drumsets erweitert
 		t.add(new XGTableEntry(0, "Normal"));
 		t.add(new XGTableEntry(1, "Drum"));
 		TABLES.add(t);

@@ -6,7 +6,7 @@ import javax.swing.*;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
-import application.XGStrings;import config.XGConfigurable;import file.XGSysexFile;
+import application.XGStrings;import config.XGConfigurable;import file.XGDatafile;
 import bulk.XGBulk;import bulk.XGBulkDumper;import gui.XGMainWindow;import module.XGModule;
 import module.XGModuleType;
 import static module.XGModuleType.MODULE_TYPES;
@@ -16,12 +16,12 @@ import xml.XGProperty;import xml.XMLNode;
 
 public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable, XGMessenger
 {
-	public static XGDevice device = null;
+	public static XGDevice DEVICE = null;
 	private static final String WARNSTRING = "This will reset all parameters!";
 
 	public static void init()
 	{	XMLNode xml = JXG.config.getChildNodeOrNew(TAG_DEVICE);
-		device = new XGDevice(xml);
+		DEVICE = new XGDevice(xml);
 		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))
 		{	try
 			{	SysexMessage msg = new SysexMessage();
@@ -41,7 +41,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 //	private final StringBuffer name;
 	private final XMLNode config;
 	private int info1, info2;
-	private XGSysexFile defaultFile;
+	private XGDatafile defaultFile;
 	private int sysexID = 0;
 //	private XGWindow childWindow;
 

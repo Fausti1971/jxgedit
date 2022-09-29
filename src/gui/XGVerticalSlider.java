@@ -9,11 +9,7 @@ import value.XGValue;
 import value.XGValueChangeListener;
 
 public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, MouseListener
-{	/**
-	 * 
-	 */
-	private static final long serialVersionUID=1L;
-
+{
 /*****************************************************************************************************************************/
 
 	private final XGValue value;
@@ -52,11 +48,7 @@ public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, 
 
 
 	private static class XGVerticalSliderBar extends JComponent implements MouseMotionListener, MouseWheelListener, XGComponent
-	{	/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
+	{
 /**********************************************************************************************/
 
 		private final XGVerticalSlider slider;

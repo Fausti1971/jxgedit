@@ -2,7 +2,7 @@ package module;
 
 import adress.InvalidXGAddressException;
 import adress.XGIdentifiableSet;
-import bulk.XGBulkType;import device.XGDevice;
+import device.XGDevice;
 import device.XGMidi;
 import static msg.XGMessageConstants.*;
 import msg.XGMessageParameterChange;
@@ -89,7 +89,7 @@ public class XGDrumsetModuleType extends XGModuleType
 	public void reset()
 	{	try
 		{	RESET_MSG[7] = (byte)(this.partmode - 2);
-			XGMidi.getMidi().submit(new XGMessageParameterChange(XGDevice.device, RESET_MSG, true));
+			XGMidi.getMidi().submit(new XGMessageParameterChange(XGDevice.DEVICE, RESET_MSG, true));
 			this.resetValues();
 		}
 		catch( XGMessengerException | InvalidMidiDataException e)

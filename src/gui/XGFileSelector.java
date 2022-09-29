@@ -14,31 +14,27 @@ import javax.swing.filechooser.FileFilter;
 import application.XGStrings;
 import file.*;
 
-public class XGFileSelector extends JFileChooser implements XGSysexFileConstants, XGUI, DocumentListener, ActionListener, XGStrings
-{	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+public class XGFileSelector extends JFileChooser implements XGUI, DocumentListener, ActionListener, XGStrings
+{
 /*****************************************************************************************/
 
 	private String path;
 	private final JTextField text;
 	private final JButton button;
 
-	public XGFileSelector(final String path, String title, String button, FileFilter filter)
+	public XGFileSelector(final String path, String title, String button, FileFilter... filters)
 	{	this.path = path;
-		this.text = new JTextField(this.path.toString());
+		this.text = new JTextField(this.path);
 		this.button = new JButton(button);
 		this.button.addActionListener(this);
 		this.setDialogTitle(title);
 		this.setApproveButtonText(button);
 		this.setAcceptAllFileFilterUsed(false);
-		this.setFileFilter(filter);
+		for(FileFilter ff : filters){	this.addChoosableFileFilter(ff);}
 	}
 
 	public final int select(Component par)
-	{	File f = new File(this.path.toString());
+	{	File f = new File(this.path);
 		this.setSelectedFile(f);
 		int res = this.showDialog(par, this.getApproveButtonText());
 		this.path = this.getSelectedFile().getAbsolutePath();

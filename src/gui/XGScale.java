@@ -10,7 +10,6 @@ import javax.swing.*;
 
 public class XGScale extends JPanel implements XGComponent
 {
-	private static final long serialVersionUID = 1L;
 
 /*****************************************************************************************************/
 

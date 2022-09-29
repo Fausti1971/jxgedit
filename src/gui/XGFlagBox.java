@@ -7,8 +7,6 @@ import application.XGStrings;import module.XGModule;import parm.XGParameter;impo
 
 public class XGFlagBox extends XGFrame
 {
-	private static final long serialVersionUID = 1L;
-
 	public static XGFlagBox newFlagbox(XGModule mod, XMLNode node)
 	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));
 		int i = 0;
@@ -41,8 +39,6 @@ public class XGFlagBox extends XGFrame
 
 		private class XGCheckboxPopup extends JPopupMenu
 		{
-			private static final long serialVersionUID=-8590959410134092274L;
-
 		/********************************************************************************************************************/
 
 		public XGCheckboxPopup(JComponent inv, Set<XGValue> values)

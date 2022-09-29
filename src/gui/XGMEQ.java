@@ -8,7 +8,6 @@ import value.XGValue;
 
 public class XGMEQ extends javax.swing.JPanel
 {
-	private static final long serialVersionUID = 1L;
 	public static final String
 		G1 = "eq_gain1",
 		G2 = "eq_gain2",

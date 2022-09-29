@@ -18,7 +18,6 @@ import xml.*;
 
 public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 {
-//	public static String FILESEPERATOR = System.getProperty("file.separator");
 	static
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
@@ -28,11 +27,6 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	public static String appName;
 	private static File configFile;
 	public static XMLNode config;
-
-//		APPNAME = "JXG";
-//		XMLPATH = "/xml/";
-//		CWD = System.getProperties().getProperty("user.dir"),
-//		USERHOMEPATH = System.getProperties().getProperty("user.home");
 
 	private static void setPaths()throws URISyntaxException
 	{	appFilePath = Paths.get(JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI());
@@ -64,7 +58,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		{	setPaths();
 			setConfig();
 		}
-		catch( URISyntaxException e)
+		catch(URISyntaxException e)
 		{	LOG.severe(e.getMessage());
 		}
 	}
@@ -77,15 +71,15 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 
 		XGMidi.init();
 		XGDevice.init();
-		XGSysexFile.init();
+		XGDatafile.init();
 
 		XGTable.init();
 		XGDefaultsTable.init();
 		XGParameterTable.init();
 
-		XGModuleType.init();
+		XGModuleType.init();//inklusive XGBulkTypes und XGValueTypes (XGOpcode)
 
-		XGModule.init();
+		XGModule.init();//inklusive XGBulk
 		XGValue.init();
 
 		XGUI.init();
@@ -102,7 +96,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	{	LOG.info("exiting application");
 		try
 		{	config.save(configFile);
-			XGDevice.device.close();
+			XGDevice.DEVICE.close();
 			System.exit(0);
 		}
 		catch(IOException | XMLStreamException e)

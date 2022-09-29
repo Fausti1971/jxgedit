@@ -11,11 +11,7 @@ import javax.swing.event.DocumentListener;
 import device.XGDevice;import xml.XGProperty;
 
 public class XGDeviceDetector extends JPanel implements DocumentListener, ActionListener, XGUI
-{	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+{
 /***********************************************************************************************************************************/
 
 	private final XGProperty property;
@@ -45,7 +41,7 @@ public class XGDeviceDetector extends JPanel implements DocumentListener, Action
 	}
 
 	@Override public void actionPerformed(ActionEvent e)
-	{	XGDevice.device.requestInfo();
+	{	XGDevice.DEVICE.requestInfo();
 		this.text.setText(this.property.getValue().toString());
 	}
 }

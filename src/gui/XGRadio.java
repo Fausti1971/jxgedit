@@ -11,8 +11,6 @@ import value.XGValueChangeListener;
 
 public class XGRadio extends XGFrame implements XGValueChangeListener, XGParameterChangeListener
 {
-	private static final long serialVersionUID = 1L;
-
 /*********************************************************************************************************/
 
 	private final XGValue value;
@@ -67,8 +65,6 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 
 	private class XGRadioButton extends JRadioButton
 	{
-		private static final long serialVersionUID = 1L;
-
 /******************************************************************/
 
 		private final XGTableEntry entry;

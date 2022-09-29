@@ -9,8 +9,6 @@ import value.XGValue;
 
 public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
 {
-	private static final long serialVersionUID = 1L;
-
 /***************************************************************************************/
 
 	private final ArrayList<XGPoint> points = new ArrayList<>();

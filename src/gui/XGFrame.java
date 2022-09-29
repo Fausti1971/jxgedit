@@ -4,8 +4,7 @@ import application.XGStrings;import xml.XMLNode;import java.awt.*;
 import javax.swing.*;import javax.swing.border.Border;import javax.swing.border.TitledBorder;
 
 public class XGFrame extends JPanel implements XGComponent
-{	private static final long serialVersionUID=-2090844398565572567L;
-
+{
 	private static final Border NAMELESS_BORDER = BorderFactory.createRaisedSoftBevelBorder();
 
 	public static XGFrame newFrame(XMLNode xml)

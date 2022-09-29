@@ -29,13 +29,15 @@ public interface XGBulkDumper extends XGLoggable
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
 		{	try
-			{	b.transmit(dest);
+			{	//b.transmit(dest);
+				dest.submit(b.getMessage());
+
 				pm.setNote(b.toString());
 				pm.setProgress(++transmitted);
-				LOG.info(b + " transmitted");
+//				LOG.info(b + " transmitted");
 				if(pm.isCanceled()) break;
 			}
-			catch(InvalidXGAddressException | XGMessengerException e)
+			catch( XGMessengerException e)
 			{	LOG.severe(e.getMessage());
 				JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, e.getMessage());
 			}
@@ -61,10 +63,12 @@ public interface XGBulkDumper extends XGLoggable
 		{	try
 			{	reqTime = System.currentTimeMillis();
 				requested++;
-				if(b.request(dest))
+				XGMessageBulkRequest req = new XGMessageBulkRequest(b, b);
+				dest.submit(req);
+				if(req.isResponsed())
 				{	pm.setNote(b.toString());
 					pm.setProgress(++responsed);
-					LOG.info("response for " + b + " within " + (b.getMessage().getTimeStamp() - reqTime) + " ms");
+//					LOG.info("response for " + b + " within " + (b.getMessage().getTimeStamp() - reqTime) + " ms");
 //					LOG.info(r.getResponse().toHexString());
 				}
 				else
@@ -73,8 +77,8 @@ public interface XGBulkDumper extends XGLoggable
 				}
 				if(pm.isCanceled()) break;
 			}
-			catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e)
-			{	LOG.log(Level.SEVERE, e.getMessage());
+			catch(InvalidMidiDataException | XGMessengerException e)
+			{	LOG.severe(e.getMessage());
 			}
 		}
 		Level level;

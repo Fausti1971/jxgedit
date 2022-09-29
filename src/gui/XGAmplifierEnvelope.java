@@ -6,8 +6,6 @@ import value.XGValue;import xml.XMLNode;
 
 public class XGAmplifierEnvelope extends XGFrame implements XGComponent
 {
-	private static final long serialVersionUID = 1L;
-
 	static XGAmplifierEnvelope newAmplifierEnvelope(XGModule mod, XMLNode node)
 	{	String[] names = new String[3];
 		XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG)).toArray(names);

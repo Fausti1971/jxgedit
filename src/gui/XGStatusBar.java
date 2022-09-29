@@ -8,11 +8,7 @@ import javax.swing.JLabel;
 import application.XGLoggable;
 
 public class XGStatusBar extends JLabel implements XGLoggable
-{	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
+{
 /***********************************************************************************************************/
 
 	public XGStatusBar()
