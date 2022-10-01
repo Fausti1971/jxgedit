@@ -163,6 +163,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
  */
 	public int getIndex(){	return this.getParameter().getTranslationTable().getIndex(this.getValue());}
 
+//TODO: untersuche: wenn der Parameter sich ändert ohne dass sich der Wert ändert
 	public boolean hasChanged(){	return !this.getValue().equals(this.oldValue);}
 
 /**
@@ -195,7 +196,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
  * @return aktueller Value aus Bulk
  */
 	public Integer getValue()
-	{	XGMessageBulkDump msg = this.bulk.getMessage();
+	{	XGMessageBulkDump msg = this.bulk.getUncheckedMessage();
 		try
 		{	int offset = msg.getBaseOffset() + this.address.getLo().getValue() - msg.getLo();
 			return this.type.codec.decode(msg, offset, this.getSize());
@@ -211,7 +212,7 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
  * @param v Value
  */
 	public void setValue(int v, boolean limitize, boolean action)
-	{	XGMessageBulkDump msg = this.bulk.getMessage();
+	{	XGMessageBulkDump msg = this.bulk.getUncheckedMessage();
 		if(limitize) v = this.getParameter().getLimitizedValue(v);
 		try
 		{	int offset = msg.getBaseOffset() + this.address.getLo().getValue() - msg.getLo();
@@ -289,12 +290,15 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		else return "no parameter info";
 	}
 
-	@Override public void submit(XGResponse res)
-	{	try
-		{	int offset = res.getBaseOffset() + this.address.getLo().getValue() - res.getLo();
-			this.setValue(this.type.codec.decode(res, offset, this.getSize()), false, false);
+	@Override public void submit(XGResponse res)throws XGMessengerException
+	{	if(res instanceof XGMessageParameterChange)
+		{	try
+			{	int offset = res.getBaseOffset() + this.address.getLo().getValue() - res.getLo();
+				this.setValue(this.type.codec.decode(res, offset, this.getSize()), false, false);
+			}
+			catch(InvalidXGAddressException e){	e.printStackTrace();}
 		}
-		catch(InvalidXGAddressException e){	e.printStackTrace();}
+		else throw new XGMessengerException(this, res);
 	}
 
 	public void submit(XGRequest req)

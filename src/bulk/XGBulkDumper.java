@@ -30,7 +30,7 @@ public interface XGBulkDumper extends XGLoggable
 		for(XGBulk b : set)
 		{	try
 			{	//b.transmit(dest);
-				dest.submit(b.getMessage());
+				dest.submit(b.getCheckedMessage());
 
 				pm.setNote(b.toString());
 				pm.setProgress(++transmitted);
@@ -53,10 +53,9 @@ public interface XGBulkDumper extends XGLoggable
 	{	if(dest == null) return;
 
 		int requested = 0, responsed = 0;
-		long time = System.currentTimeMillis(), reqTime;
-		XGRequest r;
+		long startTime = System.currentTimeMillis(), reqTime;
 		XGAddressableSet<XGBulk> set = this.getBulks();
-		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "transmitting...", "", 0, set.size());
+		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "requesting from " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
@@ -84,7 +83,7 @@ public interface XGBulkDumper extends XGLoggable
 		Level level;
 		if(requested - responsed == 0) level = Level.INFO;
 		else level = Level.WARNING;
-		LOG.log(level, responsed + " (of " + requested + ") requests responsed by " + dest + " and transmitted within " + (System.currentTimeMillis() - time) + " ms");
+		LOG.log(level, responsed + " (of " + requested + ") requests responsed by " + dest + " and transmitted within " + (System.currentTimeMillis() - startTime) + " ms");
 	}
 
 }

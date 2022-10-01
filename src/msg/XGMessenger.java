@@ -12,8 +12,18 @@ public interface XGMessenger
  */
 	default String getMessengerName(){	return this.getClass().getSimpleName();}
 
+/**
+* fordert den Messenger, die übergebene Antwort zu verarbeiten
+* @param res Antwort zur Verarbeitung
+* @exception XGMessengerException falls der Messenger die Anwort nicht verarbeiten kann oder allgemeine Fehler auftraten
+*/
 	void submit(XGResponse res) throws XGMessengerException;
 
+/**
+* übergibt fordert diesen Messenger zur Beantwortung des übergebenen Requests auf und muss die eventuell eingetroffene Antwort an die erfragende Source (req.getSource()) zurückliefern
+* @param req Anfrage zur Beantwortung
+* @exception XGMessengerException falls der Messenger nicht imstande ist, den Request zu beantworten oder allgemeine Fehler auftraten
+*/
 	void submit(XGRequest req) throws XGMessengerException;
 
 	@Override String toString();

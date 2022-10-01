@@ -14,8 +14,7 @@ import static xml.XMLNodeConstants.TAG_ITEM;
 
 public class XGDatafile extends File implements XGMessenger, XGLoggable
 {
-	public static XMLNode CONFIG;
-	public static XGProperty CURRENT_FILE = new XGProperty(TAG_ITEM, ""); 
+	public static XMLNode CONFIG; 
 
 	public static void init()
 	{	CONFIG = JXG.config.getChildNodeOrNew(XMLNodeConstants.TAG_FILES);
@@ -43,8 +42,8 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 					{	XGDatafileFilter filter = XGDatafileFilter.getFilter(file);
 						XGDatafile f = new XGDatafile(file, filter);
 						dumper.requestAll(f);
-						CURRENT_FILE.setValue(f.getName());
 						f.close();
+						JXG.CURRENT_CONTENT.setValue(f.getName());
 						CONFIG.removeChildNodesWithTextContent(TAG_ITEM, f.getAbsolutePath());
 						CONFIG.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
 						break;
@@ -111,8 +110,8 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 		{	XGDatafile df = new XGDatafile(file, filter);
 			dumper.transmitAll(df);
 			df.filter.write(df);
-			CURRENT_FILE.setValue(df.getName());
 			df.close();
+			JXG.CURRENT_CONTENT.setValue(df.getName());
 			CONFIG.removeChildNodesWithTextContent(TAG_ITEM, df.getAbsolutePath());
 			CONFIG.addChildNode(new XMLNode(TAG_ITEM, null, df.getAbsolutePath()));
 		}
@@ -136,17 +135,21 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 
 	@Override public String getMessengerName(){	return "File (" + this.getAbsolutePath() +")";}
 
-	@Override public void submit(XGResponse msg)
+	@Override public void submit(XGResponse msg)throws XGMessengerException
 	{	if(msg instanceof XGMessageBulkDump) this.buffer.add((XGMessageBulkDump)msg);
-		else LOG.warning(this + " can't handle " + msg);
+		else throw new XGMessengerException(this, msg);
 	}
 
 	@Override public void submit(XGRequest req)throws XGMessengerException
 	{	if(req instanceof XGMessageBulkRequest)
 		{	XGResponse response = this.buffer.get(req.getAddress());
-			if(req.setResponsedBy(response)) req.getSource().submit(response);
+//LOG.info(response.toHexString());
+			if(req.setResponsedBy(response))
+			{	req.getSource().submit(response);
+//LOG.info(response.toHexString());
+			}
 		}
-		else LOG.warning(this + " can't handle " + req);
+		else throw new XGMessengerException(this, req);
 	}
 
 	@Override public void close()

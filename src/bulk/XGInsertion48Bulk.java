@@ -13,7 +13,7 @@ public class XGInsertion48Bulk extends XGBulk
 	{	super(type, mod);
 	}
 
-	@Override public void submit(XGResponse res)
+	@Override public void submit(XGResponse res)throws XGMessengerException
 	{	if(this.isRequired()) super.submit(res);
 	}
 

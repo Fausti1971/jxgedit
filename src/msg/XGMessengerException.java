@@ -6,5 +6,12 @@ public class XGMessengerException extends Exception
 	{	super(msg);
 	}
 
-	private static final long serialVersionUID = 1L;
+/**
+* eine Messenger-Can't-Handle-Exception
+* @param messenger der die eigehende nachricht nicht verarbeiten kann
+* @param message welche vom angegebenen messenger nicht verarbeitet werden kann
+*/
+	public XGMessengerException(XGMessenger messenger, XGMessage message)
+	{	this(messenger + " can't handle " + message);
+	}
 }

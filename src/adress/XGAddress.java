@@ -17,6 +17,6 @@ public class XGAddress extends XGAddressRange implements Comparable<XGAddress>, 
 		return temp;
 	}
 
-	@Override public XGAddressRange getAddress(){	return this;}
+	@Override public XGAddress getAddress(){	return this;}
 
 }

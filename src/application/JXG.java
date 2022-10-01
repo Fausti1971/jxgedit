@@ -18,6 +18,7 @@ import xml.*;
 
 public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 {
+	public static XGProperty CURRENT_CONTENT = new XGProperty(TAG_ITEM, "empty");
 	static
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg

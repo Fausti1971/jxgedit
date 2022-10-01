@@ -2,7 +2,7 @@ package adress;
 
 public interface XGAddressable extends XGIdentifiable, XGAddressConstants
 {
-	XGAddressRange getAddress();
+	XGAddress getAddress();
 
 	default int getID()
 	{	try

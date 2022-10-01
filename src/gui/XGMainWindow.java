@@ -3,7 +3,7 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;import java.util.Collection;import java.util.NoSuchElementException;
 import javax.swing.*;
-import application.*;
+import adress.XGIdentifiable;import adress.XGIdentifiableSet;import application.*;
 import device.*;
 import file.XGDatafile;import static java.awt.BorderLayout.*;
 import module.*;
@@ -74,19 +74,20 @@ public class XGMainWindow extends XGWindow
 		JTabbedPane tabPane = new JTabbedPane();
 
 		for(XGModuleType mt : MODULE_TYPES)
-		{	Collection<XGModule> set = mt.getModules();
+		{	XGIdentifiableSet<XGModule> set = mt.getModules();
 			XGButton2 button;
 			if(set.size() == 1)
-			{	XGModule mod = (XGModule)set.toArray()[0];
-				XGValue v;
-				try
-				{	String infoTag = mt.getInfoTags().iterator().next();
-					v = mod.getValues().get(infoTag);
+			{	for(XGModule mod : set)//die forEach-Schleife dient lediglich dazu, den ersten Eintrag des Sets zu extrahieren
+				{	XGValue v = null;
+					for(String infoTag : mt.getInfoTags())//die forEach-Schleife dient lediglich dazu, den ersten Eintrag des Sets zu extrahieren
+					{	v = mod.getValues().get(infoTag);
+						break;
+					}
+					button = new XGButton2(mt.getName(), v);
+					button.addActionListener((ActionEvent e)->XGEditWindow.getEditWindow(mod).setVisible(true));
+					sysPane.add(button);
+					break;
 				}
-				catch(NoSuchElementException e){	v = null;}
-				button = new XGButton2(mt.getName(), v);
-				button.addActionListener((ActionEvent e)->XGEditWindow.getEditWindow(mod).setVisible(true));
-				sysPane.add(button);
 			}
 			if(set.size() > 1) tabPane.addTab(mt.getName(), new JScrollPane(new XGModuleTable(mt)));
 		}

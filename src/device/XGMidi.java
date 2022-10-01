@@ -210,7 +210,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 			if(m instanceof XGResponse)
 			{	XGResponse r = (XGResponse)m;
 				if(request != null && request.setResponsedBy(r))
-				{	request.getSource().submit(r);
+				{	//request.getSource().submit(r);
+					JXG.CURRENT_CONTENT.setValue("received from " + this);
 					requestThread.interrupt();
 				}
 				else
@@ -220,7 +221,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 			}
 			else LOG.info("unexpected message :" + m.toHexString());
 		}
-		catch(InvalidMidiDataException |  XGMessengerException e){	LOG.info(e.getMessage());}
+		catch(InvalidMidiDataException e){	LOG.info(e.getMessage());}
 	}
 
 	@Override public boolean equals(Object o)

@@ -53,28 +53,41 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 
 	private void setMessage(XGMessageBulkDump m)
 	{	this.message = m;
-		for(XGValue v : this.values) v.contentChanged(v);
+//LOG.info(m.toHexString());
+		for(XGValue v : this.values)
+		{	v.contentChanged(v);
+if(v.getModule().getTag().equals("var"))
+	LOG.info(v.getTag() + ": " + v.getInfo());
+//TODO: da der erste Var-Parameter (var_program) für alle MutableParameters der defaultsSelector ist wird bei dessen setzen ein setDefaultValue() ausgelöst,
+// was alle Bytes im Array der Message zurücksetzt 
+		}
+//LOG.info(m.toHexString());
+
 	}
 
-	public XGMessageBulkDump getMessage()
-	{	this.message.setChecksum();	//TODO: wahrscheinlich zu häufig gerufen, zukünftig lieber auf XGByteArray basieren...
+	public XGMessageBulkDump getCheckedMessage()
+	{	this.message.setChecksum();
 		return this.message;
 	}
+
+	public XGMessageBulkDump getUncheckedMessage(){	return this.message;}
 
 /**
 * returniert die Bulkadresse, d.h. lo ist nicht fixed! für fixed Adresse nimm bulk.getMessage().getAddress()
 */
 	@Override public XGAddress getAddress(){	return this.address;}
 
-	@Override public void submit(XGResponse res)
-	{	if(res instanceof XGMessageBulkDump) this.setMessage((XGMessageBulkDump)res);
-		else LOG.warning(this + " can't handle " + res);
+	@Override public void submit(XGResponse res)throws XGMessengerException
+	{	if(res instanceof XGMessageBulkDump)
+		{	this.setMessage((XGMessageBulkDump)res);
+		}
+		else throw new XGMessengerException(this, res);
 	}
 
 	@Override public void submit(XGRequest req) throws XGMessengerException
 	{	if(req instanceof XGMessageBulkRequest)
-			if(req.setResponsedBy(this.message)) req.getSource().submit(this.message);
-		else LOG.warning(this + " can't handle " + req);
+			if(req.setResponsedBy(this.message)) req.getSource().submit(this.getCheckedMessage());
+		else throw new XGMessengerException(this, req);
 	}
 
 	@Override public void close(){}

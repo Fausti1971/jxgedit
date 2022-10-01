@@ -127,12 +127,12 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		XGProgramBuffer.reset();
 	}
 
-	@Override public void submit(XGResponse msg)
-	{	LOG.info("not implemented yet...");//TODO: finde bulk oder value anhand der adresse und übergebe msg
+	@Override public void submit(XGResponse msg)throws XGMessengerException
+	{	throw new XGMessengerException(this, msg);//TODO: finde bulk oder value anhand der adresse und übergebe msg
 	}
 
-	public void submit(XGRequest req)
-	{	LOG.info("not implemented yet...");//TODO: finde bulk oder value anhand der adresse, erfrage und beantworte req
+	public void submit(XGRequest req)throws XGMessengerException
+	{	throw new XGMessengerException(this, req);//TODO: finde bulk oder value anhand der adresse, erfrage und beantworte req
 	}
 
 	@Override public String toString(){	return this.getName().getValue().toString();}

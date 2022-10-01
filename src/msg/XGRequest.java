@@ -11,7 +11,7 @@ public abstract class XGRequest extends XGSuperMessage
 	}
 
 /**
- * überprüft, ob die übergebene Message eine Antwort auf diesen XGRequest ist, setzt und returniert das Ergebnis;
+ * überprüft, ob die übergebene Message eine Antwort auf diesen XGRequest ist, setzt diese im Request und returniert das Ergebnis;
  * @param res vermeintliche Antwort
  * @return true, wenn dieser XGRequest mit der übergebenen XGResponse beantwortet ist;
  */
