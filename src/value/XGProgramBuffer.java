@@ -16,18 +16,18 @@ public interface XGProgramBuffer
 * Puffert den Wert des Programms (prg.getValue()) in den internen Cache
 */
 	static void changeProgram(XGValue program)
-	{	XGValue partmode = program.getBulk().getValues().get(MP_PM_VALUE_TAG);
+	{	XGValue partmode = program.getModule().getValues().get(MP_PM_VALUE_TAG);
+
 		int pm = partmode.getValue();
 		int prg = program.getValue();
-		try
-		{	int mp = program.getAddress().getMid().getValue();
-			switch(pm)
-			{	case 0:		normalPrograms.put(mp, prg); break;
-				case 1:		drumkitPrograms.put(mp, prg); break;
-				default:	DRUMSETS.get(pm).setProgram(prg); break;
-			}
+		int mp = program.getAddress().getID();
+		switch(pm)
+		{	case 0:		normalPrograms.put(mp, prg); break;
+			case 1:		drumkitPrograms.put(mp, prg); break;
+			default:	DRUMSETS.get(pm).setProgram(prg); break;
 		}
-		catch(InvalidXGAddressException e){	e.printStackTrace();}
+//TODO: 
+
 	}
 
 /**
@@ -36,16 +36,15 @@ public interface XGProgramBuffer
 	static void changePartmode(XGValue partmode)
 	{	XGValue prg = partmode.getBulk().getValues().get(MP_PRG_VALUE_TAG);
 		int pm = partmode.getValue();
-		try
-		{	int mp = prg.getAddress().getMid().getValue();
+		int mp = prg.getAddress().getMidValue();
 			switch(pm)
 			{	case 0:		prg.setValue(normalPrograms.getOrDefault(mp, 0), false, false); break;
 				case 1:		prg.setValue(drumkitPrograms.getOrDefault(mp, DEF_DRUMSETPROGRAM), false, false); break;
 				default:	prg.setValue(DRUMSETS.get(pm).getProgram(), false, false); break;
 			}
+//TODO: beim sequentiellen Abarbeiten eines Bulks wird erst das Program (Offset 1...3) und danach der Partmode (Offset 7) gesetzt
+// und damit das Program zurückgesetzt auf den veralteten Inhalt des Puffers
 		}
-		catch(InvalidXGAddressException e){	e.printStackTrace();}
-	}
 
 	static void reset()
 	{	normalPrograms.clear();

@@ -29,15 +29,13 @@ public interface XGBulkDumper extends XGLoggable
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
 		{	try
-			{	//b.transmit(dest);
-				dest.submit(b.getCheckedMessage());
-
+			{	dest.submit(b.getMessage());
 				pm.setNote(b.toString());
 				pm.setProgress(++transmitted);
 //				LOG.info(b + " transmitted");
 				if(pm.isCanceled()) break;
 			}
-			catch( XGMessengerException e)
+			catch( XGMessengerException | InvalidMidiDataException e)
 			{	LOG.severe(e.getMessage());
 				JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, e.getMessage());
 			}
