@@ -2,11 +2,13 @@ package value;
 
 import java.util.HashMap;
 import java.util.Map;
-import adress.InvalidXGAddressException;import static module.XGDrumsetModuleType.*;import static table.XGDefaultsTable.DEF_DRUMSETPROGRAM;import static value.XGValueType.MP_PM_VALUE_TAG;import static value.XGValueType.MP_PRG_VALUE_TAG;
+import static module.XGDrumsetModuleType.*;
+import static table.XGDefaultsTable.DEF_DRUMSETPROGRAM;
+import static value.XGValueType.MP_PM_VALUE_TAG;
+import static value.XGValueType.MP_PRG_VALUE_TAG;
 /**
 * Puffert je Multipart ein normal- und ein drumkit-Program und je Partmode ein drumsetProgram und synchronisiert diese bei Änderung
 */
-
 public interface XGProgramBuffer
 {
 	Map<Integer, Integer> normalPrograms = new HashMap<>();//mp-id (partmode = 0), prog
@@ -20,7 +22,7 @@ public interface XGProgramBuffer
 
 		int pm = partmode.getValue();
 		int prg = program.getValue();
-		int mp = program.getAddress().getID();
+		int mp = program.getID();
 		switch(pm)
 		{	case 0:		normalPrograms.put(mp, prg); break;
 			case 1:		drumkitPrograms.put(mp, prg); break;
@@ -36,7 +38,7 @@ public interface XGProgramBuffer
 	static void changePartmode(XGValue partmode)
 	{	XGValue prg = partmode.getBulk().getValues().get(MP_PRG_VALUE_TAG);
 		int pm = partmode.getValue();
-		int mp = prg.getAddress().getMidValue();
+		int mp = prg.getID();
 			switch(pm)
 			{	case 0:		prg.setValue(normalPrograms.getOrDefault(mp, 0), false, false); break;
 				case 1:		prg.setValue(drumkitPrograms.getOrDefault(mp, DEF_DRUMSETPROGRAM), false, false); break;

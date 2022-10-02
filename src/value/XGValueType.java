@@ -1,8 +1,8 @@
 package value;
 
-import java.util.function.Consumer;
+import java.util.LinkedHashMap;import java.util.Map;import java.util.Vector;import java.util.function.Consumer;
 import adress.*;
-import bulk.XGBulkType;import config.XGConfigurable;
+import application.XGStrings;import bulk.XGBulkType;import config.XGConfigurable;
 import application.XGLoggable;
 import msg.XGMessageCodec;
 import tag.*;
@@ -10,7 +10,16 @@ import xml.XGProperty;import xml.XMLNode;
 
 public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 {
-	enum SendAction{change,dump,none}
+//	enum ValueAction{change,change_program,change_partmode,dump,none}
+	static Map<String, Consumer<XGValue>> ACTIONS = new LinkedHashMap<>();
+	static
+	{	ACTIONS.put(ATTR_CHANGE_ACTION, XGValue::sendAction);
+		ACTIONS.put(ATTR_CHANGE_PROGRAM_ACTION, XGProgramBuffer::changeProgram);
+		ACTIONS.put(ATTR_CHANGE_PARTMODE_ACTION, XGProgramBuffer::changePartmode);
+		ACTIONS.put(ATTR_DUMP_ACTION, XGValue::dumpAction);
+		ACTIONS.put(ATTR_NONE_ACTION, XGValue::noneAction);
+	}
+	
 //	static final SendAction DEF_ACTION = SendAction.none;
 
 /**
@@ -24,7 +33,9 @@ public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 
 	public static final String
 		MP_PRG_VALUE_TAG = "mp_program",
-		MP_PM_VALUE_TAG = "mp_partmode";
+		MP_PM_VALUE_TAG = "mp_partmode",
+		DS_PRG_VALUE_TAG = "ds_program",
+		ID_VALUE_TAG = ATTR_ID;
 
 /*******************************************************************************************************************************/
 
@@ -33,7 +44,7 @@ public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 	final int lo, size;
 	final String tag, parameterSelectorTag, defaultSelectorTag;
 	final String parameterTableName, defaultsTableName;
-	final Consumer<XGValue> action;
+	final Vector<Consumer<XGValue>> actions = new Vector<>();
 	final XGMessageCodec codec;
 
 
@@ -51,12 +62,8 @@ public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 		this.parameterTableName = n.getStringAttribute(ATTR_PARAMETERTABLE);
 		this.defaultSelectorTag = n.getStringAttribute(ATTR_DEFAULTSELECTOR);
 		this.defaultsTableName = n.getStringAttribute(ATTR_DEFAULTSTABLE);
-		switch(SendAction.valueOf(n.getStringAttribute(ATTR_ACTIONS)))
-		{	case change:	this.action = XGValue::sendAction; break;
-			case dump:		this.action = XGValue::dumpAction; break;
-			case none:
-			default:		this.action = XGValue::noneAction; break;
-		}
+		for(String s : XGStrings.splitCSV(n.getStringAttribute(ATTR_ACTIONS)))
+			this.actions.add(ACTIONS.getOrDefault(s, XGValue::noneAction));
 	}
 
 	public int getSize(){	return this.size;}

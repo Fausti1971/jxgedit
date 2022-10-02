@@ -1,6 +1,6 @@
 package value;
 import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.Set;import java.util.function.Consumer;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
 import application.XGLoggable;
@@ -98,8 +98,8 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 
 	public void initDepencies() throws InvalidXGAddressException
 	{
-		if(XGValueType.MP_PRG_VALUE_TAG.equals(this.getTag())) this.valueListeners.add(XGProgramBuffer::changeProgram);
-		if(XGValueType.MP_PM_VALUE_TAG.equals(this.getTag())) this.valueListeners.add(XGProgramBuffer::changePartmode);
+//		if(XGValueType.MP_PRG_VALUE_TAG.equals(this.getTag())) this.valueListeners.add(XGProgramBuffer::changeProgram);
+//		if(XGValueType.MP_PM_VALUE_TAG.equals(this.getTag())) this.valueListeners.add(XGProgramBuffer::changePartmode);
 
 		if(this.type.hasMutableParameters())
 		{	XGValue psv = this.bulk.getModule().getValues().get(this.type.parameterSelectorTag);
@@ -206,7 +206,9 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		this.value = v;
 		if(this.hasChanged())
 		{	this.notifyValueListeners(this);
-			if(action) this.type.action.accept(this);
+			if(action)
+			{	for(Consumer<XGValue> c : this.type.actions) c.accept(this);
+			}
 		}
 	}
 

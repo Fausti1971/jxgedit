@@ -86,6 +86,11 @@ public interface XMLNodeConstants
 		ATTR_UNIT = "unit",
 		ATTR_ORIGIN = "origin",
 		ATTR_ACTIONS = "actions",
+		ATTR_CHANGE_ACTION = "change",
+		ATTR_DUMP_ACTION = "dump",
+		ATTR_CHANGE_PROGRAM_ACTION = "change_program",
+		ATTR_CHANGE_PARTMODE_ACTION = "change_partmode",
+		ATTR_NONE_ACTION = "none",
 
 		TAG_TABLE = "table",
 		TAG_ITEM = "item",
