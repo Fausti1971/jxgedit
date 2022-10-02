@@ -14,8 +14,8 @@ public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 	static Map<String, Consumer<XGValue>> ACTIONS = new LinkedHashMap<>();
 	static
 	{	ACTIONS.put(ATTR_CHANGE_ACTION, XGValue::sendAction);
-		ACTIONS.put(ATTR_CHANGE_PROGRAM_ACTION, XGProgramBuffer::changeProgram);
-		ACTIONS.put(ATTR_CHANGE_PARTMODE_ACTION, XGProgramBuffer::changePartmode);
+		ACTIONS.put(ATTR_CHANGE_PROGRAM_ACTION, XGProgramBuffer::bufferProgram);
+		ACTIONS.put(ATTR_CHANGE_PARTMODE_ACTION, XGProgramBuffer::restoreProgram);
 		ACTIONS.put(ATTR_DUMP_ACTION, XGValue::dumpAction);
 		ACTIONS.put(ATTR_NONE_ACTION, XGValue::noneAction);
 	}

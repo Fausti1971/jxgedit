@@ -179,22 +179,37 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 
 	public void transmit(MidiMessage mm){	this.transmitter.send(mm, -1L);}
 
-	@Override public void submit(XGResponse m) throws XGMessengerException
-	{	if(this.transmitter == null) throw new XGMessengerException("no transmitter initialized!");
-		if(m == null)throw new XGMessengerException("message was null");
-		int timeout = 0;
-		m.setTimeStamp();
-//Note to XG Data Writers: If sending consecutive bulk dumps, leave an interval of about 10ms between the F7 and the next F0.
-		if(m instanceof XGMessageBulkDump) timeout = 10;
+	@Override public void submit(XGMessageBulkDump m) throws XGMessengerException
+	{	this.checkMessage(m);
 		this.transmitter.send((MidiMessage)m, -1L);
-		try{	Thread.sleep(timeout);}
+//Note to XG Data Writers: If sending consecutive bulk dumps, leave an interval of about 10ms between the F7 and the next F0.
+		try
+		{	Thread.sleep(10);
+		}
 		catch(InterruptedException ignored){}
 	}
 
-	@Override public void submit(XGRequest req) throws XGMessengerException
+	@Override public void submit(XGMessageParameterChange m) throws XGMessengerException
+	{	this.checkMessage(m);
+		this.transmitter.send((MidiMessage)m, -1L);
+	}
+
+	@Override public void submit(XGMessageBulkRequest req) throws XGMessengerException
+	{	this.request(req);
+	}
+
+	@Override public void submit(XGMessageParameterRequest req) throws XGMessengerException
+	{	this.request(req);
+	}
+
+	private void checkMessage(XGMessage msg) throws XGMessengerException
 	{	if(this.transmitter == null) throw new XGMessengerException("no transmitter initialized!");
-		if(req == null) throw new XGMessengerException("message was null");
-		req.setTimeStamp();
+		if(msg == null) throw new XGMessengerException("message was null");
+		msg.setTimeStamp();
+	}
+
+	private void request(XGRequest req) throws XGMessengerException
+	{	this.checkMessage(req);
 		request = req;
 		requestThread = Thread.currentThread();
 		this.transmitter.send(req, -1L);

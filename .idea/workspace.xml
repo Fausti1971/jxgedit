@@ -12,10 +12,17 @@
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGInsertion48Bulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGInsertion48Bulk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGMidiRequestQueue.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/file/XGDatafile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGDatafile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessenger.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/value/XGValueType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValueType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -247,13 +254,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00006" summary="Table begonnen; Backup vor (Wieder-)Einführung von ID-Tags;">
-      <created>1615054222226</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1615054222226</updated>
     </task>
     <task id="LOCAL-00007" summary="Backup vor Umbau Hierarchie;">
       <created>1615140636150</created>
@@ -591,7 +591,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664661169500</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="Bugfix durch Umzug von change_program und change_partmode nach XGValueType.actions; Nacharbeit erforderlich;">
+      <created>1664672901767</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1664672901767</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -705,7 +712,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Knobbehavior optimized; XGSlider debugged; XGRangeLabel now private;" />
     <MESSAGE value="Insertion word-address workaround implemented;" />
     <MESSAGE value="XML-Resource now in /rsc/[dev]/*.xml" />
     <MESSAGE value="XGInsertion48Bulk als Workaround eingebaut;" />
@@ -730,7 +736,8 @@
     <MESSAGE value="Midifile-Support implemented; Kosmetik" />
     <MESSAGE value="Kosmetik, Fehlerbehebung; Backup vor Behebung Design-Bug (XGBulk.setMessage());" />
     <MESSAGE value="den neuen Bug wieder gegen den alten getauscht (XGProgramBuffer.changePartmode())" />
-    <option name="LAST_COMMIT_MESSAGE" value="den neuen Bug wieder gegen den alten getauscht (XGProgramBuffer.changePartmode())" />
+    <MESSAGE value="Bugfix durch Umzug von change_program und change_partmode nach XGValueType.actions; Nacharbeit erforderlich;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfix durch Umzug von change_program und change_partmode nach XGValueType.actions; Nacharbeit erforderlich;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

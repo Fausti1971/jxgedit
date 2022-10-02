@@ -276,15 +276,20 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		else return "no parameter info";
 	}
 
-	@Override public void submit(XGResponse res) throws XGMessengerException
-	{	int offset = res.getBaseOffset();
-		if(res instanceof XGMessageBulkDump)
-		{	offset += (this.address.getLoValue() - res.getAddress().getLoValue());
-		}
+	@Override public void submit(XGMessageBulkDump res) throws XGMessengerException
+	{	int offset = res.getBaseOffset() + this.address.getLoValue() - res.getAddress().getLoValue();
 		this.setValue(this.type.codec.decode(res, offset, this.getSize()), false, false);
 	}
 
-	public void submit(XGRequest req)throws XGMessengerException
+	@Override public void submit(XGMessageParameterChange res) throws XGMessengerException
+	{	this.setValue(this.type.codec.decode(res, res.getBaseOffset(), this.getSize()), false, false);
+	}
+
+	public void submit(XGMessageBulkRequest req)throws XGMessengerException
+	{	throw new XGMessengerException(this, req);
+	}
+
+	public void submit(XGMessageParameterRequest req)throws XGMessengerException
 	{	throw new XGMessengerException(this, req);
 	}
 

@@ -68,7 +68,7 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 			//m = new SysexMessage();
 			//m.setMessage(msg, msg.length);
 			//XGMidi.getMidi().transmit(m);
-			XGRequest m = new XGMessageBulkRequest(this, XGAddressConstants.XGMODELNAMEADRESS);
+			XGMessageBulkRequest m = new XGMessageBulkRequest(this, XGAddressConstants.XGMODELNAMEADRESS);
 			XGMidi.getMidi().submit(m);
 			if(m.isResponsed())
 			{	XGResponse r = m.getResponse();
@@ -127,12 +127,20 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		XGProgramBuffer.reset();
 	}
 
-	@Override public void submit(XGResponse msg)throws XGMessengerException
-	{	throw new XGMessengerException(this, msg);//TODO: finde bulk oder value anhand der adresse und übergebe msg
+	@Override public void submit(XGMessageBulkDump msg)throws XGMessengerException
+	{	throw new XGMessengerException(this, msg);//TODO: finde bulk anhand der adresse und übergebe msg
 	}
 
-	public void submit(XGRequest req)throws XGMessengerException
-	{	throw new XGMessengerException(this, req);//TODO: finde bulk oder value anhand der adresse, erfrage und beantworte req
+	@Override public void submit(XGMessageParameterChange msg)throws XGMessengerException
+	{	throw new XGMessengerException(this, msg);//TODO: finde parameter anhand der adresse und übergebe msg
+	}
+
+	@Override public void submit(XGMessageBulkRequest req)throws XGMessengerException
+	{	throw new XGMessengerException(this, req);//TODO: finde bulk anhand der adresse, erfrage und beantworte req
+	}
+
+	@Override public void submit(XGMessageParameterRequest req)throws XGMessengerException
+	{	throw new XGMessengerException(this, req);//TODO: finde parameter anhand der adresse, erfrage und beantworte req
 	}
 
 	@Override public String toString(){	return this.getName().getValue().toString();}

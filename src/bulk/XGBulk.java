@@ -32,17 +32,6 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 
 	public int getSize(){	return this.type.addressRange.getLo().getSize();}
 
-	//public void transmit(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException
-	//{	dest.submit(this.message);
-	//	this.message.setChecksum();
-	//	}
-
-	//public boolean request(XGMessenger dest)throws XGMessengerException, InvalidXGAddressException, InvalidMidiDataException
-	//{	XGMessageBulkRequest request = new XGMessageBulkRequest(this, this);
-	//	dest.submit(request);
-	//	return request.isResponsed();
-	//}
-
 	@Override public String getTag(){	return this.type.getTag();}
 
 	public XGTagableAddressableSet<XGValue> getValues(){	return this.values;}
@@ -61,27 +50,27 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 
 	@Override public XGAddress getAddress(){	return this.address;}
 
-	@Override public void submit(XGResponse res)throws XGMessengerException
-	{	if(res instanceof XGMessageParameterChange) this.values.get(res.getAddress()).submit(res);
-		else if(res instanceof XGMessageBulkDump)
-			for(XGValue v : this.values)
-				v.submit(res);
-
-		else throw new XGMessengerException(this, res);
+	@Override public void submit(XGMessageParameterChange res)throws XGMessengerException
+	{	this.values.get(res.getAddress()).submit(res);
 	}
 
-	@Override public void submit(XGRequest req) throws XGMessengerException
-	{	if(req instanceof XGMessageBulkRequest)
-		{	try
-			{	XGMessageBulkDump res = this.getMessage();
-				if(req.setResponsedBy(res)) req.getSource().submit(res);
-			}
-			catch(InvalidMidiDataException e)
-			{	throw new XGMessengerException(e.getMessage());
-			}
+	@Override public void submit(XGMessageBulkDump res)throws XGMessengerException
+	{	for(XGValue v : this.values)
+			v.submit(res);
+	}
+
+	@Override public void submit(XGMessageBulkRequest req) throws XGMessengerException
+	{	try
+		{	XGMessageBulkDump res = this.getMessage();
+			if(req.setResponsedBy(res)) req.getSource().submit(res);
 		}
-		else if(req instanceof XGMessageParameterRequest) this.values.get(req.getAddress()).submit(req);
-		else throw new XGMessengerException(this, req);
+		catch(InvalidMidiDataException e)
+		{	throw new XGMessengerException(e.getMessage());
+		}
+	}
+
+	@Override public void submit(XGMessageParameterRequest req) throws XGMessengerException
+	{	this.values.get(req.getAddress()).submit(req);
 	}
 
 	@Override public void close(){}

@@ -82,7 +82,9 @@ public class XGDrumsetModuleType extends XGModuleType
 
 	public void setProgram(int prg)
 	{	this.program = prg;
-		for(XGModule mod : this.getMultiparts()){	mod.getValues().get(MP_PRG_VALUE_TAG).setValue(prg, false, false);}
+		for(XGModule mod : this.getMultiparts())
+		{	mod.getValues().get(MP_PRG_VALUE_TAG).setValue(prg, false, false);
+		}
 		this.programListener.notifyValueListeners(this.programListener);
 	}
 

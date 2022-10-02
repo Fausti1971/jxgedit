@@ -17,7 +17,7 @@ public interface XGProgramBuffer
 /**
 * Puffert den Wert des Programms (prg.getValue()) in den internen Cache
 */
-	static void changeProgram(XGValue program)
+	static void bufferProgram(XGValue program)
 	{	XGValue partmode = program.getModule().getValues().get(MP_PM_VALUE_TAG);
 
 		int pm = partmode.getValue();
@@ -28,14 +28,12 @@ public interface XGProgramBuffer
 			case 1:		drumkitPrograms.put(mp, prg); break;
 			default:	DRUMSETS.get(pm).setProgram(prg); break;
 		}
-//TODO: 
-
 	}
 
 /**
 * Restauriert den Wert des Programms für den angegebenen Partmode (partmode) aus dem internen Chache
 */
-	static void changePartmode(XGValue partmode)
+	static void restoreProgram(XGValue partmode)
 	{	XGValue prg = partmode.getBulk().getValues().get(MP_PRG_VALUE_TAG);
 		int pm = partmode.getValue();
 		int mp = prg.getID();
@@ -44,8 +42,6 @@ public interface XGProgramBuffer
 				case 1:		prg.setValue(drumkitPrograms.getOrDefault(mp, DEF_DRUMSETPROGRAM), false, false); break;
 				default:	prg.setValue(DRUMSETS.get(pm).getProgram(), false, false); break;
 			}
-//TODO: beim sequentiellen Abarbeiten eines Bulks wird erst das Program (Offset 1...3) und danach der Partmode (Offset 7) gesetzt
-// und damit das Program zurückgesetzt auf den veralteten Inhalt des Puffers
 		}
 
 	static void reset()

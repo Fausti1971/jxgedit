@@ -135,21 +135,23 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 
 	@Override public String getMessengerName(){	return "File (" + this.getAbsolutePath() +")";}
 
-	@Override public void submit(XGResponse msg)throws XGMessengerException
-	{	if(msg instanceof XGMessageBulkDump) this.buffer.add((XGMessageBulkDump)msg);
-		else throw new XGMessengerException(this, msg);
+	@Override public void submit(XGMessageBulkDump msg)throws XGMessengerException
+	{	this.buffer.add(msg);
 	}
 
-	@Override public void submit(XGRequest req)throws XGMessengerException
-	{	if(req instanceof XGMessageBulkRequest)
-		{	XGResponse response = this.buffer.get(req.getAddress());
-//LOG.info(response.toHexString());
-			if(req.setResponsedBy(response))
-			{	req.getSource().submit(response);
-//LOG.info(response.toHexString());
-			}
+	@Override public void submit(XGMessageParameterChange msg)throws XGMessengerException
+	{	throw new XGMessengerException(this, msg);
+	}
+
+	@Override public void submit(XGMessageBulkRequest req)throws XGMessengerException
+	{	XGMessageBulkDump response = this.buffer.get(req.getAddress());
+		if(req.setResponsedBy(response))
+		{	req.getSource().submit(response);
 		}
-		else throw new XGMessengerException(this, req);
+	}
+
+	@Override public void submit(XGMessageParameterRequest msg)throws XGMessengerException
+	{	throw new XGMessengerException(this, msg);
 	}
 
 	@Override public void close()
