@@ -117,6 +117,8 @@ public class XGVirtualTable implements XGTable
 
 	@Override public XGTable filter(XMLNode n){	return this;}
 
+	@Override public XGTable filter(String filter){	return this;}
+
 	@Override public int size(){	return (this.maxValue - this.minValue) + 1;}
 
 	@Override public String getName(){	return this.name;}

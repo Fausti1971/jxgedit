@@ -7,29 +7,26 @@ import javax.swing.tree.TreePath;
 import table.XGTable;
 import table.XGTableEntry;
 
-public class XGTableTreeModel implements TreeModel
+public class XGFlattenTableTreeModel implements TreeModel
 {
 	/******************************************************************************************************/
 
 	private final DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
 	private final XGTable table;
 
-	public XGTableTreeModel(XGTable tab)
+	public XGFlattenTableTreeModel(XGTable tab)
 	{	this.table = tab;
 	}
 
 	@Override public Object getRoot(){	return this.root;}
 
 	@Override public Object getChild(Object parent, int index)
-	{	if(parent == this.root) return this.table.getCategories().toArray()[index];
-		if(parent instanceof String) return this.table.categorize((String)parent).getByIndex(index);
+	{	if(parent == this.root) return this.table.getByIndex(index);
 		return parent;
 	}
 
 	@Override public int getChildCount(Object parent)
-	{	if(parent == this.root) return this.table.getCategories().size();
-		if(parent instanceof XGTableEntry) return 0;
-		if(parent instanceof String) return this.table.categorize((String)parent).size();
+	{	if(parent == this.root) return this.table.size();
 		return 0;
 	}
 

@@ -131,6 +131,13 @@ public class XGRealTable implements XGTable, XMLNodeConstants
 		return table;
 	}
 
+	@Override public XGRealTable filter(String filter)
+	{	String f = filter.toLowerCase();
+		XGRealTable table = new XGRealTable(this.name + "-" + filter, this.unit, this.fallbackMask, this.sort);
+		for(XGTableEntry e : this) if(e.getName().toLowerCase().contains(f)) table.add(e);
+		return table;
+	}
+
 	@Override public String getName(){	return this.name;}
 
 	@Override public String getUnit(){	return this.unit;}

@@ -3,13 +3,13 @@ package gui;
 import java.awt.*;
 import java.awt.event.*;import java.util.Objects;
 import javax.swing.*;
-import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.DocumentEvent;import javax.swing.event.DocumentListener;import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreePath;
+import javax.swing.text.BadLocationException;import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeSelectionModel;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
-import table.XGTableEntry;
+import table.XGTable;import table.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 
@@ -73,19 +73,29 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 
 /************************************************************************************************************************/
 
-	private class XGProgramSelectorWindow extends XGWindow implements TreeSelectionListener
+	private class XGProgramSelectorWindow extends XGWindow implements TreeSelectionListener, DocumentListener
 	{	final XGProgramSelector selector;
+		private final XGTable table;
+		private XGTable filteredTable;
 		private JTree tree;
-	
+		private final JTextField filterBar = new JTextField();
+
 		XGProgramSelectorWindow(XGProgramSelector selector)
 		{	super(selector.value.getTag());
 			this.selector = selector;
+			this.table = this.filteredTable = this.selector.value.getParameter().getTranslationTable();
+
+			this.setLayout(new BorderLayout());
 			this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-			this.setContentPane(new JScrollPane(this.createContent()));
+
+			this.filterBar.getDocument().addDocumentListener(this);
+			this.add(this.filterBar, BorderLayout.NORTH);
+			this.add(new JScrollPane(this.createContent()), BorderLayout.CENTER);
+//			this.setContentPane(new JScrollPane(this.createContent()));
 		}
 
 		JComponent createContent()
-		{	XGTableTreeModel model = new XGTableTreeModel(this.selector.value.getParameter().getTranslationTable());
+		{	XGCategorizedTableTreeModel model = new XGCategorizedTableTreeModel(this.table);
 			this.tree = new JTree(model);
 
 			this.tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -125,6 +135,42 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		@Override public void windowDeactivated(WindowEvent e)
 		{	super.windowDeactivated(e);
 			this.setVisible(false);
+		}
+
+		@Override public void insertUpdate(DocumentEvent event)
+		{	try
+			{	String s = event.getDocument().getText(0, event.getDocument().getLength());
+				this.filteredTable = this.filteredTable.filter(s);
+				this.tree.setModel(new XGFlattenTableTreeModel(this.filteredTable));
+			}
+			catch(BadLocationException e)
+			{	LOG.info(e.getMessage());
+				this.filteredTable = this.table;
+				this.tree.setModel(new XGCategorizedTableTreeModel(this.filteredTable));
+			}
+		}
+
+		@Override public void removeUpdate(DocumentEvent event)
+		{	try
+			{	String s = event.getDocument().getText(0, event.getDocument().getLength());
+				if(s.isEmpty())
+				{	this.filteredTable = this.table;
+					this.tree.setModel(new XGCategorizedTableTreeModel(this.filteredTable));
+				}
+				else
+				{	this.filteredTable = this.table.filter(s);
+					this.tree.setModel(new XGFlattenTableTreeModel(this.filteredTable));
+				}
+			}
+			catch(BadLocationException e)
+			{	LOG.info(e.getMessage());
+				this.filteredTable = this.table;
+				this.tree.setModel(new XGCategorizedTableTreeModel(this.filteredTable));
+			}
+		}
+
+		@Override public void changedUpdate(DocumentEvent event)
+		{	LOG.info(event.getDocument().toString());
 		}
 	}
 }

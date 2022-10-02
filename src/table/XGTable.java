@@ -49,7 +49,8 @@ public interface XGTable extends XGLoggable, XGTableConstants, XGTagable, Iterab
 	int getMaxIndex();
 	XGTable categorize(String cat);
 	Set<String> getCategories();
-	XGTable filter(XMLNode n);
+	XGTable filter(XMLNode node);
+	XGTable filter(String filter);
 	String getName();
 	String getUnit();
 	int size();
