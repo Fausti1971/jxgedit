@@ -9,7 +9,7 @@ import xml.XMLNode;import static xml.XMLNodeConstants.TAG_TABLE;import static xm
 
 public interface XGTable extends XGLoggable, XGTableConstants, XGTagable, Iterable<XGTableEntry>
 {
-	Set<Integer> FX_MSB_PROGRAMS = new HashSet<>();//wird während der XGRealTable-Initialisierung durch XGEntry (mit programmvalues, die das Attribut address="word" besitzen) befüllt;
+	Set<Integer> INS_MSB_PROGRAMS = new HashSet<>();//wird während der XGRealTable-Initialisierung durch XGEntry (mit programmvalues, die das Attribut address="word" besitzen) befüllt;
 	XGTagableSet<XGTable> TABLES = new XGTagableSet<>();
 	int DEF_FALLBACKMASK = 127;
 

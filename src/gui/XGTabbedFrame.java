@@ -3,7 +3,7 @@ package gui;
 import xml.XMLNode;import javax.swing.*;import java.awt.*;
 
 public class XGTabbedFrame extends JTabbedPane
-{	
+{
 	public XGTabbedFrame(XMLNode node)
 	{	super(JTabbedPane.TOP, JTabbedPane.SCROLL_TAB_LAYOUT);
 	}

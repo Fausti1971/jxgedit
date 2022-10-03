@@ -53,6 +53,7 @@ public interface XMLNodeConstants
 		ATTR_NAME = "name",
 
 		TAG_BULK = "bulk",
+		TAG_INS48 = "ins48",
 
 		TAG_OPCODE = "opcode",
 		ATTR_DATATYPE = "byteType",
@@ -96,6 +97,7 @@ public interface XMLNodeConstants
 		TAG_ITEM = "item",
 		ATTR_VALUE = "value",
 		ATTR_SELECTORVALUE = "selectorValue",
+		ATTR_INS_MSB = "ins_msb_required",
 
 		TAG_TEMPLATE="template",
 		ATTR_VALUE_TAG = "value_tag",

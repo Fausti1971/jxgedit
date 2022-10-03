@@ -5,13 +5,13 @@ import adress.XGAddress;import adress.XGAddressRange;import adress.XGAddressable
 import application.XGLoggable;import module.XGModule;import msg.*;
 import tag.XGTagable;
 import tag.XGTagableAddressableSet;
-import value.XGValue;
+import value.XGValue;import static xml.XMLNodeConstants.TAG_INS48;
 import javax.sound.midi.InvalidMidiDataException;
 
 public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 {
 	public static XGBulk newBulk(XGBulkType type, XGModule mod)throws InvalidMidiDataException, InvalidXGAddressException
-	{	if(type.tag.equals("ins48")) return new XGInsertion48Bulk(type, mod);
+	{	if(type.tag.equals(TAG_INS48)) return new XGInsertion48Bulk(type, mod);
 		else return new XGBulk(type, mod);
 	}
 
