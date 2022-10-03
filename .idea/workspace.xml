@@ -12,14 +12,7 @@
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulk.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bulk/XGInsertion48Bulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGInsertion48Bulk.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGTab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGTab.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGTabbedFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGTabbedFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/table/XGTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/table/XGTableEntry.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGTableEntry.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -254,13 +247,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00009" summary="alpha1">
-      <created>1623763541003</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1623763541003</updated>
     </task>
     <task id="LOCAL-00010" summary="alpha1">
       <created>1623763896676</created>
@@ -598,7 +584,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664745511995</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="Insertion48-Workaround verbessert;">
+      <created>1664826526554</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1664826526555</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -712,7 +705,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="XGInsertion48Bulk als Workaround eingebaut;" />
     <MESSAGE value="Umzug FX_MSB_PROGRAMS nach XGTable;" />
     <MESSAGE value="optionale &lt;init_message&gt; in &lt;device&gt; config.xml eingebaut (noch ohne GUI);" />
     <MESSAGE value="Kosmetik" />
@@ -737,7 +729,8 @@
     <MESSAGE value="Bugfix durch Umzug von change_program und change_partmode nach XGValueType.actions; Nacharbeit erforderlich;" />
     <MESSAGE value="XGMessenger erfordert nun 4 submit-Methoden;" />
     <MESSAGE value="Filter in XGProgramSelectorWindow implementiert;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Filter in XGProgramSelectorWindow implementiert;" />
+    <MESSAGE value="Insertion48-Workaround verbessert;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Insertion48-Workaround verbessert;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

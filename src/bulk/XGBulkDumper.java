@@ -51,25 +51,27 @@ public interface XGBulkDumper extends XGLoggable
 	{	if(dest == null) return;
 
 		int requested = 0, responsed = 0;
-		long startTime = System.currentTimeMillis(), reqTime;
+		long startTime = System.currentTimeMillis(), wholeTime = 0, maxResponseTime = 0, responseTime = 0;
 		XGAddressableSet<XGBulk> set = this.getBulks();
 		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "requesting from " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
 		{	try
-			{	reqTime = System.currentTimeMillis();
-				requested++;
+			{	requested++;
 				XGMessageBulkRequest req = new XGMessageBulkRequest(b, b);
 				dest.submit(req);
 				if(req.isResponsed())
 				{	pm.setNote(b.toString());
 					pm.setProgress(++responsed);
+					responseTime = (req.getResponse().getTimeStamp() - req.getTimeStamp());
+					wholeTime += responseTime;
+					maxResponseTime = Math.max(maxResponseTime, responseTime);
 //					LOG.info("response for " + b + " within " + (b.getMessage().getTimeStamp() - reqTime) + " ms");
 //					LOG.info(r.getResponse().toHexString());
 				}
 				else
-				{	LOG.severe("no response for " + b + " within " + (System.currentTimeMillis() - reqTime) + " ms");
+				{	LOG.severe("no response for " + b + " within " + (System.currentTimeMillis() - req.getTimeStamp()) + " ms");
 					pm.setNote(b.toString());
 				}
 				if(pm.isCanceled()) break;
@@ -79,9 +81,10 @@ public interface XGBulkDumper extends XGLoggable
 			}
 		}
 		Level level;
-		if(requested - responsed == 0) level = Level.INFO;
+		if(requested - responsed == 0)
+			level = Level.INFO;
 		else level = Level.WARNING;
-		LOG.log(level, responsed + " (of " + requested + ") requests responsed by " + dest + " and transmitted within " + (System.currentTimeMillis() - startTime) + " ms");
+		LOG.log(level, responsed + " (of " + requested + ") requests responsed by " + dest + " and transmitted within " + (System.currentTimeMillis() - startTime) + " (avg=" + wholeTime / responsed + "/max=" + maxResponseTime + ") ms");
 	}
 
 }
