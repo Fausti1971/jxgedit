@@ -1,6 +1,6 @@
 package gui;
 
-import adress.XGIdentifiable;import config.XGConfigurable;import device.XGDevice;import module.XGDrumsetModuleType;import module.XGModule;import module.XGModuleType;import static module.XGModuleType.MODULE_TYPES;import static table.XGTable.INS_MSB_PROGRAMS;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import value.XGValue;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.awt.event.ActionEvent;import java.io.IOException;import java.util.HashMap;import java.util.Map;
+import adress.XGIdentifiable;import config.XGConfigurable;import device.XGDevice;import module.XGDrumsetModuleType;import module.XGInsertionModule;import module.XGModule;import module.XGModuleType;import static module.XGModuleType.MODULE_TYPES;import static table.XGTable.INS_MSB_PROGRAMS;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import value.XGValue;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.awt.event.ActionEvent;import java.io.IOException;import java.util.HashMap;import java.util.Map;
 
 public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable, XGConfigurable
 {
@@ -95,23 +95,26 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 				component = new XGTabbedFrame(item); break;
 			case ATTR_TAB:
 				component = new XGTab(item);
-				if("ins".equals(this.module.getTag()))//Workaround für Insertion Parameter, die Word-Adressen erfordern
-				{	XGValue prg = this.module.getValues().get("ins_program");
+				if(this.module instanceof XGInsertionModule)//Workaround für Insertion Parameter, die Word-Adressen erfordern
+				{	XGInsertionModule mod = (XGInsertionModule)this.module;
+					XGValue prg = mod.getProgram();
 					XGTab t = (XGTab)component;
-					prg.getValueListeners().add((XGValue v)->
-					{
-						XGTabbedFrame f = (XGTabbedFrame)t.getParent();
-						if(INS_MSB_PROGRAMS.contains(v.getValue()))
-						{	f.setEnabledAt(0, false);
-							f.setEnabledAt(1, true);
-							f.setSelectedIndex(1);
+					prg.getValueListeners().add
+					(	(XGValue v)->
+						{	XGTabbedFrame f = (XGTabbedFrame)t.getParent();
+							if(f == null || f.getTabCount() != 2) return;
+							if(mod.isMSBRequired())
+							{	f.setEnabledAt(0, false);
+								f.setEnabledAt(1, true);
+								f.setSelectedIndex(1);
+							}
+							else
+							{	f.setEnabledAt(0, true);
+								f.setEnabledAt(1, false);
+								f.setSelectedIndex(0);
+							}
 						}
-						else
-						{	f.setEnabledAt(0, true);
-							f.setEnabledAt(1, false);
-							f.setSelectedIndex(0);
-						}
-					});
+					);
 				}
 				break;
 			default:

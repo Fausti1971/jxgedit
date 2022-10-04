@@ -26,7 +26,7 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	{	for(XGModuleType mt : MODULE_TYPES)
 		{	for(int id : mt.getAddressRange().getMid())
 			{	try
-				{	mt.getModules().add(new XGModule(mt, id));
+				{	mt.getModules().add(newModule(mt, id));
 				}
 				catch( InvalidMidiDataException | InvalidXGAddressException e)
 				{	LOG.warning(e.getMessage());
@@ -36,16 +36,23 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 		}
 	}
 
+	public static XGModule newModule(XGModuleType mt, int id)throws InvalidMidiDataException, InvalidXGAddressException
+	{	if("ins".equals(mt.getTag())) return new XGInsertionModule(mt, id);
+		return new XGModule(mt, id);
+	}
+
 /***************************************************************************************************************/
 
 	private final int id;
 	private final XGModuleType type;
-	private final XGAddressableSet<XGBulk> bulks = new XGAddressableSet<>();
+	final XGAddressableSet<XGBulk> bulks = new XGAddressableSet<>();
 
-	public XGModule(XGModuleType mt, int id) throws InvalidMidiDataException, InvalidXGAddressException
+	XGModule(XGModuleType mt, int id) throws InvalidMidiDataException, InvalidXGAddressException
 	{	this.id = id;
 		this.type = mt;
-		for(XGBulkType bt : mt.getBulkTypes()){ this.bulks.add(XGBulk.newBulk(bt, this));}
+		for(XGBulkType bt : mt.getBulkTypes())
+		{	this.bulks.add(new XGBulk(bt, this));
+		}
 
 		XGRealTable tab = (XGRealTable)TABLES.get(TABLE_FX_PARTS);
 		String tag = mt.getTag();

@@ -10,10 +10,6 @@ import javax.sound.midi.InvalidMidiDataException;
 
 public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 {
-	public static XGBulk newBulk(XGBulkType type, XGModule mod)throws InvalidMidiDataException, InvalidXGAddressException
-	{	if(type.tag.equals(TAG_INS48)) return new XGInsertion48Bulk(type, mod);
-		else return new XGBulk(type, mod);
-	}
 
 /**********************************************************************************************************************/
 
@@ -22,7 +18,7 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 	private final XGAddress address;
 	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
 
-	protected XGBulk(XGBulkType type, XGModule mod)throws InvalidMidiDataException, InvalidXGAddressException
+	public XGBulk(XGBulkType type, XGModule mod)throws InvalidMidiDataException, InvalidXGAddressException
 	{	this.type = type;
 		this.module = mod;
 		this.address = new XGAddress(type.addressRange.getHi().getValue(), mod.getID(), type.addressRange.getLo().getMin());
