@@ -4,7 +4,7 @@ import java.util.Set;import java.util.function.Consumer;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
 import application.XGLoggable;
-import bulk.XGBulk;import device.*;
+import bulk.XGBulk;import com.sun.jdi.Value;import device.*;
 import module.*;
 import static module.XGModuleType.MODULE_TYPES;
 import msg.*;
@@ -23,10 +23,8 @@ import tag.*;
  * @author thomas
  *
  */
-public class XGValue implements XGParameterConstants, XGAddressable, Comparable<XGValue>, XGValueChangeListener, XGLoggable, XGTagable, XGMessenger
+public abstract class XGValue implements XGParameterConstants, XGAddressable, Comparable<XGValue>, XGValueChangeListener, XGLoggable, XGTagable, XGMessenger, XGIdentifiable
 {
-	private static final XGValue DEF_DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
-
 /**
 * initialisiert zu jedem Moduletype die angegebene Anzahl Instanzen (XGModule) inkl. der Bulk-Instanzen (XGAddress) und Opcode-Instanzen (XGValues inkl. Abhängigkeiten)
 */
@@ -37,102 +35,48 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 		{	for(XGModule mod : mt.getModules())
 			{	for(XGBulk blk : mod.getBulks())
 				{	for(XGValueType opc : blk.getType().getValueTypes())
-					{	XGValue v = new XGValue(opc, blk);
+					{	XGValue v = newValue(opc, blk);
 						blk.getValues().add(v);
 						pool.add(v);
 					}
 				}
 			}
 		}
-		for(XGValue v : pool)
-		{	try
-			{	v.initDepencies();}
-			catch(InvalidXGAddressException e)
-			{	LOG.warning(e.getMessage());}
-		}
+		for(XGValue v : pool) v.initDepencies();
 		for(XGValue v : pool) v.setDefaultValue();
 		LOG.info(pool.size() + " values initialized");
 	}
 
+	private static XGValue newValue(XGValueType vt, XGBulk blk)
+	{	if(vt.hasMutableParameters() && vt.hasMutableDefaults()) return new XGMutableValue(vt, blk);
+		if(vt.hasMutableParameters()) return new XGMutableParametersValue(vt, blk);
+		if(vt.hasMutableDefaults()) return new XGMutableDefaultsValue(vt, blk);
+		return new XGImmutableValue(vt, blk);
+	}
+
 /***********************************************************************************************/
 
-	private int value, oldValue = 0;
-	private final XGAddress address;
-	private final XGValueType type;
-	private volatile XGBulk bulk;
-	private XGValue parameterSelector = null, defaultSelector = null;
-	private final XGParameterTable parameters;
-	private final XGDefaultsTable defaults;
-	private final Set<XGValueChangeListener> valueListeners = new LinkedHashSet<>();
-	private final Set<XGParameterChangeListener> parameterListeners = new LinkedHashSet<>();
+	int value, oldValue = 0;
+	final XGAddress address;
+	final XGValueType type;
+	final XGBulk bulk;
+	final Set<XGValueChangeListener> valueListeners = new LinkedHashSet<>();
+	final Set<XGParameterChangeListener> parameterListeners = new LinkedHashSet<>();
 
 	XGValue(int v)
 	{	this.address = XGALLADDRESS;
-		this.parameterSelector = DEF_DEFAULTSELECTOR;
-		this.defaultSelector = DEF_DEFAULTSELECTOR;
-		this.parameters = null;
-		this.defaults = null;
 		this.type = null;
+		this.bulk = null;
+		this.value = v;
 	}
 
 	public XGValue(XGValueType type, XGBulk blk)
 	{	this.type = type;
 		this.bulk = blk;
 		this.address = new XGAddress(blk.getAddress().getHiValue(), blk.getID(), type.lo);
-
-		if(type.hasMutableParameters())
-		{	this.parameters = PARAMETERTABLES.get(type.parameterTableName);
-			if(this.parameters == null) throw new RuntimeException("parameter-table \"" + type.parameterTableName + "\" for " + type.getTag() + " not found");
-		}
-		else
-		{	this.parameters = new XGParameterTable(this.getTag());
-			this.parameters.put(DEF_SELECTORVALUE, new XGParameter(type.getConfig()));
-		}
-
-		if(type.hasMutableDefaults()){	this.defaults = DEFAULTSTABLES.get(type.defaultsTableName);}
-		else
-		{	this.defaults = new XGDefaultsTable(type.getTag());
-			this.defaults.put(XGDefaultsTable.NO_ID, DEF_SELECTORVALUE, type.getConfig().getValueAttribute(ATTR_DEFAULT, 0));
-		}
 	}
 
-	public void initDepencies() throws InvalidXGAddressException
-	{
-//		if(XGValueType.MP_PRG_VALUE_TAG.equals(this.getTag())) this.valueListeners.add(XGProgramBuffer::changeProgram);
-//		if(XGValueType.MP_PM_VALUE_TAG.equals(this.getTag())) this.valueListeners.add(XGProgramBuffer::changePartmode);
-
-		if(this.type.hasMutableParameters())
-		{	XGValue psv = this.bulk.getModule().getValues().get(this.type.parameterSelectorTag);
-			if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + " " + this.type.parameterSelectorTag + " not found for value " + this.getTag());
-			this.parameterSelector = psv;
-			this.parameterSelector.valueListeners.add((XGValue val)->this.notifyParameterListeners());
-		}
-		else this.parameterSelector = DEF_DEFAULTSELECTOR;
-
-		if(this.type.hasMutableDefaults())
-		{	String dst = this.type.defaultSelectorTag;
-			XGValue dsv = this.bulk.getModule().getValues().get(dst);
-			if(dsv != null)
-			{	this.defaultSelector = dsv;
-				this.defaultSelector.valueListeners.add((XGValue)->this.setDefaultValue());
-			}
-			else if(XGValueType.DS_PRG_VALUE_TAG.equals(dst))
-			{	XGModuleType t = this.getModule().getType();
-				if(t instanceof XGDrumsetModuleType)
-				{	this.defaultSelector = ((XGDrumsetModuleType)t).getProgramListener();
-					this.defaultSelector.valueListeners.add((XGValue)->this.setDefaultValue());
-				}
-			}
-			else if(XGValueType.ID_VALUE_TAG.equals(dst))
-			{	this.defaultSelector = new XGFixedValue(this.getTag(), this.getID());
-			}
-			else
-			{	LOG.warning(ATTR_DEFAULTSELECTOR + " " + dst + " not found for value " + this.getTag());
-				this.defaultSelector = DEF_DEFAULTSELECTOR;
-			}
-		}
-		else this.defaultSelector = DEF_DEFAULTSELECTOR;
-	}
+	public abstract void initDepencies();
 
 	public Set<XGValueChangeListener> getValueListeners(){	return this.valueListeners;}
 
@@ -152,9 +96,11 @@ public class XGValue implements XGParameterConstants, XGAddressable, Comparable<
 
 	public XGModule getModule(){	return this.bulk.getModule();}
 
-	public void setDefaultValue(){	this.setValue(this.defaults.get(this.getID(), this.defaultSelector.getValue()), false, false);}
+	public void setDefaultValue(){	this.setValue(this.getDefaultValue(), false, false);}
 
-	public XGParameter getParameter(){	return this.parameters.getOrDefault(this.parameterSelector.getValue(), NO_PARAMETER);}
+	abstract int getDefaultValue();
+
+	public abstract XGParameter getParameter();
 
 	@Override public XGAddress getAddress(){	return this.address;}
 

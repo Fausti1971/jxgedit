@@ -63,7 +63,7 @@ public class XGDrumsetModuleType extends XGModuleType
 	{	XGRealTable t = DRUMNAMES.get(key);
 		XGTableEntry def = new XGTableEntry(key, "Key " + key + " No Sound");
 		if(t == null) return def.getName();
-		return t.getByValue(this.getProgram(), def).getName();
+		return t.getByValue(this.program, def).getName();
 	}
 
 	public int getPartmode(){ return this.partmode;}

@@ -7,7 +7,7 @@ import static table.XGDefaultsTable.DEF_DRUMSETPROGRAM;
 import static value.XGValueType.MP_PM_VALUE_TAG;
 import static value.XGValueType.MP_PRG_VALUE_TAG;
 /**
-* Puffert je Multipart ein normal- und ein drumkit-Program und je Partmode ein drumsetProgram und synchronisiert diese bei Änderung
+* Puffert je Multipart ein normal- und ein drumkit-Program und je Partmode ein drumset-Program und synchronisiert diese bei Änderung
 */
 public interface XGProgramBuffer
 {

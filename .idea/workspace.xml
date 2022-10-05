@@ -10,13 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/module/XGInsertionModule.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/value/XGImmutableValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/value/XGMutableDefaults.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/value/XGMutableDefaultsValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/value/XGMutableParameters.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/value/XGMutableParametersValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/value/XGMutableValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulk.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/file/XGMidiFileFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGMidiFileFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGFixedValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGFixedValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -134,10 +139,11 @@
     <property name="project.structure.side.proportion" value="0.23136553" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.importing" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
+      <recent name="value" />
       <recent name="gui" />
       <recent name="bulk" />
       <recent name="msg" />
@@ -251,13 +257,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00011" summary="Filesaving komplettiert, Overwrite-Rückfrage, Auto-append Suffix;">
-      <created>1626290794924</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1626290794924</updated>
     </task>
     <task id="LOCAL-00012" summary="XGRequest and XGResponse is now an abstract class;">
       <created>1645651895199</created>
@@ -595,7 +594,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664829003542</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="Insertion-Workaround geändert;">
+      <created>1664911692199</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1664911692199</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -709,7 +715,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="optionale &lt;init_message&gt; in &lt;device&gt; config.xml eingebaut (noch ohne GUI);" />
     <MESSAGE value="Kosmetik" />
     <MESSAGE value="Test" />
     <MESSAGE value="structure.xml is now device.xml;" />
@@ -734,7 +739,8 @@
     <MESSAGE value="Filter in XGProgramSelectorWindow implementiert;" />
     <MESSAGE value="Insertion48-Workaround verbessert;" />
     <MESSAGE value="Response-Zeiten (avg und max) ausgwertet und angezeigt;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Response-Zeiten (avg und max) ausgwertet und angezeigt;" />
+    <MESSAGE value="Insertion-Workaround geändert;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Insertion-Workaround geändert;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

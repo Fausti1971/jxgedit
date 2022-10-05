@@ -2,8 +2,11 @@ package value;
 
 import parm.XGParameter;
 
-public class XGFixedValue extends XGValue
+public class XGFixedValue extends XGImmutableValue
 {
+	static final XGValue DEF_DEFAULTSELECTOR = new XGFixedValue("defaultSelector", DEF_SELECTORVALUE);
+
+
 	public static final XGFixedValue
 		VALUE_0 = new XGFixedValue("fix", 0),
 		VALUE_64 = new XGFixedValue("fix", 64),
