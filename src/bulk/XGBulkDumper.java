@@ -7,7 +7,7 @@ import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.*;
 import gui.*;
-import msg.*;
+import module.XGInsertionModule;import msg.*;import static xml.XMLNodeConstants.TAG_INS48;
 
 /**
  * qualifiziert die implementierende Klasse als Sammler aller enthaltenen BuklDumps (getBulks()) und Transmitter (transmitAll()) bzw. Requester (requestAll()); folglich können lediglich Instanzen, die XGBulks halten (Module, Moduletype, Device) als XGBulkDumper fungieren; vielleicht auch einst für Copy & Paste zu missbrauchen;
@@ -29,7 +29,12 @@ public interface XGBulkDumper extends XGLoggable
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
 		{	try
-			{	dest.submit(b.getMessage());
+			{	if(TAG_INS48.equals(b.getTag()) && !(((XGInsertionModule)b.module)).isMSBRequired())
+				{	LOG.info(b + " isn't required and will be ignored");
+					pm.setMaximum(pm.getMaximum() - 1);
+					continue;
+				}
+				dest.submit(b.getMessage());
 				pm.setNote(b.toString());
 				pm.setProgress(++transmitted);
 //				LOG.info(b + " transmitted");
@@ -58,7 +63,12 @@ public interface XGBulkDumper extends XGLoggable
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
 		{	try
-			{	requested++;
+			{	if(TAG_INS48.equals(b.getTag()) && !(((XGInsertionModule)b.module)).isMSBRequired())
+				{	LOG.info(b + " isn't required and will be ignored");
+					pm.setMaximum(pm.getMaximum() - 1);
+					continue;
+				}
+				requested++;
 				XGMessageBulkRequest req = new XGMessageBulkRequest(b, b);
 				dest.submit(req);
 				if(req.isResponsed())
@@ -84,7 +94,7 @@ public interface XGBulkDumper extends XGLoggable
 		if(requested - responsed == 0)
 			level = Level.INFO;
 		else level = Level.WARNING;
-		LOG.log(level, responsed + " (of " + requested + ") requests responsed by " + dest + " and transmitted within " + (System.currentTimeMillis() - startTime) + " (avg=" + wholeTime / responsed + "/max=" + maxResponseTime + ") ms");
+		LOG.log(level, responsed + " (of " + requested + ") requests responsed by " + dest + " within " + (System.currentTimeMillis() - startTime) + "ms (avg=" + wholeTime / responsed + "ms/max=" + maxResponseTime + "ms)");
 	}
 
 }

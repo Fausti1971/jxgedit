@@ -6,7 +6,7 @@ public interface XGMessageCodec
 {
 	static XGMessageCodec getCodec(XGValueType.ValueDataType type)
 	{	switch(type)
-		{	case LSB:	return LSB_CODEC;
+		{
 			case LSN:	return LSN_CODEC;
 			case MSB:	return MSB_CODEC;
 			case MSN:	return MSN_CODEC;

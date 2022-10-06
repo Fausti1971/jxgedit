@@ -1,8 +1,6 @@
 package module;
 
 import adress.InvalidXGAddressException;
-import adress.XGAddressableSet;
-import bulk.XGBulk;
 import static table.XGTable.INS_MSB_PROGRAMS;
 import value.XGValue;
 import javax.sound.midi.InvalidMidiDataException;
@@ -30,15 +28,5 @@ public class XGInsertionModule extends XGModule
 	{	XGValue v = this.getProgram();
 		if(v == null) return true;//Krücke, damit die MSB-Parameter während der Initialisierung (XGValue.init()) nicht übergangen werden;
 		return INS_MSB_PROGRAMS.contains(this.getProgram().getValue());
-	}
-
-	@Override public XGAddressableSet<XGBulk> getBulks()
-	{	if(this.isMSBRequired()) return this.bulks;
-		else
-		{	XGAddressableSet<XGBulk> set = new XGAddressableSet<>();
-			set.addAll(this.bulks);
-			set.removeIf(bulk-> TAG_INS48.equals(bulk.getTag()));
-			return set;
-		}
 	}
 }

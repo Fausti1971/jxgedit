@@ -25,10 +25,10 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	{	super(src, new byte[OVERHAED + size], true);
 		this.setBulkSize(size);
 		this.setAddress(adr);
-		this.setChecksum();
+//		this.setChecksum();
 	}
 
-	public  XGMessageBulkDump(XGMessenger src, XGValue val)throws InvalidMidiDataException// für "bulkende" Values
+	public XGMessageBulkDump(XGMessenger src, XGValue val)throws InvalidMidiDataException// für "bulkende" Values
 	{	this(src, val.getAddress(), val.getSize());
 		val.getCodec().encode(this, this.getBaseOffset(), this.getBulkSize(), val.getValue());
 		this.setChecksum();

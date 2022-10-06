@@ -28,6 +28,11 @@ public interface XGMessenger
 */
 	void submit(XGMessageParameterRequest req) throws XGMessengerException;
 
+/**
+* veranlasst den Messenger den übergebenen Request zu beantworten (der Messenger setzt die Antwort mittels req.setResponsedBy(res))
+* @param req zu beantwortender Request
+* @exception XGMessengerException falls der Messenger nicht imstande ist, den Request zu bearbeiten
+*/
 	void submit(XGMessageBulkRequest req) throws XGMessengerException;
 
 	@Override String toString();

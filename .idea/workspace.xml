@@ -10,17 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/value/XGImmutableValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/value/XGMutableDefaults.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/value/XGMutableDefaultsValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/value/XGMutableParameters.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/value/XGMutableParametersValue.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/value/XGMutableValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui/XGInsertionTabbedFrame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/XGFixedValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGFixedValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGInsertionModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGInsertionModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageCodec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageCodec.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
@@ -59,6 +58,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitSEFilterConfiguration">
     <file-type-list>

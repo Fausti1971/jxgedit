@@ -223,7 +223,7 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 	}
 
 	@Override public void submit(XGMessageBulkDump res) throws XGMessengerException
-	{	int offset = res.getBaseOffset() + this.address.getLoValue() - res.getAddress().getLoValue();
+	{	int offset = res.getBaseOffset() + (this.address.getLoValue() - res.getAddress().getLoValue());
 		this.setValue(this.type.codec.decode(res, offset, this.getSize()), false, false);
 	}
 

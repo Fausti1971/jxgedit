@@ -1,6 +1,6 @@
 package gui;
 
-import adress.XGIdentifiable;import config.XGConfigurable;import device.XGDevice;import module.XGDrumsetModuleType;import module.XGInsertionModule;import module.XGModule;import module.XGModuleType;import static module.XGModuleType.MODULE_TYPES;import static table.XGTable.INS_MSB_PROGRAMS;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import value.XGValue;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.awt.event.ActionEvent;import java.io.IOException;import java.util.HashMap;import java.util.Map;
+import adress.XGIdentifiable;import config.XGConfigurable;import device.XGDevice;import module.XGDrumsetModuleType;import module.XGInsertionModule;import module.XGModule;import module.XGModuleType;import static module.XGModuleType.MODULE_TYPES;import static table.XGTable.INS_MSB_PROGRAMS;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import value.XGValue;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.awt.event.ActionEvent;import java.awt.event.HierarchyEvent;import java.awt.event.HierarchyListener;import java.io.IOException;import java.util.HashMap;import java.util.Map;
 
 public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable, XGConfigurable
 {
@@ -92,31 +92,14 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 			case ATTR_AMP_ENV:
 				component = XGAmplifierEnvelope.newAmplifierEnvelope(this.module, item); break;
 			case ATTR_TABBED:
-				component = new XGTabbedFrame(item); break;
-			case ATTR_TAB:
-				component = new XGTab(item);
-				if(this.module instanceof XGInsertionModule)//Workaround für Insertion Parameter, die Word-Adressen erfordern
-				{	XGInsertionModule mod = (XGInsertionModule)this.module;
-					XGValue prg = mod.getProgram();
-					XGTab t = (XGTab)component;
-					prg.getValueListeners().add
-					(	(XGValue v)->
-						{	XGTabbedFrame f = (XGTabbedFrame)t.getParent();
-							if(f == null || f.getTabCount() != 2) return;
-							if(mod.isMSBRequired())
-							{	f.setEnabledAt(0, false);
-								f.setEnabledAt(1, true);
-								f.setSelectedIndex(1);
-							}
-							else
-							{	f.setEnabledAt(0, true);
-								f.setEnabledAt(1, false);
-								f.setSelectedIndex(0);
-							}
-						}
-					);
+				if(this.module instanceof XGInsertionModule)
+				{	component = new XGInsertionTabbedFrame(item, (XGInsertionModule)this.module);
+					break;
 				}
+				else component = new XGTabbedFrame(item);
 				break;
+			case ATTR_TAB:
+				component = new XGTab(item); break;
 			default:
 				return new XGFrame("unknown item type: " + type);
 		}

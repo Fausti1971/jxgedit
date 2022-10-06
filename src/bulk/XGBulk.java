@@ -36,9 +36,9 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 
 	public XGMessageBulkDump getMessage()throws InvalidMidiDataException
 	{	XGMessageBulkDump res = new XGMessageBulkDump(this, this);
-		int baseOffset = res.getBaseOffset();
+		int baseoffset = res.getBaseOffset() - this.address.getLoValue();
 		for(XGValue v : this.values)
-		{	v.getCodec().encode(res, baseOffset + (v.getAddress().getLoValue() - this.address.getLoValue()), v.getSize(), v.getValue());
+		{	v.getCodec().encode(res, baseoffset + v.getAddress().getLoValue(), v.getSize(), v.getValue());
 		}
 		res.setChecksum();
 		return res;

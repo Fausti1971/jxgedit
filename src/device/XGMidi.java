@@ -181,9 +181,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 
 	@Override public void submit(XGMessageBulkDump m) throws XGMessengerException
 	{	this.checkMessage(m);
-		this.transmitter.send((MidiMessage)m, -1L);
-//Note to XG Data Writers: If sending consecutive bulk dumps, leave an interval of about 10ms between the F7 and the next F0.
-		try
+		this.transmitter.send(m, -1L);
+		try//Note to XG Data Writers: If sending consecutive bulk dumps, leave an interval of about 10ms between the F7 and the next F0.
 		{	Thread.sleep(10);
 		}
 		catch(InterruptedException ignored){}
@@ -222,10 +221,10 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	try
 		{	XGMessage m = XGMessage.newMessage(this, mmsg);
-			if(m instanceof XGResponse)
-			{	XGResponse r = (XGResponse)m;
+			if(m instanceof XGMessageBulkDump)//TODO: die anderen Messages noch bearbeiten
+			{	XGMessageBulkDump r = (XGMessageBulkDump)m;
 				if(request != null && request.setResponsedBy(r))
-				{	//request.getSource().submit(r);
+				{	request.getSource().submit(r);
 					JXG.CURRENT_CONTENT.setValue("received from " + this);
 					requestThread.interrupt();
 				}
@@ -236,7 +235,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 			}
 			else LOG.info("unexpected message :" + m.toHexString());
 		}
-		catch(InvalidMidiDataException e){	LOG.info(e.getMessage());}
+		catch(InvalidMidiDataException | XGMessengerException e){	LOG.info(e.getMessage());}
 	}
 
 	@Override public boolean equals(Object o)
