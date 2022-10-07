@@ -3,8 +3,7 @@ package msg;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
-import adress.InvalidXGAddressException;
-import adress.XGAddress;import adress.XGAddressRange;import adress.XGAddressable;
+import adress.XGAddress;import adress.XGAddressable;
 import application.XGLoggable;
 
 public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable

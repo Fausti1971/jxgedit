@@ -1,7 +1,7 @@
 package msg;
 
 import javax.sound.midi.InvalidMidiDataException;
-import adress.InvalidXGAddressException;
+import adress.XGInvalidAddressException;
 import value.XGValue;
 
 public class XGMessageParameterRequest extends XGRequest
@@ -13,7 +13,7 @@ public class XGMessageParameterRequest extends XGRequest
 	{	super(src, array, init);
 	}
 
-	public XGMessageParameterRequest(XGMessenger src, XGValue val) throws InvalidXGAddressException, InvalidMidiDataException
+	public XGMessageParameterRequest(XGMessenger src, XGValue val) throws XGInvalidAddressException, InvalidMidiDataException
 	{	super(src, new byte[8], true);
 		this.setMessageID(MSG);
 		this.setAddress(val.getAddress());

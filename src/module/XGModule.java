@@ -2,7 +2,7 @@ package module;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import adress.InvalidXGAddressException;
+import adress.XGInvalidAddressException;
 import adress.XGAddressableSet;
 import adress.XGIdentifiable;import application.*;
 import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import static module.XGModuleType.MODULE_TYPES;
@@ -28,7 +28,7 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 			{	try
 				{	mt.getModules().add(newModule(mt, id));
 				}
-				catch( InvalidMidiDataException | InvalidXGAddressException e)
+				catch( InvalidMidiDataException | XGInvalidAddressException e)
 				{	LOG.warning(e.getMessage());
 				}
 			}
@@ -36,7 +36,7 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 		}
 	}
 
-	public static XGModule newModule(XGModuleType mt, int id)throws InvalidMidiDataException, InvalidXGAddressException
+	public static XGModule newModule(XGModuleType mt, int id)throws InvalidMidiDataException, XGInvalidAddressException
 	{	if("ins".equals(mt.getTag())) return new XGInsertionModule(mt, id);
 		return new XGModule(mt, id);
 	}
@@ -47,7 +47,7 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	private final XGModuleType type;
 	final XGAddressableSet<XGBulk> bulks = new XGAddressableSet<>();
 
-	XGModule(XGModuleType mt, int id) throws InvalidMidiDataException, InvalidXGAddressException
+	XGModule(XGModuleType mt, int id) throws InvalidMidiDataException, XGInvalidAddressException
 	{	this.id = id;
 		this.type = mt;
 		for(XGBulkType bt : mt.getBulkTypes())

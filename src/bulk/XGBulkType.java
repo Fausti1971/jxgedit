@@ -1,7 +1,7 @@
 package bulk;
 
-import adress.InvalidXGAddressException;import adress.XGAddressRange;
-import static application.XGLoggable.LOG;import config.XGConfigurable;import module.XGModuleType;import tag.XGTagableSet;import value.XGValueType;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;
+import adress.XGInvalidAddressException;import adress.XGAddressRange;
+import config.XGConfigurable;import module.XGModuleType;import tag.XGTagableSet;import value.XGValueType;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;
 
 public class XGBulkType implements XGTagable, XGConfigurable
 {
@@ -11,7 +11,7 @@ public class XGBulkType implements XGTagable, XGConfigurable
 	final XGModuleType moduleType;
 	final XGTagableSet<XGValueType> valueTypes = new XGTagableSet<>();
 
-	public XGBulkType(XGModuleType mt, XMLNode x)throws InvalidXGAddressException
+	public XGBulkType(XGModuleType mt, XMLNode x)throws XGInvalidAddressException
 	{	this.config = x;
 		this.tag = x.getStringAttribute(ATTR_ID);
 		this.addressRange = new XGAddressRange(x.getStringAttribute(ATTR_ADDRESS), mt.getAddressRange());

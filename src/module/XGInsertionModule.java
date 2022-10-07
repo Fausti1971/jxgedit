@@ -1,6 +1,6 @@
 package module;
 
-import adress.InvalidXGAddressException;
+import adress.XGInvalidAddressException;
 import static table.XGTable.INS_MSB_PROGRAMS;
 import value.XGValue;
 import javax.sound.midi.InvalidMidiDataException;
@@ -16,7 +16,7 @@ import javax.sound.midi.InvalidMidiDataException;
 */
 public class XGInsertionModule extends XGModule
 {
-	XGInsertionModule(XGModuleType mt, int id)throws InvalidMidiDataException, InvalidXGAddressException
+	XGInsertionModule(XGModuleType mt, int id)throws InvalidMidiDataException, XGInvalidAddressException
 	{	super(mt, id);
 	}
 

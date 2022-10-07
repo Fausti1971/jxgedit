@@ -1,6 +1,6 @@
 package module;
 
-import adress.InvalidXGAddressException;
+import adress.XGInvalidAddressException;
 import adress.XGIdentifiableSet;
 import device.XGDevice;
 import device.XGMidi;
@@ -47,7 +47,7 @@ public class XGDrumsetModuleType extends XGModuleType
 	private final int partmode;
 	private final XGDrumsetProgramValue programListener;
 
-	public XGDrumsetModuleType(XMLNode n, int hi) throws InvalidXGAddressException
+	public XGDrumsetModuleType(XMLNode n, int hi) throws XGInvalidAddressException
 	{	super(n, n.getStringAttributeOrDefault(ATTR_NAME, "Drumset"), hi);
 		this.partmode = hi - 46;
 		this.tag += this.partmode - 1;

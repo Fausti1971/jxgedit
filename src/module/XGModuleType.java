@@ -37,7 +37,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 				{	try
 					{	MODULE_TYPES.add(new XGDrumsetModuleType(n, h));
 					}
-					catch(InvalidXGAddressException e)
+					catch(XGInvalidAddressException e)
 					{	LOG.severe(e.getMessage());
 					}
 				}
@@ -46,7 +46,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 			try
 			{	MODULE_TYPES.add(new XGModuleType(n));
 			}
-			catch(InvalidXGAddressException e){	e.printStackTrace();}
+			catch(XGInvalidAddressException e){	e.printStackTrace();}
 		}
 		LOG.info(MODULE_TYPES.size() + " Module-Types initialized");
 	}
@@ -73,7 +73,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 /**
 * instanziiert Moduletypen, Bulktypen und Valuetypen
 */
-	public XGModuleType(XMLNode cfg, String name)throws InvalidXGAddressException
+	public XGModuleType(XMLNode cfg, String name)throws XGInvalidAddressException
 	{	this.config = cfg;
 		this.name = new StringBuffer(name);
 		this.tag = cfg.getStringAttribute(ATTR_ID);
@@ -89,7 +89,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 		}
 	}
 
-	public XGModuleType(XMLNode cfg, String name, int hi)throws InvalidXGAddressException
+	public XGModuleType(XMLNode cfg, String name, int hi)throws XGInvalidAddressException
 	{	this.config = cfg;
 		this.name = new StringBuffer(name);
 		this.tag = cfg.getStringAttribute(ATTR_ID);
@@ -108,7 +108,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 		}
 	}
 
-	public XGModuleType(XMLNode cfg)throws InvalidXGAddressException
+	public XGModuleType(XMLNode cfg)throws XGInvalidAddressException
 	{	this(cfg, cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
 	}
 

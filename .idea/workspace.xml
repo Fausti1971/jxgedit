@@ -10,17 +10,30 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/gui/XGInsertionTabbedFrame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/value/XGMultipartModeValue.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/value/XGMultipartProgramValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adress/InvalidXGAddressException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adress/XGInvalidAddressException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adress/XGAddressField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adress/XGAddressField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adress/XGAddressRange.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adress/XGAddressRange.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/adress/XGAddressable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/adress/XGAddressable.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bulk/XGBulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulk.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulkType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGKeyboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKeyboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module/XGInsertionModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGInsertionModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageCodec.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageCodec.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageParameterRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageParameterRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessenger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGMutableValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGMutableValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValueType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValueType.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -257,13 +270,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00012" summary="XGRequest and XGResponse is now an abstract class;">
-      <created>1645651895199</created>
-      <option name="number" value="00012" />
-      <option name="presentableId" value="LOCAL-00012" />
-      <option name="project" value="LOCAL" />
-      <updated>1645651895199</updated>
     </task>
     <task id="LOCAL-00013" summary="XGRequest and XGResponse is now an abstract class;">
       <created>1645652161827</created>
@@ -601,7 +607,14 @@
       <option name="project" value="LOCAL" />
       <updated>1664911692199</updated>
     </task>
-    <option name="localTasksCounter" value="61" />
+    <task id="LOCAL-00061" summary="Insertion48-Workaround in XGBulkDumper verbessert">
+      <created>1665086283097</created>
+      <option name="number" value="00061" />
+      <option name="presentableId" value="LOCAL-00061" />
+      <option name="project" value="LOCAL" />
+      <updated>1665086283098</updated>
+    </task>
+    <option name="localTasksCounter" value="62" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -715,7 +728,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Kosmetik" />
     <MESSAGE value="Test" />
     <MESSAGE value="structure.xml is now device.xml;" />
     <MESSAGE value="vergessenen SysexID selector nachgerüstet;" />
@@ -740,7 +752,8 @@
     <MESSAGE value="Insertion48-Workaround verbessert;" />
     <MESSAGE value="Response-Zeiten (avg und max) ausgwertet und angezeigt;" />
     <MESSAGE value="Insertion-Workaround geändert;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Insertion-Workaround geändert;" />
+    <MESSAGE value="Insertion48-Workaround in XGBulkDumper verbessert" />
+    <option name="LAST_COMMIT_MESSAGE" value="Insertion48-Workaround in XGBulkDumper verbessert" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,7 +1,5 @@
 package device;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
@@ -11,9 +9,6 @@ import javax.sound.midi.MidiMessage;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Receiver;
-import javax.swing.JComponent;
-import javax.swing.JPanel;
-import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;import application.*;
 import msg.*;
 import xml.*;

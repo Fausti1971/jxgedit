@@ -4,19 +4,15 @@ import java.util.Set;import java.util.function.Consumer;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
 import application.XGLoggable;
-import bulk.XGBulk;import com.sun.jdi.Value;import device.*;
+import bulk.XGBulk;import device.*;
 import module.*;
 import static module.XGModuleType.MODULE_TYPES;
 import msg.*;
-import table.XGDefaultsTable;
-import static table.XGDefaultsTable.DEFAULTSTABLES;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
-import table.XGParameterTable;
-import static table.XGParameterTable.PARAMETERTABLES;
 import table.XGTableEntry;
-import tag.*;
+import tag.*;import static value.XGValueType.MP_PM_VALUE_TAG;import static value.XGValueType.MP_PRG_VALUE_TAG;
 
 /**
  * 
@@ -48,7 +44,9 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 	}
 
 	private static XGValue newValue(XGValueType vt, XGBulk blk)
-	{	if(vt.hasMutableParameters() && vt.hasMutableDefaults()) return new XGMutableValue(vt, blk);
+	{	if(MP_PRG_VALUE_TAG.equals(vt.tag)) return new XGMultipartProgramValue(vt, blk);
+		if(MP_PM_VALUE_TAG.equals(vt.tag)) return new XGMultipartModeValue(vt, blk);
+		if(vt.hasMutableParameters() && vt.hasMutableDefaults()) return new XGMutableValue(vt, blk);
 		if(vt.hasMutableParameters()) return new XGMutableParametersValue(vt, blk);
 		if(vt.hasMutableDefaults()) return new XGMutableDefaultsValue(vt, blk);
 		return new XGImmutableValue(vt, blk);
@@ -207,7 +205,7 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 	{	try
 		{	XGMidi.getMidi().submit(new XGMessageParameterRequest(this, this));
 		}
-		catch(InvalidXGAddressException | InvalidMidiDataException | XGMessengerException e)
+		catch(XGInvalidAddressException | InvalidMidiDataException | XGMessengerException e)
 		{	e.printStackTrace();
 		}
 	}
@@ -236,7 +234,14 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 	}
 
 	public void submit(XGMessageParameterRequest req)throws XGMessengerException
-	{	throw new XGMessengerException(this, req);
+	{	try
+		{	XGMessageParameterChange res = new XGMessageParameterChange(this, this);
+			if(req.setResponsedBy(res)) req.getSource().submit(res);
+		}
+		catch(InvalidMidiDataException e)
+		{	throw new XGMessengerException(e.getMessage());
+
+		}
 	}
 
 	@Override public String toString()

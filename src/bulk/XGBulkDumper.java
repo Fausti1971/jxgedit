@@ -3,7 +3,6 @@ package bulk;
 import java.util.logging.Level;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;
-import adress.InvalidXGAddressException;
 import adress.XGAddressableSet;
 import application.*;
 import gui.*;

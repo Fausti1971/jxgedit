@@ -1,7 +1,8 @@
 package value;
 
 import bulk.XGBulk;
-import parm.XGParameter;import table.XGDefaultsTable;
+import parm.XGParameter;
+import table.XGDefaultsTable;
 import static table.XGDefaultsTable.DEFAULTSTABLES;
 import table.XGParameterTable;
 import static table.XGParameterTable.PARAMETERTABLES;

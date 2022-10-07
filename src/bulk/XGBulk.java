@@ -1,11 +1,11 @@
 package bulk;
 
-import adress.InvalidXGAddressException;
-import adress.XGAddress;import adress.XGAddressRange;import adress.XGAddressable;
+import adress.XGInvalidAddressException;
+import adress.XGAddress;import adress.XGAddressable;
 import application.XGLoggable;import module.XGModule;import msg.*;
 import tag.XGTagable;
 import tag.XGTagableAddressableSet;
-import value.XGValue;import static xml.XMLNodeConstants.TAG_INS48;
+import value.XGValue;
 import javax.sound.midi.InvalidMidiDataException;
 
 public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
@@ -18,7 +18,7 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 	private final XGAddress address;
 	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
 
-	public XGBulk(XGBulkType type, XGModule mod)throws InvalidMidiDataException, InvalidXGAddressException
+	public XGBulk(XGBulkType type, XGModule mod)throws InvalidMidiDataException, XGInvalidAddressException
 	{	this.type = type;
 		this.module = mod;
 		this.address = new XGAddress(type.addressRange.getHi().getValue(), mod.getID(), type.addressRange.getLo().getMin());

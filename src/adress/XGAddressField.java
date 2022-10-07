@@ -65,11 +65,11 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
 /**
  * 
  * @return einen eventuellen festen Wert
- * @throws InvalidXGAddressException wenn der Wert variabel (Range) ist
+ * @throws XGInvalidAddressException wenn der Wert variabel (Range) ist
  */
-	public int getValue() throws InvalidXGAddressException
+	public int getValue() throws XGInvalidAddressException
 	{	if(this.isFix()) return this.getMin();
-		else throw new InvalidXGAddressException("acces to variable addressfield: " + this);
+		else throw new XGInvalidAddressException("acces to variable addressfield: " + this);
 	}
 
 /**
@@ -79,9 +79,9 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
  * ein fixes f wird unver
  * @param f	das Addressfeld, durch das this komplettiert werden soll
  * @return ein neues Addressfeld als Komplement
- * @throws InvalidXGAddressException 
+ * @throws XGInvalidAddressException 
   */
-	public XGAddressField complement(final XGAddressField f) throws InvalidXGAddressException
+	public XGAddressField complement(final XGAddressField f) throws XGInvalidAddressException
 	{	if(this.isFix()) return this;
 		if(f.isFix() && this.contains(f)) return f;
 		return this.intersection(f);
@@ -98,10 +98,10 @@ public class XGAddressField implements XGAddressConstants, Comparable<XGAddressF
  * ermittelt und returniert eine eventuelle gemeinsame Teilmenge
  * @param f
  * @return die eventuell vorhandene Teilmenge von this und f
- * @throws InvalidXGAddressException 
+ * @throws XGInvalidAddressException 
   */
-	public XGAddressField intersection(XGAddressField f) throws InvalidXGAddressException
-	{	if(this.min > f.max || this.max < f.min) throw new InvalidXGAddressException("no intersection: " + this + "/" + f);
+	public XGAddressField intersection(XGAddressField f) throws XGInvalidAddressException
+	{	if(this.min > f.max || this.max < f.min) throw new XGInvalidAddressException("no intersection: " + this + "/" + f);
 		return new XGAddressField(Math.max(this.min, f.min), Math.min(this.max, f.max), this.mask);
 	}
 

@@ -1,7 +1,5 @@
 package msg;
 
-import adress.InvalidXGAddressException;
-
 /**
  * qualifiziert das implementierende Object als XGMessage-Source und -Destination und stellt damit die Schnittstelle zu einem Endpunkt der Außenwelt (midi, file, mem) dar
  */

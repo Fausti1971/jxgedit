@@ -8,7 +8,7 @@ public interface XGAddressable extends XGIdentifiable, XGAddressConstants
 	{	try
 		{	return this.getAddress().getMid().getValue();
 		}
-		catch(InvalidXGAddressException e)
+		catch(XGInvalidAddressException e)
 		{	System.out.println(e.getMessage());
 			return this.getAddress().getMid().getMin();
 		}

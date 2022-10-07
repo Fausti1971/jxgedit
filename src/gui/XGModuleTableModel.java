@@ -27,17 +27,11 @@ public class XGModuleTableModel  implements TableModel
 //		LOG.info(this.getClass().getSimpleName() + " " + this.type + " initialized with " + this.rows.size() + " rows");
 	}
 
-	public Vector<XGModule> getRows()
-	{	return this.rows;
-	}
+	public Vector<XGModule> getRows(){	return this.rows;}
 
-	public int getRowCount()
-	{	return this.rows.size();
-	}
+	public int getRowCount(){	return this.rows.size();}
 
-	public int getColumnCount()
-	{	return this.cols.size();
-	}
+	public int getColumnCount(){	return this.cols.size();}
 
 	public String getColumnName(int i)
 	{	if(i == 0) return ("ID");
@@ -49,26 +43,18 @@ public class XGModuleTableModel  implements TableModel
 		return XGValue.class;
 	}
 
-	public boolean isCellEditable(int r,int c)
-	{	return false;
-	}
+	public boolean isCellEditable(int r,int c){	return false;}
 
 	public Object getValueAt(int r, int c)
 	{	if(c == 0) return this.rows.get(r);
 		else return this.rows.get(r).getValues().get(this.cols.get(c));
 	}
 
-	public void setValueAt(Object o,int i,int i1)
-	{
-	}
+	public void setValueAt(Object o,int i,int i1){}
 
-	public void addTableModelListener(TableModelListener listener)
-	{	this.listeners.add(listener);
-	}
+	public void addTableModelListener(TableModelListener listener){	this.listeners.add(listener);}
 
-	public void removeTableModelListener(TableModelListener listener)
-	{	this.listeners.remove(listener);
-	}
+	public void removeTableModelListener(TableModelListener listener){	this.listeners.remove(listener);}
 
 	private void notifyListener(int row, int col)
 	{	TableModelEvent e = new TableModelEvent(this, row, row, col, TableModelEvent.UPDATE);

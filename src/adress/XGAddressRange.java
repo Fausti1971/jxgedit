@@ -34,7 +34,7 @@ public class XGAddressRange implements XGLoggable, XGAddressConstants
 				m = m.complement(adr.getMid());
 				l = l.complement(adr.getLo());
 			}
-			catch(InvalidXGAddressException e)
+			catch(XGInvalidAddressException e)
 			{	LOG.severe(e.getMessage());
 			}
 		}
@@ -77,13 +77,13 @@ public class XGAddressRange implements XGLoggable, XGAddressConstants
  * komplettiert this mittels adr, indem variable Fields durch diese aus adr möglichst konkretisiert werden 
  * @param adr Adresse mittels derer this konkretisiert werden soll
  * @return  die erfolgreich konktretisierte Adresse
- * @throws InvalidXGAddressException falls keine Schnittmenge ermittelt werden kann
+ * @throws XGInvalidAddressException falls keine Schnittmenge ermittelt werden kann
  */
-	public XGAddressRange complement(XGAddressRange adr) throws InvalidXGAddressException
+	public XGAddressRange complement(XGAddressRange adr) throws XGInvalidAddressException
 	{	//		if(this.isFixed()) return this;
 		//		if(adr.isFixed()) return adr;
 		try{	return new XGAddressRange(this.hi.complement(adr.hi), this.mid.complement(adr.mid), this.lo.complement(adr.lo));}
-		catch(InvalidXGAddressException e){	throw new InvalidXGAddressException(e.getMessage() + " within address: " + this + " and " + adr);}
+		catch(XGInvalidAddressException e){	throw new XGInvalidAddressException(e.getMessage() + " within address: " + this + " and " + adr);}
 	}
 
 /**

@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
-import adress.InvalidXGAddressException;
+import adress.XGInvalidAddressException;
 import device.XGMidi;
 import module.XGModule;
 import static table.XGTable.TABLES;import value.XGValue;
@@ -42,7 +42,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 	private final ShortMessage message = new ShortMessage();
 //	private final JComponent column;
 
-	protected XGKeyboard(XMLNode n, XGModule mod) throws InvalidXGAddressException
+	protected XGKeyboard(XMLNode n, XGModule mod) throws XGInvalidAddressException
 	{	super("");
 		this.partmodeValue = mod.getValues().get("mp_partmode");
 		this.midiChannelValue = mod.getValues().get("mp_midi_channel");
