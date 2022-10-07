@@ -217,7 +217,7 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 	public String getInfo()
 	{	XGParameter p = this.getParameter();
 		if(p != null) return p.getName() + "=" + this;
-		else return "no parameter info";
+		else return this.getTag();
 	}
 
 	@Override public void submit(XGMessageBulkDump res) throws XGMessengerException
@@ -240,7 +240,6 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 		}
 		catch(InvalidMidiDataException e)
 		{	throw new XGMessengerException(e.getMessage());
-
 		}
 	}
 

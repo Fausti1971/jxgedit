@@ -1,5 +1,8 @@
 package application;
-
+/*
+ author: Thomas Faustmann
+ mail: thomas@konferenzprofi.de
+*/
 import java.io.*;
 import java.net.URISyntaxException;
 import java.nio.file.Path;

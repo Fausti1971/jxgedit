@@ -224,13 +224,15 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 					requestThread.interrupt();
 				}
 				else
-				{	this.buffer.add(r);
+				{	XGDevice.DEVICE.submit(r);
 					LOG.info("unrequested message (" + this.buffer.size() + "): " + r);
 				}
 			}
 			else LOG.info("unexpected message :" + m.toHexString());
 		}
-		catch(InvalidMidiDataException | XGMessengerException e){	LOG.info(e.getMessage());}
+		catch(InvalidMidiDataException | XGMessengerException e)
+		{	LOG.info(e.getMessage());
+		}
 	}
 
 	@Override public boolean equals(Object o)
