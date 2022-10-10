@@ -10,18 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/gui/XGToolbar.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGCheckbox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCheckbox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGHorizontalRangeSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGHorizontalRangeSlider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGLayout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -258,13 +248,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00016" summary="Rebase">
-      <created>1645959787572</created>
-      <option name="number" value="00016" />
-      <option name="presentableId" value="LOCAL-00016" />
-      <option name="project" value="LOCAL" />
-      <updated>1645959787572</updated>
     </task>
     <task id="LOCAL-00017" summary="XGBulk und XGBulkType eingeführt;">
       <created>1646057146923</created>
@@ -602,7 +585,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665150683060</updated>
     </task>
-    <option name="localTasksCounter" value="65" />
+    <task id="LOCAL-00065" summary="geringfügige Änderungen zwecks Konstistenz in templates.xml;">
+      <created>1665436140416</created>
+      <option name="number" value="00065" />
+      <option name="presentableId" value="LOCAL-00065" />
+      <option name="project" value="LOCAL" />
+      <updated>1665436140417</updated>
+    </task>
+    <option name="localTasksCounter" value="66" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -716,7 +706,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="dynamisches Filenamen- und -pfadhandling;" />
     <MESSAGE value="Backup" />
     <MESSAGE value="Vorbereitung XML-Editwindows" />
     <MESSAGE value="Backup;" />
@@ -741,7 +730,8 @@
     <MESSAGE value="XGMultipartProgramValue und XGMultipartModeValue eingeführt (für XGProgramBuffer, actions change_program und change_partmode entsorgt)" />
     <MESSAGE value="author and screenshot inserted;" />
     <MESSAGE value="screenshot" />
-    <option name="LAST_COMMIT_MESSAGE" value="screenshot" />
+    <MESSAGE value="geringfügige Änderungen zwecks Konstistenz in templates.xml;" />
+    <option name="LAST_COMMIT_MESSAGE" value="geringfügige Änderungen zwecks Konstistenz in templates.xml;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
