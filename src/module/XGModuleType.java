@@ -59,6 +59,12 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 		ACTIONS.add(ACTION_SAVEFILE);
 	}
 
+	//public static XGModuleType getModuleType(XGAddress adr)
+	//{	for(XGModuleType mt : MODULE_TYPES)
+	//		if(mt.getAddressRange().contains(adr)) return mt;
+	//	return null;
+	//}
+
 /********************************************************************************************************************/
 
 	private final Set<String> infoTags = new LinkedHashSet<>();

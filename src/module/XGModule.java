@@ -6,7 +6,7 @@ import adress.XGInvalidAddressException;
 import adress.XGAddressableSet;
 import adress.XGIdentifiable;import application.*;
 import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import static module.XGModuleType.MODULE_TYPES;
-import table.XGRealTable;import static table.XGTable.TABLES;import static table.XGTableConstants.TABLE_FX_PARTS;import table.XGTableEntry;import tag.*;
+import msg.*;import table.XGRealTable;import static table.XGTable.TABLES;import static table.XGTableConstants.TABLE_FX_PARTS;import table.XGTableEntry;import tag.*;
 import value.*;import javax.sound.midi.InvalidMidiDataException;
 
 public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper, XGIdentifiable, XGTagable
@@ -81,9 +81,16 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	//	}
 	//}
 
+
+	public void submit(XGMessageBulkRequest req) throws XGMessengerException
+	{	this.bulks.get(req.getAddress()).submit(req);
+	}
+
 	@Override public String toString()
 	{	if(this.type instanceof XGDrumsetModuleType) return ((XGDrumsetModuleType)this.type).getDrumname(this.id);
 		else return this.type.getName() + " " + this.type.idTranslator.getByValue(this.getID());
+	}public void close()
+	{
 	}
 
 	@Override public XGAddressableSet<XGBulk> getBulks(){ return this.bulks;}

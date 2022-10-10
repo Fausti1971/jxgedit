@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
-{	private static final Dimension MIN_DIM = new Dimension(3, 2);
+{
 
 /*******************************************************************************************/
 

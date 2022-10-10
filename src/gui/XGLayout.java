@@ -1,6 +1,6 @@
 package gui;
 
-import application.XGMath;import application.XGStrings;
+import static application.XGLoggable.LOG;import application.XGMath;import application.XGStrings;
 import javax.swing.*;import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +11,7 @@ public class XGLayout implements LayoutManager2
 	{	if(o == null) throw new RuntimeException("constraint object is null!");
 		if(o instanceof String) return XGStrings.toRectangle((String)o);
 		else if(o instanceof int[]) return XGMath.toRectangle((int[])o);
-		else if(o instanceof Rectangle) return (Rectangle)o;
+		else if(o instanceof Rectangle) return new Rectangle((Rectangle)o);
 		else throw new RuntimeException("incorrect constraint object (" + o.getClass().getSimpleName() + ")");
 	}
 

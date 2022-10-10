@@ -108,6 +108,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 		{	String c = i.getStringAttribute(ATTR_CONSTRAINT);
 			component.add(this.createItems(i), c);
 		}
+//TODO: ein leeres tab_frame, tab oder frame sollte entfernt werden (dazu muss zwischen XGValue == null und XGParameter.isValid() per Exception unterschieden werden)
 		return component;
 	}
 

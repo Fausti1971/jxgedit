@@ -42,10 +42,10 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 		this.setName(XGStrings.commonString(this.loValue.getParameter().getName(), this.hiValue.getParameter().getName()));
 
 		this.bar = new XGHorizontalRangeBar(this);
-		this.add(this.bar, "0,0,1,2");
+		this.add(this.bar, "0,0,1,1");
 
 		this.label = new XGRangeLabel(this.loValue, this.hiValue);
-		this.add(this.label, "0,2,1,1");
+		this.add(this.label, "0,1,1,1");
 
 		this.addMouseListener(this);
 		boolean ena = this.isEnabled();

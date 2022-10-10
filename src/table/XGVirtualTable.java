@@ -9,7 +9,7 @@ import xml.XMLNode;
 public class XGVirtualTable implements XGTable
 {	private static final int MIN = 0, MAX = Integer.MAX_VALUE & 0x0000FFFF;
 	public static final XGTable DEF_TABLE = new XGVirtualTable(MIN, MAX & 0x0000FFFF, DEF_TABLENAME, Object::toString, Integer::parseInt);
-//TODO: eigene Klassen für translate ud retranslate um Exception werfen zu können
+
 	public static void init()
 	{	TABLES.add(DEF_TABLE);
 

@@ -29,7 +29,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	public static void init()
 	{	config = JXG.config.getChildNodeOrNew(TAG_MIDI);
 		MIDI = new XGMidi(config);
-		}
+	}
 
 	public static Set<Info> INPUTS = new LinkedHashSet<>();
 	public static Set<Info> OUTPUTS = new LinkedHashSet<>();
@@ -83,7 +83,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	private MidiDevice midiOutput = null;
 	private MidiDevice midiInput = null;
 	private int timeoutValue;
-	private final XGAddressableSet<XGResponse> buffer = new XGAddressableSet<>();
+//	private final XGAddressableSet<XGResponse> buffer = new XGAddressableSet<>();
 
 	public XGMidi(xml.XMLNode cfg)
 	{	this.setInput(cfg.getStringAttribute(ATTR_MIDIINPUT));
@@ -185,7 +185,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 
 	@Override public void submit(XGMessageParameterChange m) throws XGMessengerException
 	{	this.checkMessage(m);
-		this.transmitter.send((MidiMessage)m, -1L);
+		this.transmitter.send(m, -1L);
 	}
 
 	@Override public void submit(XGMessageBulkRequest req) throws XGMessengerException
@@ -224,8 +224,10 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 					requestThread.interrupt();
 				}
 				else
-				{	XGDevice.DEVICE.submit(r);
-					LOG.info("unrequested message (" + this.buffer.size() + "): " + r);
+				{
+					LOG.info("unrequested message: " + r);
+					XGDevice.DEVICE.submit(r);
+					JXG.CURRENT_CONTENT.setValue("received from " + this);
 				}
 			}
 			else LOG.info("unexpected message :" + m.toHexString());

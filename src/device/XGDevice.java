@@ -24,14 +24,16 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 		DEVICE = new XGDevice(xml);
 		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))
 		{	try
-			{	SysexMessage msg = new SysexMessage();
+			{	if(m.getTextContent().length() == 0) continue;
+				SysexMessage msg = new SysexMessage();
 				byte[] array = XGStrings.fromHexString(m.getTextContent().toString());
-				LOG.info("transmitting " + TAG_INIT_MESSAGE + ": " + XGStrings.toHexString(array));
 				msg.setMessage(array, array.length);
 				XGMidi.getMidi().transmit(msg);
+				LOG.info("transmitting " + TAG_INIT_MESSAGE + ": " + XGStrings.toHexString(array));
 			}
 			catch(NumberFormatException | InvalidMidiDataException e)
 			{	LOG.severe(e.getMessage());
+				JOptionPane.showMessageDialog(null, "Init Message Failure: " + e.getMessage());
 			}
 		}
 	}
@@ -128,7 +130,9 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	}
 
 	@Override public void submit(XGMessageBulkDump msg)throws XGMessengerException
-	{	throw new XGMessengerException(this, msg);//TODO: finde bulk anhand der adresse und übergebe msg
+	{	XGBulk b = this.getBulks().get(msg.getAddress());
+		if(b != null) b.submit(msg);
+		else throw new XGMessengerException("no matching Bulk found for " + msg);
 	}
 
 	@Override public void submit(XGMessageParameterChange msg)throws XGMessengerException
@@ -136,7 +140,9 @@ public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable
 	}
 
 	@Override public void submit(XGMessageBulkRequest req)throws XGMessengerException
-	{	throw new XGMessengerException(this, req);//TODO: finde bulk anhand der adresse, erfrage und beantworte req
+	{	XGBulk b = this.getBulks().get(req.getAddress());
+		if(b != null) b.submit(req);
+		else throw new XGMessengerException("no matching Bulk found for " + req);
 	}
 
 	@Override public void submit(XGMessageParameterRequest req)throws XGMessengerException
