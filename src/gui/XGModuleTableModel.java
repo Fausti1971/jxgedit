@@ -1,8 +1,8 @@
 package gui;
 
-import module.*;import value.*;import static xml.XMLNodeConstants.ATTR_ID;import javax.swing.event.*;import javax.swing.table.*;import java.util.*;
+import module.*;import value.*;import static xml.XMLNodeConstants.ATTR_ID;import javax.swing.*;import javax.swing.event.*;import javax.swing.table.*;import java.util.*;
 
-public class XGModuleTableModel  implements TableModel
+public class XGModuleTableModel  extends AbstractTableModel
 {
 	private final Vector<XGModule> rows;
 	private final Vector<String> cols;
@@ -24,7 +24,6 @@ public class XGModuleTableModel  implements TableModel
 				else v = m.getValues().get(tag);
 				v.getValueListeners().add((XGValue)->notifyListener(this.rows.indexOf(m), this.cols.indexOf(tag)));
 			}
-//		LOG.info(this.getClass().getSimpleName() + " " + this.type + " initialized with " + this.rows.size() + " rows");
 	}
 
 	public Vector<XGModule> getRows(){	return this.rows;}

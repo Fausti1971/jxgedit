@@ -1,5 +1,5 @@
 package gui;
-import module.*;
+import static application.XGLoggable.LOG;import module.*;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
@@ -15,11 +15,7 @@ public class XGModuleTable extends JTable implements java.awt.event.MouseListene
 		this.addMouseListener(this);
 		this.setAutoCreateRowSorter(true);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-//		this.setIntercellSpacing(new Dimension(GAP, GAP));
 		this.setRowHeight(this.getFont().getSize() + GAP);
-//		this.setFont(MEDIUM_FONT);
-//		this.getTableHeader().setFont(SMALL_FONT);
-//		this.setGridColor(java.awt.Color.lightGray);//wird vom L&F wieder überschrieben
 		this.setShowGrid(true);//wird vom L&F wieder überschrieben
 		this.setAutoscrolls(true);
 		((DefaultTableCellRenderer)this.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);//wird von Nimbus und GTK+ überschrieben
@@ -28,16 +24,22 @@ public class XGModuleTable extends JTable implements java.awt.event.MouseListene
 	@Override public Component prepareRenderer(final TableCellRenderer renderer, final int row, final int column)
 	{	Component c = super.prepareRenderer(renderer, row, column);
 		if(c instanceof JLabel)
-		{	((JLabel)c).setHorizontalAlignment(JLabel.CENTER);
-//			c.setFont(SMALL_FONT);
+		{	JLabel l = (JLabel)c;
+			l.setHorizontalAlignment(JLabel.CENTER);
 		}
 		return c;
 	}
 
 	private void openEditWindow()
-	{	Vector<XGModule> vec = ((XGModuleTableModel)this.getModel()).getRows();
-		for(int r : this.getSelectedRows())
-		{	XGEditWindow.getEditWindow(vec.get(r)).setVisible(true);
+	{	if(this.getModel() instanceof XGModuleTableModel)
+		{	XGModuleTableModel model = (XGModuleTableModel)this.getModel();
+			for(int r : this.getSelectedRows())
+			{	Object o = model.getValueAt(this.getRowSorter().convertRowIndexToModel(r), 0);
+				if(o instanceof XGModule)
+				{	XGModule m = (XGModule)o;
+					XGEditWindow.getEditWindow(m).setVisible(true);
+				}
+			}
 		}
 	}
 
