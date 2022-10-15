@@ -6,7 +6,7 @@ import value.XGValue;import xml.XMLNode;
 
 public class XGAmplifierEnvelope extends XGFrame implements XGComponent
 {
-	static XGAmplifierEnvelope newAmplifierEnvelope(XGModule mod, XMLNode node)
+	static XGAmplifierEnvelope newAmplifierEnvelope(XGModule mod, XMLNode node)throws XGComponentException
 	{	String[] names = new String[3];
 		XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG)).toArray(names);
 		XGValue a = mod.getValues().get(names[0]), d = mod.getValues().get(names[1]), r = mod.getValues().get(names[2]);
@@ -15,14 +15,10 @@ public class XGAmplifierEnvelope extends XGFrame implements XGComponent
 
 /**************************************************************************************/
 
-	public XGAmplifierEnvelope(XGValue atk, XGValue dec, XGValue rel)
+	public XGAmplifierEnvelope(XGValue atk, XGValue dec, XGValue rel)throws XGComponentException
 	{	super("");
 		XGPointPanel panel;
-		if(atk == null || dec == null || rel == null)
-		{	this.setEnabled(false);
-			this.setVisible(false);
-			return;
-		}
+		if(atk == null || dec == null || rel == null) throw new XGComponentException("value is null");
 
 		int maxX = atk.getParameter().getMaxIndex() - atk.getParameter().getMinIndex();
 		maxX += dec.getParameter().getMaxIndex() - dec.getParameter().getMinIndex();

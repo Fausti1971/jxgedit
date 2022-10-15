@@ -19,16 +19,11 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 	private final XGValueLabel label;
 	private final XGValue value;
 
-	public XGKnob(XGValue val)
+	public XGKnob(XGValue val) throws XGComponentException
 	{	super("");
 		this.value = val;
-		if(this.value == null)
-		{	this.setVisible(false);
-			this.setEnabled(false);
-			this.bar = null;
-			this.label = null;
-			return;
-		}
+		if(this.value == null) throw new XGComponentException("value is null");
+
 		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
 

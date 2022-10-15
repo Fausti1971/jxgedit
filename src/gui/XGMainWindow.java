@@ -83,9 +83,14 @@ public class XGMainWindow extends XGWindow
 					{	v = mod.getValues().get(infoTag);
 						break;
 					}
-					button = new XGButton2(mt.getName(), v);
-					button.addActionListener((ActionEvent e)->XGEditWindow.getEditWindow(mod).setVisible(true));
-					sysPane.add(button);
+					try
+					{	button = new XGButton2(mt.getName(), v);
+						button.addActionListener((ActionEvent e)->XGEditWindow.getEditWindow(mod).setVisible(true));
+						sysPane.add(button);
+					}
+					catch(XGComponentException ignored)
+					{
+					}
 					break;
 				}
 			}

@@ -16,14 +16,10 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 	private final XGValue value;
 	private final JComboBox<XGTableEntry> box = new JComboBox<>();
 
-	public XGCombo(XGValue val)
+	public XGCombo(XGValue val)throws XGComponentException
 	{	super("");
 		this.value = val;
-		if(this.value == null)
-		{	this.setVisible(false);
-			this.setEnabled(false);
-			return;
-		}
+		if(this.value == null) throw new XGComponentException("value is null");
 
 		XGParameter p = this.value.getParameter();
 		if(p != null)
@@ -42,7 +38,13 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 		this.parameterChanged(this.value.getParameter());
 	}
 
-	private void entrySelected(){	this.value.setEntry((XGTableEntry)this.box.getSelectedItem(), false, true);}
+	private void entrySelected()
+	{	Object o = this.box.getSelectedItem();
+		if(o instanceof XGTableEntry)
+		{	XGTableEntry e = (XGTableEntry)this.box.getSelectedItem();
+			this.value.setEntry(e, false, true);
+		}
+	}
 
 	@Override public void parameterChanged(XGParameter p)
 	{	this.setName(p.getShortName());

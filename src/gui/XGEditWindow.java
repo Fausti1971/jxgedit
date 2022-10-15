@@ -56,59 +56,65 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	}
 
 	private JComponent createItems(XMLNode item)
-	{	JComponent component;
+	{	JComponent component = null;
 		String type = item.getStringAttribute(ATTR_TYPE);
 		if(TAG_TEMPLATE.equals(item.getTag())) type = ATTR_FRAME;
 		if(type == null) return new XGFrame("missing type for item: " + item);
-		switch(type)
-		{	case ATTR_FRAME:
-				component = XGFrame.newFrame(item); break;
-			case ATTR_KNOB:
-				component = new XGKnob(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
-			case ATTR_RESET_BUTTONS:
-				component = createResetButtons(item); break;
-			case ATTR_PROG_SELECT:
-				component = new XGProgramSelector(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)));
-				break;
-			case ATTR_COMBO:
-				component = new XGCombo(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
-			case ATTR_RADIO:
-				component = new XGRadio(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)), XGComponent.XGOrientation.valueOf(item.getStringAttributeOrDefault(ATTR_ORIENTATION, "vertical")));
-				break;
-			case ATTR_FLAGBOX:
-				component = XGFlagBox.newFlagbox(this.module, item); break;
-			case ATTR_CHECKBOX:
-				component = new XGCheckbox(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
-			case ATTR_SLIDER:
-				component = XGHorizontalSlider.newSlider(this.module, item); break;
-			case ATTR_RANGE:
-				component = XGHorizontalRangeSlider.newRange(this.module, item); break;
-			case ATTR_VELO_ENV:
-				component = new XGVelocityEnvelope(this.module); break;
-			case ATTR_EQ_ENV:
-				component = new XGMEQ(this.module); break;
-			case ATTR_PITCH_ENV:
-				component = XGPitchEnvelope.newPitchEnvelope(this.module, item); break;
-			case ATTR_AMP_ENV:
-				component = XGAmplifierEnvelope.newAmplifierEnvelope(this.module, item); break;
-			case ATTR_TABBED:
-				if(this.module instanceof XGInsertionModule)
-				{	component = new XGInsertionTabbedFrame(item, (XGInsertionModule)this.module);
+		try
+		{	switch(type)
+			{	case ATTR_FRAME:
+					component = XGFrame.newFrame(item); break;
+				case ATTR_KNOB:
+					component = new XGKnob(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
+				case ATTR_RESET_BUTTONS:
+					component = createResetButtons(item); break;
+				case ATTR_PROG_SELECT:
+					component = new XGProgramSelector(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)));
 					break;
-				}
-				else component = new XGTabbedFrame(item);
-				break;
-			case ATTR_TAB:
-				component = new XGTab(item); break;
-			default:
-				return new XGFrame("unknown item type: " + type);
+				case ATTR_COMBO:
+					component = new XGCombo(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
+				case ATTR_RADIO:
+					component = new XGRadio(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)), XGComponent.XGOrientation.valueOf(item.getStringAttributeOrDefault(ATTR_ORIENTATION, "vertical")));
+					break;
+				case ATTR_FLAGBOX:
+					component = XGFlagBox.newFlagbox(this.module, item); break;
+				case ATTR_CHECKBOX:
+					component = new XGCheckbox(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
+				case ATTR_SLIDER:
+					component = XGHorizontalSlider.newSlider(this.module, item); break;
+				case ATTR_RANGE:
+					component = XGHorizontalRangeSlider.newRange(this.module, item); break;
+				case ATTR_VELO_ENV:
+					component = new XGVelocityEnvelope(this.module); break;
+				case ATTR_EQ_ENV:
+					component = new XGMEQ(this.module); break;
+				case ATTR_PITCH_ENV:
+					component = XGPitchEnvelope.newPitchEnvelope(this.module, item); break;
+				case ATTR_AMP_ENV:
+					component = XGAmplifierEnvelope.newAmplifierEnvelope(this.module, item); break;
+				case ATTR_TABBED:
+					if(this.module instanceof XGInsertionModule)
+					{	component = new XGInsertionTabbedFrame(item, (XGInsertionModule)this.module);
+						break;
+					}
+					else component = new XGTabbedFrame(item);
+					break;
+				case ATTR_TAB:
+					component = new XGTab(item); break;
+				default:
+					return new XGFrame("unknown item type: " + type);
+			}
+		}
+		catch(XGComponentException e)
+		{	//LOG.info(e.getMessage());
 		}
 		//...
 		for(XMLNode i : item.getChildNodes(TAG_ITEM))
 		{	String c = i.getStringAttribute(ATTR_CONSTRAINT);
-			component.add(this.createItems(i), c);
+			JComponent child = this.createItems(i);
+			if(component != null && child != null) component.add(child, c);
 		}
-//TODO: ein leeres tab_frame, tab oder frame sollte entfernt werden (dazu muss zwischen XGValue == null und XGParameter.isValid() per Exception unterschieden werden)
+		if(component != null && component.getComponentCount() == 0) component = null;//ein leeres tab_frame, tab oder frame sollte entfernt werden
 		return component;
 	}
 

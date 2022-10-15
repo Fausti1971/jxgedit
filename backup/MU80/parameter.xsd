@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+	<xs:element name="parameterTables">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="parameterTable" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="parameterTable">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="parameter" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		<xs:attribute name="name" use="required" type="xs:string"/>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="parameter">
+		<xs:complexType>
+			<xs:attribute name="selectorValue" type="valueType" use="required"/>
+			<xs:attribute name="name" type="xs:string" use="required"/>
+			<xs:attribute name="shortName" type="xs:string" use="optional"/>
+			<xs:attribute name="min" type="valueType" use="optional"/>
+			<xs:attribute name="max" type="valueType" use="optional"/>
+			<xs:attribute name="table" type="xs:string" use="optional"/>
+			<xs:attribute name="unit" type="xs:string" use="optional"/>
+			<xs:attribute name="origin" type="valueType" use="optional"/>
+			<xs:attribute name="default" type="valueType" />
+		</xs:complexType>
+	</xs:element>
+
+	<xs:simpleType name="valueType">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="\d+((\.\d+)+)?"/>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

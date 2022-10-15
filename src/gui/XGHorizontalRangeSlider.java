@@ -12,7 +12,7 @@ import value.XGValueChangeListener;import xml.XMLNode;
 
 public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConstants, XGValueChangeListener
 {
-	public static XGHorizontalRangeSlider newRange(XGModule mod, XMLNode node)
+	public static XGHorizontalRangeSlider newRange(XGModule mod, XMLNode node)throws XGComponentException
 	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));
 		if(tags.size() != 2) LOG.warning("incorrect count of tags for " + ATTR_RANGE + tags);
 		XGValue lo = mod.getValues().get((String)tags.toArray()[0]);
@@ -25,17 +25,12 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 	private final XGValueLabel label;
 	private final XGValue loValue, hiValue;
 
-	public XGHorizontalRangeSlider(XGValue lo, XGValue hi)
+	public XGHorizontalRangeSlider(XGValue lo, XGValue hi)throws XGComponentException
 	{	super("");
 		this.loValue = lo;
 		this.hiValue = hi;
-		if(this.loValue == null || this.hiValue == null)
-		{	this.setEnabled(false);
-			this.setVisible(false);
-			this.bar = null;
-			this.label = null;
-			return;
-		}
+		if(this.loValue == null) throw new XGComponentException("low value is null");
+		if(this.hiValue == null) throw new XGComponentException("high value is null");
 		this.loValue.getValueListeners().add(this);
 		this.hiValue.getValueListeners().add(this);
 
@@ -174,7 +169,7 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 
 		private final XGValue value2;
 
-		public XGRangeLabel(XGValue lo, XGValue hi)
+		public XGRangeLabel(XGValue lo, XGValue hi)throws XGComponentException
 		{	super(lo);
 			this.value2 = hi;
 			this.value2.getValueListeners().add(this);

@@ -17,25 +17,20 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener
 	private final XGValue depth;
 	private final XGValue offset;
 
-	public XGVelocityEnvelope(XGModule mod)
+	public XGVelocityEnvelope(XGModule mod)throws XGComponentException
 	{	super("");
 		this.depth = mod.getValues().get(SENSE);
 		this.offset = mod.getValues().get(OFFSET);
-
+		if(this.depth == null) throw new XGComponentException("velo depth value is null");
+		if(this.offset == null) throw new XGComponentException("velo offset value is null");
 		XGValue low = mod.getValues().get(LOLIM);
 		if(low == null) low = new XGFixedValue("Limit low", 1);
 
 		XGValue high = mod.getValues().get(HILIM);
 		if(high == null) high = new XGFixedValue("Limit High", 127);
 
-	/***************************************************************************************/
-		//TODO: Mach neu! die Kurvensteilheit stimmt nicht mehr, wenn die Velocity-Limits geändert werden...
+		//TODO: Mach neu! die Kurvensteilheit stimmt nicht mehr, wenn die Velocity-Limits geändert werden; limits neu vielleicht über clipping ohne points
 		XGPointPanel panel;
-		if(this.depth == null || this.offset == null)
-		{	this.setEnabled(false);
-			this.setVisible(false);
-			return;
-		}
 
 		panel = new XGPointPanel(1, 1, 0, 64, 1, 127, 64, 127);
 		panel.setUnits("Velocity", "Volume");

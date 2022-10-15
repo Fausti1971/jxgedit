@@ -24,14 +24,11 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 	private final JButton select = new JButton();
 	private XGWindow dialog = null;
 
-	public XGProgramSelector(XGValue val)
+	public XGProgramSelector(XGValue val)throws XGComponentException
 	{	super("");
 		this.value = val;
-		if(val == null)
-		{	this.setVisible(false);
-			this.setEnabled(false);
-			return;
-		}
+		if(this.value == null) throw new XGComponentException("value is null");
+
 		this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
 

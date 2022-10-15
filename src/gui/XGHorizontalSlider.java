@@ -10,7 +10,7 @@ import value.XGValueChangeListener;import xml.XMLNode;
 
 public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener, MouseListener
 {
-	static XGFrame newSlider(XGModule mod, XMLNode node)
+	static XGFrame newSlider(XGModule mod, XMLNode node)throws XGComponentException
 	{	XGValue v = mod.getValues().get(node.getStringAttribute(ATTR_VALUE_TAG));
 		Rectangle r = XGStrings.toRectangle(node.getStringAttribute(ATTR_CONSTRAINT));
 		if(node.hasAttribute(ATTR_ORIENTATION))
@@ -30,17 +30,11 @@ public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener
 	private final XGHorizontalSliderBar bar;
 	private final XGValueLabel label;
 
-	public XGHorizontalSlider(XGValue v)
+	public XGHorizontalSlider(XGValue v)throws XGComponentException
 	{	super("");
 		this.value = v;
-		if(v == null)
-		{	this.setEnabled(false);
-			this.setVisible(false);
-			this.setToolTipText(null);
-			this.bar = null;
-			this.label = null;
-			return;
-		}
+		if(this.value == null) throw new XGComponentException("value is null");
+
 		if(this.value.getParameter() != null)
 		{	this.setEnabled(true);
 			this.setVisible(true);

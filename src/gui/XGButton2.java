@@ -13,12 +13,13 @@ public class XGButton2 extends JButton implements value.XGValueChangeListener
 	private final XGValue value;
 	private final String firstRow;
 
-	public XGButton2(String firstRow, XGValue val)
+	public XGButton2(String firstRow, XGValue val)throws XGComponentException
 	{	this.value = val;
 		this.firstRow = firstRow;
 		this.setText(this.createText());
 //		this.setFont(MEDIUM_FONT);
-		if(val != null) this.value.getValueListeners().add(this);
+		if(this.value == null) throw new XGComponentException("value is null");
+		this.value.getValueListeners().add(this);
 	}
 
 	private String createText()

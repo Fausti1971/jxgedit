@@ -13,8 +13,9 @@ public class XGValueLabel extends JLabel implements XGComponent, XGValueChangeLi
 
 	protected final XGValue value;
 
-	public XGValueLabel(XGValue v)
+	public XGValueLabel(XGValue v)throws XGComponentException
 	{	this.value = v;
+		if(this.value == null) throw new XGComponentException("value is null");
 		this.setText(v.toString());
 		this.setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		this.setHorizontalAlignment(JLabel.CENTER);

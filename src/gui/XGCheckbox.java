@@ -16,14 +16,10 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 	private final XGValue value;
 	private final JCheckBox checkbox = new JCheckBox();
 
-	public XGCheckbox(XGValue val)
+	public XGCheckbox(XGValue val)throws XGComponentException
 	{	super ("");
 		this.value = val;
-		if(this.value == null)
-		{	this.setVisible(false);
-			this.setEnabled(false);
-			return;
-		}
+		if(this.value == null) throw new XGComponentException("value is null");
 		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
 		this.value.getValueListeners().add(this);
 		this.add(this.checkbox, "0,0,1,1");

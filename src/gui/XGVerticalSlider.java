@@ -16,17 +16,11 @@ public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, 
 	private final XGVerticalSliderBar bar;
 	private final XGValueLabel label;
 
-	public XGVerticalSlider(XGValue v)
+	public XGVerticalSlider(XGValue v)throws XGComponentException
 	{	super("");
 		this.value = v;
-		if(v == null)
-		{	this.setEnabled(false);
-			this.setVisible(false);
-			this.setToolTipText(null);
-			this.bar = null;
-			this.label = null;
-			return;
-		}
+		if(this.value == null) throw new XGComponentException("value is null");
+
 		if(this.value.getParameter() != null)
 		{	this.setEnabled(true);
 			this.setVisible(true);

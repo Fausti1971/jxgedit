@@ -10,20 +10,18 @@ public class XGPitchEnvelope extends JPanel implements XGComponent
 {
 	private static final XGFixedValue VALUE_255 = new XGFixedValue("fix", 255), VALUE_381 = new XGFixedValue("fix", 381);
 
-	static XGPitchEnvelope newPitchEnvelope(XGModule mod, XMLNode node)
+	static XGPitchEnvelope newPitchEnvelope(XGModule mod, XMLNode node)throws XGComponentException
 	{	return new XGPitchEnvelope(mod.getValues().get("mp_peg_init_level"), mod.getValues().get("mp_peg_attack_time"), mod.getValues().get("mp_peg_release_level"), mod.getValues().get("mp_peg_release_time"));
 	}
 
-	public XGPitchEnvelope(XGValue al, XGValue at, XGValue rl, XGValue rt)
+	public XGPitchEnvelope(XGValue al, XGValue at, XGValue rl, XGValue rt)throws XGComponentException
 	{
-/**************************************************************************************/
-
 		XGPointPanel panel;
-		if(al == null || at == null || rl == null || rt == null)
-		{	this.setEnabled(false);
-			this.setVisible(false);
-			return;
-		}
+		if(al == null) throw new XGComponentException("init level value is null");
+		if(at == null) throw new XGComponentException("attack time value is null");
+		if(rl == null) throw new XGComponentException("release level value is null");
+		if(rt == null) throw new XGComponentException("release time value is null");
+
 		this.setName("Pitch Envelope Generator");
 
 		panel = new XGPointPanel(1, 2, 0, 64, 0, 381, 0, 127);

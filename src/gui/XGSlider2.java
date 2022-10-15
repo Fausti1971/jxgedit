@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class XGSlider2 extends XGFrame
 {
-	static XGSlider2 newSlider(XGModule mod, XMLNode node)
+	static XGSlider2 newSlider(XGModule mod, XMLNode node)throws XGComponentException
 	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));
 		XGValue start, end;
 		switch(tags.size())
@@ -36,7 +36,7 @@ public class XGSlider2 extends XGFrame
 
 	private final XGValue start, end;
 
-	public XGSlider2(XGValue start, XGValue end)
+	public XGSlider2(XGValue start, XGValue end)throws XGComponentException
 	{	super("");
 		XGSliderPanel panel;
 		XGValueLabel label;

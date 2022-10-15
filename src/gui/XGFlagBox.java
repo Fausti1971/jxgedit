@@ -7,7 +7,7 @@ import application.XGStrings;import module.XGModule;import parm.XGParameter;impo
 
 public class XGFlagBox extends XGFrame
 {
-	public static XGFlagBox newFlagbox(XGModule mod, XMLNode node)
+	public static XGFlagBox newFlagbox(XGModule mod, XMLNode node)throws XGComponentException
 	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));
 		int i = 0;
 		XGValue[] vals = new XGValue[tags.size()];
@@ -19,15 +19,12 @@ public class XGFlagBox extends XGFrame
 
 	private final Set<XGValue> values = new LinkedHashSet<>();
 
-	public XGFlagBox(String name, XGValue... vals)
+	public XGFlagBox(String name, XGValue... vals)throws XGComponentException
 	{	super(name);
-		if(vals == null)
-		{	this.setEnabled(false);
-			this.setVisible(false);
-			return;
+		if(vals == null ) throw new XGComponentException("value array is null");
+		for(XGValue v : vals)
+		{	if(v != null) this.values.add(v);
 		}
-
-		for(XGValue v : vals){	if(v != null) this.values.add(v);}
 
 		JButton button = new JButton("select");
 		button.addActionListener((ActionEvent)->new XGCheckboxPopup(this, this.values));

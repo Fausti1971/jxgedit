@@ -10,8 +10,65 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
+      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/defaults.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/defaults.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/drums.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/drums.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/parameter.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/parameter.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/structure.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/structure.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/tables.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/tables.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/template.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU500/template.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/defaults.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/defaults.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/drums.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/drums.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/parameter.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/parameter.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/structure.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/structure.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/tables.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/tables.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/template.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/MU80/template.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/defaults.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/defaults.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/drums.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/drums.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/parameter.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/parameter.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/structure.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/structure.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/tables.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/tables.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/template.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backup/XG/template.xsd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/gui/XGComponentException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGAmplifierEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGAmplifierEnvelope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGButton2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGButton2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGCheckbox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCheckbox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGCombo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCombo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGFlagBox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGFlagBox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGHorizontalRangeSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGHorizontalRangeSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGHorizontalSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGHorizontalSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGKnob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKnob.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGPitchEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPitchEnvelope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGRadio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRadio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGScale.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGSlider2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSlider2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGValueLabel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGValueLabel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGVelocityEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVelocityEnvelope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -134,8 +191,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
-      <recent name="value" />
       <recent name="gui" />
+      <recent name="value" />
       <recent name="bulk" />
       <recent name="msg" />
     </key>
@@ -248,34 +305,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00017" summary="XGBulk und XGBulkType eingeführt;">
-      <created>1646057146923</created>
-      <option name="number" value="00017" />
-      <option name="presentableId" value="LOCAL-00017" />
-      <option name="project" value="LOCAL" />
-      <updated>1646057146923</updated>
-    </task>
-    <task id="LOCAL-00018" summary="debugged (structure.xml) &quot;defaultSelector&quot; von &quot;mp_program&quot; ist &quot;id&quot;">
-      <created>1647258859392</created>
-      <option name="number" value="00018" />
-      <option name="presentableId" value="LOCAL-00018" />
-      <option name="project" value="LOCAL" />
-      <updated>1647258859392</updated>
-    </task>
-    <task id="LOCAL-00019" summary="XGSysexFile.load() und XGSysexFile.save() debugged; xml file history implemented;">
-      <created>1647469951517</created>
-      <option name="number" value="00019" />
-      <option name="presentableId" value="LOCAL-00019" />
-      <option name="project" value="LOCAL" />
-      <updated>1647469951517</updated>
-    </task>
-    <task id="LOCAL-00020" summary="Resizing, Fontselection, ValueInputDialog implemented;">
-      <created>1648505509304</created>
-      <option name="number" value="00020" />
-      <option name="presentableId" value="LOCAL-00020" />
-      <option name="project" value="LOCAL" />
-      <updated>1648505509304</updated>
     </task>
     <task id="LOCAL-00021" summary="XGFrame mit optionalem Namen (JLabel) versehen und automatisiert; XGLayout debugged;">
       <created>1649040701392</created>
@@ -592,7 +621,35 @@
       <option name="project" value="LOCAL" />
       <updated>1665436140417</updated>
     </task>
-    <option name="localTasksCounter" value="66" />
+    <task id="LOCAL-00066" summary="geringfügige Änderungen zwecks Konstistenz in templates.xml;">
+      <created>1665436756551</created>
+      <option name="number" value="00066" />
+      <option name="presentableId" value="LOCAL-00066" />
+      <option name="project" value="LOCAL" />
+      <updated>1665436756551</updated>
+    </task>
+    <task id="LOCAL-00067" summary="geringfügige Änderungen zwecks Konstistenz in templates.xml;">
+      <created>1665436762858</created>
+      <option name="number" value="00067" />
+      <option name="presentableId" value="LOCAL-00067" />
+      <option name="project" value="LOCAL" />
+      <updated>1665436762858</updated>
+    </task>
+    <task id="LOCAL-00068" summary="screenshot updated;">
+      <created>1665436952005</created>
+      <option name="number" value="00068" />
+      <option name="presentableId" value="LOCAL-00068" />
+      <option name="project" value="LOCAL" />
+      <updated>1665436952005</updated>
+    </task>
+    <task id="LOCAL-00069" summary="Bugfix in XGModuleTable.openEditWindow();">
+      <created>1665759155050</created>
+      <option name="number" value="00069" />
+      <option name="presentableId" value="LOCAL-00069" />
+      <option name="project" value="LOCAL" />
+      <updated>1665759155051</updated>
+    </task>
+    <option name="localTasksCounter" value="70" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -672,7 +729,7 @@
                   <entry key="branch">
                     <value>
                       <list>
-                        <option value="probook/master" />
+                        <option value="HEAD" />
                       </list>
                     </value>
                   </entry>
@@ -706,8 +763,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Backup" />
-    <MESSAGE value="Vorbereitung XML-Editwindows" />
     <MESSAGE value="Backup;" />
     <MESSAGE value="xml-templates für editwindows vollständig implementiert;" />
     <MESSAGE value="debugging, Kosmetik;" />
@@ -731,7 +786,9 @@
     <MESSAGE value="author and screenshot inserted;" />
     <MESSAGE value="screenshot" />
     <MESSAGE value="geringfügige Änderungen zwecks Konstistenz in templates.xml;" />
-    <option name="LAST_COMMIT_MESSAGE" value="geringfügige Änderungen zwecks Konstistenz in templates.xml;" />
+    <MESSAGE value="screenshot updated;" />
+    <MESSAGE value="Bugfix in XGModuleTable.openEditWindow();" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfix in XGModuleTable.openEditWindow();" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

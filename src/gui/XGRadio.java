@@ -16,19 +16,16 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 	private final XGValue value;
 	private final XGOrientation orientation;
 
-	public XGRadio(XGValue val)
+	public XGRadio(XGValue val)throws XGComponentException
 	{	this(val, XGOrientation.vertical);
 	}
 
-	public XGRadio(XGValue val, XGOrientation orientation)
+	public XGRadio(XGValue val, XGOrientation orientation)throws XGComponentException
 	{	super("");
 		this.orientation = orientation;
 		this.value = val;
-		if(val == null)
-		{	this.setVisible(false);
-			this.setEnabled(false);
-			return;
-		}
+		if(val == null) throw new XGComponentException("value is null");
+
 		this.setAlignmentY(XGFrame.TOP_ALIGNMENT);
 		this.setAlignmentX(XGFrame.LEFT_ALIGNMENT);
 		this.value.getValueListeners().add(this);

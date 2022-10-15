@@ -33,8 +33,10 @@ public class XGMEQ extends javax.swing.JPanel
 	private final XGValue g1, g2, g3, g4, g5, f1, f2, f3, f4, f5, q1, q2, q3, q4, q5, s1, s5;
 	private final int minX, maxX, minY, maxY, midY;
 
-	public XGMEQ(XGModule mod)
+	public XGMEQ(XGModule mod)throws XGComponentException
 	{
+		if(mod == null) throw new XGComponentException("module is null");
+
 		XGTagableAddressableSet<XGValue> set = mod.getValues();
 		this.g1 = set.get(G1);
 		this.g2 = set.get(G2);
