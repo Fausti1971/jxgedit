@@ -153,6 +153,14 @@
 		</xs:complexContent>
 	</xs:complexType>
 
+	<xs:complexType name="vibrato_envelope">
+		<xs:complexContent mixed="false">
+			<xs:extension base="item">
+			<xs:attribute name="constraint" use="required" type="constraints_type"/>
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+
 	<xs:complexType name="amplifier_envelope">
 		<xs:complexContent mixed="false">
 			<xs:extension base="item">

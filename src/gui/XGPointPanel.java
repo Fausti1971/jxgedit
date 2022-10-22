@@ -7,11 +7,12 @@ import javax.swing.*;
 import application.XGMath;
 import value.XGValue;
 
-public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
+public class XGPointPanel extends JPanel implements XGResizeable, XGComponent, XGShaper
 {
 /***************************************************************************************/
 
 	private final ArrayList<XGPoint> points = new ArrayList<>();
+	private final XGShaper shaper;
 	private XGValue selectedValue;
 	private final Set<Integer> vLines = new HashSet<>(), hLines = new HashSet<>();
 	private final int grid_x, grid_y;
@@ -21,8 +22,10 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
 	private String xUnit = "", yUnit = "";
 	private Graphics2D g2;
 
-	public XGPointPanel(int gridX, int gridY, int oriX, int oriY, int minX, int maxX, int minY, int maxY)
-	{	this.minXIndex = minX;
+	public XGPointPanel(XGShaper shp, int gridX, int gridY, int oriX, int oriY, int minX, int maxX, int minY, int maxY)
+	{	if(shp == null) this.shaper = this;
+		else this.shaper = shp;
+		this.minXIndex = minX;
 		this.maxXIndex = maxX;
 		this.minYIndex = minY;
 		this.maxYIndex = maxY;
@@ -81,20 +84,15 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
 		for(int i : this.hLines) g2.drawLine(ins.left, i, w, i);
 //polygon
 		this.g2.addRenderingHints(AALIAS);//keine dotted stroke mit Antialiasing
-		GradientPaint grp = new GradientPaint(ins.left, ins.top, COL_SHAPE, w, h, COL_BAR_BACK,false);
-		g2.setPaint(grp);
-		GeneralPath gp = new GeneralPath();
-		int x = this.origin_x;
-		int y = this.origin_y;
-		gp.moveTo(x, y);
-		for(XGPoint p : points)
-		{	x = p.getX() + p.getWidth()/2;
-			y = p.getY() + p.getHeight()/2;
-			gp.lineTo(x, y);
-		}
-		gp.lineTo(w, this.origin_y);
-		gp.closePath();
+//		GradientPaint grp = new GradientPaint(0, 0, COL_BAR_BACK, 0, h, COL_SHAPE,false);
+//		g2.setPaint(grp);
+		this.g2.setColor(COL_SHAPE);
+		GeneralPath gp = this.shaper.getShape(this.getBounds());
 		this.g2.fill(gp);
+//polygonline
+		this.g2.setColor(COL_BAR_FORE);
+		this.g2.setStroke(DEF_STROKE);
+		this.g2.draw(gp);
 //units
 		this.g2.setColor(this.getBackground().darker());
 		this.g2.drawString(this.xUnit, w - this.g2.getFontMetrics().stringWidth(this.xUnit), h);
@@ -115,5 +113,20 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent
 		this.origin_y = XGMath.linearScale(this.origin_y_index, this.minYIndex, this.maxYIndex, this.getHeight(), 0);
 
 		this.repaint();
+	}
+
+	public GeneralPath getShape(Rectangle r)
+	{	GeneralPath gp = new GeneralPath();
+		int x = this.origin_x;
+		int y = this.origin_y;
+		gp.moveTo(x, y);
+		for(XGPoint p : points)
+		{	x = p.getX() + p.getWidth()/2;
+			y = p.getY() + p.getHeight()/2;
+			gp.lineTo(x, y);
+		}
+		gp.lineTo(r.width, this.origin_y);
+//		gp.closePath();
+		return gp;
 	}
 }

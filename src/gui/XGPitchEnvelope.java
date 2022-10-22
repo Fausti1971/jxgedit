@@ -9,9 +9,10 @@ import javax.swing.*;
 public class XGPitchEnvelope extends JPanel implements XGComponent
 {
 	private static final XGFixedValue VALUE_255 = new XGFixedValue("fix", 255), VALUE_381 = new XGFixedValue("fix", 381);
+	private static final String IL = "mp_peg_init_level", AT = "mp_peg_attack_time", RL = "mp_peg_release_level", RT ="mp_peg_release_time";
 
 	static XGPitchEnvelope newPitchEnvelope(XGModule mod, XMLNode node)throws XGComponentException
-	{	return new XGPitchEnvelope(mod.getValues().get("mp_peg_init_level"), mod.getValues().get("mp_peg_attack_time"), mod.getValues().get("mp_peg_release_level"), mod.getValues().get("mp_peg_release_time"));
+	{	return new XGPitchEnvelope(mod.getValues().get(IL), mod.getValues().get(AT), mod.getValues().get(RL), mod.getValues().get(RT));
 	}
 
 	public XGPitchEnvelope(XGValue al, XGValue at, XGValue rl, XGValue rt)throws XGComponentException
@@ -24,7 +25,7 @@ public class XGPitchEnvelope extends JPanel implements XGComponent
 
 		this.setName("Pitch Envelope Generator");
 
-		panel = new XGPointPanel(1, 2, 0, 64, 0, 381, 0, 127);
+		panel = new XGPointPanel(null, 1, 2, 0, 64, 0, 381, 0, 127);
 		panel.setUnits("Time", "Pitch");
 
 		panel.add(new XGPoint(0, new XGFixedValue("fixed",  0), al, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));

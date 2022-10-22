@@ -223,8 +223,8 @@
 			<opcode xsi:type="immutable" id="mp_rev" address="//19" name="Reverb Send" shortName="Rev" min="0" max="127" default="40" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_var" address="//20" name="Variation Send" shortName="Var" min="0" max="127" default="0" origin="0" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_vib_rate" address="//21" name="Vibrato Rate" shortName="Rate" min="0" max="127" origin="0" table="table1" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_vib_depth" address="//22" name="Vibrato Depth" shortName="Depth" min="0" max="127" origin="64" table="table19" default="64" actions="change"/>
-			<opcode xsi:type="immutable" id="mp_vib_delay" address="//23" name="Vibrato Delay" shortName="Delay" min="0" max="127" origin="0" table="table2" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_vib_depth" address="//22" name="Vibrato Depth" shortName="Depth" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
+			<opcode xsi:type="immutable" id="mp_vib_delay" address="//23" name="Vibrato Delay" shortName="Delay" min="0" max="127" origin="0" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_lpf_cut" address="//24" name="Low Pass Filter Cutoff Frequency" shortName="LPF" min="0" max="127" origin="64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_lpf_reso" address="//25" name="Low Pass Filter Resonance" shortName="Reso" min="0" max="127" origin="64" table="sub64" default="64" actions="change"/>
 			<opcode xsi:type="immutable" id="mp_aeg_attack" address="//26" name="AEG Attack Time" shortName="Attck" min="0" max="127" origin="64" table="table20" default="64" actions="change"/>

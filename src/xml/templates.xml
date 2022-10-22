@@ -197,25 +197,18 @@
 		</item>
 		<item xsi:type="knob" value_tag="mp_transpose" constraint="0,3,1,2"/>
 		<item xsi:type="knob" value_tag="mp_detune" constraint="1,3,1,2"/>
-		<item xsi:type="frame" label="Portamento" constraint="2,3,2,2">
+		<item xsi:type="frame" label="Portamento" constraint="0,5,2,2">
 			<item xsi:type="checkbox" value_tag="mp_portamento" constraint="0,0,1,2"/>
 			<item xsi:type="knob" value_tag="mp_portamento_time" constraint="1,0,1,2"/>
 		</item>
-		<item xsi:type="frame" label="Scale" constraint="4,3,6,4">
-			<item xsi:type="slider" value_tag="mp_scale_c" constraint="0,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_cis" constraint="1,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_d" constraint="2,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_dis" constraint="3,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_e" constraint="4,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_f" constraint="5,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_fis" constraint="6,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_g" constraint="7,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_gis" constraint="8,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_a" constraint="9,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_ais" constraint="10,0,1,4"/>
-			<item xsi:type="slider" value_tag="mp_scale_b" constraint="11,0,1,4"/>
-		</item>
-		<item xsi:type="tab_frame" constraint="10,3,6,4">
+		<item xsi:type="tab_frame" constraint="4,3,6,4">
+			<item xsi:type="tab" label="Vibrato" constraint="0,0,6,4">
+				<item xsi:type="vibrato_envelope" constraint="0,0,6,2"/>
+				<item xsi:type="knob" value_tag="mp_vib_delay" constraint="0,2,2,2"/>
+				<item xsi:type="knob" value_tag="mp_vib_rate" constraint="2,2,2,2"/>
+				<item xsi:type="knob" value_tag="mp_vib_depth" constraint="4,2,2,2"/>
+			</item>
+
 			<item xsi:type="tab" label="Pitch Env" constraint="0,0,8,4">
 				<item xsi:type="pitch_envelope" constraint="0,0,8,2"/>
 				<item xsi:type="knob" value_tag="mp_peg_init_level" constraint="0,2,2,2"/>
@@ -223,6 +216,22 @@
 				<item xsi:type="knob" value_tag="mp_peg_release_time" constraint="4,2,2,2"/>
 				<item xsi:type="knob" value_tag="mp_peg_release_level" constraint="6,2,2,2"/>
 			</item>
+			<item xsi:type="tab" label="Scale" constraint="4,3,6,4">
+				<item xsi:type="slider" value_tag="mp_scale_c" constraint="0,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_cis" constraint="1,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_d" constraint="2,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_dis" constraint="3,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_e" constraint="4,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_f" constraint="5,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_fis" constraint="6,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_g" constraint="7,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_gis" constraint="8,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_a" constraint="9,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_ais" constraint="10,0,1,4"/>
+				<item xsi:type="slider" value_tag="mp_scale_b" constraint="11,0,1,4"/>
+			</item>
+		</item>
+		<item xsi:type="tab_frame" constraint="10,3,6,4">
 			<item xsi:type="tab" label="Amp Env" constraint="0,0,6,4">
 				<item xsi:type="amplifier_envelope" value_tag="mp_aeg_attack,mp_aeg_decay,mp_aeg_release" constraint="0,0,6,2"/>
 				<item xsi:type="knob" value_tag="mp_aeg_attack" constraint="0,2,2,2"/>
@@ -235,13 +244,6 @@
 				<item xsi:type="knob" value_tag="mp_velo_depth" constraint="2,2,2,2"/>
 				<item xsi:type="knob" value_tag="mp_velo_offset" constraint="4,2,2,2"/>
 				<item xsi:type="knob" value_tag="mp_velo_hi" constraint="6,2,2,2"/>
-			</item>
-		</item>
-		<item xsi:type="frame" label="Vibrato" constraint="0,5,4,2">
-			<item xsi:type="frame" constraint="0,0,6,2">
-				<item xsi:type="knob" value_tag="mp_vib_rate" constraint="0,0,2,2"/>
-				<item xsi:type="knob" value_tag="mp_vib_depth" constraint="2,0,2,2"/>
-				<item xsi:type="knob" value_tag="mp_vib_delay" constraint="4,0,2,2"/>
 			</item>
 		</item>
 		<item xsi:type="tab_frame" constraint="0,7,12,2">

@@ -30,58 +30,57 @@ public class XGMEQ extends javax.swing.JPanel
 /*****************************************************************************************/
 
 	private final XGPointPanel panel;
-	private final XGValue g1, g2, g3, g4, g5, f1, f2, f3, f4, f5, q1, q2, q3, q4, q5, s1, s5;
-	private final int minX, maxX, minY, maxY, midY;
+	private final int midY;
 
 	public XGMEQ(XGModule mod)throws XGComponentException
 	{
 		if(mod == null) throw new XGComponentException("module is null");
 
 		XGTagableAddressableSet<XGValue> set = mod.getValues();
-		this.g1 = set.get(G1);
-		this.g2 = set.get(G2);
-		this.g3 = set.get(G3);
-		this.g4 = set.get(G4);
-		this.g5 = set.get(G5);
+		XGValue g1 = set.get(G1);
+		XGValue g2 = set.get(G2);
+		XGValue g3 = set.get(G3);
+		XGValue g4 = set.get(G4);
+		XGValue g5 = set.get(G5);
 
-		this.f1 = set.get(F1);
-		this.f2 = set.get(F2);
-		this.f3 = set.get(F3);
-		this.f4 = set.get(F4);
-		this.f5 = set.get(F5);
+		XGValue f1 = set.get(F1);
+		XGValue f2 = set.get(F2);
+		XGValue f3 = set.get(F3);
+		XGValue f4 = set.get(F4);
+		XGValue f5 = set.get(F5);
 
-		this.q1 = set.get(Q1);
-		this.q2 = set.get(Q2);
-		this.q3 = set.get(Q3);
-		this.q4 = set.get(Q4);
-		this.q5 = set.get(Q5);
+		XGValue q1 = set.get(Q1);
+		XGValue q2 = set.get(Q2);
+		XGValue q3 = set.get(Q3);
+		XGValue q4 = set.get(Q4);
+		XGValue q5 = set.get(Q5);
 
-		this.s1 = set.get(S1);
-		this.s5 = set.get(S5);
+		XGValue s1 = set.get(S1);
+		XGValue s5 = set.get(S5);
 
-		this.minX = this.f1.getParameter().getMinIndex();
-		this.maxX = this.f5.getParameter().getMaxIndex();
-		this.minY = this.g1.getParameter().getMinIndex();
-		this.maxY = this.g1.getParameter().getMaxIndex();
-		this.midY = (this.maxY - this.minY)/2 + this.minY;
+		int minX = f1.getParameter().getMinIndex();
+		int maxX = f5.getParameter().getMaxIndex();
+		int minY = g1.getParameter().getMinIndex();
+		int maxY = g1.getParameter().getMaxIndex();
+		this.midY = (maxY - minY)/2 + minY;
 
-		this.panel = new XGPointPanel(1, 5, 0, 0, this.minX, this.maxX, this.minY, this.maxY);
+		this.panel = new XGPointPanel(null, 1, 5, 0, 0, minX, maxX, minY, maxY);
 		this.panel.setUnits("Hz", "dB");
 		this.panel.setName("");
 
 		this.setLayout(new GridBagLayout());
 		this.add(this.panel, DEF_GBC);
 
-		this.panel.add(new XGPoint(0, new XGFixedValue("fixed", this.minX), this.g1, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(1, this.f1, this.g1, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(2, this.f2, this.g2, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(3, this.f3, this.g3, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(4, this.f4, this.g4, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(5, this.f5, this.g5, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		this.panel.add(new XGPoint(6, new XGFixedValue("fixed", this.maxX), this.g5, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(0, new XGFixedValue("fixed", minX), g1, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(1, f1, g1, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(2, f2, g2, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(3, f3, g3, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(4, f4, g4, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(5, f5, g5, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
+		this.panel.add(new XGPoint(6, new XGFixedValue("fixed", maxX), g5, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
 
-		this.s1.getValueListeners().add((XGValue s)->this.setShape(s.getValue(), 0, this.g1));
-		this.s5.getValueListeners().add((XGValue s)->this.setShape(s.getValue(), 6, this.g5));
+		s1.getValueListeners().add((XGValue s)->this.setShape(s.getValue(), 0, g1));
+		s5.getValueListeners().add((XGValue s)->this.setShape(s.getValue(), 6, g5));
 	}
 
 	private void setShape(int s, int i, XGValue g)

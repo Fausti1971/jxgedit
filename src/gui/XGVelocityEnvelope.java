@@ -32,7 +32,7 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener
 		//TODO: Mach neu! die Kurvensteilheit stimmt nicht mehr, wenn die Velocity-Limits geändert werden; limits neu vielleicht über clipping ohne points
 		XGPointPanel panel;
 
-		panel = new XGPointPanel(1, 1, 0, 64, 1, 127, 64, 127);
+		panel = new XGPointPanel(null, 1, 1, 0, 64, 1, 127, 64, 127);
 		panel.setUnits("Velocity", "Volume");
 
 		panel.add(new XGPoint(0, low, XGFixedValue.VALUE_0, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));

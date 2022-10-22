@@ -38,7 +38,7 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable
 		this.relationY = relY;
 		this.setSize(POINT_SIZE + 1, POINT_SIZE + 1);
 		this.setPreferredSize(this.getSize());
-		if(!(this.isMovable())) this.setVisible(false);
+		this.setVisible(this.isMovable());
 	}
 
 	private boolean isMovable()

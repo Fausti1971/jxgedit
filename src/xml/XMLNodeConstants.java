@@ -114,6 +114,7 @@ public interface XMLNodeConstants
 		ATTR_VELO_ENV = "velocity_envelope",
 		ATTR_EQ_ENV = "eq_envelope",
 		ATTR_PITCH_ENV = "pitch_envelope",
+		ATTR_VIB_ENV = "vibrato_envelope",
 		ATTR_AMP_ENV = "amplifier_envelope",
 		ATTR_TABBED = "tab_frame",
 		ATTR_TAB = "tab",

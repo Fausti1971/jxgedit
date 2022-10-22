@@ -90,6 +90,8 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 					component = new XGMEQ(this.module); break;
 				case ATTR_PITCH_ENV:
 					component = XGPitchEnvelope.newPitchEnvelope(this.module, item); break;
+				case ATTR_VIB_ENV:
+					component = new XGVibratoCurve(this.module); break;
 				case ATTR_AMP_ENV:
 					component = XGAmplifierEnvelope.newAmplifierEnvelope(this.module, item); break;
 				case ATTR_TABBED:
