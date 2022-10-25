@@ -75,7 +75,7 @@ public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, 
 			this.barHeight = endY - originY;
 			gp = new GradientPaint(w3,h2,COL_BAR_FORE_LIGHT, this.getWidth(), h2, COL_BAR_FORE,true);
 			g2.setPaint(gp);
-			g2.setStroke(DEF_STROKE);
+			g2.setStroke(DEF_NORMAL_STROKE);
 			g2.drawLine(0, endY, this.getWidth(), endY);
 			g2.fillRoundRect(0, Math.min(originY, originY + this.barHeight), this.getWidth(), Math.abs(this.barHeight), ROUND_RADIUS, ROUND_RADIUS);
 			g2.dispose();

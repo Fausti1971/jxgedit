@@ -137,30 +137,30 @@
 	</template>
 
 	<template id="eq">
-		<item xsi:type="radio" constraint="0,0,5,1" value_tag="eq_program" orientation="horizontal"/>
-		<item xsi:type="eq_envelope" constraint="0,1,5,4"/>
+		<item xsi:type="radio" constraint="0,0,15,1" value_tag="eq_program" orientation="horizontal"/>
+		<item xsi:type="eq_envelope" constraint="0,1,15,4"/>
 
-		<item xsi:type="knob" constraint="0,5,1,2" value_tag="eq_gain1"/>
-		<item xsi:type="knob" constraint="0,7,1,2" value_tag="eq_freq1"/>
-		<item xsi:type="knob" constraint="0,9,1,2" value_tag="eq_q1"/>
-		<item xsi:type="radio" constraint="0,11,1,2" value_tag="eq_shape1" orientation="vertical"/>
+		<item xsi:type="knob" constraint="0,5,2,2" value_tag="eq_freq1"/>
+		<item xsi:type="knob" constraint="0,7,2,2" value_tag="eq_q1"/>
+		<item xsi:type="radio" constraint="0,9,2,2" value_tag="eq_shape1" orientation="vertical"/>
+		<item xsi:type="slider" constraint="2,5,1,6" value_tag="eq_gain1"/>
 
-		<item xsi:type="knob" constraint="1,5,1,2" value_tag="eq_gain2"/>
-		<item xsi:type="knob" constraint="1,7,1,2" value_tag="eq_freq2"/>
-		<item xsi:type="knob" constraint="1,9,1,2" value_tag="eq_q2"/>
+		<item xsi:type="knob" constraint="3,5,2,2" value_tag="eq_freq2"/>
+		<item xsi:type="knob" constraint="3,7,2,2" value_tag="eq_q2"/>
+		<item xsi:type="slider" constraint="5,5,1,6" value_tag="eq_gain2"/>
 
-		<item xsi:type="knob" constraint="2,5,1,2" value_tag="eq_gain3"/>
-		<item xsi:type="knob" constraint="2,7,1,2" value_tag="eq_freq3"/>
-		<item xsi:type="knob" constraint="2,9,1,2" value_tag="eq_q3"/>
+		<item xsi:type="knob" constraint="6,5,2,2" value_tag="eq_freq3"/>
+		<item xsi:type="knob" constraint="6,7,2,2" value_tag="eq_q3"/>
+		<item xsi:type="slider" constraint="8,5,1,6" value_tag="eq_gain3"/>
 
-		<item xsi:type="knob" constraint="3,5,1,2" value_tag="eq_gain4"/>
-		<item xsi:type="knob" constraint="3,7,1,2" value_tag="eq_freq4"/>
-		<item xsi:type="knob" constraint="3,9,1,2" value_tag="eq_q4"/>
+		<item xsi:type="knob" constraint="9,5,2,2" value_tag="eq_freq4"/>
+		<item xsi:type="knob" constraint="9,7,2,2" value_tag="eq_q4"/>
+		<item xsi:type="slider" constraint="11,5,1,6" value_tag="eq_gain4"/>
 
-		<item xsi:type="knob" constraint="4,5,1,2" value_tag="eq_gain5"/>
-		<item xsi:type="knob" constraint="4,7,1,2" value_tag="eq_freq5"/>
-		<item xsi:type="knob" constraint="4,9,1,2" value_tag="eq_q5"/>
-		<item xsi:type="radio" constraint="4,11,1,2" value_tag="eq_shape5" orientation="vertical"/>
+		<item xsi:type="knob" constraint="12,5,2,2" value_tag="eq_freq5"/>
+		<item xsi:type="knob" constraint="12,7,2,2" value_tag="eq_q5"/>
+		<item xsi:type="radio" constraint="12,9,2,2" value_tag="eq_shape5" orientation="vertical"/>
+		<item xsi:type="slider" constraint="14,5,1,6" value_tag="eq_gain5"/>
 	</template>
 
 	<template id="mp">
@@ -201,7 +201,7 @@
 			<item xsi:type="checkbox" value_tag="mp_portamento" constraint="0,0,1,2"/>
 			<item xsi:type="knob" value_tag="mp_portamento_time" constraint="1,0,1,2"/>
 		</item>
-		<item xsi:type="tab_frame" constraint="4,3,6,4">
+		<item xsi:type="tab_frame" constraint="2,3,6,4">
 			<item xsi:type="tab" label="Vibrato" constraint="0,0,6,4">
 				<item xsi:type="vibrato_envelope" constraint="0,0,6,2"/>
 				<item xsi:type="knob" value_tag="mp_vib_delay" constraint="0,2,2,2"/>
@@ -231,7 +231,7 @@
 				<item xsi:type="slider" value_tag="mp_scale_b" constraint="11,0,1,4"/>
 			</item>
 		</item>
-		<item xsi:type="tab_frame" constraint="10,3,6,4">
+		<item xsi:type="tab_frame" constraint="8,3,6,4">
 			<item xsi:type="tab" label="Amp Env" constraint="0,0,6,4">
 				<item xsi:type="amplifier_envelope" value_tag="mp_aeg_attack,mp_aeg_decay,mp_aeg_release" constraint="0,0,6,2"/>
 				<item xsi:type="knob" value_tag="mp_aeg_attack" constraint="0,2,2,2"/>
@@ -363,9 +363,9 @@
 				<item xsi:type="knob" value_tag="mp_vl_absorp" constraint="1,0,1,2"/>
 			</item>
 		</item>
-		<item xsi:type="frame" label="" constraint="12,7,4,2">
-			<item xsi:type="checkbox" value_tag="mp_vl_noteassign" constraint="0,1,2,1"/>
-			<item xsi:type="combo" value_tag="mp_vl_notefilter" constraint="2,1,4,1"/>
+		<item xsi:type="frame" label="" constraint="12,7,2,2">
+			<item xsi:type="checkbox" value_tag="mp_vl_noteassign" constraint="0,0,2,1"/>
+			<item xsi:type="combo" value_tag="mp_vl_notefilter" constraint="0,1,2,1"/>
 		</item>
 	</template>
 	<template id="ad">

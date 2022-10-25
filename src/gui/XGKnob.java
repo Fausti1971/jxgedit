@@ -76,7 +76,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 
 	// paint background arc
 			g2.setColor(COL_BAR_BACK);
-			g2.setStroke(DEF_ARCSTROKE);
+			g2.setStroke(DEF_ARC_STROKE);
 			g2.drawArc(this.middle.x - radius, this.middle.y - radius, 2 * radius, 2 * radius, START_ARC, LENGTH_ARC);
 	// paint foreground arc
 			parm = this.knob.value.getParameter();

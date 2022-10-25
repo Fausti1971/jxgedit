@@ -1,11 +1,13 @@
 package gui;
 
-import application.XGStrings;import gui.XGPoint.PointRelation;
+import application.XGMath;import application.XGStrings;import gui.XGPoint.PointRelation;
 import module.XGModule;import value.XGFixedValue;
-import value.XGValue;import xml.XMLNode;
+import value.XGValue;import xml.XMLNode;import java.awt.*;import java.awt.geom.GeneralPath;
 
-public class XGAmplifierEnvelope extends XGFrame implements XGComponent
+public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShaper
 {
+	private static final int MAX_X = 4 * 128;//attack + decay + sustain + release;
+
 	static XGAmplifierEnvelope newAmplifierEnvelope(XGModule mod, XMLNode node)throws XGComponentException
 	{	String[] tags = new String[3];
 		XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG)).toArray(tags);
@@ -15,23 +17,43 @@ public class XGAmplifierEnvelope extends XGFrame implements XGComponent
 
 /**************************************************************************************/
 
+	private final XGValue attack, decay, release;
+
 	public XGAmplifierEnvelope(XGValue atk, XGValue dec, XGValue rel)throws XGComponentException
 	{	super("");
 		XGPointPanel panel;
 		if(atk == null || dec == null || rel == null) throw new XGComponentException("value is null");
+		this.attack = atk;
+		this.decay = dec;
+		this.release = rel;
 
-		int maxX = atk.getParameter().getMaxIndex() - atk.getParameter().getMinIndex();
-		maxX += dec.getParameter().getMaxIndex() - dec.getParameter().getMinIndex();
-		maxX += rel.getParameter().getMaxIndex() - rel.getParameter().getMinIndex();
-
-		panel = new XGPointPanel(null, 1, 5, 0, 0, 0, maxX, 0, 127);
+		panel = new XGPointPanel(this, 1, 5, 0, 0, 0, MAX_X, 0, 127);
 		panel.setUnits("Time", "Gain");
 
-		panel.add(new XGPoint(0, XGFixedValue.VALUE_0, XGFixedValue.VALUE_0, PointRelation.ABSOLUTE, PointRelation.ABSOLUTE));
-		panel.add(new XGPoint(1, atk, XGFixedValue.VALUE_127, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		panel.add(new XGPoint(2, dec, XGFixedValue.VALUE_64, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
-		panel.add(new XGPoint(3, rel, XGFixedValue.VALUE_0, PointRelation.ADD_TO_PREVIOUS_COORDINATE, PointRelation.ABSOLUTE));
+		this.attack.getValueListeners().add((XGValue v)->{panel.repaint();});
+		this.decay.getValueListeners().add((XGValue v)->{panel.repaint();});
+		this.release.getValueListeners().add((XGValue v)->{panel.repaint();});
 
 		this.add(panel, "0,0,1,1");
+	}
+
+	public GeneralPath getShape(Rectangle r)
+	{	GeneralPath gp = new GeneralPath();
+		int maxWidth = r.width / 4;
+		int minWidth = maxWidth / 10;
+		int midY = r.height/2;
+
+		int atk = XGMath.linearScale(this.attack.getValue(), 0, 127, r.x + minWidth, r.x + maxWidth);
+		int dec = XGMath.linearScale(this.decay.getValue(), 0, 127, atk + minWidth, atk + maxWidth);
+		int sus = dec + maxWidth;
+		int rel = XGMath.linearScale(this.release.getValue(), 0, 127, sus + minWidth, sus + maxWidth);
+
+		gp.moveTo(r.x, r.height);
+		gp.lineTo(atk, r.y);
+		gp.lineTo(dec, midY);
+		gp.lineTo(sus, midY);
+		gp.lineTo(rel, r.height);
+
+		return gp;
 	}
 }

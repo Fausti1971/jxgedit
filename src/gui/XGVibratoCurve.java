@@ -37,6 +37,7 @@ public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XG
 		{	throw new XGComponentException(e.getMessage());
 		}
 		this.panel = new XGPointPanel(this, 1, 0, 0, 64, 0, 576, 0, 127);
+		this.panel.setUnits("Time", "Level");
 
 		this.setLayout(new GridBagLayout());
 		this.add(this.panel, DEF_GBC);
@@ -49,12 +50,12 @@ public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XG
 	public GeneralPath getShape(Rectangle r)
 	{	GeneralPath gp = new GeneralPath();
 		if(this.rate.getValue() == 0) return gp;
-		int midY = r.height/2;
+		int midY = r.height/2 + r.y/2;
 		int maxDelayPoint = XGMath.linearScale(127, 0, 576, 0, r.width);
 		int maxWavelength = r.width - maxDelayPoint;
 		int minWavelength = Math.max(2, r.width / 655);//muss mindestens 2 sein, damit halfWavelength nicht 0 wird (Speicherüberlauf);
 		int halfWavelength = XGMath.linearScale(this.rate.getValue(), this.rate.getParameter().getMaxValue(), this.rate.getParameter().getMinValue(), minWavelength, maxWavelength)/2;
-		int amplitude = XGMath.linearScale(this.depth.getValue(), 0, 127, -r.height, r.height);
+		int amplitude = XGMath.linearScale(this.depth.getValue(), 0, 127, -(r.height - r.y), r.height - r.y);
 		Point target = new Point(r.x, midY), control = new Point();
 		gp.moveTo(target.x, target.y);
 

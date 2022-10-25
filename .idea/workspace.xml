@@ -10,23 +10,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/gui/XGShaper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/XGVibratoCurve.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGAmplifierEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGAmplifierEnvelope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGButton2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGButton2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGKnob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKnob.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGPitchEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPitchEnvelope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGPoint.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPoint.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGPointPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPointPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGVelocityEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVelocityEnvelope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/device.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/device.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGVibratoCurve.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVibratoCurve.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/xml/templates.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/templates.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/templates.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/templates.xsd" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -263,13 +259,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00022" summary="Kosmetik">
-      <created>1649150620900</created>
-      <option name="number" value="00022" />
-      <option name="presentableId" value="LOCAL-00022" />
-      <option name="project" value="LOCAL" />
-      <updated>1649150620900</updated>
     </task>
     <task id="LOCAL-00023" summary="MouseWheelInversion implemented;">
       <created>1649490928646</created>
@@ -607,7 +596,14 @@
       <option name="project" value="LOCAL" />
       <updated>1665874437842</updated>
     </task>
-    <option name="localTasksCounter" value="71" />
+    <task id="LOCAL-00071" summary="XGShaper eingeführt, vibrato_envelope implementiert;">
+      <created>1666438031357</created>
+      <option name="number" value="00071" />
+      <option name="presentableId" value="LOCAL-00071" />
+      <option name="project" value="LOCAL" />
+      <updated>1666438031358</updated>
+    </task>
+    <option name="localTasksCounter" value="72" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -721,7 +717,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="xml-templates für editwindows vollständig implementiert;" />
     <MESSAGE value="debugging, Kosmetik;" />
     <MESSAGE value="XML-Validation prepared;" />
     <MESSAGE value="XML-Validation completed; XGRange debugged;" />
@@ -746,7 +741,8 @@
     <MESSAGE value="screenshot updated;" />
     <MESSAGE value="Bugfix in XGModuleTable.openEditWindow();" />
     <MESSAGE value="XGComponentException implementiert für Components mit XGValues;" />
-    <option name="LAST_COMMIT_MESSAGE" value="XGComponentException implementiert für Components mit XGValues;" />
+    <MESSAGE value="XGShaper eingeführt, vibrato_envelope implementiert;" />
+    <option name="LAST_COMMIT_MESSAGE" value="XGShaper eingeführt, vibrato_envelope implementiert;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

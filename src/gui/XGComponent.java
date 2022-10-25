@@ -19,6 +19,16 @@ System.out.println("doubleclick detected");
 		}
 	}
 
+	default Rectangle getDrawArea()
+	{	Rectangle r = new Rectangle(this.getJComponent().getBounds());
+		Insets ins = this.getJComponent().getInsets();
+		r.x += ins.left;
+		r.y += ins.top;
+		r.width -= (ins.left + ins.right);
+		r.height -= (ins.top + ins.bottom);
+		return r;
+	}
+
 	@Override default void mousePressed(MouseEvent e)
 	{	ENVIRONMENT.mousePressed = true;
 		ENVIRONMENT.dragEvent = e;
