@@ -54,6 +54,7 @@ public interface XGTable extends XGLoggable, XGTableConstants, XGTagable, Iterab
 	String getName();
 	String getUnit();
 	int size();
+	boolean containsValue(int value);
 
 	default XGTableEntry getMinEntry(){	return this.getByIndex(this.getMinIndex());}
 

@@ -1,15 +1,14 @@
 package gui;
 
 import application.JXG;
-import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
-import java.awt.event.ComponentEvent;import java.awt.event.ComponentListener;import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import application.XGClippboardable;import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 
-public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable
+public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable, XGClippboardable
 {
 	int MIN_W = 400, MIN_H = 200, MIN_X = 20, MIN_Y = 20;
-	private static final Image LOGO = XGUI.loadImage("XGLogo32.gif");
+	private static final ImageIcon LOGO = XGUI.loadImage("XGLogo32.gif");
 	public static XGMainWindow MAINWINDOW = null;
 	private static XMLNode CONFIG;
 
@@ -30,7 +29,7 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 		XGDevice.DEVICE.getName().getListeners().add(this);
 		JXG.CURRENT_CONTENT.getListeners().add(this);
 		this.setUndecorated(false);//um den Rahmen durch den WindowManager des Systems darstellen zu lassen
-		this.setIconImage(LOGO);
+		this.setIconImage(LOGO.getImage());
 		this.setResizable(true);
 		this.setMinimumSize(new Dimension(MIN_W, MIN_H));
 		this.setBounds

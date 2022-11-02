@@ -15,7 +15,6 @@ import table.XGTable;import static table.XGTable.TABLES;import static table.XGTa
 public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper, XGConfigurable, XGTagable
 {
 	public static final XGTagableSet<XGModuleType> MODULE_TYPES = new XGTagableSet<>();//Prototypen (inkl. XGAddress bulks); initialisiert auch XGOpcodes
-	static final Set<String> ACTIONS = new LinkedHashSet<>();
 
 /**
 * instanziiert Moduletypen, Bulktypen und Valuetypen (=XGOpcodes)
@@ -51,19 +50,11 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 		LOG.info(MODULE_TYPES.size() + " Module-Types initialized");
 	}
 
-	static
-	{	ACTIONS.add(ACTION_EDIT);
-		ACTIONS.add(ACTION_REQUEST);
-		ACTIONS.add(ACTION_TRANSMIT);
-		ACTIONS.add(ACTION_LOADFILE);
-		ACTIONS.add(ACTION_SAVEFILE);
+	public static XGModuleType getModuleType(XGAddress adr)
+	{	for(XGModuleType mt : MODULE_TYPES)
+			if(mt.getAddressRange().contains(adr)) return mt;
+		return null;
 	}
-
-	//public static XGModuleType getModuleType(XGAddress adr)
-	//{	for(XGModuleType mt : MODULE_TYPES)
-	//		if(mt.getAddressRange().contains(adr)) return mt;
-	//	return null;
-	//}
 
 /********************************************************************************************************************/
 

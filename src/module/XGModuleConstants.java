@@ -26,12 +26,4 @@ public interface XGModuleConstants extends XMLNodeConstants
 
 	String DEF_MODULENAME = "nameless module";
 	ActionMap MOD_ACTIONS = new ActionMap();
-
-	String
-		ACTION_EDIT = "edit...",
-		ACTION_LOADFILE = "load file...",
-		ACTION_SAVEFILE = "save file...",
-		ACTION_REQUEST = "request",
-		ACTION_TRANSMIT = "transmit",
-		ACTION_RESET = "reset";
 }

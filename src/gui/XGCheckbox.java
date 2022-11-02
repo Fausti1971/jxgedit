@@ -3,7 +3,7 @@ package gui;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import value.XGValue;
-import value.XGValueChangeListener;
+import value.XGValueChangeListener;import xml.XMLNode;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,8 +16,8 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 	private final XGValue value;
 	private final JCheckBox checkbox = new JCheckBox();
 
-	public XGCheckbox(XGValue val)throws XGComponentException
-	{	super ("");
+	public XGCheckbox(XGValue val, XMLNode node)throws XGComponentException
+	{	super (node.getStringAttributeOrDefault(ATTR_LABEL, ""));
 		this.value = val;
 		if(this.value == null) throw new XGComponentException("value is null");
 		if(this.value.getType().hasMutableParameters()) this.value.getParameterListeners().add(this);
@@ -29,7 +29,7 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 	}
 
 	@Override public void parameterChanged(XGParameter p)
-	{	this.checkbox.setText(p.getShortName());
+	{	this.checkbox.setText(p.getTranslationTable().getByIndex(p.getMaxIndex()).getName());
 		this.checkbox.setToolTipText(p.getName());
 		this.setToolTipText(p.getName());
 		this.setVisible(p.isValid());

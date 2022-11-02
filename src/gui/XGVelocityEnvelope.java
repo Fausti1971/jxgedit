@@ -56,8 +56,8 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, 
 		rLim.x = XGMath.linearScale(this.low.getValue(), 1, 127, r.x, r.width);
 		rLim.width = XGMath.linearScale(this.high.getValue(), 1, 127, r.x, r.width) - rLim.x;
 
-		int o = XGMath.linearScale(this.offset.getValue(), 0, 127, r.height, -r.height);
-		int d = XGMath.linearScale(this.depth.getValue(), 0, 127, r.height, -r.height);
+		float o = XGMath.linearScale(this.offset.getValue(), 0, 127, r.height, -r.height);
+		float d = XGMath.linearScale(this.depth.getValue(), 0, 127, r.height, -r.height);
 
 		gp.moveTo(r.x, r.height);
 		gp.lineTo(r.x, r.height + o);
@@ -69,8 +69,6 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, 
 		r1.intersect(r2);
 
 		return new GeneralPath(r1);
-
-//		return gp;
 	}
 
 	@Override public void mouseDragged(MouseEvent e)

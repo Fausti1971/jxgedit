@@ -15,8 +15,8 @@ import value.XGValueChangeListener;
 
 public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
 {
-	private static final ImageIcon icon_next = new ImageIcon(Objects.requireNonNull(XGUI.loadImage("arrow_right.png")));
-	private static final ImageIcon icon_prev = new ImageIcon(Objects.requireNonNull(XGUI.loadImage("arrow_left.png")));
+	private static final ImageIcon icon_next = XGUI.loadImage("arrow_right.png");
+	private static final ImageIcon icon_prev = XGUI.loadImage("arrow_left.png");
 
 /*********************************************************************************************/
 
@@ -169,5 +169,9 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		@Override public void changedUpdate(DocumentEvent event)
 		{	LOG.info(event.getDocument().toString());
 		}
+
+		@Override public void copy(){}
+
+		@Override public void paste(){}
 	}
 }

@@ -18,9 +18,6 @@ public class XGPoint extends JComponent implements XGUI, XGLoggable
 		ADD_TO_PREVIOUS_COORDINATE,
 	}
 
-//TODO: vielleicht sollte man dem XGPoint eine Gradient-Variable zugestehen, die angibt,
-//		in welche Richtung (zum origin, zu nächsten XGPoint, zum min oder max) eine Linie strebt und wie schnell (wäre für EQ und Filterhüllkrve hilfreich)
-
 /******************************************************************************************************/
 
 	private final XGValue valueX; private XGValue valueY;

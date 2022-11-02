@@ -5,7 +5,7 @@ import adress.XGAddress;import adress.XGAddressable;
 import application.XGLoggable;import module.XGModule;import msg.*;
 import tag.XGTagable;
 import tag.XGTagableAddressableSet;
-import value.XGValue;
+import value.XGFixedValue;import value.XGValue;
 import javax.sound.midi.InvalidMidiDataException;
 
 public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable

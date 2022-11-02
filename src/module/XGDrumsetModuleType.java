@@ -2,7 +2,7 @@ package module;
 
 import adress.XGInvalidAddressException;
 import adress.XGIdentifiableSet;
-import device.XGDevice;
+import application.XGStrings;import device.XGDevice;
 import device.XGMidi;
 import static msg.XGMessageConstants.*;
 import msg.XGMessageParameterChange;
@@ -60,10 +60,15 @@ public class XGDrumsetModuleType extends XGModuleType
 	}
 
 	public String getDrumname(int key)
-	{	XGRealTable t = DRUMNAMES.get(key);
-		XGTableEntry def = new XGTableEntry(key, "Key " + key + " No Sound");
-		if(t == null) return def.getName();
-		return t.getByValue(this.program, def).getName();
+	{	String keyname = XGStrings.encodeKey(key);
+		String drumname = "No Sound";
+		XGTable t;
+		if(DRUMNAMES.containsKey(key))
+		{	t = DRUMNAMES.get(key);
+			if(t.containsValue(DEF_DRUMSETPROGRAM)) drumname = t.getByValue(DEF_DRUMSETPROGRAM).getName();
+			if(t.containsValue(this.program)) drumname = t.getByValue(this.program).getName();
+		}
+		return keyname + " (" + drumname + ")";
 	}
 
 	public int getPartmode(){ return this.partmode;}

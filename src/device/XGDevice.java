@@ -12,12 +12,14 @@ import module.XGModuleType;
 import static module.XGModuleType.MODULE_TYPES;
 import msg.*;
 import value.XGProgramBuffer;
-import xml.XGProperty;import xml.XMLNode;
+import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;
 
-public class XGDevice implements XGDeviceConstants, XGBulkDumper, XGConfigurable, XGMessenger
+public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XMLNodeConstants
 {
 	public static XGDevice DEVICE = null;
 	private static final String WARNSTRING = "This will reset all parameters!";
+	static int DEF_SYSEXID = 0;
+	public static String DEF_DEVNAME = "XG";
 
 	public static void init()
 	{	XMLNode xml = JXG.config.getChildNodeOrNew(TAG_DEVICE);

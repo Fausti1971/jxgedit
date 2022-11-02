@@ -86,13 +86,13 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent, X
 		this.g2.addRenderingHints(AALIAS);//keine dotted stroke mit Antialiasing
 //		GradientPaint grp = new GradientPaint(0, 0, COL_BAR_BACK, 0, h, COL_SHAPE,false);
 //		g2.setPaint(grp);
-		GeneralPath gp = this.shaper.getShape(this.getBounds());
+		Shape shp = this.shaper.getShape(this.getBounds());
 		this.g2.setColor(COL_SHAPE);
-		this.g2.fill(gp);
+		this.g2.fill(shp);
 //polygonline
 		this.g2.setColor(COL_BAR_FORE);
 		this.g2.setStroke(DEF_SMALL_STROKE);
-		this.g2.draw(gp);
+		this.g2.draw(shp);
 //units
 		this.g2.setColor(this.getBackground().darker());
 		this.g2.drawString(this.xUnit, w - this.g2.getFontMetrics().stringWidth(this.xUnit), h);

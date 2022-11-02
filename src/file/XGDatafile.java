@@ -5,7 +5,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;
 import adress.XGAddressableSet;
 import application.*;
-import static file.XGDatafileFilter.*;
+import device.XGDevice;import static file.XGDatafileFilter.*;
 import gui.*;
 import bulk.XGBulkDumper;
 import msg.*;
@@ -64,6 +64,11 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 			}
 		}
 	}
+
+	public static void recent(XGDevice device)
+	{	//später mehr...
+	}
+
 
 	public static void save(XGBulkDumper dumper)
 	{	String last = CONFIG.getLastChildOrNew(TAG_ITEM).getTextContent().toString();

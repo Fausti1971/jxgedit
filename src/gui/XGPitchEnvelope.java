@@ -47,15 +47,15 @@ public class XGPitchEnvelope extends JPanel implements XGComponent, XGShaper
 	public GeneralPath getShape(Rectangle r)
 	{	GeneralPath gp = new GeneralPath();
 
-		int midY = r.height / 2;
-		int width = r.width - r.x;
-		int maxWidth = width / 3;
-		int minWidth = maxWidth / 10;
+		float midY = r.height / 2F;
+		float width = r.width - r.x;
+		float maxWidth = width / 3F;
+		float minWidth = maxWidth / 10;
 
-		int al = XGMath.linearScale(this.attackL.getValue(), 0, 127, r.height, r.y);
-		int at = XGMath.linearScale(this.attackT.getValue(), 0, 127, minWidth, maxWidth);
-		int rl = XGMath.linearScale(this.releaseL.getValue(), 0, 127, r.height, r.y);
-		int rt = XGMath.linearScale(this.releaseT.getValue(), 0, 127, minWidth, maxWidth);
+		float al = XGMath.linearScale(this.attackL.getValue(), 0, 127, r.height, r.y);
+		float at = XGMath.linearScale(this.attackT.getValue(), 0, 127, minWidth, maxWidth);
+		float rl = XGMath.linearScale(this.releaseL.getValue(), 0, 127, r.height, r.y);
+		float rt = XGMath.linearScale(this.releaseT.getValue(), 0, 127, minWidth, maxWidth);
 
 		gp.moveTo(r.x, midY);
 		gp.lineTo(r.x, al);//ein moveTo ist für das Schließen des Pfades nicht relevant

@@ -121,6 +121,8 @@ public class XGVirtualTable implements XGTable
 
 	@Override public int size(){	return (this.maxValue - this.minValue) + 1;}
 
+	@Override public boolean containsValue(int value){	return value >= this.minValue && value <= this.maxValue;}
+
 	@Override public String getName(){	return this.name;}
 
 	@Override public String getUnit(){	return "";}

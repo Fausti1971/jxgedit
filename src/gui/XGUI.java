@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;import java.awt.event.MouseWheelEvent;import java.io.IOException;import java.util.*;
+import java.awt.event.InputEvent;import java.awt.event.KeyEvent;import java.awt.event.MouseEvent;import java.awt.event.MouseWheelEvent;import java.io.IOException;import java.util.*;
 import javax.imageio.ImageIO;import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;import javax.swing.plaf.FontUIResource;
 import application.*;
@@ -9,6 +9,44 @@ import config.XGConfigurable;import xml.XGProperty;import xml.XMLNode;
 
 public interface XGUI extends XGLoggable, XGConfigurable
 {
+	ImageIcon DEF_ICON = new ImageIcon();
+
+	String
+		ACTION_EDIT = "edit",
+		ACTION_LOADFILE = "open",
+		ACTION_RECENT = "recent",
+		ACTION_SAVEFILE = "save",
+		ACTION_COPY = "copy",
+		ACTION_PASTE = "paste",
+		ACTION_REQUEST = "request",
+		ACTION_TRANSMIT = "transmit",
+		ACTION_CONFIGURE = "settings";
+
+	Map<String, KeyStroke> KEYSTROKES = new HashMap<>()
+	{
+		{	put(ACTION_COPY, KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
+			put(ACTION_PASTE, KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK));
+			put(ACTION_LOADFILE, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
+			put(ACTION_SAVEFILE, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
+			put(ACTION_REQUEST, KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));
+			put(ACTION_TRANSMIT, KeyStroke.getKeyStroke(KeyEvent.VK_T, InputEvent.CTRL_DOWN_MASK));
+		}
+	};
+
+	Map<String, String> ICON_KEYS_40 = new HashMap<>()
+	{
+		{	put(ACTION_COPY, "copy_40.png");
+			put(ACTION_PASTE, "paste_40.png");
+			put(ACTION_LOADFILE, "open_40.png");
+			put(ACTION_RECENT, "recent_40.png");
+			put(ACTION_SAVEFILE, "saveas_40.png");
+			put(ACTION_EDIT, "edit_40.png");
+			put(ACTION_REQUEST, "import_40.png");
+			put(ACTION_TRANSMIT, "export_40.png");
+			put(ACTION_CONFIGURE, "settings_40.png");
+		}
+	};
+
 	int MAX_COL = 255;
 	Color
 		COL_TRANSPARENT = new Color(0, 0, 0, 0),
@@ -38,7 +76,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 
 	BasicStroke DEF_ARC_STROKE = new BasicStroke(DEF_STROKEWIDTH, BasicStroke.CAP_ROUND, BasicStroke.JOIN_BEVEL);
 	BasicStroke DEF_NORMAL_STROKE = new BasicStroke(DEF_STROKEWIDTH);
-	BasicStroke DEF_SMALL_STROKE = new BasicStroke(DEF_STROKEWIDTH - 2);
+	BasicStroke DEF_SMALL_STROKE = new BasicStroke(DEF_STROKEWIDTH / 2F);
 	BasicStroke DEF_DOTTED_STROKE = new BasicStroke(0.0f, DEF_NORMAL_STROKE.getEndCap(), DEF_NORMAL_STROKE.getLineJoin(), DEF_NORMAL_STROKE.getMiterLimit(), new float[]{1f,2f}, DEF_NORMAL_STROKE.getDashPhase());
 
 	int START_ARC = 225;
@@ -68,15 +106,16 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		XGUI.setLookAndFeel(ENVIRONMENT.config.getStringAttribute(ATTR_LOOKANDFEEL));
 		XGUI.ENVIRONMENT.mouseWheelInverted = Boolean.parseBoolean(ENVIRONMENT.config.getStringBufferAttributeOrNew(ATTR_MOUSEWHEEL_INVERTED, "false").toString());
 		XGUI.ENVIRONMENT.knobBehavior = XGKnob.KnobBehavior.valueOf(ENVIRONMENT.config.getStringBufferAttributeOrNew(ATTR_KNOB_BEHAVIOR, XGKnob.KnobBehavior.HORIZONTAL.name()).toString());
+//		XGUI.printIcons();
 	}
 
-	static Image loadImage(String name)
+	static ImageIcon loadImage(String name)
 	{	try
-		{	return ImageIO.read(XGUI.class.getResource(name));
+		{	return new ImageIcon(ImageIO.read(XGUI.class.getResource(name)));
 		}
 		catch(IOException e)
 		{	LOG.warning(e.getMessage());
-			return null;
+			return DEF_ICON;
 		}
 	}
 
@@ -107,6 +146,15 @@ public interface XGUI extends XGLoggable, XGConfigurable
 	{	String fontname = XGUI.ENVIRONMENT.config.getStringAttribute(ATTR_FONT_NAME);
 		int fontstyle = XGUI.ENVIRONMENT.config.getIntegerAttribute(ATTR_FONT_STYLE, Font.PLAIN);
 		setUIFont(new FontUIResource(fontname, fontstyle, size));
+	}
+
+	static void printIcons()
+	{	Enumeration<Object> keys = UIManager.getDefaults().keys();
+		while(keys.hasMoreElements())
+		{	Object key = keys.nextElement();
+			Object value = UIManager.get(key);
+			if (value instanceof ImageIcon) System.out.println(key);
+		}
 	}
 
 	static void setUIFont(FontUIResource f)

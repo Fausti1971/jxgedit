@@ -1,6 +1,23 @@
 package gui;
 
-import adress.XGIdentifiable;import config.XGConfigurable;import device.XGDevice;import module.XGDrumsetModuleType;import module.XGInsertionModule;import module.XGModule;import module.XGModuleType;import static module.XGModuleType.MODULE_TYPES;import static table.XGTable.INS_MSB_PROGRAMS;import tag.XGTagable;import tag.XGTagableIdentifiableSet;import value.XGValue;import xml.XGProperty;import xml.XMLNode;import javax.swing.*;import java.awt.event.ActionEvent;import java.awt.event.HierarchyEvent;import java.awt.event.HierarchyListener;import java.io.IOException;import java.util.HashMap;import java.util.Map;
+import adress.XGIdentifiable;
+import config.XGConfigurable;
+import device.XGDevice;
+import module.XGDrumsetModuleType;
+import module.XGInsertionModule;
+import module.XGModule;
+import module.XGModuleType;
+import static module.XGModuleType.MODULE_TYPES;
+import tag.XGTagable;
+import tag.XGTagableIdentifiableSet;
+import xml.XGProperty;
+import xml.XMLNode;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable, XGConfigurable
 {
@@ -41,12 +58,16 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 /***********************************************************************************************************/
 
 	final XGModule module;
+	final XGToolbar toolbar;
 
 	public XGEditWindow(XGModule mod)
 	{	super(mod.getType().getTag());
 		this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		this.module = mod;
-		this.setContentPane(this.createContent());
+		this.toolbar = new XGToolbar();
+		this.toolbar.addAction(ACTION_COPY, "Copy", "copy this module to clippboard", (ActionEvent e) ->{module.copy();});
+		this.add(this.toolbar, BorderLayout.NORTH);
+		this.add(this.createContent(), BorderLayout.CENTER);
 	}
 
 	@Override JComponent createContent()
@@ -79,7 +100,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 				case ATTR_FLAGBOX:
 					component = XGFlagBox.newFlagbox(this.module, item); break;
 				case ATTR_CHECKBOX:
-					component = new XGCheckbox(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG))); break;
+					component = new XGCheckbox(this.module.getValues().get(item.getStringAttribute(ATTR_VALUE_TAG)), item); break;
 				case ATTR_SLIDER:
 					component = XGHorizontalSlider.newSlider(this.module, item); break;
 				case ATTR_RANGE:
@@ -143,6 +164,9 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 		return root;
 	}
 
+	@Override public void windowClosing(WindowEvent e)
+	{	XGMainWindow.MAINWINDOW.toFront();
+	}
 
 	@Override public String getTag(){	return this.module.getType().getTag();}
 
@@ -151,4 +175,8 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	@Override public void propertyChanged(XGProperty p){	this.setTitle(this.getTitle());}
 
 	@Override public String getTitle(){	return XGMainWindow.MAINWINDOW.getTitle() + " - " + this.module;}
+
+	@Override public void copy(){	this.module.copy();}
+
+	@Override public void paste(){	this.module.paste();}
 }

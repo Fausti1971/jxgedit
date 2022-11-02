@@ -1,7 +1,15 @@
 package gui;
 
-import device.*;import static device.XGDeviceConstants.DEF_DEVNAME;import static device.XGMidi.*;import xml.XGProperty;import javax.sound.midi.*;import javax.swing.*;import javax.swing.event.*;import javax.swing.text.*;
-import java.awt.*;import java.awt.event.*;import java.util.*;
+import device.*;
+import static device.XGDevice.DEF_DEVNAME;
+import static device.XGMidi.*;
+import xml.XGProperty;
+import javax.sound.midi.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 
 public class XGSettingsWindow extends XGWindow
 {
@@ -149,4 +157,8 @@ public class XGSettingsWindow extends XGWindow
 	@Override public String getTitle(){	return XGMainWindow.MAINWINDOW.getTitle() + " - " + TAG;}
 
 	@Override public String getTag(){	return TAG;}
+
+	@Override public void copy(){}
+
+	@Override public void paste(){}
 }

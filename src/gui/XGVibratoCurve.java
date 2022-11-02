@@ -1,6 +1,6 @@
 package gui;
 
-import application.XGMath;import module.XGModule;import tag.XGTagableAddressableSet;import value.XGValue;import value.XGValueChangeListener;import javax.swing.*;import java.awt.*;import java.awt.geom.GeneralPath;
+import application.XGMath;import module.XGModule;import tag.XGTagableAddressableSet;import value.XGValue;import value.XGValueChangeListener;import javax.swing.*;import java.awt.*;import java.awt.geom.GeneralPath;import java.awt.geom.Point2D;
 
 public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XGShaper
 {
@@ -50,29 +50,29 @@ public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XG
 	public GeneralPath getShape(Rectangle r)
 	{	GeneralPath gp = new GeneralPath();
 		if(this.rate.getValue() == 0) return gp;
-		int midY = r.height/2 + r.y/2;
-		int maxDelayPoint = XGMath.linearScale(127, 0, 576, 0, r.width);
-		int maxWavelength = r.width - maxDelayPoint;
-		int minWavelength = Math.max(2, r.width / 655);//muss mindestens 2 sein, damit halfWavelength nicht 0 wird (Speicherüberlauf);
-		int halfWavelength = XGMath.linearScale(this.rate.getValue(), this.rate.getParameter().getMaxValue(), this.rate.getParameter().getMinValue(), minWavelength, maxWavelength)/2;
-		int amplitude = XGMath.linearScale(this.depth.getValue(), 0, 127, -(r.height - r.y), r.height - r.y);
-		Point target = new Point(r.x, midY), control = new Point();
-		gp.moveTo(target.x, target.y);
+		float midY = r.height/2F;
+		float maxDelayPoint = XGMath.linearScale(127, 0, 576, 0, r.width);
+		float maxWavelength = r.width - maxDelayPoint;
+		float minWavelength = Math.max(2, r.width / 655);//muss mindestens 2 sein, damit halfWavelength nicht 0 wird (Speicherüberlauf);
+		float halfWavelength = XGMath.linearScale(this.rate.getValue(), this.rate.getParameter().getMaxValue(), this.rate.getParameter().getMinValue(), minWavelength, maxWavelength)/2;
+		float amplitude = XGMath.linearScale(this.depth.getValue(), 0, 127, -(r.height - r.y), r.height - r.y);
+		float targetX = r.x, targetY = midY, controlX, controlY;
+		gp.moveTo(targetX, targetY);
 
-		target.x = XGMath.linearScale(this.delay.getValue(), this.delay.getParameter().getMinValue(), this.delay.getParameter().getMaxValue(), r.x, maxDelayPoint);
-		gp.lineTo(target.x, target.y);
+		targetX = XGMath.linearScale(this.delay.getValue(), this.delay.getParameter().getMinValue(), this.delay.getParameter().getMaxValue(), r.x, maxDelayPoint);
+		gp.lineTo(targetX, targetY);
 
-		control.x = target.x - halfWavelength/2;
-		while(target.x < r.width)
-		{	target.x += halfWavelength;
-			control.x += halfWavelength;
-			control.y = midY - amplitude;
-			gp.quadTo(control.x, control.y, target.x, target.y);
+		controlX = targetX - halfWavelength/2;
+		while(targetX < r.width)
+		{	targetX += halfWavelength;
+			controlX += halfWavelength;
+			controlY = midY - amplitude;
+			gp.quadTo(controlX, controlY, targetX, targetY);
 
-			target.x += halfWavelength;
-			control.x += halfWavelength;
-			control.y = midY + amplitude;
-			gp.quadTo(control.x, control.y, target.x, target.y);
+			targetX += halfWavelength;
+			controlX += halfWavelength;
+			controlY = midY + amplitude;
+			gp.quadTo(controlX, controlY, targetX, targetY);
 		}
 		return gp;
 	}

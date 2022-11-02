@@ -142,7 +142,7 @@
 
 		<item xsi:type="knob" constraint="0,5,2,2" value_tag="eq_freq1"/>
 		<item xsi:type="knob" constraint="0,7,2,2" value_tag="eq_q1"/>
-		<item xsi:type="radio" constraint="0,9,2,2" value_tag="eq_shape1" orientation="vertical"/>
+		<item xsi:type="checkbox" constraint="0,9,2,2" label="Shape" value_tag="eq_shape1"/>
 		<item xsi:type="slider" constraint="2,5,1,6" value_tag="eq_gain1"/>
 
 		<item xsi:type="knob" constraint="3,5,2,2" value_tag="eq_freq2"/>
@@ -159,7 +159,7 @@
 
 		<item xsi:type="knob" constraint="12,5,2,2" value_tag="eq_freq5"/>
 		<item xsi:type="knob" constraint="12,7,2,2" value_tag="eq_q5"/>
-		<item xsi:type="radio" constraint="12,9,2,2" value_tag="eq_shape5" orientation="vertical"/>
+		<item xsi:type="checkbox" constraint="12,9,2,2" label="Shape" value_tag="eq_shape5"/>
 		<item xsi:type="slider" constraint="14,5,1,6" value_tag="eq_gain5"/>
 	</template>
 
@@ -364,7 +364,7 @@
 			</item>
 		</item>
 		<item xsi:type="frame" label="" constraint="12,7,2,2">
-			<item xsi:type="checkbox" value_tag="mp_vl_noteassign" constraint="0,0,2,1"/>
+			<item xsi:type="checkbox" value_tag="mp_vl_noteassign" label="Note Assign" constraint="0,0,2,1"/>
 			<item xsi:type="combo" value_tag="mp_vl_notefilter" constraint="0,1,2,1"/>
 		</item>
 	</template>
@@ -394,8 +394,8 @@
 	</template>
 	<template id="ds">
 		<item xsi:type="frame" constraint="0,0,9,1">
-			<item xsi:type="checkbox" value_tag="ds_on" constraint="0,0,1,1"/>
-			<item xsi:type="checkbox" value_tag="ds_off" constraint="1,0,1,1"/>
+			<item xsi:type="checkbox" value_tag="ds_on" label="Note On" constraint="0,0,1,1"/>
+			<item xsi:type="checkbox" value_tag="ds_off" label="Note Off" constraint="1,0,1,1"/>
 			<item xsi:type="radio" value_tag="ds_assign" orientation="horizontal" constraint="2,0,3,1"/>
 			<item xsi:type="combo" value_tag="ds_group" constraint="5,0,2,1"/>
 			<item xsi:type="combo" value_tag="ds_audio_output" constraint="7,0,2,1"/>

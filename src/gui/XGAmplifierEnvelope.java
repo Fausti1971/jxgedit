@@ -39,14 +39,14 @@ public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShape
 
 	public GeneralPath getShape(Rectangle r)
 	{	GeneralPath gp = new GeneralPath();
-		int maxWidth = r.width / 4;
-		int minWidth = maxWidth / 10;
-		int midY = r.height/2;
+		float maxWidth = r.width / 4F;
+		float minWidth = maxWidth / 10;
+		float midY = r.height/2F;
 
-		int atk = XGMath.linearScale(this.attack.getValue(), 0, 127, r.x + minWidth, r.x + maxWidth);
-		int dec = XGMath.linearScale(this.decay.getValue(), 0, 127, atk + minWidth, atk + maxWidth);
-		int sus = dec + maxWidth;
-		int rel = XGMath.linearScale(this.release.getValue(), 0, 127, sus + minWidth, sus + maxWidth);
+		float atk = XGMath.linearScale(this.attack.getValue(), 0, 127, r.x + minWidth, r.x + maxWidth);
+		float dec = XGMath.linearScale(this.decay.getValue(), 0, 127, atk + minWidth, atk + maxWidth);
+		float sus = dec + maxWidth;
+		float rel = XGMath.linearScale(this.release.getValue(), 0, 127, sus + minWidth, sus + maxWidth);
 
 		gp.moveTo(r.x, r.height);
 		gp.lineTo(atk, r.y);

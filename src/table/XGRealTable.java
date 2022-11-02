@@ -60,11 +60,7 @@ public class XGRealTable implements XGTable, XMLNodeConstants
 		int is = this.indexes.size();
 		int es = this.entries.size();
 		int ns = this.names.size();
-		if(es != is)
-		{	System.out.println(this.entries);
-			System.out.println(this.indexes);
-			throw new RuntimeException("sizes mismatch on adding " + e.getInfo() + " to " + this.getInfo() + ": entries=" + es + ", indexes=" + is + ", names=" + ns);
-		}
+		if(es != is) throw new RuntimeException("sizes mismatch on adding " + e.getInfo() + " to " + this.getInfo() + ": entries=" + es + ", indexes=" + is + ", names=" + ns);
 	}
 
 	private void sortByValue()
@@ -76,6 +72,10 @@ public class XGRealTable implements XGTable, XMLNodeConstants
 			this.indexes.put(n.getValue(), i);
 			this.names.put(n.getName(), i);
 		}
+	}
+
+	@Override public boolean containsValue(int v)
+	{	return this.indexes.containsKey(v);
 	}
 
 	@Override public XGTableEntry getByIndex(int i)

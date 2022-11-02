@@ -1,26 +1,17 @@
 package module;
 
-import java.util.LinkedHashSet;
+import java.awt.event.ActionEvent;import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.XGInvalidAddressException;
 import adress.XGAddressableSet;
 import adress.XGIdentifiable;import application.*;
-import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import static module.XGModuleType.MODULE_TYPES;
+import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import device.XGMidi;import gui.XGMainWindow;import static module.XGModuleType.MODULE_TYPES;
 import msg.*;import table.XGRealTable;import static table.XGTable.TABLES;import static table.XGTableConstants.TABLE_FX_PARTS;import table.XGTableEntry;import tag.*;
-import value.*;import javax.sound.midi.InvalidMidiDataException;
+import value.*;import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;
 
-public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper, XGIdentifiable, XGTagable
+public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper, XGIdentifiable, XGTagable, XGMessenger
 {
-	static final Set<String> ACTIONS = new LinkedHashSet<>();
-
-	static
-	{	ACTIONS.add(ACTION_EDIT);
-		ACTIONS.add(ACTION_REQUEST);
-		ACTIONS.add(ACTION_TRANSMIT);
-		ACTIONS.add(ACTION_LOADFILE);
-		ACTIONS.add(ACTION_SAVEFILE);
-		ACTIONS.add(ACTION_RESET);
-	}
+	private static final XGClippboard CLIPPBOARD = new XGClippboard();
 
 	public static void init()
 	{	for(XGModuleType mt : MODULE_TYPES)
@@ -70,6 +61,26 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 
 	public void resetValues(){ for(XGValue v : this.getValues()) v.setDefaultValue();}
 
+	public void copy()
+	{	CLIPPBOARD.clear();
+		this.transmitAll(CLIPPBOARD);
+	}
+
+	public void paste()
+	{	if(CLIPPBOARD.isEmpty()) return;
+		for(XGMessageBulkDump m : CLIPPBOARD)
+		{	try
+			{	this.submit(m);
+			}
+			catch(XGMessengerException e)
+			{	LOG.warning(e.getMessage());
+				return;
+			}
+		}
+		int res = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, " Transmit " + CLIPPBOARD + " ?");
+		if(res == JOptionPane.YES_OPTION) this.transmitAll(XGMidi.getMidi());
+	}
+
 	//@Override public void actionPerformed(ActionEvent e)
 	//{	XGDevice dev = this.type.getDevice();
 	//	switch(e.getActionCommand())
@@ -81,6 +92,18 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	//	}
 	//}
 
+
+	public void submit(XGMessageParameterChange res) throws XGMessengerException
+	{	LOG.warning("not supported");
+	}
+
+	public void submit(XGMessageBulkDump res) throws XGMessengerException
+	{	this.bulks.get(res.getAddress()).submit(res);
+	}
+
+	public void submit(XGMessageParameterRequest req) throws XGMessengerException
+	{	LOG.warning("not supported");
+	}
 
 	public void submit(XGMessageBulkRequest req) throws XGMessengerException
 	{	this.bulks.get(req.getAddress()).submit(req);
