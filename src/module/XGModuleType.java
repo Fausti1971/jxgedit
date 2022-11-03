@@ -5,7 +5,7 @@ import java.util.Set;
 import adress.*;
 import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import config.XGConfigurable;
 import application.XGLoggable;
-import table.XGTable;import static table.XGTable.TABLES;import static table.XGTableConstants.TABLE_NONE;import static table.XGVirtualTable.DEF_TABLE;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;
+import msg.XGClippboard;import table.XGTable;import static table.XGTable.TABLES;import static table.XGTableConstants.TABLE_NONE;import static table.XGVirtualTable.DEF_TABLE;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen
@@ -66,6 +66,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 	protected String tag;
 	protected XGTable idTranslator;
 	protected final XMLNode config;
+	private final XGClippboard clippboard = new XGClippboard();
 
 /**
 * instanziiert Moduletypen, Bulktypen und Valuetypen
@@ -108,6 +109,8 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 	public XGModuleType(XMLNode cfg)throws XGInvalidAddressException
 	{	this(cfg, cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
 	}
+
+	public XGClippboard getClippboard(){	return this.clippboard;}
 
 	public XGAddressRange getAddressRange(){	return this.addressRange;}
 

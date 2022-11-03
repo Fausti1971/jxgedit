@@ -11,8 +11,6 @@ import value.*;import javax.sound.midi.InvalidMidiDataException;import javax.swi
 
 public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper, XGIdentifiable, XGTagable, XGMessenger
 {
-	private static final XGClippboard CLIPPBOARD = new XGClippboard();
-
 	public static void init()
 	{	for(XGModuleType mt : MODULE_TYPES)
 		{	for(int id : mt.getAddressRange().getMid())
@@ -62,22 +60,27 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	public void resetValues(){ for(XGValue v : this.getValues()) v.setDefaultValue();}
 
 	public void copy()
-	{	CLIPPBOARD.clear();
-		this.transmitAll(CLIPPBOARD);
+	{	XGClippboard c = this.type.getClippboard();
+		c.clear();
+		this.transmitAll(c);
 	}
 
 	public void paste()
-	{	if(CLIPPBOARD.isEmpty()) return;
-		for(XGMessageBulkDump m : CLIPPBOARD)
+	{	XGClippboard c = this.type.getClippboard();
+		if(c.isEmpty()) return;
+		for(XGMessageBulkDump m : c)
 		{	try
-			{	this.submit(m);
+			{	if(this.type instanceof XGDrumsetModuleType) m.setHi(this.type.addressRange.getHi().getValue());
+				m.setMid(this.id);
+				this.submit(m);
 			}
-			catch(XGMessengerException e)
+			catch(XGMessengerException | XGInvalidAddressException e)
 			{	LOG.warning(e.getMessage());
 				return;
 			}
 		}
-		int res = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, " Transmit " + CLIPPBOARD + " ?");
+		LOG.info(c.size() + " messages transmitted to " + this);
+		int res = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, " Transmit " + c + " ?");
 		if(res == JOptionPane.YES_OPTION) this.transmitAll(XGMidi.getMidi());
 	}
 
@@ -112,9 +115,9 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	@Override public String toString()
 	{	if(this.type instanceof XGDrumsetModuleType) return ((XGDrumsetModuleType)this.type).getDrumname(this.id);
 		else return this.type.getName() + " " + this.type.idTranslator.getByValue(this.getID());
-	}public void close()
-	{
 	}
+
+	public void close(){}
 
 	@Override public XGAddressableSet<XGBulk> getBulks(){ return this.bulks;}
 

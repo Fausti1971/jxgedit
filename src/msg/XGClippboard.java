@@ -1,41 +1,26 @@
 package msg;
-import adress.XGAddressableSet;
-import module.XGModuleType;
+import adress.XGAddressableSet;import java.util.HashSet;import java.util.Set;
 
 public class XGClippboard extends XGAddressableSet<XGMessageBulkDump> implements XGMessenger
 {
-	private XGModuleType type;
 
-	@Override public String toString()
-	{	return "Clippboard";
-	}
+	@Override public String toString(){	return "Clippboard";}
 
 	public void submit(XGMessageParameterChange res) throws XGMessengerException
-	{
+	{	LOG.warning("später...");
 	}
 
 	public void submit(XGMessageBulkDump res) throws XGMessengerException
-	{	XGModuleType t = XGModuleType.getModuleType(res.getAddress());
-		if(t == null) throw new XGMessengerException("no matching module found for " + res);
-		if(this.type == null || !this.type.equals(t)) this.clear();
-		this.type = t;
-		this.add(res);
+	{	this.add(res);
 	}
 
 	public void submit(XGMessageParameterRequest req) throws XGMessengerException
-	{
+	{	LOG.warning("später...");
 	}
 
 	public void submit(XGMessageBulkRequest req) throws XGMessengerException
-	{
+	{	LOG.warning("später...");
 	}
 
-	public void close()
-	{
-	}
-
-	@Override public void clear()
-	{	super.clear();
-		this.type = null;
-	}
+	public void close(){	LOG.warning("unnötig...");}
 }

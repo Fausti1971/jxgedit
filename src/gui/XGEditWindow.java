@@ -3,7 +3,7 @@ package gui;
 import adress.XGIdentifiable;
 import config.XGConfigurable;
 import device.XGDevice;
-import module.XGDrumsetModuleType;
+import device.XGMidi;import file.XGDatafile;import module.XGDrumsetModuleType;
 import module.XGInsertionModule;
 import module.XGModule;
 import module.XGModuleType;
@@ -64,10 +64,22 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	{	super(mod.getType().getTag());
 		this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		this.module = mod;
-		this.toolbar = new XGToolbar();
-		this.toolbar.addAction(ACTION_COPY, "Copy", "copy this module to clippboard", (ActionEvent e) ->{module.copy();});
+		this.toolbar = this.createToolbar();
 		this.add(this.toolbar, BorderLayout.NORTH);
 		this.add(this.createContent(), BorderLayout.CENTER);
+	}
+
+	private XGToolbar createToolbar()
+	{	XGToolbar tb = new XGToolbar();
+		tb.addAction(ACTION_LOADFILE, "Open", "load " + this.module + " from datadumpfile", (ActioEvent)->XGDatafile.load(this.module));
+		tb.addAction(ACTION_SAVEFILE, "Save", "save " + this.module + " to datadumpfile", (ActioEvent)->XGDatafile.save(this.module));
+		tb.addSeparator();
+		tb.addAction(ACTION_COPY, "Copy", "copy this module to clippboard", (ActionEvent e) ->{this.module.copy();});
+		tb.addAction(ACTION_PASTE, "Paste", "paste clippboard to this module", (ActionEvent e) ->{this.module.paste();});
+		tb.addSeparator();
+		tb.addAction(XGUI.ACTION_REQUEST, "Request", "request " + this.module +  " from " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> this.module.requestAll(XGMidi.getMidi())).start());
+		tb.addAction(XGUI.ACTION_TRANSMIT, "Transmit", "transmit " + this.module + " to " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> this.module.transmitAll(XGMidi.getMidi())).start());
+		return tb;
 	}
 
 	@Override JComponent createContent()

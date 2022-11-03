@@ -4,7 +4,7 @@ import adress.XGInvalidAddressException;
 import adress.XGIdentifiableSet;
 import application.XGStrings;import device.XGDevice;
 import device.XGMidi;
-import static msg.XGMessageConstants.*;
+import msg.XGClippboard;import static msg.XGMessageConstants.*;
 import msg.XGMessageParameterChange;
 import msg.XGMessengerException;
 import table.XGRealTable;import table.XGTable;import static table.XGTableConstants.TABLE_PARTMODE;import table.XGTableEntry;import table.XGVirtualTable;import value.XGDrumsetProgramValue;
@@ -23,6 +23,7 @@ public class XGDrumsetModuleType extends XGModuleType
 	public static final Map<Integer, XGRealTable> DRUMNAMES = new HashMap<>();//key, <drumprg, drumname>
 	private static final int DEF_DRUMSETPROGRAM = 127 << 14;
 	private static final int FALLBACKMASK = 127 << 14;
+	private static final XGClippboard CLIPPBOARD = new XGClippboard();//ein Clippboard für alle 4 DrumsetTypen
 
 	public static void init()
 	{	try
@@ -58,6 +59,8 @@ public class XGDrumsetModuleType extends XGModuleType
 		this.programListener = new XGDrumsetProgramValue(this);
 		DRUMSETS.put(this.partmode, this);
 	}
+
+	@Override public XGClippboard getClippboard(){	return CLIPPBOARD;}
 
 	public String getDrumname(int key)
 	{	String keyname = XGStrings.encodeKey(key);

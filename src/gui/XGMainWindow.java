@@ -31,7 +31,7 @@ public class XGMainWindow extends XGWindow
 		tb.addAction(ACTION_LOADFILE, "Open", "load datadumpfile to memory", (ActioEvent)->XGDatafile.load(XGDevice.DEVICE));
 		tb.addAction(ACTION_RECENT, "Open Recent", "load one of recently loaded datadumpfiles", (ActioEvent)->XGDatafile.recent(XGDevice.DEVICE));
 		tb.addAction(ACTION_SAVEFILE, "Save", "save memory to datadumpfile", (ActioEvent)->XGDatafile.save(XGDevice.DEVICE));
-		tb.add(Box.createHorizontalGlue());
+		tb.addSeparator();
 		tb.addAction(XGUI.ACTION_REQUEST, "Request", "request complete dump from " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> XGDevice.DEVICE.requestAll(XGMidi.getMidi())).start());
 		tb.addAction(XGUI.ACTION_TRANSMIT, "Transmit", "transmit complete memory to " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> XGDevice.DEVICE.transmitAll(XGMidi.getMidi())).start());
 		tb.add(Box.createHorizontalGlue());

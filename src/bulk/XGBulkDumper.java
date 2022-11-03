@@ -23,7 +23,7 @@ public interface XGBulkDumper extends XGLoggable
 		int transmitted = 0;
 		long time = System.currentTimeMillis();
 		XGAddressableSet<XGBulk> set = this.getBulks();
-		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "transmitting to " + dest, "", 0, set.size());
+		ProgressMonitor pm = new ProgressMonitor(XGWindow.FOCUSSED, "transmitting to " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
@@ -41,7 +41,7 @@ public interface XGBulkDumper extends XGLoggable
 			}
 			catch( XGMessengerException | InvalidMidiDataException e)
 			{	LOG.severe(e.getMessage());
-				JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, e.getMessage());
+				JOptionPane.showMessageDialog(XGWindow.FOCUSSED, e.getMessage());
 			}
 		}
 		LOG.info(transmitted + " messages transmitted to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
@@ -57,7 +57,7 @@ public interface XGBulkDumper extends XGLoggable
 		int requested = 0, responsed = 0;
 		long startTime = System.currentTimeMillis(), wholeTime = 0, maxResponseTime = 0, responseTime = 0;
 		XGAddressableSet<XGBulk> set = this.getBulks();
-		ProgressMonitor pm = new ProgressMonitor(XGMainWindow.MAINWINDOW, "requesting from " + dest, "", 0, set.size());
+		ProgressMonitor pm = new ProgressMonitor(XGWindow.FOCUSSED, "requesting from " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)

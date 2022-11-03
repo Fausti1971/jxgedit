@@ -25,7 +25,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 	Map<String, KeyStroke> KEYSTROKES = new HashMap<>()
 	{
 		{	put(ACTION_COPY, KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_DOWN_MASK));
-			put(ACTION_PASTE, KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK));
+			put(ACTION_PASTE, KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_DOWN_MASK));
 			put(ACTION_LOADFILE, KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
 			put(ACTION_SAVEFILE, KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
 			put(ACTION_REQUEST, KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_DOWN_MASK));

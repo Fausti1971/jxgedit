@@ -11,6 +11,7 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 	private static final ImageIcon LOGO = XGUI.loadImage("XGLogo32.gif");
 	public static XGMainWindow MAINWINDOW = null;
 	private static XMLNode CONFIG;
+	public static Window FOCUSSED;
 
 	public static void init()
 	{	CONFIG = JXG.config.getChildNodeOrNew(XMLNodeConstants.TAG_WIN);
@@ -83,7 +84,7 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 
 	@Override public void componentHidden(ComponentEvent e){}
 
-	@Override public void windowOpened(WindowEvent e){}
+	@Override public void windowOpened(WindowEvent e){	XGWindow.FOCUSSED = e.getWindow();}
 
 	@Override public void windowClosing(WindowEvent e){}
 
@@ -91,9 +92,9 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 
 	@Override public void windowIconified(WindowEvent e){}
 
-	@Override public void windowDeiconified(WindowEvent e){}
+	@Override public void windowDeiconified(WindowEvent e){	XGWindow.FOCUSSED = e.getWindow();}
 
-	@Override public void windowActivated(WindowEvent e){}
+	@Override public void windowActivated(WindowEvent e){	XGWindow.FOCUSSED = e.getWindow();}
 
 	@Override public void windowDeactivated(WindowEvent e){}
 }
