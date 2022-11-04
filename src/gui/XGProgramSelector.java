@@ -169,9 +169,5 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		@Override public void changedUpdate(DocumentEvent event)
 		{	LOG.info(event.getDocument().toString());
 		}
-
-		@Override public void copy(){}
-
-		@Override public void paste(){}
 	}
 }

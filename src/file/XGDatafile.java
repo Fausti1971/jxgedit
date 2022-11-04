@@ -1,8 +1,8 @@
 package file;
-import java.io.File;
-import java.io.IOException;
+import java.awt.*;import java.awt.event.ActionEvent;import java.io.File;
+import java.io.IOException;import java.util.Collection;import java.util.HashSet;import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.*;
+import javax.swing.*;import javax.swing.event.PopupMenuEvent;import javax.swing.event.PopupMenuListener;
 import adress.XGAddressableSet;
 import application.*;
 import device.XGDevice;import static file.XGDatafileFilter.*;
@@ -65,9 +65,47 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 		}
 	}
 
-	public static void recent(XGDevice device)
-	{	//später mehr...
+	public static void load(XGBulkDumper dmp, String path)
+	{	File file = new File(path);
+		if(file.exists())
+		{	try
+			{	XGDatafileFilter filter = XGDatafileFilter.getFilter(file);
+				XGDatafile f = new XGDatafile(file, filter);
+				dmp.requestAll(f);
+				f.close();
+				JXG.CURRENT_CONTENT.setValue(f.getName());
+				CONFIG.removeChildNodesWithTextContent(TAG_ITEM, f.getAbsolutePath());
+				CONFIG.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
+			}
+			catch(XGDatafileFilterException e)
+			{	LOG.info(e.getMessage());
+			}
+			catch(IOException e)
+			{	LOG.severe(e.getMessage());
+			}
+		}
 	}
+
+	public static Collection<String> getRecentFilenames()
+	{	Set<String> set = new HashSet<>();
+		for(XMLNode n : CONFIG.getChildNodes(TAG_ITEM)) set.add(n.getTextContent().toString());
+		return set;
+	}
+
+	//public static void recent(XGBulkDumper dmp, ActionEvent evnt)
+	//{	if(evnt.getSource() instanceof JComponent)
+	//	{	Point p = ((JComponent)evnt.getSource()).getLocationOnScreen();
+	//		JPopupMenu m = new JPopupMenu();
+	////		m.setSelectionModel(new DefaultSingleSelectionModel());
+	//		m.setLocation(p);
+	//		for(XMLNode n : XGDatafile.CONFIG.getChildNodes(TAG_ITEM))
+	//		{	JMenuItem i = new JMenuItem(String.valueOf(n.getTextContent()));
+	//			i.addActionListener((ActionEvent e)->{	XGDatafile.load(dmp, i.getText()); m.setVisible(false);});
+	//			m.add(i);
+	//		}
+	//		m.setVisible(true);
+	//	}
+	//}
 
 
 	public static void save(XGBulkDumper dumper)

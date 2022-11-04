@@ -1,5 +1,5 @@
 package msg;
-import adress.XGAddressableSet;import java.util.HashSet;import java.util.Set;
+import adress.XGAddressableSet;
 
 public class XGClippboard extends XGAddressableSet<XGMessageBulkDump> implements XGMessenger
 {

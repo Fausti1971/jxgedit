@@ -7,8 +7,9 @@ import java.util.HashSet;import java.util.Set;
 
 public class XGModuleTable extends JTable implements java.awt.event.MouseListener
 {
-	private final int GAP = 12;
-	private Set<ListSelectionListener> listeners = new HashSet<>();
+	private static final int GAP = 12;
+
+/***********************************************************************************************************************/
 
 	public XGModuleTable(XGModuleType type)
 	{	super(new XGModuleTableModel(type));
@@ -31,10 +32,6 @@ public class XGModuleTable extends JTable implements java.awt.event.MouseListene
 		return c;
 	}
 
-	public Set<ListSelectionListener> getSelectionListener()
-	{	return this.listeners;
-	}
-
 	public XGModule getSelectedModule()//nur das erste selektierte
 	{	if(this.getModel() instanceof XGModuleTableModel)
 		{	XGModuleTableModel model = (XGModuleTableModel)this.getModel();
@@ -47,8 +44,7 @@ public class XGModuleTable extends JTable implements java.awt.event.MouseListene
 	}
 
 	public void mouseClicked(java.awt.event.MouseEvent event)
-	{	for(ListSelectionListener l : this.listeners) l.valueChanged(new ListSelectionEvent(this.getSelectedModule(), 0, 0, false));
-		if(event.getClickCount() == 2) XGEditWindow.getEditWindow(this.getSelectedModule()).setVisible(true);
+	{	XGEditWindow.getEditWindow(this.getSelectedModule()).setVisible(true);
 	}
 
 	public void mousePressed(java.awt.event.MouseEvent event){}

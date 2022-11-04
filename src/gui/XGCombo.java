@@ -40,10 +40,7 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 
 	private void entrySelected()
 	{	Object o = this.box.getSelectedItem();
-		if(o instanceof XGTableEntry)
-		{	XGTableEntry e = (XGTableEntry)this.box.getSelectedItem();
-			this.value.setEntry(e, false, true);
-		}
+		if(o instanceof XGTableEntry) this.value.setEntry((XGTableEntry)o, false, true);
 	}
 
 	@Override public void parameterChanged(XGParameter p)

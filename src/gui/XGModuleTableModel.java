@@ -42,7 +42,7 @@ public class XGModuleTableModel  extends AbstractTableModel
 		return XGValue.class;
 	}
 
-	public boolean isCellEditable(int r,int c){	return false;}
+	public boolean isCellEditable(int r,int c){	return c!=0;}
 
 	public Object getValueAt(int r, int c)
 	{	if(c == 0) return this.rows.get(r);

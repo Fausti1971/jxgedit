@@ -187,8 +187,4 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	@Override public void propertyChanged(XGProperty p){	this.setTitle(this.getTitle());}
 
 	@Override public String getTitle(){	return XGMainWindow.MAINWINDOW.getTitle() + " - " + this.module;}
-
-	@Override public void copy(){	this.module.copy();}
-
-	@Override public void paste(){	this.module.paste();}
 }

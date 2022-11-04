@@ -1,11 +1,11 @@
 package gui;
 
 import application.JXG;
-import application.XGClippboardable;import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
+import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable, XGClippboardable
+public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable
 {
 	int MIN_W = 400, MIN_H = 200, MIN_X = 20, MIN_Y = 20;
 	private static final ImageIcon LOGO = XGUI.loadImage("XGLogo32.gif");

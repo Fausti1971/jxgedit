@@ -157,8 +157,4 @@ public class XGSettingsWindow extends XGWindow
 	@Override public String getTitle(){	return XGMainWindow.MAINWINDOW.getTitle() + " - " + TAG;}
 
 	@Override public String getTag(){	return TAG;}
-
-	@Override public void copy(){}
-
-	@Override public void paste(){}
 }

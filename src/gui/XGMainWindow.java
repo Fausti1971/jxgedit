@@ -28,8 +28,9 @@ public class XGMainWindow extends XGWindow
 
 	private XGToolbar createToolbar()
 	{	XGToolbar tb = new XGToolbar();
-		tb.addAction(ACTION_LOADFILE, "Open", "load datadumpfile to memory", (ActioEvent)->XGDatafile.load(XGDevice.DEVICE));
-		tb.addAction(ACTION_RECENT, "Open Recent", "load one of recently loaded datadumpfiles", (ActioEvent)->XGDatafile.recent(XGDevice.DEVICE));
+		XGPopup<String> pop = new XGPopup<>(XGDatafile.getRecentFilenames(), (String n)->{XGDatafile.load(XGDevice.DEVICE, n);});
+		tb.addAction(ACTION_LOADFILE, "Open", "load datadumpfile to memory; right-click for recentlist", (ActioEvent)->XGDatafile.load(XGDevice.DEVICE), pop);
+//		tb.addAction(ACTION_RECENT, "Open Recent", "load one of recently loaded datadumpfiles", (ActionEvent e)->XGDatafile.load(XGDevice.DEVICE, , e).getSelectedItem()));
 		tb.addAction(ACTION_SAVEFILE, "Save", "save memory to datadumpfile", (ActioEvent)->XGDatafile.save(XGDevice.DEVICE));
 		tb.addSeparator();
 		tb.addAction(XGUI.ACTION_REQUEST, "Request", "request complete dump from " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> XGDevice.DEVICE.requestAll(XGMidi.getMidi())).start());
@@ -39,47 +40,6 @@ public class XGMainWindow extends XGWindow
 
 		return tb;
 	}
-
-	//private JMenuBar createMenu()
-	//{	JMenuBar bar = new JMenuBar();
-	//	JMenu file = new JMenu("File");
-	//
-	//	JMenuItem load = new JMenuItem("Open Dump...");
-	//	load.addActionListener((ActioEvent)->XGDatafile.load(XGDevice.DEVICE));
-	//	file.add(load);
-	//
-	//	JMenuItem save = new JMenuItem("Save Dump...");
-	//	save.addActionListener((ActioEvent)->XGDatafile.save(XGDevice.DEVICE));
-	//	file.add(save);
-	//
-	//	file.addSeparator();
-	//
-	//	JMenuItem settings = new JMenuItem("Settings");
-	//	settings.addActionListener((ActionEvent)->XGSettingsWindow.getWindow().setVisible(true));
-	//	file.add(settings);
-	//
-	//	file.addSeparator();
-	//
-	//	JMenuItem quit = new JMenuItem("Quit");
-	//	quit.addActionListener((ActioEvent)->this.windowClosing(null));
-	//	file.add(quit);
-	//
-	//	bar.add(file);
-	//
-	//	JMenu midi = new JMenu("Midi");
-	//
-	//	JMenuItem requestAll = new JMenuItem("Request All");
-	//	requestAll.addActionListener((ActionEvent)->new Thread(() -> XGDevice.DEVICE.requestAll(XGMidi.getMidi())).start());
-	//	midi.add(requestAll);
-	//
-	//	JMenuItem transmitAll = new JMenuItem("Transmit All");
-	//	transmitAll.addActionListener((ActionEvent)->new Thread(() -> XGDevice.DEVICE.transmitAll(XGMidi.getMidi())).start());
-	//	midi.add(transmitAll);
-	//
-	//	bar.add(midi);
-	//
-	//	return bar;
-	//}
 
 	@Override public JComponent createContent()
 	{
@@ -122,13 +82,5 @@ public class XGMainWindow extends XGWindow
 		{	this.dispose();
 			JXG.quit();
 		}
-	}
-
-	@Override public void copy()
-	{	LOG.info("später");
-	}
-
-	@Override public void paste()
-	{	LOG.info("später");
 	}
 }
