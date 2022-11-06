@@ -12,10 +12,7 @@
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGClippboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGClippboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -129,9 +126,9 @@
     <property name="kotlin.migration.detection.enabled" value="false" />
     <property name="last_directory_selection" value="$PROJECT_DIR$/rsc" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/out/artifacts/JXG/MU500/structure.xml" />
-    <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.18858801" />
-    <property name="project.structure.side.proportion" value="0.23136553" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.1650758" />
+    <property name="project.structure.side.proportion" value="0.12672523" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="project.scopes" />
@@ -253,13 +250,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00027" summary="XML-Resource now in /rsc/[dev]/*.xml">
-      <created>1650056340953</created>
-      <option name="number" value="00027" />
-      <option name="presentableId" value="LOCAL-00027" />
-      <option name="project" value="LOCAL" />
-      <updated>1650056340953</updated>
     </task>
     <task id="LOCAL-00028" summary="XGInsertion48Bulk als Workaround eingebaut;">
       <created>1650670500728</created>
@@ -597,7 +587,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667583769584</updated>
     </task>
-    <option name="localTasksCounter" value="76" />
+    <task id="LOCAL-00076" summary="XGClippboard.submit(XGMessageBulkRequest) nachgerüstet, XGModule.paste() auf requestAll umgestellt;">
+      <created>1667694110720</created>
+      <option name="number" value="00076" />
+      <option name="presentableId" value="LOCAL-00076" />
+      <option name="project" value="LOCAL" />
+      <updated>1667694110720</updated>
+    </task>
+    <option name="localTasksCounter" value="77" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -711,7 +708,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="VertcalSlider added;" />
     <MESSAGE value="XGProgramSelector changed; Kosmetik;" />
     <MESSAGE value="commit" />
     <MESSAGE value="Midifile-Support implemented; Kosmetik" />
@@ -736,7 +732,8 @@
     <MESSAGE value="XGToolbar an Accelerator implemented;" />
     <MESSAGE value="XGClippboard implemented;" />
     <MESSAGE value="Recentlist-Popup implemented;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Recentlist-Popup implemented;" />
+    <MESSAGE value="XGClippboard.submit(XGMessageBulkRequest) nachgerüstet, XGModule.paste() auf requestAll umgestellt;" />
+    <option name="LAST_COMMIT_MESSAGE" value="XGClippboard.submit(XGMessageBulkRequest) nachgerüstet, XGModule.paste() auf requestAll umgestellt;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
