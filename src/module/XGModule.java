@@ -66,23 +66,31 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	}
 
 	public void paste()
-	{	XGClippboard c = this.type.getClippboard();
-		if(c.isEmpty()) return;
-		for(XGMessageBulkDump m : c)
-		{	try
-			{	if(this.type instanceof XGDrumsetModuleType) m.setHi(this.type.addressRange.getHi().getValue());
-				m.setMid(this.id);
-				this.submit(m);
-			}
-			catch(XGMessengerException | XGInvalidAddressException e)
-			{	LOG.warning(e.getMessage());
-				return;
-			}
-		}
-		LOG.info(c.size() + " messages transmitted to " + this);
-		int res = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, " Transmit " + c + " ?");
-		if(res == JOptionPane.YES_OPTION) this.transmitAll(XGMidi.getMidi());
+	{	XGClippboard c = this.getType().getClippboard();
+		this.requestAll(c);
 	}
+
+	//public void paste()
+	//{	XGClippboard c = this.type.getClippboard();
+	//	if(c.isEmpty())
+	//	{	JOptionPane.showMessageDialog(null, "clippboard is empty");
+	//		return;
+	//	}
+	//	for(XGMessageBulkDump m : c)
+	//	{	try
+	//		{	if(this.type instanceof XGDrumsetModuleType) m.setHi(this.type.addressRange.getHi().getValue());
+	//			m.setMid(this.id);
+	//			this.submit(m);
+	//		}
+	//		catch(XGMessengerException | XGInvalidAddressException e)
+	//		{	LOG.warning(e.getMessage());
+	//			return;
+	//		}
+	//	}
+	//	LOG.info(c.size() + " messages transmitted to " + this);
+	//	int res = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, " Transmit " + c + " ?");
+	//	if(res == JOptionPane.YES_OPTION) this.transmitAll(XGMidi.getMidi());
+	//}
 
 	//@Override public void actionPerformed(ActionEvent e)
 	//{	XGDevice dev = this.type.getDevice();

@@ -93,7 +93,7 @@ public interface XGBulkDumper extends XGLoggable
 		if(requested - responsed == 0)
 			level = Level.INFO;
 		else level = Level.WARNING;
-		LOG.log(level, responsed + " (of " + requested + ") requests responsed by " + dest + " within " + (System.currentTimeMillis() - startTime) + "ms (avg=" + wholeTime / responsed + "ms/max=" + maxResponseTime + "ms)");
+		LOG.log(level, responsed + " (of " + requested + ") requests responsed by " + dest + " within " + (System.currentTimeMillis() - startTime) + "ms (avg=" + wholeTime / Math.max(1, responsed) + "ms/max=" + maxResponseTime + "ms)");
 	}
 
 }

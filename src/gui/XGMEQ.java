@@ -127,6 +127,53 @@ public class XGMEQ extends javax.swing.JPanel implements XGShaper, XGValueChange
 	{	this.panel.repaint();
 	}
 
+	//public Shape getShape(Rectangle r)
+	//{	GeneralPath gp = new GeneralPath();
+	//	float[] sum = new float[61];
+	//	float midY = r.height / 2F;
+	//	int band = 0;
+	//	for(XGFreqBand b : this.bands)
+	//	{	gp.reset();
+	//		float f = XGMath.linearScale(b.frequency.getValue(), F_MIN, F_MAX, r.x, r.width);
+	//		float startY = midY;
+	//		float endY = midY;
+	//		float q = XGMath.linearScale(60f/b.q.getValue()/2, F_MIN, F_MAX, r.x, r.width);
+	//		float fl = f - q/2;
+	//		float fu = f + q/2;
+	//		float g = midY + XGMath.linearScale(b.gain.getValue(), G_MIN, G_MAX, midY, -midY);
+	//		if(b.shape.getValue() == SHELV && S1.equals(b.shape.getTag())) startY = g;
+	//		if(b.shape.getValue() == SHELV && S5.equals(b.shape.getTag())) endY = g;
+	//
+	//		gp.moveTo(r.x, startY);
+	//		gp.lineTo(fl - q, startY);
+	//		gp.curveTo(fl-q/2, startY, fl, g, f, g);
+	//		gp.curveTo(fu, g, fu+q/2, endY, fu+q, endY);
+	//		gp.lineTo(r.width, endY);
+	//
+	//		Area a;
+	//		Area a1;
+	//		float x = r.x;
+	//		float xDiff = r.width/61;
+	//		for(int freq = F_MIN; freq <= F_MAX; freq++)
+	//		{	a = new Area(gp);
+	//			a1 = new Area(new Rectangle2D.Float(x, r.y, 1, r.height));
+	//			a.intersect(a1);
+	//			float y = a.getBounds().y;
+	//			sum[freq] += y;
+	//			x += xDiff;
+	//		}
+	//		band++;
+	//	}
+	//	gp.reset();
+	//	gp.moveTo(r.x, midY);
+	//	for(int f = F_MIN; f <= F_MAX; f++)
+	//	{	float x = XGMath.linearScale(f, F_MIN, F_MAX, r.x, r.width);
+	//		gp.lineTo(x, (sum[f])/5);
+	//	}
+	//	gp.lineTo(r.width, midY);
+	//	return gp;
+	//}
+
 	public Shape getShape(Rectangle r)
 	{	GeneralPath gp = new GeneralPath();
 		float midY = r.height / 2F;

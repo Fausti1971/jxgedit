@@ -10,21 +10,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/gui/XGPopup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/gui/XGPopupListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/application/XGClippboardable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/file/XGDatafile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGDatafile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGCombo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCombo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGToolbar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGToolbar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/msg/XGClippboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGClippboard.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
@@ -263,13 +253,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00026" summary="Insertion word-address workaround implemented;">
-      <created>1649887919602</created>
-      <option name="number" value="00026" />
-      <option name="presentableId" value="LOCAL-00026" />
-      <option name="project" value="LOCAL" />
-      <updated>1649887919602</updated>
     </task>
     <task id="LOCAL-00027" summary="XML-Resource now in /rsc/[dev]/*.xml">
       <created>1650056340953</created>
@@ -607,7 +590,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667472107200</updated>
     </task>
-    <option name="localTasksCounter" value="75" />
+    <task id="LOCAL-00075" summary="Recentlist-Popup implemented;">
+      <created>1667583769583</created>
+      <option name="number" value="00075" />
+      <option name="presentableId" value="LOCAL-00075" />
+      <option name="project" value="LOCAL" />
+      <updated>1667583769584</updated>
+    </task>
+    <option name="localTasksCounter" value="76" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -721,7 +711,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Kosmetik;" />
     <MESSAGE value="VertcalSlider added;" />
     <MESSAGE value="XGProgramSelector changed; Kosmetik;" />
     <MESSAGE value="commit" />
@@ -746,7 +735,8 @@
     <MESSAGE value="Velocity Envelope debugged;" />
     <MESSAGE value="XGToolbar an Accelerator implemented;" />
     <MESSAGE value="XGClippboard implemented;" />
-    <option name="LAST_COMMIT_MESSAGE" value="XGClippboard implemented;" />
+    <MESSAGE value="Recentlist-Popup implemented;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Recentlist-Popup implemented;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
