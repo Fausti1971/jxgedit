@@ -52,6 +52,7 @@ public class XGModuleTable extends JTable
 				if(o instanceof XGValue)
 				{	if(!answered)
 					{	valueString = JOptionPane.showInputDialog(this, this.getColumnName(col), 0);
+						if(valueString == null) continue;
 						answered = true;
 					}
 					try

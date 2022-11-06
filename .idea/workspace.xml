@@ -13,6 +13,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/table/XGRealTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGRealTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/table/XGVirtualTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGVirtualTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -250,13 +253,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00028" summary="XGInsertion48Bulk als Workaround eingebaut;">
-      <created>1650670500728</created>
-      <option name="number" value="00028" />
-      <option name="presentableId" value="LOCAL-00028" />
-      <option name="project" value="LOCAL" />
-      <updated>1650670500728</updated>
     </task>
     <task id="LOCAL-00029" summary="Umzug FX_MSB_PROGRAMS nach XGTable;">
       <created>1650701447271</created>
@@ -594,7 +590,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667694110720</updated>
     </task>
-    <option name="localTasksCounter" value="77" />
+    <task id="LOCAL-00077" summary="TableSelection implemented;">
+      <created>1667756298508</created>
+      <option name="number" value="00077" />
+      <option name="presentableId" value="LOCAL-00077" />
+      <option name="project" value="LOCAL" />
+      <updated>1667756298509</updated>
+    </task>
+    <option name="localTasksCounter" value="78" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -708,7 +711,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="XGProgramSelector changed; Kosmetik;" />
     <MESSAGE value="commit" />
     <MESSAGE value="Midifile-Support implemented; Kosmetik" />
     <MESSAGE value="Kosmetik, Fehlerbehebung; Backup vor Behebung Design-Bug (XGBulk.setMessage());" />
@@ -733,7 +735,8 @@
     <MESSAGE value="XGClippboard implemented;" />
     <MESSAGE value="Recentlist-Popup implemented;" />
     <MESSAGE value="XGClippboard.submit(XGMessageBulkRequest) nachgerüstet, XGModule.paste() auf requestAll umgestellt;" />
-    <option name="LAST_COMMIT_MESSAGE" value="XGClippboard.submit(XGMessageBulkRequest) nachgerüstet, XGModule.paste() auf requestAll umgestellt;" />
+    <MESSAGE value="TableSelection implemented;" />
+    <option name="LAST_COMMIT_MESSAGE" value="TableSelection implemented;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -45,10 +45,18 @@ public class XGVirtualTable implements XGTable
 				if(i > 64) return "R" + Math.abs(i - 64);
 				else return "C";
 			},
-			XGStrings::toNumber));
+			(String s)->
+			{	if(s.equalsIgnoreCase("Rnd")) return 0;
+				if(s.equalsIgnoreCase("C")) return 64;
+				int val = XGStrings.toNumber(s);
+				if(s.substring(0, 1).equalsIgnoreCase("R")) return val + 64;
+				if(s.substring(0, 1).equalsIgnoreCase("L")) return 64 - val;
+				return val;
+			}));
 
 		TABLES.add(new XGVirtualTable(4, 124, TABLE_DEGREES,
-			(Integer i)->XGMath.linearScale(i, 4, 124, -180, 180) + "°", XGStrings::toNumber));
+			(Integer i)->XGMath.linearScale(i, 4, 124, -180, 180) + "°",
+			XGStrings::toNumber));//TODO:
 
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_PERCENT,
 			(Integer i)->XGMath.linearScale(i, 0, 127, 0, 100) + "%",

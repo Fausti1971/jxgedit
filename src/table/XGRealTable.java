@@ -94,7 +94,8 @@ public class XGRealTable implements XGTable, XMLNodeConstants
 
 	@Override public XGTableEntry getByName(String name) throws NumberFormatException
 	{	if(this.names.containsKey(name)) return this.entries.get(this.names.get(name));
-		else return this.getByValue(Integer.parseInt(name));
+		for(String s : this.names.keySet()) if(s.equalsIgnoreCase(name)) return this.entries.get(this.names.get(s));
+		return this.getByValue(Integer.parseInt(name));
 	}
 
 	@Override public int getIndex(int v)
