@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
+public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueController
 {
 
 /*******************************************************************************************/
@@ -24,6 +24,7 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 		this.value.getValueListeners().add(this);
 		this.add(this.checkbox, "0,0,1,1");
 		this.checkbox.addActionListener((ActionEvent e)->this.value.toggleIndex(true));
+		this.checkbox.addMouseListener(this);
 		this.parameterChanged(this.value.getParameter());
 		this.contentChanged(this.value);
 	}
@@ -39,5 +40,9 @@ public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XG
 	@Override public void contentChanged(XGValue v)
 	{	this.checkbox.setSelected(v.getParameter().getMaxIndex() == v.getIndex());
 		this.repaint();
+	}
+
+	public XGValue[] getValues()
+	{	return new XGValue[]{this.value};
 	}
 }

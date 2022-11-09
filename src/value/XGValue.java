@@ -96,7 +96,7 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 
 	public void setDefaultValue(){	this.setValue(this.getDefaultValue(), false, false);}
 
-	abstract int getDefaultValue();
+	public abstract int getDefaultValue();
 
 	public abstract XGParameter getParameter();
 
@@ -150,9 +150,7 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 		this.value = v;
 		if(this.hasChanged())
 		{	this.notifyValueListeners(this);
-			if(action)
-			{	for(Consumer<XGValue> c : this.type.actions) c.accept(this);
-			}
+			if(action) this.type.action.accept(this);
 		}
 	}
 

@@ -13,7 +13,7 @@ import table.XGTable;import table.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
+public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueController
 {
 	private static final ImageIcon icon_next = XGUI.loadImage("arrow_right.png");
 	private static final ImageIcon icon_prev = XGUI.loadImage("arrow_left.png");
@@ -42,6 +42,7 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		this.select.setHorizontalTextPosition(JButton.CENTER);
 		this.select.setVerticalTextPosition(JButton.CENTER);
 		this.select.addActionListener((ActionEvent e)->this.openDialog());
+		this.select.addMouseListener(this);
 		this.add(this.select, "1,0,6,2");
 
 		JButton next = new JButton(icon_next);
@@ -62,6 +63,8 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 	{	this.setName(p.getName());
 		this.repaint();
 	}
+
+	@Override public XGValue[] getValues(){	return new XGValue[]{this.value};}
 
 	private void openDialog()
 	{	if(this.dialog == null) this.dialog = new XGProgramSelectorWindow(this);

@@ -5,9 +5,9 @@ import java.awt.geom.GeneralPath;
 import java.util.*;
 import javax.swing.*;
 import application.XGMath;
-import value.XGValue;
+import static gui.XGUI.*;import value.XGValue;
 
-public class XGPointPanel extends JPanel implements XGResizeable, XGComponent, XGShaper
+public class XGPointPanel extends JPanel implements XGResizeable, XGShaper
 {
 /***************************************************************************************/
 
@@ -19,10 +19,10 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent, X
 	private final int minXIndex, maxXIndex, minYIndex, maxYIndex;
 	private int origin_x, origin_y;
 	private final int origin_x_index, origin_y_index;
-	private String xUnit = "", yUnit = "";
+	private final String xUnit, yUnit;
 	private Graphics2D g2;
 
-	public XGPointPanel(XGShaper shp, int gridX, int gridY, int oriX, int oriY, int minX, int maxX, int minY, int maxY)
+	public XGPointPanel(XGShaper shp, int gridX, int gridY, int oriX, int oriY, int minX, int maxX, int minY, int maxY, String xUnit, String yUnit)
 	{	if(shp == null) this.shaper = this;
 		else this.shaper = shp;
 		this.minXIndex = minX;
@@ -33,6 +33,8 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent, X
 		this.grid_y = gridY;
 		this.origin_x_index = oriX;
 		this.origin_y_index = oriY;
+		this.xUnit = xUnit;
+		this.yUnit = yUnit;
 		this.setBorder(BorderFactory.createLoweredSoftBevelBorder());
 		this.addComponentListener(this);
 	}
@@ -54,11 +56,6 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent, X
 	XGValue getSelectedValue(){	return this.selectedValue;}
 
 	ArrayList<XGPoint> getPoints(){	return this.points;}
-
-	void setUnits(String xUnit, String yUnit)
-	{	this.xUnit = xUnit;
-		this.yUnit = yUnit;
-	}
 
 	int getMinXIndex(){	return this.minXIndex;}
 
@@ -117,7 +114,7 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGComponent, X
 		this.repaint();
 	}
 
-	public GeneralPath getShape(Rectangle r)
+	@Override public GeneralPath getShape(Rectangle r)
 	{	GeneralPath gp = new GeneralPath();
 		int x = this.origin_x;
 		int y = this.origin_y;

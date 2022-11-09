@@ -56,7 +56,7 @@ public class XGVirtualTable implements XGTable
 
 		TABLES.add(new XGVirtualTable(4, 124, TABLE_DEGREES,
 			(Integer i)->XGMath.linearScale(i, 4, 124, -180, 180) + "°",
-			XGStrings::toNumber));//TODO:
+			(String s)->XGMath.linearScale(XGStrings.toNumber(s), -180, 180, 4, 124)));
 
 		TABLES.add(new XGVirtualTable(0, 127, TABLE_PERCENT,
 			(Integer i)->XGMath.linearScale(i, 0, 127, 0, 100) + "%",

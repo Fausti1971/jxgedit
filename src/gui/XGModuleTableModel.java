@@ -19,7 +19,7 @@ public class XGModuleTableModel  extends AbstractTableModel
 				{	if(m.getType() instanceof XGDrumsetModuleType)
 					{	v = ((XGDrumsetModuleType)m.getType()).getProgramListener();
 					}
-					else continue;//falls ID eines XGModule: weitergehen, hier gibt es nichts zu sehen...
+					else continue;
 				}
 				else v = m.getValues().get(tag);
 				v.getValueListeners().add((XGValue)->notifyListener(this.rows.indexOf(m), this.cols.indexOf(tag)));

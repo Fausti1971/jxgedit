@@ -2,7 +2,7 @@ package gui;
 
 import application.XGMath;import module.XGModule;import tag.XGTagableAddressableSet;import value.XGValue;import value.XGValueChangeListener;import javax.swing.*;import java.awt.*;import java.awt.geom.GeneralPath;import java.awt.geom.Point2D;
 
-public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XGShaper
+public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XGShaper, XGValueController
 {
 //maxDelay ca. 4s
 //minFreq 0,08Hz (= 12,5s/Welle)
@@ -21,6 +21,7 @@ public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XG
 
 	private final XGValue rate, depth, delay;
 	private final XGPointPanel panel;
+	private final XGValue[] values;
 
 	public XGVibratoCurve(XGModule module)throws XGComponentException
 	{	super("");
@@ -36,11 +37,16 @@ public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XG
 		catch(NullPointerException e)
 		{	throw new XGComponentException(e.getMessage());
 		}
-		this.panel = new XGPointPanel(this, 1, 0, 0, 64, 0, 576, 0, 127);
-		this.panel.setUnits("Time", "Level");
+		this.values = new XGValue[]{this.rate, this.depth, this.delay};
+		this.panel = new XGPointPanel(this, 1, 0, 0, 64, 0, 576, 0, 127, "Time", "Level");
+		this.panel.addMouseListener(this);
 
 		this.setLayout(new GridBagLayout());
 		this.add(this.panel, DEF_GBC);
+	}
+
+	@Override public XGValue[] getValues()
+	{	return this.values;
 	}
 
 	public void contentChanged(XGValue v)

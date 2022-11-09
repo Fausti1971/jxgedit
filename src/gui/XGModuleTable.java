@@ -1,13 +1,50 @@
 package gui;
-import static application.XGLoggable.LOG;import module.*;import value.XGValue;
+import static application.XGLoggable.LOG;import application.XGMath;import static gui.XGUI.COL_BAR_BACK;import static gui.XGUI.COL_BAR_BACK_CHANGED;import module.*;import value.XGValue;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;import javax.swing.event.ListSelectionListener;import javax.swing.event.TableModelEvent;import javax.swing.event.TableModelListener;import javax.swing.table.*;
+import javax.swing.event.ListSelectionEvent;import javax.swing.event.TableModelEvent;import javax.swing.event.TableModelListener;import javax.swing.table.*;import javax.swing.text.TableView;
 import java.awt.*;
-import java.util.Arrays;import java.util.HashSet;import java.util.Set;
+import java.util.*;
 
 public class XGModuleTable extends JTable
 {
 	private static final int GAP = 12;
+	private static final JButton DEF_BUTTON = new JButton();
+	private static final JLabel DEF_LABEL = new JLabel();
+	static
+	{	DEF_LABEL.setHorizontalAlignment(JLabel.CENTER);
+		DEF_LABEL.setOpaque(true);
+	}
+	private static final TableCellRenderer DEF_LABEL_RENDERER = (table,o,isSelected,hasFocus,row,col)->
+	{	if(o instanceof XGValue)
+		{	XGValue v = (XGValue)o;
+			String s = v.toString();
+
+			if(v.getValue() != v.getDefaultValue()) DEF_LABEL.setBackground(COL_BAR_BACK_CHANGED);
+			else DEF_LABEL.setBackground(COL_BAR_BACK);
+
+			DEF_LABEL.setText(s);
+
+			XGModuleTable t = (XGModuleTable)table;
+			FontMetrics fm = DEF_LABEL.getFontMetrics(DEF_LABEL.getFont());
+			int w = SwingUtilities.computeStringWidth(fm, s);
+			t.getColumnModel().getColumn(col).setMinWidth(w);
+		}
+		return DEF_LABEL;
+	};
+
+	private static final TableCellRenderer DEF_BUTTON_RENDERER = (table,o,isSelected,hasFocus,row,col)->
+	{	if(o instanceof XGModule)
+		{	String s = o.toString();
+
+			DEF_BUTTON.setText(s);
+
+			XGModuleTable t = (XGModuleTable)table;
+			FontMetrics fm = DEF_BUTTON.getFontMetrics(DEF_BUTTON.getFont());
+			int w = SwingUtilities.computeStringWidth(fm, s);
+			t.getColumnModel().getColumn(col).setMinWidth(w);
+		}
+		return DEF_BUTTON;
+	};
 
 /***********************************************************************************************************************/
 
@@ -22,16 +59,10 @@ public class XGModuleTable extends JTable
 		this.setRowHeight(this.getFont().getSize() + GAP);
 		this.setShowGrid(true);//wird vom L&F wieder überschrieben
 		this.setAutoscrolls(true);
+		this.setDefaultRenderer(XGModule.class, (JTable table,Object o,boolean b,boolean b1,int i,int i1)->{ DEF_BUTTON.setText(o.toString()); return DEF_BUTTON;});
+		this.setDefaultRenderer(XGValue.class, DEF_LABEL_RENDERER);
+		this.setDefaultRenderer(XGModule.class, DEF_BUTTON_RENDERER);
 		((DefaultTableCellRenderer)this.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);//wird von Nimbus und GTK+ überschrieben
-	}
-
-	@Override public Component prepareRenderer(final TableCellRenderer renderer, final int row, final int column)
-	{	Component c = super.prepareRenderer(renderer, row, column);
-		if(c instanceof JLabel)
-		{	JLabel l = (JLabel)c;
-			l.setHorizontalAlignment(JLabel.CENTER);
-		}
-		return c;
 	}
 
 	@Override public void valueChanged(ListSelectionEvent e)//ListSelectionListener

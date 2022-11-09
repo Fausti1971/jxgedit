@@ -1,6 +1,6 @@
 package value;
 
-import java.util.LinkedHashMap;import java.util.Map;import java.util.Vector;import java.util.function.Consumer;
+import java.util.LinkedHashMap;import java.util.Map;import java.util.function.Consumer;
 import adress.*;
 import application.XGStrings;import bulk.XGBulkType;import config.XGConfigurable;
 import application.XGLoggable;
@@ -44,7 +44,7 @@ public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 	final int lo, size;
 	final String tag, parameterSelectorTag, defaultSelectorTag;
 	final String parameterTableName, defaultsTableName;
-	final Vector<Consumer<XGValue>> actions = new Vector<>();//TODO:kann aus Performancegründen demnächst wahrscheinlich wieder EinzelAction werden
+	final Consumer<XGValue> action;
 	final XGMessageCodec codec;
 
 
@@ -62,8 +62,8 @@ public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 		this.parameterTableName = n.getStringAttribute(ATTR_PARAMETERTABLE);
 		this.defaultSelectorTag = n.getStringAttribute(ATTR_DEFAULTSELECTOR);
 		this.defaultsTableName = n.getStringAttribute(ATTR_DEFAULTSTABLE);
-		for(String s : XGStrings.splitCSV(n.getStringAttribute(ATTR_ACTIONS)))
-			this.actions.add(ACTIONS.getOrDefault(s, XGValue::noneAction));
+		String s = n.getStringAttribute(ATTR_ACTIONS);
+		this.action = ACTIONS.getOrDefault(s, XGValue::noneAction);
 	}
 
 	public int getSize(){	return this.size;}

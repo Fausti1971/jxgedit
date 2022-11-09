@@ -9,16 +9,12 @@ import table.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGRadio extends XGFrame implements XGValueChangeListener, XGParameterChangeListener
+public class XGRadio extends XGFrame implements XGValueChangeListener, XGParameterChangeListener, XGValueController
 {
 /*********************************************************************************************************/
 
 	private final XGValue value;
 	private final XGOrientation orientation;
-
-	public XGRadio(XGValue val)throws XGComponentException
-	{	this(val, XGOrientation.vertical);
-	}
 
 	public XGRadio(XGValue val, XGOrientation orientation)throws XGComponentException
 	{	super("");
@@ -32,6 +28,8 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 		this.parameterChanged(this.value.getParameter());
 	}
 
+	@Override public XGValue[] getValues(){	return new XGValue[]{this.value};}
+
 	@Override public void parameterChanged(XGParameter p)
 	{	if(p != null)
 		{	this.setEnabled(true);
@@ -41,10 +39,17 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 			int x = 0, y = 0;
 			switch(this.orientation)
 			{	case horizontal:
-					for(XGTableEntry e : t) this.add(new XGRadioButton(this.value, e), new int[]{x++,0,1,2}); break;
+					for(XGTableEntry e : t)
+					{	XGRadioButton b = new XGRadioButton(this.value, e);
+						b.addMouseListener(this);
+						this.add(b, new int[]{x++,0,1,2});
+					}
+					break;
 				case vertical:
 					for(XGTableEntry e : t)
-					{	this.add(new XGRadioButton(this.value, e), new int[]{0,y,1,2});
+					{	XGRadioButton b = new XGRadioButton(this.value, e);
+						b.addMouseListener(this);
+						this.add(b, new int[]{0,y,1,2});
 						y+=2;
 					}
 					break;

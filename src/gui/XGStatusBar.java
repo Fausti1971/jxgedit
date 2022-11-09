@@ -25,10 +25,10 @@ public class XGStatusBar extends JLabel implements XGLoggable
 
 /***********************************************************************************************************/
 
-	private class BarLogger extends Handler
+	private static class BarLogger extends Handler
 	{
 
-/*************************************************************************************************************/
+	/*************************************************************************************************************/
 
 		private final XGStatusBar bar;
 		private Color color;
@@ -56,9 +56,6 @@ public class XGStatusBar extends JLabel implements XGLoggable
 System.out.println("Handler.flush() called...");
 		}
 
-		@Override public void close() throws SecurityException
-		{
-System.out.println("Handler.close() called...");
-		}
+		@Override public void close() throws SecurityException{	System.out.println("Handler.close() called...");}
 	}
 }

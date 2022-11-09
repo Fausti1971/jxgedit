@@ -49,14 +49,12 @@ public interface XGUI extends XGLoggable, XGConfigurable
 
 	int MAX_COL = 255;
 	Color
-		COL_TRANSPARENT = new Color(0, 0, 0, 0),
-		COL_BAR_FORE = Color.blue,
+		COL_BAR_FORE = Color.blue,//TODO: make configurable
 		COL_BAR_FORE_LIGHT = brighter(COL_BAR_FORE, 150),
-		COL_BAR_BACK = Color.white,
+		COL_BAR_BACK = Color.white,//TODO: make configurable
 		COL_BAR_BACK_DARK = darker(COL_BAR_BACK, 20),
-		COL_SHAPE = new Color(COL_BAR_FORE.getRed(), COL_BAR_FORE.getGreen(), COL_BAR_FORE.getBlue(), 20),
-		COL_BORDER = Color.gray,
-		COL_BORDER_TEXT = Color.black;
+		COL_BAR_BACK_CHANGED = Color.yellow,
+		COL_SHAPE = new Color(COL_BAR_FORE.getRed(), COL_BAR_FORE.getGreen(), COL_BAR_FORE.getBlue(), 20);
 
 	static Color brighter(Color col, int gap)
 	{	return new Color(Math.min(MAX_COL, col.getRed() + gap), Math.min(MAX_COL, col.getGreen() + gap),Math.min(MAX_COL, col.getBlue() + gap));
@@ -66,11 +64,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 	{	return new Color(Math.max(0, col.getRed() - gap), Math.max(0, col.getGreen() - gap),Math.max(0, col.getBlue() - gap));
 	}
 
-//	int SMALL_FONTSIZE = 14, MEDIUM_FONTSIZE = 18;
-//	Font SMALL_FONT = new Font(Font.decode(null).getName(), Font.PLAIN, SMALL_FONTSIZE);
-//	Font MEDIUM_FONT = new Font(Font.decode(null).getName(), Font.PLAIN, MEDIUM_FONTSIZE);
-
-	int //GRID = SMALL_FONTSIZE * 2,
+	int
 		DEF_STROKEWIDTH = 4,
 		ROUND_RADIUS = 6;
 

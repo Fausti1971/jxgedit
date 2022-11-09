@@ -10,7 +10,7 @@ import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;import xml.XMLNode;
 
-public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConstants, XGValueChangeListener
+public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConstants, XGValueChangeListener, XGValueController
 {
 	public static XGHorizontalRangeSlider newRange(XGModule mod, XMLNode node)throws XGComponentException
 	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));
@@ -24,6 +24,7 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 	private final XGHorizontalRangeBar bar;
 	private final XGValueLabel label;
 	private final XGValue loValue, hiValue;
+	private final XGValue[] values;
 
 	public XGHorizontalRangeSlider(XGValue lo, XGValue hi)throws XGComponentException
 	{	super("");
@@ -33,6 +34,7 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 		if(this.hiValue == null) throw new XGComponentException("high value is null");
 		this.loValue.getValueListeners().add(this);
 		this.hiValue.getValueListeners().add(this);
+		this.values = new XGValue[]{this.loValue, this.hiValue};
 
 		this.setName(XGStrings.commonString(this.loValue.getParameter().getName(), this.hiValue.getParameter().getName()));
 
@@ -42,11 +44,12 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 		this.label = new XGRangeLabel(this.loValue, this.hiValue);
 		this.add(this.label, "0,1,1,1");
 
-		this.addMouseListener(this);
-		boolean ena = this.isEnabled();
-		this.bar.setEnabled(ena);
-		this.label.setEnabled(ena);
+		this.bar.addMouseListener(this);
+		this.bar.setEnabled(this.isEnabled());
+		this.label.setEnabled(this.isEnabled());
 	}
+
+	@Override public XGValue[] getValues(){	return this.values;}
 
 	@Override public String getToolTipText(){	return this.loValue.getValue() + "..." + this.hiValue.getValue();}
 

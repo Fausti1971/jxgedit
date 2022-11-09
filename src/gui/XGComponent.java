@@ -1,6 +1,6 @@
 package gui;
 
-import java.awt.*;import java.awt.event.FocusEvent;
+import value.XGValue;import java.awt.*;import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -13,9 +13,15 @@ public interface XGComponent extends XGUI, MouseListener
 	default JComponent getJComponent(){	return (JComponent)this;}
 
 	@Override default void mouseClicked(MouseEvent e)
-	{	if(e.getClickCount() == 2)
-		{
-System.out.println("doubleclick detected");
+	{	Object o = e.getSource();
+		if(e.getButton() == MouseEvent.BUTTON3)
+		{	while(o != null)
+			{	if(o instanceof XGValueController)
+					for(XGValue v : ((XGValueController)o).getValues())
+						v.setValue(v.getDefaultValue(), false, true);
+				if(o instanceof Component) o = ((Component)o).getParent();
+				else o = null;
+			}
 		}
 	}
 

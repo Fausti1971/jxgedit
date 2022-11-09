@@ -8,7 +8,7 @@ import table.XGTable;
 import table.XGTableEntry;
 import value.XGValue;
 
-public class XGCombo extends XGFrame implements XGParameterChangeListener
+public class XGCombo extends XGFrame implements XGParameterChangeListener, XGValueController
 {
 
 /*****************************************************************************************************************/
@@ -29,7 +29,9 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 			this.box.addActionListener((ActionEvent)->this.entrySelected());
 		}
 		else this.setEnabled(false);
+
 		this.setAutoscrolls(true);
+		this.box.addMouseListener(this);
 
 		this.add(this.box, "0,0,1,2");
 
@@ -49,5 +51,9 @@ public class XGCombo extends XGFrame implements XGParameterChangeListener
 		this.setEnabled(p.isValid());
 		this.setVisible(p != XGParameter.NO_PARAMETER);
 		this.repaint();
+	}
+
+	@Override public XGValue[] getValues()
+	{	return new XGValue[]{this.value};
 	}
 }

@@ -7,7 +7,7 @@ import application.XGMath;import gui.XGPoint.PointRelation;
 import module.XGModule;import value.XGFixedValue;
 import value.XGValue;import value.XGValueChangeListener;
 
-public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, XGShaper, XGValueChangeListener
+public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, XGShaper, XGValueChangeListener, XGValueController
 {
 	private static final String LOLIM = "mp_velo_lo", SENSE = "mp_velo_depth", OFFSET = "mp_velo_offset", HILIM = "mp_velo_hi"; 
 
@@ -15,6 +15,7 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, 
 
 	private final XGValue depth, offset, low, high;
 	private final XGPointPanel panel;
+	private final XGValue[] values;
 
 	public XGVelocityEnvelope(XGModule mod)throws XGComponentException
 	{	super("");
@@ -39,9 +40,9 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, 
 			this.high.getValueListeners().add(this);
 		}
 		else this.high = new XGFixedValue("Limit High", 127);
+		this.values = new XGValue[]{this.depth, this.offset, this.low, this.high};
 
-		this.panel = new XGPointPanel(this, 1, 1, 0, 64, 0, 127, 0, 127);
-		this.panel.setUnits("Velocity", "Volume");
+		this.panel = new XGPointPanel(this, 1, 1, 0, 64, 0, 127, 0, 127, "Velocity", "Volume");
 
 		this.panel.addMouseMotionListener(this);
 		this.panel.addMouseListener(this);
@@ -50,7 +51,7 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, 
 		this.add(this.panel, "0,0,1,1");
 	}
 
-	public GeneralPath getShape(Rectangle r)
+	@Override public GeneralPath getShape(Rectangle r)
 	{	GeneralPath gp = new GeneralPath();
 		Rectangle rLim = new Rectangle(r);
 		rLim.x = XGMath.linearScale(this.low.getValue(), 1, 127, r.x, r.width);
@@ -78,13 +79,9 @@ public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, 
 		e.consume();
 	}
 
-	@Override public void mouseEntered(MouseEvent e){}
+	@Override public void mouseMoved(MouseEvent event){}
 
-	@Override public void mouseExited(MouseEvent e){}
+	@Override public void contentChanged(XGValue v){	this.panel.repaint();}
 
-	@Override public void mouseMoved(MouseEvent e){}
-
-	@Override public void contentChanged(XGValue v)
-	{	this.panel.repaint();
-	}
+	@Override public XGValue[] getValues(){	return this.values;}
 }

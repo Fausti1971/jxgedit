@@ -9,7 +9,7 @@ import parm.XGParameterChangeListener;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener
+public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueController
 {
 	public enum KnobBehavior {HORIZONTAL, VERTICAL, RADIAL};
 
@@ -34,7 +34,12 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 		this.add(this.label, "0,4,1,1");
 
 		this.parameterChanged(this.value.getParameter());
+		this.addMouseListener(this);
 		}
+
+	@Override public XGValue[] getValues()
+	{	return new XGValue[]{this.value};
+	}
 
 	@Override public void contentChanged(XGValue v){	this.bar.repaint();}
 
@@ -48,14 +53,13 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 
 /******************************************************************************************************************************************/
 
-	private class XGKnobBar extends JComponent implements XGComponent, MouseMotionListener, MouseWheelListener
+	private static class XGKnobBar extends JComponent implements XGComponent, MouseMotionListener, MouseWheelListener, XGValueController
 	{
-/*****************************************************************************************/
+	/*****************************************************************************************/
 
 		private final XGKnob knob;
 		private final Point middle = new Point(), strokeStart = new Point(), strokeEnd = new Point();
 		private XGParameter parm;
-		private double lastAng;
 
 		private XGKnobBar(XGKnob knob)
 		{	this.knob = knob;
@@ -64,6 +68,8 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 			this.addMouseMotionListener(this);
 			this.addMouseWheelListener(this);
 		}
+
+		@Override public XGValue[] getValues(){	return this.knob.getValues();}
 
 		@Override public void paintComponent(Graphics g)
 		{
@@ -107,7 +113,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 					double ang = Math.atan2(e.getX() - this.middle.x, e.getY() - this.middle.y);
 					ang = Math.toDegrees(ang);
 					if (ang < 0) ang += 360;
-					result = XGMath.linearScale(Math.round(Math.round(ang)), 315, 45, this.parm.getMinIndex(), parm.getMaxIndex());
+					result = XGMath.linearScale(Math.round(Math.round(ang)), 315, 45, this.parm.getMinIndex(), this.parm.getMaxIndex());
 					break;
 			}
 			XGUI.ENVIRONMENT.dragEvent = e;

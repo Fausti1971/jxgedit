@@ -6,7 +6,7 @@ import module.XGModule;import value.XGFixedValue;
 import value.XGValue;import xml.XMLNode;
 import javax.swing.*;
 
-public class XGPitchEnvelope extends JPanel implements XGComponent, XGShaper
+public class XGPitchEnvelope extends JPanel implements XGComponent, XGShaper, XGValueController
 {
 	private static final XGFixedValue VALUE_255 = new XGFixedValue("fix", 255), VALUE_381 = new XGFixedValue("fix", 381);
 	private static final String IL = "mp_peg_init_level", AT = "mp_peg_attack_time", RL = "mp_peg_release_level", RT ="mp_peg_release_time";
@@ -18,6 +18,7 @@ public class XGPitchEnvelope extends JPanel implements XGComponent, XGShaper
 /*********************************************************************************************************************/
 
 	private final XGValue attackL, attackT, releaseL, releaseT;
+	private final XGValue[] values;
 
 	public XGPitchEnvelope(XGValue al, XGValue at, XGValue rl, XGValue rt)throws XGComponentException
 	{	XGPointPanel panel;
@@ -29,11 +30,12 @@ public class XGPitchEnvelope extends JPanel implements XGComponent, XGShaper
 		this.attackL = al;
 		this.releaseL = rl;
 		this.releaseT = rt;
+		this.values = new XGValue[]{this.attackL, this.attackT, this.releaseL, this.releaseT};
 
 		this.setName("Pitch Envelope Generator");
 
-		panel = new XGPointPanel(this, 1, 2, 0, 64, 0, 384, 0, 127);
-		panel.setUnits("Time", "Pitch");
+		panel = new XGPointPanel(this, 1, 2, 0, 64, 0, 384, 0, 127, "Time", "Pitch");
+		panel.addMouseListener(this);
 
 		this.attackL.getValueListeners().add((XGValue v)->{panel.repaint();});
 		this.attackT.getValueListeners().add((XGValue v)->{panel.repaint();});
@@ -66,4 +68,6 @@ public class XGPitchEnvelope extends JPanel implements XGComponent, XGShaper
 
 		return gp;
 	}
+
+	@Override public XGValue[] getValues(){	return this.values;}
 }

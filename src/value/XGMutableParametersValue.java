@@ -32,5 +32,5 @@ public class XGMutableParametersValue extends XGValue implements XGMutableParame
 
 	@Override public void initDepencies(){	XGMutableParameters.super.initParameterDepencies();}
 
-	@Override int getDefaultValue(){	return this.defaultValue;}
+	@Override public int getDefaultValue(){	return this.defaultValue;}
 }

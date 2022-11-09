@@ -4,7 +4,7 @@ import application.XGMath;import application.XGStrings;import gui.XGPoint.PointR
 import module.XGModule;import value.XGFixedValue;
 import value.XGValue;import xml.XMLNode;import java.awt.*;import java.awt.geom.GeneralPath;
 
-public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShaper
+public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShaper, XGValueController
 {
 	private static final int MAX_X = 4 * 128;//attack + decay + sustain + release;
 
@@ -18,6 +18,7 @@ public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShape
 /**************************************************************************************/
 
 	private final XGValue attack, decay, release;
+	private final XGValue[] values;
 
 	public XGAmplifierEnvelope(XGValue atk, XGValue dec, XGValue rel)throws XGComponentException
 	{	super("");
@@ -26,9 +27,10 @@ public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShape
 		this.attack = atk;
 		this.decay = dec;
 		this.release = rel;
+		this.values = new XGValue[]{atk, dec, rel};
 
-		panel = new XGPointPanel(this, 1, 5, 0, 0, 0, MAX_X, 0, 127);
-		panel.setUnits("Time", "Gain");
+		panel = new XGPointPanel(this, 1, 5, 0, 0, 0, MAX_X, 0, 127, "Time", "Gain");
+		panel.addMouseListener(this);
 
 		this.attack.getValueListeners().add((XGValue v)->{panel.repaint();});
 		this.decay.getValueListeners().add((XGValue v)->{panel.repaint();});
@@ -55,5 +57,9 @@ public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShape
 		gp.lineTo(rel, r.height);
 
 		return gp;
+	}
+
+	@Override public XGValue[] getValues()
+	{	return this.values;
 	}
 }

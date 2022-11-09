@@ -71,19 +71,12 @@ public class XGSlider2 extends XGFrame
 	{
 		final XGSlider2 slider;
 		final XGSlider2Bar bar;
-		final XGSliderHandle start, end;
 
 		XGSliderPanel(XGSlider2 slider)
 		{	this.slider = slider;
 
 			this.bar = new XGSlider2Bar(this);
 			this.add(this.bar);
-
-			this.start = new XGSliderHandle(this, slider.start);
-			this.add(this.start);
-
-			this.end = new XGSliderHandle(this, slider.end);
-			this.add(this.end);
 
 			this.addComponentListener(this);
 			this.setLayout(null);
@@ -98,23 +91,13 @@ public class XGSlider2 extends XGFrame
 			g2.dispose();
 		}
 
-		public void componentResized(ComponentEvent event)
-		{	this.start.resized();
-			this.end.resized();
-			this.bar.resized();
-		}
+		public void componentResized(ComponentEvent event){	this.bar.resized();}
 
-		public void componentMoved(ComponentEvent event)
-		{
-		}
+		public void componentMoved(ComponentEvent event){}
 
-		public void componentShown(ComponentEvent event)
-		{
-		}
+		public void componentShown(ComponentEvent event){}
 
-		public void componentHidden(ComponentEvent event)
-		{
-		}
+		public void componentHidden(ComponentEvent event){}
 	}
 
 /*************************************************************************************************************************/
@@ -128,7 +111,11 @@ public class XGSlider2 extends XGFrame
 		}
 
 		void resized()
-		{	this.setBounds(this.panel.start.getX(), this.panel.getHeight() - DEF_STROKEWIDTH, Math.abs(this.panel.end.getX() + DEF_STROKEWIDTH/2 - this.panel.start.getX() + DEF_STROKEWIDTH/2), DEF_STROKEWIDTH);
+		{	XGValue start = this.panel.slider.start;
+			XGValue end = this.panel.slider.end;
+			int xe = XGMath.linearScale(end.getIndex(), end.getParameter().getMinIndex(), end.getParameter().getMaxIndex(),this.panel.getX(), this.panel.getWidth()); 
+			int xs = XGMath.linearScale(start.getIndex(), start.getParameter().getMinIndex(), start.getParameter().getMaxIndex(), this.panel.getX(), this.panel.getWidth());
+			this.setBounds(xs, this.panel.getHeight(), xe - xs, this.panel.getHeight());
 			this.repaint();
 		}
 
@@ -142,56 +129,5 @@ public class XGSlider2 extends XGFrame
 			g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
 			g2.dispose();
 		}
-	}
-
-/************************************************************************************************************************/
-
-	private class XGSliderHandle extends JComponent implements XGValueChangeListener, MouseMotionListener, XGComponent
-	{
-		final XGSliderPanel panel;
-		final XGValue value;
-
-		XGSliderHandle(XGSliderPanel panel, XGValue v)
-		{	this.panel = panel;
-			this.value = v;
-			this.value.getValueListeners().add(this);
-			boolean fixed = v instanceof XGFixedValue;
-			this.setEnabled(!fixed);
-			this.setVisible(!fixed);
-			this.setCursor(new Cursor(Cursor.HAND_CURSOR));
-			this.addMouseListener(this);
-			this.addMouseMotionListener(this);
-		}
-
-		@Override public void contentChanged(XGValue v)
-		{	XGParameter p = this.value.getParameter();
-			this.setLocation(XGMath.linearScale(this.value.getIndex(), p.getMinIndex(), p.getMaxIndex(), 0, this.panel.getWidth()) - DEF_STROKEWIDTH/2, 0);
-			this.panel.bar.resized();
-		}
-
-		@Override protected void paintComponent(Graphics g)
-		{	super.paintComponent(g);
-			Graphics2D g2 = (Graphics2D)g.create();
-			g2.addRenderingHints(AALIAS);
-			g2.setColor(COL_BAR_FORE);
-			g2.fillRoundRect(0, 0, this.getWidth(), this.getHeight(), ROUND_RADIUS, ROUND_RADIUS);
-			g2.dispose();
-//System.out.println(this.value.getTag() + ", handle=" + this.getBounds());
-//System.out.println(this.value.getTag() + ", panel=" + this.panel.getBounds());
-		}
-
-		public void resized(){	this.setSize(DEF_STROKEWIDTH, this.panel.getHeight());}
-	
-		@Override public void mouseDragged(MouseEvent e)
-		{	XGParameter p = this.value.getParameter();
-			int distance = e.getX() - XGUI.ENVIRONMENT.dragEvent.getX();
-	System.out.println(distance);
-			int diff = XGMath.linearScale(distance, 0, this.panel.getWidth(), p.getMinIndex(), p.getMaxIndex());
-			this.value.addIndex(diff, true);
-			XGUI.ENVIRONMENT.dragEvent = e;
-			e.consume();
-		}
-
-		@Override public void mouseMoved(MouseEvent e){}
 	}
 }
