@@ -12,14 +12,13 @@ import static module.XGModuleType.MODULE_TYPES;
 import value.XGValue;import xml.*;
 
 public class XGMainWindow extends XGWindow
-{
+{	private static final int GAP = 10;
 
 /***********************************************************************************************************************/
 
 	public XGMainWindow(XMLNode cfg)
 	{	super("main");
-//		this.setJMenuBar(this.createMenu());
-		this.setLayout(new BorderLayout());
+		this.setLayout(new BorderLayout(GAP, GAP));
 		this.add(this.createToolbar(), NORTH);
 		this.add(this.createContent(), CENTER);
 		this.add(new XGStatusBar(), SOUTH);
@@ -30,7 +29,6 @@ public class XGMainWindow extends XGWindow
 	{	XGToolbar tb = new XGToolbar();
 		XGPopup<String> pop = new XGPopup<>(XGDatafile.getRecentFilenames(), (String n)->{XGDatafile.load(XGDevice.DEVICE, n);});
 		tb.addAction(ACTION_LOADFILE, "Open", "load datadumpfile to memory; right-click for recentlist", (ActioEvent)->XGDatafile.load(XGDevice.DEVICE), pop);
-//		tb.addAction(ACTION_RECENT, "Open Recent", "load one of recently loaded datadumpfiles", (ActionEvent e)->XGDatafile.load(XGDevice.DEVICE, , e).getSelectedItem()));
 		tb.addAction(ACTION_SAVEFILE, "Save", "save memory to datadumpfile", (ActioEvent)->XGDatafile.save(XGDevice.DEVICE));
 		tb.addSeparator();
 		tb.addAction(XGUI.ACTION_REQUEST, "Request", "request complete dump from " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> XGDevice.DEVICE.requestAll(XGMidi.getMidi())).start());
@@ -44,7 +42,7 @@ public class XGMainWindow extends XGWindow
 	@Override public JComponent createContent()
 	{
 		JPanel content = new JPanel();
-		content.setLayout(new BorderLayout());
+		content.setLayout(new BorderLayout(GAP, GAP));
 
 		JPanel sysPane = new JPanel();
 		sysPane.setLayout(new BoxLayout(sysPane, BoxLayout.X_AXIS));

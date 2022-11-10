@@ -10,33 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
-      <change afterPath="$PROJECT_DIR$/src/gui/XGValueController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGAmplifierEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGAmplifierEnvelope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGCheckbox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCheckbox.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGCombo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCombo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGComponent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGHorizontalRangeSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGHorizontalRangeSlider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGKnob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKnob.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGPitchEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPitchEnvelope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGPointPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPointPanel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGRadio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRadio.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSlider2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSlider2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGStatusBar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGStatusBar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGVelocityEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVelocityEnvelope.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGVibratoCurve.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVibratoCurve.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/table/XGVirtualTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGVirtualTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/XGMutableParametersValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGMutableParametersValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/XGValueType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValueType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -274,13 +250,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00030" summary="optionale &lt;init_message&gt; in &lt;device&gt; config.xml eingebaut (noch ohne GUI);">
-      <created>1650755402342</created>
-      <option name="number" value="00030" />
-      <option name="presentableId" value="LOCAL-00030" />
-      <option name="project" value="LOCAL" />
-      <updated>1650755402342</updated>
     </task>
     <task id="LOCAL-00031" summary="Kosmetik">
       <created>1650756749056</created>
@@ -618,7 +587,14 @@
       <option name="project" value="LOCAL" />
       <updated>1667765614127</updated>
     </task>
-    <option name="localTasksCounter" value="79" />
+    <task id="LOCAL-00079" summary="TableCellWidth automated;">
+      <created>1668029354056</created>
+      <option name="number" value="00079" />
+      <option name="presentableId" value="LOCAL-00079" />
+      <option name="project" value="LOCAL" />
+      <updated>1668029354056</updated>
+    </task>
+    <option name="localTasksCounter" value="80" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -732,7 +708,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Midifile-Support implemented; Kosmetik" />
     <MESSAGE value="Kosmetik, Fehlerbehebung; Backup vor Behebung Design-Bug (XGBulk.setMessage());" />
     <MESSAGE value="den neuen Bug wieder gegen den alten getauscht (XGProgramBuffer.changePartmode())" />
     <MESSAGE value="Bugfix durch Umzug von change_program und change_partmode nach XGValueType.actions; Nacharbeit erforderlich;" />
@@ -757,7 +732,8 @@
     <MESSAGE value="XGClippboard.submit(XGMessageBulkRequest) nachgerüstet, XGModule.paste() auf requestAll umgestellt;" />
     <MESSAGE value="TableSelection implemented;" />
     <MESSAGE value="Debugging;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Debugging;" />
+    <MESSAGE value="TableCellWidth automated;" />
+    <option name="LAST_COMMIT_MESSAGE" value="TableCellWidth automated;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
