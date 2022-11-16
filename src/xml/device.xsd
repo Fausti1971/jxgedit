@@ -162,7 +162,7 @@
 		<xs:attribute name="id" use="required" type="xs:ID"/>
 		<xs:attribute name="address" use="required" type="opcodeAddress"/>
 		<xs:attribute name="byteType" type="byteTypes" default="LSB"/>
-		<xs:attribute name="actions" use="required" type="xs:string"/>
+		<xs:attribute name="actions" use="optional" type="xs:string" default="change"/>
 	</xs:attributeGroup>
 
 	<xs:attributeGroup name="parameterAttribute">

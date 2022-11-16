@@ -24,12 +24,15 @@ public abstract class XGDatafileFilter extends FileFilter implements XGLoggable
 	public static XGDatafileFilter getFilter(File f) throws XGDatafileFilterException
 	{	if(SYX_FILEFILTER.accept(f)) return SYX_FILEFILTER;
 		if(MID_FILEFILTER.accept(f)) return MID_FILEFILTER;
-		throw new XGDatafileFilterException("can't determine fileformat for " + f);
+		throw new XGDatafileFilterException("can't determine fileformat of " + f);
 	}
 
 	@Override public boolean accept(File f)
 	{	if(f.isDirectory()) return true;
-		String suffix = f.getName().substring(f.getName().length() - 4);
+		int dot = f.getName().lastIndexOf(".");
+		if(dot == -1) return false;
+	//	String suffix = f.getName().substring(f.getName().length() - 4);
+		String suffix = f.getName().substring(dot);
 		return suffix.equalsIgnoreCase(this.getSuffix());
 	}
 ///**

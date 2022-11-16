@@ -5,10 +5,10 @@ import java.awt.event.*;
 import javax.swing.*;
 import application.XGMath;
 import application.XGStrings;import module.XGModule;import parm.XGParameter;
-import value.XGValue;
+import parm.XGParameterChangeListener;import value.XGValue;
 import value.XGValueChangeListener;import xml.XMLNode;
 
-public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener, MouseListener
+public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener, XGParameterChangeListener, MouseListener
 {
 	static XGFrame newSlider(XGModule mod, XMLNode node)throws XGComponentException
 	{	XGValue v = mod.getValues().get(node.getStringAttribute(ATTR_VALUE_TAG));
@@ -35,11 +35,6 @@ public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener
 		this.value = v;
 		if(this.value == null) throw new XGComponentException("value is null");
 
-		if(this.value.getParameter() != null)
-		{	this.setEnabled(true);
-			this.setVisible(true);
-			this.setName(this.value.getParameter().getShortName());
-		}
 		this.addMouseListener(this);
 		this.value.getValueListeners().add(this);
 
@@ -48,9 +43,17 @@ public class XGHorizontalSlider extends XGFrame implements XGValueChangeListener
 
 		this.label = new XGValueLabel(this.value);
 		this.add(this.label, "0,1,1,1");
+
+		this.parameterChanged(this.value.getParameter());
 	}
 
-//	@Override public String getName(){	return this.value.getParameter().getShortName();}
+	@Override public void parameterChanged(XGParameter p)
+	{	this.setName(p.getShortName());
+		this.setToolTipText(p.getName());
+		this.label.setText(this.value.toString());
+		this.setVisible(p.isValid());
+		this.setEnabled(p.isValid());
+	}
 
 	@Override public void contentChanged(XGValue v)
 	{	this.bar.repaint();

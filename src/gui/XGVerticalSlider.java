@@ -14,14 +14,13 @@ public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, 
 
 	private final XGValue value;
 	private final XGVerticalSliderPanel bar;
+	private final XGValueLabel label;
 	private XGParameter parameter;
 
 	public XGVerticalSlider(XGValue v)throws XGComponentException
 	{	super("");
 		this.value = v;
 		if(this.value == null) throw new XGComponentException("value is null");
-
-		this.parameterChanged(value.getParameter());
 
 		this.addMouseListener(this);
 		this.value.getValueListeners().add(this);
@@ -30,8 +29,10 @@ public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, 
 		this.bar.addMouseListener(this);
 		this.add(this.bar, "0,0,1,5");
 
-		XGValueLabel label = new XGValueLabel(this.value);
-		this.add(label, "0,5,1,1");
+		this.label = new XGValueLabel(this.value);
+		this.add(this.label, "0,5,1,1");
+
+		this.parameterChanged(value.getParameter());
 	}
 
 //	@Override public String getName(){	return this.value.getParameter().getShortName();}
@@ -40,9 +41,11 @@ public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, 
 
 	@Override public void parameterChanged(XGParameter p)
 	{	if(p != null)
-		{	this.setEnabled(p.isValid());
+		{	this.setName(p.getShortName());
+			this.setToolTipText(p.getName());
+			this.label.setText(this.value.toString());
 			this.setVisible(p.isValid());
-			this.setName(p.getShortName());
+			this.setEnabled(p.isValid());
 		}
 		this.parameter = p;
 	}

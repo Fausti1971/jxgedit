@@ -125,48 +125,48 @@ public class XGMEQ extends JPanel implements XGShaper, XGValueChangeListener
 
 	public void contentChanged(XGValue v){	this.panel.repaint();}
 
-	public Shape getShape(Rectangle r)//alle 5 Kurven nacheinander, geschnitten und addiert; prinzipielle richtig aber sieht scheiße aus...
+	public Shape getShape(Rectangle r)//alle 5 Kurven nacheinander, geschnitten und addiert; prinzipiell richtig aber sieht scheiße aus...
 	{	GeneralPath gp = new GeneralPath();
-		float[] sum = new float[61];
-		float midY = r.height / 2F;
+		final float[] sum = new float[61];
+		final float midY = r.height / 2F;
+		float fc, startY, endY, q, fl, fu, g;
 
 		for(XGFreqBand b : this.bands)
 		{	gp.reset();
-			float f = XGMath.linearScale(b.frequency.getValue(), F_MIN, F_MAX, r.x, r.width);
-			float startY = midY;
-			float endY = midY;
-			float q = XGMath.linearScale(60f/b.q.getValue()/2, F_MIN, F_MAX, r.x, r.width);
-			float fl = f - q/2;
-			float fu = f + q/2;
-			float g = midY + XGMath.linearScale(b.gain.getValue(), G_MIN, G_MAX, midY, -midY);
+			fc = XGMath.linearScale(b.frequency.getValue(), F_MIN, F_MAX, r.x, r.width);
+			startY = midY;
+			endY = midY;
+			q = XGMath.linearScale(60f/b.q.getValue()/2, F_MIN, F_MAX, r.x, r.width);
+			fl = fc - q/2;
+			fu = fc + q/2;
+			g = midY + XGMath.linearScale(b.gain.getValue(), G_MIN, G_MAX, midY, -midY);
 			if(b.shape.getValue() == SHELV && S1.equals(b.shape.getTag())) startY = g;
 			if(b.shape.getValue() == SHELV && S5.equals(b.shape.getTag())) endY = g;
 
 	//		https://youtu.be/D2cgE3exNTI
 
-			gp.moveTo(r.x, r.height);
+			gp.moveTo(r.x, r.height - 1);
 			gp.lineTo(r.x, startY);
 			gp.lineTo(fl - q, startY);
-			gp.curveTo(fl-q/2, startY, fl, g, f, g);
+			gp.curveTo(fl-q/2, startY, fl, g, fc, g);
 			gp.curveTo(fu, g, fu+q/2, endY, fu+q, endY);
 			gp.lineTo(r.width, endY);
-			gp.lineTo(r.width, r.height);
+			gp.lineTo(r.width, r.height - 1);
+			gp.closePath();
 
 			Area a1 = new Area(gp);
 			Area a2;
+			Rectangle2D.Float r2 = new Rectangle2D.Float(0, r.y, 1, r.height);
 			for(int i = F_MIN; i <= F_MAX; i++)
 			{	float x = XGMath.linearScale(i, F_MIN, F_MAX, r.x, r.width);
-				Rectangle2D.Float r2 = new Rectangle2D.Float(Math.min(r.width - 1, x), r.y, 1, r.height);
+				r2.x = Math.min(r.width - 1, x);
 				a2 = new Area(r2);
-				if(a1.intersects(r2))
-				{	a2.intersect(a1);
-					sum[i] += a2.getBounds2D().getY();
-				}
+				a2.intersect(a1);
+				sum[i] += a2.getBounds2D().getY();
 			}
 		}
 		gp.reset();
 		gp.moveTo(r.x, midY);
-		CubicCurve2D.Float curve = new CubicCurve2D.Float();
 		for(int i = F_MIN; i <= F_MAX; i++)
 		{	float x = XGMath.linearScale(i, F_MIN, F_MAX, r.x, r.width);
 			gp.lineTo(x, sum[i] / 5);

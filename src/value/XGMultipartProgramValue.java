@@ -1,6 +1,11 @@
 package value;
 
-import bulk.XGBulk;import msg.XGMessageBulkDump;import msg.XGMessengerException;import static value.XGValueType.MP_PM_VALUE_TAG;public class XGMultipartProgramValue extends XGMutableValue
+import bulk.XGBulk;
+import msg.XGMessageBulkDump;
+import msg.XGMessengerException;
+import static value.XGValueType.MP_PM_VALUE_TAG;
+
+public class XGMultipartProgramValue extends XGMutableValue
 {
 	XGMultipartProgramValue(XGValueType vt,XGBulk bk)
 	{	super(vt,bk);

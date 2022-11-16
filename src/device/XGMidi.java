@@ -2,14 +2,9 @@ package device;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import javax.sound.midi.InvalidMidiDataException;
-import javax.sound.midi.MidiDevice;
+import javax.sound.midi.*;
 import javax.sound.midi.MidiDevice.Info;
-import javax.sound.midi.MidiMessage;
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.MidiUnavailableException;
-import javax.sound.midi.Receiver;
-import adress.XGAddressableSet;import application.*;
+import application.*;
 import msg.*;
 import xml.*;
 
@@ -80,8 +75,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 /******************************************************************************************************************/
 
 	private Receiver transmitter;
-	private MidiDevice midiOutput = null;
-	private MidiDevice midiInput = null;
+	private MidiDevice output = null;
+	private MidiDevice input = null;
 	private int timeoutValue;
 //	private final XGAddressableSet<XGResponse> buffer = new XGAddressableSet<>();
 
@@ -92,7 +87,15 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	}
 
 	private void setOutput(String s)
-	{	for(Info i : OUTPUTS) if(i.getName().equals(s)) this.setOutput(i);
+	{	Info last = null;
+		for(Info i : OUTPUTS)
+		{	last = i;
+			if(i.getName().equals(s))
+			{	this.setOutput(i);
+				return;
+			}
+		}
+		this.setOutput(last);
 	}
 
 	public void setOutput(Info i)
@@ -106,11 +109,10 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 
 	private void setOutput(MidiDevice dev)
 	{	if(this.transmitter != null) this.transmitter.close();
-//		if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
 		if(dev != null)
 		{	try
 			{	if(!dev.isOpen()) dev.open();
-				this.midiOutput = dev;
+				this.output = dev;
 				this.transmitter = dev.getReceiver();
 			}
 			catch(MidiUnavailableException e)
@@ -123,7 +125,15 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	}
 
 	private void setInput(String s)
-	{	for(Info i : INPUTS) if(i.getName().equals(s)) this.setInput(i);
+	{	Info last=null;
+		for(Info i : INPUTS)
+		{	last = i;
+			if(last.getName().equals(s))
+			{	this.setInput(i);
+				return;
+			}
+		}
+		this.setInput(last);//fallback falls der angegebene Port nicht existiert
 	}
 
 	public void setInput(Info i)
@@ -140,7 +150,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 		{	try
 			{	if(!dev.isOpen()) dev.open();
 				dev.getTransmitter().setReceiver(this);
-				this.midiInput = dev;
+				this.input = dev;
 			}
 			catch(MidiUnavailableException e)
 			{	javax.swing.JOptionPane.showMessageDialog(null, e.getMessage() + ": " + dev.getDeviceInfo().getName(), "MIDI Input", javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -151,24 +161,24 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 		config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
 	}
 
-	public MidiDevice getInput(){	return this.midiInput;}
+	public MidiDevice getInput(){	return this.input;}
 
-	public MidiDevice getOutput(){	return this.midiOutput;}
+	public MidiDevice getOutput(){	return this.output;}
 
 	private String getInputName()
-	{	if(this.midiInput == null) return "no input device";
-		else return this.midiInput.getDeviceInfo().getName();
+	{	if(this.input == null) return "no input device";
+		else return this.input.getDeviceInfo().getName();
 	}
 
 	private String getOutputName()
-	{	if(this.midiOutput == null) return "no output device";
-		else return this.midiOutput.getDeviceInfo().getName();
+	{	if(this.output == null) return "no output device";
+		else return this.output.getDeviceInfo().getName();
 	}
 
 	@Override public void close()
-	{	if(this.midiInput != null && this.midiInput.isOpen()) this.midiInput.close();
+	{	if(this.input != null && this.input.isOpen()) this.input.close();
 		LOG.info("MidiInput closed: " + this.getInputName());
-		if(this.midiOutput != null && this.midiOutput.isOpen()) this.midiOutput.close();
+		if(this.output != null && this.output.isOpen()) this.output.close();
 		LOG.info("MidiOutput closed: " + this.getOutputName());
 	}
 

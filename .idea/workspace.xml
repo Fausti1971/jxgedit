@@ -12,7 +12,13 @@
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/file/XGDatafileFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGDatafileFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGHorizontalSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGHorizontalSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGMultipartProgramValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGMultipartProgramValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/device.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/device.xsd" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -69,6 +75,9 @@
   </component>
   <component name="NamedScopeManager">
     <scope name="Unnamed" pattern="file[jxgedit]:rsc/*||file[jxgedit]:rsc//*" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="51" />
@@ -250,13 +259,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00031" summary="Kosmetik">
-      <created>1650756749056</created>
-      <option name="number" value="00031" />
-      <option name="presentableId" value="LOCAL-00031" />
-      <option name="project" value="LOCAL" />
-      <updated>1650756749056</updated>
     </task>
     <task id="LOCAL-00032" summary="Test">
       <created>1650788703698</created>
@@ -594,7 +596,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668029354056</updated>
     </task>
-    <option name="localTasksCounter" value="80" />
+    <task id="LOCAL-00080" summary="set HGap &amp; VGAp in MainWindow;">
+      <created>1668039215565</created>
+      <option name="number" value="00080" />
+      <option name="presentableId" value="LOCAL-00080" />
+      <option name="project" value="LOCAL" />
+      <updated>1668039215565</updated>
+    </task>
+    <option name="localTasksCounter" value="81" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -708,7 +717,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Kosmetik, Fehlerbehebung; Backup vor Behebung Design-Bug (XGBulk.setMessage());" />
     <MESSAGE value="den neuen Bug wieder gegen den alten getauscht (XGProgramBuffer.changePartmode())" />
     <MESSAGE value="Bugfix durch Umzug von change_program und change_partmode nach XGValueType.actions; Nacharbeit erforderlich;" />
     <MESSAGE value="XGMessenger erfordert nun 4 submit-Methoden;" />
@@ -733,7 +741,8 @@
     <MESSAGE value="TableSelection implemented;" />
     <MESSAGE value="Debugging;" />
     <MESSAGE value="TableCellWidth automated;" />
-    <option name="LAST_COMMIT_MESSAGE" value="TableCellWidth automated;" />
+    <MESSAGE value="set HGap &amp; VGAp in MainWindow;" />
+    <option name="LAST_COMMIT_MESSAGE" value="set HGap &amp; VGAp in MainWindow;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
