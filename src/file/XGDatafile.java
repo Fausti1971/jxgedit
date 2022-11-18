@@ -182,19 +182,11 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 	{	this.buffer.add(msg);
 	}
 
-	@Override public void submit(XGMessageParameterChange msg)throws XGMessengerException
-	{	throw new XGMessengerException(this, msg);
-	}
-
 	@Override public void submit(XGMessageBulkRequest req)throws XGMessengerException
 	{	XGMessageBulkDump response = this.buffer.get(req.getAddress());
 		if(req.setResponsedBy(response))
 		{	req.getSource().submit(response);
 		}
-	}
-
-	@Override public void submit(XGMessageParameterRequest msg)throws XGMessengerException
-	{	throw new XGMessengerException(this, msg);
 	}
 
 	@Override public void close()

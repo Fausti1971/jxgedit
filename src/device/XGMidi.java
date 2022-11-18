@@ -15,6 +15,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	private static final Object lock = new Object();
 	private static volatile XGRequest request = null;
 	private static volatile Thread requestThread = null;
+	public static Set<Info> INPUTS = new LinkedHashSet<>();
+	public static Set<Info> OUTPUTS = new LinkedHashSet<>();
 
 	public static XGMidi getMidi()
 	{	if(MIDI == null) XGMidi.init();
@@ -23,15 +25,9 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 
 	public static void init()
 	{	config = JXG.config.getChildNodeOrNew(TAG_MIDI);
-		MIDI = new XGMidi(config);
-	}
-
-	public static Set<Info> INPUTS = new LinkedHashSet<>();
-	public static Set<Info> OUTPUTS = new LinkedHashSet<>();
-
-	static
-	{	synchronized(lock){	initInputs();}
+		synchronized(lock){	initInputs();}
 		synchronized(lock){	initOutputs();}
+		MIDI = new XGMidi(config);
 	}
 
 	private static void initInputs()
@@ -48,7 +44,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 				LOG.info("MIDI-Input detected: " + i);
 			}
 			catch (MidiUnavailableException e)
-			{	LOG.info(e.getMessage());
+			{	LOG.severe(e.getMessage());
 			}
 		}
 	}
@@ -67,7 +63,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 				LOG.info("MIDI-Output detected: " + i);
 			}
 			catch (MidiUnavailableException e)
-			{	LOG.info(e.getMessage());
+			{	LOG.severe(e.getMessage());
 			}
 		}
 	}
@@ -95,6 +91,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 				return;
 			}
 		}
+		LOG.warning(s + " does not exist!");
 		this.setOutput(last);
 	}
 
@@ -114,14 +111,14 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 			{	if(!dev.isOpen()) dev.open();
 				this.output = dev;
 				this.transmitter = dev.getReceiver();
+				LOG.info(this.getOutputName());
+				config.setStringAttribute(ATTR_MIDIOUTPUT, this.getOutputName());
 			}
 			catch(MidiUnavailableException e)
 			{	javax.swing.JOptionPane.showMessageDialog(null, e.getMessage() + ": " + dev.getDeviceInfo().getName(), "MIDI Output", javax.swing.JOptionPane.WARNING_MESSAGE);
 				LOG.severe(e.getMessage());
 			}
 		}
-		LOG.info(this.getOutputName());
-		config.setStringAttribute(ATTR_MIDIOUTPUT, this.getOutputName());
 	}
 
 	private void setInput(String s)
@@ -133,6 +130,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 				return;
 			}
 		}
+		LOG.warning(s + " does not exist!");
 		this.setInput(last);//fallback falls der angegebene Port nicht existiert
 	}
 
@@ -151,14 +149,14 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 			{	if(!dev.isOpen()) dev.open();
 				dev.getTransmitter().setReceiver(this);
 				this.input = dev;
+				LOG.info(this.getInputName());
+				config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
 			}
 			catch(MidiUnavailableException e)
 			{	javax.swing.JOptionPane.showMessageDialog(null, e.getMessage() + ": " + dev.getDeviceInfo().getName(), "MIDI Input", javax.swing.JOptionPane.WARNING_MESSAGE);
 				LOG.severe(e.getMessage());
 			}
 		}
-		LOG.info(this.getInputName());
-		config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
 	}
 
 	public MidiDevice getInput(){	return this.input;}

@@ -1,5 +1,5 @@
 package gui;
-import static application.XGLoggable.LOG;import application.XGMath;import static gui.XGUI.COL_BAR_BACK;import static gui.XGUI.COL_BAR_BACK_CHANGED;import module.*;import value.XGValue;
+import static application.XGLoggable.LOG;import application.XGMath;import static gui.XGUI.*;import module.*;import value.XGValue;
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;import javax.swing.event.TableModelEvent;import javax.swing.event.TableModelListener;import javax.swing.table.*;import javax.swing.text.TableView;
 import java.awt.*;
@@ -19,8 +19,10 @@ public class XGModuleTable extends JTable
 		{	XGValue v = (XGValue)o;
 			String s = v.toString();
 
-			if(v.getValue() != v.getDefaultValue()) DEF_LABEL.setBackground(COL_BAR_BACK_CHANGED);
-			else DEF_LABEL.setBackground(COL_BAR_BACK);
+			Color bg = COL_BAR_BACK;
+			if(v.getValue() != v.getDefaultValue()) bg = COL_BAR_BACK_CHANGED;
+			if(isSelected) bg = COL_BAR_BACK_DARK;
+			DEF_LABEL.setBackground(bg);
 
 			DEF_LABEL.setText(s);
 
@@ -68,7 +70,7 @@ public class XGModuleTable extends JTable
 	@Override public void valueChanged(ListSelectionEvent e)//ListSelectionListener
 	{	super.valueChanged(e);
 		if(e.getValueIsAdjusting()) return;
-		String valueString = "";
+		String valueString = null;
 		boolean answered = false;
 
 		for(int col : this.getSelectedColumns())
@@ -82,9 +84,12 @@ public class XGModuleTable extends JTable
 				}
 				if(o instanceof XGValue)
 				{	if(!answered)
-					{	valueString = JOptionPane.showInputDialog(this, this.getColumnName(col), 0);
-						if(valueString == null) continue;
+					{	valueString = JOptionPane.showInputDialog(this, this.getColumnName(col), "0");
 						answered = true;
+						if(valueString == null)
+						{	this.clearSelection();
+							return;
+						}
 					}
 					try
 					{	((XGValue)o).setValue(valueString, true);

@@ -228,10 +228,6 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 	{	this.setValue(this.type.codec.decode(res, res.getBaseOffset(), this.getSize()), false, false);
 	}
 
-	public void submit(XGMessageBulkRequest req)throws XGMessengerException
-	{	throw new XGMessengerException(this, req);
-	}
-
 	public void submit(XGMessageParameterRequest req)throws XGMessengerException
 	{	try
 		{	XGMessageParameterChange res = new XGMessageParameterChange(this, this);

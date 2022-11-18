@@ -6,18 +6,6 @@ public class XGClippboard extends XGAddressableSet<XGMessageBulkDump> implements
 
 	@Override public String toString(){	return "Clippboard";}
 
-	public void submit(XGMessageParameterChange res) throws XGMessengerException
-	{	LOG.warning("später...");
-	}
-
-	public void submit(XGMessageBulkDump res) throws XGMessengerException
-	{	this.add(res);
-	}
-
-	public void submit(XGMessageParameterRequest req) throws XGMessengerException
-	{	LOG.warning("später...");
-	}
-
 	public void submit(XGMessageBulkRequest req) throws XGMessengerException
 	{	if(this.isEmpty()) throw new XGMessengerException("clippboard is empty!");
 

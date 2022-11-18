@@ -137,18 +137,10 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 		else throw new XGMessengerException("no matching Bulk found for " + msg);
 	}
 
-	@Override public void submit(XGMessageParameterChange msg)throws XGMessengerException
-	{	throw new XGMessengerException(this, msg);//TODO: finde parameter anhand der adresse und übergebe msg
-	}
-
 	@Override public void submit(XGMessageBulkRequest req)throws XGMessengerException
 	{	XGBulk b = this.getBulks().get(req.getAddress());
 		if(b != null) b.submit(req);
 		else throw new XGMessengerException("no matching Bulk found for " + req);
-	}
-
-	@Override public void submit(XGMessageParameterRequest req)throws XGMessengerException
-	{	throw new XGMessengerException(this, req);//TODO: finde parameter anhand der adresse, erfrage und beantworte req
 	}
 
 	@Override public String toString(){	return this.getName().getValue().toString();}

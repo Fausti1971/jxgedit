@@ -104,16 +104,8 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	//}
 
 
-	public void submit(XGMessageParameterChange res) throws XGMessengerException
-	{	LOG.warning("not supported");
-	}
-
 	public void submit(XGMessageBulkDump res) throws XGMessengerException
 	{	this.bulks.get(res.getAddress()).submit(res);
-	}
-
-	public void submit(XGMessageParameterRequest req) throws XGMessengerException
-	{	LOG.warning("not supported");
 	}
 
 	public void submit(XGMessageBulkRequest req) throws XGMessengerException

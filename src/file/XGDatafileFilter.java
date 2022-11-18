@@ -5,13 +5,8 @@ import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;import jav
 
 public abstract class XGDatafileFilter extends FileFilter implements XGLoggable
 {
-	abstract String getSuffix();
-	abstract void read(XGDatafile f)throws IOException;
-	abstract void write(XGDatafile f)throws InvalidMidiDataException, IOException;
-
 	public static XGDatafileFilter SYX_FILEFILTER = new XGSysexFileFilter();
 	public static XGDatafileFilter MID_FILEFILTER = new XGMidiFileFilter();
-
 	public static FileFilter SUPPORTED_FILEFILTER = new FileFilter()
 	{	@Override public String getDescription()
 		{	return "All Supported Files";
@@ -26,6 +21,12 @@ public abstract class XGDatafileFilter extends FileFilter implements XGLoggable
 		if(MID_FILEFILTER.accept(f)) return MID_FILEFILTER;
 		throw new XGDatafileFilterException("can't determine fileformat of " + f);
 	}
+
+/**********************************************************************************************************************/
+
+	abstract String getSuffix();
+	abstract void read(XGDatafile f)throws IOException;
+	abstract void write(XGDatafile f)throws InvalidMidiDataException, IOException;
 
 	@Override public boolean accept(File f)
 	{	if(f.isDirectory()) return true;

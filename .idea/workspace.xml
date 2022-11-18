@@ -12,13 +12,16 @@
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/file/XGDatafile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGDatafile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/file/XGDatafileFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGDatafileFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGHorizontalSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGHorizontalSlider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/XGMultipartProgramValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGMultipartProgramValue.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/device.xsd" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/device.xsd" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGClippboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGClippboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessenger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessengerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessengerException.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -259,13 +262,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00032" summary="Test">
-      <created>1650788703698</created>
-      <option name="number" value="00032" />
-      <option name="presentableId" value="LOCAL-00032" />
-      <option name="project" value="LOCAL" />
-      <updated>1650788703698</updated>
     </task>
     <task id="LOCAL-00033" summary="structure.xml is now device.xml;">
       <created>1650795085592</created>
@@ -603,7 +599,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668039215565</updated>
     </task>
-    <option name="localTasksCounter" value="81" />
+    <task id="LOCAL-00081" summary="Bugfix XGDatafileFilter.accept(File); Bugfix XGMidi.setInput(String s); Bugfix XGMidi.setOutput(String s);">
+      <created>1668556986839</created>
+      <option name="number" value="00081" />
+      <option name="presentableId" value="LOCAL-00081" />
+      <option name="project" value="LOCAL" />
+      <updated>1668556986839</updated>
+    </task>
+    <option name="localTasksCounter" value="82" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -717,7 +720,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="den neuen Bug wieder gegen den alten getauscht (XGProgramBuffer.changePartmode())" />
     <MESSAGE value="Bugfix durch Umzug von change_program und change_partmode nach XGValueType.actions; Nacharbeit erforderlich;" />
     <MESSAGE value="XGMessenger erfordert nun 4 submit-Methoden;" />
     <MESSAGE value="Filter in XGProgramSelectorWindow implementiert;" />
@@ -742,7 +744,8 @@
     <MESSAGE value="Debugging;" />
     <MESSAGE value="TableCellWidth automated;" />
     <MESSAGE value="set HGap &amp; VGAp in MainWindow;" />
-    <option name="LAST_COMMIT_MESSAGE" value="set HGap &amp; VGAp in MainWindow;" />
+    <MESSAGE value="Bugfix XGDatafileFilter.accept(File); Bugfix XGMidi.setInput(String s); Bugfix XGMidi.setOutput(String s);" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfix XGDatafileFilter.accept(File); Bugfix XGMidi.setInput(String s); Bugfix XGMidi.setOutput(String s);" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
