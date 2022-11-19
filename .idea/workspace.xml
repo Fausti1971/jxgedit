@@ -14,14 +14,10 @@
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/file/XGDatafile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGDatafile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/file/XGDatafileFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGDatafileFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/msg/XGClippboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGClippboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGMessenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessenger.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGMessengerException.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessengerException.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/templates.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/templates.xml" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -262,13 +258,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00033" summary="structure.xml is now device.xml;">
-      <created>1650795085592</created>
-      <option name="number" value="00033" />
-      <option name="presentableId" value="LOCAL-00033" />
-      <option name="project" value="LOCAL" />
-      <updated>1650795085592</updated>
     </task>
     <task id="LOCAL-00034" summary="vergessenen SysexID selector nachgerüstet;">
       <created>1650801084500</created>
@@ -606,7 +595,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668556986839</updated>
     </task>
-    <option name="localTasksCounter" value="82" />
+    <task id="LOCAL-00082" summary="Bugfixes in XGModuleTable;">
+      <created>1668776900923</created>
+      <option name="number" value="00082" />
+      <option name="presentableId" value="LOCAL-00082" />
+      <option name="project" value="LOCAL" />
+      <updated>1668776900923</updated>
+    </task>
+    <option name="localTasksCounter" value="83" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -720,7 +716,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Bugfix durch Umzug von change_program und change_partmode nach XGValueType.actions; Nacharbeit erforderlich;" />
     <MESSAGE value="XGMessenger erfordert nun 4 submit-Methoden;" />
     <MESSAGE value="Filter in XGProgramSelectorWindow implementiert;" />
     <MESSAGE value="Insertion48-Workaround verbessert;" />
@@ -745,7 +740,8 @@
     <MESSAGE value="TableCellWidth automated;" />
     <MESSAGE value="set HGap &amp; VGAp in MainWindow;" />
     <MESSAGE value="Bugfix XGDatafileFilter.accept(File); Bugfix XGMidi.setInput(String s); Bugfix XGMidi.setOutput(String s);" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bugfix XGDatafileFilter.accept(File); Bugfix XGMidi.setInput(String s); Bugfix XGMidi.setOutput(String s);" />
+    <MESSAGE value="Bugfixes in XGModuleTable;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfixes in XGModuleTable;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -127,30 +127,30 @@ public class XGMEQ extends JPanel implements XGShaper, XGValueChangeListener
 
 	public Shape getShape(Rectangle r)//alle 5 Kurven nacheinander, geschnitten und addiert; prinzipiell richtig aber sieht scheiße aus...
 	{	GeneralPath gp = new GeneralPath();
-		final float[] sum = new float[61];
-		final float midY = r.height / 2F;
-		float fc, startY, endY, q, fl, fu, g;
+		final float[] ySum = new float[F_MAX + 1];
+		final float yMiddle = r.height / 2F;
+		float xFreqCenter, yStart, yEnd, yQ, xFreqLower, xFreqUpper, yGain;
 
 		for(XGFreqBand b : this.bands)
 		{	gp.reset();
-			fc = XGMath.linearScale(b.frequency.getValue(), F_MIN, F_MAX, r.x, r.width);
-			startY = midY;
-			endY = midY;
-			q = XGMath.linearScale(60f/b.q.getValue()/2, F_MIN, F_MAX, r.x, r.width);
-			fl = fc - q/2;
-			fu = fc + q/2;
-			g = midY + XGMath.linearScale(b.gain.getValue(), G_MIN, G_MAX, midY, -midY);
-			if(b.shape.getValue() == SHELV && S1.equals(b.shape.getTag())) startY = g;
-			if(b.shape.getValue() == SHELV && S5.equals(b.shape.getTag())) endY = g;
+			xFreqCenter = XGMath.linearScale(b.frequency.getValue(), F_MIN, F_MAX, r.x, r.width);
+			yStart = yMiddle;
+			yEnd = yMiddle;
+			yQ = XGMath.linearScale(30f/b.q.getValue(), F_MIN, F_MAX, r.x, r.width);
+			xFreqLower = xFreqCenter - yQ/2;
+			xFreqUpper = xFreqCenter + yQ/2;
+			yGain = yMiddle + XGMath.linearScale(b.gain.getValue(), G_MIN, G_MAX, yMiddle, -yMiddle);
+			if(b.shape.getValue() == SHELV && S1.equals(b.shape.getTag())) yStart = yGain;
+			if(b.shape.getValue() == SHELV && S5.equals(b.shape.getTag())) yEnd = yGain;
 
 	//		https://youtu.be/D2cgE3exNTI
 
 			gp.moveTo(r.x, r.height - 1);
-			gp.lineTo(r.x, startY);
-			gp.lineTo(fl - q, startY);
-			gp.curveTo(fl-q/2, startY, fl, g, fc, g);
-			gp.curveTo(fu, g, fu+q/2, endY, fu+q, endY);
-			gp.lineTo(r.width, endY);
+			gp.lineTo(r.x, yStart);
+			gp.lineTo(xFreqLower - yQ, yStart);
+			gp.curveTo(xFreqLower - yQ/2, yStart, xFreqLower, yGain, xFreqCenter, yGain);
+			gp.curveTo(xFreqUpper, yGain, xFreqUpper + yQ/2, yEnd, xFreqUpper + yQ, yEnd);
+			gp.lineTo(r.width, yEnd);
 			gp.lineTo(r.width, r.height - 1);
 			gp.closePath();
 
@@ -162,16 +162,16 @@ public class XGMEQ extends JPanel implements XGShaper, XGValueChangeListener
 				r2.x = Math.min(r.width - 1, x);
 				a2 = new Area(r2);
 				a2.intersect(a1);
-				sum[i] += a2.getBounds2D().getY();
+				ySum[i] += a2.getBounds2D().getY();
 			}
 		}
 		gp.reset();
-		gp.moveTo(r.x, midY);
+		gp.moveTo(r.x, yMiddle);
 		for(int i = F_MIN; i <= F_MAX; i++)
 		{	float x = XGMath.linearScale(i, F_MIN, F_MAX, r.x, r.width);
-			gp.lineTo(x, sum[i] / 5);
+			gp.lineTo(x, ySum[i] / 5);
 		}
-		gp.lineTo(r.width, midY);
+		gp.lineTo(r.width, yMiddle);
 		return gp;
 	}
 

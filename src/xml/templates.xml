@@ -171,10 +171,6 @@
 		<item xsi:type="radio" value_tag="mp_key_on_assign" orientation="horizontal" constraint="10,0,2,1"/>
 		<item xsi:type="radio" value_tag="mp_poly" orientation="horizontal" constraint="12,0,2,1"/>
 
-		<item xsi:type="combo" value_tag="mp_audio_output" constraint="14,0,2,1"/>
-		<item xsi:type="range_slider" value_tag="mp_note_lo,mp_note_hi" constraint="14,1,2,1"/>
-		<item xsi:type="slider" value_tag="mp_reserve" constraint="14,2,2,1"/>
-
 		<item xsi:type="knob" value_tag="mp_volume" constraint="0,1,1,2"/>
 		<item xsi:type="knob" value_tag="mp_pan" constraint="1,1,1,2"/>
 		<item xsi:type="frame" label="Effect" constraint="2,1,4,2">
@@ -183,18 +179,24 @@
 			<item xsi:type="knob" value_tag="mp_cho" constraint="2,0,1,5"/>
 			<item xsi:type="knob" value_tag="mp_var" constraint="3,0,1,5"/>
 		</item>
-		<item xsi:type="frame" label="Filter" constraint="6,1,4,2">
-			<item xsi:type="knob" value_tag="mp_eg_lpf" constraint="0,0,1,2"/>
-			<item xsi:type="knob" value_tag="mp_lpf_cut" constraint="1,0,1,2"/>
-			<item xsi:type="knob" value_tag="mp_lpf_reso" constraint="2,0,1,2"/>
-			<item xsi:type="knob" value_tag="mp_hpf_cut" constraint="3,0,1,2"/>
+		<item xsi:type="tab_frame" constraint="6,1,4,2">
+			<item xsi:type="tab" label="Filter" constraint="0,0,4,2">
+				<item xsi:type="knob" value_tag="mp_eg_lpf" constraint="0,0,1,2"/>
+				<item xsi:type="knob" value_tag="mp_lpf_cut" constraint="1,0,1,2"/>
+				<item xsi:type="knob" value_tag="mp_lpf_reso" constraint="2,0,1,2"/>
+				<item xsi:type="knob" value_tag="mp_hpf_cut" constraint="3,0,1,2"/>
+			</item>
+			<item xsi:type="tab" label="EQ" constraint="0,0,4,2">
+				<item xsi:type="knob" value_tag="mp_eq_bass_freq" constraint="0,0,1,2"/>
+				<item xsi:type="knob" value_tag="mp_eq_bass" constraint="1,0,1,2"/>
+				<item xsi:type="knob" value_tag="mp_eq_treble_freq" constraint="2,0,1,2"/>
+				<item xsi:type="knob" value_tag="mp_eq_treble" constraint="3,0,1,2"/>
+			</item>
 		</item>
-		<item xsi:type="frame" label="EQ" constraint="10,1,4,2">
-			<item xsi:type="knob" value_tag="mp_eq_bass_freq" constraint="0,0,1,2"/>
-			<item xsi:type="knob" value_tag="mp_eq_bass" constraint="1,0,1,2"/>
-			<item xsi:type="knob" value_tag="mp_eq_treble_freq" constraint="2,0,1,2"/>
-			<item xsi:type="knob" value_tag="mp_eq_treble" constraint="3,0,1,2"/>
-		</item>
+		<item xsi:type="range_slider" value_tag="mp_note_lo,mp_note_hi" constraint="10,1,4,1"/>
+		<item xsi:type="slider" value_tag="mp_reserve" constraint="10,2,2,1"/>
+		<item xsi:type="combo" value_tag="mp_audio_output" constraint="12,2,2,1"/>
+
 		<item xsi:type="knob" value_tag="mp_transpose" constraint="0,3,1,2"/>
 		<item xsi:type="knob" value_tag="mp_detune" constraint="1,3,1,2"/>
 		<item xsi:type="frame" label="Portamento" constraint="0,5,2,2">
@@ -407,17 +409,19 @@
 			<item xsi:type="knob" value_tag="ds_cho" constraint="1,0,1,2"/>
 			<item xsi:type="knob" value_tag="ds_var" constraint="2,0,1,2"/>
 		</item>
-		<item xsi:type="frame" label="Filter" constraint="5,1,4,2">
-			<item xsi:type="knob" value_tag="ds_lpf_cut" constraint="0,0,1,2"/>
-			<item xsi:type="knob" value_tag="ds_lpf_reso" constraint="1,0,1,2"/>
-			<item xsi:type="knob" value_tag="ds_velo_lpf" constraint="2,0,1,2"/>
-			<item xsi:type="knob" value_tag="ds_hpf_cut" constraint="3,0,1,2"/>
-		</item>
-		<item xsi:type="frame" label="EQ" constraint="9,1,4,2">
-			<item xsi:type="knob" value_tag="ds_eq_bass_freq" constraint="0,0,1,2"/>
-			<item xsi:type="knob" value_tag="ds_eq_bass" constraint="1,0,1,2"/>
-			<item xsi:type="knob" value_tag="ds_eq_treble_freq" constraint="2,0,1,2"/>
-			<item xsi:type="knob" value_tag="ds_eq_treble" constraint="3,0,1,2"/>
+		<item xsi:type="tab_frame" constraint="5,1,4,2">
+			<item xsi:type="tab" label="Filter" constraint="0,0,4,2">
+				<item xsi:type="knob" value_tag="ds_lpf_cut" constraint="0,0,1,2"/>
+				<item xsi:type="knob" value_tag="ds_lpf_reso" constraint="1,0,1,2"/>
+				<item xsi:type="knob" value_tag="ds_velo_lpf" constraint="2,0,1,2"/>
+				<item xsi:type="knob" value_tag="ds_hpf_cut" constraint="3,0,1,2"/>
+			</item>
+			<item xsi:type="tab" label="EQ" constraint="0,0,4,2">
+				<item xsi:type="knob" value_tag="ds_eq_bass_freq" constraint="0,0,1,2"/>
+				<item xsi:type="knob" value_tag="ds_eq_bass" constraint="1,0,1,2"/>
+				<item xsi:type="knob" value_tag="ds_eq_treble_freq" constraint="2,0,1,2"/>
+				<item xsi:type="knob" value_tag="ds_eq_treble" constraint="3,0,1,2"/>
+			</item>
 		</item>
 		<item xsi:type="frame" label="Pitch" constraint="0,3,2,2">
 			<item xsi:type="knob" value_tag="ds_pitch" constraint="0,0,1,2"/>

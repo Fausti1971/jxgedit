@@ -49,7 +49,7 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 	private int sysexID = 0;
 //	private XGWindow childWindow;
 
-	public XGDevice(XMLNode cfg)
+	private XGDevice(XMLNode cfg)
 	{	this.sysexID = cfg.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID);
 		this.config = cfg;
 		LOG.info("device initialized: " + this);

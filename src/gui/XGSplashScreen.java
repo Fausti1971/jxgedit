@@ -1,7 +1,7 @@
 package gui;
 
 import static application.XGLoggable.LOG;
-import javax.swing.*;
+import javax.swing.*;import javax.swing.text.DefaultCaret;
 import java.awt.*;import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -13,6 +13,7 @@ public class XGSplashScreen extends JFrame
 		this.setTitle("initializing JXG, please wait...");
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		JTextArea status = new JTextArea();
+		((DefaultCaret)status.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);//autoscroll
 		status.setFont(status.getFont().deriveFont((float)d.height / 100));
 		this.handler = new Handler()
 		{	public void publish(LogRecord record)
@@ -29,7 +30,7 @@ public class XGSplashScreen extends JFrame
 		this.getContentPane().add(new JScrollPane(status));
 
 		this.setResizable(true);
-		this.setSize(d.width/5, d.height/5);
+		this.setSize(d.width/4, d.height/4);
 		this.setLocationRelativeTo(null);
 		this.setVisible(true);
 	}

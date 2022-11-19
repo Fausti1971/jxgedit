@@ -76,7 +76,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	private int timeoutValue;
 //	private final XGAddressableSet<XGResponse> buffer = new XGAddressableSet<>();
 
-	public XGMidi(xml.XMLNode cfg)
+	private XGMidi(xml.XMLNode cfg)
 	{	this.setInput(cfg.getStringAttribute(ATTR_MIDIINPUT));
 		this.setOutput(cfg.getStringAttribute(ATTR_MIDIOUTPUT));
 		this.setTimeout(cfg.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
