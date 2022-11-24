@@ -14,4 +14,4 @@ You can customize your device by copy (one or more of) these files in a folder (
 edit it for device preferences, type (or detect) devicename in settingswindow and restart. Now the specs will be overridden by the available specs of the ".xml"-file in your device-folder.
 If you have got more than one XG-device, you can rename the jar-file as you like and the config-file will be named by the name of the jar-file with extension ".xml" and saved beside the .jar.
 
-![screenshot](./jxgedit2.png)
+![screenshot](./jxgedit3.png)

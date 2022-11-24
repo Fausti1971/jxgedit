@@ -2,7 +2,7 @@ package gui;
 
 import java.awt.*;
 import java.awt.geom.*;
-import static application.XGLoggable.LOG;import application.XGMath;import static gui.XGUI.DEF_GBC;
+import application.XGMath;import static gui.XGUI.DEF_GBC;
 import module.XGModule;
 import tag.*;
 import value.XGFixedValue;
@@ -52,6 +52,7 @@ public class XGMEQ extends JPanel implements XGShaper, XGValueChangeListener
 
 	private final XGPointPanel panel;
 	private final XGFreqBand[] bands = new XGFreqBand[5];
+	final Point2D.Float[] sumPoints = new Point2D.Float[F_MAX + 1];
 
 	public XGMEQ(XGModule mod)throws XGComponentException
 	{
@@ -108,8 +109,8 @@ public class XGMEQ extends JPanel implements XGShaper, XGValueChangeListener
 			s1.getValueListeners().add((XGValue v)->{this.panel.repaint();});
 			s5.getValueListeners().add((XGValue v)->{this.panel.repaint();});
 
-		this.setLayout(new GridBagLayout());
-		this.add(this.panel, DEF_GBC);
+			this.setLayout(new GridBagLayout());
+			this.add(this.panel, DEF_GBC);
 
 		//float q = 0;
 		//for(int i = Q_MIN; i <= Q_MAX; i++)
@@ -127,9 +128,10 @@ public class XGMEQ extends JPanel implements XGShaper, XGValueChangeListener
 
 	public Shape getShape(Rectangle r)//alle 5 Kurven nacheinander, geschnitten und addiert; prinzipiell richtig aber sieht scheiße aus...
 	{	GeneralPath gp = new GeneralPath();
-		final float[] ySum = new float[F_MAX + 1];
 		final float yMiddle = r.height / 2F;
 		float xFreqCenter, yStart, yEnd, yQ, xFreqLower, xFreqUpper, yGain;
+		for(int i = F_MIN; i <= F_MAX; i++)
+			this.sumPoints[i] = new Point2D.Float(XGMath.linearScale(i, F_MIN, F_MAX, r.x, r.width), 0);
 
 		for(XGFreqBand b : this.bands)
 		{	gp.reset();
@@ -157,20 +159,16 @@ public class XGMEQ extends JPanel implements XGShaper, XGValueChangeListener
 			Area a1 = new Area(gp);
 			Area a2;
 			Rectangle2D.Float r2 = new Rectangle2D.Float(0, r.y, 1, r.height);
-			for(int i = F_MIN; i <= F_MAX; i++)
-			{	float x = XGMath.linearScale(i, F_MIN, F_MAX, r.x, r.width);
-				r2.x = Math.min(r.width - 1, x);
+			for(Point2D.Float p : this.sumPoints)
+			{	r2.x = Math.min(r.width - 1, p.x);
 				a2 = new Area(r2);
 				a2.intersect(a1);
-				ySum[i] += a2.getBounds2D().getY();
+				p.y += (float)a2.getBounds2D().getY();
 			}
 		}
 		gp.reset();
 		gp.moveTo(r.x, yMiddle);
-		for(int i = F_MIN; i <= F_MAX; i++)
-		{	float x = XGMath.linearScale(i, F_MIN, F_MAX, r.x, r.width);
-			gp.lineTo(x, ySum[i] / 5);
-		}
+		for(Point2D.Float p : this.sumPoints) gp.lineTo(p.x, p.y / 5);
 		gp.lineTo(r.width, yMiddle);
 		return gp;
 	}

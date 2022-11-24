@@ -11,13 +11,23 @@
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGAmplifierEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGAmplifierEnvelope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGCheckbox.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCheckbox.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGCombo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGCombo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGComponent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGFrame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGHorizontalRangeSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGHorizontalRangeSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGKnob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGKnob.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGMEQ.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMEQ.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGClippboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGClippboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/templates.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/templates.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGPitchEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGPitchEnvelope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGProgramSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGRadio.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGRadio.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGValueController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGValueComponent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGVelocityEnvelope.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVelocityEnvelope.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVerticalSlider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGVibratoCurve.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGVibratoCurve.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -139,7 +149,7 @@
     <property name="project.structure.side.proportion" value="0.12672523" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
-    <property name="settings.editor.selected.configurable" value="project.scopes" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -258,13 +268,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00034" summary="vergessenen SysexID selector nachgerüstet;">
-      <created>1650801084500</created>
-      <option name="number" value="00034" />
-      <option name="presentableId" value="LOCAL-00034" />
-      <option name="project" value="LOCAL" />
-      <updated>1650801084500</updated>
     </task>
     <task id="LOCAL-00035" summary="dynamisches Filenamen- und -pfadhandling;">
       <created>1650836446981</created>
@@ -602,7 +605,14 @@
       <option name="project" value="LOCAL" />
       <updated>1668776900923</updated>
     </task>
-    <option name="localTasksCounter" value="83" />
+    <task id="LOCAL-00083" summary="Bugfixes in XGClippboard; Cosmetics;">
+      <created>1668818301749</created>
+      <option name="number" value="00083" />
+      <option name="presentableId" value="LOCAL-00083" />
+      <option name="project" value="LOCAL" />
+      <updated>1668818301749</updated>
+    </task>
+    <option name="localTasksCounter" value="84" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -716,7 +726,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="XGMessenger erfordert nun 4 submit-Methoden;" />
     <MESSAGE value="Filter in XGProgramSelectorWindow implementiert;" />
     <MESSAGE value="Insertion48-Workaround verbessert;" />
     <MESSAGE value="Response-Zeiten (avg und max) ausgwertet und angezeigt;" />
@@ -741,7 +750,8 @@
     <MESSAGE value="set HGap &amp; VGAp in MainWindow;" />
     <MESSAGE value="Bugfix XGDatafileFilter.accept(File); Bugfix XGMidi.setInput(String s); Bugfix XGMidi.setOutput(String s);" />
     <MESSAGE value="Bugfixes in XGModuleTable;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Bugfixes in XGModuleTable;" />
+    <MESSAGE value="Bugfixes in XGClippboard; Cosmetics;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfixes in XGClippboard; Cosmetics;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -774,9 +784,6 @@
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
     <select />
-  </component>
-  <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/jxg$JXG.ic" NAME="JXG Coverage Results" MODIFIED="1650064690953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/device/XGMidi.java">

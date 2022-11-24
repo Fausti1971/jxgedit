@@ -1,11 +1,13 @@
 package gui;
 
 import application.XGStrings;import xml.XMLNode;import java.awt.*;
-import javax.swing.*;import javax.swing.border.Border;import javax.swing.border.TitledBorder;
+import javax.swing.*;import javax.swing.border.Border;import javax.swing.border.EtchedBorder;import javax.swing.border.LineBorder;import javax.swing.border.TitledBorder;
 
 public class XGFrame extends JPanel implements XGComponent
 {
-	private static final Border NAMELESS_BORDER = BorderFactory.createRaisedSoftBevelBorder();
+//	private static final Border NAMELESS_BORDER = BorderFactory.createRaisedSoftBevelBorder();
+	private static final Border NAMELESS_BORDER = BorderFactory.createEmptyBorder();
+
 
 	public static XGFrame newFrame(XMLNode xml)
 	{	Rectangle r = new Rectangle(0,0,1,1);

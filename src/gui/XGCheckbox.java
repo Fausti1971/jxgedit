@@ -5,10 +5,9 @@ import parm.XGParameterChangeListener;
 import value.XGValue;
 import value.XGValueChangeListener;import xml.XMLNode;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueController
+public class XGCheckbox extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueComponent
 {
 
 /*******************************************************************************************/

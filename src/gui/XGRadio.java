@@ -9,7 +9,7 @@ import table.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGRadio extends XGFrame implements XGValueChangeListener, XGParameterChangeListener, XGValueController
+public class XGRadio extends XGFrame implements XGValueChangeListener, XGParameterChangeListener, XGValueComponent
 {
 /*********************************************************************************************************/
 

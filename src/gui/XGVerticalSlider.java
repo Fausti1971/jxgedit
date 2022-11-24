@@ -8,7 +8,7 @@ import parm.XGParameter;
 import parm.XGParameterChangeListener;import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, XGParameterChangeListener, MouseListener, XGValueController
+public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, XGParameterChangeListener, MouseListener, XGValueComponent
 {
 /*****************************************************************************************************************************/
 
@@ -55,7 +55,7 @@ public class XGVerticalSlider extends XGFrame implements XGValueChangeListener, 
 
 	/***********************************************************************************************************************/
 
-	private static class XGVerticalSliderPanel extends JComponent implements MouseMotionListener, MouseWheelListener, XGComponent, XGValueController
+	private static class XGVerticalSliderPanel extends JComponent implements MouseMotionListener, MouseWheelListener, XGComponent, XGValueComponent
 	{
 		private final XGVerticalSlider slider;
 		private final Rectangle bar = new Rectangle();

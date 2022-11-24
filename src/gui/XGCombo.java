@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.*;
 import javax.swing.*;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
@@ -8,7 +7,7 @@ import table.XGTable;
 import table.XGTableEntry;
 import value.XGValue;
 
-public class XGCombo extends XGFrame implements XGParameterChangeListener, XGValueController
+public class XGCombo extends XGFrame implements XGParameterChangeListener, XGValueComponent
 {
 
 /*****************************************************************************************************************/

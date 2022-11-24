@@ -1,7 +1,6 @@
 package gui;
 
-import value.XGValue;import java.awt.*;import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
+import value.XGValue;import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import javax.swing.JComponent;
@@ -16,8 +15,8 @@ public interface XGComponent extends XGUI, MouseListener
 	{	Object o = e.getSource();
 		if(e.getButton() == MouseEvent.BUTTON3)
 		{	while(o != null)
-			{	if(o instanceof XGValueController)
-					for(XGValue v : ((XGValueController)o).getValues())
+			{	if(o instanceof XGValueComponent)
+					for(XGValue v : ((XGValueComponent)o).getValues())
 						v.setValue(v.getDefaultValue(), false, true);
 				if(o instanceof Component) o = ((Component)o).getParent();
 				else o = null;

@@ -1,12 +1,11 @@
 package gui;
 import java.awt.*;import java.awt.geom.GeneralPath;
-import adress.XGAddressRange;
-import application.XGMath;import gui.XGPoint.PointRelation;
+import application.XGMath;
 import module.XGModule;import value.XGFixedValue;
 import value.XGValue;import xml.XMLNode;
 import javax.swing.*;
 
-public class XGPitchEnvelope extends JPanel implements XGComponent, XGShaper, XGValueController
+public class XGPitchEnvelope extends JPanel implements XGComponent, XGShaper, XGValueComponent
 {
 	private static final XGFixedValue VALUE_255 = new XGFixedValue("fix", 255), VALUE_381 = new XGFixedValue("fix", 381);
 	private static final String IL = "mp_peg_init_level", AT = "mp_peg_attack_time", RL = "mp_peg_release_level", RT ="mp_peg_release_time";

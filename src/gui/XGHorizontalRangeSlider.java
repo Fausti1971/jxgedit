@@ -10,7 +10,7 @@ import parm.XGParameterConstants;
 import value.XGValue;
 import value.XGValueChangeListener;import xml.XMLNode;
 
-public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConstants, XGValueChangeListener, XGValueController
+public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConstants, XGValueChangeListener, XGValueComponent
 {
 	public static XGHorizontalRangeSlider newRange(XGModule mod, XMLNode node)throws XGComponentException
 	{	Set<String> tags = XGStrings.splitCSV(node.getStringAttribute(ATTR_VALUE_TAG));

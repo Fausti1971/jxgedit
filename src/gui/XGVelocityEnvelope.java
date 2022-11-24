@@ -2,12 +2,12 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionListener;import java.awt.geom.AffineTransform;import java.awt.geom.Area;import java.awt.geom.GeneralPath;
-import application.XGMath;import gui.XGPoint.PointRelation;
+import java.awt.event.MouseMotionListener;import java.awt.geom.Area;import java.awt.geom.GeneralPath;
+import application.XGMath;
 import module.XGModule;import value.XGFixedValue;
 import value.XGValue;import value.XGValueChangeListener;
 
-public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, XGShaper, XGValueChangeListener, XGValueController
+public class XGVelocityEnvelope extends XGFrame implements MouseMotionListener, XGShaper, XGValueChangeListener, XGValueComponent
 {
 	private static final String LOLIM = "mp_velo_lo", SENSE = "mp_velo_depth", OFFSET = "mp_velo_offset", HILIM = "mp_velo_hi"; 
 

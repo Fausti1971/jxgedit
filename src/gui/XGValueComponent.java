@@ -2,6 +2,6 @@ package gui;
 
 import value.XGValue;
 
-public interface XGValueController
+public interface XGValueComponent
 {	XGValue[] getValues();
 }

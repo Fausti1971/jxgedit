@@ -1,10 +1,10 @@
 package gui;
 
-import application.XGMath;import application.XGStrings;import gui.XGPoint.PointRelation;
-import module.XGModule;import value.XGFixedValue;
+import application.XGMath;import application.XGStrings;
+import module.XGModule;
 import value.XGValue;import xml.XMLNode;import java.awt.*;import java.awt.geom.GeneralPath;
 
-public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShaper, XGValueController
+public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShaper, XGValueComponent
 {
 	private static final int MAX_X = 4 * 128;//attack + decay + sustain + release;
 

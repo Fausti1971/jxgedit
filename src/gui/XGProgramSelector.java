@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.*;import java.util.Objects;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;import javax.swing.event.DocumentListener;import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -13,7 +13,7 @@ import table.XGTable;import table.XGTableEntry;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueController
+public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueComponent
 {
 	private static final ImageIcon icon_next = XGUI.loadImage("arrow_right.png");
 	private static final ImageIcon icon_prev = XGUI.loadImage("arrow_left.png");
@@ -61,6 +61,9 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 
 	@Override public void parameterChanged(XGParameter p)
 	{	this.setName(p.getName());
+		this.setToolTipText(p.getName());
+		this.setEnabled(p.isValid());
+		this.setVisible(p.isValid());
 		this.repaint();
 	}
 
@@ -73,7 +76,7 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 
 /************************************************************************************************************************/
 
-	private class XGProgramSelectorWindow extends XGWindow implements TreeSelectionListener, DocumentListener
+	private static class XGProgramSelectorWindow extends XGWindow implements TreeSelectionListener, DocumentListener
 	{	final XGProgramSelector selector;
 		private final XGTable table;
 		private XGTable filteredTable;

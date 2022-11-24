@@ -1,8 +1,8 @@
 package gui;
 
-import application.XGMath;import module.XGModule;import tag.XGTagableAddressableSet;import value.XGValue;import value.XGValueChangeListener;import javax.swing.*;import java.awt.*;import java.awt.geom.GeneralPath;import java.awt.geom.Point2D;
+import application.XGMath;import module.XGModule;import tag.XGTagableAddressableSet;import value.XGValue;import value.XGValueChangeListener;import java.awt.*;import java.awt.geom.GeneralPath;
 
-public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XGShaper, XGValueController
+public class XGVibratoCurve extends XGFrame implements XGValueChangeListener, XGShaper, XGValueComponent
 {
 //maxDelay ca. 4s
 //minFreq 0,08Hz (= 12,5s/Welle)

@@ -9,7 +9,7 @@ import parm.XGParameterChangeListener;
 import value.XGValue;
 import value.XGValueChangeListener;
 
-public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueController
+public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueComponent
 {
 	public enum KnobBehavior {HORIZONTAL, VERTICAL, RADIAL};
 
@@ -53,7 +53,7 @@ public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValu
 
 /******************************************************************************************************************************************/
 
-	private static class XGKnobBar extends JComponent implements XGComponent, MouseMotionListener, MouseWheelListener, XGValueController
+	private static class XGKnobBar extends JComponent implements XGComponent, MouseMotionListener, MouseWheelListener, XGValueComponent
 	{
 	/*****************************************************************************************/
 
