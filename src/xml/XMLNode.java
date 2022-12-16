@@ -120,7 +120,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 	private XMLNode parent;
 	private final Set<XMLNode> childNodes = new LinkedHashSet<>();
 	private final String tag;
-	private final StringBuffer content = new StringBuffer("");
+	private final StringBuffer content = new StringBuffer();
 	private final XGTagableSet<XGProperty> attributes = new XGTagableSet<>();
 
 	public XMLNode(String tag){	this.tag = tag;}

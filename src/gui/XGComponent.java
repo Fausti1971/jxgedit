@@ -11,6 +11,15 @@ public interface XGComponent extends XGUI, MouseListener
 
 	default JComponent getJComponent(){	return (JComponent)this;}
 
+	default XGWindow getWindow()
+	{	Container c = this.getJComponent();
+		while(c != null)
+		{	if(c instanceof XGWindow) return (XGWindow)c;
+			c = c.getParent();
+		}
+		return XGMainWindow.MAINWINDOW;
+	}
+
 	@Override default void mouseClicked(MouseEvent e)
 	{	Object o = e.getSource();
 		if(e.getButton() == MouseEvent.BUTTON3)

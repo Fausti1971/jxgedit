@@ -41,7 +41,7 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		this.select.setText(this.value.toString());
 		this.select.setHorizontalTextPosition(JButton.CENTER);
 		this.select.setVerticalTextPosition(JButton.CENTER);
-		this.select.addActionListener((ActionEvent e)->this.openDialog());
+		this.select.addActionListener((ActionEvent e)->this.openDialog(this.getWindow()));
 		this.select.addMouseListener(this);
 		this.add(this.select, "1,0,6,2");
 
@@ -69,8 +69,8 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 
 	@Override public XGValue[] getValues(){	return new XGValue[]{this.value};}
 
-	private void openDialog()
-	{	if(this.dialog == null) this.dialog = new XGProgramSelectorWindow(this);
+	private void openDialog(XGWindow parent)
+	{	if(this.dialog == null) this.dialog = new XGProgramSelectorWindow(parent, this);
 		this.dialog.setVisible(true);
 	}
 
@@ -83,8 +83,8 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		private JTree tree;
 		private final JTextField filterBar = new JTextField();
 
-		XGProgramSelectorWindow(XGProgramSelector selector)
-		{	super(selector.value.getTag());
+		XGProgramSelectorWindow(XGWindow parent, XGProgramSelector selector)
+		{	super(parent, selector.value.getTag());
 			this.selector = selector;
 			this.table = this.filteredTable = this.selector.value.getParameter().getTranslationTable();
 

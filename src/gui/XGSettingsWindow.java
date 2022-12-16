@@ -6,10 +6,10 @@ import static device.XGMidi.*;
 import xml.XGProperty;
 import javax.sound.midi.*;
 import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.event.*;import javax.xml.stream.XMLStreamException;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.io.IOException;import java.util.*;
 
 public class XGSettingsWindow extends XGWindow
 {
@@ -24,7 +24,7 @@ public class XGSettingsWindow extends XGWindow
 /**************************************************************************************/
 
 	private XGSettingsWindow()
-	{	super(TAG);
+	{	super(XGMainWindow.MAINWINDOW, TAG);
 		this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		this.setContentPane(this.createContent());
 	}

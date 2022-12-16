@@ -17,7 +17,7 @@ public class XGMainWindow extends XGWindow
 /***********************************************************************************************************************/
 
 	public XGMainWindow(XMLNode cfg)
-	{	super("main");
+	{	super(null, "main");
 		this.setLayout(new BorderLayout(GAP, GAP));
 		this.add(this.createToolbar(), NORTH);
 		this.add(this.createContent(), CENTER);
@@ -77,7 +77,10 @@ public class XGMainWindow extends XGWindow
 
 	@Override public void windowClosing(WindowEvent e)
 	{	if(JOptionPane.showConfirmDialog(this, "Quit?", "Closing...", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-		{	this.dispose();
+		{	for(XGWindow w: this.ownedWindows)
+			{	w.windowClosing(e);
+			}
+			this.dispose();
 			JXG.quit();
 		}
 	}

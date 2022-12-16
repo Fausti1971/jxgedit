@@ -1,8 +1,8 @@
 package gui;
 
 import application.JXG;
-import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
-import java.awt.event.*;
+import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
+import java.awt.event.*;import java.util.HashSet;import java.util.Set;
 import javax.swing.*;
 
 public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable
@@ -22,10 +22,12 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 
 	final XMLNode config;
 	final String tag;
+	final Set<XGWindow> ownedWindows = new XGTagableSet<>();
 
-	public XGWindow(String tag)
+	public XGWindow(XGWindow parent, String tag)
 	{	super();
 		this.tag = tag;
+		if(parent != null) parent.ownedWindows.add(this);
 		this.config = CONFIG.getChildNodeWithAttributeOrNew(TAG_ITEM, ATTR_ID, tag);
 		XGDevice.DEVICE.getName().getListeners().add(this);
 		JXG.CURRENT_CONTENT.getListeners().add(this);

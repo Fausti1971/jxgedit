@@ -49,7 +49,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	{	XGEditWindow win = EDITWINDOWS.get(mod.getTag(), mod.getID());
 		if(win != null) return win;
 		else
-		{	win = new XGEditWindow(mod);
+		{	win = new XGEditWindow(XGMainWindow.MAINWINDOW, mod);
 			EDITWINDOWS.add(win);
 		}
 		return win;
@@ -60,8 +60,8 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	final XGModule module;
 	final XGToolbar toolbar;
 
-	public XGEditWindow(XGModule mod)
-	{	super(mod.getType().getTag());
+	public XGEditWindow(XGWindow parent, XGModule mod)
+	{	super(parent, mod.getType().getTag());
 		this.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
 		this.module = mod;
 		this.toolbar = this.createToolbar();
@@ -180,7 +180,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	{	XGMainWindow.MAINWINDOW.toFront();
 	}
 
-	@Override public String getTag(){	return this.module.getType().getTag();}
+	@Override public String getTag(){	return this.tag;}
 
 	@Override public int getID(){	return this.module.getID();}
 
