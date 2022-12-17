@@ -10,12 +10,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
-      <change beforePath="$PROJECT_DIR$/.classpath" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.project" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jxgedit.iml" beforeDir="false" afterPath="$PROJECT_DIR$/jxgedit.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGLogo24.gif" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/JXG/gui/XGLogo32.gif" beforeDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -133,8 +133,8 @@
     <property name="last_directory_selection" value="$PROJECT_DIR$/rsc" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/out/artifacts/JXG/MU500/structure.xml" />
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="project.structure.proportion" value="0.1650758" />
-    <property name="project.structure.side.proportion" value="0.12672523" />
+    <property name="project.structure.proportion" value="0.12638438" />
+    <property name="project.structure.side.proportion" value="0.14589486" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="run.code.analysis.last.selected.profile" value="aDefault" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
@@ -256,13 +256,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00037" summary="Backup">
-      <created>1650908141229</created>
-      <option name="number" value="00037" />
-      <option name="presentableId" value="LOCAL-00037" />
-      <option name="project" value="LOCAL" />
-      <updated>1650908141229</updated>
     </task>
     <task id="LOCAL-00038" summary="Backup">
       <created>1651003957057</created>
@@ -600,7 +593,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671199084683</updated>
     </task>
-    <option name="localTasksCounter" value="86" />
+    <task id="LOCAL-00086" summary="Bugfix MidiPortSelect;">
+      <created>1671236130863</created>
+      <option name="number" value="00086" />
+      <option name="presentableId" value="LOCAL-00086" />
+      <option name="project" value="LOCAL" />
+      <updated>1671236130863</updated>
+    </task>
+    <option name="localTasksCounter" value="87" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -714,7 +714,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Response-Zeiten (avg und max) ausgwertet und angezeigt;" />
     <MESSAGE value="Insertion-Workaround geändert;" />
     <MESSAGE value="Insertion48-Workaround in XGBulkDumper verbessert" />
     <MESSAGE value="XGMultipartProgramValue und XGMultipartModeValue eingeführt (für XGProgramBuffer, actions change_program und change_partmode entsorgt)" />
@@ -739,7 +738,8 @@
     <MESSAGE value="Bugfixes in XGClippboard; Cosmetics;" />
     <MESSAGE value="image changed;" />
     <MESSAGE value="Kosmetik;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Kosmetik;" />
+    <MESSAGE value="Bugfix MidiPortSelect;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Bugfix MidiPortSelect;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
