@@ -1,9 +1,8 @@
 package device;
 
-import java.lang.reflect.InvocationTargetException;import java.util.LinkedHashSet;
-import java.util.List;import java.util.Set;
+import java.util.*;
 import javax.sound.midi.*;
-import javax.sound.midi.MidiDevice.Info;import javax.sound.midi.spi.MidiDeviceProvider;
+import javax.sound.midi.MidiDevice.Info;import javax.swing.*;
 import application.*;
 import msg.*;
 import xml.*;
@@ -11,8 +10,8 @@ import xml.*;
 public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable, XMLNodeConstants
 {	private static final int DEF_TIMEOUT = 300;
 	private static XGMidi MIDI = null;
-	private static XMLNode config = null;
-	private static final Object lock = new Object();
+	private static XMLNode CONFIG = null;
+	private static final Object LOCK = new Object();
 	private static volatile XGRequest request = null;
 	private static volatile Thread requestThread = null;
 	public static Set<Info> INPUTS = new LinkedHashSet<>();
@@ -24,10 +23,17 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	}
 
 	public static void init()
-	{	config = JXG.config.getChildNodeOrNew(TAG_MIDI);
-		synchronized(lock){	initInputs();}
-		synchronized(lock){	initOutputs();}
-		MIDI = new XGMidi(config);
+	{	CONFIG = JXG.config.getChildNodeOrNew(TAG_MIDI);
+		synchronized(LOCK){	initInputs();}
+		synchronized(LOCK){	initOutputs();}
+		try
+		{	MIDI = new XGMidi(CONFIG);
+		}
+		catch(MidiUnavailableException e)
+		{	JOptionPane.showMessageDialog(null, e.getMessage(), "MIDI", JOptionPane.WARNING_MESSAGE);
+			LOG.severe(e.getMessage() + " I don't know, what is to do...");
+			MIDI = new XGMidi(INPUTS.iterator().next(), OUTPUTS.iterator().next(), DEF_TIMEOUT);
+		}
 	}
 
 	private static void initInputs()
@@ -76,86 +82,69 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	private int timeoutValue;
 //	private final XGAddressableSet<XGResponse> buffer = new XGAddressableSet<>();
 
-	private XGMidi(xml.XMLNode cfg)
+	private XGMidi(MidiDevice.Info input, MidiDevice.Info output, int timeout)
+	{	try
+		{	this.setInput(input);
+			this.setOutput(output);
+		}
+		catch(MidiUnavailableException e)
+		{	JOptionPane.showMessageDialog(null, e.getMessage(), "MIDI", JOptionPane.WARNING_MESSAGE);
+		}
+		this.setTimeout(timeout);
+	}
+
+	private XGMidi(XMLNode cfg)throws MidiUnavailableException
 	{	this.setInput(cfg.getStringAttribute(ATTR_MIDIINPUT));
 		this.setOutput(cfg.getStringAttribute(ATTR_MIDIOUTPUT));
 		this.setTimeout(cfg.getIntegerAttribute(ATTR_MIDITIMEOUT, DEF_TIMEOUT));
 	}
 
-	private void setOutput(String s)
-	{	Info last = null;
-		for(Info i : OUTPUTS)
-		{	last = i;
-			if(i.getName().equals(s))
+	public void setOutput(String s)throws MidiUnavailableException
+	{	for(Info i : OUTPUTS)
+		{	if(i.getName().equals(s))
 			{	this.setOutput(i);
 				return;
 			}
 		}
-		LOG.warning(s + " does not exist!");
-		this.setOutput(last);
+		throw new MidiUnavailableException(s + " does not exist!");
 	}
 
-	public void setOutput(Info i)
-	{	try
-		{	this.setOutput(MidiSystem.getMidiDevice(i));
-		}
-		catch(MidiUnavailableException e)
-		{	LOG.warning(e.getMessage());
-		}
+	public void setOutput(Info i) throws MidiUnavailableException
+	{	this.setOutput(MidiSystem.getMidiDevice(i));
 	}
 
-	private void setOutput(MidiDevice dev)
+	public void setOutput(MidiDevice dev)throws MidiUnavailableException
 	{	if(this.transmitter != null) this.transmitter.close();
 		if(dev != null)
-		{	try
-			{	if(!dev.isOpen()) dev.open();
-				this.output = dev;
-				this.transmitter = dev.getReceiver();
-				LOG.info(this.getOutputName());
-				config.setStringAttribute(ATTR_MIDIOUTPUT, this.getOutputName());
-			}
-			catch(MidiUnavailableException e)
-			{	javax.swing.JOptionPane.showMessageDialog(null, e.getMessage() + ": " + dev.getDeviceInfo().getName(), "MIDI Output", javax.swing.JOptionPane.WARNING_MESSAGE);
-				LOG.severe(e.getMessage());
-			}
+		{	if(!dev.isOpen()) dev.open();
+			this.output = dev;
+			this.transmitter = dev.getReceiver();
+			LOG.info(this.getOutputName());
+			CONFIG.setStringAttribute(ATTR_MIDIOUTPUT, this.getOutputName());
 		}
 	}
 
-	private void setInput(String s)
-	{	Info last=null;
-		for(Info i : INPUTS)
-		{	last = i;
-			if(last.getName().equals(s))
+	public void setInput(String s)throws MidiUnavailableException
+	{	for(Info i : INPUTS)
+		{	if(i.getName().equals(s))
 			{	this.setInput(i);
 				return;
 			}
 		}
-		LOG.warning(s + " does not exist!");
-		this.setInput(last);//fallback falls der angegebene Port nicht existiert
+		throw new MidiUnavailableException(s + " does not exist!");
 	}
 
-	public void setInput(Info i)
-	{	try
-		{	this.setInput(MidiSystem.getMidiDevice(i));
-		}
-		catch(MidiUnavailableException e)
-		{	LOG.warning(e.getMessage());
-		}
+	public void setInput(Info i)throws MidiUnavailableException
+	{	this.setInput(MidiSystem.getMidiDevice(i));
 	}
 
-	private void setInput(MidiDevice dev)
+	public void setInput(MidiDevice dev) throws MidiUnavailableException
 	{	if(dev != null)
-		{	try
-			{	if(!dev.isOpen()) dev.open();
-				dev.getTransmitter().setReceiver(this);
-				this.input = dev;
-				LOG.info(this.getInputName());
-				config.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
-			}
-			catch(MidiUnavailableException e)
-			{	javax.swing.JOptionPane.showMessageDialog(null, e.getMessage() + ": " + dev.getDeviceInfo().getName(), "MIDI Input", javax.swing.JOptionPane.WARNING_MESSAGE);
-				LOG.severe(e.getMessage());
-			}
+		{	if(!dev.isOpen()) dev.open();
+			dev.getTransmitter().setReceiver(this);
+			this.input = dev;
+			LOG.info(this.getInputName());
+			CONFIG.setStringAttribute(ATTR_MIDIINPUT, this.getInputName());
 		}
 	}
 
@@ -255,7 +244,7 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 
 	public void setTimeout(int t)
 	{	this.timeoutValue = t;
-		config.setIntegerAttribute(ATTR_MIDITIMEOUT, t);
+		CONFIG.setIntegerAttribute(ATTR_MIDITIMEOUT, t);
 		LOG.info("" + t);
 	}
 

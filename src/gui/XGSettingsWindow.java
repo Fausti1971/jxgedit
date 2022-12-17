@@ -6,10 +6,10 @@ import static device.XGMidi.*;
 import xml.XGProperty;
 import javax.sound.midi.*;
 import javax.swing.*;
-import javax.swing.event.*;import javax.xml.stream.XMLStreamException;
+import javax.swing.event.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;import java.util.*;
+import java.util.*;
 
 public class XGSettingsWindow extends XGWindow
 {
@@ -32,12 +32,25 @@ public class XGSettingsWindow extends XGWindow
 	JComponent createContent()
 	{	XGFrame root = new XGFrame(null);
 		Rectangle r = new Rectangle(0,0,1,1);
+		XGMidi midi = XGMidi.getMidi();
 
 		root.add(new JLabel("MIDI Input:", JLabel.LEADING), r);
 		JComboBox<MidiDevice.Info> mi = new JComboBox<>(new Vector<>(INPUTS));
-		MidiDevice md = XGMidi.getMidi().getInput();
-		if(md != null) mi.setSelectedItem(md.getDeviceInfo());
-		mi.addItemListener((ItemEvent e)->XGMidi.getMidi().setInput((MidiDevice.Info)e.getItem()));
+		MidiDevice md = midi.getInput();
+		final MidiDevice.Info mdii = md.getDeviceInfo();
+		mi.setSelectedItem(mdii);
+		mi.addItemListener
+		(	(ItemEvent e)->
+			{	try
+				{	if(e.getStateChange() == ItemEvent.SELECTED) midi.setInput((MidiDevice.Info)e.getItem());
+				}
+				catch(MidiUnavailableException exception)
+				{	LOG.warning(exception.getMessage());
+					JOptionPane.showMessageDialog(null, exception.getMessage() + ": " + e.getItem(), "MIDI Input", JOptionPane.WARNING_MESSAGE);
+					mi.setSelectedItem(mdii);
+				}
+			}
+		);
 		r.x = 1;
 		root.add(mi, r);
 
@@ -46,9 +59,21 @@ public class XGSettingsWindow extends XGWindow
 		r.x = 0;
 		root.add(new JLabel("MIDI Output:", JLabel.LEADING), r);
 		JComboBox<MidiDevice.Info> mo = new JComboBox<>(new Vector<>(OUTPUTS));
-		md = XGMidi.getMidi().getOutput();
-		if(md != null) mo.setSelectedItem(md.getDeviceInfo());
-		mo.addItemListener((ItemEvent e)->XGMidi.getMidi().setOutput((MidiDevice.Info)e.getItem()));
+		md = midi.getOutput();
+		final MidiDevice.Info mdio = md.getDeviceInfo();
+		mo.setSelectedItem(mdio);
+		mo.addItemListener
+		(	(ItemEvent e)->
+			{	try
+				{	if(e.getStateChange() == ItemEvent.SELECTED) midi.setOutput((MidiDevice.Info)e.getItem());
+				}
+				catch(MidiUnavailableException exception)
+				{	LOG.warning(exception.getMessage());
+					JOptionPane.showMessageDialog(null, exception.getMessage() + ": " + e.getItem(), "MIDI Output", JOptionPane.WARNING_MESSAGE);
+					mo.setSelectedItem(mdio);
+				}
+			}
+		);
 		r.x = 1;
 		root.add(mo, r);
 
@@ -56,8 +81,8 @@ public class XGSettingsWindow extends XGWindow
 
 		r.x = 0;
 		root.add(new JLabel("MIDI Timeout:", JLabel.LEADING), r);
-		JSpinner mto = new JSpinner(new SpinnerNumberModel(XGMidi.getMidi().getTimeout(), 10, 1000, 10));
-		mto.addChangeListener((ChangeEvent e)->XGMidi.getMidi().setTimeout((Integer)((JSpinner)e.getSource()).getValue()));
+		JSpinner mto = new JSpinner(new SpinnerNumberModel(midi.getTimeout(), 10, 1000, 10));
+		mto.addChangeListener((ChangeEvent e)->midi.setTimeout((Integer)((JSpinner)e.getSource()).getValue()));
 		r.x = 1;
 		root.add(mto, r);
 
