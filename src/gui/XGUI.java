@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.*;
-import java.awt.event.InputEvent;import java.awt.event.KeyEvent;import java.awt.event.MouseEvent;import java.awt.event.MouseWheelEvent;import java.io.IOException;import java.util.*;
+import java.awt.event.InputEvent;import java.awt.event.KeyEvent;import java.awt.event.MouseEvent;import java.awt.event.MouseWheelEvent;import java.util.*;
 import javax.imageio.ImageIO;import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;import javax.swing.plaf.FontUIResource;
 import application.*;
@@ -33,17 +33,28 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		}
 	};
 
-	Map<String, String> ICON_KEYS_40 = new HashMap<>()
+	private static int getIconSize()
+	{	int fontsize = XGUI.ENVIRONMENT.config.getIntegerAttribute(ATTR_FONT_SIZE, DEF_FONTSIZE);
+		if(fontsize < 12) return 16;
+		if(fontsize > 22) return 40;
+		return 30;
+	}
+
+	static String getIconPath(String iconKey)
+	{	return "icons" + "/" + XGUI.getIconSize() + "/" + ICON_KEYS.getOrDefault(iconKey, "edit.png");
+	}
+
+	Map<String, String> ICON_KEYS = new HashMap<>()
 	{
-		{	put(ACTION_COPY, "copy_40.png");
-			put(ACTION_PASTE, "paste_40.png");
-			put(ACTION_LOADFILE, "open_40.png");
-			put(ACTION_RECENT, "recent_40.png");
-			put(ACTION_SAVEFILE, "saveas_40.png");
-			put(ACTION_EDIT, "edit_40.png");
-			put(ACTION_REQUEST, "import_40.png");
-			put(ACTION_TRANSMIT, "export_40.png");
-			put(ACTION_CONFIGURE, "settings_40.png");
+		{	put(ACTION_COPY, "copy.png");
+			put(ACTION_PASTE, "paste.png");
+			put(ACTION_LOADFILE, "open.png");
+			put(ACTION_RECENT, "recent.png");
+			put(ACTION_SAVEFILE, "saveas.png");
+			put(ACTION_EDIT, "edit.png");
+			put(ACTION_REQUEST, "import.png");
+			put(ACTION_TRANSMIT, "export.png");
+			put(ACTION_CONFIGURE, "settings.png");
 		}
 	};
 
@@ -107,7 +118,7 @@ public interface XGUI extends XGLoggable, XGConfigurable
 	{	try
 		{	return new ImageIcon(ImageIO.read(XGUI.class.getResource(name)));
 		}
-		catch(IOException e)
+		catch(Exception e)
 		{	LOG.warning(e.getMessage());
 			return DEF_ICON;
 		}

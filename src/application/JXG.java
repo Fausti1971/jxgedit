@@ -40,7 +40,8 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		LOG.info("filepath: " + appPath.toString());
 
 		String file =  appFilePath.getFileName().toString();
-		appName =  file.substring(0, file.lastIndexOf("."));
+		if(!file.contains(".")) appName = file;
+		else appName =  file.substring(0, file.lastIndexOf("."));
 		LOG.info("appname: " + appName);
 
 		configFile = new File(appPath.resolve(appName + ".xml").toUri());

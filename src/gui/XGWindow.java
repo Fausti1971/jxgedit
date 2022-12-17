@@ -8,7 +8,7 @@ import javax.swing.*;
 public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable
 {
 	int MIN_W = 400, MIN_H = 200, MIN_X = 20, MIN_Y = 20;
-	private static final ImageIcon LOGO = XGUI.loadImage("XGLogo32.gif");
+	private static final ImageIcon LOGO = XGUI.loadImage("images/XGLogo32.gif");
 	public static XGMainWindow MAINWINDOW = null;
 	private static XMLNode CONFIG;
 	public static Window FOCUSSED;

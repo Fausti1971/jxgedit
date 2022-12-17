@@ -15,8 +15,8 @@ import value.XGValueChangeListener;
 
 public class XGProgramSelector extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueComponent
 {
-	private static final ImageIcon icon_next = XGUI.loadImage("arrow_right.png");
-	private static final ImageIcon icon_prev = XGUI.loadImage("arrow_left.png");
+	private static final ImageIcon icon_next = XGUI.loadImage("images/arrow_right.png");
+	private static final ImageIcon icon_prev = XGUI.loadImage("images/arrow_left.png");
 
 /*********************************************************************************************/
 
@@ -81,7 +81,6 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		private final XGTable table;
 		private XGTable filteredTable;
 		private JTree tree;
-		private final JTextField filterBar = new JTextField();
 
 		XGProgramSelectorWindow(XGWindow parent, XGProgramSelector selector)
 		{	super(parent, selector.value.getTag());
@@ -91,8 +90,8 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 			this.setLayout(new BorderLayout());
 			this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
-			this.filterBar.getDocument().addDocumentListener(this);
-			this.add(this.filterBar, BorderLayout.NORTH);
+			JTextField filterBar = new JTextField();filterBar.getDocument().addDocumentListener(this);
+			this.add(filterBar, BorderLayout.NORTH);
 			this.add(new JScrollPane(this.createContent()), BorderLayout.CENTER);
 //			this.setContentPane(new JScrollPane(this.createContent()));
 		}

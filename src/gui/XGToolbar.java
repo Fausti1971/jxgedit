@@ -1,7 +1,7 @@
 package gui;
 
-import file.XGDatafile;import xml.XMLNode;import javax.swing.*;
-import java.awt.event.ActionEvent;import java.awt.event.ActionListener;
+import javax.swing.*;
+import java.awt.event.ActionListener;
 
 public class XGToolbar extends JToolBar implements XGUI
 {
@@ -23,7 +23,7 @@ public class XGToolbar extends JToolBar implements XGUI
 //		b.setName(name);
 		if(pop != null) b.setComponentPopupMenu(pop);
 		b.setToolTipText(desc);
-		b.setIcon(XGUI.loadImage(ICON_KEYS_40.get(key)));
+		b.setIcon(XGUI.loadImage(XGUI.getIconPath(key)));
 		b.addActionListener(al);
 		b.registerKeyboardAction(al, KEYSTROKES.get(key), WHEN_IN_FOCUSED_WINDOW);
 		this.add(b);

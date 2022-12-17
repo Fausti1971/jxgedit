@@ -143,6 +143,10 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 		catch(XGComponentException e)
 		{	//LOG.info(e.getMessage());
 		}
+		catch(ExceptionInInitializerError e)
+		{	LOG.severe("error until componentcreation...");
+			component = new XGFrame("$$$");
+		}
 		//...
 		for(XMLNode i : item.getChildNodes(TAG_ITEM))
 		{	String c = i.getStringAttribute(ATTR_CONSTRAINT);
