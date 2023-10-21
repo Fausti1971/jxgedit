@@ -1,41 +1,35 @@
 package gui;
 
-import javax.swing.*;
-import java.awt.event.*;
+import xml.XMLNode;import javax.swing.*;import javax.swing.event.PopupMenuEvent;import javax.swing.event.PopupMenuListener;
+import java.awt.*;import java.awt.event.*;
 import java.util.Collection;
 
-public class XGPopup<T> extends JPopupMenu implements ActionListener
+public class XGPopup<T> extends JPopupMenu implements PopupMenuListener
 {
+	private final Collection<? extends T>list;
 	private final XGPopupListener<T> listener;
+
 	XGPopup(Collection<? extends T>list, XGPopupListener<T> handler)
 	{	this.listener = handler;
-		for(T n : list)
-		{	XGPopupItem<T> i = new XGPopupItem<T>(n);
-			i.addActionListener(this);
+		this.list = list;
+		this.addPopupMenuListener(this);
+	}
+
+	@Override public void popupMenuWillBecomeVisible(PopupMenuEvent event)
+	{	for(T n : this.list)
+		{	JMenuItem i = new JMenuItem();
+			if(n instanceof XMLNode) i.setText(((XMLNode)n).getTextContent().toString());
+			else i.setText(n.toString());
+			i.addActionListener((ActionEvent)->this.listener.popupSelected(n));
 			this.add(i);
 		}
 	}
 
-	public void actionPerformed(ActionEvent event)
-	{	Object o = event.getSource();
-		if(o instanceof XGPopupItem)
-		{	XGPopupItem<T> item = (XGPopupItem)o;
-			listener.popupSelected(item.getItem());
-		}
+	@Override public void popupMenuWillBecomeInvisible(PopupMenuEvent event)
+	{	this.removeAll();
 	}
 
-/*********************************************************************************************************************/
-
-	private class XGPopupItem<E> extends JMenuItem
-	{	private final E item;
-
-		XGPopupItem(E item)
-		{	this.item = item;
-			this.setText(item.toString());
-		}
-
-		E getItem()
-		{	return this.item;
-		}
+	@Override public void popupMenuCanceled(PopupMenuEvent event)
+	{
 	}
 }

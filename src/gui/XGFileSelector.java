@@ -49,7 +49,7 @@ public class XGFileSelector extends JFileChooser implements XGUI, DocumentListen
 		root.setBorder(new TitledBorder(BorderFactory.createLineBorder(c, 1, true), this.getName(), TitledBorder.CENTER, TitledBorder.DEFAULT_POSITION, this.getFont(), c));
 
 		root.setLayout(new BorderLayout());
-		root.setToolTipText(this.path.toString());
+		root.setToolTipText(this.path);
 		root.setAlignmentX(0.5f);
 //		Dimension dim = new Dimension(GRID * 5, GRID * 2);
 //		this.text.setMinimumSize(dim);
@@ -70,6 +70,6 @@ public class XGFileSelector extends JFileChooser implements XGUI, DocumentListen
 
 	@Override public void actionPerformed(ActionEvent e)
 	{	this.select(this.button);
-		this.text.setText(this.path.toString());
+		this.text.setText(this.path);
 	}
 }

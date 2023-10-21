@@ -94,7 +94,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		System.gc();
 		splash.dispose();
 
-		LOG.info(appName + " initialized from " + configFile + " within " + (System.currentTimeMillis() - time) + " ms");
+		LOG.info(appName + " initialized from " + configFile + " within " + (System.currentTimeMillis() - time) + " ms.");
 	}
 
 	public static void quit()

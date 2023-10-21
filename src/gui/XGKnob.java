@@ -11,7 +11,7 @@ import value.XGValueChangeListener;
 
 public class XGKnob extends XGFrame implements XGParameterChangeListener, XGValueChangeListener, XGValueComponent
 {
-	public enum KnobBehavior {HORIZONTAL, VERTICAL, RADIAL};
+	public enum KnobBehavior {HORIZONTAL, VERTICAL, RADIAL}
 
 /*****************************************************************************************************************************/
 

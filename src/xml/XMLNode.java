@@ -163,7 +163,9 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 
 	public void removeChildNodesWithTextContent(String tag, String text)
 	{	synchronized(this.childNodes)
-		{	for(XMLNode n : this.getChildNodes(tag)){	if(n.getTextContent().toString().equals(text)) n.removeNode();}
+		{	for(XMLNode n : this.getChildNodes(tag))
+			{	if(n.getTextContent().toString().equals(text)) n.removeNode();
+			}
 		}
 	}
 

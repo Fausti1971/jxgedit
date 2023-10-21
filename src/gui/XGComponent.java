@@ -7,7 +7,7 @@ import javax.swing.JComponent;
 
 public interface XGComponent extends XGUI, MouseListener
 {
-	enum XGOrientation{horizontal, vertical};
+	enum XGOrientation{horizontal, vertical}
 
 	default JComponent getJComponent(){	return (JComponent)this;}
 

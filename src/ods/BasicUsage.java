@@ -9,7 +9,7 @@ public class BasicUsage
 {	static int START = 0, END = 1;
 	static final int[] DRUMDEFAULTS = {142,190}, DRUMNAMES = {125,140};
 
-	public static void main(String args[])
+	public static void main(String[] args)
 	{	try
 		{	SpreadSheet spread = new SpreadSheet(new File("/home/thomas/Dokumente/Computer/XG/XGspec2_korr.ods"));
 			System.out.println("Number of sheets: " + spread.getNumSheets());

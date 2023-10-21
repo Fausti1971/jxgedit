@@ -1,6 +1,6 @@
 package file;
 import java.awt.*;import java.awt.event.ActionEvent;import java.io.File;
-import java.io.IOException;import java.util.Collection;import java.util.HashSet;import java.util.Set;
+import java.io.IOException;import java.util.Collection;import java.util.HashSet;import java.util.LinkedHashSet;import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import javax.swing.*;import javax.swing.event.PopupMenuEvent;import javax.swing.event.PopupMenuListener;
 import adress.XGAddressableSet;
@@ -44,8 +44,7 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 						dumper.requestAll(f);
 						f.close();
 						JXG.CURRENT_CONTENT.setValue(f.getName());
-						CONFIG.removeChildNodesWithTextContent(TAG_ITEM, f.getAbsolutePath());
-						CONFIG.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
+						addToRecentFiles(f.getAbsolutePath());
 						break;
 					}
 					catch(XGDatafileFilterException e)
@@ -74,8 +73,7 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 				dmp.requestAll(f);
 				f.close();
 				JXG.CURRENT_CONTENT.setValue(f.getName());
-				CONFIG.removeChildNodesWithTextContent(TAG_ITEM, f.getAbsolutePath());
-				CONFIG.addChildNode(new XMLNode(TAG_ITEM, null, f.getAbsolutePath()));
+				addToRecentFiles(f.getAbsolutePath());
 			}
 			catch(XGDatafileFilterException e)
 			{	LOG.info(e.getMessage());
@@ -86,8 +84,13 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 		}
 	}
 
+	public static void addToRecentFiles(String s)
+	{	CONFIG.removeChildNodesWithTextContent(TAG_ITEM, s);
+		CONFIG.addChildNode(new XMLNode(TAG_ITEM, null, s));
+	}
+
 	public static Collection<String> getRecentFilenames()
-	{	Set<String> set = new HashSet<>();
+	{	Set<String> set = new LinkedHashSet<>();
 		for(XMLNode n : CONFIG.getChildNodes(TAG_ITEM)) set.add(n.getTextContent().toString());
 		return set;
 	}
@@ -155,8 +158,7 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 			df.filter.write(df);
 			df.close();
 			JXG.CURRENT_CONTENT.setValue(df.getName());
-			CONFIG.removeChildNodesWithTextContent(TAG_ITEM, df.getAbsolutePath());
-			CONFIG.addChildNode(new XMLNode(TAG_ITEM, null, df.getAbsolutePath()));
+			addToRecentFiles(df.getAbsolutePath());
 		}
 		catch(IOException | InvalidMidiDataException e)
 		{	LOG.severe(e.getMessage());

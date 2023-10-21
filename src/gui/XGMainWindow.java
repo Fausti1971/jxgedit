@@ -27,8 +27,9 @@ public class XGMainWindow extends XGWindow
 
 	private XGToolbar createToolbar()
 	{	XGToolbar tb = new XGToolbar();
-		XGPopup<String> pop = new XGPopup<>(XGDatafile.getRecentFilenames(), (String n)->{XGDatafile.load(XGDevice.DEVICE, n);});
-		tb.addAction(ACTION_LOADFILE, "Open", "load datadumpfile to memory; right-click for recentlist", (ActioEvent)->XGDatafile.load(XGDevice.DEVICE), pop);
+		XGPopup<XMLNode> pop = new XGPopup<>(XGDatafile.CONFIG.getChildNodes(), (XMLNode n)->XGDatafile.load(XGDevice.DEVICE, n.getTextContent().toString()));
+
+		tb.addAction(ACTION_LOADFILE, "Open", "load datadumpfile to memory; right-click for recentlist", (ActionEvent)->XGDatafile.load(XGDevice.DEVICE), pop);
 		tb.addAction(ACTION_SAVEFILE, "Save", "save memory to datadumpfile", (ActioEvent)->XGDatafile.save(XGDevice.DEVICE));
 		tb.addSeparator();
 		tb.addAction(XGUI.ACTION_REQUEST, "Request", "request complete dump from " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> XGDevice.DEVICE.requestAll(XGMidi.getMidi())).start());

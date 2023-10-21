@@ -35,8 +35,8 @@ public interface XGUI extends XGLoggable, XGConfigurable
 
 	private static int getIconSize()
 	{	int fontsize = XGUI.ENVIRONMENT.config.getIntegerAttribute(ATTR_FONT_SIZE, DEF_FONTSIZE);
-		if(fontsize < 12) return 16;
-		if(fontsize > 22) return 40;
+		if(fontsize < 10) return 16;
+		if(fontsize > 20) return 40;
 		return 30;
 	}
 

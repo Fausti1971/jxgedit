@@ -118,7 +118,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 
 /************************************************************************************************************************************************/
 
-	private class XGKey extends JLabel implements MouseListener
+	private static class XGKey extends JLabel implements MouseListener
 	{
 	/************************************************************************/
 
@@ -156,7 +156,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 		}
 
 		private String getHTML(String text)
-		{	StringBuilder tmp = new StringBuilder(new String("<html>"));
+		{	StringBuilder tmp = new StringBuilder("<html>");
 			for(char c : text.toCharArray())
 			{	tmp.append(c).append("<br>");
 			}
