@@ -239,13 +239,6 @@
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
     </task>
-    <task id="LOCAL-00040" summary="Backup;">
-      <created>1651436260996</created>
-      <option name="number" value="00040" />
-      <option name="presentableId" value="LOCAL-00040" />
-      <option name="project" value="LOCAL" />
-      <updated>1651436260996</updated>
-    </task>
     <task id="LOCAL-00041" summary="Backup;">
       <created>1651586151227</created>
       <option name="number" value="00041" />
@@ -582,7 +575,14 @@
       <option name="project" value="LOCAL" />
       <updated>1671313438550</updated>
     </task>
-    <option name="localTasksCounter" value="89" />
+    <task id="LOCAL-00089" summary="Recentlisthandling überarbeitet;">
+      <created>1697853663370</created>
+      <option name="number" value="00089" />
+      <option name="presentableId" value="LOCAL-00089" />
+      <option name="project" value="LOCAL" />
+      <updated>1697853663371</updated>
+    </task>
+    <option name="localTasksCounter" value="90" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -696,7 +696,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="XGMultipartProgramValue und XGMultipartModeValue eingeführt (für XGProgramBuffer, actions change_program und change_partmode entsorgt)" />
     <MESSAGE value="author and screenshot inserted;" />
     <MESSAGE value="screenshot" />
     <MESSAGE value="geringfügige Änderungen zwecks Konstistenz in templates.xml;" />
@@ -721,7 +720,8 @@
     <MESSAGE value="Bugfix MidiPortSelect;" />
     <MESSAGE value="Image upload;" />
     <MESSAGE value="icons and images moved into folders; icons fontsize-dependent;" />
-    <option name="LAST_COMMIT_MESSAGE" value="icons and images moved into folders; icons fontsize-dependent;" />
+    <MESSAGE value="Recentlisthandling überarbeitet;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Recentlisthandling überarbeitet;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
