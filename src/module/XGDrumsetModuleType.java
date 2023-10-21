@@ -63,13 +63,13 @@ public class XGDrumsetModuleType extends XGModuleType
 	@Override public XGClippboard getClippboard(){	return CLIPPBOARD;}
 
 	public String getDrumname(int key)
-	{	String keyname = XGStrings.encodeKey(key);
+	{	String keyname = XGStrings.encodeKey(key);//note
 		String drumname = "No Sound";
-		XGTable t;
+		XGRealTable t;
 		if(DRUMNAMES.containsKey(key))
 		{	t = DRUMNAMES.get(key);
-			if(t.containsValue(DEF_DRUMSETPROGRAM)) drumname = t.getByValue(DEF_DRUMSETPROGRAM).getName();
 			if(t.containsValue(this.program)) drumname = t.getByValue(this.program).getName();
+			else if(t.containsValue(this.program & DEF_DRUMSETPROGRAM)) drumname = t.getByValue(this.program & DEF_DRUMSETPROGRAM).getName();
 		}
 		return keyname + " (" + drumname + ")";
 	}
