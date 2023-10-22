@@ -11,10 +11,6 @@
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/xml/drums.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/drums.xml" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -226,20 +222,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00042" summary="Backup;">
-      <created>1651612045888</created>
-      <option name="number" value="00042" />
-      <option name="presentableId" value="LOCAL-00042" />
-      <option name="project" value="LOCAL" />
-      <updated>1651612045888</updated>
-    </task>
-    <task id="LOCAL-00043" summary="xml-templates für editwindows vollständig implementiert;">
-      <created>1651693066133</created>
-      <option name="number" value="00043" />
-      <option name="presentableId" value="LOCAL-00043" />
-      <option name="project" value="LOCAL" />
-      <updated>1651693066133</updated>
     </task>
     <task id="LOCAL-00044" summary="debugging, Kosmetik;">
       <created>1651701275965</created>
@@ -570,7 +552,21 @@
       <option name="project" value="LOCAL" />
       <updated>1697853683893</updated>
     </task>
-    <option name="localTasksCounter" value="91" />
+    <task id="LOCAL-00091" summary="Drumnamehandling fixed;">
+      <created>1697885384828</created>
+      <option name="number" value="00091" />
+      <option name="presentableId" value="LOCAL-00091" />
+      <option name="project" value="LOCAL" />
+      <updated>1697885384838</updated>
+    </task>
+    <task id="LOCAL-00092" summary="Drumnamehandling fixed;">
+      <created>1697885508429</created>
+      <option name="number" value="00092" />
+      <option name="presentableId" value="LOCAL-00092" />
+      <option name="project" value="LOCAL" />
+      <updated>1697885508429</updated>
+    </task>
+    <option name="localTasksCounter" value="93" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -684,7 +680,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="author and screenshot inserted;" />
     <MESSAGE value="screenshot" />
     <MESSAGE value="geringfügige Änderungen zwecks Konstistenz in templates.xml;" />
     <MESSAGE value="screenshot updated;" />
@@ -709,7 +704,8 @@
     <MESSAGE value="Image upload;" />
     <MESSAGE value="icons and images moved into folders; icons fontsize-dependent;" />
     <MESSAGE value="Recentlisthandling überarbeitet;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Recentlisthandling überarbeitet;" />
+    <MESSAGE value="Drumnamehandling fixed;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Drumnamehandling fixed;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
