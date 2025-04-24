@@ -360,13 +360,6 @@
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
     </task>
-    <task id="LOCAL-00045" summary="XML-Validation prepared;">
-      <created>1651788831908</created>
-      <option name="number" value="00045" />
-      <option name="presentableId" value="LOCAL-00045" />
-      <option name="project" value="LOCAL" />
-      <updated>1651788831908</updated>
-    </task>
     <task id="LOCAL-00046" summary="XML-Validation prepared;">
       <created>1651788859087</created>
       <option name="number" value="00046" />
@@ -703,7 +696,14 @@
       <option name="project" value="LOCAL" />
       <updated>1697969849056</updated>
     </task>
-    <option name="localTasksCounter" value="94" />
+    <task id="LOCAL-00094" summary="ProgramselectorWindow fixed">
+      <created>1745513187642</created>
+      <option name="number" value="00094" />
+      <option name="presentableId" value="LOCAL-00094" />
+      <option name="project" value="LOCAL" />
+      <updated>1745513187643</updated>
+    </task>
+    <option name="localTasksCounter" value="95" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -817,7 +817,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="screenshot" />
     <MESSAGE value="geringfügige Änderungen zwecks Konstistenz in templates.xml;" />
     <MESSAGE value="screenshot updated;" />
     <MESSAGE value="Bugfix in XGModuleTable.openEditWindow();" />
@@ -842,7 +841,8 @@
     <MESSAGE value="icons and images moved into folders; icons fontsize-dependent;" />
     <MESSAGE value="Recentlisthandling überarbeitet;" />
     <MESSAGE value="Drumnamehandling fixed;" />
-    <option name="LAST_COMMIT_MESSAGE" value="Drumnamehandling fixed;" />
+    <MESSAGE value="ProgramselectorWindow fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="ProgramselectorWindow fixed" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
