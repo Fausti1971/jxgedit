@@ -1,8 +1,7 @@
 package module;
 
 import adress.XGInvalidAddressException;
-import static table.XGTable.INS_MSB_PROGRAMS;
-import value.XGValue;
+import table.XGTable;import value.XGValue;
 import javax.sound.midi.InvalidMidiDataException;
 
 /**
@@ -27,6 +26,6 @@ public class XGInsertionModule extends XGModule
 	public boolean isMSBRequired()
 	{	XGValue v = this.getProgram();
 		if(v == null) return true;//Krücke, damit die MSB-Parameter während der Initialisierung (XGValue.init()) nicht übergangen werden;
-		return INS_MSB_PROGRAMS.contains(this.getProgram().getValue());
+		return XGTable.INS_MSB_PROGRAMS.contains(this.getProgram().getValue());
 	}
 }

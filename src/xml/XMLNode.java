@@ -6,7 +6,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
-import javax.xml.stream.XMLEventReader;
+import javax.xml.XMLConstants;import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -16,7 +16,7 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.sax.SAXSource;import javax.xml.transform.stream.StreamSource;import javax.xml.validation.Schema;import javax.xml.validation.SchemaFactory;import javax.xml.validation.Validator;
 import application.JXG;import application.XGLoggable;
 import application.XGStrings;
-import device.XGDevice;import gui.XGMainWindow;import static javax.xml.XMLConstants.W3C_XML_SCHEMA_NS_URI;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import tag.XGTagable;import tag.XGTagableSet;import static xml.XMLNodeConstants.W3C_XML_SCHEMA;
+import device.XGDevice;import gui.XGMainWindow;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import tag.XGTagable;import tag.XGTagableSet;
 
 public class XMLNode implements XGTagable, XGLoggable, XGStrings
 {
@@ -74,12 +74,12 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 	{	URL schemaURL = XMLNode.class.getResource(schemaName);
 		Schema schema = null;
 		try
-		{	schema = SchemaFactory.newInstance(W3C_XML_SCHEMA).newSchema(schemaURL);
+		{	schema = SchemaFactory.newInstance(XMLNodeConstants.W3C_XML_SCHEMA).newSchema(schemaURL);
 		}
 		catch (Exception e)
 		{	try
 			{
-				schema = SchemaFactory.newInstance(W3C_XML_SCHEMA_NS_URI).newSchema(schemaURL);
+				schema = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(schemaURL);
 			}
 			catch (Exception ee)
 			{	LOG.severe(ee.getMessage());
@@ -109,7 +109,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 		while(i.hasNext())
 		{	Attribute a = i.next();
 			name = a.getName().getLocalPart();
-			if(!XGStrings.isAlNum(name)) throw new RuntimeException(name + ERRORSTRING);
+			if(XGStrings.isNotAlphaNumeric(name)) throw new RuntimeException(name + ERRORSTRING);
 			prop.add(new XGProperty(name, a.getValue()));
 		}
 		return prop;
@@ -129,7 +129,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 
 	public XMLNode(String tag, XGProperty attr, String txt)
 	{	//if(!XGStrings.isAlNum(tag)) throw new RuntimeException(tag + ERRORSTRING);
-		this.tag = XGStrings.toAlNum(tag);
+		this.tag = XGStrings.toAlphaNumeric(tag);
 		this.attributes.add(attr);
 		this.content.replace(0, this.content.length(), txt);
 	}
@@ -263,7 +263,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 	}
 
 	public void setStringAttribute(final String attr, final String value)
-	{	if(!XGStrings.isAlNum(attr)) throw new RuntimeException(attr + ERRORSTRING);
+	{	if(XGStrings.isNotAlphaNumeric(attr)) throw new RuntimeException(attr + ERRORSTRING);
 		if(this.attributes.containsKey(attr)) this.attributes.get(attr).setValue(value);
 		else this.attributes.add(new XGProperty(attr, value));
 	}
@@ -313,14 +313,14 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 		{	JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "Line " + e.getLineNumber() + ": " + e.getMessage());
 		}
 
-		public void warning(SAXParseException e) throws SAXException {	LOG.warning(e.getMessage());}
+		public void warning(SAXParseException e)  {	LOG.warning(e.getMessage());}
 
-		public void fatalError(SAXParseException e) throws SAXException
+		public void fatalError(SAXParseException e)
 		{	LOG.severe(e.getMessage());
 			showMessage(e);
 		}
 
-		public void error(SAXParseException e) throws SAXException
+		public void error(SAXParseException e)
 		{	LOG.severe(e.getMessage());
 			showMessage(e);
 		}

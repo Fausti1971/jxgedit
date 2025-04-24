@@ -2,7 +2,7 @@ package value;
 
 import java.util.LinkedHashMap;import java.util.Map;import java.util.function.Consumer;
 import adress.*;
-import application.XGStrings;import bulk.XGBulkType;import config.XGConfigurable;
+import bulk.XGBulkType;import config.XGConfigurable;
 import application.XGLoggable;
 import msg.XGMessageCodec;
 import tag.*;
@@ -11,7 +11,7 @@ import xml.XGProperty;import xml.XMLNode;
 public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 {
 //	enum ValueAction{change,change_program,change_partmode,dump,none}
-	static Map<String, Consumer<XGValue>> ACTIONS = new LinkedHashMap<>();
+	static final Map<String, Consumer<XGValue>> ACTIONS = new LinkedHashMap<>();
 	static
 	{	ACTIONS.put(ATTR_CHANGE_ACTION, XGValue::sendAction);
 //		ACTIONS.put(ATTR_CHANGE_PROGRAM_ACTION, XGProgramBuffer::bufferProgram);

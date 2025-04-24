@@ -3,7 +3,6 @@ package value;
 import bulk.XGBulk;
 import parm.XGParameter;
 import table.XGDefaultsTable;
-import static table.XGDefaultsTable.DEFAULTSTABLES;
 
 public class XGMutableDefaultsValue extends XGValue implements XGMutableDefaults
 {
@@ -15,7 +14,7 @@ public class XGMutableDefaultsValue extends XGValue implements XGMutableDefaults
 	{	super(type,blk);
 
 		this.parameter = new XGParameter(type.getConfig());
-		this.defaultsTable = DEFAULTSTABLES.get(type.defaultsTableName);
+		this.defaultsTable = XGDefaultsTable.DEFAULTSTABLES.get(type.defaultsTableName);
 	}
 
 	public XGValue getDefaultsSelector(){	return this.defaultsSelector;}

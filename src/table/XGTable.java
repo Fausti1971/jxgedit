@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 import application.*;
 import tag.*;
-import xml.XMLNode;import static xml.XMLNodeConstants.TAG_TABLE;import static xml.XMLNodeConstants.XML_TABLES;
+import xml.XMLNode;import xml.XMLNodeConstants;
 
 public interface XGTable extends XGLoggable, XGTableConstants, XGTagable, Iterable<XGTableEntry>
 {
@@ -15,8 +15,8 @@ public interface XGTable extends XGLoggable, XGTableConstants, XGTagable, Iterab
 
 	static void init()
 	{	try
-		{	XMLNode xml = XMLNode.parse(XML_TABLES);
-			for(XMLNode x : xml.getChildNodes(TAG_TABLE))
+		{	XMLNode xml = XMLNode.parse(XMLNodeConstants.XML_TABLES);
+			for(XMLNode x : xml.getChildNodes(XMLNodeConstants.TAG_TABLE))
 			{	TABLES.add(new XGRealTable(x));
 			}
 		}

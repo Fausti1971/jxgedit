@@ -1,9 +1,7 @@
 package gui;
 
-import device.*;
-import static device.XGDevice.DEF_DEVNAME;
-import static device.XGMidi.*;
-import xml.XGProperty;
+import application.XGLoggable;import device.*;
+import xml.XGProperty;import xml.XMLNodeConstants;
 import javax.sound.midi.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -35,7 +33,7 @@ public class XGSettingsWindow extends XGWindow
 		XGMidi midi = XGMidi.getMidi();
 
 		root.add(new JLabel("MIDI Input:", JLabel.LEADING), r);
-		JComboBox<MidiDevice.Info> mi = new JComboBox<>(new Vector<>(INPUTS));
+		JComboBox<MidiDevice.Info> mi = new JComboBox<>(new Vector<>(XGMidi.INPUTS));
 		MidiDevice md = midi.getInput();
 		final MidiDevice.Info mdii = md.getDeviceInfo();
 		mi.setSelectedItem(mdii);
@@ -45,7 +43,7 @@ public class XGSettingsWindow extends XGWindow
 				{	if(e.getStateChange() == ItemEvent.SELECTED) midi.setInput((MidiDevice.Info)e.getItem());
 				}
 				catch(MidiUnavailableException exception)
-				{	LOG.warning(exception.getMessage());
+				{	XGLoggable.LOG.warning(exception.getMessage());
 					JOptionPane.showMessageDialog(null, exception.getMessage() + ": " + e.getItem(), "MIDI Input", JOptionPane.WARNING_MESSAGE);
 					mi.setSelectedItem(mdii);
 				}
@@ -58,7 +56,7 @@ public class XGSettingsWindow extends XGWindow
 
 		r.x = 0;
 		root.add(new JLabel("MIDI Output:", JLabel.LEADING), r);
-		JComboBox<MidiDevice.Info> mo = new JComboBox<>(new Vector<>(OUTPUTS));
+		JComboBox<MidiDevice.Info> mo = new JComboBox<>(new Vector<>(XGMidi.OUTPUTS));
 		md = midi.getOutput();
 		final MidiDevice.Info mdio = md.getDeviceInfo();
 		mo.setSelectedItem(mdio);
@@ -68,7 +66,7 @@ public class XGSettingsWindow extends XGWindow
 				{	if(e.getStateChange() == ItemEvent.SELECTED) midi.setOutput((MidiDevice.Info)e.getItem());
 				}
 				catch(MidiUnavailableException exception)
-				{	LOG.warning(exception.getMessage());
+				{	XGLoggable.LOG.warning(exception.getMessage());
 					JOptionPane.showMessageDialog(null, exception.getMessage() + ": " + e.getItem(), "MIDI Output", JOptionPane.WARNING_MESSAGE);
 					mo.setSelectedItem(mdio);
 				}
@@ -91,7 +89,7 @@ public class XGSettingsWindow extends XGWindow
 		r.x = 0;
 		root.add(new JLabel("Device Name:", JLabel.LEADING), r);
 		r.x = 1;
-		root.add(new XGDeviceDetector(XGDevice.DEVICE.getConfig().getAttributes().getOrNew(ATTR_NAME, new XGProperty(ATTR_NAME, DEF_DEVNAME))), r);
+		root.add(new XGDeviceDetector(XGDevice.DEVICE.getConfig().getAttributes().getOrNew(XMLNodeConstants.ATTR_NAME, new XGProperty(XMLNodeConstants.ATTR_NAME, XGDevice.DEF_DEVNAME))), r);
 
 		r.y++;
 
@@ -106,7 +104,7 @@ public class XGSettingsWindow extends XGWindow
 
 		r.x = 0;
 		root.add(new JLabel("Initial Message:", JLabel.LEADING), r);
-		StringBuffer sb = XGDevice.DEVICE.getConfig().getChildNodeOrNew(TAG_INIT_MESSAGE).getTextContent();
+		StringBuffer sb = XGDevice.DEVICE.getConfig().getChildNodeOrNew(XMLNodeConstants.TAG_INIT_MESSAGE).getTextContent();
 		JTextField tf = new JTextField(sb.toString());
 		tf.getDocument().addDocumentListener(new DocumentListener()
 		{	public void insertUpdate(DocumentEvent event){	sb.replace(0, sb.length(), tf.getText());}
@@ -129,7 +127,7 @@ public class XGSettingsWindow extends XGWindow
 		root.add(new JLabel("Look & Feel:", JLabel.LEADING), r);
 		JComboBox<String> laf = new JComboBox<>(new Vector<>(XGUI.LOOKANDFEELS.keySet()));
 //		laf.setSelectedItem(UIManager.getLookAndFeel().getName());//gibt für "GTK+" immer "GTK Look And Feel" zurücK und wird somit nicht gefunden?!
-		laf.setSelectedItem(XGUI.ENVIRONMENT.config.getStringAttribute(ATTR_LOOKANDFEEL));
+		laf.setSelectedItem(XGUI.ENVIRONMENT.config.getStringAttribute(XMLNodeConstants.ATTR_LOOKANDFEEL));
 		laf.addItemListener((ItemEvent e)->XGUI.setLookAndFeel((String)e.getItem()));
 		r.x = 1;
 		root.add(laf, r);
@@ -138,7 +136,7 @@ public class XGSettingsWindow extends XGWindow
 
 		r.x = 0;
 		root.add(new JLabel("Fontname:", JLabel.LEADING), r);
-		String fontname = XGUI.ENVIRONMENT.config.getStringAttribute(ATTR_FONT_NAME);
+		String fontname = XGUI.ENVIRONMENT.config.getStringAttribute(XMLNodeConstants.ATTR_FONT_NAME);
 		JComboBox<String> fnt = new JComboBox<>(XGUI.FONTS);
 		fnt.setSelectedItem(fontname);
 		fnt.addItemListener((ItemEvent e)->XGUI.setFont((String)e.getItem()));
@@ -149,7 +147,7 @@ public class XGSettingsWindow extends XGWindow
 
 		r.x = 0;
 		root.add(new JLabel("Fontsize:", JLabel.LEADING), r);
-		int size = XGUI.ENVIRONMENT.config.getIntegerAttribute(ATTR_FONT_SIZE, DEF_FONTSIZE);
+		int size = XGUI.ENVIRONMENT.config.getIntegerAttribute(XMLNodeConstants.ATTR_FONT_SIZE, DEF_FONTSIZE);
 		JSpinner sl = new JSpinner(new SpinnerNumberModel(size,8,72,1));
 		sl.setValue(size);
 		sl.addChangeListener((ChangeEvent e)->XGUI.setFontSize((Integer)((JSpinner)e.getSource()).getValue()));

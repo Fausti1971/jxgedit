@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class BasicUsage
-{	static int START = 0, END = 1;
+{	static final int START = 0; static final int END = 1;
 	static final int[] DRUMDEFAULTS = {142,190}, DRUMNAMES = {125,140};
 
 	public static void main(String[] args)

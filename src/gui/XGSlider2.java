@@ -6,7 +6,6 @@ import module.XGModule;
 import parm.XGParameter;
 import value.XGFixedValue;
 import value.XGValue;
-import value.XGValueChangeListener;
 import xml.XMLNode;
 import javax.swing.*;
 import java.awt.*;

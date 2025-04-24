@@ -6,7 +6,7 @@ import javax.swing.*;
 import adress.XGAddressableSet;
 import application.*;
 import gui.*;
-import module.XGInsertionModule;import msg.*;import static xml.XMLNodeConstants.TAG_INS48;
+import module.XGInsertionModule;import msg.*;import xml.XMLNodeConstants;
 
 /**
  * qualifiziert die implementierende Klasse als Sammler aller enthaltenen BuklDumps (getBulks()) und Transmitter (transmitAll()) bzw. Requester (requestAll()); folglich können lediglich Instanzen, die XGBulks halten (Module, Moduletype, Device) als XGBulkDumper fungieren; vielleicht auch einst für Copy & Paste zu missbrauchen;
@@ -28,7 +28,7 @@ public interface XGBulkDumper extends XGLoggable
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
 		{	try
-			{	if(TAG_INS48.equals(b.getTag()) && !(((XGInsertionModule)b.module)).isMSBRequired())
+			{	if(XMLNodeConstants.TAG_INS48.equals(b.getTag()) && !(((XGInsertionModule)b.module)).isMSBRequired())
 				{	LOG.info(b + " isn't required and will be ignored");
 					pm.setMaximum(pm.getMaximum() - 1);
 					continue;
@@ -62,7 +62,7 @@ public interface XGBulkDumper extends XGLoggable
 		pm.setMillisToPopup(0);
 		for(XGBulk b : set)
 		{	try
-			{	if(TAG_INS48.equals(b.getTag()) && !(((XGInsertionModule)b.module)).isMSBRequired())
+			{	if(XMLNodeConstants.TAG_INS48.equals(b.getTag()) && !(((XGInsertionModule)b.module)).isMSBRequired())
 				{	LOG.info(b + " isn't required and will be ignored");
 					pm.setMaximum(pm.getMaximum() - 1);
 					continue;

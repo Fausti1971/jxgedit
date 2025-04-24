@@ -1,16 +1,14 @@
 package file;
-import java.awt.*;import java.awt.event.ActionEvent;import java.io.File;
-import java.io.IOException;import java.util.Collection;import java.util.HashSet;import java.util.LinkedHashSet;import java.util.Set;
+import java.io.File;
+import java.io.IOException;import java.util.Collection;import java.util.LinkedHashSet;import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
-import javax.swing.*;import javax.swing.event.PopupMenuEvent;import javax.swing.event.PopupMenuListener;
+import javax.swing.*;
 import adress.XGAddressableSet;
 import application.*;
-import device.XGDevice;import static file.XGDatafileFilter.*;
 import gui.*;
 import bulk.XGBulkDumper;
 import msg.*;
 import xml.*;
-import static xml.XMLNodeConstants.TAG_ITEM;
 
 public class XGDatafile extends File implements XGMessenger, XGLoggable
 {
@@ -19,18 +17,18 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 	public static void init()
 	{	CONFIG = JXG.config.getChildNodeOrNew(XMLNodeConstants.TAG_FILES);
 		File f;
-		for(XMLNode x : CONFIG.getChildNodes(TAG_ITEM))
+		for(XMLNode x : CONFIG.getChildNodes(XMLNodeConstants.TAG_ITEM))
 		{	String s = x.getTextContent().toString();
 			f =  new File(s);
 			if(f.exists()) continue;
-			LOG.info(s + " doesn't exist (removing from history)");
+			XGLoggable.LOG.info(s + " doesn't exist (removing from history)");
 			x.removeNode();
 		}
 	}
 
 	public static void load(XGBulkDumper dumper)
-	{	String last = CONFIG.getLastChildOrNew(TAG_ITEM).getTextContent().toString();
-		XGFileSelector fs = new XGFileSelector(last, "load data file...", "load", SUPPORTED_FILEFILTER, SYX_FILEFILTER, MID_FILEFILTER);
+	{	String last = CONFIG.getLastChildOrNew(XMLNodeConstants.TAG_ITEM).getTextContent().toString();
+		XGFileSelector fs = new XGFileSelector(last, "load data file...", "load", XGDatafileFilter.SUPPORTED_FILEFILTER, XGDatafileFilter.SYX_FILEFILTER, XGDatafileFilter.MID_FILEFILTER);
 
 		while(true)
 		{	int res = fs.select(XGMainWindow.MAINWINDOW);
@@ -48,16 +46,16 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 						break;
 					}
 					catch(XGDatafileFilterException e)
-					{	LOG.info(e.getMessage());
+					{	XGLoggable.LOG.info(e.getMessage());
 					}
 					catch(IOException e)
-					{	LOG.severe(e.getMessage());
+					{	XGLoggable.LOG.severe(e.getMessage());
 						return;
 					}
 				}
 				else
 				{	String s = file + " does not exist!";
-					LOG.info(s);
+					XGLoggable.LOG.info(s);
 					JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, s);
 				}
 			}
@@ -76,22 +74,22 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 				addToRecentFiles(f.getAbsolutePath());
 			}
 			catch(XGDatafileFilterException e)
-			{	LOG.info(e.getMessage());
+			{	XGLoggable.LOG.info(e.getMessage());
 			}
 			catch(IOException e)
-			{	LOG.severe(e.getMessage());
+			{	XGLoggable.LOG.severe(e.getMessage());
 			}
 		}
 	}
 
 	public static void addToRecentFiles(String s)
-	{	CONFIG.removeChildNodesWithTextContent(TAG_ITEM, s);
-		CONFIG.addChildNode(new XMLNode(TAG_ITEM, null, s));
+	{	CONFIG.removeChildNodesWithTextContent(XMLNodeConstants.TAG_ITEM, s);
+		CONFIG.addChildNode(new XMLNode(XMLNodeConstants.TAG_ITEM, null, s));
 	}
 
 	public static Collection<String> getRecentFilenames()
 	{	Set<String> set = new LinkedHashSet<>();
-		for(XMLNode n : CONFIG.getChildNodes(TAG_ITEM)) set.add(n.getTextContent().toString());
+		for(XMLNode n : CONFIG.getChildNodes(XMLNodeConstants.TAG_ITEM)) set.add(n.getTextContent().toString());
 		return set;
 	}
 
@@ -112,15 +110,15 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 
 
 	public static void save(XGBulkDumper dumper)
-	{	String last = CONFIG.getLastChildOrNew(TAG_ITEM).getTextContent().toString();
-		XGFileSelector fs = new XGFileSelector(last, "save data file...", "save", SUPPORTED_FILEFILTER, MID_FILEFILTER, SYX_FILEFILTER);
+	{	String last = CONFIG.getLastChildOrNew(XMLNodeConstants.TAG_ITEM).getTextContent().toString();
+		XGFileSelector fs = new XGFileSelector(last, "save data file...", "save", XGDatafileFilter.SUPPORTED_FILEFILTER, XGDatafileFilter.MID_FILEFILTER, XGDatafileFilter.SYX_FILEFILTER);
 		int fs_result ;
 		File file;
 		XGDatafileFilter filter ;
 		while(true)
 		{	fs_result = fs.select(XGMainWindow.MAINWINDOW);
 			if(fs_result == XGFileSelector.CANCEL_OPTION)
-			{	LOG.info("fileselection aborted");
+			{	XGLoggable.LOG.info("fileselection aborted");
 				return;
 			}
 			if(fs_result == XGFileSelector.APPROVE_OPTION)
@@ -130,23 +128,23 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 					if(file.exists())
 					{	int res = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, " Overwrite " + file + " ?");
 						if(res == JOptionPane.YES_OPTION)
-						{	LOG.info("yes is choosen: "+ file);
+						{	XGLoggable.LOG.info("yes is choosen: "+ file);
 							break;
 						}
 						if(res == JOptionPane.NO_OPTION) continue;
 						if(res == JOptionPane.CANCEL_OPTION) return;
 					}
 					else if(file.createNewFile())
-					{	LOG.info("new file created: " + file);
+					{	XGLoggable.LOG.info("new file created: " + file);
 						break;
 					}
 				}
 				catch(XGDatafileFilterException e)
-				{	LOG.info(e.getMessage());
+				{	XGLoggable.LOG.info(e.getMessage());
 					continue;
 				}
 				catch(IOException exception)
-				{	LOG.severe("I/O-Exception: " + exception.getMessage());
+				{	XGLoggable.LOG.severe("I/O-Exception: " + exception.getMessage());
 					continue;
 				}
 			}
@@ -160,8 +158,8 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 			JXG.CURRENT_CONTENT.setValue(df.getName());
 			addToRecentFiles(df.getAbsolutePath());
 		}
-		catch(IOException | InvalidMidiDataException e)
-		{	LOG.severe(e.getMessage());
+		catch(IOException e)
+		{	XGLoggable.LOG.severe(e.getMessage());
 		}
 	}
 
@@ -180,7 +178,7 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 
 	@Override public String getMessengerName(){	return "File (" + this.getAbsolutePath() +")";}
 
-	@Override public void submit(XGMessageBulkDump msg)throws XGMessengerException
+	@Override public void submit(XGMessageBulkDump msg)
 	{	this.buffer.add(msg);
 	}
 

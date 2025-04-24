@@ -1,5 +1,5 @@
 package msg;
-import adress.XGAddress;import adress.XGAddressRange;import adress.XGAddressableSet;import module.XGDrumsetModuleType;import module.XGModuleType;import javax.swing.*;
+import adress.XGAddress;import adress.XGAddressableSet;import module.XGDrumsetModuleType;import module.XGModuleType;
 
 public class XGClippboard extends XGAddressableSet<XGMessageBulkDump> implements XGMessenger
 {

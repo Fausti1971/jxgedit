@@ -1,7 +1,6 @@
 package device;
 
-import static application.XGLoggable.LOG;
-import javax.sound.midi.Receiver;
+import application.XGLoggable;import javax.sound.midi.Receiver;
 import javax.sound.midi.Transmitter;
 
 public class XGNoneMidiTransmitter implements Transmitter
@@ -17,6 +16,6 @@ public class XGNoneMidiTransmitter implements Transmitter
 	}
 
 	public void close()
-	{	LOG.info("close");
+	{	XGLoggable.LOG.info("close");
 	}
 }

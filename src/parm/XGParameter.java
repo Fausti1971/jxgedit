@@ -1,6 +1,6 @@
 package parm;
 import application.*;
-import table.XGTable;import static table.XGTable.TABLES;import table.XGVirtualTable;import xml.XMLNode;
+import table.XGTable;import table.XGVirtualTable;import xml.XMLNode;
 
 public class XGParameter implements XGLoggable, XGParameterConstants
 {	private static final int MAX_SHORTNAME_LENGTH = 6;
@@ -14,7 +14,7 @@ public class XGParameter implements XGLoggable, XGParameterConstants
 	private final boolean isValid;
 
 	public XGParameter(XMLNode n)
-	{	this.translationTable = TABLES.getOrDefault(n.getStringAttribute(ATTR_TABLE), XGVirtualTable.DEF_TABLE).filter(n);
+	{	this.translationTable = XGTable.TABLES.getOrDefault(n.getStringAttribute(ATTR_TABLE), XGVirtualTable.DEF_TABLE).filter(n);
 		this.minValue = n.getValueAttribute(ATTR_MIN, UNLIMITED);//falls keine ATTR_MIN angegeben wurde wird min auf UNLIMITED gesetzt, d.h. dass die Range durch die Table bestimmt wird
 		this.maxValue = n.getValueAttribute(ATTR_MAX, UNLIMITED);//falls keine ATTR_MAX angegeben wurde wird max auf UNLIMITED gesetzt, d.h. dass die Range durch die Table bestimmt wird
 		this.defaultValue = n.getValueAttribute(ATTR_DEFAULT, this.getMinValue());

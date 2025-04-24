@@ -6,9 +6,7 @@ import javax.swing.*;
 import adress.XGIdentifiableSet;import application.*;
 import device.*;
 import file.XGDatafile;
-import static java.awt.BorderLayout.*;
 import module.*;
-import static module.XGModuleType.MODULE_TYPES;
 import value.XGValue;import xml.*;
 
 public class XGMainWindow extends XGWindow
@@ -19,9 +17,9 @@ public class XGMainWindow extends XGWindow
 	public XGMainWindow(XMLNode cfg)
 	{	super(null, "main");
 		this.setLayout(new BorderLayout(GAP, GAP));
-		this.add(this.createToolbar(), NORTH);
-		this.add(this.createContent(), CENTER);
-		this.add(new XGStatusBar(), SOUTH);
+		this.add(this.createToolbar(), BorderLayout.NORTH);
+		this.add(this.createContent(), BorderLayout.CENTER);
+		this.add(new XGStatusBar(), BorderLayout.SOUTH);
 		this.setVisible(true);
 	}
 
@@ -50,7 +48,7 @@ public class XGMainWindow extends XGWindow
 
 		JTabbedPane tabPane = new JTabbedPane();
 
-		for(XGModuleType mt : MODULE_TYPES)
+		for(XGModuleType mt : XGModuleType.MODULE_TYPES)
 		{	XGIdentifiableSet<XGModule> set = mt.getModules();
 			XGButton2 button;
 			if(set.size() == 1)
@@ -71,8 +69,8 @@ public class XGMainWindow extends XGWindow
 				tabPane.addTab(mt.getName(), new JScrollPane(table));
 			}
 		}
-		content.add(sysPane, NORTH);
-		content.add(tabPane, CENTER);
+		content.add(sysPane, BorderLayout.NORTH);
+		content.add(tabPane, BorderLayout.CENTER);
 		return content; 
 	}
 

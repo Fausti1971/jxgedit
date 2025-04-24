@@ -1,6 +1,6 @@
 package msg;
 
-import static application.XGLoggable.LOG; /**
+import application.XGLoggable; /**
  * qualifiziert das implementierende Object als XGMessage-Source und -Destination und stellt damit die Schnittstelle zu einem Endpunkt der Außenwelt (midi, file, mem) dar
  */
 public interface XGMessenger
@@ -16,11 +16,11 @@ public interface XGMessenger
 * @exception XGMessengerException falls der Messenger die Anwort nicht verarbeiten kann oder allgemeine Fehler auftraten
 */
 	default void submit(XGMessageParameterChange res) throws XGMessengerException
-	{	LOG.severe(this + DEF_ERROR + res);
+	{	XGLoggable.LOG.severe(this + DEF_ERROR + res);
 	}
 
 	default void submit(XGMessageBulkDump res) throws XGMessengerException
-	{	LOG.severe(this + DEF_ERROR + res);
+	{	XGLoggable.LOG.severe(this + DEF_ERROR + res);
 	}
 
 /**
@@ -29,7 +29,7 @@ public interface XGMessenger
 * @exception XGMessengerException falls der Messenger nicht imstande ist, den Request zu beantworten oder allgemeine Fehler auftraten
 */
 	default void submit(XGMessageParameterRequest req) throws XGMessengerException
-	{	LOG.severe(this + DEF_ERROR + req);
+	{	XGLoggable.LOG.severe(this + DEF_ERROR + req);
 	}
 
 /**
@@ -38,7 +38,7 @@ public interface XGMessenger
 * @exception XGMessengerException falls der Messenger nicht imstande ist, den Request zu bearbeiten
 */
 	default void submit(XGMessageBulkRequest req) throws XGMessengerException
-	{	LOG.severe(this + DEF_ERROR + req);
+	{	XGLoggable.LOG.severe(this + DEF_ERROR + req);
 	}
 
 	@Override String toString();

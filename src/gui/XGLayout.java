@@ -1,6 +1,6 @@
 package gui;
 
-import static application.XGLoggable.LOG;import application.XGMath;import application.XGStrings;
+import application.XGMath;import application.XGStrings;
 import javax.swing.*;import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;

@@ -3,9 +3,7 @@ package value;
 import bulk.XGBulk;
 import parm.XGParameter;
 import table.XGDefaultsTable;
-import static table.XGDefaultsTable.DEFAULTSTABLES;
 import table.XGParameterTable;
-import static table.XGParameterTable.PARAMETERTABLES;
 
 public class XGMutableValue extends XGValue implements XGMutableDefaults, XGMutableParameters
 {
@@ -16,10 +14,10 @@ public class XGMutableValue extends XGValue implements XGMutableDefaults, XGMuta
 	XGMutableValue(XGValueType vt, XGBulk bk)
 	{	super(vt, bk);
 
-		this.parametersTable = PARAMETERTABLES.get(type.parameterTableName);
+		this.parametersTable = XGParameterTable.PARAMETERTABLES.get(type.parameterTableName);
 		if(this.parametersTable == null) throw new RuntimeException("parameter-table \"" + type.parameterTableName + "\" for " + type.getTag() + " not found");
 
-		this.defaultsTable = DEFAULTSTABLES.get(type.defaultsTableName);
+		this.defaultsTable = XGDefaultsTable.DEFAULTSTABLES.get(type.defaultsTableName);
 	}
 
 	public XGValue getThis(){	return this;}

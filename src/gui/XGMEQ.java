@@ -2,7 +2,7 @@ package gui;
 
 import java.awt.*;
 import java.awt.geom.*;
-import application.XGMath;import static gui.XGUI.DEF_GBC;
+import application.XGMath;
 import module.XGModule;
 import tag.*;
 import value.XGFixedValue;
@@ -88,11 +88,11 @@ public class XGMEQ extends JPanel implements XGShaper, XGValueChangeListener
 			this.panel = new XGPointPanel(this, 1, 9, 0, 0, F_MIN, F_MAX, G_MIN, G_MAX, "Octaves", "Gain");
 			this.panel.setName("");
 
-			g1.getValueListeners().add((XGValue v)->{this.panel.repaint();});
-			g2.getValueListeners().add((XGValue v)->{this.panel.repaint();});
-			g3.getValueListeners().add((XGValue v)->{this.panel.repaint();});
-			g4.getValueListeners().add((XGValue v)->{this.panel.repaint();});
-			g5.getValueListeners().add((XGValue v)->{this.panel.repaint();});
+			g1.getValueListeners().add((XGValue v)->this.panel.repaint());
+			g2.getValueListeners().add((XGValue v)->this.panel.repaint());
+			g3.getValueListeners().add((XGValue v)->this.panel.repaint());
+			g4.getValueListeners().add((XGValue v)->this.panel.repaint());
+			g5.getValueListeners().add((XGValue v)->this.panel.repaint());
 
 			f1.getValueListeners().add(this);
 			f2.getValueListeners().add(this);
@@ -100,17 +100,17 @@ public class XGMEQ extends JPanel implements XGShaper, XGValueChangeListener
 			f4.getValueListeners().add(this);
 			f5.getValueListeners().add(this);
 
-			q1.getValueListeners().add((XGValue v)->{this.panel.repaint();});
-			q2.getValueListeners().add((XGValue v)->{this.panel.repaint();});
-			q3.getValueListeners().add((XGValue v)->{this.panel.repaint();});
-			q4.getValueListeners().add((XGValue v)->{this.panel.repaint();});
-			q5.getValueListeners().add((XGValue v)->{this.panel.repaint();});
+			q1.getValueListeners().add((XGValue v)->this.panel.repaint());
+			q2.getValueListeners().add((XGValue v)->this.panel.repaint());
+			q3.getValueListeners().add((XGValue v)->this.panel.repaint());
+			q4.getValueListeners().add((XGValue v)->this.panel.repaint());
+			q5.getValueListeners().add((XGValue v)->this.panel.repaint());
 
-			s1.getValueListeners().add((XGValue v)->{this.panel.repaint();});
-			s5.getValueListeners().add((XGValue v)->{this.panel.repaint();});
+			s1.getValueListeners().add((XGValue v)->this.panel.repaint());
+			s5.getValueListeners().add((XGValue v)->this.panel.repaint());
 
 			this.setLayout(new GridBagLayout());
-			this.add(this.panel, DEF_GBC);
+			this.add(this.panel, XGUI.DEF_GBC);
 
 		//float q = 0;
 		//for(int i = Q_MIN; i <= Q_MAX; i++)

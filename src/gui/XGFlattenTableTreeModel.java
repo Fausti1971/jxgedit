@@ -5,7 +5,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 import table.XGTable;
-import table.XGTableEntry;
 
 public class XGFlattenTableTreeModel implements TreeModel
 {

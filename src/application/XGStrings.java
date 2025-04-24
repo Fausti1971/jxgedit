@@ -1,6 +1,6 @@
 package application;
 
-import static application.XGLoggable.LOG;import java.awt.*;import java.util.*;
+import java.awt.*;import java.util.*;
 
 public interface XGStrings
 {
@@ -11,7 +11,7 @@ public interface XGStrings
 	String TEXT_REPLACEMENT = "_";
 	String[] KEY = {"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
 
-	static String toAlNum(String dirty)
+	static String toAlphaNumeric(String dirty)
 	{	return dirty.replaceAll(REGEX_NON_ALNUM, TEXT_REPLACEMENT);
 	}
 
@@ -73,7 +73,7 @@ public interface XGStrings
 
 	static boolean isNumber(String name){	return name.matches(REGEX_NUM);}
 
-	static boolean isAlNum(String name){	return name.matches(REGEX_ALNUM);}
+	static boolean isNotAlphaNumeric(String name){	return !name.matches(REGEX_ALNUM);}
 
 	static String commonString(String s1, String s2)
 	{	int i = 0, last = Math.min(s1.length(), s2.length());
@@ -91,7 +91,7 @@ public interface XGStrings
 	static Rectangle toRectangle(String s)
 	{	Rectangle r = new Rectangle();
 		String[] n = s.split(",");
-		if(n.length != 4) throw new RuntimeException(s + " contains " + n.length + " tokens! (4 tokens expected)");
+		if(n.length != 4) throw new RuntimeException(s + " contains " + n.length + " comma-separated tokens! (4 tokens expected)");
 		for(String c : n) if(!XGStrings.isNumber(c)) throw new RuntimeException("token " + c + " of string " + s + " is not a number!"); 
 		r.x = Integer.parseInt(n[0]);
 		r.y = Integer.parseInt(n[1]);
@@ -143,9 +143,9 @@ public interface XGStrings
 */
 	static String toShortName(String name, int length)
 	{	if(name.length() <= length) return name;
-		String[] words = name.split(" |\\/");
+		String[] words = name.split("[ /]");
 		int i = 0;
-		for(String s : words) words[i++] = s.replaceAll("a|e|i|o|u", "");
+		for(String s : words) words[i++] = s.replaceAll("[aeiou]", "");
 		int lettersPerWord = length / words.length;
 		StringBuilder res = new StringBuilder();
 		for(String s : words){	res.append(s,0, Math.min(s.length(), lettersPerWord));}
@@ -186,4 +186,4 @@ public interface XGStrings
 	}
 
 	static String encodeKey(int key){	return KEY[key % 12] + (key/12 - 2);}
-	}
+}

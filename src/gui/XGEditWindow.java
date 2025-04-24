@@ -7,7 +7,6 @@ import device.XGMidi;import file.XGDatafile;import module.XGDrumsetModuleType;
 import module.XGInsertionModule;
 import module.XGModule;
 import module.XGModuleType;
-import static module.XGModuleType.MODULE_TYPES;
 import tag.XGTagable;
 import tag.XGTagableIdentifiableSet;
 import xml.XGProperty;
@@ -74,8 +73,8 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 		tb.addAction(ACTION_LOADFILE, "Open", "load " + this.module + " from datadumpfile", (ActioEvent)->XGDatafile.load(this.module));
 		tb.addAction(ACTION_SAVEFILE, "Save", "save " + this.module + " to datadumpfile", (ActioEvent)->XGDatafile.save(this.module));
 		tb.addSeparator();
-		tb.addAction(ACTION_COPY, "Copy", "copy " + this.module + " to clippboard", (ActionEvent e) ->{this.module.copy();});
-		tb.addAction(ACTION_PASTE, "Paste", "paste clippboard to " + this.module, (ActionEvent e) ->{this.module.paste();});
+		tb.addAction(ACTION_COPY, "Copy", "copy " + this.module + " to clippboard", (ActionEvent e) ->this.module.copy());
+		tb.addAction(ACTION_PASTE, "Paste", "paste clippboard to " + this.module, (ActionEvent e) ->this.module.paste());
 		tb.addSeparator();
 		tb.addAction(XGUI.ACTION_REQUEST, "Request", "request " + this.module +  " from " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> this.module.requestAll(XGMidi.getMidi())).start());
 		tb.addAction(XGUI.ACTION_TRANSMIT, "Transmit", "transmit " + this.module + " to " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> this.module.transmitAll(XGMidi.getMidi())).start());
@@ -162,7 +161,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 
 		JButton b;
 		int y = 0;
-		for(XGModuleType mt : MODULE_TYPES)
+		for(XGModuleType mt : XGModuleType.MODULE_TYPES)
 		{	if(mt instanceof XGDrumsetModuleType)
 			{	b = new JButton("Reset " + mt.getName());
 				b.addActionListener((ActionEvent e)->((XGDrumsetModuleType)mt).reset());

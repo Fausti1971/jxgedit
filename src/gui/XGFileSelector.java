@@ -12,7 +12,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileFilter;
 import application.XGStrings;
-import file.*;
 
 public class XGFileSelector extends JFileChooser implements XGUI, DocumentListener, ActionListener, XGStrings
 {

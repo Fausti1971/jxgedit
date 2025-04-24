@@ -1,13 +1,10 @@
 package value;
 
 import adress.XGIdentifiable;
-import application.XGLoggable;
-import static application.XGLoggable.LOG;
-import module.XGDrumsetModuleType;
+import application.XGLoggable;import module.XGDrumsetModuleType;
 import module.XGModuleType;
 import table.XGDefaultsTable;
-import static value.XGFixedValue.DEF_DEFAULTSELECTOR;
-import static xml.XMLNodeConstants.ATTR_DEFAULTSELECTOR;
+import xml.XMLNodeConstants;
 
 public interface XGMutableDefaults extends XGIdentifiable
 {
@@ -48,8 +45,8 @@ public interface XGMutableDefaults extends XGIdentifiable
 		}
 
 		else
-		{	LOG.warning(ATTR_DEFAULTSELECTOR + " " + dst + " not found for value " + v.getTag());
-			this.setDefaultsSelector(DEF_DEFAULTSELECTOR);
+		{	XGLoggable.LOG.warning(XMLNodeConstants.ATTR_DEFAULTSELECTOR + " " + dst + " not found for value " + v.getTag());
+			this.setDefaultsSelector(XGFixedValue.DEF_DEFAULTSELECTOR);
 		}
 	}
 }

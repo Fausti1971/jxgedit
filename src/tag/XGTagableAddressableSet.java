@@ -3,7 +3,7 @@ package tag;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Set;
-import adress.XGAddress;import adress.XGAddressRange;
+import adress.XGAddress;
 import adress.XGAddressable;
 import adress.XGAddressableSet;
 import application.XGLoggable;

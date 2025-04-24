@@ -1,7 +1,7 @@
 package gui;
 
 import application.XGStrings;import xml.XMLNode;import java.awt.*;
-import javax.swing.*;import javax.swing.border.Border;import javax.swing.border.EtchedBorder;import javax.swing.border.LineBorder;import javax.swing.border.TitledBorder;
+import javax.swing.*;import javax.swing.border.Border;import javax.swing.border.TitledBorder;
 
 public class XGFrame extends JPanel implements XGComponent
 {

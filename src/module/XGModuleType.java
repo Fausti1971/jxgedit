@@ -5,7 +5,7 @@ import java.util.Set;
 import adress.*;
 import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import config.XGConfigurable;
 import application.XGLoggable;
-import msg.XGClippboard;import table.XGTable;import static table.XGTable.TABLES;import static table.XGTableConstants.TABLE_NONE;import static table.XGVirtualTable.DEF_TABLE;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;
+import msg.XGClippboard;import table.XGTable;import table.XGTableConstants;import table.XGVirtualTable;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen
@@ -75,7 +75,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 	{	this.config = cfg;
 		this.name = new StringBuffer(name);
 		this.tag = cfg.getStringAttribute(ATTR_ID);
-		this.idTranslator = TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TABLE), TABLES.get(TABLE_NONE));
+		this.idTranslator = XGTable.TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TABLE), XGTable.TABLES.get(XGTableConstants.TABLE_NONE));
 		
 		this.addressRange = new XGAddressRange(cfg.getStringAttribute(ATTR_ADDRESS));
 
@@ -91,7 +91,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 	{	this.config = cfg;
 		this.name = new StringBuffer(name);
 		this.tag = cfg.getStringAttribute(ATTR_ID);
-		this.idTranslator = TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TABLE), DEF_TABLE);
+		this.idTranslator = XGTable.TABLES.getOrDefault(cfg.getStringAttribute(ATTR_TABLE), XGVirtualTable.DEF_TABLE);
 
 		XGAddressRange adr = new XGAddressRange(cfg.getStringAttribute(ATTR_ADDRESS));
 		this.addressRange = new XGAddressRange(new XGAddressField(hi), adr.getMid(), adr.getLo());

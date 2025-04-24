@@ -36,10 +36,10 @@ public class XGPitchEnvelope extends JPanel implements XGComponent, XGShaper, XG
 		panel = new XGPointPanel(this, 1, 2, 0, 64, 0, 384, 0, 127, "Time", "Pitch");
 		panel.addMouseListener(this);
 
-		this.attackL.getValueListeners().add((XGValue v)->{panel.repaint();});
-		this.attackT.getValueListeners().add((XGValue v)->{panel.repaint();});
-		this.releaseL.getValueListeners().add((XGValue v)->{panel.repaint();});
-		this.releaseT.getValueListeners().add((XGValue v)->{panel.repaint();});
+		this.attackL.getValueListeners().add((XGValue v)->panel.repaint());
+		this.attackT.getValueListeners().add((XGValue v)->panel.repaint());
+		this.releaseL.getValueListeners().add((XGValue v)->panel.repaint());
+		this.releaseT.getValueListeners().add((XGValue v)->panel.repaint());
 
 		this.setLayout(new GridBagLayout());
 		this.add(panel, DEF_GBC);

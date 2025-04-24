@@ -65,6 +65,10 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 		this.setEnabled(p.isValid());
 		this.setVisible(p.isValid());
 		this.repaint();
+		if(this.dialog != null)
+		{	this.dialog.dispose();
+			this.dialog = null;
+		}
 	}
 
 	@Override public XGValue[] getValues(){	return new XGValue[]{this.value};}
@@ -90,7 +94,8 @@ public class XGProgramSelector extends XGFrame implements XGParameterChangeListe
 			this.setLayout(new BorderLayout());
 			this.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 
-			JTextField filterBar = new JTextField();filterBar.getDocument().addDocumentListener(this);
+			JTextField filterBar = new JTextField();
+			filterBar.getDocument().addDocumentListener(this);
 			this.add(filterBar, BorderLayout.NORTH);
 			this.add(new JScrollPane(this.createContent()), BorderLayout.CENTER);
 //			this.setContentPane(new JScrollPane(this.createContent()));

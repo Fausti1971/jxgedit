@@ -1,18 +1,17 @@
 package value;
 import java.util.LinkedHashSet;
-import java.util.Set;import java.util.function.Consumer;
+import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
 import application.XGLoggable;
 import bulk.XGBulk;import device.*;
 import module.*;
-import static module.XGModuleType.MODULE_TYPES;
 import msg.*;
 import parm.XGParameter;
 import parm.XGParameterChangeListener;
 import parm.XGParameterConstants;
 import table.XGTableEntry;
-import tag.*;import static value.XGValueType.MP_PM_VALUE_TAG;import static value.XGValueType.MP_PRG_VALUE_TAG;
+import tag.*;
 
 /**
  * 
@@ -27,7 +26,7 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 	public static void init()
 	{	XGAddressableSet<XGValue> pool = new XGAddressableSet<>();
 	
-		for(XGModuleType mt : MODULE_TYPES)
+		for(XGModuleType mt : XGModuleType.MODULE_TYPES)
 		{	for(XGModule mod : mt.getModules())
 			{	for(XGBulk blk : mod.getBulks())
 				{	for(XGValueType opc : blk.getType().getValueTypes())
@@ -44,8 +43,8 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 	}
 
 	private static XGValue newValue(XGValueType vt, XGBulk blk)
-	{	if(MP_PRG_VALUE_TAG.equals(vt.tag)) return new XGMultipartProgramValue(vt, blk);
-		if(MP_PM_VALUE_TAG.equals(vt.tag)) return new XGMultipartModeValue(vt, blk);
+	{	if(XGValueType.MP_PRG_VALUE_TAG.equals(vt.tag)) return new XGMultipartProgramValue(vt, blk);
+		if(XGValueType.MP_PM_VALUE_TAG.equals(vt.tag)) return new XGMultipartModeValue(vt, blk);
 		if(vt.hasMutableParameters() && vt.hasMutableDefaults()) return new XGMutableValue(vt, blk);
 		if(vt.hasMutableParameters()) return new XGMutableParametersValue(vt, blk);
 		if(vt.hasMutableDefaults()) return new XGMutableDefaultsValue(vt, blk);
@@ -204,7 +203,7 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 	{	try
 		{	XGMidi.getMidi().submit(new XGMessageParameterRequest(this, this));
 		}
-		catch(XGInvalidAddressException | InvalidMidiDataException | XGMessengerException e)
+		catch(XGMessengerException | InvalidMidiDataException e)
 		{	e.printStackTrace();
 		}
 	}
@@ -224,7 +223,7 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 		this.setValue(this.type.codec.decode(res, offset, this.getSize()), false, false);
 	}
 
-	@Override public void submit(XGMessageParameterChange res) throws XGMessengerException
+	@Override public void submit(XGMessageParameterChange res)
 	{	this.setValue(this.type.codec.decode(res, res.getBaseOffset(), this.getSize()), false, false);
 	}
 

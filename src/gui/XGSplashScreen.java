@@ -1,7 +1,6 @@
 package gui;
 
-import static application.XGLoggable.LOG;
-import javax.swing.*;import javax.swing.text.DefaultCaret;
+import application.XGLoggable;import javax.swing.*;import javax.swing.text.DefaultCaret;
 import java.awt.*;import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -26,7 +25,7 @@ public class XGSplashScreen extends JFrame
 			{
 			}
 		};
-		LOG.addHandler(this.handler);
+		XGLoggable.LOG.addHandler(this.handler);
 		this.getContentPane().add(new JScrollPane(status));
 
 		this.setResizable(true);
@@ -36,7 +35,7 @@ public class XGSplashScreen extends JFrame
 	}
 
 	public void dispose()
-	{	LOG.removeHandler(this.handler);
+	{	XGLoggable.LOG.removeHandler(this.handler);
 		super.dispose();
 	}
 }

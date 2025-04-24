@@ -1,9 +1,7 @@
 package value;
 
 import parm.XGParameter;
-import static parm.XGParameterConstants.NO_PARAMETER;
-import table.XGParameterTable;
-import static xml.XMLNodeConstants.ATTR_PARAMETERSELECTOR;
+import parm.XGParameterConstants;import table.XGParameterTable;import xml.XMLNodeConstants;
 
 public interface XGMutableParameters
 {
@@ -16,7 +14,7 @@ public interface XGMutableParameters
 	XGValue getThis();
 
 	default XGParameter getParameter()
-	{	return this.getParametersTable().getOrDefault(this.getParametersSelector().getValue(), NO_PARAMETER);
+	{	return this.getParametersTable().getOrDefault(this.getParametersSelector().getValue(), XGParameterConstants.NO_PARAMETER);
 	}
 
 	default void initParameterDepencies()
@@ -24,7 +22,7 @@ public interface XGMutableParameters
 		assert v.bulk != null;
 		assert v.type != null;
 		XGValue psv = v.bulk.getModule().getValues().get(v.type.parameterSelectorTag);
-		if(psv == null) throw new RuntimeException(ATTR_PARAMETERSELECTOR + " " + v.type.parameterSelectorTag + " not found for value " + v.getTag());
+		if(psv == null) throw new RuntimeException(XMLNodeConstants.ATTR_PARAMETERSELECTOR + " " + v.type.parameterSelectorTag + " not found for value " + v.getTag());
 		this.setParametersSelector(psv);
 		this.getParametersSelector().valueListeners.add((XGValue val)->v.notifyParameterListeners());
 	}

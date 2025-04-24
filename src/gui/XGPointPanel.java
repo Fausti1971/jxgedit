@@ -5,7 +5,7 @@ import java.awt.geom.GeneralPath;
 import java.util.*;
 import javax.swing.*;
 import application.XGMath;
-import static gui.XGUI.*;import value.XGValue;
+import value.XGValue;
 
 public class XGPointPanel extends JPanel implements XGResizeable, XGShaper
 {
@@ -72,23 +72,23 @@ public class XGPointPanel extends JPanel implements XGResizeable, XGShaper
 		Insets ins = this.getInsets();
 		int w = this.getWidth() - (ins.left + ins.right), h = this.getHeight() - (ins.top + ins.bottom);
 //background
-		this.g2.setColor(COL_BAR_BACK);
+		this.g2.setColor(XGUI.COL_BAR_BACK);
 		this.g2.fillRect(ins.left, ins.top, w, h);
 //grid
 		this.g2.setColor(Color.gray);
-		this.g2.setStroke(DEF_DOTTED_STROKE);
+		this.g2.setStroke(XGUI.DEF_DOTTED_STROKE);
 		for(int i : this.vLines) g2.drawLine(i, ins.top, i, h);
 		for(int i : this.hLines) g2.drawLine(ins.left, i, w, i);
 //polygon
-		this.g2.addRenderingHints(AALIAS);//keine dotted stroke mit Antialiasing
+		this.g2.addRenderingHints(XGUI.AALIAS);//keine dotted stroke mit Antialiasing
 //		GradientPaint grp = new GradientPaint(0, 0, COL_BAR_BACK, 0, h, COL_SHAPE,false);
 //		g2.setPaint(grp);
 		Shape shp = this.shaper.getShape(this.getBounds());
-		this.g2.setColor(COL_SHAPE);
+		this.g2.setColor(XGUI.COL_SHAPE);
 		this.g2.fill(shp);
 //polygonline
-		this.g2.setColor(COL_BAR_FORE);
-		this.g2.setStroke(DEF_SMALL_STROKE);
+		this.g2.setColor(XGUI.COL_BAR_FORE);
+		this.g2.setStroke(XGUI.DEF_SMALL_STROKE);
 		this.g2.draw(shp);
 //units
 		this.g2.setColor(this.getBackground().darker());

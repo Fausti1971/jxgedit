@@ -1,7 +1,6 @@
 package gui;
 
 import xml.XMLNode;import javax.swing.*;import javax.swing.event.PopupMenuEvent;import javax.swing.event.PopupMenuListener;
-import java.awt.*;import java.awt.event.*;
 import java.util.Collection;
 
 public class XGPopup<T> extends JPopupMenu implements PopupMenuListener

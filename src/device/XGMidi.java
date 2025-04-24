@@ -14,8 +14,8 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 	private static final Object LOCK = new Object();
 	private static volatile XGRequest request = null;
 	private static volatile Thread requestThread = null;
-	public static Set<Info> INPUTS = new LinkedHashSet<>();
-	public static Set<Info> OUTPUTS = new LinkedHashSet<>();
+	public static final Set<Info> INPUTS = new LinkedHashSet<>();
+	public static final Set<Info> OUTPUTS = new LinkedHashSet<>();
 
 	public static XGMidi getMidi()
 	{	if(MIDI == null) XGMidi.init();

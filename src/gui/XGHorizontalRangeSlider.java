@@ -166,7 +166,7 @@ public class XGHorizontalRangeSlider extends XGFrame implements XGParameterConst
 
 /************************************************************************************************************/
 
-	private class XGRangeLabel extends XGValueLabel
+	private static class XGRangeLabel extends XGValueLabel
 	{
 	/*****************************************************************************************************/
 

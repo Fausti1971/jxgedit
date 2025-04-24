@@ -1,9 +1,7 @@
 package ods;
 
-import application.XGStrings;
 import com.github.miachm.sods.Sheet;
-import static module.XGDrumsetModuleType.DRUMNAMES;
-import table.XGTableEntry;
+import module.XGDrumsetModuleType;import table.XGTableEntry;
 import java.util.*;
 
 public interface DrumNames
@@ -39,7 +37,7 @@ public interface DrumNames
 							n = s.getRange(row, col).getCell(0,0).getValue();
 //							System.out.println("s=" + s.getName() + ", k="+ key + " " + row + "/" + col + " (" + n + ")");
 							if(n instanceof String)
-							{	DRUMNAMES.get(key).add(new XGTableEntry(sum, (String)n));
+							{	XGDrumsetModuleType.DRUMNAMES.get(key).add(new XGTableEntry(sum, (String)n));
 								DONE.add(sum);
 							}
 						}

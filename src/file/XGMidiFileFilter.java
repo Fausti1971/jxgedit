@@ -1,7 +1,7 @@
 package file;
 
 import gui.XGMainWindow;import msg.XGMessage;import msg.XGMessageBulkDump;import javax.sound.midi.*;import javax.swing.*;import java.io.EOFException;
-import java.io.IOException;import java.util.Map;
+import java.io.IOException;
 
 public class XGMidiFileFilter extends XGDatafileFilter
 {

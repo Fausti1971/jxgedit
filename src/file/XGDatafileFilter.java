@@ -1,13 +1,13 @@
 package file;
 
-import application.XGLoggable;import gui.XGFileSelector;import gui.XGListSelectionPane;import gui.XGMainWindow;import java.io.File;import java.io.IOException;import java.nio.file.CopyOption;import java.nio.file.Files;import java.nio.file.Path;import java.nio.file.StandardCopyOption;
-import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;import javax.swing.filechooser.FileFilter;
+import application.XGLoggable;import java.io.File;import java.io.IOException;
+import javax.sound.midi.InvalidMidiDataException;import javax.swing.filechooser.FileFilter;
 
 public abstract class XGDatafileFilter extends FileFilter implements XGLoggable
 {
-	public static XGDatafileFilter SYX_FILEFILTER = new XGSysexFileFilter();
-	public static XGDatafileFilter MID_FILEFILTER = new XGMidiFileFilter();
-	public static FileFilter SUPPORTED_FILEFILTER = new FileFilter()
+	public static final XGDatafileFilter SYX_FILEFILTER = new XGSysexFileFilter();
+	public static final XGDatafileFilter MID_FILEFILTER = new XGMidiFileFilter();
+	public static final FileFilter SUPPORTED_FILEFILTER = new FileFilter()
 	{	@Override public String getDescription()
 		{	return "All Supported Files";
 		}
@@ -26,7 +26,7 @@ public abstract class XGDatafileFilter extends FileFilter implements XGLoggable
 
 	abstract String getSuffix();
 	abstract void read(XGDatafile f)throws IOException;
-	abstract void write(XGDatafile f)throws InvalidMidiDataException, IOException;
+	abstract void write(XGDatafile f);
 
 	@Override public boolean accept(File f)
 	{	if(f.isDirectory()) return true;

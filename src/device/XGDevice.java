@@ -9,7 +9,6 @@ import application.JXG;
 import application.XGStrings;import config.XGConfigurable;import file.XGDatafile;
 import bulk.XGBulk;import bulk.XGBulkDumper;import gui.XGMainWindow;import module.XGModule;
 import module.XGModuleType;
-import static module.XGModuleType.MODULE_TYPES;
 import msg.*;
 import value.XGProgramBuffer;
 import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;
@@ -18,8 +17,8 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 {
 	public static XGDevice DEVICE = null;
 	private static final String WARNSTRING = "This will reset all parameters!";
-	static int DEF_SYSEXID = 0;
-	public static String DEF_DEVNAME = "XG";
+	static final int DEF_SYSEXID = 0;
+	public static final String DEF_DEVNAME = "XG";
 
 	public static void init()
 	{	XMLNode xml = JXG.config.getChildNodeOrNew(TAG_DEVICE);
@@ -95,7 +94,7 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().submit(new XGMessageParameterChange(this, new byte[]{0,0,0,0,0,0,0x7E,0,0}, true));
-			for(XGModuleType mt : MODULE_TYPES) mt.resetValues();
+			for(XGModuleType mt : XGModuleType.MODULE_TYPES) mt.resetValues();
 		}
 		catch(InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
@@ -109,7 +108,7 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().transmit(new SysexMessage(new byte[]{(byte)0xF0,0x7E,0x7F,0x09,0x01,(byte)0xF7}, 6));
-			for(XGModuleType mt : MODULE_TYPES) mt.resetValues();
+			for(XGModuleType mt : XGModuleType.MODULE_TYPES) mt.resetValues();
 		}
 		catch(InvalidMidiDataException e)
 		{	e.printStackTrace();
@@ -123,7 +122,7 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().submit(new XGMessageParameterChange(this, new byte[]{0,0,0,0,0,0,0x7F,0,0}, true));
-			for(XGModuleType mt : MODULE_TYPES) mt.resetValues();
+			for(XGModuleType mt : XGModuleType.MODULE_TYPES) mt.resetValues();
 		}
 		catch(InvalidMidiDataException | XGMessengerException e1)
 		{	LOG.severe(e1.getMessage());
@@ -149,7 +148,7 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 
 	@Override public XGAddressableSet<XGBulk> getBulks()
 	{	XGAddressableSet<XGBulk> set = new XGAddressableSet<>();
-		for(XGModuleType mt : MODULE_TYPES)
+		for(XGModuleType mt : XGModuleType.MODULE_TYPES)
 			for(XGModule mi : mt.getModules())
 				set.addAll(mi.getBulks());
 		return set;

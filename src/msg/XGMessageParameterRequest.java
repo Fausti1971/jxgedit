@@ -13,7 +13,7 @@ public class XGMessageParameterRequest extends XGRequest
 	{	super(src, array, init);
 	}
 
-	public XGMessageParameterRequest(XGMessenger src, XGValue val) throws XGInvalidAddressException, InvalidMidiDataException
+	public XGMessageParameterRequest(XGMessenger src, XGValue val) throws  InvalidMidiDataException
 	{	super(src, new byte[8], true);
 		this.setMessageID(MSG);
 		this.setAddress(val.getAddress());

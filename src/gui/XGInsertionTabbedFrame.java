@@ -1,6 +1,6 @@
 package gui;
 
-import static application.XGLoggable.LOG;import module.XGInsertionModule;import module.XGModule;import value.XGValue;import value.XGValueChangeListener;import xml.XMLNode;import java.awt.event.ComponentEvent;import java.awt.event.ComponentListener;import java.beans.PropertyChangeEvent;import java.beans.PropertyChangeListener;
+import module.XGInsertionModule;import value.XGValue;import value.XGValueChangeListener;import xml.XMLNode;import java.beans.PropertyChangeEvent;import java.beans.PropertyChangeListener;
 
 public class XGInsertionTabbedFrame extends XGTabbedFrame implements XGValueChangeListener, PropertyChangeListener
 {

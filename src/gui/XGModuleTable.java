@@ -1,9 +1,8 @@
 package gui;
-import static application.XGLoggable.LOG;import application.XGMath;import static gui.XGUI.*;import module.*;import value.XGValue;
+import application.XGLoggable;import module.*;import value.XGValue;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;import javax.swing.event.TableModelEvent;import javax.swing.event.TableModelListener;import javax.swing.table.*;import javax.swing.text.TableView;
+import javax.swing.event.ListSelectionEvent;import javax.swing.table.*;
 import java.awt.*;
-import java.util.*;
 
 public class XGModuleTable extends JTable
 {
@@ -19,9 +18,9 @@ public class XGModuleTable extends JTable
 		{	XGValue v = (XGValue)o;
 			String s = v.toString();
 
-			Color bg = COL_BAR_BACK;
-			if(v.getValue() != v.getDefaultValue()) bg = COL_BAR_BACK_CHANGED;
-			if(isSelected) bg = COL_BAR_BACK_DARK;
+			Color bg = XGUI.COL_BAR_BACK;
+			if(v.getValue() != v.getDefaultValue()) bg = XGUI.COL_BAR_BACK_CHANGED;
+			if(isSelected) bg = XGUI.COL_BAR_BACK_DARK;
 			DEF_LABEL.setBackground(bg);
 
 			DEF_LABEL.setText(s);
@@ -95,7 +94,7 @@ public class XGModuleTable extends JTable
 					{	((XGValue)o).setValue(valueString, true);
 					}
 					catch(NumberFormatException ex)
-					{	LOG.warning(ex.getMessage());
+					{	XGLoggable.LOG.warning(ex.getMessage());
 					}
 				}
 			}

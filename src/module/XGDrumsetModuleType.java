@@ -4,12 +4,11 @@ import adress.XGInvalidAddressException;
 import adress.XGIdentifiableSet;
 import application.XGStrings;import device.XGDevice;
 import device.XGMidi;
-import msg.XGClippboard;import static msg.XGMessageConstants.*;
-import msg.XGMessageParameterChange;
+import msg.XGClippboard;
+import msg.XGMessageConstants;import msg.XGMessageParameterChange;
 import msg.XGMessengerException;
-import table.XGRealTable;import table.XGTable;import static table.XGTableConstants.TABLE_PARTMODE;import table.XGTableEntry;import table.XGVirtualTable;import value.XGDrumsetProgramValue;
-import static value.XGValueType.MP_PM_VALUE_TAG;
-import static value.XGValueType.MP_PRG_VALUE_TAG;
+import table.*;import value.XGDrumsetProgramValue;
+import value.XGValueType;
 import xml.XMLNode;
 import javax.sound.midi.InvalidMidiDataException;
 import java.io.IOException;
@@ -18,7 +17,7 @@ import java.util.Map;
 
 public class XGDrumsetModuleType extends XGModuleType
 {
-	private static final byte[] RESET_MSG = {(byte)SOX, VENDOR, MSG_PC, MODEL, 0, 0, 0x7D, 0, (byte)EOX};
+	private static final byte[] RESET_MSG = {(byte)XGMessageConstants.SOX, XGMessageConstants.VENDOR, XGMessageConstants.MSG_PC, XGMessageConstants.MODEL, 0, 0, 0x7D, 0, (byte)XGMessageConstants.EOX};
 	public static final Map<Integer, XGDrumsetModuleType> DRUMSETS = new HashMap<>();//partmode, Drumset
 	public static final Map<Integer, XGRealTable> DRUMNAMES = new HashMap<>();//key, <drumprg, drumname>
 	private static final int DEF_DRUMSETPROGRAM = 127 << 14;
@@ -54,7 +53,7 @@ public class XGDrumsetModuleType extends XGModuleType
 		this.tag += this.partmode - 1;
 		this.name.append(" ").append(this.partmode - 1);
 
-		((XGRealTable)XGTable.TABLES.get(TABLE_PARTMODE)).add(new XGTableEntry(this.partmode, this.name.toString()));
+		((XGRealTable)XGTable.TABLES.get(XGTableConstants.TABLE_PARTMODE)).add(new XGTableEntry(this.partmode, this.name.toString()));
 		this.idTranslator = new XGVirtualTable(this.partmode, this.partmode, this.tag, this::getDrumname, (String s)->this.partmode);
 		this.programListener = new XGDrumsetProgramValue(this);
 		DRUMSETS.put(this.partmode, this);
@@ -79,7 +78,7 @@ public class XGDrumsetModuleType extends XGModuleType
 	private XGIdentifiableSet<XGModule> getMultiparts()
 	{	XGIdentifiableSet<XGModule> mp = new XGIdentifiableSet<>();
 		for(XGModule mod : MODULE_TYPES.get("mp").getModules())
-		{	if(mod.getValues().get(MP_PM_VALUE_TAG).getValue() == this.partmode) mp.add(mod);
+		{	if(mod.getValues().get(XGValueType.MP_PM_VALUE_TAG).getValue() == this.partmode) mp.add(mod);
 		}
 		return mp;
 	}
@@ -91,7 +90,7 @@ public class XGDrumsetModuleType extends XGModuleType
 	public void setProgram(int prg)
 	{	this.program = prg;
 		for(XGModule mod : this.getMultiparts())
-		{	mod.getValues().get(MP_PRG_VALUE_TAG).setValue(prg, false, false);
+		{	mod.getValues().get(XGValueType.MP_PRG_VALUE_TAG).setValue(prg, false, false);
 		}
 		this.programListener.notifyValueListeners(this.programListener);
 	}

@@ -1,18 +1,16 @@
 package module;
 
-import java.awt.event.ActionEvent;import java.util.LinkedHashSet;
-import java.util.Set;
 import adress.XGInvalidAddressException;
 import adress.XGAddressableSet;
 import adress.XGIdentifiable;import application.*;
-import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import device.XGMidi;import gui.XGMainWindow;import static module.XGModuleType.MODULE_TYPES;
-import msg.*;import table.XGRealTable;import static table.XGTable.TABLES;import static table.XGTableConstants.TABLE_FX_PARTS;import table.XGTableEntry;import tag.*;
-import value.*;import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;
+import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;
+import msg.*;import table.XGRealTable;import table.XGTable;import table.XGTableConstants;import table.XGTableEntry;import tag.*;
+import value.*;import javax.sound.midi.InvalidMidiDataException;
 
 public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLoggable, XGBulkDumper, XGIdentifiable, XGTagable, XGMessenger
 {
 	public static void init()
-	{	for(XGModuleType mt : MODULE_TYPES)
+	{	for(XGModuleType mt : XGModuleType.MODULE_TYPES)
 		{	for(int id : mt.getAddressRange().getMid())
 			{	try
 				{	mt.getModules().add(newModule(mt, id));
@@ -43,7 +41,7 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 		{	this.bulks.add(new XGBulk(bt, this));
 		}
 
-		XGRealTable tab = (XGRealTable)TABLES.get(TABLE_FX_PARTS);
+		XGRealTable tab = (XGRealTable)XGTable.TABLES.get(XGTableConstants.TABLE_FX_PARTS);
 		String tag = mt.getTag();
 		if("mp".equals(tag)) tab.add(new XGTableEntry(id, this.toString()));
 		if("ad".equals(tag)) tab.add(new XGTableEntry(id + 64, this.toString()));

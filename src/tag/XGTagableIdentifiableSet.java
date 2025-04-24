@@ -12,7 +12,7 @@ public class XGTagableIdentifiableSet<T extends XGIdentifiable & XGTagable> impl
 	private final Map<String, XGIdentifiableSet<T>> map = new HashMap<>();
 
 	public void add(T obj)
-	{	XGIdentifiableSet<T> set = this.map.getOrDefault(obj.getTag(), new XGIdentifiableSet<T>());
+	{	XGIdentifiableSet<T> set = this.map.getOrDefault(obj.getTag(), new XGIdentifiableSet<>());
 		set.add(obj);
 		this.map.putIfAbsent(obj.getTag(), set);
 	}

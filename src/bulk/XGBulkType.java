@@ -11,7 +11,7 @@ public class XGBulkType implements XGTagable, XGConfigurable
 	final XGModuleType moduleType;
 	final XGTagableSet<XGValueType> valueTypes = new XGTagableSet<>();
 
-	public XGBulkType(XGModuleType mt, XMLNode x)throws XGInvalidAddressException
+	public XGBulkType(XGModuleType mt, XMLNode x)
 	{	this.config = x;
 		this.tag = x.getStringAttribute(ATTR_ID);
 		this.addressRange = new XGAddressRange(x.getStringAttribute(ATTR_ADDRESS), mt.getAddressRange());

@@ -2,7 +2,7 @@ package adress;
 
 import application.XGLoggable;
 
-public class XGAddressRange implements XGLoggable, XGAddressConstants
+@SuppressWarnings("ALL") public class XGAddressRange implements XGLoggable, XGAddressConstants
 {
 	final XGAddressField hi, mid, lo;
 

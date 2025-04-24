@@ -1,11 +1,9 @@
 package table;
 
 import java.util.HashSet;
-import java.util.Set;
+import java.util.Objects;import java.util.Set;
 import application.XGStrings;
-import static table.XGTable.INS_MSB_PROGRAMS;
-import xml.XMLNode;
-import static xml.XMLNodeConstants.*;
+import xml.XMLNode;import xml.XMLNodeConstants;
 
 public class XGTableEntry implements Comparable<XGTableEntry>
 {
@@ -19,11 +17,11 @@ public class XGTableEntry implements Comparable<XGTableEntry>
 
 	public XGTableEntry(XMLNode n)
 	{
-		this.value = n.getValueAttribute(ATTR_VALUE, 0);
-		this.name = n.getStringAttributeOrDefault(ATTR_NAME, "no value");
-		this.filters = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLEFILTER));
-		this.categories = XGStrings.splitCSV(n.getStringAttribute(ATTR_TABLECATEGORIES));
-		if(Boolean.parseBoolean(n.getStringAttribute(ATTR_INS_MSB))) INS_MSB_PROGRAMS.add(this.value);
+		this.value = n.getValueAttribute(XMLNodeConstants.ATTR_VALUE, 0);
+		this.name = n.getStringAttributeOrDefault(XMLNodeConstants.ATTR_NAME, "no value");
+		this.filters = XGStrings.splitCSV(n.getStringAttribute(XMLNodeConstants.ATTR_TABLEFILTER));
+		this.categories = XGStrings.splitCSV(n.getStringAttribute(XMLNodeConstants.ATTR_TABLECATEGORIES));
+		if(Boolean.parseBoolean(n.getStringAttribute(XMLNodeConstants.ATTR_INS_MSB))) XGTable.INS_MSB_PROGRAMS.add(this.value);
 	}
 
 	public XGTableEntry(int v, String translate)
@@ -62,7 +60,7 @@ public class XGTableEntry implements Comparable<XGTableEntry>
 	}
 
 	@Override public boolean equals(Object e)
-	{	if(e instanceof XGTableEntry) return ((XGTableEntry) e).value == this.value;
+	{	if(e instanceof XGTableEntry) return Objects.equals(((XGTableEntry) e).value,this.value);
 		return false;
 	}
 	

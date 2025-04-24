@@ -4,11 +4,9 @@ import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import application.*;
-import static parm.XGParameterConstants.DEF_SELECTORVALUE;
-import tag.XGTagable;
+import parm.XGParameterConstants;import tag.XGTagable;
 import tag.XGTagableSet;
-import xml.XGProperty;import xml.XMLNode;
-import static xml.XMLNodeConstants.*;
+import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;
 /**
  * simple taggable HashMap<Integer, HashMap<Integer, Integer>>, deren erster int der Wert des Selektors, der zweite int der Wert des zugehörigen Defaults ist
  * @author thomas
@@ -17,13 +15,13 @@ import static xml.XMLNodeConstants.*;
 public class XGDefaultsTable implements XGLoggable, XGTagable, XGTableConstants
 {
 	public static final int DEF_DRUMSETPROGRAM = XGStrings.parseValue("127.0.0", 127 << 14);
-	public static final int NO_ID = DEF_SELECTORVALUE;
+	public static final int NO_ID = XGParameterConstants.DEF_SELECTORVALUE;
 	public static final XGTagableSet<XGDefaultsTable> DEFAULTSTABLES = new XGTagableSet<>();
 
 	public static void init()
 	{	try
-		{	XMLNode n = XMLNode.parse(XML_DEFAULTS);
-			for(XMLNode t : n.getChildNodes(TAG_DEFAULTSTABLE))
+		{	XMLNode n = XMLNode.parse(XMLNodeConstants.XML_DEFAULTS);
+			for(XMLNode t : n.getChildNodes(XMLNodeConstants.TAG_DEFAULTSTABLE))
 			{	DEFAULTSTABLES.add(new XGDefaultsTable(t));
 			}
 		}
@@ -34,7 +32,7 @@ public class XGDefaultsTable implements XGLoggable, XGTagable, XGTableConstants
 /**
 * eine Dummy-Defaultstable, die lediglich die id returniert;
 */
-		DEFAULTSTABLES.add(new XGDefaultsTable(ATTR_ID)
+		DEFAULTSTABLES.add(new XGDefaultsTable(XMLNodeConstants.ATTR_ID)
 			{	@Override public int get(int id, int sel)
 				{	return (id);
 				}
@@ -84,23 +82,23 @@ public class XGDefaultsTable implements XGLoggable, XGTagable, XGTableConstants
 	}
 
 	public XGDefaultsTable(XMLNode n)
-	{	this(n.getStringAttribute(ATTR_NAME));
+	{	this(n.getStringAttribute(XMLNodeConstants.ATTR_NAME));
 
 		int id;
-		this.put(NO_ID, DEF_SELECTORVALUE, n.getValueAttribute(ATTR_DEFAULT, 0));//für XGOpcodes ohne mutableDefaults
+		this.put(NO_ID, XGParameterConstants.DEF_SELECTORVALUE, n.getValueAttribute(XMLNodeConstants.ATTR_DEFAULT, 0));//für XGOpcodes ohne mutableDefaults
 
-		if(n.hasChildNode(TAG_ID))
-		{	for(XMLNode i : n.getChildNodes(TAG_ID))
-			{	id = i.getIntegerAttribute(ATTR_VALUE, NO_ID);
-				this.put(id, DEF_SELECTORVALUE, 0);
-				for(XMLNode d : i.getChildNodes(TAG_ITEM))
-				{	this.put(id, d.getValueAttribute(ATTR_SELECTORVALUE, DEF_SELECTORVALUE), d.getValueAttribute(ATTR_VALUE, 0));
+		if(n.hasChildNode(XMLNodeConstants.TAG_ID))
+		{	for(XMLNode i : n.getChildNodes(XMLNodeConstants.TAG_ID))
+			{	id = i.getIntegerAttribute(XMLNodeConstants.ATTR_VALUE, NO_ID);
+				this.put(id, XGParameterConstants.DEF_SELECTORVALUE, 0);
+				for(XMLNode d : i.getChildNodes(XMLNodeConstants.TAG_ITEM))
+				{	this.put(id, d.getValueAttribute(XMLNodeConstants.ATTR_SELECTORVALUE, XGParameterConstants.DEF_SELECTORVALUE), d.getValueAttribute(XMLNodeConstants.ATTR_VALUE, 0));
 				}
 			}
 		}
 		else
-			for(XMLNode d : n.getChildNodes(TAG_ITEM))
-				this.put(NO_ID, d.getValueAttribute(ATTR_SELECTORVALUE, DEF_SELECTORVALUE), d.getValueAttribute(ATTR_VALUE, 0));
+			for(XMLNode d : n.getChildNodes(XMLNodeConstants.TAG_ITEM))
+				this.put(NO_ID, d.getValueAttribute(XMLNodeConstants.ATTR_SELECTORVALUE, XGParameterConstants.DEF_SELECTORVALUE), d.getValueAttribute(XMLNodeConstants.ATTR_VALUE, 0));
 
 //		if(!this.idMap.containsKey(NO_ID)) throw new RuntimeException("table " + this.tag + " has no fallback");
 		LOG.info(this.getClass().getSimpleName() + " " + this.tag + " initialized");
@@ -116,7 +114,7 @@ public class XGDefaultsTable implements XGLoggable, XGTagable, XGTableConstants
 
 	public int get(int id, int sel)
 	{	if(!this.idMap.containsKey(id)) id = NO_ID;
-		if(!this.idMap.get(id).containsKey(sel)) sel = DEF_SELECTORVALUE;
+		if(!this.idMap.get(id).containsKey(sel)) sel = XGParameterConstants.DEF_SELECTORVALUE;
 		return this.idMap.get(id).get(sel);
 	}
 
@@ -124,18 +122,18 @@ public class XGDefaultsTable implements XGLoggable, XGTagable, XGTableConstants
 
 	public XMLNode toXMLNode()//Überbleibsel zum dekodieren der *.ods
 	{	int min = -1, max = -1;
-		XMLNode table = new XMLNode(TAG_DEFAULTSTABLE, new XGProperty(ATTR_NAME, this.tag));
+		XMLNode table = new XMLNode(XMLNodeConstants.TAG_DEFAULTSTABLE, new XGProperty(XMLNodeConstants.ATTR_NAME, this.tag));
 		for(int m : this.idMap.keySet())
-		{	XMLNode id = new XMLNode(TAG_ID, new XGProperty(ATTR_VALUE, XGStrings.valueToString(m)));
+		{	XMLNode id = new XMLNode(XMLNodeConstants.TAG_ID, new XGProperty(XMLNodeConstants.ATTR_VALUE, XGStrings.valueToString(m)));
 			table.addChildNode(id);
 			for(int s : this.idMap.get(m).keySet())
-			{	XMLNode item = new XMLNode(TAG_ITEM, new XGProperty(ATTR_SELECTORVALUE, XGStrings.valueToString(s)));
+			{	XMLNode item = new XMLNode(XMLNodeConstants.TAG_ITEM, new XGProperty(XMLNodeConstants.ATTR_SELECTORVALUE, XGStrings.valueToString(s)));
 				int v = this.idMap.get(m).get(s);
 				if(min == -1) min = v;
 				min = Math.min(min, v);
 				if(max == -1) max = v;
 				max = Math.max(max, v);
-				item.getAttributes().getOrNew(ATTR_VALUE, new XGProperty(ATTR_VALUE, XGStrings.valueToString(v)));
+				item.getAttributes().getOrNew(XMLNodeConstants.ATTR_VALUE, new XGProperty(XMLNodeConstants.ATTR_VALUE, XGStrings.valueToString(v)));
 				id.addChildNode(item);
 			}
 		}

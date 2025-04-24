@@ -2,12 +2,12 @@ package gui;
 
 import application.JXG;
 import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
-import java.awt.event.*;import java.util.HashSet;import java.util.Set;
+import java.awt.event.*;import java.util.Set;
 import javax.swing.*;
 
 public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable
 {
-	int MIN_W = 400, MIN_H = 200, MIN_X = 20, MIN_Y = 20;
+	final int MIN_W = 400; final int MIN_H = 200; final int MIN_X = 20; final int MIN_Y = 20;
 	private static final ImageIcon LOGO = XGUI.loadImage("images/XGLogo32.gif");
 	public static XGMainWindow MAINWINDOW = null;
 	private static XMLNode CONFIG;

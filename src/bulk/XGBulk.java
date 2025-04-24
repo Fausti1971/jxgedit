@@ -5,7 +5,7 @@ import adress.XGAddress;import adress.XGAddressable;
 import application.XGLoggable;import module.XGModule;import msg.*;
 import tag.XGTagable;
 import tag.XGTagableAddressableSet;
-import value.XGFixedValue;import value.XGValue;
+import value.XGValue;
 import javax.sound.midi.InvalidMidiDataException;
 
 public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
@@ -18,7 +18,7 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 	private final XGAddress address;
 	private final XGTagableAddressableSet<XGValue> values = new XGTagableAddressableSet<>();
 
-	public XGBulk(XGBulkType type, XGModule mod)throws InvalidMidiDataException, XGInvalidAddressException
+	public XGBulk(XGBulkType type, XGModule mod)throws  XGInvalidAddressException
 	{	this.type = type;
 		this.module = mod;
 		this.address = new XGAddress(type.addressRange.getHi().getValue(), mod.getID(), type.addressRange.getLo().getMin());

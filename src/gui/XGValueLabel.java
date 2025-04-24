@@ -1,10 +1,9 @@
 package gui;
 
-import parm.XGParameter;import value.XGValue;import value.XGValueChangeListener;
+import value.XGValue;import value.XGValueChangeListener;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 public class XGValueLabel extends JLabel implements XGComponent, XGValueChangeListener
 {

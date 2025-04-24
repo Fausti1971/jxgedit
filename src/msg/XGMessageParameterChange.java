@@ -38,7 +38,7 @@ public class XGMessageParameterChange extends XGSuperMessage implements XGRespon
 
 	@Override public int getBaseOffset(){	return DATA_OFFS;}
 
-	@Override public void checkSum() throws InvalidMidiDataException{}
+	@Override public void checkSum() {}
 
 	@Override public void setChecksum(){}
 

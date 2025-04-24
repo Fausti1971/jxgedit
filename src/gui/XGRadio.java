@@ -65,7 +65,7 @@ public class XGRadio extends XGFrame implements XGValueChangeListener, XGParamet
 
 /****************************************************************************************************/
 
-	private class XGRadioButton extends JRadioButton
+	private static class XGRadioButton extends JRadioButton
 	{
 /******************************************************************/
 

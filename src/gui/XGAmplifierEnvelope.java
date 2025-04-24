@@ -32,9 +32,9 @@ public class XGAmplifierEnvelope extends XGFrame implements XGComponent, XGShape
 		panel = new XGPointPanel(this, 1, 5, 0, 0, 0, MAX_X, 0, 127, "Time", "Gain");
 		panel.addMouseListener(this);
 
-		this.attack.getValueListeners().add((XGValue v)->{panel.repaint();});
-		this.decay.getValueListeners().add((XGValue v)->{panel.repaint();});
-		this.release.getValueListeners().add((XGValue v)->{panel.repaint();});
+		this.attack.getValueListeners().add((XGValue v)->panel.repaint());
+		this.decay.getValueListeners().add((XGValue v)->panel.repaint());
+		this.release.getValueListeners().add((XGValue v)->panel.repaint());
 
 		this.add(panel, "0,0,1,1");
 	}

@@ -34,7 +34,7 @@ public class XGFlagBox extends XGFrame
 		this.add(button, "0,0,1,2");
 	}
 
-		private class XGCheckboxPopup extends JPopupMenu
+		private static class XGCheckboxPopup extends JPopupMenu
 		{
 		/********************************************************************************************************************/
 

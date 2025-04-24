@@ -1,6 +1,6 @@
 package file;
 
-import gui.XGMainWindow;import msg.XGMessage;import msg.XGMessageBulkDump;import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;import javax.swing.filechooser.FileFilter;import java.io.File;import java.io.FileInputStream;import java.io.FileOutputStream;import java.io.IOException;import java.util.Arrays;
+import gui.XGMainWindow;import msg.XGMessage;import msg.XGMessageBulkDump;import javax.sound.midi.InvalidMidiDataException;import javax.swing.*;import java.io.FileInputStream;import java.io.FileOutputStream;import java.io.IOException;import java.util.Arrays;
 
 public class XGSysexFileFilter extends XGDatafileFilter
 {	private static final String SYX_SUFFIX = ".syx";

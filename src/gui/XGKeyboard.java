@@ -18,7 +18,7 @@ import javax.swing.border.LineBorder;
 import adress.XGInvalidAddressException;
 import device.XGMidi;
 import module.XGModule;
-import static table.XGTable.TABLES;import value.XGValue;
+import table.XGTable;import value.XGValue;
 import xml.XMLNode;
 
 public class XGKeyboard extends XGFrame implements XGUI
@@ -42,7 +42,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 	private final ShortMessage message = new ShortMessage();
 //	private final JComponent column;
 
-	protected XGKeyboard(XMLNode n, XGModule mod) throws XGInvalidAddressException
+	protected XGKeyboard(XMLNode n, XGModule mod)
 	{	super("");
 		this.partmodeValue = mod.getValues().get("mp_partmode");
 		this.midiChannelValue = mod.getValues().get("mp_midi_channel");
@@ -101,7 +101,7 @@ public class XGKeyboard extends XGFrame implements XGUI
 	}
 
 	private String getKeyText(XGKey key)
-	{	return TABLES.get("tones").getByIndex(key.getNumber()).getName();
+	{	return XGTable.TABLES.get("tones").getByIndex(key.getNumber()).getName();
 	}
 
 	private void maxKeyChanged()
