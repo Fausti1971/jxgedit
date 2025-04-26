@@ -5,7 +5,7 @@ package application;
 */
 import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.file.Path;
+import java.nio.file.FileSystem;import java.nio.file.FileSystems;import java.nio.file.Path;
 import java.nio.file.Paths;
 import javax.xml.stream.XMLStreamException;
 import device.*;
@@ -21,7 +21,7 @@ import xml.*;
 
 public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 {
-	public static final XGProperty CURRENT_CONTENT = new XGProperty(TAG_ITEM, "default");
+	public static final XGProperty CURRENT_CONTENT = new XGProperty(TAG_ITEM, "default");//der momentane Speicherinhalt (Dump, File o.ä.)
 	static
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
 		//	%1 = date+time (tb = mon, td = tag, tY = jahr, tl = std, tM = min, tS = sec) %2 = class+method, %3 = null, %4 = level, %5 = msg
@@ -34,22 +34,28 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 
 	private static void setPaths()throws URISyntaxException
 	{	appFilePath = Paths.get(JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-		LOG.info("appfile: " + appFilePath.toString());
+		LOG.info("AppFilePath: " + appFilePath.toString());
 
 		appPath = appFilePath.getParent();
-		LOG.info("filepath: " + appPath.toString());
+		LOG.info("AppPath: " + appPath.toString());
 
 		String file =  appFilePath.getFileName().toString();
 		if(!file.contains(".")) appName = file;
 		else appName =  file.substring(0, file.lastIndexOf("."));
-		LOG.info("appname: " + appName);
+		LOG.info("AppName: " + appName);
 
-		configFile = new File(appPath.resolve(appName + ".xml").toUri());
-		LOG.info("configfile: " + configFile);
 	}
 
-	private static void setConfig()
-	{	try
+	private static void setConfig(String[] args)
+	{	Path filepath = appPath.resolve(appName + ".xml");
+		if(args.length > 0)
+		{	filepath = Paths.get(args[0]);
+		}
+
+		configFile = new File(filepath.toUri());
+		LOG.info("ConfigFilePath: " + configFile);
+
+		try
 		{	config = XMLNode.parse(configFile);
 		}
 		catch(IOException e)
@@ -58,10 +64,10 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		}
 	}
 
-	private static void init()
+	private static void init(String[] args)
 	{	try
 		{	setPaths();
-			setConfig();
+			setConfig(args);
 		}
 		catch(URISyntaxException e)
 		{	LOG.severe(e.getMessage());
@@ -72,12 +78,16 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	{	long time = System.currentTimeMillis();
 		XGSplashScreen splash = new XGSplashScreen();
 
-		JXG.init();
+		JXG.init(args);
 
 		XGMidi.init();
 		XGDevice.init();
 		XGDatafile.init();
 
+		XGUI.init();
+
+//TODO: ab hier exit-Methoden basteln für DeviceChange
+//Device Start
 		XGTable.init();
 		XGDefaultsTable.init();
 		XGParameterTable.init();
@@ -86,13 +96,15 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 
 		XGModule.init();//inklusive XGBulk
 		XGValue.init();
+//Device End
 
-		XGUI.init();
-		XGEditWindow.init();
-		XGWindow.init();
+//Windows Start
+		XGEditWindow.init();//TODO: exit-Methode basteln
+		XGWindow.init();//TODO: exit-Methode basteln, XGMainWindow muss nach DeviceChange neu erzeugt werden
+//Windows End
 
 		System.gc();
-		splash.dispose();
+		splash.setVisible(false);//TODO: über Button wieder sichtbar machen...
 
 		LOG.info(appName + " initialized from " + configFile + " within " + (System.currentTimeMillis() - time) + " ms.");
 	}

@@ -29,7 +29,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 			for(XMLNode n : xml.getChildNodes(TAG_TEMPLATE))
 			{	String tag = n.getStringAttribute(ATTR_ID);
 				if("ds".equals(tag))
-				{	for(XGDrumsetModuleType dsmt: XGDrumsetModuleType.DRUMSETS.values())
+				{	for(XGDrumsetModuleType dsmt: XGDrumsetModuleType.DRUMSETS.values())//addiere für jedes initialisierte DrumsetModule ein Template
 					{	TEMPLATES.put(dsmt.getTag(), n);
 						LOG.info(dsmt.getTag());
 					}
@@ -174,7 +174,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 
 		b = new JButton("Reset All Parameters");
 		b.addActionListener((ActionEvent e)->XGDevice.DEVICE.resetAll(true, true));
-		root.add(b, new int[]{0,y++,4,1});
+		root.add(b, new int[]{0,y,4,1});
 
 		return root;
 	}

@@ -10,7 +10,7 @@ public class XGSplashScreen extends JFrame
 	public XGSplashScreen()
 	{	Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setTitle("initializing JXG, please wait...");
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		JTextArea status = new JTextArea();
 		((DefaultCaret)status.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);//autoscroll
 		status.setFont(status.getFont().deriveFont((float)d.height / 100));
