@@ -32,6 +32,11 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	private static File configFile;
 	public static XMLNode config;
 
+	public final static String FILESEPARATOR = FileSystems.getDefault().getSeparator();
+	public final static String DEVICEXMLPATH = "xml" + FILESEPARATOR + "devices" + FILESEPARATOR;
+	public final static String DEF_DEVICEXMLPATH = DEVICEXMLPATH + "XG" + FILESEPARATOR;
+	public final static String XML_SCHEMAPATH = "xml" + FILESEPARATOR + "schemas" + FILESEPARATOR;
+
 	private static void setPaths()throws URISyntaxException
 	{	appFilePath = Paths.get(JXG.class.getProtectionDomain().getCodeSource().getLocation().toURI());
 		LOG.info("AppFilePath: " + appFilePath.toString());
@@ -104,7 +109,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 //Windows End
 
 		System.gc();
-		splash.setVisible(false);//TODO: über Button wieder sichtbar machen...
+//		splash.setVisible(false);//TODO: über Button wieder sichtbar machen...
 
 		LOG.info(appName + " initialized from " + configFile + " within " + (System.currentTimeMillis() - time) + " ms.");
 	}

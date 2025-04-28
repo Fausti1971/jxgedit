@@ -1,12 +1,12 @@
 package xml;
 
 import java.io.*;
-import java.net.URI;import java.net.URL;import java.nio.file.Path;import java.util.Iterator;
+import java.net.URL;import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
-import javax.xml.XMLConstants;import javax.xml.stream.XMLEventReader;
+import javax.xml.XMLConstants;import javax.xml.parsers.ParserConfigurationException;import javax.xml.parsers.SAXParser;import javax.xml.parsers.SAXParserFactory;import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -16,92 +16,97 @@ import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.sax.SAXSource;import javax.xml.transform.stream.StreamSource;import javax.xml.validation.Schema;import javax.xml.validation.SchemaFactory;import javax.xml.validation.Validator;
 import application.JXG;import application.XGLoggable;
 import application.XGStrings;
-import device.XGDevice;import gui.XGMainWindow;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import tag.XGTagable;import tag.XGTagableSet;
+import device.XGDevice;import gui.XGMainWindow;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import org.xml.sax.helpers.DefaultHandler;import tag.XGTagable;import tag.XGTagableSet;
 
 public class XMLNode implements XGTagable, XGLoggable, XGStrings
 {
 	private static final String ERRORSTRING = " contains invalid character";
 
 	public static XMLNode parse(String filename) throws IOException
-	{	try
-		{	Path appPath = JXG.appPath;
-			URI uri = appPath.resolve(XGDevice.DEVICE.toString()).resolve(filename).toUri();
-			File f = new File(uri);
-			validateXml(new FileInputStream(f), filename);
-			return parse(new FileInputStream(f),filename);
+	{	String xmlPath = JXG.DEVICEXMLPATH + XGDevice.DEVICE.getName().getValue() + JXG.FILESEPARATOR + filename;
+		String defXmlPath  = JXG.DEF_DEVICEXMLPATH + filename;
+		String path = xmlPath;
+
+		URL url = ClassLoader.getSystemResource(path);
+		if(url == null)
+		{	LOG.info("no resource for " + path + ", trying " + defXmlPath);
+			path = defXmlPath;
+			url = ClassLoader.getSystemResource(path);
 		}
-		catch(IOException e)
-		{	LOG.warning(e.getMessage() + " - using internal defaults");
-			validateXml(XMLNode.class.getResourceAsStream(filename), filename);
-			return parse(XMLNode.class.getResourceAsStream(filename), filename);
+		if(url == null) throw new IOException("no resource for " + path);
+
+		LOG.info("xmlURL=" + url);
+
+		InputStream s = url.openStream();
+		if (s == null) throw new IOException(" can't read " + url);
+
+//validation funktioniert nicht wegen vermeintlicher namespace-kollisionen
+/*		try
+		{	validateXml(filename);
 		}
+		catch( SAXException e)
+		{	throw new IOException("validation error=" + e.getMessage());
+		}
+*/		return parse(url);
 	}
 
 	public static XMLNode parse(File f) throws IOException
-	{	return parse(new FileInputStream(f), f.toString());
+	{	return parse(f.toURI().toURL());
 	}
 
-	private static XMLNode parse(InputStream xml, String name) throws IOException
-	{	if(xml == null) throw new IOException();
-		XMLNode current_node = null, parent_node, root_node = null;
+	private static XMLNode parse(URL url) throws IOException
+	{	XMLNode current_node = null, parent_node, root_node = null;
 		XMLInputFactory inputFactory = XMLInputFactory.newInstance();
 		try
-		{	XMLEventReader rd = inputFactory.createXMLEventReader(new StreamSource(xml));
+		{	XMLEventReader rd = inputFactory.createXMLEventReader(new StreamSource(url.openStream()));
 			while(rd.hasNext())
 			{	XMLEvent ev = rd.nextEvent();
-				if(ev.isStartDocument()) LOG.info("parsing started: " + name);
+				if(ev.isStartDocument()) LOG.info("started");
 				if(ev.isStartElement())
 				{	parent_node = current_node;
 					current_node = new XMLNode(ev.asStartElement().getName().getLocalPart(), XMLNode.createProperties(ev.asStartElement().getAttributes()));
-					if(parent_node != null) parent_node.addChildNode(current_node);	//falls parent existiert, füge diesem diese node hinzu
+					if(parent_node != null) parent_node.addChildNode(current_node);	//falls parent existiert, füge selbigem diese node hinzu
 					else root_node = current_node;	//falls nicht ist diese node root-node
 				}
 				if(ev.isCharacters()) if(current_node != null) current_node.setTextContent(ev.asCharacters().getData().trim());
 				if(ev.isEndElement()) if(current_node != null) current_node = current_node.parent;
-				if(ev.isEndDocument()) LOG.info("parsing finished: " + name);
+				if(ev.isEndDocument()) LOG.info("finished");
 			}
 			rd.close();
 		}
 		catch(XMLStreamException e)
-		{	LOG.severe(name + ": " + e.getMessage());
-//			new JOptionPane(e.getMessage() + xml);
-//			System.exit(1);
+		{	LOG.severe(url + ": " + e.getMessage());
 		}
 		return root_node;
 	}
 
-	private static Schema loadSchema(String schemaName)
-	{	URL schemaURL = XMLNode.class.getResource(schemaName);
-		Schema schema = null;
-		try
-		{	schema = SchemaFactory.newInstance(XMLNodeConstants.W3C_XML_SCHEMA).newSchema(schemaURL);
-		}
-		catch (Exception e)
-		{	try
-			{
-				schema = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI).newSchema(schemaURL);
-			}
-			catch (Exception ee)
-			{	LOG.severe(ee.getMessage());
-			}
-		}
-		return schema;
-	}
+	private static void validateXml(String xmlFileName)throws IOException, SAXException
+	{	String schemaFileName = JXG.XML_SCHEMAPATH + xmlFileName.replace(".xml", ".xsd");
 
-	private static void validateXml(InputStream is, String xmlName)
-	{	String schemafile = xmlName.replace(".xml", ".xsd");
-		try
-		{	Schema schema = loadSchema(schemafile);
-			Validator validator = schema.newValidator();
-			validator.setErrorHandler(new XMLErrorHandler());
-			SAXSource source = new SAXSource(new InputSource(is));
-			LOG.info("validation started: " + xmlName + "; schema=" + schemafile);
-			validator.validate(source);
-			LOG.info("validation passed: " + xmlName + "; schema=" + schemafile);
-		}
-		catch (Exception e){	LOG.severe(e.getMessage());}
-	}
+		URL schemaURL = ClassLoader.getSystemResource(schemaFileName);
+		LOG.info(schemaURL.toString());
 
+		SchemaFactory factory = SchemaFactory.newDefaultInstance();
+		Schema schema = factory.newSchema(schemaURL);
+		if(schema == null) throw new SAXException(schemaURL + " cant't read");
+
+		Validator validator = schema.newValidator();
+		validator.setErrorHandler(new ErrorHandler()
+		{	public void warning(SAXParseException e)
+			{	LOG.warning(e.getMessage());
+			}
+			public void fatalError(SAXParseException e)
+			{	LOG.severe(e.getMessage());
+				showMessage(e, schemaURL);
+			}
+			public void error(SAXParseException e)
+			{	LOG.severe(e.getMessage());
+				showMessage(e, schemaURL);
+			}
+		});
+		SAXSource source = new SAXSource(new InputSource(schemaURL.openStream()));
+		validator.validate(source);
+	}
 
 	private static XGTagableSet<XGProperty> createProperties(Iterator<Attribute> i)
 	{	XGTagableSet<XGProperty> prop = new XGTagableSet<>();
@@ -113,6 +118,10 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 			prop.add(new XGProperty(name, a.getValue()));
 		}
 		return prop;
+	}
+
+	private static void showMessage(SAXParseException e, URL url)
+	{	JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "File=" + url + ", Line=" + e.getLineNumber() + ", Message=" + e.getMessage());
 	}
 
 /*************************************************************************************************************/
@@ -303,26 +312,12 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 			for(XMLNode n2 : n.childNodes) n2.writeNode(w, n2);
 			w.writeEndElement();
 		}
-		catch(XMLStreamException e1){	e1.printStackTrace();}
+		catch(XMLStreamException e1)
+		{	e1.printStackTrace();
+		}
 	}
 
-	@Override public String toString(){	return this.tag;}
-
-	private static class XMLErrorHandler implements ErrorHandler
-	{	private void showMessage(SAXParseException e)
-		{	JOptionPane.showMessageDialog(XGMainWindow.MAINWINDOW, "Line " + e.getLineNumber() + ": " + e.getMessage());
-		}
-
-		public void warning(SAXParseException e)  {	LOG.warning(e.getMessage());}
-
-		public void fatalError(SAXParseException e)
-		{	LOG.severe(e.getMessage());
-			showMessage(e);
-		}
-
-		public void error(SAXParseException e)
-		{	LOG.severe(e.getMessage());
-			showMessage(e);
-		}
+	@Override public String toString()
+	{	return this.tag;
 	}
 }

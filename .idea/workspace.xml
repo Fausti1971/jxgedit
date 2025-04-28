@@ -13,11 +13,23 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/gui/XGProgramSelector$XGProgramSelectorWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/gui/XGProgramSelector$XGProgramSelectorWindow.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/gui/XGProgramSelector.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/gui/XGProgramSelector.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/application/JXG.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/application/JXG.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/gui/XGSplashScreen.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/gui/XGSplashScreen.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/application/JXG.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/application/JXG.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSplashScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/XMLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNodeConstants.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/defaults.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/defaults.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/device.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/device.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/drums.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/drums.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/parameter.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/parameter.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/tables.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/tables.xsd" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/templates.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/templates.xsd" beforeDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -74,9 +86,6 @@
   </component>
   <component name="NamedScopeManager">
     <scope name="Unnamed" pattern="file[jxgedit]:rsc/*||file[jxgedit]:rsc//*" />
-  </component>
-  <component name="ProblemsViewState">
-    <option name="selectedIndex" value="1" />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="51" />
@@ -229,13 +238,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00047" summary="XML-Validation completed; XGRange debugged;">
-      <created>1652191134915</created>
-      <option name="number" value="00047" />
-      <option name="presentableId" value="LOCAL-00047" />
-      <option name="project" value="LOCAL" />
-      <updated>1652191134915</updated>
     </task>
     <task id="LOCAL-00048" summary="Kosmetik;">
       <created>1652306902999</created>
@@ -573,7 +575,14 @@
       <option name="project" value="LOCAL" />
       <updated>1745513292072</updated>
     </task>
-    <option name="localTasksCounter" value="96" />
+    <task id="LOCAL-00096" summary="before implement deviceChange at runtime;">
+      <created>1745709284755</created>
+      <option name="number" value="00096" />
+      <option name="presentableId" value="LOCAL-00096" />
+      <option name="project" value="LOCAL" />
+      <updated>1745709284756</updated>
+    </task>
+    <option name="localTasksCounter" value="97" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -664,11 +673,6 @@
         </entry>
       </map>
     </option>
-    <option name="OPEN_GENERIC_TABS">
-      <map>
-        <entry key="1" value="TOOL_WINDOW" />
-      </map>
-    </option>
     <option name="RECENT_FILTERS">
       <map>
         <entry key="Branch">
@@ -717,11 +721,11 @@
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
+        <breakpoint type="java-exception">
           <properties class="java.lang.RuntimeException" package="java.lang" />
           <option name="timeStamp" value="1" />
         </breakpoint>
-        <breakpoint enabled="true" type="java-exception">
+        <breakpoint type="java-exception">
           <properties class="java.lang.NullPointerException" package="java.lang" />
           <option name="timeStamp" value="2" />
         </breakpoint>
