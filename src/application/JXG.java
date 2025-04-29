@@ -5,22 +5,17 @@ package application;
 */
 import java.io.*;
 import java.net.URISyntaxException;
-import java.nio.file.FileSystem;import java.nio.file.FileSystems;import java.nio.file.Path;
+import java.nio.file.FileSystems;import java.nio.file.Path;
 import java.nio.file.Paths;
-import javax.xml.stream.XMLStreamException;
+import javax.swing.*;import javax.xml.stream.XMLStreamException;
 import device.*;
 import file.*;
 import gui.*;
-import module.XGModule;
-import module.XGModuleType;
-import table.XGDefaultsTable;
-import table.XGParameterTable;
-import table.XGTable;
-import value.*;
 import xml.*;
 
 public class JXG implements XGLoggable, XGUI, XMLNodeConstants
-{
+{	public static boolean QUIT = false;
+	public static XGLogWindow LOGWINDOW;
 	public static final XGProperty CURRENT_CONTENT = new XGProperty(TAG_ITEM, "default");//der momentane Speicherinhalt (Dump, File o.ä.)
 	static
 	{	System.setProperty("java.util.logging.SimpleFormatter.format", "%1$tl:%1$tM:%1$tS %4$s %2$s: %5$s %n");
@@ -48,12 +43,11 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		if(!file.contains(".")) appName = file;
 		else appName =  file.substring(0, file.lastIndexOf("."));
 		LOG.info("AppName: " + appName);
-
 	}
 
 	private static void setConfig(String[] args)
 	{	Path filepath = appPath.resolve(appName + ".xml");
-		if(args.length > 0)
+		if(args.length > 0)//falls ein String übergeben wurde, interpretiere diesen als config-file-path
 		{	filepath = Paths.get(args[0]);
 		}
 
@@ -69,7 +63,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		}
 	}
 
-	private static void init(String[] args)
+	private static void init(String[] args)//TODO: evtl. Schalter einbauen für --config (-c), --device (-d), --midiinput(-i), --midioutput (-o), --file (-f)...
 	{	try
 		{	setPaths();
 			setConfig(args);
@@ -80,38 +74,15 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 	}
 
 	public static void main(String[] args)
-	{	long time = System.currentTimeMillis();
-		XGSplashScreen splash = new XGSplashScreen();
+	{	LOGWINDOW = new XGLogWindow();
 
 		JXG.init(args);
 
 		XGMidi.init();
-		XGDevice.init();
 		XGDatafile.init();
-
 		XGUI.init();
 
-//TODO: ab hier exit-Methoden basteln für DeviceChange
-//Device Start
-		XGTable.init();
-		XGDefaultsTable.init();
-		XGParameterTable.init();
-
-		XGModuleType.init();//inklusive XGBulkTypes und XGValueTypes (XGOpcode)
-
-		XGModule.init();//inklusive XGBulk
-		XGValue.init();
-//Device End
-
-//Windows Start
-		XGEditWindow.init();//TODO: exit-Methode basteln
-		XGWindow.init();//TODO: exit-Methode basteln, XGMainWindow muss nach DeviceChange neu erzeugt werden
-//Windows End
-
-		System.gc();
-//		splash.setVisible(false);//TODO: über Button wieder sichtbar machen...
-
-		LOG.info(appName + " initialized from " + configFile + " within " + (System.currentTimeMillis() - time) + " ms.");
+		new XGDevice(JXG.config.getChildNodeOrNew(TAG_DEVICE));
 	}
 
 	public static void quit()
@@ -123,6 +94,7 @@ public class JXG implements XGLoggable, XGUI, XMLNodeConstants
 		}
 		catch(IOException | XMLStreamException e)
 		{	LOG.severe(e.getMessage());
+			JOptionPane.showConfirmDialog(null, e.getMessage());
 		}
 	}
 }

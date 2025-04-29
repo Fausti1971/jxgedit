@@ -44,6 +44,12 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 		}
 	}
 
+	public static void exit()
+	{	for(XGEditWindow w : EDITWINDOWS.values()) w.dispose();
+		EDITWINDOWS.clear();
+		TEMPLATES.clear();
+	}
+
 	public static XGEditWindow getEditWindow(XGModule mod)
 	{	XGEditWindow win = EDITWINDOWS.get(mod.getTag(), mod.getID());
 		if(win != null) return win;
@@ -183,11 +189,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 	{	XGMainWindow.MAINWINDOW.toFront();
 	}
 
-	@Override public String getTag(){	return this.tag;}
-
 	@Override public int getID(){	return this.module.getID();}
 
-	@Override public void propertyChanged(XGProperty p){	this.setTitle(this.getTitle());}
-
-	@Override public String getTitle(){	return XGMainWindow.MAINWINDOW.getTitle() + " - " + this.module;}
+	@Override public String getTitle(){	return this.parentWindow.getTitle() + " - " + this.module;}
 }

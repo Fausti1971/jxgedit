@@ -3,7 +3,7 @@ package gui;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 
-public class XGToolbar extends JToolBar implements XGUI
+public class XGToolbar extends JToolBar
 {
 
 /************************************************************************************************************************/
@@ -25,7 +25,7 @@ public class XGToolbar extends JToolBar implements XGUI
 		b.setToolTipText(desc);
 		b.setIcon(XGUI.loadImage(XGUI.getIconPath(key)));
 		b.addActionListener(al);
-		b.registerKeyboardAction(al, KEYSTROKES.get(key), WHEN_IN_FOCUSED_WINDOW);
+		b.registerKeyboardAction(al, XGUI.KEYSTROKES.get(key), WHEN_IN_FOCUSED_WINDOW);
 		this.add(b);
 	}
 }

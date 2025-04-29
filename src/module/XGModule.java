@@ -34,7 +34,7 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	private final XGModuleType type;
 	final XGAddressableSet<XGBulk> bulks = new XGAddressableSet<>();
 
-	XGModule(XGModuleType mt, int id) throws InvalidMidiDataException, XGInvalidAddressException
+	XGModule(XGModuleType mt, int id) throws  XGInvalidAddressException
 	{	this.id = id;
 		this.type = mt;
 		for(XGBulkType bt : mt.getBulkTypes())
@@ -45,6 +45,11 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 		String tag = mt.getTag();
 		if("mp".equals(tag)) tab.add(new XGTableEntry(id, this.toString()));
 		if("ad".equals(tag)) tab.add(new XGTableEntry(id + 64, this.toString()));
+	}
+
+	public void exit()
+	{	for(XGBulk b : this.bulks) b.exit();
+		this.bulks.clear();
 	}
 
 	public XGModuleType getType(){ return this.type;}

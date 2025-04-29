@@ -27,4 +27,14 @@ public class XGTagableIdentifiableSet<T extends XGIdentifiable & XGTagable> impl
 		else return false;
 	}
 
+	public Collection<T> values()
+	{	Collection<T> list = new HashSet<>();
+		for(XGIdentifiableSet<T> s : this.map.values()) list.addAll(s);
+		return list;
+	}
+
+	public void clear()
+	{	for(XGIdentifiableSet<T> s : this.map.values()) s.clear();
+		this.map.clear();
+	}
 }

@@ -41,7 +41,7 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 						XGDatafile f = new XGDatafile(file, filter);
 						dumper.requestAll(f);
 						f.close();
-						JXG.CURRENT_CONTENT.setValue(f.getName());
+						JXG.CURRENT_CONTENT.setValue(f.getAbsolutePath());
 						addToRecentFiles(f.getAbsolutePath());
 						break;
 					}
@@ -70,7 +70,7 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 				XGDatafile f = new XGDatafile(file, filter);
 				dmp.requestAll(f);
 				f.close();
-				JXG.CURRENT_CONTENT.setValue(f.getName());
+				JXG.CURRENT_CONTENT.setValue(f.getAbsolutePath());
 				addToRecentFiles(f.getAbsolutePath());
 			}
 			catch(XGDatafileFilterException e)
@@ -155,7 +155,7 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 			dumper.transmitAll(df);
 			df.filter.write(df);
 			df.close();
-			JXG.CURRENT_CONTENT.setValue(df.getName());
+			JXG.CURRENT_CONTENT.setValue(df.getAbsolutePath());
 			addToRecentFiles(df.getAbsolutePath());
 		}
 		catch(IOException e)

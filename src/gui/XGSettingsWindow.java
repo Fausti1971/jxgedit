@@ -1,6 +1,6 @@
 package gui;
 
-import application.XGLoggable;import device.*;
+import application.JXG;import application.XGLoggable;import device.*;
 import xml.XGProperty;import xml.XMLNodeConstants;
 import javax.sound.midi.*;
 import javax.swing.*;
@@ -89,7 +89,7 @@ public class XGSettingsWindow extends XGWindow
 		r.x = 0;
 		root.add(new JLabel("Device Name:", JLabel.LEADING), r);
 		r.x = 1;
-		root.add(new XGDeviceDetector(XGDevice.DEVICE.getConfig().getAttributes().getOrNew(XMLNodeConstants.ATTR_NAME, new XGProperty(XMLNodeConstants.ATTR_NAME, XGDevice.DEF_DEVNAME))), r);
+		root.add(new XGDeviceSelector(), r);
 
 		r.y++;
 
@@ -177,7 +177,7 @@ public class XGSettingsWindow extends XGWindow
 		return root;
 	}
 
-	@Override public String getTitle(){	return XGMainWindow.MAINWINDOW.getTitle() + " - " + TAG;}
+	@Override public String getTitle(){	return JXG.appName + " - " + TAG;}
 
 	@Override public String getTag(){	return TAG;}
 }

@@ -3,7 +3,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
-import application.XGLoggable;
+import application.JXG;import application.XGLoggable;
 import bulk.XGBulk;import device.*;
 import module.*;
 import msg.*;
@@ -20,9 +20,6 @@ import tag.*;
  */
 public abstract class XGValue implements XGParameterConstants, XGAddressable, Comparable<XGValue>, XGValueChangeListener, XGLoggable, XGTagable, XGMessenger, XGIdentifiable
 {
-/**
-* initialisiert zu jedem Moduletype die angegebene Anzahl Instanzen (XGModule) inkl. der Bulk-Instanzen (XGAddress) und Opcode-Instanzen (XGValues inkl. Abhängigkeiten)
-*/
 	public static void init()
 	{	XGAddressableSet<XGValue> pool = new XGAddressableSet<>();
 	

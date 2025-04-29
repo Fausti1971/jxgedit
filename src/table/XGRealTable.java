@@ -42,7 +42,9 @@ public class XGRealTable implements XGTable, XMLNodeConstants
 //		LOG.info(this.name);
 	}
 
-	public XGRealTable(String name){	this(name, "", DEF_FALLBACKMASK, true);}
+	public XGRealTable(String name)
+	{	this(name, "", DEF_FALLBACKMASK, true);
+	}
 
 /**
 * Die Indizierung der Entries erfolgt aufsteigend nach e.value
@@ -94,7 +96,9 @@ public class XGRealTable implements XGTable, XMLNodeConstants
 
 	@Override public XGTableEntry getByName(String name) throws NumberFormatException
 	{	if(this.names.containsKey(name)) return this.entries.get(this.names.get(name));
-		for(String s : this.names.keySet()) if(s.equalsIgnoreCase(name)) return this.entries.get(this.names.get(s));
+		for(String s : this.names.keySet())
+			if(s.equalsIgnoreCase(name))
+				return this.entries.get(this.names.get(s));
 		return this.getByValue(Integer.parseInt(name));
 	}
 
@@ -148,4 +152,5 @@ public class XGRealTable implements XGTable, XMLNodeConstants
 	@Override public Iterator<XGTableEntry> iterator(){	return this.entries.iterator();}
 
 	@Override public int size(){	return this.entries.size();}
-}
+	
+	}

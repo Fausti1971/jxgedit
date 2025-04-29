@@ -4,18 +4,22 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import adress.XGIdentifiableSet;import application.*;
-import device.*;
+import config.XGPropertyChangeListener;import device.*;
 import file.XGDatafile;
 import module.*;
 import value.XGValue;import xml.*;
 
-public class XGMainWindow extends XGWindow
+public class XGMainWindow extends XGWindow implements XGPropertyChangeListener
 {	private static final int GAP = 10;
 
 /***********************************************************************************************************************/
 
-	public XGMainWindow(XMLNode cfg)
+	public XGMainWindow()
 	{	super(null, "main");
+
+		XGDevice.DEVICE.getName().getListeners().add(this);
+		JXG.CURRENT_CONTENT.getListeners().add(this);
+
 		this.setLayout(new BorderLayout(GAP, GAP));
 		this.add(this.createToolbar(), BorderLayout.NORTH);
 		this.add(this.createContent(), BorderLayout.CENTER);
@@ -34,6 +38,7 @@ public class XGMainWindow extends XGWindow
 		tb.addAction(XGUI.ACTION_TRANSMIT, "Transmit", "transmit complete memory to " + XGDevice.DEVICE, (ActionEvent)->new Thread(() -> XGDevice.DEVICE.transmitAll(XGMidi.getMidi())).start());
 		tb.add(Box.createHorizontalGlue());
 		tb.addAction(XGUI.ACTION_CONFIGURE, "Settings", "show the settings-window", (ActionEvent)->XGSettingsWindow.getWindow().setVisible(true));
+		tb.addAction(XGUI.ACTION_LOGWIN, "LogWindow", "show the log-window", (ActionEvent)->JXG.LOGWINDOW.setVisible(!JXG.LOGWINDOW.isVisible()));
 
 		return tb;
 	}
@@ -52,17 +57,15 @@ public class XGMainWindow extends XGWindow
 		{	XGIdentifiableSet<XGModule> set = mt.getModules();
 			XGButton2 button;
 			if(set.size() == 1)
-			{	for(XGModule mod : set)//die forEach-Schleife dient lediglich dazu, den ersten Eintrag des Sets zu extrahieren
-				{	XGValue v = null;
-					for(String infoTag : mt.getInfoTags())//die forEach-Schleife dient lediglich dazu, den ersten Eintrag des Sets zu extrahieren
-					{	v = mod.getValues().get(infoTag);
-						break;
-					}
-					button = new XGButton2(mt.getName(), v);
-						button.addActionListener((ActionEvent e)->XGEditWindow.getEditWindow(mod).setVisible(true));
-						sysPane.add(button);
-					break;
+			{	XGValue v = null;
+				XGModule mod = set.iterator().next();
+				if(mt.getInfoTags().size() != 0)
+				{	String infoTag = mt.getInfoTags().iterator().next();
+					v = mod.getValues().get(infoTag);
 				}
+				button = new XGButton2(mt.getName(), v);
+				button.addActionListener((ActionEvent e)->XGEditWindow.getEditWindow(mod).setVisible(true));
+				sysPane.add(button);
 			}
 			if(set.size() > 1)
 			{	XGModuleTable table = new XGModuleTable(mt);
@@ -74,13 +77,25 @@ public class XGMainWindow extends XGWindow
 		return content; 
 	}
 
-	@Override public void windowClosing(WindowEvent e)
-	{	if(JOptionPane.showConfirmDialog(this, "Quit?", "Closing...", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
-		{	for(XGWindow w: this.ownedWindows)
-			{	w.windowClosing(e);
-			}
-			this.dispose();
+	@Override public void windowClosing(WindowEvent e)//wird offenbar nur gerufen, wenn über gui fenster geschlossen wird
+	{if(JOptionPane.showConfirmDialog(this, "Quit?", "Closing...", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION)
+		{	this.dispose();
+			XGWindow.MAINWINDOW = null;
 			JXG.quit();
 		}
+	}
+
+	@Override public void dispose()
+	{	XGDevice.DEVICE.getName().getListeners().remove(this);
+		JXG.CURRENT_CONTENT.getListeners().remove(this);
+		super.dispose();
+	}
+
+	@Override public void propertyChanged(XGProperty p)
+	{	this.setTitle(this.getTitle());
+	}
+
+	@Override public String getTitle()
+	{	return XGDevice.DEVICE.getName().getValue() + " - " + JXG.CURRENT_CONTENT.getValue();
 	}
 }

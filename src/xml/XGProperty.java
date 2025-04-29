@@ -16,7 +16,7 @@ public class XGProperty implements XGTagable
 	@Override public String getTag(){ return this.key;}
 
 	public void setValue(String s)
-	{	if(s != null)
+	{	if(s != null && !s.equals(this.value.toString()))
 		{	this.value.replace(0, this.value.length(), s);
 			this.notifyListeners();
 		}
@@ -28,5 +28,10 @@ public class XGProperty implements XGTagable
 
 	@Override public String toString(){ return this.key + "=" + this.value;}
 
-	private void notifyListeners(){ for(XGPropertyChangeListener l : this.listeners) l.propertyChanged(this);}
+	private void notifyListeners()
+	{	for(XGPropertyChangeListener l : this.listeners)
+		{	System.out.println("info to listener: " + l);
+			l.propertyChanged(this);
+		}
+	}
 }

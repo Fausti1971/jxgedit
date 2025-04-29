@@ -4,10 +4,10 @@ import application.XGLoggable;import javax.swing.*;import javax.swing.text.Defau
 import java.awt.*;import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
-public class XGSplashScreen extends JFrame 
+public class XGLogWindow extends JFrame 
 {	private final Handler handler;
 
-	public XGSplashScreen()
+	public XGLogWindow()
 	{	Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
 		this.setTitle("initializing JXG, please wait...");
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
@@ -31,7 +31,7 @@ public class XGSplashScreen extends JFrame
 		this.setResizable(true);
 		this.setSize(d.width/4, d.height/4);
 		this.setLocationRelativeTo(null);
-		this.setVisible(true);
+//		this.setVisible(true);
 	}
 
 	public void dispose()

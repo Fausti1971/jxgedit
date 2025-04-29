@@ -6,24 +6,67 @@ import javax.swing.*;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
-import application.XGStrings;import config.XGConfigurable;import file.XGDatafile;
-import bulk.XGBulk;import bulk.XGBulkDumper;import gui.XGMainWindow;import module.XGModule;
+import application.XGStrings;import config.XGConfigurable;import config.XGPropertyChangeListener;import file.XGDatafile;
+import bulk.XGBulk;import bulk.XGBulkDumper;import gui.XGEditWindow;import gui.XGMainWindow;import gui.XGWindow;import module.XGModule;
 import module.XGModuleType;
 import msg.*;
-import value.XGProgramBuffer;
-import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;
+import table.XGDefaultsTable;import table.XGParameterTable;import table.XGTable;import value.XGProgramBuffer;
+import value.XGValue;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.io.IOException;import java.net.URL;import java.security.CodeSource;import java.util.*;import java.util.zip.ZipEntry;import java.util.zip.ZipInputStream;
 
-public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XMLNodeConstants
+public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XMLNodeConstants, XGPropertyChangeListener
 {
 	public static XGDevice DEVICE = null;
-	private static final String WARNSTRING = "This will reset all parameters!";
+	public static final String WARNSTRING = "This will reset all parameters!";
 	static final int DEF_SYSEXID = 0;
 	public static final String DEF_DEVNAME = "XG";
 
-	public static void init()
-	{	XMLNode xml = JXG.config.getChildNodeOrNew(TAG_DEVICE);
-		DEVICE = new XGDevice(xml);
-		for(XMLNode m : xml.getChildNodes(TAG_INIT_MESSAGE))
+	public static Collection<String> getAvailableDevices()
+	{	Set<String> list = new HashSet<>();
+		CodeSource src = JXG.class.getProtectionDomain().getCodeSource();
+		if(src != null)
+		{	URL jar = src.getLocation();
+			try
+			{	ZipInputStream zip = new ZipInputStream(jar.openStream());
+				while(true)
+				{	ZipEntry e = zip.getNextEntry();
+					if (e == null) break;
+					String name = e.getName();
+					if (name.startsWith(JXG.DEVICEXMLPATH))
+					{	if(e.isDirectory())
+						{	name = name.replace(JXG.DEVICEXMLPATH, "");
+							name = name.replace(JXG.FILESEPARATOR, "");
+							if(name.isBlank()) continue;
+							list.add(name);
+							LOG.info("devicefolder=" + name);
+						}
+					}
+				}
+			}
+			catch(IOException e)
+			{	LOG.severe(e.getMessage());
+			}
+		}
+		return list;
+	}
+
+/***************************************************************************************************************************/
+
+	private final XMLNode config;
+	private int info1, info2;
+	private XGDatafile defaultFile;
+	private int sysexID = 0;
+
+	public XGDevice(XMLNode cfg)
+	{	this.sysexID = cfg.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID);
+		this.config = cfg;
+		DEVICE = this;
+		this.init();
+		this.sendInitMessage();
+		this.config.getAttributes().get(ATTR_NAME).getListeners().add(this);
+	}
+
+	private void sendInitMessage()
+	{	for(XMLNode m : this.config.getChildNodes(TAG_INIT_MESSAGE))
 		{	try
 			{	if(m.getTextContent().length() == 0) continue;
 				SysexMessage msg = new SysexMessage();
@@ -39,19 +82,38 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 		}
 	}
 
-/***************************************************************************************************************************/
+	public void init()
+	{	boolean logState = JXG.LOGWINDOW.isVisible();
+		JXG.LOGWINDOW.setVisible(true);
 
-//	private final StringBuffer name;
-	private final XMLNode config;
-	private int info1, info2;
-	private XGDatafile defaultFile;
-	private int sysexID = 0;
-//	private XGWindow childWindow;
+		XGTable.init();
+		XGDefaultsTable.init();
+		XGParameterTable.init();
+		XGModuleType.init();//inklusive XGBulkTypes und XGValueTypes (XGOpcode)
+		XGModule.init();//inklusive XGBulk
+		XGValue.init();
+		XGEditWindow.init();
+		XGWindow.init();
 
-	private XGDevice(XMLNode cfg)
-	{	this.sysexID = cfg.getIntegerAttribute(ATTR_SYSEXID, DEF_SYSEXID);
-		this.config = cfg;
-		LOG.info("device initialized: " + this);
+		System.gc();
+
+		LOG.info("device initialized: " + DEVICE);
+		JXG.LOGWINDOW.setVisible(logState);
+	}
+
+	private void exit()
+	{	XGWindow.exit();
+		XGEditWindow.exit();
+
+		for(XGModuleType mt : XGModuleType.MODULE_TYPES) mt.exit();//löscht hierarchisch alle XGModuleTypes, XGBulkTypes, XGValueTypes, XGModules, XGBulks, XGValues
+
+		XGParameterTable.PARAMETERTABLES.clear();
+		XGDefaultsTable.DEFAULTSTABLES.clear();
+		XGTable.TABLES.clear();
+		XGTable.INS_MSB_PROGRAMS.clear();
+
+		System.gc();
+		LOG.info("device exited: " + DEVICE);
 	}
 
 	public XGProperty getName(){	return this.config.getAttributes().getOrNew(ATTR_NAME, new XGProperty(ATTR_NAME, DEF_DEVNAME));}
@@ -89,9 +151,9 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 	}
 
 	public void resetXG(boolean send, boolean ask)
-	{	int answer = javax.swing.JOptionPane.CANCEL_OPTION;
-		if(ask) answer = JOptionPane.showConfirmDialog(gui.XGMainWindow.MAINWINDOW, WARNSTRING);
-		if(answer == javax.swing.JOptionPane.CANCEL_OPTION || answer == javax.swing.JOptionPane.NO_OPTION) return;
+	{	int answer = JOptionPane.CANCEL_OPTION;
+		if(ask) answer = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, WARNSTRING);
+		if(answer == JOptionPane.CANCEL_OPTION || answer == JOptionPane.NO_OPTION) return;
 		try
 		{	if(send) XGMidi.getMidi().submit(new XGMessageParameterChange(this, new byte[]{0,0,0,0,0,0,0x7E,0,0}, true));
 			for(XGModuleType mt : XGModuleType.MODULE_TYPES) mt.resetValues();
@@ -156,5 +218,11 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 
 	@Override public XMLNode getConfig(){	return this.config;}
 
-	@Override public void propertyChanged(XGProperty attr){	LOG.info(attr.toString());}
+	@Override public void propertyChanged(XGProperty attr)
+	{	if(ATTR_NAME.equals(attr.getTag()))
+		{	this.exit();
+			this.init();
+//			LOG.info("property changed=" + attr.toString());
+		}
+	}
 }

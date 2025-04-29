@@ -20,7 +20,8 @@ public interface XGUI extends XGLoggable, XGConfigurable
 		ACTION_PASTE = "paste",
 		ACTION_REQUEST = "request",
 		ACTION_TRANSMIT = "transmit",
-		ACTION_CONFIGURE = "settings";
+		ACTION_CONFIGURE = "settings",
+		ACTION_LOGWIN = "log";
 
 	Map<String, KeyStroke> KEYSTROKES = new HashMap<>()
 	{
@@ -197,5 +198,5 @@ public interface XGUI extends XGLoggable, XGConfigurable
 
 	@Override  default XMLNode getConfig(){	return ENVIRONMENT.config;}
 
-	@Override default void propertyChanged(XGProperty p){	LOG.info(p.toString());}
+//	@Override default void propertyChanged(XGProperty p){	LOG.info(p.toString());}
 }

@@ -10,7 +10,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import device.XGDevice;import xml.XGProperty;
 
-public class XGDeviceDetector extends JPanel implements DocumentListener, ActionListener, XGUI
+public class XGDeviceDetector extends JPanel implements DocumentListener, ActionListener
 {
 /***********************************************************************************************************************************/
 
@@ -24,7 +24,9 @@ public class XGDeviceDetector extends JPanel implements DocumentListener, Action
 		this.text.setText(this.property.getValue().toString());
 		this.text.getDocument().addDocumentListener(this);
 		this.add(text, BorderLayout.CENTER);
-		JButton button = new JButton("detect");this.add(button, BorderLayout.EAST);
+
+		JButton button = new JButton("detect");
+		this.add(button, BorderLayout.EAST);
 		button.addActionListener(this);
 	}
 

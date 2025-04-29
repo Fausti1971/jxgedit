@@ -1,36 +1,47 @@
 package gui;
 
 import application.JXG;
-import config.XGPropertyChangeListener;import device.XGDevice;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
+import tag.XGTagable;import tag.XGTagableSet;import xml.XMLNode;import xml.XMLNodeConstants;import java.awt.*;
 import java.awt.event.*;import java.util.Set;
 import javax.swing.*;
 
-public abstract class XGWindow extends JFrame implements XGUI, WindowListener, XGPropertyChangeListener, ComponentListener, XGTagable
+public abstract class XGWindow extends JFrame implements XGUI, WindowListener, ComponentListener, XGTagable
 {
+	private static final int GAP = 10;
+	public static XGMainWindow MAINWINDOW = null;
 	final int MIN_W = 400; final int MIN_H = 200; final int MIN_X = 20; final int MIN_Y = 20;
 	private static final ImageIcon LOGO = XGUI.loadImage("images/XGLogo32.gif");
-	public static XGMainWindow MAINWINDOW = null;
 	private static XMLNode CONFIG;
 	public static Window FOCUSSED;
 
 	public static void init()
 	{	CONFIG = JXG.config.getChildNodeOrNew(XMLNodeConstants.TAG_WIN);
-		MAINWINDOW = new XGMainWindow(CONFIG);
+		XGMainWindow.MAINWINDOW = new XGMainWindow();
+	}
+
+	public static void exit()
+	{	if(XGWindow.MAINWINDOW != null) XGWindow.MAINWINDOW.dispose();
+		if(XGWindow.FOCUSSED != null)
+		{	XGWindow.FOCUSSED.dispose();
+			XGWindow.FOCUSSED = null;
+		}
 	}
 
 /**************************************************************************************************/
 
 	final XMLNode config;
 	final String tag;
+	final XGWindow parentWindow;
 	final Set<XGWindow> ownedWindows = new XGTagableSet<>();
 
 	public XGWindow(XGWindow parent, String tag)
 	{	super();
 		this.tag = tag;
-		if(parent != null) parent.ownedWindows.add(this);
+		this.parentWindow = parent;
+		if(parent != null)
+		{	parent.ownedWindows.add(this);
+		}
 		this.config = CONFIG.getChildNodeWithAttributeOrNew(TAG_ITEM, ATTR_ID, tag);
-		XGDevice.DEVICE.getName().getListeners().add(this);
-		JXG.CURRENT_CONTENT.getListeners().add(this);
 		this.setUndecorated(false);//um den Rahmen durch den WindowManager des Systems darstellen zu lassen
 		this.setIconImage(LOGO.getImage());
 		this.setResizable(true);
@@ -54,11 +65,9 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 		for(Window w : this.getOwnedWindows()) javax.swing.SwingUtilities.updateComponentTreeUI(w);
 	}
 
-	@Override public void propertyChanged(XGProperty p){	this.setTitle(this.getTitle());}
-
-	@Override public String getTag(){	return this.tag;}
-
-	@Override public String getTitle(){	return JXG.appName + " - " + JXG.CURRENT_CONTENT.getValue();}
+	@Override public String getTag()
+	{	return this.tag;
+	}
 
 	@Override public void dispose()
 	{	synchronized(this)
@@ -66,8 +75,8 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, X
 			{	w.setVisible(false);
 				w.dispose();
 			}
-			super.dispose();
 		}
+		super.dispose();
 	}
 
 	@Override public void componentResized(ComponentEvent e)

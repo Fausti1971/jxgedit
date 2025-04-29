@@ -74,8 +74,6 @@ public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 
 	@Override public XMLNode getConfig(){	return this.config;}
 
-	@Override public void propertyChanged(XGProperty n){}
-
 	@Override public String toString(){	return this.tag + " - " + this.lo;}
 
 	@Override public String getTag(){	return this.tag;}

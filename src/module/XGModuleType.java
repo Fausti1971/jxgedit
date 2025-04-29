@@ -5,7 +5,7 @@ import java.util.Set;
 import adress.*;
 import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import config.XGConfigurable;
 import application.XGLoggable;
-import msg.XGClippboard;import table.XGTable;import table.XGTableConstants;import table.XGVirtualTable;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;
+import gui.XGModuleTable;import msg.XGClippboard;import table.XGTable;import table.XGTableConstants;import table.XGTableEntry;import table.XGVirtualTable;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen
@@ -32,7 +32,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 		for(XMLNode n : xml.getChildNodes(TAG_MODULE))
 		{	XGAddressRange adr = new XGAddressRange(n.getStringAttribute(ATTR_ADDRESS));
 			if(adr.getHi().getMin() >= 48)//falls Drumset
-			{	for(int h : adr.getHi())//erzeuge für jedes Drumset ein ModuleType
+			{	for(int h : adr.getHi())//erzeuge je Drumset ein ModuleType
 				{	try
 					{	MODULE_TYPES.add(new XGDrumsetModuleType(n, h));
 					}
@@ -71,7 +71,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 /**
 * instanziiert Moduletypen, Bulktypen und Valuetypen
 */
-	public XGModuleType(XMLNode cfg, String name)throws XGInvalidAddressException
+	private XGModuleType(XMLNode cfg, String name)throws XGInvalidAddressException
 	{	this.config = cfg;
 		this.name = new StringBuffer(name);
 		this.tag = cfg.getStringAttribute(ATTR_ID);
@@ -79,7 +79,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 		
 		this.addressRange = new XGAddressRange(cfg.getStringAttribute(ATTR_ADDRESS));
 
-		for(XMLNode x : cfg.getChildNodes(TAG_BULK)){	this.bulkTypes.add(new XGBulkType(this, x));}
+		for(XMLNode x : cfg.getChildNodes(TAG_BULK)) this.bulkTypes.add(new XGBulkType(this, x));
 
 		for(XMLNode n : cfg.getChildNodes(TAG_INFO))
 		{	String opc = n.getStringAttribute(ATTR_REF);
@@ -87,7 +87,7 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 		}
 	}
 
-	public XGModuleType(XMLNode cfg, String name, int hi)throws XGInvalidAddressException
+	XGModuleType(XMLNode cfg, String name, int hi)throws XGInvalidAddressException
 	{	this.config = cfg;
 		this.name = new StringBuffer(name);
 		this.tag = cfg.getStringAttribute(ATTR_ID);
@@ -106,8 +106,19 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 		}
 	}
 
-	public XGModuleType(XMLNode cfg)throws XGInvalidAddressException
+	private XGModuleType(XMLNode cfg)throws XGInvalidAddressException
 	{	this(cfg, cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
+	}
+
+	public void exit()
+	{	this.infoTags.clear();
+		for(XGBulkType bt : this.bulkTypes) bt.getValueTypes().clear();
+		this.bulkTypes.clear();
+		for(XGModule m : this.modules) m.exit();
+		this.modules.clear();
+		XGDrumsetModuleType.DRUMSETS.clear();
+		XGDrumsetModuleType.DRUMNAMES.clear();
+//		this.idTranslator.clear();
 	}
 
 	public XGClippboard getClippboard(){	return this.clippboard;}
@@ -119,8 +130,6 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 	public Set<String> getInfoTags(){ return this.infoTags;}
 
 	@Override public XMLNode getConfig(){ return this.config;}
-
-	@Override public void propertyChanged(XGProperty n){}
 
 	public String getName(){ return this.name.toString();}
 
