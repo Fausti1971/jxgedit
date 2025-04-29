@@ -1,7 +1,7 @@
 package gui;
 
 import adress.XGIdentifiable;
-import config.XGConfigurable;
+import xml.XGConfigurable;
 import device.XGDevice;
 import device.XGMidi;import file.XGDatafile;import module.XGDrumsetModuleType;
 import module.XGInsertionModule;
@@ -9,7 +9,6 @@ import module.XGModule;
 import module.XGModuleType;
 import tag.XGTagable;
 import tag.XGTagableIdentifiableSet;
-import xml.XGProperty;
 import xml.XMLNode;
 import javax.swing.*;
 import java.awt.*;
@@ -31,23 +30,17 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 				if("ds".equals(tag))
 				{	for(XGDrumsetModuleType dsmt: XGDrumsetModuleType.DRUMSETS.values())//addiere für jedes initialisierte DrumsetModule ein Template
 					{	TEMPLATES.put(dsmt.getTag(), n);
-						LOG.info(dsmt.getTag());
+						LOG.info("template added=" + dsmt.getTag());
 					}
 					continue;
 				}
 				TEMPLATES.put(tag, n);
-				LOG.info(tag);
+				LOG.info("template added=" + tag);
 			}
 		}
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());
 		}
-	}
-
-	public static void exit()
-	{	for(XGEditWindow w : EDITWINDOWS.values()) w.dispose();
-		EDITWINDOWS.clear();
-		TEMPLATES.clear();
 	}
 
 	public static XGEditWindow getEditWindow(XGModule mod)
@@ -146,7 +139,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 			}
 		}
 		catch(XGComponentException e)
-		{	//LOG.info(e.getMessage());
+		{	LOG.info(e.getMessage());
 		}
 		catch(ExceptionInInitializerError e)
 		{	LOG.severe("error until componentcreation...");

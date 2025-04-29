@@ -1,7 +1,7 @@
 package bulk;
 
-import adress.XGInvalidAddressException;import adress.XGAddressRange;
-import config.XGConfigurable;import module.XGModuleType;import tag.XGTagableSet;import value.XGValueType;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;
+import adress.XGAddressRange;
+import xml.XGConfigurable;import module.XGModuleType;import tag.XGTagableSet;import value.XGValueType;import tag.XGTagable;import xml.XGProperty;import xml.XMLNode;
 
 public class XGBulkType implements XGTagable, XGConfigurable
 {

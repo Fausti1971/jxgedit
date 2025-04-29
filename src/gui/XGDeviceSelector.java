@@ -2,11 +2,10 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;import java.awt.event.ItemEvent;import java.awt.event.ItemListener;import java.util.Collection;import java.util.Vector;
+import java.awt.event.ActionListener;import java.util.Vector;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;import javax.swing.event.PopupMenuEvent;import javax.swing.event.PopupMenuListener;
-import config.XGPropertyChangeListener;import device.XGDevice;import xml.XGProperty;import xml.XMLNodeConstants;
+import javax.swing.event.PopupMenuEvent;import javax.swing.event.PopupMenuListener;
+import application.JXG;import device.XGDevice;import xml.XGProperty;
 
 public class XGDeviceSelector extends JPanel implements ActionListener, PopupMenuListener
 {
@@ -21,7 +20,8 @@ public class XGDeviceSelector extends JPanel implements ActionListener, PopupMen
 		this.setLayout(new BorderLayout());
 
 		this.popup = new JComboBox<>(new Vector<>(XGDevice.getAvailableDevices()));
-		this.popup.setSelectedItem(this.deviceNameProp.getValue().toString());
+		this.oldString = this.deviceNameProp.getValue().toString();
+		this.popup.setSelectedItem(this.oldString);
 
 		this.popup.addPopupMenuListener(this);
 		this.add(this.popup, BorderLayout.CENTER);
@@ -31,9 +31,20 @@ public class XGDeviceSelector extends JPanel implements ActionListener, PopupMen
 		button.addActionListener(this);
 	}
 
+	private void confirmQuit(String newString)
+	{	if(this.oldString.equals(newString)) return;
+		int answer = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, "Switch " + this.oldString + " to " + newString + " will quit the application!\nYou must restart manually!");
+		if(answer == JOptionPane.OK_OPTION)
+		{	this.deviceNameProp.setValue(newString);
+			JXG.quit();
+		}
+		else this.popup.setSelectedItem(this.oldString); 
+	}
+
 	@Override public void actionPerformed(ActionEvent e)
 	{	XGDevice.DEVICE.requestInfo();
-		this.popup.setSelectedItem(this.deviceNameProp.getValue());
+		this.confirmQuit(this.deviceNameProp.getValue().toString());
+		this.deviceNameProp.setValue(this.oldString);
 	}
 
 	public void popupMenuWillBecomeVisible(PopupMenuEvent event)
@@ -41,11 +52,7 @@ public class XGDeviceSelector extends JPanel implements ActionListener, PopupMen
 	}
 
 	public void popupMenuWillBecomeInvisible(PopupMenuEvent event)
-	{	String newString = this.popup.getSelectedItem().toString();
-		if(this.oldString.equals(newString)) return;
-		int answer = JOptionPane.showConfirmDialog(XGMainWindow.MAINWINDOW, "Switch " + this.oldString + " to " + newString + " will reinitialize the device!");
-		if(answer == JOptionPane.OK_OPTION) this.deviceNameProp.setValue(newString);
-		else this.popup.setSelectedItem(this.oldString); 
+	{	confirmQuit(this.popup.getSelectedItem().toString());
 	}
 
 	public void popupMenuCanceled(PopupMenuEvent event)

@@ -3,9 +3,9 @@ package module;
 import java.io.IOException;import java.util.LinkedHashSet;
 import java.util.Set;
 import adress.*;
-import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import config.XGConfigurable;
+import bulk.XGBulk;import bulk.XGBulkDumper;import bulk.XGBulkType;import xml.XGConfigurable;
 import application.XGLoggable;
-import gui.XGModuleTable;import msg.XGClippboard;import table.XGTable;import table.XGTableConstants;import table.XGTableEntry;import table.XGVirtualTable;import tag.XGTagable;import tag.XGTagableSet;import xml.XGProperty;import xml.XMLNode;
+import msg.XGClippboard;import table.XGTable;import table.XGTableConstants;import table.XGVirtualTable;import tag.XGTagable;import tag.XGTagableSet;import xml.XMLNode;
 
 /**
  * Moduletypen, keine Instanzen
@@ -108,17 +108,6 @@ public class XGModuleType implements XGModuleConstants, XGLoggable, XGBulkDumper
 
 	private XGModuleType(XMLNode cfg)throws XGInvalidAddressException
 	{	this(cfg, cfg.getStringAttributeOrDefault(ATTR_NAME, DEF_MODULENAME));
-	}
-
-	public void exit()
-	{	this.infoTags.clear();
-		for(XGBulkType bt : this.bulkTypes) bt.getValueTypes().clear();
-		this.bulkTypes.clear();
-		for(XGModule m : this.modules) m.exit();
-		this.modules.clear();
-		XGDrumsetModuleType.DRUMSETS.clear();
-		XGDrumsetModuleType.DRUMNAMES.clear();
-//		this.idTranslator.clear();
 	}
 
 	public XGClippboard getClippboard(){	return this.clippboard;}

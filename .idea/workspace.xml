@@ -11,7 +11,27 @@
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/device/XGDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/device/XGDevice.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/gui/XGEditWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/gui/XGEditWindow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/gui/XGWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/gui/XGWindow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulkType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/XGConfigurable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XGConfigurable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/XGPropertyChangeListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XGPropertyChangeListener.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGDeviceSelector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGDeviceSelector.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGLogWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGLogWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGSettingsWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/gui/XGWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModuleType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValueType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValueType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/XGProperty.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XGProperty.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -152,11 +172,11 @@
       <recent name="application.JXG" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="xml" />
       <recent name="table" />
       <recent name="bulk" />
       <recent name="module" />
       <recent name="value" />
-      <recent name="msg" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="gui" />
@@ -220,13 +240,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00050" summary="XGProgramSelector changed; Kosmetik;">
-      <created>1652650115316</created>
-      <option name="number" value="00050" />
-      <option name="presentableId" value="LOCAL-00050" />
-      <option name="project" value="LOCAL" />
-      <updated>1652650115316</updated>
     </task>
     <task id="LOCAL-00051" summary="commit">
       <created>1658128809989</created>
@@ -564,7 +577,14 @@
       <option name="project" value="LOCAL" />
       <updated>1745946041327</updated>
     </task>
-    <option name="localTasksCounter" value="99" />
+    <task id="LOCAL-00099" summary="readme">
+      <created>1745947219239</created>
+      <option name="number" value="00099" />
+      <option name="presentableId" value="LOCAL-00099" />
+      <option name="project" value="LOCAL" />
+      <updated>1745947219239</updated>
+    </task>
+    <option name="localTasksCounter" value="100" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -673,7 +693,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="XGComponentException implementiert für Components mit XGValues;" />
     <MESSAGE value="XGShaper eingeführt, vibrato_envelope implementiert;" />
     <MESSAGE value="Velocity Envelope debugged;" />
     <MESSAGE value="XGToolbar an Accelerator implemented;" />
@@ -698,7 +717,8 @@
     <MESSAGE value="before implement deviceChange at runtime;" />
     <MESSAGE value="now using xml- and xsd-files from the jar, validation disabled;" />
     <MESSAGE value="deviceChange at runtime completed; configFile via args;" />
-    <option name="LAST_COMMIT_MESSAGE" value="deviceChange at runtime completed; configFile via args;" />
+    <MESSAGE value="readme" />
+    <option name="LAST_COMMIT_MESSAGE" value="readme" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

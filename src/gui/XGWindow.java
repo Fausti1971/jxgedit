@@ -19,14 +19,6 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, C
 		XGMainWindow.MAINWINDOW = new XGMainWindow();
 	}
 
-	public static void exit()
-	{	if(XGWindow.MAINWINDOW != null) XGWindow.MAINWINDOW.dispose();
-		if(XGWindow.FOCUSSED != null)
-		{	XGWindow.FOCUSSED.dispose();
-			XGWindow.FOCUSSED = null;
-		}
-	}
-
 /**************************************************************************************************/
 
 	final XMLNode config;
@@ -76,6 +68,7 @@ public abstract class XGWindow extends JFrame implements XGUI, WindowListener, C
 				w.dispose();
 			}
 		}
+		this.removeAll();
 		super.dispose();
 	}
 

@@ -2,11 +2,11 @@ package value;
 
 import java.util.LinkedHashMap;import java.util.Map;import java.util.function.Consumer;
 import adress.*;
-import bulk.XGBulkType;import config.XGConfigurable;
+import bulk.XGBulkType;import xml.XGConfigurable;
 import application.XGLoggable;
 import msg.XGMessageCodec;
 import tag.*;
-import xml.XGProperty;import xml.XMLNode;
+import xml.XMLNode;
 
 public class XGValueType implements XGLoggable, XGConfigurable, XGTagable
 {

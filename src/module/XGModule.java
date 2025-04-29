@@ -47,11 +47,6 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 		if("ad".equals(tag)) tab.add(new XGTableEntry(id + 64, this.toString()));
 	}
 
-	public void exit()
-	{	for(XGBulk b : this.bulks) b.exit();
-		this.bulks.clear();
-	}
-
 	public XGModuleType getType(){ return this.type;}
 
 	public XGTagableAddressableSet<XGValue> getValues()

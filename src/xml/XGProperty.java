@@ -1,6 +1,6 @@
 package xml;
 
-import config.XGPropertyChangeListener;import tag.XGTagable;import java.util.LinkedHashSet;import java.util.Set;
+import tag.XGTagable;import java.util.LinkedHashSet;import java.util.Set;
 
 public class XGProperty implements XGTagable
 {	private final String key;
@@ -29,9 +29,6 @@ public class XGProperty implements XGTagable
 	@Override public String toString(){ return this.key + "=" + this.value;}
 
 	private void notifyListeners()
-	{	for(XGPropertyChangeListener l : this.listeners)
-		{	System.out.println("info to listener: " + l);
-			l.propertyChanged(this);
-		}
+	{	for(XGPropertyChangeListener l : this.listeners) l.propertyChanged(this);
 	}
 }

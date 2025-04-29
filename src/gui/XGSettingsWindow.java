@@ -177,6 +177,11 @@ public class XGSettingsWindow extends XGWindow
 		return root;
 	}
 
+	@Override public void dispose()
+	{	XGSettingsWindow.WINDOW = null;
+		super.dispose();
+	}
+
 	@Override public String getTitle(){	return JXG.appName + " - " + TAG;}
 
 	@Override public String getTag(){	return TAG;}

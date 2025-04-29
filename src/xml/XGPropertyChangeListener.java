@@ -1,4 +1,4 @@
-package config;
+package xml;
 
 import xml.XGProperty;
 

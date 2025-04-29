@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import adress.XGIdentifiableSet;import application.*;
-import config.XGPropertyChangeListener;import device.*;
+import xml.XGPropertyChangeListener;import device.*;
 import file.XGDatafile;
 import module.*;
 import value.XGValue;import xml.*;
@@ -88,6 +88,7 @@ public class XGMainWindow extends XGWindow implements XGPropertyChangeListener
 	@Override public void dispose()
 	{	XGDevice.DEVICE.getName().getListeners().remove(this);
 		JXG.CURRENT_CONTENT.getListeners().remove(this);
+		XGMainWindow.MAINWINDOW = null;
 		super.dispose();
 	}
 

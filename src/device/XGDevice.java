@@ -6,14 +6,14 @@ import javax.swing.*;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
-import application.XGStrings;import config.XGConfigurable;import config.XGPropertyChangeListener;import file.XGDatafile;
+import application.XGStrings;import xml.XGConfigurable;import xml.XGPropertyChangeListener;import file.XGDatafile;
 import bulk.XGBulk;import bulk.XGBulkDumper;import gui.XGEditWindow;import gui.XGMainWindow;import gui.XGWindow;import module.XGModule;
 import module.XGModuleType;
 import msg.*;
 import table.XGDefaultsTable;import table.XGParameterTable;import table.XGTable;import value.XGProgramBuffer;
 import value.XGValue;import xml.XGProperty;import xml.XMLNode;import xml.XMLNodeConstants;import java.io.IOException;import java.net.URL;import java.security.CodeSource;import java.util.*;import java.util.zip.ZipEntry;import java.util.zip.ZipInputStream;
 
-public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XMLNodeConstants, XGPropertyChangeListener
+public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XMLNodeConstants
 {
 	public static XGDevice DEVICE = null;
 	public static final String WARNSTRING = "This will reset all parameters!";
@@ -62,7 +62,6 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 		DEVICE = this;
 		this.init();
 		this.sendInitMessage();
-		this.config.getAttributes().get(ATTR_NAME).getListeners().add(this);
 	}
 
 	private void sendInitMessage()
@@ -83,8 +82,7 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 	}
 
 	public void init()
-	{	boolean logState = JXG.LOGWINDOW.isVisible();
-		JXG.LOGWINDOW.setVisible(true);
+	{	JXG.LOGWINDOW.setVisible(true);
 
 		XGTable.init();
 		XGDefaultsTable.init();
@@ -98,22 +96,7 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 		System.gc();
 
 		LOG.info("device initialized: " + DEVICE);
-		JXG.LOGWINDOW.setVisible(logState);
-	}
-
-	private void exit()
-	{	XGWindow.exit();
-		XGEditWindow.exit();
-
-		for(XGModuleType mt : XGModuleType.MODULE_TYPES) mt.exit();//löscht hierarchisch alle XGModuleTypes, XGBulkTypes, XGValueTypes, XGModules, XGBulks, XGValues
-
-		XGParameterTable.PARAMETERTABLES.clear();
-		XGDefaultsTable.DEFAULTSTABLES.clear();
-		XGTable.TABLES.clear();
-		XGTable.INS_MSB_PROGRAMS.clear();
-
-		System.gc();
-		LOG.info("device exited: " + DEVICE);
+		JXG.LOGWINDOW.setVisible(false);
 	}
 
 	public XGProperty getName(){	return this.config.getAttributes().getOrNew(ATTR_NAME, new XGProperty(ATTR_NAME, DEF_DEVNAME));}
@@ -217,12 +200,4 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 	}
 
 	@Override public XMLNode getConfig(){	return this.config;}
-
-	@Override public void propertyChanged(XGProperty attr)
-	{	if(ATTR_NAME.equals(attr.getTag()))
-		{	this.exit();
-			this.init();
-//			LOG.info("property changed=" + attr.toString());
-		}
-	}
 }

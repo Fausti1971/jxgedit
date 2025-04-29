@@ -24,14 +24,6 @@ public class XGBulk implements XGTagable, XGAddressable, XGMessenger, XGLoggable
 		this.address = new XGAddress(type.addressRange.getHi().getValue(), mod.getID(), type.addressRange.getLo().getMin());
 	}
 
-	public void exit()
-	{	for(XGValue v : this.values)
-		{	v.getValueListeners().clear();
-			v.getParameterListeners().clear();
-		}
-		this.values.clear();
-	}
-
 	public XGBulkType getType(){	return this.type;}
 
 	public int getSize(){	return this.type.addressRange.getLo().getSize();}

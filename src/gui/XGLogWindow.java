@@ -1,6 +1,6 @@
 package gui;
 
-import application.XGLoggable;import javax.swing.*;import javax.swing.text.DefaultCaret;
+import application.JXG;import application.XGLoggable;import javax.swing.*;import javax.swing.text.DefaultCaret;
 import java.awt.*;import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
@@ -9,7 +9,7 @@ public class XGLogWindow extends JFrame
 
 	public XGLogWindow()
 	{	Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-		this.setTitle("initializing JXG, please wait...");
+		this.setTitle("jxgedit - Log");
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		JTextArea status = new JTextArea();
 		((DefaultCaret)status.getCaret()).setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);//autoscroll
