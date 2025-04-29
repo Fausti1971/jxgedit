@@ -11,6 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="89850c6a-936c-4456-afee-f5b062461c10" name="probook-list" comment="backup single">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/jxgedit/device/XGDevice.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/device/XGDevice.class" afterDir="false" />
@@ -240,13 +241,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00051" summary="commit">
-      <created>1658128809989</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1658128809989</updated>
     </task>
     <task id="LOCAL-00052" summary="Midifile-Support implemented; Kosmetik">
       <created>1664486398323</created>
@@ -584,7 +578,14 @@
       <option name="project" value="LOCAL" />
       <updated>1745947219239</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="deviceChange at runtime removed (restart required); fixes;">
+      <created>1745970580826</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1745970580827</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -693,7 +694,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="XGShaper eingeführt, vibrato_envelope implementiert;" />
     <MESSAGE value="Velocity Envelope debugged;" />
     <MESSAGE value="XGToolbar an Accelerator implemented;" />
     <MESSAGE value="XGClippboard implemented;" />
@@ -718,7 +718,8 @@
     <MESSAGE value="now using xml- and xsd-files from the jar, validation disabled;" />
     <MESSAGE value="deviceChange at runtime completed; configFile via args;" />
     <MESSAGE value="readme" />
-    <option name="LAST_COMMIT_MESSAGE" value="readme" />
+    <MESSAGE value="deviceChange at runtime removed (restart required); fixes;" />
+    <option name="LAST_COMMIT_MESSAGE" value="deviceChange at runtime removed (restart required); fixes;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
