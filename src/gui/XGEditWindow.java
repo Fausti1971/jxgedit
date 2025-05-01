@@ -67,7 +67,7 @@ public class XGEditWindow extends XGWindow implements XGTagable, XGIdentifiable,
 		this.add(this.createContent(), BorderLayout.CENTER);
 	}
 
-	private XGToolbar createToolbar()
+	private XGToolbar createToolbar()//TODO: Lautsprecher-Button zum Vorhören des Drumsounds
 	{	XGToolbar tb = new XGToolbar();
 		tb.addAction(ACTION_LOADFILE, "Open", "load " + this.module + " from datadumpfile", (ActioEvent)->XGDatafile.load(this.module));
 		tb.addAction(ACTION_SAVEFILE, "Save", "save " + this.module + " to datadumpfile", (ActioEvent)->XGDatafile.save(this.module));

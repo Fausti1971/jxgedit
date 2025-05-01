@@ -1,14 +1,15 @@
 package gui;
-import application.XGLoggable;import module.*;import value.XGValue;
-import javax.swing.*;
+import static application.XGLoggable.LOG;import device.XGMidi;import module.*;import value.XGValue;
+import javax.sound.midi.InvalidMidiDataException;import javax.sound.midi.ShortMessage;import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;import javax.swing.table.*;
-import java.awt.*;
+import java.awt.*;import java.awt.event.MouseEvent;import java.awt.event.MouseListener;
 
-public class XGModuleTable extends JTable
+public class XGModuleTable extends JTable implements MouseListener
 {
-	private static final int GAP = 12;
+	private static final int GAP = 12, MIDI_VELOCITY = 100;
 	private static final JButton DEF_BUTTON = new JButton();
 	private static final JLabel DEF_LABEL = new JLabel();
+	private static ShortMessage PLAYING_NOTE;
 	static
 	{	DEF_LABEL.setHorizontalAlignment(JLabel.CENTER);
 		DEF_LABEL.setOpaque(true);
@@ -64,6 +65,7 @@ public class XGModuleTable extends JTable
 		this.setDefaultRenderer(XGValue.class, DEF_LABEL_RENDERER);
 		this.setDefaultRenderer(XGModule.class, DEF_BUTTON_RENDERER);
 		((DefaultTableCellRenderer)this.getTableHeader().getDefaultRenderer()).setHorizontalAlignment(JLabel.CENTER);//wird von Nimbus und GTK+ überschrieben
+		if(type instanceof XGDrumsetModuleType) this.addMouseListener(this);
 	}
 
 	@Override public void valueChanged(ListSelectionEvent e)//ListSelectionListener
@@ -94,11 +96,66 @@ public class XGModuleTable extends JTable
 					{	((XGValue)o).setValue(valueString, true);
 					}
 					catch(NumberFormatException ex)
-					{	XGLoggable.LOG.warning(ex.getMessage());
+					{	LOG.warning(ex.getMessage());
 					}
 				}
 			}
 		}
 		this.clearSelection();
+	}
+
+	@Override public void mouseClicked(MouseEvent event)
+	{
+	}
+
+	@Override public void mousePressed(MouseEvent event)
+	{	if(event.isPopupTrigger())
+		{	this.playNoteOff();
+			Object o = this.getValueAt(this.rowAtPoint(event.getPoint()), this.columnAtPoint(event.getPoint()));
+			XGModule m = null;
+			XGDrumsetModuleType dsmt;
+			if(o instanceof XGModule)
+			{	m = (XGModule)o;
+				if(m.getType() instanceof XGDrumsetModuleType)
+				{	dsmt = (XGDrumsetModuleType)m.getType();
+					int ch = dsmt.getMidiChannel();
+					if(ch != -1)
+					{	try
+						{	PLAYING_NOTE = new ShortMessage(0x90 | (ch % 0xF), m.getID(), MIDI_VELOCITY);
+							XGMidi.getMidi().transmit(PLAYING_NOTE);
+						}
+						catch(InvalidMidiDataException e)
+						{	e.printStackTrace();
+						}
+					}
+				}
+			}
+		}
+		//LOG.info("mousePressed=" + event);
+	}
+
+	private void playNoteOff()
+	{	if(PLAYING_NOTE != null)
+		{	byte[] array = PLAYING_NOTE.getMessage();
+			try
+			{	XGMidi.getMidi().transmit(new ShortMessage(array[0], array[1], 0));
+			}
+			catch(InvalidMidiDataException e)
+			{	e.printStackTrace();
+			}
+			PLAYING_NOTE = null;
+		}
+	}
+
+	@Override public void mouseReleased(MouseEvent event)
+	{	this.playNoteOff();
+	}
+
+	@Override public void mouseEntered(MouseEvent event)
+	{
+	}
+
+	@Override public void mouseExited(MouseEvent event)
+	{
 	}
 }

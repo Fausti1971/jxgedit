@@ -2,9 +2,10 @@ package value;
 
 import java.util.HashMap;
 import java.util.Map;
-import module.XGDrumsetModuleType;import table.XGDefaultsTable;
+import static application.XGLoggable.LOG;import module.XGDrumsetModuleType;import table.XGDefaultsTable;
 /**
-* Puffert je Multipart ein normal- und ein drumkit-Program und je Partmode ein drumset-Program und synchronisiert diese bei Änderung
+* Puffert je Multipart ein normal- und ein drumkit-program und synchronisiert diese bei Änderung;
+* drumset-programs werden im zugehörigen XGDrumsetModule gespeichert;
 */
 public interface XGProgramBuffer
 {
@@ -22,16 +23,24 @@ public interface XGProgramBuffer
 		int mp = program.getID();
 		switch(pm)
 		{	case 0:		normalPrograms.put(mp, prg); break;
-			case 1:		drumkitPrograms.put(mp, prg); break;
+			case 1:		drumkitPrograms.put(mp, prg); break;//TODO: drumkit-multipart-programme erfordern ebenfalls eine synchronisation
 			default:	XGDrumsetModuleType.DRUMSETS.get(pm).setProgram(prg); break;
 		}
 	}
 
 /**
-* Restauriert den Wert des Programms für den angegebenen Partmode (partmode) aus dem internen Chache
+* Restauriert den Wert des Programms für den angegebenen Partmode (partmode) aus dem internen Cache
 */
 	static void restoreProgram(XGValue partmode)
-	{	XGValue prg = partmode.getBulk().getValues().get(XGValueType.MP_PRG_VALUE_TAG);
+	{	LOG.info("oldPartmode=" + partmode.oldValue + ", newPartmode=" + partmode.value);
+
+		XGDrumsetModuleType dsmt = XGDrumsetModuleType.DRUMSETS.get(partmode.oldValue);
+		if(dsmt != null) dsmt.getAssignedMultiparts().remove(partmode.getModule());
+
+		dsmt = XGDrumsetModuleType.DRUMSETS.get(partmode.value);
+		if(dsmt != null) dsmt.getAssignedMultiparts().add(partmode.getModule());
+
+		XGValue prg = partmode.getBulk().getValues().get(XGValueType.MP_PRG_VALUE_TAG);
 		int pm = partmode.getValue();
 		int mp = prg.getID();
 			switch(pm)

@@ -12,8 +12,7 @@ import value.XGValueType;
 import xml.XMLNode;
 import javax.sound.midi.InvalidMidiDataException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class XGDrumsetModuleType extends XGModuleType
 {
@@ -45,6 +44,7 @@ public class XGDrumsetModuleType extends XGModuleType
 
 	private volatile int program = DEF_DRUMSETPROGRAM;
 	private final int partmode;
+	private final Set<XGModule> assignedMultiparts = new HashSet<>();
 	private final XGDrumsetProgramValue programListener;
 
 	public XGDrumsetModuleType(XMLNode n, int hi) throws XGInvalidAddressException
@@ -74,13 +74,23 @@ public class XGDrumsetModuleType extends XGModuleType
 	}
 
 	public int getPartmode(){ return this.partmode;}
-
-	private XGIdentifiableSet<XGModule> getMultiparts()
+/*
+	public XGIdentifiableSet<XGModule> getAssignedMultiparts()//TODO: erwäge eine lokale Speicherung; Notifikation per XGPartmodeListener
 	{	XGIdentifiableSet<XGModule> mp = new XGIdentifiableSet<>();
 		for(XGModule mod : MODULE_TYPES.get("mp").getModules())
 		{	if(mod.getValues().get(XGValueType.MP_PM_VALUE_TAG).getValue() == this.partmode) mp.add(mod);
 		}
 		return mp;
+	}
+*/
+	public Set<XGModule> getAssignedMultiparts()
+	{	return this.assignedMultiparts;
+	}
+
+	public int getMidiChannel()
+	{	Iterator<XGModule> i = this.assignedMultiparts.iterator();
+		if(i.hasNext()) return i.next().getValues().get("mp_midi_channel").getValue();
+		else return -1;
 	}
 
 	public XGDrumsetProgramValue getProgramListener(){	return this.programListener;}
@@ -89,7 +99,7 @@ public class XGDrumsetModuleType extends XGModuleType
 
 	public void setProgram(int prg)
 	{	this.program = prg;
-		for(XGModule mod : this.getMultiparts())
+		for(XGModule mod : this.assignedMultiparts)
 		{	mod.getValues().get(XGValueType.MP_PRG_VALUE_TAG).setValue(prg, false, false);
 		}
 		this.programListener.notifyValueListeners(this.programListener);

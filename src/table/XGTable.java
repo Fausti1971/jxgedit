@@ -23,11 +23,11 @@ public interface XGTable extends XGLoggable, XGTableConstants, XGTagable, Iterab
 		catch(IOException e)
 		{	LOG.severe(e.getMessage());
 		}
-		XGRealTable t = new XGRealTable(TABLE_FX_PARTS);//wird zur Laufzeit um die Multipart- und ADPart-Instanzen erweitert
+		XGRealTable t = new XGRealTable(TABLE_FX_PARTS);//für Insertion-Effekte zugängliche Instanzen; wird zur Laufzeit um die Multipart- und ADPart-Instanzen erweitert
 		t.add(new XGTableEntry(127, "Off"));
 		TABLES.add(t);
 
-		t = new XGRealTable(TABLE_PARTMODE);//wird bei XGDrumsetModuleType.init() um die vorhandenen Drumsets erweitert
+		t = new XGRealTable(TABLE_PARTMODE);//verfügbare Partmodes; wird bei XGDrumsetModuleType.init() um die sich aus der Konfiguration ergebenden Drumsets erweitert
 		t.add(new XGTableEntry(0, "Normal"));
 		t.add(new XGTableEntry(1, "Drum"));
 		TABLES.add(t);

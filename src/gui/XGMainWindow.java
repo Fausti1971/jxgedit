@@ -56,7 +56,7 @@ public class XGMainWindow extends XGWindow implements XGPropertyChangeListener
 		for(XGModuleType mt : XGModuleType.MODULE_TYPES)
 		{	XGIdentifiableSet<XGModule> set = mt.getModules();
 			XGButton2 button;
-			if(set.size() == 1)
+			if(set.size() == 1)//falls moduleType nur über ein module verfügt
 			{	XGValue v = null;
 				XGModule mod = set.iterator().next();
 				if(mt.getInfoTags().size() != 0)

@@ -1,6 +1,6 @@
 package gui;
 
-import module.*;import value.*;import xml.XMLNodeConstants;import javax.swing.event.*;import javax.swing.table.*;import java.util.*;
+import static application.XGLoggable.LOG;import module.*;import value.*;import xml.XMLNodeConstants;import javax.swing.event.*;import javax.swing.table.*;import java.util.*;
 
 public class XGModuleTableModel  extends AbstractTableModel
 {
@@ -13,7 +13,7 @@ public class XGModuleTableModel  extends AbstractTableModel
 		this.cols = new Vector<>(t.getInfoTags());
 		this.cols.add(0, XMLNodeConstants.ATTR_ID);
 		for(XGModule m : this.rows)
-			for(String tag : this.cols)
+		{	for(String tag : this.cols)
 			{	XGValue v;
 				if(tag.equals(XMLNodeConstants.ATTR_ID))
 				{	if(m.getType() instanceof XGDrumsetModuleType)
@@ -24,6 +24,7 @@ public class XGModuleTableModel  extends AbstractTableModel
 				else v = m.getValues().get(tag);
 				v.getValueListeners().add((XGValue)->notifyListener(this.rows.indexOf(m), this.cols.indexOf(tag)));
 			}
+		}
 	}
 
 	public Vector<XGModule> getRows(){	return this.rows;}

@@ -4,7 +4,7 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiMessage;
 import javax.sound.midi.SysexMessage;
 import adress.XGAddress;import adress.XGAddressable;
-import application.XGLoggable;
+import application.XGLoggable;import application.XGStrings;
 
 public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 {
@@ -15,18 +15,18 @@ public interface XGMessage extends XGMessageConstants, XGAddressable, XGLoggable
 			case MSG_PC:	return new XGMessageParameterChange(src, array, init);
 			case MSG_DR:	return new XGMessageBulkRequest(src, array, init);
 			case MSG_PR:	return new XGMessageParameterRequest(src, array, init);
-			default:		throw new InvalidMidiDataException("unknown xg message: " + application.XGStrings.toHexString(array));
+			default:		throw new InvalidMidiDataException("unknown xg message: " + XGStrings.toHexString(array));
 		}
 	}
 
 	static XGMessage newMessage(XGMessenger src, MidiMessage msg) throws InvalidMidiDataException
 	{	if(msg instanceof SysexMessage) return newMessage(src, msg.getMessage(), false);
-		else throw new InvalidMidiDataException("no sysex message: " + application.XGStrings.toHexString(msg.getMessage()));
+		else throw new InvalidMidiDataException("no sysex message: " + XGStrings.toHexString(msg.getMessage()));
 	}
 
 	static void checkMessage(byte[] array) throws InvalidMidiDataException
 	{	if(array[VENDOR_OFFS] == VENDOR && array[MODEL_OFFS] == MODEL) return;
-		throw new InvalidMidiDataException("no xg message: " + application.XGStrings.toHexString(array));
+		throw new InvalidMidiDataException("no xg message: " + XGStrings.toHexString(array));
 	}
 
 /***************************************************************************************************/
