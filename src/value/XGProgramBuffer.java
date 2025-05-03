@@ -2,7 +2,7 @@ package value;
 
 import java.util.HashMap;
 import java.util.Map;
-import static application.XGLoggable.LOG;import module.XGDrumsetModuleType;import table.XGDefaultsTable;
+import application.XGLoggable;import module.XGDrumsetModuleType;import table.XGDefaultsTable;
 /**
 * Puffert je Multipart ein normal- und ein drumkit-program und synchronisiert diese bei Änderung;
 * drumset-programs werden im zugehörigen XGDrumsetModule gespeichert;
@@ -32,7 +32,7 @@ public interface XGProgramBuffer
 * Restauriert den Wert des Programms für den angegebenen Partmode (partmode) aus dem internen Cache
 */
 	static void restoreProgram(XGValue partmode)
-	{	LOG.info("oldPartmode=" + partmode.oldValue + ", newPartmode=" + partmode.value);
+	{	XGLoggable.LOG.info("oldPartmode=" + partmode.oldValue + ", newPartmode=" + partmode.value);
 
 		XGDrumsetModuleType dsmt = XGDrumsetModuleType.DRUMSETS.get(partmode.oldValue);
 		if(dsmt != null) dsmt.getAssignedMultiparts().remove(partmode.getModule());

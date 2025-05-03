@@ -11,7 +11,7 @@ public abstract class XGRequest extends XGSuperMessage
 	}
 
 /**
- * überprüft, ob die übergebene Message eine Antwort auf diesen XGRequest ist, setzt diese im Request und returniert das Ergebnis;
+ * überprüft, ob die übergebene Message eine Antwort auf diesen XGRequest ist, setzt diese ggf. im Request und returniert das Ergebnis;
  * @param res vermeintliche Antwort
  * @return true, wenn dieser XGRequest mit der übergebenen XGResponse beantwortet ist;
  */
@@ -30,7 +30,7 @@ public abstract class XGRequest extends XGSuperMessage
 	public boolean isResponsed(){	return this.responsed;}
 
 /**
- * returniert den Prototyp einer auf diesen XGRequest erwarteten oder erfolgten XGResponse (MessageID, SysexID und XGAddress);
+ * returniert den Prototyp (MessageID, SysexID und XGAddress) einer auf diesen XGRequest zu erwartenden oder wirklich erfolgten XGResponse;
  * @return s.o.
  */
 	public XGResponse getResponse(){	return this.response;}

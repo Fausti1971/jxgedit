@@ -11,33 +11,20 @@ public interface XGMessenger
 	default String getMessengerName(){	return this.getClass().getSimpleName();}
 
 /**
-* fordert den Messenger, die übergebene Antwort zu verarbeiten
+* fordert den Messenger auf, die übergebene Antwort zu verarbeiten
 * @param res Antwort zur Verarbeitung
 * @exception XGMessengerException falls der Messenger die Anwort nicht verarbeiten kann oder allgemeine Fehler auftraten
 */
-	default void submit(XGMessageParameterChange res) throws XGMessengerException
-	{	XGLoggable.LOG.severe(this + DEF_ERROR + res);
-	}
-
-	default void submit(XGMessageBulkDump res) throws XGMessengerException
+	default void submit(XGResponse res) throws XGMessengerException
 	{	XGLoggable.LOG.severe(this + DEF_ERROR + res);
 	}
 
 /**
-* übergibt fordert diesen Messenger zur Beantwortung des übergebenen Requests auf und muss die eventuell eingetroffene Antwort an die erfragende Source (req.getSource()) zurückliefern
+* fordert diesen Messenger zur Beantwortung des übergebenen Requests auf und muss die eventuell eingetroffene Antwort an die erfragende Source (req.getSource()) zurückliefern
 * @param req Anfrage zur Beantwortung
 * @exception XGMessengerException falls der Messenger nicht imstande ist, den Request zu beantworten oder allgemeine Fehler auftraten
 */
-	default void submit(XGMessageParameterRequest req) throws XGMessengerException
-	{	XGLoggable.LOG.severe(this + DEF_ERROR + req);
-	}
-
-/**
-* veranlasst den Messenger den übergebenen Request zu beantworten (der Messenger setzt die Antwort mittels req.setResponsedBy(res))
-* @param req zu beantwortender Request
-* @exception XGMessengerException falls der Messenger nicht imstande ist, den Request zu bearbeiten
-*/
-	default void submit(XGMessageBulkRequest req) throws XGMessengerException
+	default void request(XGRequest req) throws XGMessengerException
 	{	XGLoggable.LOG.severe(this + DEF_ERROR + req);
 	}
 

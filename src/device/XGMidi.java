@@ -171,26 +171,39 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 
 	public void transmit(MidiMessage mm){	this.transmitter.send(mm, -1L);}
 
-	@Override public void submit(XGMessageBulkDump m) throws XGMessengerException
-	{	this.checkMessage(m);
-		this.transmitter.send(m, -1L);
-		try//Note to XG Data Writers: If sending consecutive bulk dumps, leave an interval of about 10ms between the F7 and the next F0.
-		{	Thread.sleep(10);
+	@Override public void submit(XGResponse res) throws XGMessengerException
+	{	this.checkMessage(res);
+		this.transmitter.send((MidiMessage)res, -1L);
+		if(res instanceof XGMessageBulkDump)
+		{	try//Note to XG Data Writers: If sending consecutive bulk dumps, leave an interval of about 10ms between the F7 and the next F0.
+			{	Thread.sleep(10);
+			}
+			catch(InterruptedException ignored){}
 		}
-		catch(InterruptedException ignored){}
 	}
 
-	@Override public void submit(XGMessageParameterChange m) throws XGMessengerException
-	{	this.checkMessage(m);
-		this.transmitter.send(m, -1L);
-	}
-
-	@Override public void submit(XGMessageBulkRequest req) throws XGMessengerException
-	{	this.request(req);
-	}
-
-	@Override public void submit(XGMessageParameterRequest req) throws XGMessengerException
-	{	this.request(req);
+	public void request(XGRequest req) throws XGMessengerException
+	{	this.checkMessage(req);
+		long time = System.currentTimeMillis();
+		request = req;
+		requestThread = Thread.currentThread();
+		this.transmitter.send(req, -1L);
+		try
+		{	Thread.sleep(this.timeoutValue);
+		}
+		catch(InterruptedException e)
+		{	LOG.info(req + " responsed by " + req.getResponse() + " within " + (req.getResponse().getTimeStamp() - time) + " ms");
+			try
+			{	Thread.sleep(this.timeoutValue/30);//MU80 braucht Bedenkzeit nach der Übermittlung
+			}
+			catch(InterruptedException exception)
+			{	exception.printStackTrace();
+			}
+			request = null;
+			requestThread = null;
+			return;
+		}
+		throw new XGMessengerException(req + " not responsed within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
 	private void checkMessage(XGMessage msg) throws XGMessengerException
@@ -199,35 +212,24 @@ public class XGMidi implements  XGLoggable, XGMessenger, Receiver, AutoCloseable
 		msg.setTimeStamp();
 	}
 
-	private void request(XGRequest req) throws XGMessengerException
-	{	this.checkMessage(req);
-		request = req;
-		requestThread = Thread.currentThread();
-		this.transmitter.send(req, -1L);
-		try{	Thread.sleep(this.timeoutValue);}
-		catch(InterruptedException ignored){}
-		request = null;
-		requestThread = null;
-	}
-
 	@Override public void send(MidiMessage mmsg, long timeStamp)	//send-methode des receivers (this); also eigentlich meine receive-methode
 	{	try
 		{	XGMessage m = XGMessage.newMessage(this, mmsg);
-			if(m instanceof XGMessageBulkDump)//TODO: die anderen Messages noch bearbeiten
-			{	XGMessageBulkDump r = (XGMessageBulkDump)m;
-				if(request != null && request.setResponsedBy(r))
-				{	request.getSource().submit(r);
+			if(m instanceof XGResponse)
+			{	XGResponse res = (XGResponse)m;
+				if(request != null && request.setResponsedBy(res))
+				{	request.getSource().submit(res);
 					JXG.CURRENT_CONTENT.setValue("received from " + this);
 					requestThread.interrupt();
 				}
 				else
 				{
-					LOG.info("unrequested message: " + r);
-					XGDevice.DEVICE.submit(r);
+					LOG.info("unrequested message: " + res);
+					XGDevice.DEVICE.submit(res);
 					JXG.CURRENT_CONTENT.setValue("received from " + this);
 				}
 			}
-			else LOG.info("unexpected message :" + m.toHexString());
+			else LOG.info("response to " + m + " not implemented (at moment)");
 		}
 		catch(InvalidMidiDataException | XGMessengerException e)
 		{	LOG.info(e.getMessage());

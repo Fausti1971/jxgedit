@@ -106,8 +106,8 @@ public class XGModule implements Comparable<XGModule>, XGModuleConstants, XGLogg
 	{	this.bulks.get(res.getAddress()).submit(res);
 	}
 
-	public void submit(XGMessageBulkRequest req) throws XGMessengerException
-	{	this.bulks.get(req.getAddress()).submit(req);
+	public void request(XGMessageBulkRequest req) throws XGMessengerException
+	{	this.bulks.get(req.getAddress()).request(req);
 	}
 
 	@Override public String toString()

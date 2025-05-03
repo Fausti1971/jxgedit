@@ -1,5 +1,5 @@
 package gui;
-import static application.XGLoggable.LOG;import device.XGMidi;import module.*;import value.XGValue;
+import static application.XGLoggable.LOG;import application.XGStrings;import device.XGMidi;import module.*;import value.XGValue;
 import javax.sound.midi.InvalidMidiDataException;import javax.sound.midi.ShortMessage;import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;import javax.swing.table.*;
 import java.awt.*;import java.awt.event.MouseEvent;import java.awt.event.MouseListener;
@@ -121,17 +121,19 @@ public class XGModuleTable extends JTable implements MouseListener
 					int ch = dsmt.getMidiChannel();
 					if(ch != -1)
 					{	try
-						{	PLAYING_NOTE = new ShortMessage(0x90 | (ch % 0xF), m.getID(), MIDI_VELOCITY);
+						{	PLAYING_NOTE = new ShortMessage(0x90 | (ch % 0x10), m.getID(), MIDI_VELOCITY);
 							XGMidi.getMidi().transmit(PLAYING_NOTE);
 						}
 						catch(InvalidMidiDataException e)
 						{	e.printStackTrace();
 						}
 					}
+					else LOG.info("no midi-channel assigned to " + dsmt);
 				}
+				else LOG.info(m + " is not a drumset");
 			}
+			else LOG.info(o + " is not a instance of XGModule");
 		}
-		//LOG.info("mousePressed=" + event);
 	}
 
 	private void playNoteOff()

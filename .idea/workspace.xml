@@ -13,17 +13,31 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/artifacts/JXG/JXG.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/artifacts/JXG/JXG.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/file/XGDatafile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/file/XGDatafile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/file/XGDatafileFilter$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/file/XGDatafileFilter$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/file/XGDatafileFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/file/XGDatafileFilter.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/file/XGMidiFileFilter.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/file/XGMidiFileFilter.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/jxgedit/gui/XGModuleTable.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/gui/XGModuleTable.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/gui/XGModuleTableModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/gui/XGModuleTableModel.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/jxgedit/module/XGDrumsetModuleType.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/module/XGDrumsetModuleType.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGEditWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGEditWindow.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGMainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGMainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/msg/XGMessageBulkDump.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/msg/XGMessageBulkDump.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/jxgedit/value/XGProgramBuffer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/jxgedit/value/XGProgramBuffer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulk.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulk.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/bulk/XGBulkDumper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGDevice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGDevice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/device/XGMidi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/device/XGMidi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/file/XGDatafile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGDatafile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/file/XGDatafileFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGDatafileFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/file/XGMidiFileFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/file/XGMidiFileFilter.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/gui/XGModuleTableModel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGDrumsetModuleType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/msg/XGMessage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessage.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/table/XGTable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/table/XGTable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module/XGModule.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module/XGModule.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGClippboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGClippboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessageBulkDump.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGMessenger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGMessenger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/msg/XGRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/msg/XGRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGMultipartProgramValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGMultipartProgramValue.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGProgramBuffer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/value/XGValue.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/value/XGValue.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/xml/XMLNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/xml/XMLNode.java" afterDir="false" />
     </list>
     <list id="93d9dd1e-3ec2-49b9-9029-f8ae79a88b82" name="github-list" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -232,13 +246,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1550006041915</updated>
-    </task>
-    <task id="LOCAL-00053" summary="Kosmetik, Fehlerbehebung; Backup vor Behebung Design-Bug (XGBulk.setMessage());">
-      <created>1664649012979</created>
-      <option name="number" value="00053" />
-      <option name="presentableId" value="LOCAL-00053" />
-      <option name="project" value="LOCAL" />
-      <updated>1664649012980</updated>
     </task>
     <task id="LOCAL-00054" summary="den neuen Bug wieder gegen den alten getauscht (XGProgramBuffer.changePartmode())">
       <created>1664661169500</created>
@@ -576,7 +583,14 @@
       <option name="project" value="LOCAL" />
       <updated>1745970661393</updated>
     </task>
-    <option name="localTasksCounter" value="102" />
+    <task id="LOCAL-00102" summary="preview drumsound (via rightclick) implemented;">
+      <created>1746058357435</created>
+      <option name="number" value="00102" />
+      <option name="presentableId" value="LOCAL-00102" />
+      <option name="project" value="LOCAL" />
+      <updated>1746058357435</updated>
+    </task>
+    <option name="localTasksCounter" value="103" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -685,7 +699,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="CHECK_NEW_TODO" value="false" />
-    <MESSAGE value="Velocity Envelope debugged;" />
     <MESSAGE value="XGToolbar an Accelerator implemented;" />
     <MESSAGE value="XGClippboard implemented;" />
     <MESSAGE value="Recentlist-Popup implemented;" />
@@ -710,7 +723,8 @@
     <MESSAGE value="deviceChange at runtime completed; configFile via args;" />
     <MESSAGE value="readme" />
     <MESSAGE value="deviceChange at runtime removed (restart required); fixes;" />
-    <option name="LAST_COMMIT_MESSAGE" value="deviceChange at runtime removed (restart required); fixes;" />
+    <MESSAGE value="preview drumsound (via rightclick) implemented;" />
+    <option name="LAST_COMMIT_MESSAGE" value="preview drumsound (via rightclick) implemented;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

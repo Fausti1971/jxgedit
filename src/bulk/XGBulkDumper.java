@@ -23,6 +23,7 @@ public interface XGBulkDumper extends XGLoggable
 		int transmitted = 0;
 		long time = System.currentTimeMillis();
 		XGAddressableSet<XGBulk> set = this.getBulks();
+
 		ProgressMonitor pm = new ProgressMonitor(XGWindow.FOCUSSED, "transmitting to " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
@@ -44,6 +45,7 @@ public interface XGBulkDumper extends XGLoggable
 				JOptionPane.showMessageDialog(XGWindow.FOCUSSED, e.getMessage());
 			}
 		}
+		pm.close();
 		LOG.info(transmitted + " messages transmitted to " + dest + " within " + (System.currentTimeMillis() - time) + " ms");
 	}
 
@@ -57,6 +59,7 @@ public interface XGBulkDumper extends XGLoggable
 		int requested = 0, responsed = 0;
 		long startTime = System.currentTimeMillis(), wholeTime = 0, maxResponseTime = 0, responseTime = 0;
 		XGAddressableSet<XGBulk> set = this.getBulks();
+
 		ProgressMonitor pm = new ProgressMonitor(XGWindow.FOCUSSED, "requesting from " + dest, "", 0, set.size());
 		pm.setMillisToDecideToPopup(0);
 		pm.setMillisToPopup(0);
@@ -69,7 +72,7 @@ public interface XGBulkDumper extends XGLoggable
 				}
 				requested++;
 				XGMessageBulkRequest req = new XGMessageBulkRequest(b, b);
-				dest.submit(req);
+				dest.request(req);
 				if(req.isResponsed())
 				{	pm.setNote(b.toString());
 					pm.setProgress(++responsed);
@@ -80,7 +83,7 @@ public interface XGBulkDumper extends XGLoggable
 //					LOG.info(r.getResponse().toHexString());
 				}
 				else
-				{	LOG.severe("no response for " + b + " within " + (System.currentTimeMillis() - req.getTimeStamp()) + " ms");
+				{	//LOG.severe("no response for " + b + " within " + (System.currentTimeMillis() - req.getTimeStamp()) + " ms");
 					pm.setNote(b.toString());
 				}
 				if(pm.isCanceled()) break;

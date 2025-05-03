@@ -3,7 +3,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import javax.sound.midi.InvalidMidiDataException;
 import adress.*;
-import application.JXG;import application.XGLoggable;
+import application.XGLoggable;
 import bulk.XGBulk;import device.*;
 import module.*;
 import msg.*;
@@ -198,7 +198,7 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 */
 	public void requestAction()
 	{	try
-		{	XGMidi.getMidi().submit(new XGMessageParameterRequest(this, this));
+		{	XGMidi.getMidi().request(new XGMessageParameterRequest(this, this));
 		}
 		catch(XGMessengerException | InvalidMidiDataException e)
 		{	e.printStackTrace();
@@ -215,22 +215,25 @@ public abstract class XGValue implements XGParameterConstants, XGAddressable, Co
 		else return this.getTag();
 	}
 
-	@Override public void submit(XGMessageBulkDump res) throws XGMessengerException
-	{	int offset = res.getBaseOffset() + (this.address.getLoValue() - res.getAddress().getLoValue());
-		this.setValue(this.type.codec.decode(res, offset, this.getSize()), false, false);
-	}
-
-	@Override public void submit(XGMessageParameterChange res)
-	{	this.setValue(this.type.codec.decode(res, res.getBaseOffset(), this.getSize()), false, false);
-	}
-
-	public void submit(XGMessageParameterRequest req)throws XGMessengerException
-	{	try
-		{	XGMessageParameterChange res = new XGMessageParameterChange(this, this);
-			if(req.setResponsedBy(res)) req.getSource().submit(res);
+	@Override public void submit(XGResponse res) throws XGMessengerException
+	{	if(res instanceof XGMessageBulkDump)
+		{	int offset = res.getBaseOffset() + (this.address.getLoValue() - res.getAddress().getLoValue());
+			this.setValue(this.type.codec.decode(res, offset, this.getSize()), false, false);
 		}
-		catch(InvalidMidiDataException e)
-		{	throw new XGMessengerException(e.getMessage());
+		if(res instanceof XGMessageParameterChange)
+		{	this.setValue(this.type.codec.decode(res, res.getBaseOffset(), this.getSize()), false, false);
+		}
+	}
+
+	@Override public void request(XGRequest req)throws XGMessengerException
+	{	if(req instanceof XGMessageParameterRequest)
+		{	try
+			{	XGMessageParameterChange res = new XGMessageParameterChange(this, this);
+				if(req.setResponsedBy(res)) req.getSource().submit(res);
+			}
+			catch(InvalidMidiDataException e)
+			{	throw new XGMessengerException(e.getMessage());
+			}
 		}
 	}
 

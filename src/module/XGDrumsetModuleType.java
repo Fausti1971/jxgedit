@@ -74,15 +74,7 @@ public class XGDrumsetModuleType extends XGModuleType
 	}
 
 	public int getPartmode(){ return this.partmode;}
-/*
-	public XGIdentifiableSet<XGModule> getAssignedMultiparts()//TODO: erwäge eine lokale Speicherung; Notifikation per XGPartmodeListener
-	{	XGIdentifiableSet<XGModule> mp = new XGIdentifiableSet<>();
-		for(XGModule mod : MODULE_TYPES.get("mp").getModules())
-		{	if(mod.getValues().get(XGValueType.MP_PM_VALUE_TAG).getValue() == this.partmode) mp.add(mod);
-		}
-		return mp;
-	}
-*/
+
 	public Set<XGModule> getAssignedMultiparts()
 	{	return this.assignedMultiparts;
 	}

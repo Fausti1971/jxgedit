@@ -11,7 +11,7 @@ import msg.*;
 import xml.*;
 
 public class XGDatafile extends File implements XGMessenger, XGLoggable
-{
+{	//TODO: beschissenes Konzept überdenken: bislang requestet der XGDumper seine konfigurierten Bulks aus dem Datafile, was nicht zielführend ist, wenn auch/nur ParameterChangeMessages drin sind; Es müsste also das XGDatafile an einen (als Destination) übergebenen XGMessenger gepushed werden 
 	public static XMLNode CONFIG; 
 
 	public static void init()
@@ -24,11 +24,13 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 			XGLoggable.LOG.info(s + " doesn't exist (removing from history)");
 			x.removeNode();
 		}
+		new XGSysexFileFilter();
+		new XGMidiFileFilter();
 	}
 
 	public static void load(XGBulkDumper dumper)
 	{	String last = CONFIG.getLastChildOrNew(XMLNodeConstants.TAG_ITEM).getTextContent().toString();
-		XGFileSelector fs = new XGFileSelector(last, "load data file...", "load", XGDatafileFilter.SUPPORTED_FILEFILTER, XGDatafileFilter.SYX_FILEFILTER, XGDatafileFilter.MID_FILEFILTER);
+		XGFileSelector fs = new XGFileSelector(last, "load data file...", "load", XGDatafileFilter.getFilters());
 
 		while(true)
 		{	int res = fs.select(XGMainWindow.MAINWINDOW);
@@ -93,25 +95,9 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 		return set;
 	}
 
-	//public static void recent(XGBulkDumper dmp, ActionEvent evnt)
-	//{	if(evnt.getSource() instanceof JComponent)
-	//	{	Point p = ((JComponent)evnt.getSource()).getLocationOnScreen();
-	//		JPopupMenu m = new JPopupMenu();
-	////		m.setSelectionModel(new DefaultSingleSelectionModel());
-	//		m.setLocation(p);
-	//		for(XMLNode n : XGDatafile.CONFIG.getChildNodes(TAG_ITEM))
-	//		{	JMenuItem i = new JMenuItem(String.valueOf(n.getTextContent()));
-	//			i.addActionListener((ActionEvent e)->{	XGDatafile.load(dmp, i.getText()); m.setVisible(false);});
-	//			m.add(i);
-	//		}
-	//		m.setVisible(true);
-	//	}
-	//}
-
-
 	public static void save(XGBulkDumper dumper)
 	{	String last = CONFIG.getLastChildOrNew(XMLNodeConstants.TAG_ITEM).getTextContent().toString();
-		XGFileSelector fs = new XGFileSelector(last, "save data file...", "save", XGDatafileFilter.SUPPORTED_FILEFILTER, XGDatafileFilter.MID_FILEFILTER, XGDatafileFilter.SYX_FILEFILTER);
+		XGFileSelector fs = new XGFileSelector(last, "save data file...", "save", XGDatafileFilter.getFilters());
 		int fs_result ;
 		File file;
 		XGDatafileFilter filter ;
@@ -165,7 +151,7 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 
 /******************************************************************************************************************************************/
 
-	final XGAddressableSet<XGMessageBulkDump> buffer = new XGAddressableSet<>();
+	final XGAddressableSet<XGResponse> buffer = new XGAddressableSet<>();
 	final XGDatafileFilter filter;
 
 	private XGDatafile(File f, XGDatafileFilter filter)throws IOException
@@ -178,12 +164,12 @@ public class XGDatafile extends File implements XGMessenger, XGLoggable
 
 	@Override public String getMessengerName(){	return "File (" + this.getAbsolutePath() +")";}
 
-	@Override public void submit(XGMessageBulkDump msg)
-	{	this.buffer.add(msg);
+	@Override public void submit(XGResponse res)
+	{	this.buffer.add(res);
 	}
 
-	@Override public void submit(XGMessageBulkRequest req)throws XGMessengerException
-	{	XGMessageBulkDump response = this.buffer.get(req.getAddress());
+	@Override public void request(XGRequest req)throws XGMessengerException
+	{	XGResponse response = this.buffer.get(req.getAddress());
 		if(req.setResponsedBy(response))
 		{	req.getSource().submit(response);
 		}

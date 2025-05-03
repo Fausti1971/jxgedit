@@ -6,17 +6,17 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 import javax.swing.JOptionPane;
-import javax.xml.XMLConstants;import javax.xml.parsers.ParserConfigurationException;import javax.xml.parsers.SAXParser;import javax.xml.parsers.SAXParserFactory;import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.XMLEvent;
-import javax.xml.transform.sax.SAXSource;import javax.xml.transform.stream.StreamSource;import javax.xml.validation.Schema;import javax.xml.validation.SchemaFactory;import javax.xml.validation.Validator;
+import javax.xml.transform.sax.SAXSource;import javax.xml.transform.stream.StreamSource;import javax.xml.validation.*;
 import application.JXG;import application.XGLoggable;
 import application.XGStrings;
-import device.XGDevice;import gui.XGMainWindow;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import org.xml.sax.helpers.DefaultHandler;import tag.XGTagable;import tag.XGTagableSet;
+import device.XGDevice;import gui.XGMainWindow;import org.xml.sax.ErrorHandler;import org.xml.sax.InputSource;import org.xml.sax.SAXException;import org.xml.sax.SAXParseException;import tag.XGTagable;import tag.XGTagableSet;
 
 public class XMLNode implements XGTagable, XGLoggable, XGStrings
 {
@@ -45,7 +45,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 		{	validateXml(filename);
 		}
 		catch( SAXException e)
-		{	throw new IOException("validation error=" + e.getMessage());
+		{	throw new IOException(e.getMessage());
 		}
 */		return parse(url);
 	}
@@ -93,7 +93,7 @@ public class XMLNode implements XGTagable, XGLoggable, XGStrings
 		Validator validator = schema.newValidator();
 		validator.setErrorHandler(new ErrorHandler()
 		{	public void warning(SAXParseException e)
-			{	LOG.warning(e.getMessage());
+			{	LOG.warning("validator warning=" + e.getMessage());
 			}
 			public void fatalError(SAXParseException e)
 			{	LOG.severe(e.getMessage());

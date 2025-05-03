@@ -1,6 +1,6 @@
 package file;
 
-import gui.XGMainWindow;import msg.XGMessage;import msg.XGMessageBulkDump;import javax.sound.midi.*;import javax.swing.*;import java.io.EOFException;
+import gui.XGMainWindow;import msg.XGMessage;import msg.XGMessageBulkDump;import msg.XGResponse;import javax.sound.midi.*;import javax.swing.*;import java.io.EOFException;
 import java.io.IOException;
 
 public class XGMidiFileFilter extends XGDatafileFilter
@@ -19,6 +19,7 @@ public class XGMidiFileFilter extends XGDatafileFilter
 		}
 	}
 
+/*******************************************************************************************************************/
 
 	@Override String getSuffix(){	return MID_SUFFIX;}
 
@@ -74,8 +75,8 @@ public class XGMidiFileFilter extends XGDatafileFilter
 		if(seq == null) return;
 		Track track = seq.createTrack();
 		int i = 0;
-		for(XGMessageBulkDump m : f.buffer)
-		{	track.add(new MidiEvent(m, i += m.getLength()));
+		for(XGResponse m : f.buffer)
+		{	track.add(new MidiEvent((MidiMessage)m, i += m.getBulkSize()));
 		}
 
 		try

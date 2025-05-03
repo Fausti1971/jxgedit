@@ -1,28 +1,48 @@
 package file;
 
-import application.XGLoggable;import java.io.File;import java.io.IOException;
-import javax.sound.midi.InvalidMidiDataException;import javax.swing.filechooser.FileFilter;
+import application.XGLoggable;import tag.XGTagable;import tag.XGTagableSet;import java.io.File;import java.io.IOException;
+import javax.swing.filechooser.FileFilter;
 
-public abstract class XGDatafileFilter extends FileFilter implements XGLoggable
+public abstract class XGDatafileFilter extends FileFilter implements XGLoggable, XGTagable
 {
-	public static final XGDatafileFilter SYX_FILEFILTER = new XGSysexFileFilter();
-	public static final XGDatafileFilter MID_FILEFILTER = new XGMidiFileFilter();
-	public static final FileFilter SUPPORTED_FILEFILTER = new FileFilter()
+	public static final XGTagableSet<XGDatafileFilter> DATAFILE_FILTERS = new XGTagableSet<>();
+
+	public final FileFilter SUPPORTED_FILEFILTER = new FileFilter()
 	{	@Override public String getDescription()
 		{	return "All Supported Files";
 		}
 		@Override public boolean accept(File f)
-		{	return MID_FILEFILTER.accept(f) || SYX_FILEFILTER.accept(f);
+		{	for(XGDatafileFilter ff : DATAFILE_FILTERS) if(ff.accept(f)) return true;
+			return false;
 		}
 	};
 
+	public static FileFilter[] getFilters()
+	{	FileFilter[] ff = new FileFilter[DATAFILE_FILTERS.size() + 1];
+		int i = 0;
+		ff[i++] = new FileFilter()
+			{	@Override public String getDescription()
+				{	return "All Supported Files";
+				}
+				@Override public boolean accept(File f)
+				{	for(XGDatafileFilter ff : DATAFILE_FILTERS) if(ff.accept(f)) return true;
+					return false;
+				}
+			};
+		for(FileFilter f : DATAFILE_FILTERS)  ff[i++] = f;
+		return ff;
+	}
+
 	public static XGDatafileFilter getFilter(File f) throws XGDatafileFilterException
-	{	if(SYX_FILEFILTER.accept(f)) return SYX_FILEFILTER;
-		if(MID_FILEFILTER.accept(f)) return MID_FILEFILTER;
-		throw new XGDatafileFilterException("can't determine fileformat of " + f);
+	{	for(XGDatafileFilter ff : DATAFILE_FILTERS) if(ff.accept(f)) return ff;
+		throw new XGDatafileFilterException("unknown fileformat of " + f);
 	}
 
 /**********************************************************************************************************************/
+
+	XGDatafileFilter()
+	{	DATAFILE_FILTERS.add(this);
+	}
 
 	abstract String getSuffix();
 	abstract void read(XGDatafile f)throws IOException;
@@ -32,7 +52,6 @@ public abstract class XGDatafileFilter extends FileFilter implements XGLoggable
 	{	if(f.isDirectory()) return true;
 		int dot = f.getName().lastIndexOf(".");
 		if(dot == -1) return false;
-	//	String suffix = f.getName().substring(f.getName().length() - 4);
 		String suffix = f.getName().substring(dot);
 		return suffix.equalsIgnoreCase(this.getSuffix());
 	}
@@ -43,6 +62,9 @@ public abstract class XGDatafileFilter extends FileFilter implements XGLoggable
 //	{	if(ff.getSuffix().equalsIgnoreCase(s.substring(s.length() - 4))) return;
 //		else s.replace(s.length() - 4, s.length(), ff.getSuffix());
 //	}
+	@Override public String getTag()
+	{	return this.getSuffix();
+	}
 
 	@Override public String toString(){	return this.getDescription();}
 }

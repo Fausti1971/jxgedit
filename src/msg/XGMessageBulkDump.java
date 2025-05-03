@@ -21,7 +21,7 @@ public class XGMessageBulkDump extends XGSuperMessage implements XGResponse
 	{	this(src, blk.getAddress(), blk.getSize());
 	}
 
-	public XGMessageBulkDump(XGMessenger src, XGAddress adr, int size) throws InvalidMidiDataException //wird manuell angelegt und als response benötigt
+	XGMessageBulkDump(XGMessenger src, XGAddress adr, int size) throws InvalidMidiDataException //wird manuell angelegt und als response benötigt
 	{	super(src, new byte[OVERHAED + size], true);
 		this.setBulkSize(size);
 		this.setAddress(adr);

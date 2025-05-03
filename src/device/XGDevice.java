@@ -6,7 +6,7 @@ import javax.swing.*;
 import adress.XGAddressConstants;
 import adress.XGAddressableSet;
 import application.JXG;
-import application.XGStrings;import xml.XGConfigurable;import xml.XGPropertyChangeListener;import file.XGDatafile;
+import application.XGStrings;import xml.XGConfigurable;import file.XGDatafile;
 import bulk.XGBulk;import bulk.XGBulkDumper;import gui.XGEditWindow;import gui.XGMainWindow;import gui.XGWindow;import module.XGModule;
 import module.XGModuleType;
 import msg.*;
@@ -117,7 +117,7 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 			//m.setMessage(msg, msg.length);
 			//XGMidi.getMidi().transmit(m);
 			XGMessageBulkRequest m = new XGMessageBulkRequest(this, XGAddressConstants.XGMODELNAMEADRESS);
-			XGMidi.getMidi().submit(m);
+			XGMidi.getMidi().request(m);
 			if(m.isResponsed())
 			{	XGResponse r = m.getResponse();
 				int offs = r.getBaseOffset();
@@ -175,16 +175,18 @@ public class XGDevice implements  XGBulkDumper, XGConfigurable, XGMessenger, XML
 		XGProgramBuffer.reset();
 	}
 
-	@Override public void submit(XGMessageBulkDump msg)throws XGMessengerException
-	{	XGBulk b = this.getBulks().get(msg.getAddress());
-		if(b != null) b.submit(msg);
-		else throw new XGMessengerException("no matching Bulk found for " + msg);
+	@Override public void submit(XGResponse res)throws XGMessengerException
+	{	XGBulk b = this.getBulks().get(res.getAddress());
+		if(b != null) b.submit(res);
+		else throw new XGMessengerException("no matching Bulk found for " + res);
 	}
 
-	@Override public void submit(XGMessageBulkRequest req)throws XGMessengerException
-	{	XGBulk b = this.getBulks().get(req.getAddress());
-		if(b != null) b.submit(req);
-		else throw new XGMessengerException("no matching Bulk found for " + req);
+	@Override public void request(XGRequest req)throws XGMessengerException
+	{	if(req instanceof XGMessageBulkRequest)
+		{	XGBulk b = this.getBulks().get(req.getAddress());
+			if(b != null) b.request(req);
+			else throw new XGMessengerException("no matching Bulk found for " + req);
+		}
 	}
 
 	@Override public String toString(){	return this.getName().getValue().toString();}
